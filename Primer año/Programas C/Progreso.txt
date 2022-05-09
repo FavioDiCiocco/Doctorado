@@ -1,0 +1,42 @@
+09/05/2022
+
+Ayer y anteayer estuve mirando el código por arriba. Ya hoy lo agarré y
+lo emprolijé borrando varias cosas comentadas. Entre ellas, creo que lo que
+estuvo bien borrar son las matrices de agentes activados y la de grado medio
+de las redes.
+
+Ahora, yo quiero mandar a correr el sistema, teniendo este opiniones positivas,
+un campo externo y un coeficiente que regule la intensidad con la que
+las opiniones caen a cero. El coeficiente ya lo agregué y vale 1.
+Para que las opiniones sean postivas reemplace el uso de la función Gaussiana
+por una distribución uniforme entre [0 y 5]. Me pareció que 5 sería razonable.
+
+Para el campo externo, tengo que agregar un término a la ecuación dinámica que
+se sume a todo el resto de agentes, se me ocurre que se sume justo antes
+de rearmar la red y que la intensidad del campo externo sea tres o cinco.
+Podría barrer en eso también.
+
+¿Qué datos quiero mirar? Me interesa en principio ver las opiniones iniciales
+y las finales, la Varprom y el comportamiento de los testigos.
+
+Bien, ya preparé para que se construyan dos archivos, uno que es Opiniones
+y toda la perorata, que guarda los siguientes datos:
+Opiniones iniciales
+Varprom
+Opiniones Finales
+Semilla
+
+El segundo archivo, que es Testigos y la perorata, guarda las opiniones de
+diez testigos de manera que cada columna es la evolución de las opiniones
+de un testigo. En realidad cada dos columnas.
+
+Todavía queda agregar el campo externo y ya podemos empezar a ver qué hace esto.
+Lo agregué al campo como una influencia que surge en cada iteración previa a que
+el sistema rearme la red. 
+
+Creo que está armado el código, lo podemos mandar a correr. Ya revisé y corregí
+los errores con el Cygwin. Voy a barrer en el campoext y en lambda, que es la
+intensidad del decaimiento.
+
+Ya el programa lo mandé a correr, pero está teniendo problemas. Por algún motivo,
+las opiniones no se actualizan. Y además, el cálculo de Varprom me da "inf".

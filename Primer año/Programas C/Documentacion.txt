@@ -1,0 +1,138 @@
+Voy a anotar qué hacen cada uno de los programas en esta carpeta:
+
+.) Archivo:
+------------
+Acá guardo todos los códigos de prueba que armo, la idea es tener
+un archivo en el cual poder buscar códigos viejos por si alguna cosa
+ya la armé antes. Cada nuevo entrada en el archivo se inicia con
+las palabras NUEVO_PROGRAMA, por lo que para ir avanzando rápido entre
+códigos uso un buscador de palabras y voy avanzando entre estos. Además
+cada entrada tiene una pequeña descripción de qué hace y cuando lo armé.
+
+.) Asesinar.sh:
+----------------
+Este programa es hermano de Metainstanciacion.sh. La cosa es que si
+al mandar a correr una tanda de programas descubro que hay algo mal, este
+código se encarga de eliminar todos esos programas de una. Para eso,
+aprovecha que Metainstanciacion.sh guarda los datos de los programas
+que están corriendo en archivos con nombre salida$$$$$.out. En esos archivos,
+siempre en la primera fila se guarda el número de ID de la tarea que se encarga
+de correr esos archivos, así que Asesinar.sh simplemente levanta los ID de los
+archivos de salida y con eso usa el comando kill para ir cortando esos programas.
+Si no hay nada corriendo, mandar el Asesinar.sh sólo hará que el programa avise
+que no hay programas corriendo con ese ID.
+Esto funciona claramente con línea de Comando y principalmente lo uso en las 
+máquinas del DF porque mi pc no tiene varios hilos para mandar a correr
+varias cosas juntas.
+
+.) Trío de Claves:
+------------------
+Estos archivos son parte del protocolo de conexión con las computadoras del
+DF, realmente sé poco sobre su funcionamiento y qué hacer con ellos.
+
+.) Compilar.sh:
+----------------
+Como es muy molesto tener que recordar siempre cuál era la serie de comandos
+para que en Línea de Comando se me compilara un programa, armé un archivo
+Bash que recibe el nombre del programa, lo compila y después lo ejecuta.
+Lo único que necesita es el nombre del archivo, no su extensión. También
+puede recibir datos extras que pasar al programa para que sirvan como input
+por línea de comando. Lo uso mucho con el Prosem.c así lo compilo y lo mando
+a correr. Luego de intentar compilar, el archivo te pide confirmación para
+mandarlo a correr, cosa que si en la compilación surgió un problema puedas
+revisarlo primero.
+
+.) Ejecutar.sh:
+----------------
+Este programa no sé si ya quedó obsoleto. La cosa es que al principio,
+al armar los programas de Bash tiraban un error como de falta de permiso o
+de que no entendían a donde correr. Cuestión que el programa los levantaba
+con un lenguaje equivocado y por eso no interpretaba correctamente el shebang.
+La solución es hacerle un dos2unix al archivo. Como me empezó a dar paja,
+empecé a usar Ejecutar.sh como forma de correr los códigos en Bash, básicamente
+porque el sujeto ante cada mínimo cambio me defaulteaba al lenguaje equivocado.
+Igual esos problemas en las pc de la facultad no los tuve tanto, no sé si
+ya más o menos quedó olvidado. Igual, por si acaso, mejor dejar esto
+dando vueltas.
+
+.) Instanciar e Instanciar2.sh:
+--------------------------------
+Estos dos programas son básicamente uno mismo. Tengo
+los dos porque en un momento me encargué de mandar a correr un tipo
+de archivos y después otro tipo y para no andar corrigiendo en cada
+vez, mejor tener dos archivos y listo. Eventualmente borraré
+uno cuando organice la próxima etapa de trabajo. Cuestión,
+estos archivos lo que hacen es primero borrar todos los
+archivos en bin. Me tomó darme cuenta que eso es mucho muy importante.
+Luego manda a compilar todo de nuevo. Obviamente, haciendo uso del
+archivo makefile. Luego, pide confirmación para mandar a correr, por
+si acaso algo salió mal. Anota el ID del código, y luego itera un mismo
+código a lo largo de una serie de variables de manera de armar un conjunto de
+datos simulados. La idea de esto es mandar a correr muchas cosas. Con el tiempo
+fue recibiendo mejoras, y una de ellas es que este sea un programa subordinado
+al Metainstanciacion.sh. De esa manera, puedo mandar varios de estos al mismo
+tiempo y en dos segundos preparar el armado de una tanda larga de datos.
+En estos casos es importante que esté comentado el make clean y make all
+inicial, para que no haya bardos.
+
+.) Makefile:
+-------------
+Este es un código heredado de la materia de Física Computacional. Esquemáticamente
+comprendo lo que hace, tiene una serie de comandos detallados sobre compilar,
+borrar archivos y cosas. Lo importante a saber es que tiene una parte bastante clara
+donde podés cambiarle el nombre del archivo resultante para poder diferenciar la etapa
+del trabajo en la que estás. También es importante recordar que para que esto trabaje
+bien necesita estar por fuera de una carpeta src en la cual está TODO tu código separado
+en partecitas, con un main.c, y después el resto de archivos que son como tus librerías
+necesitan tener archivos .c y .h. Además, los archivos .c tienen sólo la descripción de
+las funciones, mientras que los archivos .h tienen la declaración de las funciones y de
+variables.
+En definitiva, no lo toques, funca bien. make all compila, make clean limpia el bin.
+
+.) Metainstanciacion.sh:
+--------------------------
+Este archivo se llama así porque controla a las Instanciaciones. Básicamente lo que hace
+es mandar a correr varias veces las instanciaciones, variando alguna variable de manera
+de que estas Instanciaciones armen todo un conjunto de datos necesarios. La versión que
+tengo ahora en la pc de mi casa está desactualizada de la versión que tengo en las pcs
+del DF. Por un lado tiene unos valores que determinan en que número arranca la variable,
+cuantas de esas variables tiene que resolver un sólo Instanciar.sh y también a veces
+le agrego una segunda variable que pasarle al Instanciar, como el grado de la red o el K.
+Metainstanciacion.sh borra los archivos en el bin, compila todo nuevamente, confirma si
+no hay ningún problema y recién ahí manda a correr. Luego, si todo está bien, genera una
+cierta cantidad de Instanciar.sh, mandando a un archivo salida$$$$$.out la salida de
+Instanciar, cosa que si hay un error sepa que paso. También avisa entre qué valores
+está moviendo la variable, aunque eso es también un poco a interpretación según cómo después
+el código de C lo modifica, pero igual sirve porque en general yo hago la cuenta previa
+de entre qué valores se mueve esa variable.
+Algo importante, en el futuro estaría bueno poder ponerle una forma de que la variable
+avance de a más de a uno, porque actualmente eso ha sido un problema. Nada insalvable,
+pero algo a revisar.
+
+.) Progreso:
+---------------
+Este archivo es un diario donde anoto lo que hice, lo que tengo que hacer,
+un poco de lo que siento y más que nada me organizo mi trabajo para poder
+hacer las cosas mejor. Porque se trabaja mucho más eficiente si se sabe qué
+es lo próximo que hay que hacer. De paso, mi idea es que este archivo sea
+únicamente de Tesis, después en Doctorado armaré uno nuevo.
+
+.) Prosem:
+----------
+Este es el archivo de pruebas, acá armo lo código de C donde quiero probar
+cosas que no sé qué hacen o cómo hacerlas funcionar. Se llama porque inicialmente
+arranqué probando el uso de la semilla acá. Desde entonces bastante agua a corrido
+y todavía falta mucha por correr. Siempre tiene armado el código de la última prueba
+que hice. Todo lo que se prueba y se ve que funciona se pasa a Archivo.c para
+su correcto archivado.
+
+.) Tabla_Valores_TANH:
+-----------------------
+Este es un archivo que mis programas de cálculo usan para evitar calcular
+explícitamente cuánto vale la tanh, en cambio simplemente usan esta tabla e
+interpolan el resultado. Se supone que esto debería haber hecho que el programa
+funcione mucho más rápido porque realizar una interpolación debería ser mucho
+menos costoso que calcular una tanh. Increíblemente, apenas sí noté una diferencia,
+así que esto fue una buena pérdida de tiempo. Pero una vez ya implementado, quitarlo
+me daba mucha pereza así que quedó y además teóricamente debería ser mejor, así que
+mejor dejarlo y listo.

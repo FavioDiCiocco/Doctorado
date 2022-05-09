@@ -1,0 +1,12 @@
+PruebaMod
+-----------
+En esta carpeta me guardo los datos de opiniones iniciales, Varprom, opiniones
+finales y opiniones de testigos del modelo con campo externo. Recién estamos
+arrancando, así que esto es una simple prueba. La idea sería ver qué hace el código
+al moverme en el espacio de los parámetros alfa, intensidad de campo e intensidad
+de decaimiento de las opiniones.
+
+Python
+-------
+Acá voy a poner los programas de Python que voy a estar usando para levantar mis datos.
+Lo separo para no tener tantos archivos dando vueltas.

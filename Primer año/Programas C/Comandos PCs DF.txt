@@ -1,0 +1,87 @@
+Acá voy anotando las cosas que me surgen como tareas por hacer, cosa de no tener que hacer
+scroll hacia arriba en el archivo de progreso cada vez que quiero recordar qué tengo que hacer.
+-----------------------------------------------------------------------------------------------
+
+Cosas Super generales:
+----------------------
+.) Vamos a hacer el modelo de agentes e integrando el RK4
+.) Armar la red por modelo de actividad
+.) Hacer el modelo de agentes sería discretizar la ecuación diferencial
+
+
+---------------------------------------------------------------------------------------------
+
+###################################
+Datos que tengo de Redes Estáticas
+###################################
+
+En la computadora de Oporto tengo los datos de Redes Estáticas. Tengo datos para redes con 1000 sujetos,
+de 2 tópicos, redes de Barabasi, Erdos-Renyi y Random Regulars, con Alfa entre 0 y 4 de a 0,1;
+con cos(Delta) entre -0,5 y 1 de a 0,1; con Grado Medio entre 4 y 16 de a 4; 60 iteraciones para
+cada elemento del ensamble.
+A este conjunto de datos le voy a sumar un segundo barrido realizado entre 0 y 0,2 de a 0,01 para Alfa.
+También voy a sumar un barrido fino para el C(delta) entre -0,2 y 0,2.
+
+
+-----------------------------------------------------------------------------------------------
+
+INFO DE LA CUENTA REMOTA:
+Usuario externo: faviodiciocco2@login.df.uba.ar
+Usuario interno: faviodic@setubal.df.uba.ar
+
+PARA ENTRAR:
+ssh -J faviodiciocco2@login.df.uba.ar faviodic@setubal.df.uba.ar
+
+PARA CORRER ARCHIVOS .PY:
+./Proceso.py (Corre, pero si cerrás la terminal se cierra el programa)
+./script.py > salida.out & (Corre el programa en el Background. Salida .out guarda lo que hubiera
+ido a la terminal como salida. El Ampersand es lo que hace que funcione en el background.
+Al correr te da un número de proceso ID que tenés que guardar por si necesitás matar el proceso más tarde)
+
+PARA COPIAR ARCHIVOS DESDE MI PC A LA DE SETUBAL (Parado en mi pc):
+scp -(r)o "ProxyJump faviodiciocco2@login.df.uba.ar" "PATH LOCAL" "faviodic@setubal.df.uba.ar:PATH REMOTO"
+
+PARA COPIAR ARCHIVOS DESDE UNA PC EXTERNA A LA MIA (Parado en mi pc):
+scp -(r)o "ProxyJump faviodiciocco2@login.df.uba.ar" "faviodic@oporto.df.uba.ar:~/Carpeta/que/quieras" "D:Users/Favio/Documents"
+
+PARA VER LOS PROGRAMAS QUE ESTÁN CORRIENDO DE FONDO:
+htop
+
+PARA MANDAR A CORRER UN PROGRAMA EN EL BACKGROUND:
+nohup COMANDO &
+
+PARA CREAR UN AMBIENTE DE PYTHON QUE PERMITA CORRER EN LA MÁQUINA
+virtualenv -p /usr/bin/python3 environment
+
+PARA ACTIVAR EL AMBIENTE DE PYTHON
+source environment/bin/activate
+
+PARA DESACTIVAR EL AMBIENTE DE PYTHON
+source environment/bin/deactivate
+
+PARA CORRER COSAS EN EL AMBIENTE DE PYTHON en el background
+nohup python COMANDO > salida.out &
+
+(La idea del ambiente es que en esa carpeta se guardan programas y cosas
+de Python, entonces podés instalar ahí todo, luego cuando vayas a correr
+algo en Python siempre primero activa el ambiente para asegurarte
+que todo corra bien, tomando como referencia las librerías ahí cargadas.)
+
+PARA INSTALAR COSAS DE PYTHON
+pip ...
+
+
+ID procesos: 
+
+
+------------------------------------------------------------------------------------------------------------
+Cuenta nueva en Oporto: (20 hilos)
+
+faviodic@oporto.df.uba.ar
+contraseña: eYESHIELD21
+
+-------------------------------------------------------------------------------------------------------------
+Cuenta nueva en Algarve: (20 hilos)
+
+faviodic@algarve.df.uba.ar
+contraseña: No1olvi2dar3
