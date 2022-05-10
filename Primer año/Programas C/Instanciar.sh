@@ -21,11 +21,11 @@ then
 			# while [ $Alfa -le $3 ]
 			for Alfa in {0..20}
 			do
-				for Cdelta in 0
+				for Cdelta in {-5..10} 
 				do
-					for Campo in {0..5}
+					for Campo in 0
 					do
-						for Decaimiento in {1..5}
+						for Decaimiento in 1
 						do
 							echo Alfa = $Alfa, Cdelta = $Cdelta, campo = $Campo, Decaimiento = $Decaimiento
 							./$1.e $N $Alfa $Cdelta $iteracion $Campo $Decaimiento

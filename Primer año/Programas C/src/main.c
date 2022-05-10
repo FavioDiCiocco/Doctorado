@@ -54,8 +54,8 @@ int main(int argc, char *argv[]){
 		int i_contador = 0;
 		int i_rearmar = 0;
 		int i_tamano = 0;
-		int i_testigos = 10;
-		int a_Testigos[10] = {1,5,10,20,30,50,80,100,150,190};
+		int i_testigos = 5;
+		int a_Testigos[5] = {1,2,3,4,5};
 		
 		// Voy a armar mi array de punteros, el cual voy a usar para guardar los datos de pasos previos del sistema
 		double* ap_OpinionesPrevias[ps_datos->i_pasosprevios];
@@ -74,7 +74,7 @@ int main(int argc, char *argv[]){
 		ps_red->pi_Ady = (int*) malloc((2+ps_datos->i_N*ps_datos->i_N)*sizeof(int)); // Matriz de adyacencia de la red. Determina quienes están conectados con quienes
 		ps_red->pd_Opi = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Lista de vectores de opinión de la red, Tengo T elementos para cada agente.
 		ps_red->pd_PreOpi = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Paso previo del sistema antes de iterar.
-		ps_red->pd_Diferencia = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Paso previo del sistema antes de iterar.
+		ps_red->pd_Diferencia = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Vector que guarda la diferencia entre dos pasos del sistema
 		ps_red->pd_Act = (double*) malloc((2+ps_datos->i_N)*sizeof(double)); // Vector que guarda los valores de actividad de todos los agentes
 		
 		
@@ -85,13 +85,13 @@ int main(int argc, char *argv[]){
 		
 		// Este archivo es el que guarda las opiniones de todos los agentes mientras evolucionan
 		char s_archivo1[355];
-		sprintf(s_archivo1,"../Programas Python/PruebaMod/Opiniones_alfa=%.3f_N=%d_campo=%.3lf_lambda=%.3lf_Iter=%d"
-			,ps_datos->f_alfa,ps_datos->i_N,ps_datos->d_campoext,ps_datos->d_lambda,i_iteracion);
+		sprintf(s_archivo1,"../Programas Python/PruebaMod/Opiniones_alfa=%.3f_N=%d_Cosd=%.3f_Iter=%d.file"
+			,ps_datos->f_alfa,ps_datos->i_N,ps_datos->f_Cosangulo,i_iteracion);
 		FILE *pa_archivo1=fopen(s_archivo1,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 		
 		char s_archivo2[355];
-		sprintf(s_archivo2,"../Programas Python/PruebaMod/Testigos_alfa=%.3f_N=%d_campo=%.3lf_lambda=%.3lf_Iter=%d"
-			,ps_datos->f_alfa,ps_datos->i_N,ps_datos->d_campoext,ps_datos->d_lambda,i_iteracion);
+		sprintf(s_archivo2,"../Programas Python/PruebaMod/Testigos_alfa=%.3f_N=%d_Cosd=%.3f_Iter=%d.file"
+			,ps_datos->f_alfa,ps_datos->i_N,ps_datos->f_Cosangulo,i_iteracion);
 		FILE *pa_archivo2=fopen(s_archivo2,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 		
 		// Este archivo levanta los datos de la tabla de valores de tanh calculados previamente.
@@ -114,7 +114,7 @@ int main(int argc, char *argv[]){
 		
 		
 		
-		// Inicializo mis ocho "matrices".
+		// Inicializo mis seis "matrices".
 		// Matriz de Adyacencia. Es de tamaño N*N
 		for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_N+2; i_i++) ps_red->pi_Ady[i_i] = 0;
 		ps_red->pi_Ady[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
@@ -145,11 +145,6 @@ int main(int argc, char *argv[]){
 		ps_red->pd_Act[0] = 1;
 		ps_red->pd_Act[1] = ps_datos->i_N;
 		
-		// Matriz de agentes activados. Es de tamaño 1*N
-		for(register int i_i=0; i_i<ps_datos->i_N+2; i_i++) ps_red->pi_Activados[i_i] = 0;
-		ps_red->pi_Activados[0] = 1;
-		ps_red->pi_Activados[1] = ps_datos->i_N;
-		
 		// Inicializo el Agente y Tópico a mirar. Esto no significa mucho porque después lo voy a cambiar.
 		ps_red->i_agente = 0;
 		ps_red->i_topico = 0;
@@ -169,7 +164,7 @@ int main(int argc, char *argv[]){
 	Escribir_d(ps_red->pd_Opi,pa_archivo1);
 	
 	Actividad(ps_red->pd_Act,ps_datos->d_epsilon,-ps_datos->d_gamma);
-
+	
 	// Arranco el guardado de los datos de mis testigos
 	fprintf(pa_archivo2, "Opiniones de los testigos\n");
 	for(register int i_sujeto=0; i_sujeto<i_testigos; i_sujeto++) 
@@ -197,14 +192,17 @@ int main(int argc, char *argv[]){
 		i_IndiceOpiPasado++;
 	}
 
+	
 	fprintf(pa_archivo1,"Variación promedio \n");
 	// Evolucionemos el sistema utilizando un mecanismo de corte
+	
 	while(i_contador < ps_datos->i_Itextra){
 		// Inicializo el contador
 		i_contador = 0;
 		
 		// Evoluciono el sistema hasta que se cumpla el criterio de corte
 		do{
+			
 			if(i_rearmar%i_renovar_Adyacencia == 0){
 				i_tamano = Tamano_Comunidad(ps_red->pi_Ady,0);
 				if(i_tamano < ps_datos->i_N) Adyacencia_Actividad(ps_red, ps_datos);
@@ -226,7 +224,9 @@ int main(int argc, char *argv[]){
 		}
 		while(ps_red->d_Varprom > ps_datos->d_CritCorte && i_tamano < ps_datos->i_N);
 		
+			
 		// Ahora evoluciono el sistema una cantidad i_Itextra de veces. Le pongo como condición que si el sistema deja de cumplir la condición de corte, deje de evolucionar
+		
 		while(i_contador < ps_datos->i_Itextra && ps_red->d_Varprom <= ps_datos->d_CritCorte ){
 			if(i_rearmar%i_renovar_Adyacencia == 0){
 				i_tamano = Tamano_Comunidad(ps_red->pi_Ady,0);
@@ -246,17 +246,18 @@ int main(int argc, char *argv[]){
 			for(register int i_p=0; i_p<ps_datos->i_N*ps_datos->i_T; i_p++) *(ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios]+i_p+2) = ps_red->pd_Opi[i_p+2];
 			i_contador +=1;
 		}
+		
 		// Si el sistema evolucionó menos veces que la cantidad arbitraria, es porque rompió la condiciones de corte.
 		// Por tanto lo vuelvo a hacer trabajar hasta que se vuelva a cumplir la condición de corte.
 		// Si logra evolucionar la cantidad arbitraria de veces sin problemas, termino la evolución.
 	}
-	
 	// Guardo las opiniones finales y la semilla en el primer archivo.
 	// Las opiniones de los testigos las guardo en el segundo
+	fprintf(pa_archivo1,"\n");
 	fprintf(pa_archivo1,"Opiniones finales de los agentes\n");
 	Escribir_d(ps_red->pd_Opi,pa_archivo1);
-	fprintf(pa_archivo1, "Semilla\n");
-	fprintf(pa_archivo1, "%ld\n",semilla);
+	fprintf(pa_archivo1,"Semilla\n");
+	fprintf(pa_archivo1,"%ld\n",semilla);
 	
 	
 	

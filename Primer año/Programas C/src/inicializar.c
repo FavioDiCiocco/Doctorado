@@ -31,7 +31,7 @@ int GenerarAng(ps_Red ps_var, ps_Param ps_par){
 	i_C = (int) ps_var->pd_Ang[1];
 	
 	// Inicializo la matriz de Superposicion de mi sistema.
-	for(register int i_i=0; i_i<i_F; i_i++) for(register int i_j=0; i_j<i_i; i_j++) ps_var->pd_Ang[i_i*i_C+i_j+2] = ps_par->f_Cosangulo; //*(((-i_i-i_j)%2)*2+1); // Decidí poner 0.5 entre todos los tópicos de mi modelo
+	for(register int i_i=0; i_i<i_F; i_i++) for(register int i_j=0; i_j<i_i; i_j++) ps_var->pd_Ang[i_i*i_C+i_j+2] = ps_par->f_Cosangulo; //
 	for(register int i_i=0; i_i<i_F; i_i++) ps_var->pd_Ang[i_i*i_C+i_i+2] = 1; // Esto me pone 1 en toda la diagonal
 	for(register int i_i=0; i_i<i_F; i_i++) for(register int i_j=i_i+1; i_j<i_C; i_j++) ps_var->pd_Ang[i_i*i_C+i_j+2] = ps_var->pd_Ang[i_j*i_C+i_i+2]; // Esta sola línea simetriza la matriz
 	return 0;
@@ -40,7 +40,7 @@ int GenerarAng(ps_Red ps_var, ps_Param ps_par){
 
 // // Esta función es la que lee un archivo y me arma la matriz de Adyacencia
 int Lectura_Adyacencia(int *pi_vec, FILE *pa_archivo){
-	// Deefino los enteros que voy a usar para leer el archivo y escribir sobre el vector.	
+	// Defino los enteros que voy a usar para leer el archivo y escribir sobre el vector.	
 	int i_indice = 2;
 	int i_salida = 0;
 	
@@ -94,10 +94,7 @@ int Adyacencia_Actividad(ps_Red ps_red, ps_Param ps_datos){
 	i_F = ps_red->pi_Ady[0];
 
 	// Ahora reviso todos los agentes, los intento activar y si se activa lo conecto con m agentes.
-	for(ps_red->i_agente=0; ps_red->i_agente<i_F; ps_red->i_agente++) if(Random()<ps_red->pd_Act[ps_red->i_agente+2]){
-		Conectar_agentes(ps_red,ps_datos);
-		ps_red->pi_Activados[ps_red->i_agente+2] = 1;
-	}
+	for(ps_red->i_agente=0; ps_red->i_agente<i_F; ps_red->i_agente++) if(Random()<ps_red->pd_Act[ps_red->i_agente+2]) Conectar_agentes(ps_red,ps_datos);
 	
 	return 0;
 }
