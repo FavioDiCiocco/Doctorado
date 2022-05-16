@@ -40,3 +40,54 @@ intensidad del decaimiento.
 
 Ya el programa lo mandé a correr, pero está teniendo problemas. Por algún motivo,
 las opiniones no se actualizan. Y además, el cálculo de Varprom me da "inf".
+
+---------------------------------------------------------------------------------
+
+10/05/2022
+
+Hoy es el primer día que vine a la facultad, me instalé en la oficina, descargué
+programas, instalé Github Desktop y Notepad ++.
+
+Después pasé el resto del día trabajando en el archivo de main para que el modelo
+labure en el caso de tener opiniones positivas en su distribución inicial.
+Estuve un buen rato porque había problemas en el código que me costaban encontrar.
+Al final lo que ocurría es que estaba pisando un vector no declarado, que es el
+vector de los agentes activados. Un vector que había eliminado pero que estaba siendo
+llamado en una de las funciones de las redes de actividad. Creo que en la función que
+establece los enlaces de los agentes activados.
+
+----------------------------------------------------------------------------------------
+
+16/05/2022
+
+Entre el martes pasado (10/05/2022) y hoy lunes (16/05/2022) no hubo mucho trabajo
+porque estuve yendo a la TREFEMAC, mis viejos se fueron y hubo que cuidar a los
+perros. Fueron días movidos y complejos. Esta semana me voy a mudar, así que
+vamos a ver qué podemos avanzar. Encima está el trabajo del Labo de Datos.
+Está fuerte la semana.
+
+Volviendo al trabajo, hoy ya me puse a armar datos del modelo en tres casos:
+1) alfa = 0, Cdelta = 0.
+2) alfa = 2, Cdelta = 0.
+3) alfa = 2, Cdelta = 1.
+
+Lo siguiente es tomar estos datos y armar los gráficos de distribución de opiniones
+en el espacio de tópicos.
+
+Ya logré armar los gráficos con los datos que hice. Falta ajustar un poco los gráficos,
+pero en líneas generales están. Lo que se observa es un que en los casos de consenso
+las opiniones forman una nube cerca del cero en la región positiva del espacio de
+tópicos. Algunas opiniones llegan a valores negativos, estudiar eso cómo ocurre.
+
+Por otro lado, los gráficos de distribución de las opiniones 2D en los casos de
+polarización descorrelacionada y estado ideológico son indistinguibles. Además,
+hay mucha variabilidad en el tiempo. Bah, habría que ver qué significa "mucha".
+En principio el programa puede tardar entre 15 y 40 unidades de tiempo.
+
+Lo siguiente sería ver si podemos restringir el espacio de los valores observados
+de manera de enfocar mejor el gráfico hacia los datos graficados y que no
+sea tanto un gráfico vacío.
+
+Hecho eso, habría que analizar porqué algunos valores se vuelven negativos,
+evaluar si los resultados obtenidos tienen sentido con lo esperado y si
+habr
