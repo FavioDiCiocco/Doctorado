@@ -129,4 +129,7 @@ El jueves sería ideal arrancar modificando la ecuación dinámica en el código
 remover las cosas sobre cálculos de tanh y empezar a observar el comportamiento
 del sistema para distintos valores de mu, alfa y cos(delta). Luego de eso,
 decidiremos el tema de cómo interpretar este nuevo parámetro. Hagamos la
-documentaci
+documentación de esto a medida que voy haciendo los cambios.
+
+
+
