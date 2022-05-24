@@ -90,4 +90,43 @@ sea tanto un gráfico vacío.
 
 Hecho eso, habría que analizar porqué algunos valores se vuelven negativos,
 evaluar si los resultados obtenidos tienen sentido con lo esperado y si
-habr
+habría que hacer nuevos gráficos o modificar el programa.
+
+------------------------------------------------------------------------------
+
+24/05/2022
+
+Lo primero que hice a la mañana fue ajustar los gráficos para poder observar
+mejor la distribución de opiniones en el espacio 2D. Si alfa es alto, para casos
+de correlación cero o alta correlación, el sistema se comporta exactamente igual
+y polariza en el primer cuadrante.
+
+En cambio, para casos de controversialidad negativa el sistema se comporta tal cual
+se comportó siempre, polarizando en los cuadrantes 2 y 4. Claramente las condiciones
+iniciales no logran determinar el comportamiento del sistema para que este se
+encuentre confinado al primer cuadrante.
+
+Luego de eso estuve el resto del día estudiando la expresión de la ecuación dinámica
+de la bifurcación transcrítica. Leyendo del Strogatz, básicamente se observa que
+esta bifurcación se caracteriza porque dos puntos fijos intercambian estabilidad,
+siendo que un punto fijo estable se vuelve inestable mientras que uno inestable
+se vuelve estable. Esta ecuación aplicada a nuestro modelo permite que existan dos
+puntos fijos, el 0 y el punto fijo (mu/K). Dependiendo del signo de mu, el cero
+será un atractor o un repulsor. En particular, si mu es positivo, el cero es un
+atractor, mientras que si mu es negativo, el cero es un repulsor. Y respectivamente,
+el otro punto será un repulsor o un atractor.
+
+Se me ocurre que esto nos permite proponer un nuevo comportamiento al sistema donde
+ahora el primer término de la ecuación dinámica no es únicamente la tendencia de los
+agentes a perder su convicción en el tema, sino que puede ser su apatía o interés en
+los tópicos y por tanto se puede definir mu positivo para tópicos aburridos y 
+mu negativo para tópicos interesantes.
+
+Este análisis junto con la adaptación de la ecuación dinámica del modelo a la
+ecuación dinámica de una bifurcación transcrítica están anotados en mi cuaderno.
+
+El jueves sería ideal arrancar modificando la ecuación dinámica en el código,
+remover las cosas sobre cálculos de tanh y empezar a observar el comportamiento
+del sistema para distintos valores de mu, alfa y cos(delta). Luego de eso,
+decidiremos el tema de cómo interpretar este nuevo parámetro. Hagamos la
+documentaci
