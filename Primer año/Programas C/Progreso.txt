@@ -40,3 +40,131 @@ intensidad del decaimiento.
 
 Ya el programa lo mandé a correr, pero está teniendo problemas. Por algún motivo,
 las opiniones no se actualizan. Y además, el cálculo de Varprom me da "inf".
+
+---------------------------------------------------------------------------------
+
+10/05/2022
+
+Hoy es el primer día que vine a la facultad, me instalé en la oficina, descargué
+programas, instalé Github Desktop y Notepad ++.
+
+Después pasé el resto del día trabajando en el archivo de main para que el modelo
+labure en el caso de tener opiniones positivas en su distribución inicial.
+Estuve un buen rato porque había problemas en el código que me costaban encontrar.
+Al final lo que ocurría es que estaba pisando un vector no declarado, que es el
+vector de los agentes activados. Un vector que había eliminado pero que estaba siendo
+llamado en una de las funciones de las redes de actividad. Creo que en la función que
+establece los enlaces de los agentes activados.
+
+----------------------------------------------------------------------------------------
+
+16/05/2022
+
+Entre el martes pasado (10/05/2022) y hoy lunes (16/05/2022) no hubo mucho trabajo
+porque estuve yendo a la TREFEMAC, mis viejos se fueron y hubo que cuidar a los
+perros. Fueron días movidos y complejos. Esta semana me voy a mudar, así que
+vamos a ver qué podemos avanzar. Encima está el trabajo del Labo de Datos.
+Está fuerte la semana.
+
+Volviendo al trabajo, hoy ya me puse a armar datos del modelo en tres casos:
+1) alfa = 0, Cdelta = 0.
+2) alfa = 2, Cdelta = 0.
+3) alfa = 2, Cdelta = 1.
+
+Lo siguiente es tomar estos datos y armar los gráficos de distribución de opiniones
+en el espacio de tópicos.
+
+Ya logré armar los gráficos con los datos que hice. Falta ajustar un poco los gráficos,
+pero en líneas generales están. Lo que se observa es un que en los casos de consenso
+las opiniones forman una nube cerca del cero en la región positiva del espacio de
+tópicos. Algunas opiniones llegan a valores negativos, estudiar eso cómo ocurre.
+
+Por otro lado, los gráficos de distribución de las opiniones 2D en los casos de
+polarización descorrelacionada y estado ideológico son indistinguibles. Además,
+hay mucha variabilidad en el tiempo. Bah, habría que ver qué significa "mucha".
+En principio el programa puede tardar entre 15 y 40 unidades de tiempo.
+
+Lo siguiente sería ver si podemos restringir el espacio de los valores observados
+de manera de enfocar mejor el gráfico hacia los datos graficados y que no
+sea tanto un gráfico vacío.
+
+Hecho eso, habría que analizar porqué algunos valores se vuelven negativos,
+evaluar si los resultados obtenidos tienen sentido con lo esperado y si
+habría que hacer nuevos gráficos o modificar el programa.
+
+------------------------------------------------------------------------------
+
+24/05/2022
+
+Lo primero que hice a la mañana fue ajustar los gráficos para poder observar
+mejor la distribución de opiniones en el espacio 2D. Si alfa es alto, para casos
+de correlación cero o alta correlación, el sistema se comporta exactamente igual
+y polariza en el primer cuadrante.
+
+En cambio, para casos de controversialidad negativa el sistema se comporta tal cual
+se comportó siempre, polarizando en los cuadrantes 2 y 4. Claramente las condiciones
+iniciales no logran determinar el comportamiento del sistema para que este se
+encuentre confinado al primer cuadrante.
+
+Luego de eso estuve el resto del día estudiando la expresión de la ecuación dinámica
+de la bifurcación transcrítica. Leyendo del Strogatz, básicamente se observa que
+esta bifurcación se caracteriza porque dos puntos fijos intercambian estabilidad,
+siendo que un punto fijo estable se vuelve inestable mientras que uno inestable
+se vuelve estable. Esta ecuación aplicada a nuestro modelo permite que existan dos
+puntos fijos, el 0 y el punto fijo (mu/K). Dependiendo del signo de mu, el cero
+será un atractor o un repulsor. En particular, si mu es positivo, el cero es un
+atractor, mientras que si mu es negativo, el cero es un repulsor. Y respectivamente,
+el otro punto será un repulsor o un atractor.
+
+Se me ocurre que esto nos permite proponer un nuevo comportamiento al sistema donde
+ahora el primer término de la ecuación dinámica no es únicamente la tendencia de los
+agentes a perder su convicción en el tema, sino que puede ser su apatía o interés en
+los tópicos y por tanto se puede definir mu positivo para tópicos aburridos y 
+mu negativo para tópicos interesantes.
+
+Este análisis junto con la adaptación de la ecuación dinámica del modelo a la
+ecuación dinámica de una bifurcación transcrítica están anotados en mi cuaderno.
+
+El jueves sería ideal arrancar modificando la ecuación dinámica en el código,
+remover las cosas sobre cálculos de tanh y empezar a observar el comportamiento
+del sistema para distintos valores de mu, alfa y cos(delta). Luego de eso,
+decidiremos el tema de cómo interpretar este nuevo parámetro. Hagamos la
+documentación de esto a medida que voy haciendo los cambios.
+
+---------------------------------------------------------------------------------
+
+25/05/2022
+
+Estuve un rato mirando el tema de la beca y del trámite de título.
+Lo importante para hacer es en algún momento charlar sobre anotarme en la 
+carrera de doctorado. Eso charlarlo con pablo.
+
+Por otro lado, ya borré todo rastro de la tanh en el código. Modifiqué
+la ecuación dinámica para calcular el cuadrado del producto entre la matriz
+de superposición y el vector de opinión del agente j. Lo siguiente es empezar
+a ver el comportamiento del modelo ante la variación de los parámetros
+mu, alfa y Cdelta.
+
+Estuve probando cosas en bash para poder pasar números con fracción directamente
+desde Bash a mi programa de C y no tener que andar pasando enteros y sobre esos
+armar una fracción para conseguir el número decimal deseado. La cosa es que en
+Prueba.sh dejé anotado en los comentarios como se usa el comando bc, por lo menos
+de forma rudimentaria. Y también como obtener los datos de un array. Con eso
+ya puedo empezar a armar mis arrays en los archivos de Instanciar y desde ahí
+pasar directo los valores de alfa y Cdelta deseados.
+
+Con eso hecho, me puse a armar algunos datos del modelo con la ecuación dinámica
+adaptada según la ecuación dinámica de una bifurcación transcrítica. Esto salió
+mal. El término cuadrático potencia mucho a los agentes con opiniones mayores a
+1, y esto hace que refuercen mucho a sus vecinos y el sistema entra en una espiral
+de refuerzos que no frena más. Cada vez se aleja más y más. Ese término
+cuadrático así pelado no va a servir. Necesitamos algo que contenga a las
+opiniones en la región [0,1] para que se pueda usar. Se me ocurrieron formas
+de normalizar la opinión, pero creo que hasta charlarlas con Pablo no tiene mucho
+sentido explorarlas demasiado.
+
+Hay una en particular que se me ocurrió y creo que estaría interesante. Espero
+que Pablo y Sebas opinen lo mismo. Podría mañana mandarle un mensaje a Sebas y
+ver qué piensa él al respecto.
+
+
