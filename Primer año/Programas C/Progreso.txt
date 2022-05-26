@@ -131,5 +131,17 @@ del sistema para distintos valores de mu, alfa y cos(delta). Luego de eso,
 decidiremos el tema de cómo interpretar este nuevo parámetro. Hagamos la
 documentación de esto a medida que voy haciendo los cambios.
 
+---------------------------------------------------------------------------------
 
+25/05/2022
+
+Estuve un rato mirando el tema de la beca y del trámite de título.
+Lo importante para hacer es en algún momento charlar sobre anotarme en la 
+carrera de doctorado. Eso charlarlo con pablo.
+
+Por otro lado, ya borré todo rastro de la tanh en el código. Modifiqué
+la ecuación dinámica para calcular el cuadrado del producto entre la matriz
+de superposición y el vector de opinión del agente j. Lo siguiente es empezar
+a ver el comportamiento del modelo ante la variación de los parámetros
+mu, alfa y Cdelta.
 
