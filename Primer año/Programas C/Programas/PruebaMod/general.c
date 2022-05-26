@@ -104,7 +104,7 @@ int Visualizar_i(int *pi_vec){
 // y uno del paso temporal siguiente me alcance para poder hacer una evolución sincrónica del sistema.
 // Fijate que la foto se ve intacta, porque en la línea antes de calcular el resultado final, vuelvo a reescribir
 // mi foto con el valor inicial que tenía, de manera de que esta foto entra y sale igual.
-double RK4(double *pd_sistema ,ps_Red ps_var, ps_Param ps_par, double (*pf_funcion)(ps_Red ps_var, ps_Param ps_par)){
+double RK4(double *pd_sistema ,ps_Red ps_var, ps_Param ps_par, ps_Tab ps_tab, double (*pf_funcion)(ps_Red ps_var, ps_Param ps_par, ps_Tab ps_tab)){
 	// Defino las variables y vectores que voy a necesitar
 	int i_F = (int) *pd_sistema; // Este es el número de filas del vector principal
 	int i_C = (int) *(pd_sistema+1); // Este es el número de columnas del vector principal
@@ -134,7 +134,7 @@ double RK4(double *pd_sistema ,ps_Red ps_var, ps_Param ps_par, double (*pf_funci
 	for(register int i_j=0; i_j<4; i_j++){ // Esto itera para mis 4 k
 		// Calculo el elemento de la pendiente k(i_j+1)
 		for(register int i_i=0; i_i<i_F*i_C; i_i++) *(pd_sistema+i_i+2) = *(pd_inicial+i_i+2)+*(pd_pendientes+i_j+2)*DT[i_j];
-		*(pd_pendientes+i_j+1+2) = (*pf_funcion)(ps_var,ps_par);
+		*(pd_pendientes+i_j+1+2) = (*pf_funcion)(ps_var,ps_par,ps_tab);
 	}
 	
 	// Copio al sistema igual que el inicial para deshacer los cambios que hice en el vector principal al calcular los k

@@ -35,7 +35,7 @@ typedef struct Parametros{
 	double d_epsilon; // Actividad mínima de los agentes
 	double d_gamma; // Potencia de la distribución de probabilidades de la actividad. Es el valor positivo.
 	double d_beta; // Exponente que regula el grado de homofilia
-	double d_mu; // Coeficiente que regula la intensidad con que los agentes caen al cero.
+	double d_lambda; // Coeficiente que regula la intensidad con que los agentes caen al cero.
 	double d_campoext; // Valor que toma el campo externo que afecta al sistema.
 	float f_K; // Influencia social
 	float f_alfa; // Controversialidad de los temas
@@ -52,12 +52,21 @@ typedef struct Parametros{
 
 typedef s_Param *ps_Param;
 
+// Armé este struct aparte para que no se mezclen las cosas de la tabla con las cosas de la red y los
+// parámetros del sistema.
+typedef struct Tabla{
+	double* pd_valores; // Este es el vector donde guardo los valores de la tabla
+	int i_largo; // Este es el largo de la tabla.
+}s_Tabla;
+
+typedef s_Tabla * ps_Tab;
+
 //################################################################################################
 
 double Random();
 double Gaussiana(float f_mu, float f_sigma);
 double Norma_d(double *pd_x);
-double RK4(double *pd_sistema ,ps_Red ps_var, ps_Param ps_par, double (*pf_funcion)(ps_Red ps_var, ps_Param ps_par));
+double RK4(double *pd_sistema ,ps_Red ps_var, ps_Param ps_par, ps_Tab ps_tab, double (*pf_funcion)(ps_Red ps_var, ps_Param ps_par, ps_Tab ps_tab));
 int Visualizar_d(double *pd_vec);
 int Visualizar_f(float *pf_vec);
 int Visualizar_i(int *pi_vec);

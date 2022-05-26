@@ -5,6 +5,7 @@
 #include<math.h>
 #include<string.h>
 #include "general.h"
+#include "TTanh.h"
 #include "inicializar.h"
 
 

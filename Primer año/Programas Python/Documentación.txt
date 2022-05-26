@@ -8,5 +8,5 @@ de decaimiento de las opiniones.
 
 Python
 -------
-Acá voy a poner los programas de Python que voy a estar usando para levantar mis datos.
+Acá voy a poner los programas de Python que voy a estar usando para analizar mis datos.
 Lo separo para no tener tantos archivos dando vueltas.

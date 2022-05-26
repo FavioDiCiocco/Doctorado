@@ -1,0 +1,15 @@
+Cada una de las carpetas contiene archivos de C que usé para correr el
+modelo en alguna fase del trabajo. Acá voy a ir anotando qué es lo que
+se suponía que hiciera el código en esa fase.
+
+.) PruebaMod:
+-------------
+
+En este código agregué coeficientes para considerar un campo externo y para
+que el primer término de la ecuación dinámica tenga una intensidad variable.
+Además modifique la asignación de opinones iniciales para que las opiniones
+se distribuyan con probabilidad uniforme entre 0 y 5. Con esto estudié el
+comportamiento del sistema para casos de baja controversialidad, alta
+controversialidad, baja correlación y alta correlación. También agregué
+que en los casos de Consenso el sistema primero se asegure de que la red
+esté completamente conectada y después termine la simulación.

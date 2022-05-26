@@ -1,0 +1,12 @@
+Cada una de las carpetas contiene imágenes armadas en las distintas
+fases del trabajo de la tesis.
+
+.) PruebaMod:
+-------------
+
+Armé histogramas 2D, gráficos de Varprom y de Opinión en un tópico vs T
+para estudiar el comportamiento del modelo al distribuir las opiniones
+únicamente en valores positivos en función de la controversialidad
+y la correlación.
+
+

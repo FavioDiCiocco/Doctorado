@@ -6,6 +6,7 @@
 #include<time.h>
 #include<string.h>
 #include"general.h"
+#include"TTanh.h"
 #include"inicializar.h"
 #include"avanzar.h"
 
@@ -26,14 +27,17 @@ int main(int argc, char *argv[]){
 		ps_Red ps_red; // No te vayas a confundir, que ps_Red es el tipo de dato definido por usuario como un puntero al struct Red. En cambio, ps_red es un puntero
 		ps_red = malloc(sizeof(s_Red)); 
 		
+		ps_Tab ps_tab; // Al igual que en los otros, ps_Tab es el tipo de dato definidio por usuario como el puntero al struct Tabla, en cambio ps_tab es un puntero.
+		ps_tab = malloc(sizeof(s_Tabla));
+		
 		// Parámetros de mi modelo. Esto va desde número de agentes hasta el paso temporal de integración.
 		ps_datos->i_N = strtol(argv[1],NULL,10); // Cantidad de agentes en el modelo
 		ps_datos->i_T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
 		ps_datos->i_m = 10; // Cantidad de conexiones que hace el agente al activarse
 		ps_datos->f_K = 3; // Influencia social
 		ps_datos->f_dt = 0.01; // Paso temporal de iteración del sistema
-		ps_datos->d_mu = strtol(argv[6],NULL,10); // Coeficiente que regula la intensidad con que los agentes caen al cero.
-		ps_datos->f_alfa = strtof(argv[2],NULL); // Controversialidad de los tópicos. Arranquemos con controversialidad intermedia. Voy a estar dividiendo esto acá para poder pasar enteros desde el instanciar.
+		ps_datos->d_lambda = strtol(argv[6],NULL,10); // Coeficiente que regula la intensidad con que los agentes caen al cero.
+		ps_datos->f_alfa = strtof(argv[2],NULL)/10; // Controversialidad de los tópicos. Arranquemos con controversialidad intermedia. Voy a estar dividiendo esto acá para poder pasar enteros desde el instanciar.
 		ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 		ps_datos->d_epsilon = 0.01; // Mínimo valor de actividad de los agentes
 		ps_datos->d_gamma = 2.1; // Esta es la potencia que define la distribución de actividad
@@ -41,7 +45,7 @@ int main(int argc, char *argv[]){
 		ps_datos->d_campoext = strtol(argv[5],NULL,10); // Este es el campo externo que afecta a todos los agentes
 		ps_datos->d_CritCorte = 0.0005; // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
 		ps_datos->i_Itextra = 40; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
-		ps_datos->f_Cosangulo = strtof(argv[3],NULL); // Este es el coseno de Delta que define la relación entre tópicos.
+		ps_datos->f_Cosangulo = strtof(argv[3],NULL)/10; // Este es el coseno de Delta que define la relación entre tópicos.
 		ps_datos->i_pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
 		
 		// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
@@ -81,14 +85,34 @@ int main(int argc, char *argv[]){
 		
 		// Este archivo es el que guarda las opiniones de todos los agentes mientras evolucionan
 		char s_archivo1[355];
-		sprintf(s_archivo1,"../Programas Python/Transcritico/Opiniones_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
-			,ps_datos->f_alfa,ps_datos->i_N,ps_datos->f_Cosangulo,ps_datos->d_mu,i_iteracion);
+		sprintf(s_archivo1,"../Programas Python/PruebaMod/Opiniones_alfa=%.3f_N=%d_Cosd=%.3f_Iter=%d.file"
+			,ps_datos->f_alfa,ps_datos->i_N,ps_datos->f_Cosangulo,i_iteracion);
 		FILE *pa_archivo1=fopen(s_archivo1,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 		
 		char s_archivo2[355];
-		sprintf(s_archivo2,"../Programas Python/Transcritico/Testigos_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
-			,ps_datos->f_alfa,ps_datos->i_N,ps_datos->f_Cosangulo,ps_datos->d_mu,i_iteracion);
+		sprintf(s_archivo2,"../Programas Python/PruebaMod/Testigos_alfa=%.3f_N=%d_Cosd=%.3f_Iter=%d.file"
+			,ps_datos->f_alfa,ps_datos->i_N,ps_datos->f_Cosangulo,i_iteracion);
 		FILE *pa_archivo2=fopen(s_archivo2,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
+		
+		// Este archivo levanta los datos de la tabla de valores de tanh calculados previamente.
+		char s_Tanh[100];
+		sprintf(s_Tanh,"Tabla_Valores_TANH");
+		FILE *pa_tabtanh=fopen(s_Tanh,"r");
+		
+		// Ahora que tengo el stream a la tabla de valores de tanh, malloqueo e inicializo mi vector donde guardo los valores.
+		ps_tab->i_largo = Largo_Tabla_TANH(pa_tabtanh);
+		
+		// Inicializo mi vector donde guardo los valores de la tabla de tanh.
+		ps_tab->pd_valores = (double*) malloc((ps_tab->i_largo+2)*sizeof(double));
+		for(register int i_i=0; i_i<ps_tab->i_largo+2; i_i++) ps_tab->pd_valores[i_i] = 0;
+		ps_tab->pd_valores[0] = 1;
+		ps_tab->pd_valores[1] = ps_tab->i_largo;
+		
+		//Guardo los valores y cierro el archivo.
+		Lectura_Tabla_TANH(ps_tab->pd_valores, pa_tabtanh);
+		fclose(pa_tabtanh);
+		
+		
 		
 		// Inicializo mis seis "matrices".
 		// Matriz de Adyacencia. Es de tamaño N*N
@@ -127,7 +151,7 @@ int main(int argc, char *argv[]){
 		ps_red->i_agente2 = 0;
 		
 		// Puntero a la función que define mi ecuación diferencial
-		double (*pf_EcDin)(ps_Red var, ps_Param par) = &Din2;
+		double (*pf_EcDin)(ps_Red var, ps_Param par, ps_Tab tab) = &Din2;
 		
 	
 	// Genero las redes de mi sistema
@@ -158,7 +182,7 @@ int main(int argc, char *argv[]){
 		}
 		if((i_rearmar%i_renovar_Adyacencia)-1 == 0) ps_datos->d_campoext = strtol(argv[5],NULL,10);
 		else ps_datos->d_campoext = 0;
-		Iteracion(ps_red,ps_datos,pf_EcDin);
+		Iteracion(ps_red,ps_datos,ps_tab,pf_EcDin);
 		for(register int i_sujeto=0; i_sujeto<i_testigos; i_sujeto++) 
 			for(register int i_opinion=0; i_opinion<ps_datos->i_T; i_opinion++) 
 				fprintf(pa_archivo2, "%.6lf\t",ps_red->pd_Opi[a_Testigos[i_sujeto]*ps_datos->i_T+i_opinion+2]);
@@ -186,7 +210,7 @@ int main(int argc, char *argv[]){
 			if((i_rearmar%i_renovar_Adyacencia)-1 == 0) ps_datos->d_campoext = strtol(argv[5],NULL,10);
 			else ps_datos->d_campoext = 0;
 			for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_PreOpi[i_j+2] = ps_red->pd_Opi[i_j+2];
-			Iteracion(ps_red,ps_datos,pf_EcDin);
+			Iteracion(ps_red,ps_datos,ps_tab,pf_EcDin);
 			for(register int i_sujeto=0; i_sujeto<i_testigos; i_sujeto++) 
 				for(register int i_opinion=0; i_opinion<ps_datos->i_T; i_opinion++) 
 					fprintf(pa_archivo2, "%.6lf\t",ps_red->pd_Opi[a_Testigos[i_sujeto]*ps_datos->i_T+i_opinion+2]);
@@ -198,7 +222,7 @@ int main(int argc, char *argv[]){
 			fprintf(pa_archivo1, "%lf\t",ps_red->d_Varprom); // Guardo el valor de variación promedio
 			for(register int i_p=0; i_p<ps_datos->i_N*ps_datos->i_T; i_p++) *(ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios]+i_p+2) = ps_red->pd_Opi[i_p+2];
 		}
-		while(ps_red->d_Varprom > ps_datos->d_CritCorte || i_tamano < ps_datos->i_N);
+		while(ps_red->d_Varprom > ps_datos->d_CritCorte && i_tamano < ps_datos->i_N);
 		
 			
 		// Ahora evoluciono el sistema una cantidad i_Itextra de veces. Le pongo como condición que si el sistema deja de cumplir la condición de corte, deje de evolucionar
@@ -209,7 +233,7 @@ int main(int argc, char *argv[]){
 				if(i_tamano < ps_datos->i_N) Adyacencia_Actividad(ps_red, ps_datos);
 			}
 			for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_PreOpi[i_j+2] = ps_red->pd_Opi[i_j+2];
-			Iteracion(ps_red,ps_datos,pf_EcDin);
+			Iteracion(ps_red,ps_datos,ps_tab,pf_EcDin);
 			for(register int i_sujeto=0; i_sujeto<i_testigos; i_sujeto++) 
 				for(register int i_opinion=0; i_opinion<ps_datos->i_T; i_opinion++) 
 					fprintf(pa_archivo2, "%.6lf\t",ps_red->pd_Opi[a_Testigos[i_sujeto]*ps_datos->i_T+i_opinion+2]);
@@ -245,6 +269,8 @@ int main(int argc, char *argv[]){
 	free(ps_red->pd_PreOpi);
 	free(ps_red->pd_Diferencia);
 	free(ps_red->pd_Act);
+	free(ps_tab->pd_valores);
+	free(ps_tab);
 	free(ps_red);
 	free(ps_datos);
 	fclose(pa_archivo1);
