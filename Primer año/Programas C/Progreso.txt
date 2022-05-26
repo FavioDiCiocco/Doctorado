@@ -145,3 +145,26 @@ de superposición y el vector de opinión del agente j. Lo siguiente es empezar
 a ver el comportamiento del modelo ante la variación de los parámetros
 mu, alfa y Cdelta.
 
+Estuve probando cosas en bash para poder pasar números con fracción directamente
+desde Bash a mi programa de C y no tener que andar pasando enteros y sobre esos
+armar una fracción para conseguir el número decimal deseado. La cosa es que en
+Prueba.sh dejé anotado en los comentarios como se usa el comando bc, por lo menos
+de forma rudimentaria. Y también como obtener los datos de un array. Con eso
+ya puedo empezar a armar mis arrays en los archivos de Instanciar y desde ahí
+pasar directo los valores de alfa y Cdelta deseados.
+
+Con eso hecho, me puse a armar algunos datos del modelo con la ecuación dinámica
+adaptada según la ecuación dinámica de una bifurcación transcrítica. Esto salió
+mal. El término cuadrático potencia mucho a los agentes con opiniones mayores a
+1, y esto hace que refuercen mucho a sus vecinos y el sistema entra en una espiral
+de refuerzos que no frena más. Cada vez se aleja más y más. Ese término
+cuadrático así pelado no va a servir. Necesitamos algo que contenga a las
+opiniones en la región [0,1] para que se pueda usar. Se me ocurrieron formas
+de normalizar la opinión, pero creo que hasta charlarlas con Pablo no tiene mucho
+sentido explorarlas demasiado.
+
+Hay una en particular que se me ocurrió y creo que estaría interesante. Espero
+que Pablo y Sebas opinen lo mismo. Podría mañana mandarle un mensaje a Sebas y
+ver qué piensa él al respecto.
+
+
