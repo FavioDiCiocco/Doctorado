@@ -167,4 +167,40 @@ Hay una en particular que se me ocurrió y creo que estaría interesante. Espero
 que Pablo y Sebas opinen lo mismo. Podría mañana mandarle un mensaje a Sebas y
 ver qué piensa él al respecto.
 
+----------------------------------------------------------------------------
+
+30/05/2022
+
+Agregué el término de normalización que entiendo es el máximo valor de opinión
+que cualquier agente puede alcanzar, y eso sólo es posible si se conecta
+con toda la red y además si toda la red está con opinión 1. Claramente este
+es un máximo inalcanzable y por eso es que las opiniones de los agentes van
+a estar muy tiradas al cero. Podríamos probar y ver si usando valores más
+bajos de mu o valores más altos de K permiten que las opiniones de los
+agentes despeguen un poco del cero. Pero esto es especulación, hay que hacer
+las cuentas.
+
+Para mencionar, también modifiqué en avanzar el Din2, tenía un else para un
+if que no hacía realmente nada. Era cuando calculaba la sumatoria de opiniones
+del segundo término. Si los agentes estaban conectados aplicaba la función
+Din1. Si no estaban conectados, sumaba cero. Pero para sumar cero, directamente
+ni pongo el else y listo.
+
+También voy a ir armando carpetas para cada tipo de normalización, cosa de no
+confundir los archivos. La carpeta con la normalización sobredimensionada es
+Norm_Maxima.
+
+Ya probé el modelo con Norm_Maxima. En el caso de mu positivo el sistema logra
+converger y alcanza estados de consenso. Básicamente, lo que está pasando es
+que las opiniones son lo suficientemente bajas como para no poder hacerle frente
+al término que los tira al cero. En el caso del mu negativo, incluso para el caso
+de alfa cero, el sistema eventualmente se dispara. El motivo es que la normalización
+con alfa cero es simplemente 1. (Mu = 1). Entonces lo que ocurre es que la derivada
+queda igualada a un término que es siempre positivo y por tanto crece en cada iteración.
+Las opiniones se escapan.
+
+Me parece que no podemos simplemente plantear el mu en valor positivo. Pero entonces
+esta ecuación del punto de bifurcación no sé si tenga sentido de ser usada.
+
+
 
