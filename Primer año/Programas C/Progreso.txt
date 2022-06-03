@@ -217,6 +217,10 @@ En la tarde estuve haciendo un análisis de las ecuaciones dinámicas del modelo
 el caso de dos agentes. En principio, no llegué a nada todavía. Claramente el estudio de
 este tipo de ecuaciones dinámicas es complejo y no se puede encarar directamente.
 
+----------------------------------------------------------------------------------------
+
+02/06/2022
+
 Se me ocurrió probar de estudiar el comportamiento del sistema en el caso de que
 los dos agentes conectados tengan opiniones similares. Me suena razonable
 como suposición si considero que las opiniones arrancan en el espacio positivo de
@@ -242,5 +246,26 @@ Y de paso, hoy a la tarde asistí al coloquio de física de Luz Ricci (nombre de
 expositora). Estuvo interesante, fue sobre análisis de materiales nanométricos
 a través de métodos ópticos, algunas aplicaciones y métodos desarrollados. Eso
 es un resumen muy breve.
+
+---------------------------------------------------------------------------------------
+
+03/06/2022
+
+Durante la mañana y la tarde continué el análisis de las ecuaciones dinámicas
+del modelo para el caso de bifuración transcrítica. Logré llegar a la conclusión
+que en ambos casos el sistema presenta dos puntos fijos, si se toma como 
+condición que para cada agente las opiniones en ambos tópicos son iguales.
+
+Uno de estos puntos fijos es el cero, el cual puede ser un atractor o repulsor
+dependiendo de si el coeficiente mu es positivo o negativo respectivamente.
+El otro punto fijo toma el mismo valor que tomaba el modelo de Baumann para
+el límite entre la región de consenso y la región de polarización. Este punto
+fijo presenta autovalores positivos y negativos, con lo cual resulta un punto 
+inestable que aleja al sistema en una dirección y lo atrae en otra. Esto me lleva
+a pensar que no hay forma de que el modelo así como está planteado pueda ser
+estable o converger a nada. Por tanto necesita fuertemente una revisión.
+
+
+
 
 
