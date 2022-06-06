@@ -265,6 +265,19 @@ inestable que aleja al sistema en una dirección y lo atrae en otra. Esto me lle
 a pensar que no hay forma de que el modelo así como está planteado pueda ser
 estable o converger a nada. Por tanto necesita fuertemente una revisión.
 
+------------------------------------------------------------------------------------
+
+06/06/2022
+
+Hoy estuve leyendo el paper que Pablo me pasó sobre dinamica de polarización.
+Anoté un resumen sobre esto en el archivo de resúmenes en la carpeta de Tesis
+en el drive. Debería pasar los resúmenes del resto de papers a ese archivo y
+ya usar ese archivo directamente.
+
+
+
+
+
 
 
 
