@@ -167,4 +167,150 @@ Hay una en particular que se me ocurrió y creo que estaría interesante. Espero
 que Pablo y Sebas opinen lo mismo. Podría mañana mandarle un mensaje a Sebas y
 ver qué piensa él al respecto.
 
+----------------------------------------------------------------------------
+
+30/05/2022
+
+Agregué el término de normalización que entiendo es el máximo valor de opinión
+que cualquier agente puede alcanzar, y eso sólo es posible si se conecta
+con toda la red y además si toda la red está con opinión 1. Claramente este
+es un máximo inalcanzable y por eso es que las opiniones de los agentes van
+a estar muy tiradas al cero. Podríamos probar y ver si usando valores más
+bajos de mu o valores más altos de K permiten que las opiniones de los
+agentes despeguen un poco del cero. Pero esto es especulación, hay que hacer
+las cuentas.
+
+Para mencionar, también modifiqué en avanzar el Din2, tenía un else para un
+if que no hacía realmente nada. Era cuando calculaba la sumatoria de opiniones
+del segundo término. Si los agentes estaban conectados aplicaba la función
+Din1. Si no estaban conectados, sumaba cero. Pero para sumar cero, directamente
+ni pongo el else y listo.
+
+También voy a ir armando carpetas para cada tipo de normalización, cosa de no
+confundir los archivos. La carpeta con la normalización sobredimensionada es
+Norm_Maxima.
+
+Ya probé el modelo con Norm_Maxima. En el caso de mu positivo el sistema logra
+converger y alcanza estados de consenso. Básicamente, lo que está pasando es
+que las opiniones son lo suficientemente bajas como para no poder hacerle frente
+al término que los tira al cero. En el caso del mu negativo, incluso para el caso
+de alfa cero, el sistema eventualmente se dispara. El motivo es que la normalización
+con alfa cero es simplemente 1. (Mu = 1). Entonces lo que ocurre es que la derivada
+queda igualada a un término que es siempre positivo y por tanto crece en cada iteración.
+Las opiniones se escapan.
+
+Me parece que no podemos simplemente plantear el mu en valor positivo. Pero entonces
+esta ecuación del punto de bifurcación no sé si tenga sentido de ser usada.
+
+------------------------------------------------------------------------------------
+
+01/06/2022
+
+Lo primero que hice fue copiar el archivo de ActividadConexa.py y lo renombré
+estudio_transcritico.py. Este segundo archivo lo usé para armar los gráficos de
+Varprom, Tópicos vs T e Histograma 2D de los datos del modelo transcritico normalizado
+de forma sobredimensionada. Esto tomó un rato y me hace ver que ese código podría
+necesitar una buena pulida para verse mejor. Cosas como el armado del SuperDiccionario
+necesitan realizarse mejor. Pero eso quedará para otro momento.
+
+En la tarde estuve haciendo un análisis de las ecuaciones dinámicas del modelo para
+el caso de dos agentes. En principio, no llegué a nada todavía. Claramente el estudio de
+este tipo de ecuaciones dinámicas es complejo y no se puede encarar directamente.
+
+----------------------------------------------------------------------------------------
+
+02/06/2022
+
+Se me ocurrió probar de estudiar el comportamiento del sistema en el caso de que
+los dos agentes conectados tengan opiniones similares. Me suena razonable
+como suposición si considero que las opiniones arrancan en el espacio positivo de
+valores y que sólo van a reforzarse. Además, cada uno crece en función de la opinión
+del vecino, entonces si sus opiniones tienen valores diferentes, el que tenga opiniones
+más pequeñas crecerá más en una iteración que su vecino porque el que tiene opinión más
+baja recibirá un impulso más grande de su vecino que tiene opiniones más grandes.
+
+Estuve mirando las ecuaciones dinámicas e intentando estudiar el comportamiento del
+sistema para el caso de 2 agentes conectados. Llegué a la conclusión de que para 2
+agentes conectados, el sistema presenta dos puntos fijos, uno en el cero y el otro
+en el borde que separaba las regiones de consenso y polarización según el paper de
+Baumann. Al principio me pareció trivial, pero no creo que sea un resultado tan
+trivial si consideramos que partí de una ecuación dinámica completamente diferente.
+Quedaría estudiar la estabilidad de estos puntos, cosa que no hice todavía.
+
+Antes de eso, me adelanté a estudiar el comportamiento del sistema con tres agentes.
+Creo que eso resultaría bastante interesante y daría una buena comprensión de qué
+está pasando. Espero sea resoluble. Lo siguiente sería empezar a simular el modelo
+en estos casos y ver que los resultados coinciden con lo predicho analíticamente.
+
+Y de paso, hoy a la tarde asistí al coloquio de física de Luz Ricci (nombre de la
+expositora). Estuvo interesante, fue sobre análisis de materiales nanométricos
+a través de métodos ópticos, algunas aplicaciones y métodos desarrollados. Eso
+es un resumen muy breve.
+
+---------------------------------------------------------------------------------------
+
+03/06/2022
+
+Durante la mañana y la tarde continué el análisis de las ecuaciones dinámicas
+del modelo para el caso de bifuración transcrítica. Logré llegar a la conclusión
+que en ambos casos el sistema presenta dos puntos fijos, si se toma como 
+condición que para cada agente las opiniones en ambos tópicos son iguales.
+
+Uno de estos puntos fijos es el cero, el cual puede ser un atractor o repulsor
+dependiendo de si el coeficiente mu es positivo o negativo respectivamente.
+El otro punto fijo toma el mismo valor que tomaba el modelo de Baumann para
+el límite entre la región de consenso y la región de polarización. Este punto
+fijo presenta autovalores positivos y negativos, con lo cual resulta un punto 
+inestable que aleja al sistema en una dirección y lo atrae en otra. Esto me lleva
+a pensar que no hay forma de que el modelo así como está planteado pueda ser
+estable o converger a nada. Por tanto necesita fuertemente una revisión.
+
+------------------------------------------------------------------------------------
+
+06/06/2022
+
+Hoy estuve leyendo el paper que Pablo me pasó sobre dinamica de polarización.
+Anoté un resumen sobre esto en el archivo de resúmenes en la carpeta de Tesis
+en el drive. Debería pasar los resúmenes del resto de papers a ese archivo y
+ya usar ese archivo directamente.
+
+------------------------------------------------------------------------------------
+
+09/06/2022
+
+Voy a hacer simulaciones del modelo para el caso de 2 agentes y 3 agentes. Para
+eso necesito modificar el armado de la matriz de adyacencia, quitar todo el tema
+de las actividades y agregar una condición de que el código corte si las opiniones
+se alejan demasiado. También voy a necesitar carpetas nuevas en las que almacenar
+estos datos.
+
+Ya tengo armadas las carpetas y actualizada la documentación. Ahora puedo ponerme
+a modificar el programa C. Después veré de repasar el archivo py cuando haga los
+gráficos de esto y borraré todo lo innecesario, dejando el archivo .py previo
+como la versión que contiene todo. Cosa de tener a donde retomar lo que busco.
+
+Las modificaciones que tengo que ahcer son:
+.) Cambiar el número de agentes. (Eso se hace en Instanciar.sh) DONE
+.) Cambiar el armado de la red de Adyacencia, hacerla de forma manual. DONE
+.) Quitar el uso de actividad. Fijarse que eso no genere warnings de 
+variables definidas pero no usadas. DONE y ???
+.) Cambiar la carpeta en la cual se guardan los datos. DONE
+.) Quitar la normalización de la ecuación dinámica. DONE
+.) Agregar una condición de corte de la simulación si las opiniones
+crecen demasiado.
+.) Modificar a los testigos, porque ahora sólo tengo tres agentes.
+Incluso, podría sacarme de encima el guardar datos iniciales y finales
+de la matriz porque los testigos tendrían todo.
+
+Creo que eso es todo lo que hay que hacer.
+
+Ahí están anotados los que resolví, mañana continuar con lo de agregar la
+condición de corte. Me quedé mirando la parte del while para ver que esto
+corte bien. Desconfío de que el sistema cumpla correctamente esa condición.
+Probar algo así en Prosem para ver que todo funque correctamente.
+
+(Por alguna razón esa última frase no se guardó bien)
+
+
+
 
