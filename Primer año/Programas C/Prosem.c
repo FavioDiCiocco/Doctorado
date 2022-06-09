@@ -17,23 +17,26 @@ int main(int argc, char *argv[]){
 	time(&tt_prin);
 	srand(time(NULL));
 	int i_tardanza;
+	double a=-1.5;
+	
+	printf("%lf\n",abs(a));
 	
 	// Abro un archivo
-	char s_nombre[255];
-	sprintf(s_nombre,"Valores_Gaussiana");
-	FILE* pa_archivo = fopen(s_nombre,"w");
+	// char s_nombre[255];
+	// sprintf(s_nombre,"Valores_Gaussiana");
+	// FILE* pa_archivo = fopen(s_nombre,"w");
 	
 	
 	// Quiero probar si estoy usando bien el método que me pasó Sebas para generar números con una distribución normal
-	double d_resultado;
-	for(register int i_i=0; i_i<1000000; i_i++){
-		d_resultado = Gaussiana(0,sqrt(2.5));
-		fprintf(pa_archivo,"\t%lf",d_resultado);
-	}
+	// double d_resultado;
+	// for(register int i_i=0; i_i<1000000; i_i++){
+		// d_resultado = Gaussiana(0,sqrt(2.5));
+		// fprintf(pa_archivo,"\t%lf",d_resultado);
+	// }
 	
 	
 	// Ejecuto los comandos finales para medir el tiempo y liberar memoria
-	fclose(pa_archivo);
+	// fclose(pa_archivo);
 	time(&tt_fin);
 	i_tardanza = tt_fin-tt_prin;
 	printf("Tarde %d segundos en terminar",i_tardanza);

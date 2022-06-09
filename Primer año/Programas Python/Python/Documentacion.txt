@@ -1,0 +1,21 @@
+Acá voy a anotar descripciones sobre los archivos de Python creados.
+
+Actividad_Conexa.py:
+---------------------
+
+Este archivo está sacado de los que usé durante la licenciatura para
+levantar datos y armar los gráficos. Le hice algunas modificaciones
+cosa de que levantara mis dos nuevos archivos de Opiniones y Testigos
+de la carpeta de PruebaMod y con eso me armara tres tipos de gráficos.
+Gráficos de histogramas 2D, gráficos de Opinión en función del tiempo
+y gráficos de Varprom. Hubo un toque de ajustar los cuadros para que
+se vean más lindos, atento a modificar eso para otros casos.
+
+estudio_transcritico.py:
+-------------------------
+
+Inicialmente es una copia de Actividad_Conexa.py. La idea es usarlo para 
+levantar los datos de Transcritico de todas y cada una de sus subcarpetas.
+Lo diferencio de Actividad_Conexa principalmente porque los archivos
+del transcritico tienen anotado el valor del decaimiento en el nombre.
+Fuera de eso, la idea es que arme los mismos gráficos.

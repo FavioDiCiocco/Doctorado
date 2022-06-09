@@ -10,3 +10,31 @@ Python
 -------
 Acá voy a poner los programas de Python que voy a estar usando para analizar mis datos.
 Lo separo para no tener tantos archivos dando vueltas.
+
+Temporal
+--------
+Esta carpeta no creo que dure mucho tiempo. Estoy guardando los datos que dieron
+muy mal del modelo cuando usé la ecuación dinámica de un punto de bifurcación
+transcrítico.
+
+Transcritico
+------------
+En esta carpeta me guardo dos tipos de archivos, el de Opiniones y el de Testigos.
+El de opiniones tiene las opiniones iniciales, finales, variación promedio y semilla
+del sistema, el de Testigos tiene los valores de opiniones de 5 agentes en
+función del tiempo. Esto lo estoy haciendo para el sistema con la ecuación dinámica
+del punto de bifurcación transcrítico. Para esto agrego al modelo el coeficiente
+mu (regula la intensidad del primer término) y considero los valores cuadrados
+de las opiniones en la sumatoria de las contribuciones de los vecinos.
+
+Conjunto_pequeño:
+------------------
+En esta carpeta voy a guardar datos del sistema armado con dos o tres agentes. Estos
+datos los voy a tener todos mezclados, no me parece que haga falta separarlos en 
+carpetas diferenciadas, total el archivo de python está armado para diferenciar estos
+archivos. La idea de esto es observar si el sistema se comporta como lo estudiado en el
+caso analítico. Esto significaría que el 0 es un punto fijo estable o inestable dependiendo
+del signo de mu, mientras que el otro punto fijo siempre tiene una dirección que aleja a las
+opiniones. Los datos a guardar serán opiniones iniciales y finales, Varprom y testigos.
+
+

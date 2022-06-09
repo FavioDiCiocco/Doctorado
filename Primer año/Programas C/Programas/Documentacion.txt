@@ -13,3 +13,17 @@ comportamiento del sistema para casos de baja controversialidad, alta
 controversialidad, baja correlación y alta correlación. También agregué
 que en los casos de Consenso el sistema primero se asegure de que la red
 esté completamente conectada y después termine la simulación.
+
+.) Transcritico:
+----------------
+
+Acá ya modifiqué la función dinámica, saqué todo lo referido a la tanh
+y preparé los archivos para que en el nombre lleven registro del número
+de agentes, la controversialidad, el cosdelta y el mu, que sería la 
+intensidad con la cual los agentes se van al cero. De este código 
+obtenía los datos de opiniones iniciales y finales, Varprom y los
+datos de los testigos. Los datos armados los hice normalizando la
+ecuación dinámica usando la Norm_máxima, que sería dividir por la máxima
+sumatoria de opiniones que un agente podría obtener. En los casos de 
+mu positivo todo daba bien, pero en los de mu negativo el sistema
+divergía completamente.

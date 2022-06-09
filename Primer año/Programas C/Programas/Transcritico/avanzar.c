@@ -38,7 +38,11 @@ double Din1(ps_Red ps_var, ps_Param ps_par){
 double Din2(ps_Red ps_var, ps_Param ps_par){
 	// Defino las variables locales de mi función. d_resultado es lo que voy a returnear.
 	// d_sumatoria es el total de la sumatoria del segundo término de la ecuación diferencial.
-	double d_resultado,d_sumatoria=0;
+	double d_resultado,d_norm,d_sumatoria=0;
+	
+	// Este es el término que uso para normalizar la sumatoria de la ecuación dinámica,
+	// así los valores de las opiniones no se me disparan.
+	d_norm = abs(ps_par->d_mu)+ps_par->f_K*ps_par->f_alfa*(ps_par->i_N-1)*(1+abs(ps_par->f_Cosangulo))*(1+abs(ps_par->f_Cosangulo));
 	
 	// Calculo la sumatoria de la ecuación diferencial. Para esto es que existe la función Din1.
 	// La sumatoria es sobre todos los agentes conectados en la red de adyacencia
@@ -46,7 +50,7 @@ double Din2(ps_Red ps_var, ps_Param ps_par){
 	
 	// Obtengo el tamaño de Columnas de mi matriz de Vectores de opinión y calculo el valor del campo que define mi ecuación diferencial
 	int i_C = (int) ps_var->pd_Opi[1];
-	d_resultado = -ps_par->d_mu*ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2]+(ps_par->f_K*ps_par->f_alfa*d_sumatoria);
+	d_resultado = -ps_par->d_mu*ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2]+(ps_par->f_K*ps_par->f_alfa*d_sumatoria)/d_norm;
 	// d_resultado = -ps_par->d_lambda*ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2]+ps_par->f_K*d_sumatoria+ps_par->d_campoext;
 	return d_resultado;
 }
