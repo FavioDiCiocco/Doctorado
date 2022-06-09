@@ -274,10 +274,40 @@ Anoté un resumen sobre esto en el archivo de resúmenes en la carpeta de Tesis
 en el drive. Debería pasar los resúmenes del resto de papers a ese archivo y
 ya usar ese archivo directamente.
 
+------------------------------------------------------------------------------------
 
+09/06/2022
 
+Voy a hacer simulaciones del modelo para el caso de 2 agentes y 3 agentes. Para
+eso necesito modificar el armado de la matriz de adyacencia, quitar todo el tema
+de las actividades y agregar una condición de que el código corte si las opiniones
+se alejan demasiado. También voy a necesitar carpetas nuevas en las que almacenar
+estos datos.
 
+Ya tengo armadas las carpetas y actualizada la documentación. Ahora puedo ponerme
+a modificar el programa C. Después veré de repasar el archivo py cuando haga los
+gráficos de esto y borraré todo lo innecesario, dejando el archivo .py previo
+como la versión que contiene todo. Cosa de tener a donde retomar lo que busco.
 
+Las modificaciones que tengo que ahcer son:
+.) Cambiar el número de agentes. (Eso se hace en Instanciar.sh) DONE
+.) Cambiar el armado de la red de Adyacencia, hacerla de forma manual. DONE
+.) Quitar el uso de actividad. Fijarse que eso no genere warnings de 
+variables definidas pero no usadas. DONE y ???
+.) Cambiar la carpeta en la cual se guardan los datos. DONE
+.) Quitar la normalización de la ecuación dinámica. DONE
+.) Agregar una condición de corte de la simulación si las opiniones
+crecen demasiado.
+.) Modificar a los testigos, porque ahora sólo tengo tres agentes.
+Incluso, podría sacarme de encima el guardar datos iniciales y finales
+de la matriz porque los testigos tendrían todo.
+
+Creo que eso es todo lo que hay que hacer.
+
+Ahí están anotados los que resolví, mañana continuar con lo de agregar la
+condición de corte. Me quedé mirando la parte del while para ver que esto
+corte bien. Desconfío de que el sistema cumpla correctamente esa condición.
+Probar algo as
 
 
 
