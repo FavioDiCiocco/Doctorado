@@ -307,7 +307,9 @@ Creo que eso es todo lo que hay que hacer.
 Ahí están anotados los que resolví, mañana continuar con lo de agregar la
 condición de corte. Me quedé mirando la parte del while para ver que esto
 corte bien. Desconfío de que el sistema cumpla correctamente esa condición.
-Probar algo as
+Probar algo así en Prosem para ver que todo funque correctamente.
+
+(Por alguna razón esa última frase no se guardó bien)
 
 
 
