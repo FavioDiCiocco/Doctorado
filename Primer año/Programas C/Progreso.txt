@@ -293,14 +293,14 @@ Las modificaciones que tengo que ahcer son:
 .) Cambiar el número de agentes. (Eso se hace en Instanciar.sh) DONE
 .) Cambiar el armado de la red de Adyacencia, hacerla de forma manual. DONE
 .) Quitar el uso de actividad. Fijarse que eso no genere warnings de 
-variables definidas pero no usadas. DONE y ???
+variables definidas pero no usadas. DONE y DONE
 .) Cambiar la carpeta en la cual se guardan los datos. DONE
 .) Quitar la normalización de la ecuación dinámica. DONE
 .) Agregar una condición de corte de la simulación si las opiniones
-crecen demasiado.
+crecen demasiado. DONE
 .) Modificar a los testigos, porque ahora sólo tengo tres agentes.
 Incluso, podría sacarme de encima el guardar datos iniciales y finales
-de la matriz porque los testigos tendrían todo.
+de la matriz porque los testigos tendrían todo. DONE
 
 Creo que eso es todo lo que hay que hacer.
 
@@ -311,6 +311,20 @@ Probar algo así en Prosem para ver que todo funque correctamente.
 
 (Por alguna razón esa última frase no se guardó bien)
 
+--------------------------------------------------------------------------------
 
+10/06/2022
+
+Terminé de hacer modificaciones al código en C para poder realizar simulaciones
+de 2 y 3 agentes. Con esto ahora voy a observar si el sistema converge al cero
+o luego diverge. Para los casos que diverge, el código debería cortar si la
+norma del vector de opiniones es mayor al valor que tendría si las opiniones
+de cada agente en cada tópico fuera 100. Haré 20 iteraciones para 2 y 3 agentes
+con controversialidad variando de a 0,05 entre 0 y 0,2, y luego controversialidad
+1. El Cdelta será 0 siempre y mu será 1 y -1.
+
+
+Completó todo en segundos, ya después empezaré a ver los resultados de los datos.
+Seguramente lo haga ya el lunes o martes eso.
 
 
