@@ -327,4 +327,20 @@ con controversialidad variando de a 0,05 entre 0 y 0,2, y luego controversialida
 Completó todo en segundos, ya después empezaré a ver los resultados de los datos.
 Seguramente lo haga ya el lunes o martes eso.
 
+---------------------------------------------------------------------------------
+
+13/06/2022
+
+En la mañana organicé algunas cosas con el grupo de Labo de Datos, hablé con
+Lupi y eestuve armando el archivo de Conjunto_pequeño.py para estudiar los datos
+simulados el otro día. Tome el de estudio_transcritico, lo copié y empecé a sacarle
+todo lo que no fuera a usar en este caso. Estoy esquilmando el código para arrancar
+nuevamente de cero, cualquier cosa que pueda necesitar después la copiaré. Además,
+estoy independizándome del SuperDiccionario e implementando el uso de pandas
+para manejar los nombres de los archivos.
+
+Todavía queda revisar la mitad del código, pero buena parte de eso hay que simplemente
+borrarla.
+
+
 
