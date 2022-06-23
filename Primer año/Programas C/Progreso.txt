@@ -342,5 +342,31 @@ para manejar los nombres de los archivos.
 Todavía queda revisar la mitad del código, pero buena parte de eso hay que simplemente
 borrarla.
 
+-----------------------------------------------------------------------------------
+
+23/06/2022
+
+Cómo pasaron 10 días de la última entrada me asusta un poco. Yendo a lo que hice hoy,
+estuve revisando la ecuación dinámica e intentando pensar en soluciones para que no
+crezcan de forma desmedida las opiniones de los agentes al interactuar. Para esto
+se me ocurre modificar la función cuadrática por una función logarítmica. La función
+logarítmica tiene una derivada que se hace más chica a medida que x crece, de forma
+tal que si las opiniones crecen mucho esa derivada se hace pequeña. 
+
+Para estudiar esto el proceso será parecido al anterior. Primero veré la ecuación
+dinámica del punto transcrítico. Luego, pasaré a estudiar la ecuación dinámica aplicada
+a nuestro modelo. Habrá que considerar los dos casos de aplicación del logaritmo que se
+me ocurrieron y ver las diferencias de cada uno.
+
+Por otra parte, Pablo propone ir pensando en cómo plantear el modelo en versión estocástica.
+Para esto podés arrancar tomando parte del código que ya tenés de esto y re adaptarlo. Eso
+suena lo más lógico.
+
+También hay que considerar en los planes y en el tiempo el estudio para el final de
+la materia de Dorso, que puede o no darse.
+
+
+
+
 
 
