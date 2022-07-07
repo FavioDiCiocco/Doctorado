@@ -365,6 +365,46 @@ suena lo más lógico.
 También hay que considerar en los planes y en el tiempo el estudio para el final de
 la materia de Dorso, que puede o no darse.
 
+--------------------------------------------------------------------------------------
+
+06/07/2022
+
+Entre el 23 y hoy no es que estuve rascándome, el preparar el TP final de Labo de Datos
+fue complejo. Al final Cami nos carreó como la mejor. Se merece un chocolatito o algo.
+
+Cuestión que hoy estuve todo el día analizando la ecuación dinámica del punto transcrítico
+para el caso en que la ecuación tiene un logaritmo en vez de una cuadrática. Claramente
+la ecuación fue más compleja de resolver. Lo que descubrí con esto es primero que 
+la aparición de un punto fijo en los valores positivos ya no depende del signo de "r"
+sino de su módulo. Para "r" negativo o 0, el único punto fijo existente es el cero y
+es un punto estable. En cambio, si "r" es mayor a cero y menor a uno, se tiene un 
+punto fijo estable en el cero y un punto fijo inestable en un valor positivo de x. Si bien
+no pude despejar el valor de este punto fijo en función de "r", sí pude despejar "r" en
+función del punto fijo, de forma tal que puedo construir una ecuación para que tenga
+un punto fijo en un valor deseado.
+
+En el caso de "r" igual a uno se tiene que sólo el cero es un punto fijo y que además
+es un punto silla, que siempre empuja al sistema hacia los valores positivos.
+
+Finalmente, si "r" es mayor que uno se tiene que el cero es un punto fijo inestable
+y por otro lado se tiene un punto fijo entre menos uno y cero, el cual se vuelve
+estable. Nuevamente, si bien no se puede calcular el valor de este punto fijo en
+función de "r", se puede sí calcular "r" en función del punto fijo y de esa manera
+armar una ecuación a medida.
+
+Luego estuve intentando resolver la ecuación dinámica aplicada a dos agentes conectados,
+sin embargo esto resultó ser bastante más complicado de lo que parecía ya que al
+querer hacer eso me surge una ecuación que tiene un logaritmo dentro de un logaritmo.
+Un bardo importante.
+
+Mañana vamos a intentar continuar con esto y resolverlo mejor. Hay que tomar en cuenta
+que entonces este modelo no presenta punto fijo estable en los valores positivos de x.
+Hay que ver cómo se puede crear un punto estable en los valores de x positivos. Seguramente
+la separación de "r" en dos valores "K" y "mu" me permite más fácilmente jugar con la estabilidad
+de esos puntos
+
+
+
 
 
 
