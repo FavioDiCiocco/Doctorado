@@ -31,7 +31,7 @@ int main(int argc, char *argv[]){
 		ps_datos->i_T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
 		ps_datos->f_K = 3; // Influencia social
 		ps_datos->f_dt = 0.01; // Paso temporal de iteración del sistema
-		ps_datos->d_mu = strtol(argv[6],NULL,10); // Coeficiente que regula la intensidad con que los agentes caen al cero.
+		ps_datos->d_mu = strtol(argv[4],NULL,10); // Coeficiente que regula la intensidad con que los agentes caen al cero.
 		ps_datos->f_alfa = strtof(argv[2],NULL); // Controversialidad de los tópicos. Arranquemos con controversialidad intermedia. Voy a estar dividiendo esto acá para poder pasar enteros desde el instanciar.
 		ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 		// ps_datos->i_m = 10; // Cantidad de conexiones que hace el agente al activarse
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]){
 		ps_datos->i_pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
 		
 		// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
-		int i_iteracion = strtol(argv[4],NULL,10); // Número de instancia de la simulación.
+		int i_iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
 		int i_contador = 0;
 		
 		// Defino unas variables double que voy a necesitar
@@ -80,7 +80,7 @@ int main(int argc, char *argv[]){
 		
 		// Este archivo es el que guarda las opiniones de todos los agentes mientras evolucionan
 		char s_archivo1[355];
-		sprintf(s_archivo1,"../Programas Python/Conjunto_pequeño/Opiniones_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
+		sprintf(s_archivo1,"../Programas Python/Conjunto_pequeño/Varprom_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
 			,ps_datos->f_alfa,ps_datos->i_N,ps_datos->f_Cosangulo,ps_datos->d_mu,i_iteracion);
 		FILE *pa_archivo1=fopen(s_archivo1,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 		
@@ -95,8 +95,8 @@ int main(int argc, char *argv[]){
 		ps_red->pi_Ady[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
 		ps_red->pi_Ady[1] = ps_datos->i_N; // Pongo el número de columnas en la segunda coordenada
 		// Inicializo la matriz de Adyacencia directamente acá. Me pareció que no valía la pena armar una función para esto.
-		for(register int i_i=0; i_i<ps_red->pi_Ady[0]; i_i++) for(register int i_j=0; i_j<i_i; i_j++) ps_var->pd_Ang[i_i*ps_red->pi_Ady[1]+i_j+2] = 1;  // Esto me pone 1 debajo de la diagonal
-		for(register int i_i=0; i_i<ps_red->pi_Ady[0]; i_i++) for(register int i_j=i_i+1; i_j<ps_red->pi_Ady[1]; i_j++) ps_var->pd_Ang[i_i*ps_red->pi_Ady[1]+i_j+2] = ps_var->pd_Ang[i_j*ps_red->pi_Ady[1]+i_i+2]; // Esta sola línea simetriza la matriz
+		for(register int i_i=1; i_i<ps_red->pi_Ady[0]; i_i++) for(register int i_j=0; i_j<i_i; i_j++) ps_red->pi_Ady[i_i*ps_red->pi_Ady[1]+i_j+2] = 1;  // Esto me pone 1 debajo de la diagonal
+		for(register int i_i=0; i_i<ps_red->pi_Ady[0]; i_i++) for(register int i_j=i_i+1; i_j<ps_red->pi_Ady[1]; i_j++) ps_red->pi_Ady[i_i*ps_red->pi_Ady[1]+i_j+2] = ps_red->pd_Ang[i_j*ps_red->pi_Ady[1]+i_i+2]; // Esta sola línea simetriza la matriz
 		
 		
 		// Matriz de Superposición de Tópicos. Es de tamaño T*T
@@ -131,17 +131,13 @@ int main(int argc, char *argv[]){
 	// Genero las redes de mi sistema
 	GenerarOpi(ps_red,ps_datos); // Esto me inicializa mis vectores de opinión, asignándole a cada agente una opinión en cada tópico
 	GenerarAng(ps_red,ps_datos); // Esto me inicializa mi matriz de superposición, definiendo el solapamiento entre tópicos.
-
 	
-	// Acá guardo los datos de las opiniones del sistema.
-	fprintf(pa_archivo1, "Opiniones iniciales de los agentes\n");
-	Escribir_d(ps_red->pd_Opi,pa_archivo1);
 	
 	// Arranco el guardado de los datos de mis testigos
 	fprintf(pa_archivo2, "Opiniones de los testigos\n");
-	for(register int i_sujeto=0; i_sujeto<i_testigos; i_sujeto++) 
+	for(register int i_sujeto=0; i_sujeto<ps_datos->i_N; i_sujeto++) 
 		for(register int i_opinion=0; i_opinion<ps_datos->i_T; i_opinion++) 
-			fprintf(pa_archivo2, "%.6lf\t",ps_red->pd_Opi[a_Testigos[i_sujeto]*ps_datos->i_T+i_opinion+2]);
+			fprintf(pa_archivo2, "%.6lf\t",ps_red->pd_Opi[i_sujeto*ps_datos->i_T+i_opinion+2]);
 	fprintf(pa_archivo2, "\n");
 	
 	int i_IndiceOpiPasado = 0;
@@ -149,11 +145,10 @@ int main(int argc, char *argv[]){
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
 		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_PreOpi[i_j+2] = ps_red->pd_Opi[i_j+2];
 		Iteracion(ps_red,ps_datos,pf_EcDin);
-		for(register int i_sujeto=0; i_sujeto<i_testigos; i_sujeto++) 
+		for(register int i_sujeto=0; i_sujeto<ps_datos->i_N; i_sujeto++) 
 			for(register int i_opinion=0; i_opinion<ps_datos->i_T; i_opinion++) 
-				fprintf(pa_archivo2, "%.6lf\t",ps_red->pd_Opi[a_Testigos[i_sujeto]*ps_datos->i_T+i_opinion+2]);
+				fprintf(pa_archivo2, "%.6lf\t",ps_red->pd_Opi[i_sujeto*ps_datos->i_T+i_opinion+2]);
 		fprintf(pa_archivo2, "\n");
-		i_rearmar += 1;
 		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) *(ap_OpinionesPrevias[i_IndiceOpiPasado]+i_j+2) = ps_red->pd_Opi[i_j+2];
 		i_IndiceOpiPasado++;
 	}
@@ -170,32 +165,30 @@ int main(int argc, char *argv[]){
 		do{
 			for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_PreOpi[i_j+2] = ps_red->pd_Opi[i_j+2];
 			Iteracion(ps_red,ps_datos,pf_EcDin);
-			for(register int i_sujeto=0; i_sujeto<i_testigos; i_sujeto++) 
+			for(register int i_sujeto=0; i_sujeto<ps_datos->i_N; i_sujeto++) 
 				for(register int i_opinion=0; i_opinion<ps_datos->i_T; i_opinion++) 
-					fprintf(pa_archivo2, "%.6lf\t",ps_red->pd_Opi[a_Testigos[i_sujeto]*ps_datos->i_T+i_opinion+2]);
+					fprintf(pa_archivo2, "%.6lf\t",ps_red->pd_Opi[i_sujeto*ps_datos->i_T+i_opinion+2]);
 			fprintf(pa_archivo2, "\n");
 			i_IndiceOpiPasado++;
-			i_rearmar += 1;
 			Delta_Vec_d(ps_red->pd_Opi,ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios],ps_red->pd_Diferencia); // Veo la diferencia entre 20 pasos anteriores y el actual en las opiniones
 			ps_red->d_Varprom = Norma_d(ps_red->pd_Diferencia)/ps_datos->d_NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
 			fprintf(pa_archivo1, "%lf\t",ps_red->d_Varprom); // Guardo el valor de variación promedio
 			d_normav = Norma_d(ps_red->pd_Opi); // Calculo la norma del vector de opiniones
 			for(register int i_p=0; i_p<ps_datos->i_N*ps_datos->i_T; i_p++) *(ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios]+i_p+2) = ps_red->pd_Opi[i_p+2];
 		}
-		while((ps_red->d_Varprom > ps_datos->d_CritCorte || i_tamano < ps_datos->i_N) && d_normav < d_tope);
+		while( ps_red->d_Varprom > ps_datos->d_CritCorte && d_normav < d_tope);
 		
 			
 		// Ahora evoluciono el sistema una cantidad i_Itextra de veces. Le pongo como condición que si el sistema deja de cumplir la condición de corte, deje de evolucionar
 		
-		while(i_contador < ps_datos->i_Itextra && ps_red->d_Varprom <= ps_datos->d_CritCorte ){
+		while(i_contador < ps_datos->i_Itextra && (ps_red->d_Varprom <= ps_datos->d_CritCorte || d_normav >= d_tope) ){
 			for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_PreOpi[i_j+2] = ps_red->pd_Opi[i_j+2];
 			Iteracion(ps_red,ps_datos,pf_EcDin);
-			for(register int i_sujeto=0; i_sujeto<i_testigos; i_sujeto++) 
+			for(register int i_sujeto=0; i_sujeto<ps_datos->i_N; i_sujeto++) 
 				for(register int i_opinion=0; i_opinion<ps_datos->i_T; i_opinion++) 
-					fprintf(pa_archivo2, "%.6lf\t",ps_red->pd_Opi[a_Testigos[i_sujeto]*ps_datos->i_T+i_opinion+2]);
+					fprintf(pa_archivo2, "%.6lf\t",ps_red->pd_Opi[i_sujeto*ps_datos->i_T+i_opinion+2]);
 			fprintf(pa_archivo2, "\n");
 			i_IndiceOpiPasado++;
-			i_rearmar += 1;
 			Delta_Vec_d(ps_red->pd_Opi,ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios],ps_red->pd_Diferencia); // Veo la diferencia entre 20 pasos anteriores y el actual en las opiniones
 			ps_red->d_Varprom = Norma_d(ps_red->pd_Diferencia)/ps_datos->d_NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
 			fprintf(pa_archivo1, "%lf\t",ps_red->d_Varprom); // Guardo el valor de variación promedio 
@@ -207,11 +200,8 @@ int main(int argc, char *argv[]){
 		// Por tanto lo vuelvo a hacer trabajar hasta que se vuelva a cumplir la condición de corte.
 		// Si logra evolucionar la cantidad arbitraria de veces sin problemas, termino la evolución.
 	}
-	// Guardo las opiniones finales y la semilla en el primer archivo.
+	// Guardo la semilla en el primer archivo.
 	// Las opiniones de los testigos las guardo en el segundo
-	fprintf(pa_archivo1,"\n");
-	fprintf(pa_archivo1,"Opiniones finales de los agentes\n");
-	Escribir_d(ps_red->pd_Opi,pa_archivo1);
 	fprintf(pa_archivo1,"Semilla\n");
 	fprintf(pa_archivo1,"%ld\n",semilla);
 	

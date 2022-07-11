@@ -5,6 +5,7 @@
 #include<math.h>
 #include<time.h>
 #include<string.h>
+#include<stdbool.h>
 
 
 double Random();
@@ -17,22 +18,15 @@ int main(int argc, char *argv[]){
 	time(&tt_prin);
 	srand(time(NULL));
 	int i_tardanza;
-	double a=-1.5;
+	bool a,b,c;
 	
-	printf("%lf\n",abs(a));
+	a = false;
+	b = false;
+	c = true;
 	
-	// Abro un archivo
-	// char s_nombre[255];
-	// sprintf(s_nombre,"Valores_Gaussiana");
-	// FILE* pa_archivo = fopen(s_nombre,"w");
+	if( (!a || b) && c) printf("Es verdadero\n");
+	else printf("Es falso\n");
 	
-	
-	// Quiero probar si estoy usando bien el método que me pasó Sebas para generar números con una distribución normal
-	// double d_resultado;
-	// for(register int i_i=0; i_i<1000000; i_i++){
-		// d_resultado = Gaussiana(0,sqrt(2.5));
-		// fprintf(pa_archivo,"\t%lf",d_resultado);
-	// }
 	
 	
 	// Ejecuto los comandos finales para medir el tiempo y liberar memoria

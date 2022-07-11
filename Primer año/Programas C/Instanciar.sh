@@ -14,15 +14,15 @@ echo "El ID del script es $$"
 # Voy a Hardcodear algunos Arrays
 
 Arr_Agentes=(2 3)
-Arr_Alfas=(0 2)
-Arr_Cdeltas=(-1 0 1)
-Arr_Decaimientos=(1)
+Arr_Alfas=(0 0.05 0.1 0.15 0.2 1)
+Arr_Cdeltas=(0)
+Arr_Decaimientos=(1 -1)
 
 if [ -z $decision ]
 then
 	for N in ${Arr_Agentes[@]}
 	do
-		for iteracion in {0..10}
+		for iteracion in {0..20}
 		do
 			# Alfa=$2
 			# while [ $Alfa -le $3 ]
@@ -30,13 +30,10 @@ then
 			do
 				for Cdelta in ${Arr_Cdeltas[@]} 
 				do
-					for Campo in 0
+					for Decaimiento in ${Arr_Decaimientos[@]}
 					do
-						for Decaimiento in ${Arr_Decaimientos[@]}
-						do
-							echo Alfa = $Alfa, Cdelta = $Cdelta, campo = $Campo, Decaimiento = $Decaimiento
-							./$1.e $N $Alfa $Cdelta $iteracion $Campo $Decaimiento
-						done
+						echo Alfa = $Alfa, Cdelta = $Cdelta, Decaimiento = $Decaimiento
+						./$1.e $N $Alfa $Cdelta $Decaimiento $iteracion
 					done
 				done
 			# ((Alfa++))
