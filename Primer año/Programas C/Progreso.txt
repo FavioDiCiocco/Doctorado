@@ -403,10 +403,55 @@ Hay que ver cómo se puede crear un punto estable en los valores de x positivos.
 la separación de "r" en dos valores "K" y "mu" me permite más fácilmente jugar con la estabilidad
 de esos puntos
 
+---------------------------------------------------------------------------------------------------
 
+13/07/2022
 
+No comprendo cómo pasan tan rápido los días, simplemente no sé qué pasó entre 
+la última vez que escribí y hoy. Pero vamos a intentar recordarlo. En la libreta
+está anotado lo que pasó, ahora todo tiene sentido.
 
+Cuestión que seguí trabajando la expresión dinámica del modelo con el logaritmo
+en vez de la tanh. Esta vez los resultados son un poco más prometedores, se
+observan dos puntos críticos, uno en cero y el otro en un valor positivo.
+La existencia de este segundo punto crítico y el hecho de que sea positivo
+no es algo trivial, pero con algo de cuidado creo que se puede lograr que se 
+encuentre donde queremos en general. 
+  Lo importante entonces es que estos dos puntos fijos obtenidos son o atractivos
+  o repulsivos y dependiendo del signo de la variable mu alternan. Igual no hay que
+  olvidar que los resultados que obtuve son para el caso más simple de todos, con
+  varias aproximaciones. Hay que ver qué pasa después.
+  
+  
+Ayer estuve armando un resumen con todo lo que analicé de esta ecuación dinámica
+para poder mostrárselo a Pablo y a Lupi. Tengo hechos los gráficos y toda la
+bola. Hoy lo charlamos rápido con pablo y me recomendó que arme una presentación
+de esto y de los resultados obtenidos del sistema cuando reemplazamos la tanh por
+una cuadrática. Así que ya mañana me pondré con eso.
 
+Por otro lado, estuve trabajando en el archivo de python de Conjunto_pequeño.py.
+Logré hacer que grafique, pero luego de mirarlo noté que los gráficos de Varprom
+me graficaba una sóla iteración del sistema, cuando debería graficar la de cada
+sistema. Esto me pareció raro, así que miré los archivos a ver qué pasaba. Y
+por algún motivo desconocidos, pareciera que los datos armados son los mismos
+exactos para las simulaciones dado un valor de N, alfa, cdelta, y mu. Es
+muy raro eso, tengo que revisar qué pasó.
 
+También noté que no tengo armada una documentación de la carpeta de trasncritico
+y de la nueva carpeta que puse en imágenes. Debería corregir eso. Aunque quizás
+haga esto a lo último, preparar la presentación tiene prioridad.
+
+Lo otro que estaba pensando es que debe existir un entorno tipo anaconda o spyder
+para trabajar python en Linux. Trabajarlo desde línea de comando es una paja, el
+programa corre y no tenés mucho para hacer para chequear qué anda mal. Voy
+a buscar mañana algo que sirva para eso, así ya trabajo más cómodo en la facultad.
+
+La otra es mudar las cosas a notebooks, ir probando ahí y después descargarlo
+en la pc. Pero me parece mucho laburo y una cagada francamente. Además tendría
+que organizarme el drive. Y ya tengo tres grandes cosas que organizar, el drive,
+el mail y algo más que ya no recuerdo.
+
+Ya tengo marcado el laburo para mañana, mañana lo continuamos. Y mañana a
+primera hora me anoto lo que hice en el cuaderno.
 
 
