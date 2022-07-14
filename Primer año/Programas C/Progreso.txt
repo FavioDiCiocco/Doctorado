@@ -468,5 +468,28 @@ de la curva. No puedo comprender qué genera ese pico. Lo miro y simplemente no 
 entiendo.
 
 Dicho esto, ya puedo ponerme a trabajar directo en el tema de armar una presentación
-de esto. Así que eso har
+de esto. Así que eso haré.
+
+En la tarde estuve viendo unos videos sobre los temas de clases que iba a dar, así
+que no pude trabajar tanto. Lo que hice fue cambiar el gráfico de histograma 2D por 
+unos scatter plot, me parece que resultan mejores para observar cómo se distribuyen
+las opiniones finales de los agentes en el espacio de opiniones. Podría incluso 
+graficar las trayectorias, aunque creo que el gráfico quedaría sobrecargado. Probar
+eso mañana, no es muy complejo.
+
+Hecho eso, ya tengo todo lo necesario para hacer la presentación que me dijo Pablo.
+Para eso tengo que:
+.) Preparar datos para el modelo con la función logarítmica.
+.) Graficar esos datos.
+.) Actualizar la documentación acorde.
+.) Armar la presentación:
+  -) Arrancar con la ecuación original y lo que teníamos
+  -) Ecuación dinámica transcrítica con función cuadrática
+  -) Puntos fijos de la ecuación dinámica transcrítica y su análisis
+  -) Análisis de la ecuación para el sistema con dos y tres agentes
+  -) Gráficos obtenidos a partir de los datos y su interpretación
+  -) Mostrar el código para que no queden dudas sobre lo hecho
+  -) Ídem pero con la ecuación dinámica con función logarítmica
+
+Me parece una buena presentación esa.
 
