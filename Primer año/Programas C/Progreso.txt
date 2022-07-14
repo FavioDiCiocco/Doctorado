@@ -454,4 +454,19 @@ el mail y algo más que ya no recuerdo.
 Ya tengo marcado el laburo para mañana, mañana lo continuamos. Y mañana a
 primera hora me anoto lo que hice en el cuaderno.
 
+-----------------------------------------------------------------------------------
+
+14/07/2022
+
+Revisé los datos y al parecer el problema era que como el sistema tenía pocos
+agentes, el código se resolvía muy rápido y no llegaba a cambiar la semilla.
+Entonces, todos los archivos tenían la misma semilla y por eso arrancaban
+con las mismas exactas opiniones.
+
+Analizando los gráficos, se observa que los de Varprom tienen un pico al principio
+de la curva. No puedo comprender qué genera ese pico. Lo miro y simplemente no lo
+entiendo.
+
+Dicho esto, ya puedo ponerme a trabajar directo en el tema de armar una presentación
+de esto. Así que eso har
 
