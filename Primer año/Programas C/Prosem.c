@@ -18,22 +18,21 @@ int main(int argc, char *argv[]){
 	time(&tt_prin);
 	srand(time(NULL));
 	int i_tardanza;
-	bool a,b,c;
+
+	double resultado;
+	resultado = log(0.5);
+	printf("El ln(0.5) = %.3f\n",resultado);
 	
-	a = false;
-	b = false;
-	c = true;
-	
-	if( (!a || b) && c) printf("Es verdadero\n");
-	else printf("Es falso\n");
-	
-	
+	for(register int i_i=1; i_i<5; i_i++){
+		resultado = log(i_i);
+		printf("El ln(%d) = %.3f\n",i_i,resultado);
+	}
 	
 	// Ejecuto los comandos finales para medir el tiempo y liberar memoria
 	// fclose(pa_archivo);
 	time(&tt_fin);
 	i_tardanza = tt_fin-tt_prin;
-	printf("Tarde %d segundos en terminar",i_tardanza);
+	printf("Tarde %d segundos en terminar\n",i_tardanza);
 		
 	return 0;
 }

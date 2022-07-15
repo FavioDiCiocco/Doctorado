@@ -394,40 +394,37 @@ for Carpeta in ["Conjunto_pequeño"]:
                     
                     plt.rcParams.update({'font.size': 20})
                     fig, ax = plt.subplots(figsize = (20, 15))
-                    
-                    # Armo el array de Opiniones Finales
-                    OpinionesFinales = np.array([])
+                    Colores1 = cm.rainbow(np.linspace(0,1,Df_archivos_r.loc[(Df_archivos_r["n"]==AGENTES) & (Df_archivos_r["mu"]==MU) & (Df_archivos_r["cdelta"]==CDELTA) & (Df_archivos_r["alfa"]==ALFA), "nombre"].shape[0]))
                     
                     for numero,nombre in enumerate(Df_archivos_r.loc[(Df_archivos_r["n"]==AGENTES) & (Df_archivos_r["mu"]==MU) & (Df_archivos_r["cdelta"]==CDELTA) & (Df_archivos_r["alfa"]==ALFA), "nombre"]):
                         
                         #----------------------------------------------------------------------------------------------------------------------------------
                         # Acá levanto los datos de los archivos de Testigos. Estos archivos tienen los siguientes datos:
+                        # Opiniones de los testigos (Eso hasta el final)
                         
                         Datos = ldata("{}/{}".format(Conjunto_Direcciones,nombre))
                         
                         # Levanto los datos de la Variación Promedio
                         Opi = np.array([float(x) for x in Datos[len(Datos)-2][:-1]])
                         
-                        # Me voy armando un array con las opiniones finales de los agentes a lo largo
-                        # de todas las simulaciones
-                        
-                        OpinionesFinales = np.concatenate((OpinionesFinales,Opi),axis=None)
-                        
                         # -------------------------------------------------------------------------------------------------
                     
-                    # Acá voy a armar gráficos conjuntos de los Histogramas 2D cosa de que el etiquetado se realice de mejor forma.
-                    # Dios quiera que esto salga fácil y rápido.
+                        # En vez de hacer los gráficos de hist2D, voy hacer gráficos scatter de los agentes de cada simulación.
+                        # La idea sería que los agentes de cada simulación tengan el mismo color. Me parece que va a resultar más
+                        # informativo que lo que estoy viendo ahora
+                        
+                        ax.plot(Opi[0::2],Opi[1::2],"o",markersize = 18, c = Colores1[numero])
+                        ax.annotate(r"$\alpha$={},cos($\delta$)={},$\mu$={},N={}".format(ALFA,CDELTA,MU,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha=0.7))
 
                     # Ahora grafico las curvas de distribución de ambas opiniones
-                    ax.hist2d(OpinionesFinales[0::2],OpinionesFinales[1::2], bins=(50,50), density=True, cmap=plt.cm.Reds)
-                    ax.annotate(r"$\alpha$={},cos($\delta$)={},$\mu$={},N={}".format(ALFA,CDELTA,MU,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha=0.7))
+                    # ax.hist2d(OpinionesFinales[0::2],OpinionesFinales[1::2], bins=(50,50), density=True, cmap=plt.cm.Reds)
                             
                     #-------------------------------------------------------------------------------------------
                                         
-                    plt.savefig("../../Imagenes/{}/Hist2D_N={:.0f}_alfa={:.2f}_Cdelta={:.2f}_mu={:.2f}.png".format(Carpeta,AGENTES,ALFA,CDELTA,MU),bbox_inches = "tight")
+                    plt.savefig("../../Imagenes/{}/EspFases_N={:.0f}_alfa={:.2f}_Cdelta={:.2f}_mu={:.2f}.png".format(Carpeta,AGENTES,ALFA,CDELTA,MU),bbox_inches = "tight")
                     plt.close(fig)
                                      
-    print("Terminé los gráficos de testigos y los histogramas 2D")
+    print("Terminé los gráficos de testigos y los scatterplot")
     
     Tiempo()
     
@@ -479,7 +476,6 @@ for Carpeta in ["Conjunto_pequeño"]:
                         
                         # Ahora grafico las curvas de Variación de Opiniones
                         plt.semilogy(X,Var,"--",c = Colores2[numero], linewidth = 4)
-                        print(nombre)
                         
                         # ----------------------------------------------------------------------------------------------------------------------------
                     

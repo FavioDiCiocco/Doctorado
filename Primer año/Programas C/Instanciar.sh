@@ -15,14 +15,14 @@ echo "El ID del script es $$"
 
 Arr_Agentes=(2 3)
 Arr_Alfas=(0 0.05 0.1 0.15 0.2 1)
-Arr_Cdeltas=(0)
+Arr_Cdeltas=(0 0.5 1)
 Arr_Decaimientos=(1 -1)
 
 if [ -z $decision ]
 then
 	for N in ${Arr_Agentes[@]}
 	do
-		for iteracion in {0..20}
+		for iteracion in {0..10}
 		do
 			# Alfa=$2
 			# while [ $Alfa -le $3 ]

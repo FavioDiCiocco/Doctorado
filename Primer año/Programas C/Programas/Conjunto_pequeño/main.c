@@ -81,12 +81,12 @@ int main(int argc, char *argv[]){
 		
 		// Este archivo es el que guarda las opiniones de todos los agentes mientras evolucionan
 		char s_archivo1[355];
-		sprintf(s_archivo1,"../Programas Python/Trans_ln/Varprom_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
+		sprintf(s_archivo1,"../Programas Python/Conjunto_pequeño/Varprom_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
 			,ps_datos->f_alfa,ps_datos->i_N,ps_datos->f_Cosangulo,ps_datos->d_mu,i_iteracion);
 		FILE *pa_archivo1=fopen(s_archivo1,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 		
 		char s_archivo2[355];
-		sprintf(s_archivo2,"../Programas Python/Trans_ln/Testigos_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
+		sprintf(s_archivo2,"../Programas Python/Conjunto_pequeño/Testigos_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
 			,ps_datos->f_alfa,ps_datos->i_N,ps_datos->f_Cosangulo,ps_datos->d_mu,i_iteracion);
 		FILE *pa_archivo2=fopen(s_archivo2,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 		

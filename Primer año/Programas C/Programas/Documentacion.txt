@@ -27,3 +27,15 @@ ecuación dinámica usando la Norm_máxima, que sería dividir por la máxima
 sumatoria de opiniones que un agente podría obtener. En los casos de 
 mu positivo todo daba bien, pero en los de mu negativo el sistema
 divergía completamente.
+
+.) Conjunto_pequeño:
+--------------------
+
+Aplico el modelo con el término cuadrático a un sistema con dos o tres
+agentes para corroborar los resultados obtenidos de forma analítica.
+El armado de los datos es idéntico al caso anterior, generando dos
+archivos: Varprom y Testigos. Al código le agregué el uso de la
+función sleep de forma que la separación temporal entre corridas
+sea mayor a 1 segundo, para que cada corrida tenga una semilla
+diferente al trabajar.
+

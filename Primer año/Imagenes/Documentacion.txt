@@ -3,10 +3,26 @@ fases del trabajo de la tesis.
 
 .) PruebaMod:
 -------------
-
 Armé histogramas 2D, gráficos de Varprom y de Opinión en un tópico vs T
 para estudiar el comportamiento del modelo al distribuir las opiniones
 únicamente en valores positivos en función de la controversialidad
 y la correlación.
+
+.) Transcritico:
+----------------
+En esta carpeta iban los histogramas 2D, los gráficos de Varprom y el
+de opinión en un tópico vs T. En este caso el sistema estudiado es el
+que tiene una función cuadrática en vez de la tanh. En su interior tiene
+una carpeta llamada Norm_maxima porque estaba pensando probar diferentes
+formas de normalizar la ecuación, pero finalmente ninguna realmente 
+sirve para evitar que el sistema diverja completamente.
+
+.)Conjunto_pequeño:
+-------------------
+En este caso tomo el modelo del caso anterior, el transcritico,
+y lo aplico a dos o tres agentes completamente conectados. La
+idea es observar si el sistema tiende a los puntos fijos considerados.
+Lo que sí cambié el histograma 2D por un scatter plot, porque si voy
+a graficar dos o tres puntos, queda mejor verlo en un scatter.
 
 
