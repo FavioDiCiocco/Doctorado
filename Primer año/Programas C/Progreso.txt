@@ -493,3 +493,34 @@ Para eso tengo que:
 
 Me parece una buena presentación esa.
 
+-------------------------------------------------------------------------------------
+
+15/07/2022
+
+A la mañana me quedé en casa para ir a buscar el DNI y revisé los papeles y cosas
+que necesito para inscribirme al doctorado, ya la semana que viene empiezo a juntarlos.
+
+En la tarde vine a la facultad, resolví varias cosas pequeñas como pagar la cuota
+del lavarropas, hablar con Pablo sobre la carta a la comisión del doctorado y 
+completar la documentación faltante de los archivos de las carpetas de imágenes,
+Programas y la de Programas Python. 
+
+Finalmente modifiqué el archivo main cosa de que la ecuación dinámica tenga el
+logaritmo en lugar de la tanh. También armé la carpeta Trans_ln para ir guardando
+los datos de las simulaciones. Después tendría que simplemente tomar el archivo
+de Conjunto_pequeño y modificarlo cambiando la dirección de la carpeta cosa
+de que arme los nuevos gráficos. Es una boludez de hacer.
+
+Estuve pensando que si mi objetivo es corroborar las simulaciones con los resultados
+analíticos, entonces debería calcular dónde caen los puntos fijos en función
+de mis parámetros y ver si tiene algún sentido. Igual, no creo que sea algo tan
+directo de ver.
+
+Ya el lunes armo los gráficos y empiezo con la presentación. El martes debería
+estar, dale, pongámonos las pilas. Y ya después de eso arrancamos con el planteo
+del sistema con una evolución estocástica. Y si se puede, y encontramos un momento,
+revisar el archivo de graficación de python. No me gusta cómo está planteada esa
+cadena de fors. Tiene que haber algo más sencillo.
+
+
+
