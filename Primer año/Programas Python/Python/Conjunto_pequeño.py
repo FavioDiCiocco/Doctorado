@@ -261,7 +261,7 @@ T=2 # Defino acá el número de tópicos porque es algo que no cambia por ahora,
 
 SuperDiccionario = dict()
 
-for Carpeta in ["Conjunto_pequeño"]:
+for Carpeta in ["Trans_ln"]:
 
    # CÓDIGO PARA LEVANTAR ARCHIVOS DE UNA CARPETA CON TODOS LOS ARCHIVOS MEZCLADOS
     
@@ -330,7 +330,7 @@ for Carpeta in ["Conjunto_pequeño"]:
                 for i_alfa,ALFA in enumerate(Conjunto_Alfa):
                     
                     # Graficar me restringe la cantidad de gráficos a armar, cosa de no llenarme de miles de gráficos iguales.
-                    Graficar = [1,5]
+                    Graficar = [1]
                     
                     #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     
@@ -364,7 +364,7 @@ for Carpeta in ["Conjunto_pequeño"]:
                             plt.xlabel("Tiempo")
                             plt.ylabel("Tópico")
                             plt.grid(alpha = 0.5)
-                            plt.annotate(r"$\alpha$={},cos($\delta$)={},$\mu$={},N={}".format(ALFA,CDELTA,MU,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha=0.7))
+                            plt.annotate(r"$\alpha$={},cos($\delta$)={},$\mu$={},N={}".format(ALFA,CDELTA,MU,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha=0.9))
                             plt.savefig("../../Imagenes/{}/TopicosvsT_N={:.0f}_alfa={:.3f}_Cdelta={:.2f}_mu={:.2f}_sim={}.png".format(Carpeta,AGENTES,ALFA,CDELTA,MU,repeticion),bbox_inches = "tight")
                             plt.close("Topico")
                         
@@ -404,8 +404,25 @@ for Carpeta in ["Conjunto_pequeño"]:
                         
                         Datos = ldata("{}/{}".format(Conjunto_Direcciones,nombre))
                         
-                        # Levanto los datos de la Variación Promedio
-                        Opi = np.array([float(x) for x in Datos[len(Datos)-2][:-1]])
+                        # Levanto los datos de las opiniones de los agentes testigos
+                        Testigos = np.zeros((len(Datos)-2,len(Datos[1])-1)) # Inicializo mi array donde pondré las opiniones de los testigos.
+                        
+                        for i,fila in enumerate(Datos[1:-1:]):
+                            Testigos[i] = fila[:-1]
+                        
+                        for sujeto in range(int(AGENTES)):
+                            ax.plot(Testigos[:,sujeto*2], Testigos[:,sujeto*2+1], color="gray", linewidth=2, alpha=0.5)
+                        
+                    for numero,nombre in enumerate(Df_archivos_r.loc[(Df_archivos_r["n"]==AGENTES) & (Df_archivos_r["mu"]==MU) & (Df_archivos_r["cdelta"]==CDELTA) & (Df_archivos_r["alfa"]==ALFA), "nombre"]):
+                        
+                        #----------------------------------------------------------------------------------------------------------------------------------
+                        # Acá levanto los datos de los archivos de Testigos. Estos archivos tienen los siguientes datos:
+                        # Opiniones de los testigos (Eso hasta el final)
+                        
+                        Datos = ldata("{}/{}".format(Conjunto_Direcciones,nombre))
+                        
+                        # Acá me guardo los datos de opiniones finales
+                        Opifinal = np.array([float(x) for x in Datos[len(Datos)-2][:-1]])
                         
                         # -------------------------------------------------------------------------------------------------
                     
@@ -413,8 +430,8 @@ for Carpeta in ["Conjunto_pequeño"]:
                         # La idea sería que los agentes de cada simulación tengan el mismo color. Me parece que va a resultar más
                         # informativo que lo que estoy viendo ahora
                         
-                        ax.plot(Opi[0::2],Opi[1::2],"o",markersize = 18, c = Colores1[numero])
-                        ax.annotate(r"$\alpha$={},cos($\delta$)={},$\mu$={},N={}".format(ALFA,CDELTA,MU,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha=0.7))
+                        ax.plot(Opifinal[0::2],Opifinal[1::2],"o",markersize = 18, c = Colores1[numero])
+                        ax.annotate(r"$\alpha$={},cos($\delta$)={},$\mu$={},N={}".format(ALFA,CDELTA,MU,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha=0.9))
 
                     # Ahora grafico las curvas de distribución de ambas opiniones
                     # ax.hist2d(OpinionesFinales[0::2],OpinionesFinales[1::2], bins=(50,50), density=True, cmap=plt.cm.Reds)
@@ -483,7 +500,7 @@ for Carpeta in ["Conjunto_pequeño"]:
                     
                     CritCorte = 0.0005
                     plt.axhline(CritCorte)
-                    plt.annotate(r"$\alpha$={},cos($\delta$)={},$\mu$={},N={}".format(ALFA,CDELTA,MU,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha=0.7))
+                    plt.annotate(r"$\alpha$={},cos($\delta$)={},$\mu$={},N={}".format(ALFA,CDELTA,MU,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha=0.9))
                     plt.grid(alpha = 0.5)
                             
                     #-------------------------------------------------------------------------------------------

@@ -19,3 +19,28 @@ levantar los datos de Transcritico de todas y cada una de sus subcarpetas.
 Lo diferencio de Actividad_Conexa principalmente porque los archivos
 del transcritico tienen anotado el valor del decaimiento en el nombre.
 Fuera de eso, la idea es que arme los mismos gráficos.
+
+Conjunto_pequeño.py:
+---------------------
+
+Este archivo toma lo que había en estudio_transcritico e intenta hacer
+una actualización sobre ese código. Primero que nada quito el SuperDiccionario
+y lo reemplazo por el uso de Pandas. Como forma de levantar los datos y
+organizarlos es una mejora ya que es algo más natural y más sencillo
+de hacer. Aún así, sigue siendo un poco molesto la forma de recorrer
+los for de los Alfa, Cdelta y Mu. Siento que debería haber una forma
+más natural y clara a la vista de recorrer eso. En una próxima
+iteración del código debería intentar que eso se vea mejor.
+Este código realiza tres tipos de gráficos: Opiniones finales en
+el espacio de tópicos (es un scatter plot de las opiniones de los agentes.
+Esto antes era  un histograma 2D, pero lo modifiqué porque como
+tengo dos o tres agentes, un histograma no me resultaba tan
+claro. Además como tengo pocos agentes, puedo hacer que los
+puntos de una misma simulación tengan colores iguales, eso
+hace que sea más fácil ver cómo se distribuyen los estados finales
+de los sistemas), Opiniones en función del tiempo y Variación
+promedio en función del tiempo.
+	En un principio este archivo era sólo para armar los gráficos
+de la carpeta de Conjunto_pequeño, pero como los datos de Trans_ln
+son iguales, da la situación para simplemente hacer todo en un
+sólo código.

@@ -30,9 +30,9 @@ int main(int argc, char *argv[]){
 		// Parámetros de mi modelo. Esto va desde número de agentes hasta el paso temporal de integración.
 		ps_datos->i_N = strtol(argv[1],NULL,10); // Cantidad de agentes en el modelo
 		ps_datos->i_T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
-		ps_datos->f_K = 3; // Influencia social
+		ps_datos->f_K = 1; // Influencia social
 		ps_datos->f_dt = 0.01; // Paso temporal de iteración del sistema
-		ps_datos->d_mu = strtol(argv[4],NULL,10); // Coeficiente que regula la intensidad con que los agentes caen al cero.
+		ps_datos->d_mu = strtof(argv[4],NULL); // Coeficiente que regula la intensidad con que los agentes caen al cero.
 		ps_datos->f_alfa = strtof(argv[2],NULL); // Controversialidad de los tópicos. Arranquemos con controversialidad intermedia. Voy a estar dividiendo esto acá para poder pasar enteros desde el instanciar.
 		ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 		// ps_datos->i_m = 10; // Cantidad de conexiones que hace el agente al activarse
@@ -97,8 +97,7 @@ int main(int argc, char *argv[]){
 		ps_red->pi_Ady[1] = ps_datos->i_N; // Pongo el número de columnas en la segunda coordenada
 		// Inicializo la matriz de Adyacencia directamente acá. Me pareció que no valía la pena armar una función para esto.
 		for(register int i_i=1; i_i<ps_red->pi_Ady[0]; i_i++) for(register int i_j=0; i_j<i_i; i_j++) ps_red->pi_Ady[i_i*ps_red->pi_Ady[1]+i_j+2] = 1;  // Esto me pone 1 debajo de la diagonal
-		for(register int i_i=0; i_i<ps_red->pi_Ady[0]; i_i++) for(register int i_j=i_i+1; i_j<ps_red->pi_Ady[1]; i_j++) ps_red->pi_Ady[i_i*ps_red->pi_Ady[1]+i_j+2] = ps_red->pd_Ang[i_j*ps_red->pi_Ady[1]+i_i+2]; // Esta sola línea simetriza la matriz
-		
+		for(register int i_i=0; i_i<ps_red->pi_Ady[0]; i_i++) for(register int i_j=i_i+1; i_j<ps_red->pi_Ady[1]; i_j++) ps_red->pi_Ady[i_i*ps_red->pi_Ady[1]+i_j+2] = ps_red->pi_Ady[i_j*ps_red->pi_Ady[1]+i_i+2]; // Esta sola línea simetriza la matriz
 		
 		// Matriz de Superposición de Tópicos. Es de tamaño T*T
 		for(register int i_i=0; i_i<ps_datos->i_T*ps_datos->i_T+2; i_i++) ps_red->pd_Ang[i_i] = 0;
