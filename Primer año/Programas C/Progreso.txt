@@ -522,5 +522,47 @@ del sistema con una evolución estocástica. Y si se puede, y encontramos un mom
 revisar el archivo de graficación de python. No me gusta cómo está planteada esa
 cadena de fors. Tiene que haber algo más sencillo.
 
+------------------------------------------------------------------------------------
 
+18/07/2022
+
+Hoy estuve revisando los gráficos armados por el modelo de la ecuación dinámica
+transcrítica para el caso de la función logarítmica. Lo primero que se me ocurrió
+es modificar lso valores de mu y de alfa barridos cosa de observar la aparición
+de los puntos fijos y el cambio de estabilidad. Para eso modifiqué los mu's para
+que varíen de 0.1 a 0.3 y alfa lo hice variar entre 0 y 1 de a 0.2, sin poner
+el 0.6 o 0.8. Esto es porque si alfa vale cero, los tres valores de mu son mayores
+que alfa, si vale 0.2 tengo un valor de alfa menor, uno igual y uno mayor, y
+si alfa es 0.4 tengo tres valores de mu menores que alfa. Todo esto porque la 
+relación entre alfa y mu es lo que determina si el punto fijo estable es un
+valor positivo de opinión o si es el cero. Para que la aparición de este
+punto fijo dependa de una relación 1 a 1 entre alfa y mu le cambié el valor
+a K de 3 a 1.
+
+Los gráficos de esto muestran que el valor del punto fijo estable positivo
+depende de la relación entre mu, alfa y la cantidad de agentes del sistema.
+Para 2 agentes, si mu < alfa el punto fijo estable es el cero, mientras que
+en caso contrario el sistema busca un punto fijo positivo. En cambio para
+3 agentes mu apenas más pequeño que alfa no parece alcanzar para que el
+sistema decaiga completamente al cero.
+
+En todo este análisis también observé que el armado de la matriz de Adyacencia
+estaba mal hecho. Eso hacía que algunos agentes se conecten pero otros no.
+Eso afectó tanto a estos datos, cosa que corregí al final, como a los datos
+de Conjunto_pequeño, los cuales todavía no corregí. Esos necesitan ser corregidos
+mañana para observar mejor qué pasaba con ese sistema.
+
+Otra cosa que observé es que el Spyder me come completamente la RAM. No comprendo
+por qué. Tendré que ver otra forma de hacerlo funcionar o si existe alguna solución
+para que esa memoria se libere, porque se vuelve insostenible. Básicamente si dejo
+abierto el spyder mucho tiempo, la RAM se llena progresivamente. Al cerrarlo, 
+se libera todo de una. Es una bosta eso.
+
+Ya mañana debería ver de armar la presentación completa. Para eso sólo faltan
+los gráficos de la ecuación transcrítica con función cuadrática. Mañana
+concentrémonos en eso únicamente, así ya tengo la presentación hecha y se
+lo menciono a Pablo.
+
+Después veré de solucionar el tema del consumo de la RAM. Quizás use algún
+notebook como hacen los dem
 
