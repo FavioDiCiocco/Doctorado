@@ -571,3 +571,31 @@ para que ahora agreguen las trayectorias de las opiniones de los agentes.
 Eso soluciona el tema de las escalas raras y además permite seguir mejor
 el comportamiento del sistema.
 
+--------------------------------------------------------------------------
+
+19/08/2022
+
+Al principio en la mañana me pelee con el hecho de que los gráficos del
+sistema con la ecuación dinámica transcrítica y función cuadrática no
+se veían. Cuestión que el número de Itextra y pasosprevios eran más
+que suficientes para que el sistema explotara y no pudiera ni ser
+graficado. Reduje bastante eso, y aún así el sistema alcanza valores
+de opiniones o de variación promedio absurdamente altos. Pero por
+lo menos son graficables.
+
+Después estuve retocando los gráficos del modelo de baumann original
+aplicado sobre valores iniciales de "interés" distribuidos sobre una región
+positiva. Esto lo hice para que se vea un poco mejor al ponerlo en la presentación.
+
+Le mandé un mail a Mariano respecto del tema de la carta que tiene que
+mandar Pablo a la comisión de Doctorado. Esta semana tengo que tener
+eso hecho.
+
+Avancé con la presentación. En sí sólo hice el primero de los ítems que
+tengo anotados, sin embargo me gusta cómo está quedando y es cierto que
+el armado de la presentación toma tiempo por la parte de seleccionar los
+gráficos, emprolijarlos, organizar la data. Creo que trabajé bien.
+
+Mañana tengo que seguir con eso. Y ya el jueves me pongo con lo de la 
+inscripción al doctorado cosa de tener eso hecho este mes.
+
