@@ -30,7 +30,7 @@ double Din1(ps_Red ps_var, ps_Param ps_par){
 	// i_Ca = (int) ps_var->pi_Ady[1];
 	
 	for(register int i_p=0; i_p<i_Cs; i_p++) d_opiniones_superpuestas += ps_var->pd_Ang[ps_var->i_topico*i_Cs+i_p+2]*ps_var->pd_Opi[ps_var->i_agente2*i_Co+i_p+2]; // Calculo previamente este producto de la matriz con el vector.
-	d_resultado = d_opiniones_superpuestas*d_opiniones_superpuestas; // Esto es lo que está dentro de la sumatoria en la ecuación dinámica.
+	d_resultado = log(d_opiniones_superpuestas+1); // Esto es lo que está dentro de la sumatoria en la ecuación dinámica.
 	return d_resultado; // La función devuelve el número que buscás, no te lo asigna en una variable.
 }
 

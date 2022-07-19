@@ -261,7 +261,7 @@ T=2 # Defino acá el número de tópicos porque es algo que no cambia por ahora,
 
 SuperDiccionario = dict()
 
-for Carpeta in ["Trans_ln"]:
+for Carpeta in ["Conjunto_pequeño","Trans_ln"]:
 
    # CÓDIGO PARA LEVANTAR ARCHIVOS DE UNA CARPETA CON TODOS LOS ARCHIVOS MEZCLADOS
     

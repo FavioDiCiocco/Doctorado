@@ -25,4 +25,10 @@ idea es observar si el sistema tiende a los puntos fijos considerados.
 Lo que sí cambié el histograma 2D por un scatter plot, porque si voy
 a graficar dos o tres puntos, queda mejor verlo en un scatter.
 
-
+.) Trans_ln:
+------------
+Al igual que en Conjunto_pequeño, aplico el modelo a dos o tres
+agentes, sólo que en este caso reemplazo la función cuadrática
+por un logaritmo. De ahí saco gráficos de opiniones finales
+en el espacio de tópicos, Opiniones en función del tiempo y
+Variación promedio. 

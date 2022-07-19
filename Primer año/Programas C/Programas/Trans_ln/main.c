@@ -40,9 +40,9 @@ int main(int argc, char *argv[]){
 		// ps_datos->d_gamma = 2.1; // Esta es la potencia que define la distribución de actividad
 		ps_datos->d_beta = 3; // Esta es la potencia que determina el grado de homofilia.
 		ps_datos->d_CritCorte = 0.0005; // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
-		ps_datos->i_Itextra = 3; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
+		ps_datos->i_Itextra = 40; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 		ps_datos->f_Cosangulo = strtof(argv[3],NULL); // Este es el coseno de Delta que define la relación entre tópicos.
-		ps_datos->i_pasosprevios = 2; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
+		ps_datos->i_pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
 		
 		// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 		int i_iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
@@ -81,12 +81,12 @@ int main(int argc, char *argv[]){
 		
 		// Este archivo es el que guarda las opiniones de todos los agentes mientras evolucionan
 		char s_archivo1[355];
-		sprintf(s_archivo1,"../Programas Python/Conjunto_pequeño/Varprom_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
+		sprintf(s_archivo1,"../Programas Python/Trans_ln/Varprom_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
 			,ps_datos->f_alfa,ps_datos->i_N,ps_datos->f_Cosangulo,ps_datos->d_mu,i_iteracion);
 		FILE *pa_archivo1=fopen(s_archivo1,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 		
 		char s_archivo2[355];
-		sprintf(s_archivo2,"../Programas Python/Conjunto_pequeño/Testigos_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
+		sprintf(s_archivo2,"../Programas Python/Trans_ln/Testigos_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
 			,ps_datos->f_alfa,ps_datos->i_N,ps_datos->f_Cosangulo,ps_datos->d_mu,i_iteracion);
 		FILE *pa_archivo2=fopen(s_archivo2,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 		
@@ -98,7 +98,6 @@ int main(int argc, char *argv[]){
 		// Inicializo la matriz de Adyacencia directamente acá. Me pareció que no valía la pena armar una función para esto.
 		for(register int i_i=1; i_i<ps_red->pi_Ady[0]; i_i++) for(register int i_j=0; i_j<i_i; i_j++) ps_red->pi_Ady[i_i*ps_red->pi_Ady[1]+i_j+2] = 1;  // Esto me pone 1 debajo de la diagonal
 		for(register int i_i=0; i_i<ps_red->pi_Ady[0]; i_i++) for(register int i_j=i_i+1; i_j<ps_red->pi_Ady[1]; i_j++) ps_red->pi_Ady[i_i*ps_red->pi_Ady[1]+i_j+2] = ps_red->pi_Ady[i_j*ps_red->pi_Ady[1]+i_i+2]; // Esta sola línea simetriza la matriz
-		
 		
 		// Matriz de Superposición de Tópicos. Es de tamaño T*T
 		for(register int i_i=0; i_i<ps_datos->i_T*ps_datos->i_T+2; i_i++) ps_red->pd_Ang[i_i] = 0;

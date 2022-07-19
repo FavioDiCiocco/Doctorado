@@ -14,9 +14,9 @@ echo "El ID del script es $$"
 # Voy a Hardcodear algunos Arrays
 
 Arr_Agentes=(2 3)
-Arr_Alfas=(0 0.2 0.4 1)
+Arr_Alfas=(0 0.2 0.4)
 Arr_Cdeltas=(0 0.5 1)
-Arr_Decaimientos=(0.1 0.2 0.3)
+Arr_Decaimientos=(-0.1 0.1 0.2)
 
 if [ -z $decision ]
 then
@@ -43,5 +43,3 @@ then
 	done
 
 fi
-
-

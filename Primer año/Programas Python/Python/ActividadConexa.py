@@ -541,7 +541,7 @@ for Carpeta in ["PruebaMod"]:
                     
                         repeticion = int(nombre.strip(".file").split("_")[4].split("=")[1])
                         
-                        if repeticion in Graficar and ALFA in [0,2] and CDELTA in [0,1]:
+                        if repeticion in Graficar and ALFA in [0,2] and CDELTA in [-1,0,1]:
                         
                             plt.rcParams.update({'font.size': 28})
                             plt.figure("Topico",figsize=(20,15))
@@ -552,7 +552,7 @@ for Carpeta in ["PruebaMod"]:
                             plt.xlabel("Tiempo")
                             plt.ylabel("Tópico")
                             plt.grid(alpha = 0.5)
-                            plt.annotate(r"$\alpha$={},cos($\delta$)={},N={}".format(ALFA,CDELTA,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha=0.7))
+                            # plt.annotate(r"$\alpha$={},cos($\delta$)={},N={}".format(ALFA,CDELTA,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha=0.7))
                             plt.savefig("../../Imagenes/{}/TopicosvsT_alfa={:.3f}_Cdelta={:.2f}_N={}_iter={}.png".format(Carpeta,ALFA,CDELTA,AGENTES,repeticion),bbox_inches = "tight")
                             plt.close("Topico")
                         
@@ -956,7 +956,7 @@ for Carpeta in ["PruebaMod"]:
                 
                 CritCorte = 0.0005
                 ax.axhline(CritCorte)
-                ax.annotate(r"$\alpha$={},cos($\delta$)={},N={}".format(ALFA,CDELTA,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha=0.7))
+                # ax.annotate(r"$\alpha$={},cos($\delta$)={},N={}".format(ALFA,CDELTA,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha=0.7))
                 ax.grid(alpha = 0.5)
                         
             #-------------------------------------------------------------------------------------------
@@ -1042,11 +1042,9 @@ for Carpeta in ["PruebaMod"]:
             
             for ALFA,ialfa in zip(Conjunto_Alfa,np.arange(len(Conjunto_Alfa))):
                 
-                plt.rcParams.update({'font.size': 28})
-                fig, ax = plt.subplots(figsize = (20, 15))
-                
-                # Armo el array de Opiniones Finales
+                # Armo el array de Opiniones Finales y el de opiniones iniciales
                 OpinionesFinales = np.array([])
+                OpinionesIniciales = np.array([])
                 
                 for nombre,numero in zip(SuperDiccionario[Carpeta][TIPO][AGENTES][CDELTA][ALFA],np.arange(len(SuperDiccionario[Carpeta][TIPO][AGENTES][CDELTA][ALFA]))):
                     
@@ -1059,13 +1057,18 @@ for Carpeta in ["PruebaMod"]:
                     
                     Datos = ldata("{}/{}".format(Conjunto_Direcciones[0],nombre))
                     
-                    # Levanto los datos de la Variación Promedio
-                    Opi = np.array([float(x) for x in Datos[5][:-1]])
+                    # Levanto los datps de las opiniones iniciales
+                    Opi1 = np.array([float(x) for x in Datos[1][:-1]])
+                    
+                    # Levanto los datos de las opiniones finales
+                    Opi2 = np.array([float(x) for x in Datos[5][:-1]])
                     
                     # Me voy armando un array con las opiniones finales de los agentes a lo largo
                     # de todas las simulaciones
                     
-                    OpinionesFinales = np.concatenate((OpinionesFinales,Opi),axis=None)
+                    OpinionesIniciales = np.concatenate((OpinionesIniciales,Opi1),axis=None)
+                    
+                    OpinionesFinales = np.concatenate((OpinionesFinales,Opi2),axis=None)
                     
                     # -------------------------------------------------------------------------------------------------
                 
@@ -1077,13 +1080,21 @@ for Carpeta in ["PruebaMod"]:
                 # Opiniones2D = np.concatenate((OpinionesFinales,OpiExtremos), axis=None)
                 
 
+                plt.rcParams.update({'font.size': 28})
+                fig, ax = plt.subplots(figsize = (20, 15))
+                
                 # Ahora grafico las curvas de distribución de ambas opiniones
                 # ax.hist2d(Opiniones2D[0::2],Opiniones2D[1::2], bins=(79,79), density=True, cmap=plt.cm.Reds)
-                ax.hist2d(OpinionesFinales[0::2],OpinionesFinales[1::2], bins=(79,79), density=True, cmap=plt.cm.Reds)
+                # ax.hist2d(OpinionesFinales[0::2],OpinionesFinales[1::2], bins=(79,79), density=True, cmap=plt.cm.Reds)
+                ax.plot(OpinionesFinales[0::2],OpinionesFinales[1::2],"ro",markersize = 10)
+                ax.set_xlabel(r"$x^1$")
+                ax.set_ylabel(r"$x^2$")
+                ax.hlines(y=0,xmin=0,xmax=max(OpinionesFinales[0::2]),color="black",linewidth=2)
+                ax.vlines(x=0,ymin=0,ymax=max(OpinionesFinales[1::2]),colors="black",linewidth=2)
                 # if ALFA == 2 and CDELTA >= 0:
                     # ax.set_xlim(0,150)
                     # ax.set_ylim(0,150)
-                ax.annotate(r"$\alpha$={},cos($\delta$)={},N={}".format(ALFA,CDELTA,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha=0.7))
+                # ax.annotate(r"$\alpha$={},cos($\delta$)={},N={}".format(ALFA,CDELTA,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha=0.7))
                         
                 #-------------------------------------------------------------------------------------------
                 
@@ -1091,7 +1102,32 @@ for Carpeta in ["PruebaMod"]:
                 # la varianza del sistema para converger, la cual depende mucho de lo que tarda cada sistema
                 # en volverse conexo
                 
-                plt.savefig("../../Imagenes/{}/Hist2D_alfa={:.2f}_Cdelta={:.2f}.png".format(Carpeta,ALFA,CDELTA),bbox_inches = "tight")
+                plt.savefig("../../Imagenes/{}/OpiFinal_alfa={:.2f}_Cdelta={:.2f}.png".format(Carpeta,ALFA,CDELTA),bbox_inches = "tight")
+                plt.close(fig)
+                
+                # Me armo acá un gráfico de opiniones iniciales, para tener que mostrar en la presentación
+                
+                plt.rcParams.update({'font.size': 28})
+                fig, ax = plt.subplots(figsize = (20, 15))
+                
+                # Ahora grafico las curvas de distribución de ambas opiniones
+                # ax.hist2d(Opiniones2D[0::2],Opiniones2D[1::2], bins=(79,79), density=True, cmap=plt.cm.Reds)
+                # ax.hist2d(OpinionesFinales[0::2],OpinionesFinales[1::2], bins=(79,79), density=True, cmap=plt.cm.Reds)
+                ax.plot(OpinionesIniciales[0::2],OpinionesIniciales[1::2],"bo",markersize = 10)
+                ax.set_xlabel(r"$x^1$")
+                ax.set_ylabel(r"$x^2$")
+                # if ALFA == 2 and CDELTA >= 0:
+                    # ax.set_xlim(0,150)
+                    # ax.set_ylim(0,150)
+                # ax.annotate(r"$\alpha$={},cos($\delta$)={},N={}".format(ALFA,CDELTA,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha=0.7))
+                        
+                #-------------------------------------------------------------------------------------------
+                
+                # Acá cierro el gráfico de las Variaciones Promedio. Este gráfico me sirve para ver
+                # la varianza del sistema para converger, la cual depende mucho de lo que tarda cada sistema
+                # en volverse conexo
+                
+                plt.savefig("../../Imagenes/{}/OpiInicial_alfa={:.2f}_Cdelta={:.2f}.png".format(Carpeta,ALFA,CDELTA),bbox_inches = "tight")
                 plt.close(fig)
         
         

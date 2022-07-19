@@ -39,3 +39,11 @@ función sleep de forma que la separación temporal entre corridas
 sea mayor a 1 segundo, para que cada corrida tenga una semilla
 diferente al trabajar.
 
+.) Trans_ln:
+-------------
+
+Aplico el modelo con el término logarítmico a un sistema con dos o tres
+agentes para corroborar los resultados obtenidos de forma analítica.
+El armado de los datos es el mismo que en el código anterior.
+
+

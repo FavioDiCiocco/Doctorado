@@ -97,7 +97,7 @@ int main(int argc, char *argv[]){
 		ps_red->pi_Ady[1] = ps_datos->i_N; // Pongo el número de columnas en la segunda coordenada
 		// Inicializo la matriz de Adyacencia directamente acá. Me pareció que no valía la pena armar una función para esto.
 		for(register int i_i=1; i_i<ps_red->pi_Ady[0]; i_i++) for(register int i_j=0; i_j<i_i; i_j++) ps_red->pi_Ady[i_i*ps_red->pi_Ady[1]+i_j+2] = 1;  // Esto me pone 1 debajo de la diagonal
-		for(register int i_i=0; i_i<ps_red->pi_Ady[0]; i_i++) for(register int i_j=i_i+1; i_j<ps_red->pi_Ady[1]; i_j++) ps_red->pi_Ady[i_i*ps_red->pi_Ady[1]+i_j+2] = ps_red->pd_Ang[i_j*ps_red->pi_Ady[1]+i_i+2]; // Esta sola línea simetriza la matriz
+		for(register int i_i=0; i_i<ps_red->pi_Ady[0]; i_i++) for(register int i_j=i_i+1; i_j<ps_red->pi_Ady[1]; i_j++) ps_red->pi_Ady[i_i*ps_red->pi_Ady[1]+i_j+2] = ps_red->pd_Ady[i_j*ps_red->pi_Ady[1]+i_i+2]; // Esta sola línea simetriza la matriz
 		
 		
 		// Matriz de Superposición de Tópicos. Es de tamaño T*T
