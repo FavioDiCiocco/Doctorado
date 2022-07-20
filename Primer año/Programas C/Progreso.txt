@@ -573,7 +573,7 @@ el comportamiento del sistema.
 
 --------------------------------------------------------------------------
 
-19/08/2022
+19/07/2022
 
 Al principio en la mañana me pelee con el hecho de que los gráficos del
 sistema con la ecuación dinámica transcrítica y función cuadrática no
@@ -599,3 +599,19 @@ gráficos, emprolijarlos, organizar la data. Creo que trabajé bien.
 Mañana tengo que seguir con eso. Y ya el jueves me pongo con lo de la 
 inscripción al doctorado cosa de tener eso hecho este mes.
 
+-------------------------------------------------------------------------
+
+20/07/2022
+
+Hoy trabajé el armado de la presentación de la parte de la ecuación transcrítica
+con función cuadrática. Preparé las primeras partes de la teoría y presentación
+de la ecuación y después revisé los gráficos que podrían ser interesantes de
+mostrar, así como los intenté emprolijar un poco para que se vean más fácilmente
+interpretables. Tardé bastante más de lo que esperaba, la verdad que para hoy
+yo pensaba ya tener terminada la presentación. El viernes no podré trabajar en
+esto, así que quedará para la semana que viene. Mañana me quedo en casa para
+preparar la documentación de la inscripción al doctorado y revisar el tema
+de la RAFA.
+
+La presentación está subida así como todos los archivos, podría probar si
+tengo tiempo de ver de avanzar esto.
