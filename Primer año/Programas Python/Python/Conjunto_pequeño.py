@@ -359,12 +359,12 @@ for Carpeta in ["Conjunto_pequeño","Trans_ln"]:
                             plt.figure("Topico",figsize=(20,15))
                             X = np.arange(Testigos.shape[0])*0.01
                             for sujeto in range(int(AGENTES)):
-                                plt.plot(X,Testigos[:,sujeto*2], linewidth = 6)
-                                plt.plot(X,Testigos[:,sujeto*2+1], linewidth = 6)
+                                plt.semilogy(X,Testigos[:,sujeto*2], linewidth = 6)
+                                plt.semilogy(X,Testigos[:,sujeto*2+1], linewidth = 6)
                             plt.xlabel("Tiempo")
                             plt.ylabel("Tópico")
                             plt.grid(alpha = 0.5)
-                            plt.annotate(r"$\alpha$={},cos($\delta$)={},$\mu$={},N={}".format(ALFA,CDELTA,MU,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha=0.9))
+                            # plt.annotate(r"$\alpha$={},cos($\delta$)={},$\mu$={},N={}".format(ALFA,CDELTA,MU,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White'))
                             plt.savefig("../../Imagenes/{}/TopicosvsT_N={:.0f}_alfa={:.3f}_Cdelta={:.2f}_mu={:.2f}_sim={}.png".format(Carpeta,AGENTES,ALFA,CDELTA,MU,repeticion),bbox_inches = "tight")
                             plt.close("Topico")
                         
@@ -411,7 +411,7 @@ for Carpeta in ["Conjunto_pequeño","Trans_ln"]:
                             Testigos[i] = fila[:-1]
                         
                         for sujeto in range(int(AGENTES)):
-                            ax.plot(Testigos[:,sujeto*2], Testigos[:,sujeto*2+1], color="gray", linewidth=2, alpha=0.5)
+                            ax.loglog(Testigos[:,sujeto*2], Testigos[:,sujeto*2+1], color="gray", linewidth=2, alpha=0.5)
                         
                     for numero,nombre in enumerate(Df_archivos_r.loc[(Df_archivos_r["n"]==AGENTES) & (Df_archivos_r["mu"]==MU) & (Df_archivos_r["cdelta"]==CDELTA) & (Df_archivos_r["alfa"]==ALFA), "nombre"]):
                         
@@ -430,8 +430,10 @@ for Carpeta in ["Conjunto_pequeño","Trans_ln"]:
                         # La idea sería que los agentes de cada simulación tengan el mismo color. Me parece que va a resultar más
                         # informativo que lo que estoy viendo ahora
                         
-                        ax.plot(Opifinal[0::2],Opifinal[1::2],"o",markersize = 18, c = Colores1[numero])
-                        ax.annotate(r"$\alpha$={},cos($\delta$)={},$\mu$={},N={}".format(ALFA,CDELTA,MU,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha=0.9))
+                        ax.loglog(Opifinal[0::2],Opifinal[1::2],"o",markersize = 18, c = Colores1[numero])
+                        ax.set_xlabel(r"$x^1$")
+                        ax.set_ylabel(r"$x^2$")
+                        # ax.annotate(r"$\alpha$={},cos($\delta$)={},$\mu$={},N={}".format(ALFA,CDELTA,MU,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White'))
 
                     # Ahora grafico las curvas de distribución de ambas opiniones
                     # ax.hist2d(OpinionesFinales[0::2],OpinionesFinales[1::2], bins=(50,50), density=True, cmap=plt.cm.Reds)
@@ -498,9 +500,9 @@ for Carpeta in ["Conjunto_pequeño","Trans_ln"]:
                     
                     # Acá coloco ciertas marcas importantes para el gráfico
                     
-                    CritCorte = 0.0005
-                    plt.axhline(CritCorte)
-                    plt.annotate(r"$\alpha$={},cos($\delta$)={},$\mu$={},N={}".format(ALFA,CDELTA,MU,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha=0.9))
+                    # CritCorte = 0.0005
+                    # plt.axhline(CritCorte)
+                    # plt.annotate(r"$\alpha$={},cos($\delta$)={},$\mu$={},N={}".format(ALFA,CDELTA,MU,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White', alpha = 0.3))
                     plt.grid(alpha = 0.5)
                             
                     #-------------------------------------------------------------------------------------------
