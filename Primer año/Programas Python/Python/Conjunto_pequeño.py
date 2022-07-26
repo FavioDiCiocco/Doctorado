@@ -330,24 +330,21 @@ for Carpeta in ["Conjunto_pequeño","Trans_ln"]:
                 for i_alfa,ALFA in enumerate(Conjunto_Alfa):
                     
                     # Graficar me restringe la cantidad de gráficos a armar, cosa de no llenarme de miles de gráficos iguales.
-                    Graficar = [1]
+                    Graficar = [2]
                     
                     #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     
                     for numero,nombre in enumerate(Df_archivos_r.loc[(Df_archivos_r["n"]==AGENTES) & (Df_archivos_r["mu"]==MU) & (Df_archivos_r["cdelta"]==CDELTA) & (Df_archivos_r["alfa"]==ALFA), "nombre"]):
-                        
                         #-----------------------------------------------------------------------------------------------
                         # De los archivos de Testigos levanto las opiniones de todos los agentes a lo largo de todo el proceso. En este sistema de Conjunto_pequeño tengo 2 o 3 agentes.
                         
-                        Datos = ldata("{}/{}".format(Conjunto_Direcciones,nombre)) 
+                        Datos = ldata("{}/{}".format(Conjunto_Direcciones,nombre))
                         
                         Testigos = np.zeros((len(Datos)-2,len(Datos[1])-1)) # Inicializo mi array donde pondré las opiniones de los testigos.
                         
                         for i,fila in enumerate(Datos[1:-1:]):
                             Testigos[i] = fila[:-1]
-                        
                         # De esta manera tengo mi array que me guarda los datos de los agentes a lo largo de la evolución del sistema.
-                        
                         #----------------------------------------------------------------------------------------------------------------------------------
                         
                         # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
@@ -355,7 +352,7 @@ for Carpeta in ["Conjunto_pequeño","Trans_ln"]:
                         
                         if repeticion in Graficar:
                         
-                            plt.rcParams.update({'font.size': 20})
+                            plt.rcParams.update({'font.size': 32})
                             plt.figure("Topico",figsize=(20,15))
                             X = np.arange(Testigos.shape[0])*0.01
                             for sujeto in range(int(AGENTES)):
@@ -369,7 +366,7 @@ for Carpeta in ["Conjunto_pequeño","Trans_ln"]:
                             plt.close("Topico")
                         
                         #-----------------------------------------------------------------------------------------------
-                        
+                   
         # Acá me voy a tener que hacer el armado de datos para graficar el Conjunto de Hist2D   
          
         Conjunto_Mus = np.unique(Df_archivos_r.loc[Df_archivos_r["n"]==AGENTES,"mu"].values)
@@ -392,7 +389,7 @@ for Carpeta in ["Conjunto_pequeño","Trans_ln"]:
                 
                     #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
                     
-                    plt.rcParams.update({'font.size': 20})
+                    plt.rcParams.update({'font.size': 32})
                     fig, ax = plt.subplots(figsize = (20, 15))
                     Colores1 = cm.rainbow(np.linspace(0,1,Df_archivos_r.loc[(Df_archivos_r["n"]==AGENTES) & (Df_archivos_r["mu"]==MU) & (Df_archivos_r["cdelta"]==CDELTA) & (Df_archivos_r["alfa"]==ALFA), "nombre"].shape[0]))
                     
@@ -442,6 +439,23 @@ for Carpeta in ["Conjunto_pequeño","Trans_ln"]:
                                         
                     plt.savefig("../../Imagenes/{}/EspFases_N={:.0f}_alfa={:.2f}_Cdelta={:.2f}_mu={:.2f}.png".format(Carpeta,AGENTES,ALFA,CDELTA,MU),bbox_inches = "tight")
                     plt.close(fig)
+                    
+                
+    
+    
+        # Me armo acá un gráfico de opiniones iniciales, para tener que mostrar en la presentación
+        
+        plt.rcParams.update({'font.size': 32})
+        fig, ax = plt.subplots(figsize = (20, 15))
+        
+        for numero,nombre in enumerate(Df_archivos_r.loc[(Df_archivos_r["n"]==AGENTES) & (Df_archivos_r["mu"]==MU) & (Df_archivos_r["cdelta"]==CDELTA) & (Df_archivos_r["alfa"]==ALFA), "nombre"]):
+            Datos = ldata("{}/{}".format(Conjunto_Direcciones,nombre))
+            OpinionesIniciales = np.array(Datos[1][:-1],dtype="float")
+            ax.plot(OpinionesIniciales[0::2],OpinionesIniciales[1::2],"bo",markersize = 10)
+        ax.set_xlabel(r"$x^1$")
+        ax.set_ylabel(r"$x^2$")
+        plt.savefig("../../Imagenes/{}/OpiInicial_alfa={:.2f}_Cdelta={:.2f}.png".format(Carpeta,ALFA,CDELTA),bbox_inches = "tight")
+        plt.close(fig)
                                      
     print("Terminé los gráficos de testigos y los scatterplot")
     
@@ -478,7 +492,7 @@ for Carpeta in ["Conjunto_pequeño","Trans_ln"]:
                     # Abro el gráfico para los valores de ALFA y CDELTA correctos
                     
                     Colores2 = cm.rainbow(np.linspace(0,1,Df_archivos_r.loc[(Df_archivos_r["n"]==AGENTES) & (Df_archivos_r["mu"]==MU) & (Df_archivos_r["cdelta"]==CDELTA) & (Df_archivos_r["alfa"]==ALFA), "nombre"].shape[0]))
-                    plt.rcParams.update({'font.size': 20})
+                    plt.rcParams.update({'font.size': 32})
                     plt.figure("Varprom",figsize = (20, 15))
                 
                     for numero,nombre in enumerate(Df_archivos_r.loc[(Df_archivos_r["n"]==AGENTES) & (Df_archivos_r["mu"]==MU) & (Df_archivos_r["cdelta"]==CDELTA) & (Df_archivos_r["alfa"]==ALFA), "nombre"]):
@@ -488,7 +502,7 @@ for Carpeta in ["Conjunto_pequeño","Trans_ln"]:
                         Datos = ldata("{}/{}".format(Conjunto_Direcciones,nombre))
                         
                         # Levanto los datos de Variación Promedio
-                        Var = np.array([float(x) for x in Datos[1][:-1]])
+                        Var = np.array([float(x) for x in Datos[1][2:-1]])
                         
                         # Esto es el tiempo a graficar
                         X = np.arange(len(Var))*0.01
