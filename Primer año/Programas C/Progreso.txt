@@ -615,3 +615,28 @@ de la RAFA.
 
 La presentación está subida así como todos los archivos, podría probar si
 tengo tiempo de ver de avanzar esto.
+
+----------------------------------------------------------------------------------
+
+26/07/2022
+
+Hoy continué con el armado de la presentación. La verdad no avancé mucho, pero
+es que me detuve a revisar algunos detalles, definir cuáles datos usar, rearmar
+algunos gráficos para que se vea mejor las marcas en los ejes, revisar por qué
+en unos gráficos la opinión daba mas grande que en otros, parchar los gráficos
+de variación en los que el primer valor tiene ese salto raro y feo.
+
+Cuestión que me enganché con cosas que no debí haber mirado y me consumieron más
+de lo necesario. Ya mañana hago la parte de la ecuación transcrítica con función
+logarítmica, no debería tardar mucho, sería algo muy similar a lo hecho en el
+caso de la función cuadrática. Los gráficos además ya debería tenerlos. Si veo
+que la representación logarítmica no va, lo vuelvo a pasar a representación
+lineal. Después mañana pensaré si tengo algún lugar para poner los gráficos
+de Varprom. O si son necesarios. Después podría poner algunos más en un apéndice.
+
+Terminado esto, lo siguiente ya sí sería empezar a pensar el modelo en términos de
+interacción de a pares, plantear una evolución estocástica del modelo. Para eso
+tengo que utilizar el código que tenía en su momento sobre esto. Lo tendré que
+actualizar. Y al hacer eso, puedo aprovechar y actualizar otros códigos.
+
+
