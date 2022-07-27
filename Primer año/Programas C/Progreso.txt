@@ -663,6 +663,13 @@ que el punto inicial quede sin compararse. Eso es lo que produce el cambio
 brusco en la Varprom en el paso número i_pasosprevios. Cambiaré eso
 del main de la transcrítica cuadrática y de la transcrítica logarítmica.
 
-
+Esto queda como trabajo pendiente para mañana, o en su defecto el viernes.
+Continuando con la presentación, agregué unas cosas que me parecen importantes
+a la parte teórica de la transcrítica logarítmica. Y también seleccioné y
+agregué los gráficos pertinentes para estudiar el comportamiento del sistema.
+Ahora sólo queda agregar las conclusiones, poner la ecuación dinámica junto al
+resto de los gráficos y creo que eso es todo. (Conclusiones engloba lo que
+aprendí de la transcrítica logarítmica así como lo que se me ocurre hacer
+a continuaci
 
 
