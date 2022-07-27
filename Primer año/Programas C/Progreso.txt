@@ -639,4 +639,30 @@ interacción de a pares, plantear una evolución estocástica del modelo. Para e
 tengo que utilizar el código que tenía en su momento sobre esto. Lo tendré que
 actualizar. Y al hacer eso, puedo aprovechar y actualizar otros códigos.
 
+-----------------------------------------------------------------------------------
+
+27/07/2022
+
+Estoy armando la parte de la presentación de la bifrucación transcrítica logarítmica.
+Ya creo tener hecha la parte teórica, quedaría entonces armar la parte de los gráficos
+y resultados. Cuando me puse a ver eso, me dió la sensación de que quedarían mejor
+los gráficos en escala lineal y no logarítmica. Eso implica volver a correr
+el archivo de Conjunto_pequeño.py. Eso me hizo pensar en que la Varprom está
+corrida en el primer valor para no ver ese feo e inexplicable pico inicial. Pero en
+el caso de las funciones logarítmicas ese pico no aparece en el primer paso, sino
+20 pasos más adelante. Ese número no es casualidad, hay algo claramente mal en el
+cálculo de la Varprom en el programa de C, y tengo que corregirlo.
+
+Es así que miré el archivo de C y noté cosas que no me gustan. Primero, los
+datos de las opiniones que se guardan en el archivo correspondiente lo hago
+a partir de usar fors, siendo que existe y queda más prolija la función
+Escribir_d. Lo segundo, está claramente mal la utilización del 
+i_IndiceOpiPasado. Se nota que está corrido, creo que el problema surge en
+la parte de las iteraciones, que el indice se adelanta un lugar y eso deja
+que el punto inicial quede sin compararse. Eso es lo que produce el cambio
+brusco en la Varprom en el paso número i_pasosprevios. Cambiaré eso
+del main de la transcrítica cuadrática y de la transcrítica logarítmica.
+
+
+
 
