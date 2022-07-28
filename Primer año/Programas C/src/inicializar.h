@@ -11,6 +11,7 @@ int Lectura_Adyacencia(int *pi_vec, FILE *pa_archivo);
 int Actividad(double* pd_vec, double d_epsilon, double d_potencia);
 int Adyacencia_Actividad(ps_Red ps_red, ps_Param ps_datos);
 int Conectar_agentes(ps_Red ps_red, ps_Param ps_datos);
+int GenerarAdy_Conectada(ps_Red ps_var, ps_Param ps_par);
 
 #endif
 
