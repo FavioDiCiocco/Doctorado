@@ -687,6 +687,16 @@ de interacciones de a pares. Luego de eso podría revisar los archivos de Python
 ver si los puedo emprolijar u organizar mejor. Y después me pondré a preparar el
 barrido del espacio de parámetros del modelo.
 
+Ya revisé el archivo main.c de la transcrítica cuadrática y lo emprolijé todo, reorganicé
+el código para que las cosas referentes a una parte del código estén todas juntas y
+no vayan todas desperdigadas. También agregué una función para armar matrices de adyacencia
+completamente conectadas. Corregí la parte de las cosas que hago a mano que ya tienen
+funciones y organicé todo el tema de la iteración para que primero se hagan las
+cuentas y después se guarden los datos.
+
+Queda para mañana probar si con esto se resuelve el tema del pico feo que se
+observa en los gráficos de Varprom.
+
 --------------------------------------------------------------------------------
 
 
