@@ -670,6 +670,23 @@ agregué los gráficos pertinentes para estudiar el comportamiento del sistema.
 Ahora sólo queda agregar las conclusiones, poner la ecuación dinámica junto al
 resto de los gráficos y creo que eso es todo. (Conclusiones engloba lo que
 aprendí de la transcrítica logarítmica así como lo que se me ocurre hacer
-a continuaci
+a continuación)
+
+-----------------------------------------------------------------------------
+
+28/07/2022
+
+En la mañana terminé la presentación, completé lo que faltaba de las conclusiones
+de la transcrítica y la revisé para ver que no faltara nada o que no hubiera errores
+en las ecuaciones.
+
+Ahora en la tarde voy a revisar el archivo main de la transcrítica cuadrática y la
+logarítmica para corregir las cosas que vi ayer. Hecho eso y comprobado que los gráficos
+de Varprom salen bien, voy a ponerme con el tema de plantear el modelo como una evolución
+de interacciones de a pares. Luego de eso podría revisar los archivos de Python para
+ver si los puedo emprolijar u organizar mejor. Y después me pondré a preparar el
+barrido del espacio de parámetros del modelo.
+
+--------------------------------------------------------------------------------
 
 
