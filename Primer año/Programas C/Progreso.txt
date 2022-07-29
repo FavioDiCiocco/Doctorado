@@ -699,4 +699,28 @@ observa en los gráficos de Varprom.
 
 --------------------------------------------------------------------------------
 
+29/07/2022
 
+Calculé nuevos datos para la ecuación transcrítica cuadrática usando el código
+de C reordenado y emprolijado. Los resultados dan bien y ya no tiene el problema
+de que la Varprom tiene ese pico feo al principio.
+
+Visto que esto funciona bien reorganicé el código de la ecuación transcrítica
+logarítmica y me armé nuevos datos. En este caso también funcionó bien y con esto
+ya tengo estos dos códigos completos y funcionando.
+
+Lo siguiente sería entonces armar un barrido en el espacio de parámetros para
+caracterizar mejor los valores a los cuales tienden los agentes. Para eso 
+lo ideal sería pasar los datos a Algarve u Oporto y empezar a correr. Pero
+antes de eso estaría bueno hacer una limpieza de esas computadoras, ver lo que
+sirve y lo que no sacarlo así no ocupa espacio ni confunde. Pablo también propuso
+el normalizar la suma dentro del logaritmo por el número de agentes. Si bien
+el número de agentes me parece un poco grande como normalización, me parece una
+buena idea poner algo para que los intereses dentro del logaritmo no
+crezcan tanto y los valores de interés se encuentren más contenidos.
+
+Dicho esto, pasaré el resto de la tarde preparando el código de la evolución
+del sistema con interacción de a pares. Para eso voy a tomar el código que
+tenía de antes de la tesis, el de interacción de a pares.
+
+---------------------------------------------------------------------------------
