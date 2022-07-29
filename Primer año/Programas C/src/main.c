@@ -28,7 +28,7 @@ int main(int argc, char *argv[]){
 	
 	ps_Red ps_red; // No te vayas a confundir, que ps_Red es el tipo de dato definido por usuario como un puntero al struct Red. En cambio, ps_red es un puntero
 	ps_red = malloc(sizeof(s_Red)); 
-		
+	
 	//#############################################################################################
 		
 	// Defino los parámetros de mi modelo. Esto va desde número de agentes hasta el paso temporal de integración.
@@ -44,23 +44,17 @@ int main(int argc, char *argv[]){
 	// ps_datos->d_gamma = 2.1; // Esta es la potencia que define la distribución de actividad
 	ps_datos->d_beta = 3; // Esta es la potencia que determina el grado de homofilia.
 	ps_datos->d_CritCorte = 0.0005; // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
-	ps_datos->i_Itextra = 3; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
+	ps_datos->i_Itextra = 40; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	ps_datos->f_Cosangulo = strtof(argv[3],NULL); // Este es el coseno de Delta que define la relación entre tópicos.
-	ps_datos->i_pasosprevios = 2; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
-	
+	ps_datos->i_pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
+		
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
-	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
-	
-	// Defino unas variables double que voy a necesitar
-	double d_tope = 0; // Este es el máximo valor que puede tomar la norma del vector de opiniones
-	for(register int i_i = 0; i_i < ps_datos->i_N; i_i++) for(register int i_j=0; i_j < ps_datos->i_T; i_j++) d_tope += 100*100; // Considero como máximo que las opiniones valgan 100
-	d_tope = sqrt(d_tope); // Le tomo la raíz cuadrada para que sea la norma.
-	double d_normav = 0; // Este es el valor que tiene la norma del vector de opiniones
-	
+	int i_contador = 0;
+		
 	// Voy a armar mi array de punteros, el cual voy a usar para guardar los datos de pasos previos del sistema
 	double* ap_OpinionesPrevias[ps_datos->i_pasosprevios];
-	
+		
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
 		ap_OpinionesPrevias[i_i] = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Malloqueo los punteros de mis pasos previos
 		// Defino su número de filas y columnas como N*T
@@ -68,9 +62,9 @@ int main(int argc, char *argv[]){
 		*(ap_OpinionesPrevias[i_i]+1) = ps_datos->i_T;
 		for(register int i_j=0; i_j<ps_datos->i_T*ps_datos->i_N;i_j++) *(ap_OpinionesPrevias[i_i]+i_j+2) = 0; // Inicializo los punteros
 	}
-		
-	//################################################################################################################################
-		
+	
+	//#############################################################################################
+	
 	// Defino mis matrices y las inicializo
 	
 	// Matrices de mi sistema. Estas son la de Adyacencia, la de Superposición de Tópicos y la de vectores de opinión de los agentes.
@@ -107,7 +101,7 @@ int main(int argc, char *argv[]){
 	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_Diferencia[i_i] = 0; // Inicializo la matriz
 	ps_red->pd_Diferencia[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
 	ps_red->pd_Diferencia[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
-		
+	
 	//################################################################################################################################
 	
 	// Genero los datos de las matrices de mi sistema
@@ -117,7 +111,7 @@ int main(int argc, char *argv[]){
 	GenerarAdy_Conectada(ps_red,ps_datos); // Esto me arma una matriz de adyacencia de una red totalmente conectada
 		
 	//################################################################################################################################
-		
+	
 	// Abro los archivos en los que guardo datos y defino mi puntero a función.
 	
 	// Voy a abrir dos archivos. Uno para para guardar la Varprom y la semilla
@@ -125,21 +119,21 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_archivo1[355];
-	sprintf(s_archivo1,"../Programas Python/Conjunto_pequeño/Varprom_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
+	sprintf(s_archivo1,"../Programas Python/Trans_ln/Varprom_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
 		,ps_datos->f_alfa,ps_datos->i_N,ps_datos->f_Cosangulo,ps_datos->d_mu,i_iteracion);
 	FILE *pa_archivo1=fopen(s_archivo1,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_archivo2[355];
-	sprintf(s_archivo2,"../Programas Python/Conjunto_pequeño/Testigos_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
+	sprintf(s_archivo2,"../Programas Python/Trans_ln/Testigos_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
 		,ps_datos->f_alfa,ps_datos->i_N,ps_datos->f_Cosangulo,ps_datos->d_mu,i_iteracion);
 	FILE *pa_archivo2=fopen(s_archivo2,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
-	
+		
 	// Puntero a la función que define mi ecuación diferencial
 	double (*pf_EcDin)(ps_Red var, ps_Param par) = &Din2;
-		
-	//################################################################################################################################
 	
+	//################################################################################################################################
+
 	// Hago las simulaciones de pasos previos del sistema cosa de tener con qué comparar al calcular la Varprom
 	// y ya arranco guardando datos.
 	
@@ -152,9 +146,9 @@ int main(int argc, char *argv[]){
 		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_PreOpi[i_j+2] = ps_red->pd_Opi[i_j+2]; // Guardo una foto del estado actual en PreOpi
 		Iteracion(ps_red,ps_datos,pf_EcDin); // Itero mi sistema
 		Escribir_d(ps_red->pd_Opi,pa_archivo2); // Guardo las opiniones de mis agentes
-		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) *(ap_OpinionesPrevias[i_i+i_j+2]) = ps_red->pd_Opi[i_j+2];
+		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) *(ap_OpinionesPrevias[i_i]+i_j+2) = ps_red->pd_Opi[i_j+2];
 	}
-
+	
 	//################################################################################################################################
 	
 	// Realizo la simulación del modelo hasta que este alcance un estado estable
@@ -177,15 +171,13 @@ int main(int argc, char *argv[]){
 			ps_red->d_Varprom = Norma_d(ps_red->pd_Diferencia)/ps_datos->d_NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
 			fprintf(pa_archivo1, "%lf\t",ps_red->d_Varprom); // Guardo el valor de variación promedio
 			Escribir_d(ps_red->pd_Opi,pa_archivo2); // Guardo las opiniones de mis agentes
-			d_normav = Norma_d(ps_red->pd_Opi); // Calculo la norma del vector de opiniones
 			i_IndiceOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
 		}
-		while( ps_red->d_Varprom > ps_datos->d_CritCorte && d_normav < d_tope);
+		while( ps_red->d_Varprom > ps_datos->d_CritCorte);
 		
-			
-		// Ahora evoluciono el sistema una cantidad $i_Itextra de veces. Le pongo como condición que si el sistema deja de cumplir la condición de corte vuelva al paso anterior
+		// Ahora evoluciono el sistema una cantidad i_Itextra de veces. Le pongo como condición que si el sistema deja de cumplir la condición de corte, deje de evolucionar
 		
-		while(i_contador < ps_datos->i_Itextra && (ps_red->d_Varprom <= ps_datos->d_CritCorte || d_normav >= d_tope) ){
+		while(i_contador < ps_datos->i_Itextra && ps_red->d_Varprom <= ps_datos->d_CritCorte ){
 			for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_PreOpi[i_j+2] = ps_red->pd_Opi[i_j+2]; // Guardo una foto del estado actual en PreOpi
 			Iteracion(ps_red,ps_datos,pf_EcDin); // Itero mi sistema
 			Delta_Vec_d(ps_red->pd_Opi,ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios],ps_red->pd_Diferencia); // Veo la diferencia entre $i_pasosprevios pasos anteriores y el actual en las opiniones
@@ -233,3 +225,17 @@ int main(int argc, char *argv[]){
 	return 0;
  }
 
+
+
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+// Esto lo comento porque considero que no voy a necesitar esto para el programa en el caso de la transcrítica logarítmica
+
+// Defino unas variables double que voy a necesitar
+// double d_tope = 0; // Este es el máximo valor que puede tomar la norma del vector de opiniones
+// for(register int i_i = 0; i_i < ps_datos->i_N; i_i++) for(register int i_j=0; i_j < ps_datos->i_T; i_j++) d_tope += 100*100; // Considero como máximo que las opiniones valgan 100
+// d_tope = sqrt(d_tope); // Le tomo la raíz cuadrada para que sea la norma.
+// double d_normav = 0; // Este es el valor que tiene la norma del vector de opiniones
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
