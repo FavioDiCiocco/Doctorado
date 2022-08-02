@@ -52,18 +52,19 @@ double Din2(ps_Red ps_var, ps_Param ps_par){
 }
 
 // Esta función me itera todo el sistema. Está buena para simplemente reemplazarla en el main.
-int Iteracion(ps_Red ps_var, ps_Param ps_par, double (*pf_Dinamica)(ps_Red ps_var, ps_Param ps_par) ){
+int Iteracion(double *pd_sistema,ps_Red ps_var, ps_Param ps_par, double (*pf_Dinamica)(ps_Red ps_var, ps_Param ps_par) ){
 	// Voy a recorrer todos los agentes, de manera de evolucionarlos a todos
 	for(ps_var->i_agente=0; ps_var->i_agente<ps_par->i_N; ps_var->i_agente++){
 		// Recorro todos los tópicos, para poder así evolucionar todas mis variables
 		for(ps_var->i_topico=0; ps_var->i_topico<ps_par->i_T; ps_var->i_topico++){
 			// En la posición del agente y del tópico correspondiente guardo el valor dado por la evolución.
-			// El RK4 actual es tal que la matriz PreOpi no varía luego de todo el proceso de evolución, lo cual me permite
-			// usar el vector PreOpi como si fuera una foto del sistema antes de evolucionarlo y que al guardar los datos de la evolución
-			// en Opi, lo que estoy haciendo es ir uno por uno construyendo mi siguiente paso temporal.
-			ps_var->pd_Opi[ps_var->i_agente*ps_par->i_T+ps_var->i_topico+2] = RK4(ps_var->pd_PreOpi, ps_var, ps_par,pf_Dinamica);
+			// El RK4 actual es tal que la matriz Opi no varía luego de todo el proceso de evolución, lo cual me permite
+			// usar el vector Opi como si fuera una foto del sistema antes de evolucionarlo y que al guardar los datos de la evolución
+			// en OpiPosterior, lo que estoy haciendo es ir uno por uno construyendo mi siguiente paso temporal.
+			ps_var->pd_OpiPosterior[ps_var->i_agente*ps_par->i_T+ps_var->i_topico+2] = RK4(ps_var->pd_Opi, ps_var, ps_par,pf_Dinamica);
 		}
 	}
+	for(register int i_j=0; i_j<ps_par->i_N*ps_par->i_T; i_j++) ps_var->pd_Opi[i_j+2] = ps_var->pd_OpiPosterior[i_j+2];  // Guardo el sistema evolucionado en las opiniones actuales
 	return 0;
 }
 

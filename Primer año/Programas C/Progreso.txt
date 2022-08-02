@@ -724,3 +724,33 @@ del sistema con interacción de a pares. Para eso voy a tomar el código que
 tenía de antes de la tesis, el de interacción de a pares.
 
 ---------------------------------------------------------------------------------
+
+01/08/2022
+
+Hoy estuve con varias pequeñas cosas que me consumieron todo el día, así
+que no avance demasiado. Igualemente, resolví el tema del RK4. Lo revisé
+y efectivamente estaba mal, estaba básicamente trabajando como un Euler
+ineficiente. Así que para solucionar eso, hice un recambio de cosas en
+el código. El RK4 particularmente lo dejé tal cual estaba, ese no necesitaba
+cambios. Modifiqué el nombre del vector PreOpi a OpiPosterior. Este vector
+ahora lo que hace es ir guardando los valores de opiniones que voy calculando
+del próximo paso. De esta manera voy usando el RK4 para calcular los nuevos
+valores de opiniones de mis agentes, los guardo en OpiPosterior y una vez
+terminado de evolucionar a todos los agentes y todos sus tópicos, paso a 
+reescribir el vector de Opi con los resultados de OpiPosterior.
+
+Tambien modifiqué los input de Iteracion, porque me parece que si bien
+funcionaba el mandarle el puntero del struct directo, creo que resultaba
+oscurecedor respecto de cuál es el puntero que se estaba evolucionando.
+
+Lo puse a prueba. Para empezar las 4 pendientes calculadas son distintas.
+Si bien la segunda y tercera parecen iguales, se distinguen en los últimos
+decimales. Por otro lado lo comparé con esos valores calculados a mano
+con la calculadora, la primer pendiente me dió lo mismo, así que parece
+que está bien.
+
+Me queda mañana usar esto para corregir la transcrítica logarítmica, luego
+corregir la transcrítica cuadrática y ver si los resultados son distintos o
+no. También revisaría el RK4 para ver si se me ocurre hacer más sencillos los
+comentarios. Terminado eso, ahora sí, laburo el caso de evolución estocástica
+del sistema.

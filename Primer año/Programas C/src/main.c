@@ -46,7 +46,7 @@ int main(int argc, char *argv[]){
 	ps_datos->d_CritCorte = 0.0005; // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
 	ps_datos->i_Itextra = 40; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	ps_datos->f_Cosangulo = strtof(argv[3],NULL); // Este es el coseno de Delta que define la relación entre tópicos.
-	ps_datos->i_pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
+	ps_datos->i_pasosprevios = 2; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
 		
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
@@ -73,7 +73,7 @@ int main(int argc, char *argv[]){
 	ps_red->pd_Opi = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Lista de vectores de opinión de la red, Tengo T elementos para cada agente.
 	
 	// También hay una matriz de paso previo del sistema y un vector para guardar la diferencia entre el paso previo y el actual.
-	ps_red->pd_PreOpi = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Paso previo del sistema antes de iterar.
+	ps_red->pd_OpiPosterior = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Paso previo del sistema antes de iterar.
 	ps_red->pd_Diferencia = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Vector que guarda la diferencia entre dos pasos del sistema
 	
 	// Inicializo mis cinco "matrices".
@@ -93,9 +93,9 @@ int main(int argc, char *argv[]){
 	ps_red->pd_Opi[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
 	
 	// Matriz de vectores de opinión en el paso temporal Previo. Es de tamaño N*T
-	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_PreOpi[i_i] = 0; // Inicializo la matriz
-	ps_red->pd_PreOpi[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
-	ps_red->pd_PreOpi[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
+	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_OpiPosterior[i_i] = 0; // Inicializo la matriz
+	ps_red->pd_OpiPosterior[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
+	ps_red->pd_OpiPosterior[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
 	
 	// Matriz de diferencia entre los vectores Opi y PreOpi. Es de tamaño N*T
 	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_Diferencia[i_i] = 0; // Inicializo la matriz
@@ -116,7 +116,7 @@ int main(int argc, char *argv[]){
 	
 	// Voy a abrir dos archivos. Uno para para guardar la Varprom y la semilla
 	// El segundo anotar las opiniones de los agentes, que son solo 2 o 3.
-	
+	/*
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_archivo1[355];
 	sprintf(s_archivo1,"../Programas Python/Trans_ln/Varprom_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
@@ -128,7 +128,7 @@ int main(int argc, char *argv[]){
 	sprintf(s_archivo2,"../Programas Python/Trans_ln/Testigos_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
 		,ps_datos->f_alfa,ps_datos->i_N,ps_datos->f_Cosangulo,ps_datos->d_mu,i_iteracion);
 	FILE *pa_archivo2=fopen(s_archivo2,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
-		
+	*/
 	// Puntero a la función que define mi ecuación diferencial
 	double (*pf_EcDin)(ps_Red var, ps_Param par) = &Din2;
 	
@@ -138,19 +138,18 @@ int main(int argc, char *argv[]){
 	// y ya arranco guardando datos.
 	
 	// Guardo la distribución inicial de las opiniones de mis testigos. Que son todos mis agentes en este caso
-	fprintf(pa_archivo2, "Opiniones de los testigos\n");
-	Escribir_d(ps_red->pd_Opi,pa_archivo2);  // Guardo las opiniones de mis agentes
+	// fprintf(pa_archivo2, "Opiniones de los testigos\n");
+	// Escribir_d(ps_red->pd_Opi,pa_archivo2);  // Guardo las opiniones de mis agentes
 	
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar	
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
-		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_PreOpi[i_j+2] = ps_red->pd_Opi[i_j+2]; // Guardo una foto del estado actual en PreOpi
-		Iteracion(ps_red,ps_datos,pf_EcDin); // Itero mi sistema
-		Escribir_d(ps_red->pd_Opi,pa_archivo2); // Guardo las opiniones de mis agentes
+		Iteracion(ps_red->pd_Opi,ps_red,ps_datos,pf_EcDin); // Itero mi sistema
+		// Escribir_d(ps_red->pd_Opi,pa_archivo2); // Guardo las opiniones de mis agentes
 		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) *(ap_OpinionesPrevias[i_i]+i_j+2) = ps_red->pd_Opi[i_j+2];
 	}
 	
 	//################################################################################################################################
-	
+	/*
 	// Realizo la simulación del modelo hasta que este alcance un estado estable
 	
 	fprintf(pa_archivo1,"Variación promedio \n"); // Escribo la primer fila de mi archivo de Varprom
@@ -201,7 +200,7 @@ int main(int argc, char *argv[]){
 	// Guardo la semilla en el primer archivo.
 	fprintf(pa_archivo1,"Semilla\n");
 	fprintf(pa_archivo1,"%ld\n",semilla);
-	
+	*/
 	
 	
 	// Libero los espacios dedicados a mis vectores y cierro mis archivos
@@ -209,12 +208,12 @@ int main(int argc, char *argv[]){
 	free(ps_red->pd_Ang);
 	free(ps_red->pi_Ady);
 	free(ps_red->pd_Opi);
-	free(ps_red->pd_PreOpi);
+	free(ps_red->pd_OpiPosterior);
 	free(ps_red->pd_Diferencia);
 	free(ps_red);
 	free(ps_datos);
-	fclose(pa_archivo1);
-	fclose(pa_archivo2);
+	// fclose(pa_archivo1);
+	// fclose(pa_archivo2);
 	
 	// Finalmente imprimo el tiempo que tarde en ejecutar todo el programa
 	time(&tt_fin);
