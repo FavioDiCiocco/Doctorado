@@ -36,21 +36,7 @@ int GenerarAng(ps_Red ps_var, ps_Param ps_par){
 	return 0;
 }
 
-// Esta función me arma una matriz de Adyacencia de una red totalmente conectada
-int GenerarAdy_Conectada(ps_Red ps_var, ps_Param ps_par){
-	// Obtengo las dimensiones de la matriz de Adyacencia.
-	int i_F,i_C;
-	i_F = ps_var->pi_Ady[0];
-	i_C = ps_var->pi_Ady[1];
-	
-	// Escribo la matriz de Adyacencia
-	for(register int i_i=1; i_i<i_F; i_i++) for(register int i_j=0; i_j<i_i; i_j++) ps_var->pi_Ady[i_i*i_C+i_j+2] = 1;  // Esto me pone 1 debajo de la diagonal
-	for(register int i_i=0; i_i<i_F; i_i++) for(register int i_j=i_i+1; i_j<i_C; i_j++) ps_var->pi_Ady[i_i*i_C+i_j+2] = ps_var->pi_Ady[i_j*i_C+i_i+2]; // Esta sola línea simetriza la matriz
-	return 0;
-}
-
-
-// // Esta función es la que lee un archivo y me arma la matriz de Adyacencia
+// Esta función es la que lee un archivo y me arma la matriz de Adyacencia
 int Lectura_Adyacencia(int *pi_vec, FILE *pa_archivo){
 	// Defino los enteros que voy a usar para leer el archivo y escribir sobre el vector.	
 	int i_indice = 2;
@@ -72,6 +58,20 @@ int Lectura_Adyacencia(int *pi_vec, FILE *pa_archivo){
 		return 1;
 	}
 	
+	return 0;
+}
+
+
+// Esta función me arma una matriz de Adyacencia de una red totalmente conectada
+int GenerarAdy_Conectada(ps_Red ps_var, ps_Param ps_par){
+	// Obtengo las dimensiones de la matriz de Adyacencia.
+	int i_F,i_C;
+	i_F = ps_var->pi_Ady[0];
+	i_C = ps_var->pi_Ady[1];
+	
+	// Escribo la matriz de Adyacencia
+	for(register int i_i=1; i_i<i_F; i_i++) for(register int i_j=0; i_j<i_i; i_j++) ps_var->pi_Ady[i_i*i_C+i_j+2] = 1;  // Esto me pone 1 debajo de la diagonal
+	for(register int i_i=0; i_i<i_F; i_i++) for(register int i_j=i_i+1; i_j<i_C; i_j++) ps_var->pi_Ady[i_i*i_C+i_j+2] = ps_var->pi_Ady[i_j*i_C+i_i+2]; // Esta sola línea simetriza la matriz
 	return 0;
 }
 

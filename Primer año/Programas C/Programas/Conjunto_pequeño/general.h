@@ -11,7 +11,7 @@
 // Acá vienen los structs.
 // El struct Red tiene los datos que definen mi red, y la info de la red
 typedef struct Red{
-	double *pd_PreOpi; // Vector que guarda la matriz de opiniones del sistema en el paso temporal Previo.
+	double *pd_OpiPosterior; // Vector que guarda la matriz de opiniones del sistema en el paso temporal Previo.
 	double *pd_Diferencia; // Vector que guarda las diferencias entre PreOpi y Opi.
 	double *pd_Opi; // Vector de opinión de cada individuo
 	double *pd_Ang; // Matriz de superposición entre tópicos. Tiene tamaño T*T

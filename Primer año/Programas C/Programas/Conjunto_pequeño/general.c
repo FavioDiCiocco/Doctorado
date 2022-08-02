@@ -147,7 +147,9 @@ double RK4(double *pd_sistema ,ps_Red ps_var, ps_Param ps_par, double (*pf_funci
 	// Ahora hagamos algún mecanismo de visualización, para ver que todo esté correctamente calculado. Dios que esto va a ser un bardo.
 	// Primero visualicemos las pendientes. Para eso voy a armar unos strings que poner en el printeo
 	
-	// printf("\n Estas son las pendientes\n");
+	// printf("Estoy mirando el RK4 del agente %d y el tópico %d\n", ps_var->i_agente, ps_var->i_topico);
+	
+	// printf("Estas son las pendientes\n");
 	// Visualizar_d(pd_pendientes);
 	
 	// También tengo que visualizar mi vector trabajado.

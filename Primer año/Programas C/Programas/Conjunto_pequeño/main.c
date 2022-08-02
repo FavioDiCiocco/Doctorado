@@ -44,9 +44,9 @@ int main(int argc, char *argv[]){
 	// ps_datos->d_gamma = 2.1; // Esta es la potencia que define la distribución de actividad
 	ps_datos->d_beta = 3; // Esta es la potencia que determina el grado de homofilia.
 	ps_datos->d_CritCorte = 0.0005; // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
-	ps_datos->i_Itextra = 3; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
+	ps_datos->i_Itextra = 1; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	ps_datos->f_Cosangulo = strtof(argv[3],NULL); // Este es el coseno de Delta que define la relación entre tópicos.
-	ps_datos->i_pasosprevios = 2; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
+	ps_datos->i_pasosprevios = 1; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
 	
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
@@ -80,7 +80,7 @@ int main(int argc, char *argv[]){
 	ps_red->pd_Opi = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Lista de vectores de opinión de la red, Tengo T elementos para cada agente.
 	
 	// También hay una matriz de paso previo del sistema y un vector para guardar la diferencia entre el paso previo y el actual.
-	ps_red->pd_PreOpi = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Paso previo del sistema antes de iterar.
+	ps_red->pd_OpiPosterior = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Paso previo del sistema antes de iterar.
 	ps_red->pd_Diferencia = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Vector que guarda la diferencia entre dos pasos del sistema
 	
 	// Inicializo mis cinco "matrices".
@@ -100,9 +100,9 @@ int main(int argc, char *argv[]){
 	ps_red->pd_Opi[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
 	
 	// Matriz de vectores de opinión en el paso temporal Previo. Es de tamaño N*T
-	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_PreOpi[i_i] = 0; // Inicializo la matriz
-	ps_red->pd_PreOpi[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
-	ps_red->pd_PreOpi[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
+	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_OpiPosterior[i_i] = 0; // Inicializo la matriz
+	ps_red->pd_OpiPosterior[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
+	ps_red->pd_OpiPosterior[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
 	
 	// Matriz de diferencia entre los vectores Opi y PreOpi. Es de tamaño N*T
 	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_Diferencia[i_i] = 0; // Inicializo la matriz
@@ -150,8 +150,7 @@ int main(int argc, char *argv[]){
 	
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar	
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
-		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_PreOpi[i_j+2] = ps_red->pd_Opi[i_j+2]; // Guardo una foto del estado actual en PreOpi
-		Iteracion(ps_red,ps_datos,pf_EcDin); // Itero mi sistema
+		Iteracion(ps_red->pd_Opi,ps_red,ps_datos,pf_EcDin); // Itero mi sistema
 		Escribir_d(ps_red->pd_Opi,pa_archivo2); // Guardo las opiniones de mis agentes
 		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) *(ap_OpinionesPrevias[i_i]+i_j+2) = ps_red->pd_Opi[i_j+2];
 	}
@@ -171,8 +170,7 @@ int main(int argc, char *argv[]){
 		
 		// Evoluciono el sistema hasta que se cumpla el criterio de corte
 		do{
-			for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_PreOpi[i_j+2] = ps_red->pd_Opi[i_j+2]; // Guardo una foto del estado actual en PreOpi
-			Iteracion(ps_red,ps_datos,pf_EcDin); // Itero mi sistema
+			Iteracion(ps_red->pd_Opi,ps_red,ps_datos,pf_EcDin); // Itero mi sistema
 			Delta_Vec_d(ps_red->pd_Opi,ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios],ps_red->pd_Diferencia); // Veo la diferencia entre $i_pasosprevios pasos anteriores y el actual en las opiniones
 			for(register int i_p=0; i_p<ps_datos->i_N*ps_datos->i_T; i_p++) *(ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios]+i_p+2) = ps_red->pd_Opi[i_p+2]; // Me guardo el estado actual en la posición correspondiente de ap_OpinionesPrevias
 			ps_red->d_Varprom = Norma_d(ps_red->pd_Diferencia)/ps_datos->d_NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
@@ -186,13 +184,12 @@ int main(int argc, char *argv[]){
 		// Ahora evoluciono el sistema una cantidad $i_Itextra de veces. Le pongo como condición que si el sistema deja de cumplir la condición de corte vuelva al paso anterior
 		
 		while(i_contador < ps_datos->i_Itextra && (ps_red->d_Varprom <= ps_datos->d_CritCorte || d_normav >= d_tope) ){
-			for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_PreOpi[i_j+2] = ps_red->pd_Opi[i_j+2]; // Guardo una foto del estado actual en PreOpi
-			Iteracion(ps_red,ps_datos,pf_EcDin); // Itero mi sistema
+			Iteracion(ps_red->pd_Opi,ps_red,ps_datos,pf_EcDin); // Itero mi sistema
 			Delta_Vec_d(ps_red->pd_Opi,ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios],ps_red->pd_Diferencia); // Veo la diferencia entre $i_pasosprevios pasos anteriores y el actual en las opiniones
 			for(register int i_p=0; i_p<ps_datos->i_N*ps_datos->i_T; i_p++) *(ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios]+i_p+2) = ps_red->pd_Opi[i_p+2]; // Me guardo el estado actual en la posición correspondiente de ap_OpinionesPrevias
 			ps_red->d_Varprom = Norma_d(ps_red->pd_Diferencia)/ps_datos->d_NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
-			Escribir_d(ps_red->pd_Opi,pa_archivo2); // Guardo las opiniones de mis agentes
 			fprintf(pa_archivo1, "%lf\t",ps_red->d_Varprom); // Guardo el valor de variación promedio 
+			Escribir_d(ps_red->pd_Opi,pa_archivo2); // Guardo las opiniones de mis agentes
 			i_IndiceOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
 			i_contador +=1; // Avanzo el contador para que el sistema haga una cantidad $i_Itextra de iteraciones extras
 		}
@@ -217,7 +214,7 @@ int main(int argc, char *argv[]){
 	free(ps_red->pd_Ang);
 	free(ps_red->pi_Ady);
 	free(ps_red->pd_Opi);
-	free(ps_red->pd_PreOpi);
+	free(ps_red->pd_OpiPosterior);
 	free(ps_red->pd_Diferencia);
 	free(ps_red);
 	free(ps_datos);

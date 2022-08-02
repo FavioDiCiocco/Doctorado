@@ -261,7 +261,7 @@ T=2 # Defino acá el número de tópicos porque es algo que no cambia por ahora,
 
 SuperDiccionario = dict()
 
-for Carpeta in ["Trans_ln"]:
+for Carpeta in ["Conjunto_pequeño"]:
 
    # CÓDIGO PARA LEVANTAR ARCHIVOS DE UNA CARPETA CON TODOS LOS ARCHIVOS MEZCLADOS
     
@@ -356,8 +356,8 @@ for Carpeta in ["Trans_ln"]:
                             plt.figure("Topico",figsize=(20,15))
                             X = np.arange(Testigos.shape[0])*0.01
                             for sujeto in range(int(AGENTES)):
-                                plt.plot(X,Testigos[:,sujeto*2], linewidth = 6)
-                                plt.plot(X,Testigos[:,sujeto*2+1], linewidth = 6)
+                                plt.semilogy(X,Testigos[:,sujeto*2], linewidth = 6)
+                                plt.semilogy(X,Testigos[:,sujeto*2+1], linewidth = 6)
                             plt.xlabel("Tiempo")
                             plt.ylabel("Tópico")
                             plt.grid(alpha = 0.5)
@@ -408,7 +408,7 @@ for Carpeta in ["Trans_ln"]:
                             Testigos[i] = fila[:-1]
                         
                         for sujeto in range(int(AGENTES)):
-                            ax.plot(Testigos[:,sujeto*2], Testigos[:,sujeto*2+1], color="gray", linewidth=2, alpha=0.5)
+                            ax.loglog(Testigos[:,sujeto*2], Testigos[:,sujeto*2+1], color="gray", linewidth=2, alpha=0.5)
                         
                     for numero,nombre in enumerate(Df_archivos_r.loc[(Df_archivos_r["n"]==AGENTES) & (Df_archivos_r["mu"]==MU) & (Df_archivos_r["cdelta"]==CDELTA) & (Df_archivos_r["alfa"]==ALFA), "nombre"]):
                         
@@ -427,7 +427,7 @@ for Carpeta in ["Trans_ln"]:
                         # La idea sería que los agentes de cada simulación tengan el mismo color. Me parece que va a resultar más
                         # informativo que lo que estoy viendo ahora
                         
-                        ax.plot(Opifinal[0::2],Opifinal[1::2],"o",markersize = 18, c = Colores1[numero])
+                        ax.loglog(Opifinal[0::2],Opifinal[1::2],"o",markersize = 18, c = Colores1[numero])
                         ax.set_xlabel(r"$x^1$")
                         ax.set_ylabel(r"$x^2$")
                         # ax.annotate(r"$\alpha$={},cos($\delta$)={},$\mu$={},N={}".format(ALFA,CDELTA,MU,AGENTES), xy=(0.7,0.9),xycoords='axes fraction',fontsize=20,bbox=dict(facecolor='White'))

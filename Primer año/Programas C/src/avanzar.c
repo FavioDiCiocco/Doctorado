@@ -30,7 +30,7 @@ double Din1(ps_Red ps_var, ps_Param ps_par){
 	// i_Ca = (int) ps_var->pi_Ady[1];
 	
 	for(register int i_p=0; i_p<i_Cs; i_p++) d_opiniones_superpuestas += ps_var->pd_Ang[ps_var->i_topico*i_Cs+i_p+2]*ps_var->pd_Opi[ps_var->i_agente2*i_Co+i_p+2]; // Calculo previamente este producto de la matriz con el vector.
-	d_resultado = log(d_opiniones_superpuestas+1); // Esto es lo que está dentro de la sumatoria en la ecuación dinámica.
+	d_resultado = d_opiniones_superpuestas*d_opiniones_superpuestas; // Esto es lo que está dentro de la sumatoria en la ecuación dinámica.
 	return d_resultado; // La función devuelve el número que buscás, no te lo asigna en una variable.
 }
 
@@ -58,13 +58,15 @@ int Iteracion(double *pd_sistema,ps_Red ps_var, ps_Param ps_par, double (*pf_Din
 		// Recorro todos los tópicos, para poder así evolucionar todas mis variables
 		for(ps_var->i_topico=0; ps_var->i_topico<ps_par->i_T; ps_var->i_topico++){
 			// En la posición del agente y del tópico correspondiente guardo el valor dado por la evolución.
-			// El RK4 actual es tal que la matriz Opi no varía luego de todo el proceso de evolución, lo cual me permite
-			// usar el vector Opi como si fuera una foto del sistema antes de evolucionarlo y que al guardar los datos de la evolución
-			// en OpiPosterior, lo que estoy haciendo es ir uno por uno construyendo mi siguiente paso temporal.
-			ps_var->pd_OpiPosterior[ps_var->i_agente*ps_par->i_T+ps_var->i_topico+2] = RK4(ps_var->pd_Opi, ps_var, ps_par,pf_Dinamica);
+			// El RK4 actual es tal que la matriz toma la matriz Opi, le hace una copia para tener el estado inicial y
+			// luego va variando al vector Opi para calcular las nuevas pendientes. Cuando tiene todas las pendientes, usa
+			// la copia inicial para reescribir Opi y que salga como entró. Luego usa las pendientes para calcular el valor de la 
+			// opinión en el siguiente paso y eso es lo que guardo en el puntero OpiPosterior
+			ps_var->pd_OpiPosterior[ps_var->i_agente*ps_par->i_T+ps_var->i_topico+2] = RK4(pd_sistema, ps_var, ps_par,pf_Dinamica);
 		}
 	}
-	for(register int i_j=0; i_j<ps_par->i_N*ps_par->i_T; i_j++) ps_var->pd_Opi[i_j+2] = ps_var->pd_OpiPosterior[i_j+2];  // Guardo el sistema evolucionado en las opiniones actuales
+	// Ahora que tengo todo el sistema evolucionado en OpiPosterior, lo paso a Opi para que la Opinión esté evolucionada
+	for(register int i_j=0; i_j<ps_par->i_N*ps_par->i_T; i_j++) ps_var->pd_Opi[i_j+2] = ps_var->pd_OpiPosterior[i_j+2];
 	return 0;
 }
 
