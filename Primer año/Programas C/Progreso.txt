@@ -754,3 +754,23 @@ corregir la transcrítica cuadrática y ver si los resultados son distintos o
 no. También revisaría el RK4 para ver si se me ocurre hacer más sencillos los
 comentarios. Terminado eso, ahora sí, laburo el caso de evolución estocástica
 del sistema.
+-----------------------------------------------------------------------------
+
+02/08/2022
+
+Probé las correcciones hechas sobre el RK4 al detalle con un archivo de
+Python aparte. Por lo visto, funciona perfecto. Ahora lo que debería hacer
+es correr los datos de la transcrítica logarítmica y ver que los gráficos
+no sean muy distintos a lo que yo puse, sino caer en la desesperación.
+
+Hecho esto, podemos finalmente pasar a estudiar la evolución del modelo
+en el caso estocástico. Bueno, quizás no pasemos tan diréctamente a esto.
+De Secretaría Académica me mandaron un mail diciendo que le hable a un cierto
+profesor para que él me tome el final de Física Computacional. Si sumo eso
+con el hecho de que voy a empezar a cursar el cuatri que viene, voy a
+avanzar lento con esto, por lo menos el primer mes de cursada.
+
+Pero superado eso, le entramos duro al armado del modelo estocástico.
+Igual mañana ya podría ponerme con eso y tener algo ya funcional, digo yo.
+
+-------------------------------------------------------------------------------
