@@ -774,3 +774,35 @@ Pero superado eso, le entramos duro al armado del modelo estocástico.
 Igual mañana ya podría ponerme con eso y tener algo ya funcional, digo yo.
 
 -------------------------------------------------------------------------------
+
+03/08/2022
+
+Lo primero que hice fue plantear el cómo modificar el modelo para que realice una
+evolución estocástica. Esto lo escribí en el cuaderno y ahí lo que menciono es el
+tema de que necesito definir cómo es la selección del segundo agente para la
+interacción del modelo. Esta selección actualmente se resuelve de manera
+equiprobable, tomando al segundo agente del conjunto total de agentes. Esto
+puede cambiarse en cambio y para mi hay dos opciones características. La primera
+es que el segundo agente se tome del subconjunto de vecinos del primer agente
+de forma equiprobable, entendiendo que la red del primer agente se construye
+siguiendo el protocolo de construcción de la red de actividad que planteamos
+en la tesis. La otra opción es desligarse completamente de la red y tomar
+al segundo agente del conjunto total de agentes pero eligiéndolo con una
+probabilidad condicionada por la homofilia entre los agentes, usando la
+misma probabilidad que se usaba en el modelo.
+
+Teniendo esto planteado, para comenzar a probar el código simplemente realicé
+una evolución estocástica en la cual el segundo agente se selecciona equiprobablemente
+de conjunto total de agentes de la red. Y el resto de la tarde me la pasé
+probando manualmente que las cuentas realizadas sean las correctas. Haciendo
+esto por suerte detecté que tenía mal planteada la función Din1 y estaba
+aplicando la transcrítica cuadrática, no la logarítmica.
+
+Ya mañana o pasado queda charlar con Pablo al respecto y tomar una decisión
+sobre cómo evolucionar este sistema. Para mi lo ideal sería considerar 
+un sistema sin una red compleja, directamente mandar el sistema a correr.
+Quizás incluso podríamos proponer una red que se forme estocásticamente,
+asignando actividad a los agentes y activándolos al azar, luego registrando
+enlaces entre aquellos agentes que interactúan. Finalmente, estudiamos las
+redes que surgen de estos comportamientos, sus propiedades y conectividad.
+Me gusta la idea.
