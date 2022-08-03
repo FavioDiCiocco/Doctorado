@@ -92,7 +92,7 @@ int main(int argc, char *argv[]){
 	ps_red->pd_Opi[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
 	ps_red->pd_Opi[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
 	
-	// Matriz de vectores de opinión en el paso temporal Previo. Es de tamaño N*T
+	// Matriz de vectores de opinión en el paso temporal Posterior. Es de tamaño N*T
 	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_OpiPosterior[i_i] = 0; // Inicializo la matriz
 	ps_red->pd_OpiPosterior[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
 	ps_red->pd_OpiPosterior[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada

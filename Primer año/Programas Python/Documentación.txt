@@ -51,7 +51,15 @@ matriz y vector y luego al final calcular un sólo logaritmo. La diferencia entr
 dos expresiones es que la expresión 1 se puede reescribir como si fuera un sólo
 logaritmo con la productoria de la matriz de superposición por el vector de opiniones sobre
 todos los vecinos, mientras que la opción 2 es un sólo logaritmo pero de la sumatoria.
-En principio no puedo afirmar cuál suena más razonable o correcto. Puedo decir que
-la "Opción 1" tiene a favor que dentro de los logaritmos sólo lleva un +1 y no tiene
-ningún problema al respecto. En la otra, quizás, debería colocar algo más grande
-que un +1.
+La opción 2 me gusta más porque no deja que los valores de opiniones en el argumento
+se vuelvan demasiado grandes.
+
+Modelo_estocástico:
+--------------------
+En esta carpeta guardaré los archivos que vaya generando del modelo en el cual los agentes
+evolucionan sus opiniones utilizando la ecuación transcrítica logarítmica con interacciones
+de a pares. Modifiqué los archivos de datos porque ahora voy a volver a trabajar con muchos
+agentes, así que vuelvo a tener archivos de Opiniones_... y Testigos_... . La forma de
+realizar la selección del segundo agente es un tema a definir y de gran relevancia en
+la caracterización de la evolución de este sistema. Es posible que esta carpeta contenga
+varias sub carpetas.
