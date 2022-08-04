@@ -823,7 +823,27 @@ tema de la contraseña porque no pude entrar.
 En Oporto y Algarve borré todo lo viejo e innecesario, así no me estorba
 ni me confunde. Lo siguiente será empezar a copiar cosas de la máquina
 principal a las pcs para empezar a laburar. Eso lo haré a la tarde.
-Espero no haber borrado nada útil. Conf
+Espero no haber borrado nada útil. Confío en que no
+
+Terminado eso empecé a preparar el archivo para caracterizar el modelo con
+la ecuación logarítmica. Partí del códgio de trans_ln y fui agregando
+cosas para el guardado de datos de Modelo_estocástico. Aún así faltan
+cosas por hacer en el código. Son:
+  .) Agregar una parte en la cual el sistema evolucione hasta que la
+  red se vuelva conexa. Una vez que la red es conexa el código avanza
+  a la siguiente etapa en la cual corre hasta alcanzar un estado estable.
+  .) Modificar la ecuación dinámica para que dentro del log haya una 
+  sumatoria y no una productoria. Este es en realidad un cambio doble,
+  porque al hacer esto también tengo que cambiar el logaritmo natural
+  por un logaritmo en base 10.
+
+Hechas esas cosas, estamos en condiciones de mandar a correr el código
+para probar cuánto podría tardar. Teniendo una idea del tiempo que 
+tardaría en resolver para 1000 agentes, ahí sí lo mandamos a Algarve,
+que creo están libres las máquinas, y corremos sobre los 20 hilos.
+
+La idea es hacer eso mañana y ya la semana que viene arrancamos con la
+materia de Dorso a Full.
 
 -------------------------------------------------------------------------------
 
