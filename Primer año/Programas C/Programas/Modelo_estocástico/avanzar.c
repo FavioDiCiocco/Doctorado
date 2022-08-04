@@ -38,16 +38,19 @@ double Din1(ps_Red ps_var, ps_Param ps_par){
 double Din2(ps_Red ps_var, ps_Param ps_par){
 	// Defino las variables locales de mi función. d_resultado es lo que voy a returnear.
 	// d_sumatoria es el total de la sumatoria del segundo término de la ecuación diferencial.
-	double d_resultado,d_sumatoria=0;
-	
-	// Calculo la sumatoria de la ecuación diferencial. Para esto es que existe la función Din1.
-	// La sumatoria es sobre todos los agentes conectados en la red de adyacencia
-	for(ps_var->i_agente2=0; ps_var->i_agente2<ps_par->i_N; ps_var->i_agente2++) if(ps_var->pi_Ady[ps_var->i_agente*ps_var->pi_Ady[1]+ps_var->i_agente2+2] == 1) d_sumatoria += Din1(ps_var,ps_par);
+	double d_resultado;
 	
 	// Obtengo el tamaño de Columnas de mi matriz de Vectores de opinión y calculo el valor del campo que define mi ecuación diferencial
 	int i_C = (int) ps_var->pd_Opi[1];
-	d_resultado = -ps_par->d_mu*ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2]+(ps_par->f_K*ps_par->f_alfa*d_sumatoria);
-	// d_resultado = -ps_par->d_lambda*ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2]+ps_par->f_K*d_sumatoria+ps_par->d_campoext;
+	d_resultado = -ps_par->d_mu*ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2]+(ps_par->f_K*ps_par->f_alfa*Din1(ps_var,ps_par));
+	
+	// Esta parte del código no la uso en una interacción de a pares
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// La sumatoria es sobre todos los agentes conectados en la red de adyacencia
+	// for(ps_var->i_agente2=0; ps_var->i_agente2<ps_par->i_N; ps_var->i_agente2++) if(ps_var->pi_Ady[ps_var->i_agente*ps_var->pi_Ady[1]+ps_var->i_agente2+2] == 1) d_sumatoria += Din1(ps_var,ps_par);
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 	return d_resultado;
 }
 
@@ -55,6 +58,13 @@ double Din2(ps_Red ps_var, ps_Param ps_par){
 int Iteracion(double *pd_sistema,ps_Red ps_var, ps_Param ps_par, double (*pf_Dinamica)(ps_Red ps_var, ps_Param ps_par) ){
 	// Voy a recorrer todos los agentes, de manera de evolucionarlos a todos
 	for(ps_var->i_agente=0; ps_var->i_agente<ps_par->i_N; ps_var->i_agente++){
+		do{
+			// Elijo un segundo agente con el que interactuar.
+			ps_var->i_agente2 = rand()%ps_par->i_N;
+		}
+		// Este agente tiene que ser distinto al primero
+		while(ps_var->i_agente==ps_var->i_agente2);
+		printf("El agente %d interactuó con el agente %d\n",ps_var->i_agente,ps_var->i_agente2);
 		// Recorro todos los tópicos, para poder así evolucionar todas mis variables
 		for(ps_var->i_topico=0; ps_var->i_topico<ps_par->i_T; ps_var->i_topico++){
 			// En la posición del agente y del tópico correspondiente guardo el valor dado por la evolución.

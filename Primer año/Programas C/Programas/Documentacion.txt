@@ -44,6 +44,23 @@ diferente al trabajar.
 
 Aplico el modelo con el término logarítmico a un sistema con dos o tres
 agentes para corroborar los resultados obtenidos de forma analítica.
-El armado de los datos es el mismo que en el código anterior.
+El armado de los datos es idéntico al caso anterior, generando dos
+archivos: Varprom y Testigos. Al código le agregué el uso de la
+función sleep de forma que la separación temporal entre corridas
+sea mayor a 1 segundo, para que cada corrida tenga una semilla
+diferente al trabajar.
 
+.) Modelo estocástico:
+----------------------
+
+Evoluciono la dinámica del sistema considerando interacciones entre
+pares de agentes de forma estocástica. Para esto recorro todos los
+agentes de la red y para cada uno elijo un segundo agente del conjunto
+total de agentes y de forma equiprobable. En este código evoluciono
+la ecuación dinámica con el término logarítmico. De acá genero
+dos archivos, el de Opiniones (que guarda opiniones iniciales,
+varprom, finales y semilla) y el de Testigos (que guarda las opiniones
+de los primeros 10 agentes de principio a fin de la simulación.
+En principio el código está para correrse, pero decidí dejar esto
+para más tarde.
 

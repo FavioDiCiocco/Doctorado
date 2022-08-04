@@ -52,7 +52,7 @@ int Visualizar_d(double *pd_vec){
 	
 	// Printeo mi vector
 	for(register int i_i=0; i_i<i_F; i_i++){
-		for(register int i_j=0; i_j<i_C; i_j++) printf("%lf\t",*(pd_vec+i_i*i_C+i_j+2));
+		for(register int i_j=0; i_j<i_C; i_j++) printf("%.9lf\t",*(pd_vec+i_i*i_C+i_j+2));
 		printf("\n");
 	}
 	printf("\n");
@@ -149,13 +149,13 @@ double RK4(double *pd_sistema ,ps_Red ps_var, ps_Param ps_par, double (*pf_funci
 	
 	// printf("Estoy mirando el RK4 del agente %d y el tópico %d\n", ps_var->i_agente, ps_var->i_topico);
 	
-	// printf("Estas son las pendientes\n");
-	// Visualizar_d(pd_pendientes);
+	printf("Estas son las pendientes\n");
+	Visualizar_d(pd_pendientes);
 	
 	// También tengo que visualizar mi vector trabajado.
 	
-	// printf("Este es mi vector de opinión actual \n");
-	// Visualizar_d(ps_var->pd_Opi);
+	// printf("Este es mi vector antes de evolucionarlo \n");
+	// Visualizar_d(pd_inicial);
 	
 	// printf("Este es mi vector luego de evolucionarlo \n");
 	// Visualizar_d(pd_sistema);
@@ -179,7 +179,7 @@ int Escribir_d(double *pd_vec, FILE *pa_archivo){
 	i_C = *(pd_vec+1);
 	
 	// Ahora printeo todo el vector en mi archivo
-	for(register int i_i=0; i_i<i_C*i_F; i_i++) fprintf(pa_archivo,"%.6lf\t",*(pd_vec+i_i+2));
+	for(register int i_i=0; i_i<i_C*i_F; i_i++) fprintf(pa_archivo,"%lf\t",*(pd_vec+i_i+2));
 	fprintf(pa_archivo,"\n");
 	
 	return 0;

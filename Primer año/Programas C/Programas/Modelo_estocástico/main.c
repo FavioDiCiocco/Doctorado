@@ -28,7 +28,7 @@ int main(int argc, char *argv[]){
 	
 	ps_Red ps_red; // No te vayas a confundir, que ps_Red es el tipo de dato definido por usuario como un puntero al struct Red. En cambio, ps_red es un puntero
 	ps_red = malloc(sizeof(s_Red)); 
-	
+		
 	//#############################################################################################
 		
 	// Defino los parámetros de mi modelo. Esto va desde número de agentes hasta el paso temporal de integración.
@@ -39,32 +39,33 @@ int main(int argc, char *argv[]){
 	ps_datos->d_mu = strtof(argv[4],NULL); // Coeficiente que regula la intensidad con que los agentes caen al cero.
 	ps_datos->f_alfa = strtof(argv[2],NULL); // Controversialidad de los tópicos
 	ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
-	ps_datos->i_m = 10; // Cantidad de conexiones que hace el agente al activarse
-	ps_datos->d_epsilon = 0.01; // Mínimo valor de actividad de los agentes
-	ps_datos->d_gamma = 2.1; // Esta es la potencia que define la distribución de actividad
+	// ps_datos->i_m = 10; // Cantidad de conexiones que hace el agente al activarse
+	// ps_datos->d_epsilon = 0.01; // Mínimo valor de actividad de los agentes
+	// ps_datos->d_gamma = 2.1; // Esta es la potencia que define la distribución de actividad
 	ps_datos->d_beta = 3; // Esta es la potencia que determina el grado de homofilia.
 	ps_datos->d_CritCorte = 0.0005; // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
-	ps_datos->i_Itextra = 40; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
+	ps_datos->i_Itextra = 50; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	ps_datos->f_Cosangulo = strtof(argv[3],NULL); // Este es el coseno de Delta que define la relación entre tópicos.
-	ps_datos->i_pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
-		
+	ps_datos->i_pasosprevios = 3; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
+	
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
 	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
-	int i_testigos = 10; // Este es el número de testigos que registraré. Voy a registrar los testigos de 0 a 9
-		
-	// Voy a armar mi array de punteros, el cual voy a usar para guardar los datos de pasos previos del sistema
-	double* ap_OpinionesPrevias[ps_datos->i_pasosprevios];
-		
-	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
-		ap_OpinionesPrevias[i_i] = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Malloqueo los punteros de mis pasos previos
-		// Defino su número de filas y columnas como N*T
-		*ap_OpinionesPrevias[i_i] = ps_datos->i_N;
-		*(ap_OpinionesPrevias[i_i]+1) = ps_datos->i_T;
-		for(register int i_j=0; i_j<ps_datos->i_T*ps_datos->i_N;i_j++) *(ap_OpinionesPrevias[i_i]+i_j+2) = 0; // Inicializo los punteros
-	}
+	// int i_testigos = 10; // Este es el número de testigos que voy a considerar. Guardaré los datos de los testigos 0 a 9.
 	
-	//#############################################################################################
+	// Voy a armar mi array de punteros, el cual voy a usar para guardar los datos de pasos previos del sistema
+	// double* ap_OpinionesPrevias[ps_datos->i_pasosprevios];
+	
+	// for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
+		// ap_OpinionesPrevias[i_i] = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Malloqueo los punteros de mis pasos previos
+		// // Defino su número de filas y columnas como N*T
+		// *ap_OpinionesPrevias[i_i] = ps_datos->i_N;
+		// *(ap_OpinionesPrevias[i_i]+1) = ps_datos->i_T;
+		// for(register int i_j=0; i_j<ps_datos->i_T*ps_datos->i_N;i_j++) *(ap_OpinionesPrevias[i_i]+i_j+2) = 0; // Inicializo los punteros
+	// }
+	
+		
+	//################################################################################################################################
 	
 	// Defino mis matrices y las inicializo
 	
@@ -102,61 +103,68 @@ int main(int argc, char *argv[]){
 	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_Diferencia[i_i] = 0; // Inicializo la matriz
 	ps_red->pd_Diferencia[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
 	ps_red->pd_Diferencia[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
-	
+		
 	//################################################################################################################################
-	
+
 	// Genero los datos de las matrices de mi sistema
 	
 	GenerarOpi(ps_red,ps_datos); // Esto me inicializa mis vectores de opinión, asignándole a cada agente una opinión en cada tópico
 	GenerarAng(ps_red,ps_datos); // Esto me inicializa mi matriz de superposición, definiendo el solapamiento entre tópicos.
+	GenerarAdy_Conectada(ps_red,ps_datos); // Esto me arma una matriz de adyacencia de una red totalmente conectada
 		
 	//################################################################################################################################
-	
+		
 	// Abro los archivos en los que guardo datos y defino mi puntero a función.
 	
 	// Voy a abrir dos archivos. En el primero guardo la opinión inicial, la Varprom, la opinión final y la semilla
 	// En el segundo me anoto la evolución de las opiniones de los testigos.
-	
+	/*
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_archivo1[355];
-	sprintf(s_archivo1,"../Programas Python/Din_log/Opiniones_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
+	sprintf(s_archivo1,"../Programas Python/Modelo_estocástico/Opiniones_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
 		,ps_datos->f_alfa,ps_datos->i_N,ps_datos->f_Cosangulo,ps_datos->d_mu,i_iteracion);
 	FILE *pa_archivo1=fopen(s_archivo1,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_archivo2[355];
-	sprintf(s_archivo2,"../Programas Python/Din_log/Testigos_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
+	sprintf(s_archivo2,"../Programas Python/Modelo_estocástico/Testigos_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
 		,ps_datos->f_alfa,ps_datos->i_N,ps_datos->f_Cosangulo,ps_datos->d_mu,i_iteracion);
 	FILE *pa_archivo2=fopen(s_archivo2,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
-	
+	*/
 	// Puntero a la función que define mi ecuación diferencial
 	double (*pf_EcDin)(ps_Red var, ps_Param par) = &Din2;
 	
 	//################################################################################################################################
-
-	// Acá voy a hacer las simulaciones de pasos previos del sistema y también voy a evolucionar el sistema hasta tener una red conexa.
-	// Primero que nada arranco guardando las opiniones iniciales.
 	
-	// Guardo la distribución inicial de las opiniones de mis agentes
-
+	// Hago las simulaciones de pasos previos del sistema cosa de tener con qué comparar al calcular la Varprom
+	// y ya arranco guardando datos.
+	
+	// Guardo la distribución inicial de las opiniones de mis testigos. Que son todos mis agentes en este caso
+	// fprintf(pa_archivo1, "Opiniones iniciales\n");
+	// Escribir_d(ps_red->pd_Opi,pa_archivo1);  // Guardo las opiniones de mis agentes
+	
 	printf("Esta es la matriz inicial de opiniones\n");
 	Visualizar_d(ps_red->pd_Opi);
 	
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar	
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
 		Iteracion(ps_red->pd_Opi,ps_red,ps_datos,pf_EcDin); // Itero mi sistema
+		printf("Esta es la matriz de opiniones\n");
+		Visualizar_d(ps_red->pd_Opi);
+		/*
 		// Me guardo los valores de opinión de mis agentes testigo
 		for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo2,"%lf\t",ps_red->pd_Opi[i_j*ps_datos->i_T+i_k+2]);
 		fprintf(pa_archivo1,"\n");
 		// Registro el estado actual en el array de OpinionesPrevias.
 		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) *(ap_OpinionesPrevias[i_i]+i_j+2) = ps_red->pd_Opi[i_j+2];
+		*/
 	}
-	
+
 	//################################################################################################################################
 	
 	// Realizo la simulación del modelo hasta que este alcance un estado estable
-	
-	fprintf(pa_archivo1,"Variación promedio \n"); // 
+	/*
+	fprintf(pa_archivo1,"Variación promedio \n"); // Escribo la primer fila de mi archivo de Varprom
 	
 	// Evolucionemos el sistema utilizando un mecanismo de corte
 	
@@ -182,7 +190,7 @@ int main(int argc, char *argv[]){
 		}
 		while( ps_red->d_Varprom > ps_datos->d_CritCorte);
 		
-		// Ahora evoluciono el sistema una cantidad i_Itextra de veces. Le pongo como condición que si el sistema deja de cumplir la condición de corte, deje de evolucionar
+		// Ahora evoluciono el sistema una cantidad $i_Itextra de veces. Le pongo como condición que si el sistema deja de cumplir la condición de corte vuelva al paso anterior
 		
 		while(i_contador < ps_datos->i_Itextra && ps_red->d_Varprom <= ps_datos->d_CritCorte ){
 			// Evolución
@@ -199,7 +207,6 @@ int main(int argc, char *argv[]){
 			i_IndiceOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
 			i_contador +=1; // Avanzo el contador para que el sistema haga una cantidad $i_Itextra de iteraciones extras
 		}
-		
 		// Si el sistema evolucionó menos veces que la cantidad arbitraria, es porque rompió la condiciones de corte.
 		// Por tanto lo vuelvo a hacer trabajar hasta que se vuelva a cumplir la condición de corte.
 		// Si logra evolucionar la cantidad arbitraria de veces sin problemas, termino la evolución.
@@ -214,11 +221,11 @@ int main(int argc, char *argv[]){
 	Escribir_d(ps_red->pd_Opi,pa_archivo1);
 	fprintf(pa_archivo1,"Semilla\n");
 	fprintf(pa_archivo1,"%ld\n",semilla);
-	
+	*/
 	
 	
 	// Libero los espacios dedicados a mis vectores y cierro mis archivos
-	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++) free(ap_OpinionesPrevias[i_i]);
+	// for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++) free(ap_OpinionesPrevias[i_i]);
 	free(ps_red->pd_Ang);
 	free(ps_red->pi_Ady);
 	free(ps_red->pd_Opi);
@@ -226,28 +233,15 @@ int main(int argc, char *argv[]){
 	free(ps_red->pd_Diferencia);
 	free(ps_red);
 	free(ps_datos);
-	fclose(pa_archivo1);
-	fclose(pa_archivo2);
+	// fclose(pa_archivo1);
+	// fclose(pa_archivo2);
 	
 	// Finalmente imprimo el tiempo que tarde en ejecutar todo el programa
 	time(&tt_fin);
 	f_tardanza = tt_fin-tt_prin;
+	sleep(1);
 	printf("Tarde %.1f segundos \n",f_tardanza);
 	
 	return 0;
  }
 
-
-
-
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	
-// Esto lo comento porque considero que no voy a necesitar esto para el programa en el caso de la transcrítica logarítmica
-
-// Defino unas variables double que voy a necesitar
-// double d_tope = 0; // Este es el máximo valor que puede tomar la norma del vector de opiniones
-// for(register int i_i = 0; i_i < ps_datos->i_N; i_i++) for(register int i_j=0; i_j < ps_datos->i_T; i_j++) d_tope += 100*100; // Considero como máximo que las opiniones valgan 100
-// d_tope = sqrt(d_tope); // Le tomo la raíz cuadrada para que sea la norma.
-// double d_normav = 0; // Este es el valor que tiene la norma del vector de opiniones
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
