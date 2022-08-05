@@ -847,3 +847,38 @@ materia de Dorso a Full.
 
 -------------------------------------------------------------------------------
 
+05/08/2022
+
+Hoy trabajé dese casa, se puede laburar perfecto. Quién diría que cargar
+todo a Github sería tan cómodo para laburar.
+
+Cuestión, modifiqué varias cosas del código para la etapa Din_log.
+Lo que hice en el main fue agregar una sección donde el sistema evoluciona hasta
+generar una red conexa. También me aseguré de guardar las redes de Adyacencia
+armadas, cosa de poder ver que efectivamente sean redes conexas.
+
+En avanzar modifiqué el tema del logaritmo para que ahora el programa calcule
+un logaritmo en base 10 y que además haga el logaritmo de la sumatoria
+y no el de la productoria.
+
+En inicializar aproveché y emprolijé la función de Conectar Adyacencia. Eso
+necesitaba un retoque porque era muy molesto cada vez que necesitaba revisar
+algo de ahí. Además había partes en las funciones donde buscaba elementos de
+la matriz de adyacencia y utilizaba el número de filas en vez del de columnas,
+un error feo pero que no se notaba porque el número de filas y de columnas
+de la matriz de adyacencia son iguales.
+Lo que sí noté es que había una parte del código que era una complicación al
+pedo, algo sobre calcular distancias usando la norma, cuando en realidad dado
+el espacio no ortogonal el tamaño de un vector se calcula distinto. Encima,
+ni siquiera era necesario calcular esa distancia, no comprendo qué pasó.
+Seguro el quilombo de cuentas me re confundió.
+
+Ahora que suba esto a Github, ya probé y lo pasé a la pc de Oporto sin problemas.
+La semana que viene puedo descargarlo en la facu, pasarlo a Oporto y de ahí
+mandarlo a correr. Una vez que tenga eso, ya nos concentramos a full con el final
+de Dorso. Esa cosa va a ser un bardo si no me dedico. Así que la semana que viene
+haré poco y nada de la tesis. Igual, hace una semana que tengo cosas para mencionarle
+a Pablo y charlarlas. Bueno, eso ya se verá. Me alegra haber podido laburar desde
+casa, hoy me concentré bastante más en el laburo.
+
+--------------------------------------------------------------------------------

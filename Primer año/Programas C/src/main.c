@@ -51,7 +51,7 @@ int main(int argc, char *argv[]){
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
 	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
-	int i_testigos = 10; // Este es el número de testigos que registraré. Voy a registrar los testigos de 0 a 9
+	int i_testigos = 6; // Este es el número de testigos que registraré. Voy a registrar los testigos de 0 a 9
 	
 	// Defino variables para ver que la red crezca hasta volverse conexa
 	int i_renovar_Adyacencia = (int) (1/ps_datos->f_dt); // Este número es la cantidad de veces que itero el sistema antes de renovar la matriz de Adyacencia
@@ -151,8 +151,8 @@ int main(int argc, char *argv[]){
 	// Primero que nada arranco guardando las opiniones iniciales.
 	
 	// Guardo la distribución inicial de las opiniones de mis agentes y preparo para guardar la Varprom.
-	printf("Esta es la matriz inicial de opiniones\n");
-	Visualizar_d(ps_red->pd_Opi);
+	fprintf(pa_archivo1,"Opiniones Iniciales\n");
+	Escribir_d(ps_red->pd_Opi,pa_archivo1);
 	
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar	
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
@@ -176,12 +176,13 @@ int main(int argc, char *argv[]){
 	// Evoluciono la red hasta lograr armar una red conexa.
 	// También preparo para guardar los valores de Varprom en mi archivo
 	
-	fprintf(pa_archivo1,"Variación promedio \n"); // 
+	fprintf(pa_archivo1,"Variación promedio \n");
 	
+	int i_IndiceOpiPasado = 0; 
 	// Evoluciono al sistema hasta que la red se vuelva conexa, ignorando si el sistema ya llegó antes a un estado estable.
 	do{
 		// Si la red no es conexa, agrego enlaces
-		if(i_rearmar%i_renovar_Adyacencia == 0) if(i_tamano < ps_datos->i_N) Adyacencia_Actividad(ps_red, ps_datos); // Podría intentar colocar todo en un solo if
+		if(i_rearmar%i_renovar_Adyacencia == 0) Adyacencia_Actividad(ps_red, ps_datos);
 		// Evolución
 		Iteracion(ps_red->pd_Opi,ps_red,ps_datos,pf_EcDin); // Itero mi sistema
 		// Cálculos derivados
@@ -204,7 +205,6 @@ int main(int argc, char *argv[]){
 	
 	// Realizo la simulación del modelo hasta que este alcance un estado estable
 	
-	int i_IndiceOpiPasado = 0;
 	while(i_contador < ps_datos->i_Itextra){
 		
 		i_contador = 0; // Inicializo el contador
@@ -253,9 +253,11 @@ int main(int argc, char *argv[]){
 	
 	// Guardo las últimas cosas, libero las memorias malloqueadas y luego termino
 	
-	// Guardo las opiniones finales y la semilla en el primer archivo.
+	// Guardo las opiniones finales, la matriz de adyacencia y la semilla en el primer archivo.
 	fprintf(pa_archivo1,"Opiniones finales\n");
 	Escribir_d(ps_red->pd_Opi,pa_archivo1);
+	fprintf(pa_archivo1,"matriz de Adyacencia\n"); // Guardo esto para poder comprobar que la red sea conexa.
+	Escribir_i(ps_red->pi_Opi,pa_archivo1);
 	fprintf(pa_archivo1,"Semilla\n");
 	fprintf(pa_archivo1,"%ld\n",semilla);
 	
