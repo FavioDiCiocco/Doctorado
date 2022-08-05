@@ -132,8 +132,8 @@ int Conectar_agentes(ps_Red ps_red, ps_Param ps_datos){
 	*(pi_agentes_libres+1) = i_C;
 	for(register int i_i=0; i_i<i_C; i_i++) *(pi_agentes_libres+i_i+2) = 0;
 	
-	// Reviso la fila de la matriz de adyacencia del agente i_agente, y me guardo los números de los agentes
-	// que no tienen conexión con i_agente. Lo separo en dos fors, porque la idea es saltear el caso
+	// Reviso la fila de la matriz de adyacencia del agente $i_agente, y me guardo los números de los agentes
+	// que no tienen conexión con $i_agente. Lo separo en dos fors, porque la idea es saltear el caso
 	// de i_i = ps_red->i_agente
 	for(register int i_i=0; i_i<ps_red->i_agente; i_i++){
 		if(ps_red->pi_Ady[ps_red->i_agente*i_F+i_i+2]==0){

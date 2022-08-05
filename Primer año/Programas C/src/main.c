@@ -52,6 +52,11 @@ int main(int argc, char *argv[]){
 	int i_iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
 	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
 	int i_testigos = 10; // Este es el número de testigos que registraré. Voy a registrar los testigos de 0 a 9
+	
+	// Defino variables para ver que la red crezca hasta volverse conexa
+	int i_renovar_Adyacencia = (int) (1/ps_datos->f_dt); // Este número es la cantidad de veces que itero el sistema antes de renovar la matriz de Adyacencia
+	int i_rearmar = 0; // Esto es un contador para ver cuándo volver a expandir la red
+	int i_tamano = 0; // Esto lo uso para medir el tamaño de la comunidad del primer agente
 		
 	// Voy a armar mi array de punteros, el cual voy a usar para guardar los datos de pasos previos del sistema
 	double* ap_OpinionesPrevias[ps_datos->i_pasosprevios];
@@ -73,11 +78,13 @@ int main(int argc, char *argv[]){
 	ps_red->pd_Ang = (double*) malloc((2+ps_datos->i_T*ps_datos->i_T)*sizeof(double)); // Matriz simétrica de superposición entre tópicos.
 	ps_red->pd_Opi = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Lista de vectores de opinión de la red, Tengo T elementos para cada agente.
 	
-	// También hay una matriz de paso previo del sistema y un vector para guardar la diferencia entre el paso previo y el actual.
+	// También hay una matriz de paso posterior del sistema, un vector para guardar la diferencia entre 
+	// el paso previo y el actual y un vector con la actividad de cada uno d elos agentes
 	ps_red->pd_OpiPosterior = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Paso previo del sistema antes de iterar.
 	ps_red->pd_Diferencia = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Vector que guarda la diferencia entre dos pasos del sistema
+	ps_red->pd_Act = (double*) malloc((2+ps_datos->i_N)*sizeof(double)); // Vector que guarda los valores de actividad de todos los agentes
 	
-	// Inicializo mis cinco "matrices".
+	// Inicializo mis seis "matrices".
 	// Matriz de Adyacencia. Es de tamaño N*N
 	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_N+2; i_i++) ps_red->pi_Ady[i_i] = 0; // Inicializo la matriz
 	ps_red->pi_Ady[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
@@ -103,12 +110,18 @@ int main(int argc, char *argv[]){
 	ps_red->pd_Diferencia[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
 	ps_red->pd_Diferencia[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
 	
+	// Matriz de Actividad de los agentes. Es de tamaño 1*N
+	for(register int i_i=0; i_i<ps_datos->i_N+2; i_i++) ps_red->pd_Act[i_i] = 0; // Inicializo la matriz
+	ps_red->pd_Act[0] = 1; // Pongo el número de filas en la primer coordenada
+	ps_red->pd_Act[1] = ps_datos->i_N; // Pongo el número de columnas en la segunda coordenada
+	
 	//################################################################################################################################
 	
 	// Genero los datos de las matrices de mi sistema
 	
 	GenerarOpi(ps_red,ps_datos); // Esto me inicializa mis vectores de opinión, asignándole a cada agente una opinión en cada tópico
 	GenerarAng(ps_red,ps_datos); // Esto me inicializa mi matriz de superposición, definiendo el solapamiento entre tópicos.
+	Actividad(ps_red->pd_Act,ps_datos->d_epsilon,-ps_datos->d_gamma); // Distribuyo los valores de actividad para cada uno de mis agentes
 		
 	//################################################################################################################################
 	
@@ -137,28 +150,59 @@ int main(int argc, char *argv[]){
 	// Acá voy a hacer las simulaciones de pasos previos del sistema y también voy a evolucionar el sistema hasta tener una red conexa.
 	// Primero que nada arranco guardando las opiniones iniciales.
 	
-	// Guardo la distribución inicial de las opiniones de mis agentes
-
+	// Guardo la distribución inicial de las opiniones de mis agentes y preparo para guardar la Varprom.
 	printf("Esta es la matriz inicial de opiniones\n");
 	Visualizar_d(ps_red->pd_Opi);
 	
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar	
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
+		// Si sucedieron $i_renovar_Adyacencia iteraciones, agrego enlaces a la red de Adyacencia según modelo de red de actividades
+		if(i_rearmar%i_renovar_Adyacencia == 0){
+			i_tamano = Tamano_Comunidad(ps_red->pi_Ady,0); // Reviso el tamaño de la comunidad del primer agente
+			if(i_tamano < ps_datos->i_N) Adyacencia_Actividad(ps_red, ps_datos); // Si la red no es conexa, agrego enlaces
+		}
 		Iteracion(ps_red->pd_Opi,ps_red,ps_datos,pf_EcDin); // Itero mi sistema
 		// Me guardo los valores de opinión de mis agentes testigo
 		for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo2,"%lf\t",ps_red->pd_Opi[i_j*ps_datos->i_T+i_k+2]);
 		fprintf(pa_archivo1,"\n");
 		// Registro el estado actual en el array de OpinionesPrevias.
 		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) *(ap_OpinionesPrevias[i_i]+i_j+2) = ps_red->pd_Opi[i_j+2];
+		// Actualizo índices
+		i_rearmar++;  // Avanzo el índice de rearmar para que la red se renueve cada $i_renovar_Adyacencia iteraciones-
 	}
 	
 	//################################################################################################################################
 	
-	// Realizo la simulación del modelo hasta que este alcance un estado estable
+	// Evoluciono la red hasta lograr armar una red conexa.
+	// También preparo para guardar los valores de Varprom en mi archivo
 	
 	fprintf(pa_archivo1,"Variación promedio \n"); // 
 	
-	// Evolucionemos el sistema utilizando un mecanismo de corte
+	// Evoluciono al sistema hasta que la red se vuelva conexa, ignorando si el sistema ya llegó antes a un estado estable.
+	do{
+		// Si la red no es conexa, agrego enlaces
+		if(i_rearmar%i_renovar_Adyacencia == 0) if(i_tamano < ps_datos->i_N) Adyacencia_Actividad(ps_red, ps_datos); // Podría intentar colocar todo en un solo if
+		// Evolución
+		Iteracion(ps_red->pd_Opi,ps_red,ps_datos,pf_EcDin); // Itero mi sistema
+		// Cálculos derivados
+		Delta_Vec_d(ps_red->pd_Opi,ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios],ps_red->pd_Diferencia); // Veo la diferencia entre $i_pasosprevios pasos anteriores y el actual en las opiniones
+		for(register int i_p=0; i_p<ps_datos->i_N*ps_datos->i_T; i_p++) *(ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios]+i_p+2) = ps_red->pd_Opi[i_p+2]; // Me guardo el estado actual en la posición correspondiente de ap_OpinionesPrevias
+		ps_red->d_Varprom = Norma_d(ps_red->pd_Diferencia)/ps_datos->d_NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
+		// Escritura
+		fprintf(pa_archivo1, "%lf\t",ps_red->d_Varprom); // Guardo el valor de variación promedio
+		for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo2,"%lf\t",ps_red->pd_Opi[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de opinión de mis agentes testigo
+		fprintf(pa_archivo1,"\n");
+		// Actualización de índices
+		i_IndiceOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
+		i_rearmar++;  // Avanzo el índice de rearmar para que la red se renueve cada $i_renovar_Adyacencia iteraciones
+		i_tamano = Tamano_Comunidad(ps_red->pi_Ady,0); // Reviso el tamaño de la comunidad del primer agente
+	}
+	while(i_tamano < ps_datos->i_N);
+	
+	
+	//################################################################################################################################
+	
+	// Realizo la simulación del modelo hasta que este alcance un estado estable
 	
 	int i_IndiceOpiPasado = 0;
 	while(i_contador < ps_datos->i_Itextra){
@@ -219,6 +263,7 @@ int main(int argc, char *argv[]){
 	
 	// Libero los espacios dedicados a mis vectores y cierro mis archivos
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++) free(ap_OpinionesPrevias[i_i]);
+	free(ps_red->pd_Act);
 	free(ps_red->pd_Ang);
 	free(ps_red->pi_Ady);
 	free(ps_red->pd_Opi);
