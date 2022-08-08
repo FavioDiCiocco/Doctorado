@@ -882,3 +882,31 @@ a Pablo y charlarlas. Bueno, eso ya se verá. Me alegra haber podido laburar des
 casa, hoy me concentré bastante más en el laburo.
 
 --------------------------------------------------------------------------------
+
+08/08/2022
+
+En la mañana bajé en la facultad el código que hice en casa. Le corregí dos
+tonterías que faltaban, declarar unos ints y cositas. Terminado eso, cargué
+el código en Oporto y actualicé el Instanciar.sh para que cree los arrays de
+parámetros con valores floats y que no se mueva sólamente en valores enteros.
+(Eso era un bardo extra). Lo probé y me fijé que todo funque bien.
+
+Después revisé el Metainstanciación, esa cosa no necesitaba mucho laburo.
+Corregidos y actualizados los programas de Instanciación, mandé a correr
+en la pc de Oporto, ocupando los 20 hilos. Son 80 iteraciones de un barrido
+en todo el espacio de parámetros, variando alfa, cdelta y mu en [0,1] de a
+0,1. Si mis cuentas están bien, esto va a tomar tres días y medio en terminar
+de correr. Así que un día antes del DDF va a estar terminado. Espero que nadie
+necesite usar las pcs de Oporto.
+
+Como soy un ansioso volví a mirar la pc de Oporto, ahí vi que el programa se
+había trabado. Claro, había mandado a correr casos en los que el Mu es cero.
+El sistema no tenía fuerza que lo tire hacia el centro, era puramente repulsor.
+Nunca dejaba de crecer. Ahora modifiqué para que lo mínimo que mu pueda valer
+sea 0,1 y lo volví a mandar. Esto estará para el 12/08, seguro.
+
+En el entre tiempo, y hoy también lo hice, vamos a estudiar puro y duro la
+materia de Dorso. Es un parto leer esos powerpoints. Y eso que estoy con los
+primeros. Dios se apiade de nosotros.
+
+--------------------------------------------------------------------------------
