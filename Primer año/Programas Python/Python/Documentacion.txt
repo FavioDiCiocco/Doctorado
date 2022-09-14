@@ -44,3 +44,14 @@ promedio en función del tiempo.
 de la carpeta de Conjunto_pequeño, pero como los datos de Trans_ln
 son iguales, da la situación para simplemente hacer todo en un
 sólo código.
+
+Exploracion.py
+--------------
+
+No  recordaba que tenía este archivo, imagino que su objetivo era
+revisar lo que estaba pasando con los archivos de Varprom.
+Si no me equivoco en estos casos me estaba pasando que el programa
+no terminaba de resolver el código nunca y me estaba generando archivos
+super gigantes. Luego, intenté revisar lo que había en los Varprom
+pero creo que los archivos eran demasiado grandes para revisar, así
+que ahí lo dejé.

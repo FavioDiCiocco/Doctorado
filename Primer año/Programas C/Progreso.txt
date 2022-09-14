@@ -910,3 +910,26 @@ materia de Dorso. Es un parto leer esos powerpoints. Y eso que estoy con los
 primeros. Dios se apiade de nosotros.
 
 --------------------------------------------------------------------------------
+
+14/09/2022
+
+El final de Dorso fue un evento complejo. Sin embargo, valió la pena, o eso
+espero. Ahora voy a retomar esto y al mismo tiempo voy a estar trabajando en
+pasar a Python el código de Fortran sobre el paper de Pablo. Tanto el de
+"Los indecisos tienen la clave", como uno sobre modelo del votante. Así que
+no sólo trabajaré en esto.
+
+Acabo de revisar los archivos de datos y me estoy dando cuenta de que había
+unos saltos de línea mal en el main, porque debía hacer que el salto de línea
+sea en el archivo 2 y los hacía en el archivo 1. Eso llevó a que el archivo 2
+que debería tener una línea por cada iteración del sistema tenga una sola línea,
+mientras que en el archivo 1 debía tener toda la Varprom en una sola fila y la
+tenía en múltiples filas con una sola columna. Un bardo. Esto significa que de nuevo
+tengo que mandar a correr todo, otra vez. Lo bueno es que tengo laburo para hacer
+mientras esto corre, así que no es taaan malo. Podría ser peor, podría estar necesitando
+que esos datos estén perfectamente armados y querer cortarme las bolas.
+
+Mandemos a correr eso de nuevo y mientras ir trabajando el armado de un archivo
+de Python que prepare gráficos en base a esos datos, que estarán hechos cuando estén.
+Ya hice las correcciones de los archivos main.c tanto en pc de Oporto como en 
+mi pc.

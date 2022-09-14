@@ -259,8 +259,6 @@ t0 = time.time()
 T=2 # Defino acá el número de tópicos porque es algo que no cambia por ahora,
 # pero no tenía dónde más definirlo
 
-SuperDiccionario = dict()
-
 for Carpeta in ["Conjunto_pequeño"]:
 
    # CÓDIGO PARA LEVANTAR ARCHIVOS DE UNA CARPETA CON TODOS LOS ARCHIVOS MEZCLADOS
