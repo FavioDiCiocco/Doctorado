@@ -154,6 +154,8 @@ int main(int argc, char *argv[]){
 	fprintf(pa_archivo1,"Opiniones Iniciales\n");
 	Escribir_d(ps_red->pd_Opi,pa_archivo1);
 	
+	fprintf(pa_archivo2,"Opiniones Testigos\n");
+	
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar	
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
 		// Si sucedieron $i_renovar_Adyacencia iteraciones, agrego enlaces a la red de Adyacencia según modelo de red de actividades
@@ -164,7 +166,7 @@ int main(int argc, char *argv[]){
 		Iteracion(ps_red->pd_Opi,ps_red,ps_datos,pf_EcDin); // Itero mi sistema
 		// Me guardo los valores de opinión de mis agentes testigo
 		for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo2,"%lf\t",ps_red->pd_Opi[i_j*ps_datos->i_T+i_k+2]);
-		fprintf(pa_archivo1,"\n");
+		fprintf(pa_archivo2,"\n");
 		// Registro el estado actual en el array de OpinionesPrevias.
 		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) *(ap_OpinionesPrevias[i_i]+i_j+2) = ps_red->pd_Opi[i_j+2];
 		// Actualizo índices
@@ -192,7 +194,7 @@ int main(int argc, char *argv[]){
 		// Escritura
 		fprintf(pa_archivo1, "%lf\t",ps_red->d_Varprom); // Guardo el valor de variación promedio
 		for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo2,"%lf\t",ps_red->pd_Opi[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de opinión de mis agentes testigo
-		fprintf(pa_archivo1,"\n");
+		fprintf(pa_archivo2,"\n");
 		// Actualización de índices
 		i_IndiceOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
 		i_rearmar++;  // Avanzo el índice de rearmar para que la red se renueve cada $i_renovar_Adyacencia iteraciones
@@ -220,7 +222,7 @@ int main(int argc, char *argv[]){
 			// Escritura
 			fprintf(pa_archivo1, "%lf\t",ps_red->d_Varprom); // Guardo el valor de variación promedio
 			for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo2,"%lf\t",ps_red->pd_Opi[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de opinión de mis agentes testigo
-			fprintf(pa_archivo1,"\n");
+			fprintf(pa_archivo2,"\n");
 			// Actualización de índices
 			i_IndiceOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
 		}
@@ -238,7 +240,7 @@ int main(int argc, char *argv[]){
 			// Escritura
 			fprintf(pa_archivo1, "%lf\t",ps_red->d_Varprom); // Guardo el valor de variación promedio 
 			for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo2,"%lf\t",ps_red->pd_Opi[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de opinión de mis agentes testigo
-			fprintf(pa_archivo1,"\n");
+			fprintf(pa_archivo2,"\n");
 			// Actualización de índices
 			i_IndiceOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
 			i_contador +=1; // Avanzo el contador para que el sistema haga una cantidad $i_Itextra de iteraciones extras
