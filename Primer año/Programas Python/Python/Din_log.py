@@ -5,110 +5,18 @@ Created on Wed Sep 14 14:11:00 2022
 @author: Favio
 """
 
-
 import matplotlib.pyplot as plt
-from matplotlib.pyplot import cm
-from matplotlib.colors import LinearSegmentedColormap
 import pandas as pd
 import numpy as np
 import time
 import math
 import os
+import funciones as func
 
 # Importo todas las librerías que voy a usar en el programa. Estas son las que
 # uso en los tres programas, por lo que no debería necesitar nada más.
 
-#--------------------------------------------------------------------------------
-
-# Voy a definir TODAS las funciones que voy a usar, total definirlas no roba
-# tiempo o proceso al programa.
-
-
-# Esto printea una cantidad de valores cant de un objeto iterable que paso
-# en la parte de lista.
-def scan(lista,cant=10):
-    i=0
-    for x in lista:
-        print(x)
-        i+=1
-        if i>cant:
-            break
-            
-        
-# Esto va al final de un código, simplemente printea cuánto tiempo pasó desde la última
-# vez que escribí el inicio del cronómetro t0=time.time()
-def Tiempo():
-    t1=time.time()
-    print("Esto tardó {} segundos".format(t1-t0))
-
-
-# Esta es la función que uso por excelencia para levantar datos de archivos. Lo
-# bueno es que lee archivos de forma general, no necesita que sean csv o cosas así
-def ldata(archive):
-        f = open(archive)
-        data = []
-        for line in f:
-            col = line.split("\t")
-            col = [x.strip() for x in col]
-            data.append(col)
-        return data 
-
-
-def Indice_Color(vector,Divisiones):
-    # Primero calculo el ángulo
-    Vhor = [1,0] # Este vector representa la horizontal
-    if np.linalg.norm(vector) != 0 :
-        vector_unitario = vector/np.linalg.norm(vector)
-        Producto_escalar = np.dot(Vhor,vector_unitario)
-        Angulo = np.arccos(Producto_escalar)
-
-        # Le hago ajuste considerando el cuadrante del vector
-        if vector[1] < 0:
-            Angulo = 2*math.pi-Angulo
-
-
-        # Ahora calculo el valor de división entera y el Resto
-        Delta = (2*math.pi)/Divisiones
-        Dividendo = Angulo/Delta
-        D = math.floor(Dividendo)
-        R = (Dividendo - D) * Delta
-
-        # Compruebo en qué casillero cae el ángulo y returneo el índice
-        if R <= Delta/2:
-            return D # En este caso el ángulo se encuentra entre (D*Delta-Delta/2,D*Delta+Delta/2]
-        elif R > Delta/2:
-            return (D+1)%Divisiones # En este caso el ángulo se encuentra entre ((D+1)*Delta-Delta/2,(D+1)*Delta+Delta/2]
-    else:
-        return 0;
-
-
-# Acá lo que voy a hacer es preparar los colores que voy a usar para definir los puntos finales
-# de las trayectorias de las opiniones
-
-Divisiones = 144
-color=cm.rainbow(np.linspace(0,1,Divisiones))
-
-
-# Lo que hice acá es definir una ¿lista? que tiene en cada casillero los datos que definen un color.
-# Tiene diferenciados 144 colores, es decir que tengo un color para cada región de 2.5 grados. Estas regiones
-# las voy a distribuir centrándolas en cada ángulo que cada color representa. Por lo tanto,
-# Los vectores que tengan ángulo entre -1.25º y 1.25º tienen el primer color. Los que tengan entre
-# 1.25º y 3.75º tienen el segundo color. Y así. Por tanto yo tengo que hallar una fórmula que para
-# cada ángulo le asigne el casillero que le corresponde en el vector de color. Luego, cuando grafique
-# el punto, para el color le agrego un input que sea: c = color[n]
-
-
-
-# Estas son todas las funciones que voy a necesitar. Lo último no es una función,
-# es la lista de colores que necesitaba para usar la función Indice_Color.
-# Ahora voy a definir la parte que se encarga de levantar los nombre y el path
-# de los archivos.
-
 t0 = time.time()
-
-#-------------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------------
 
 T=2 # Defino acá el número de tópicos porque es algo que no cambia por ahora,
 # pero no tenía dónde más definirlo
@@ -151,3 +59,45 @@ for Carpeta in ["Din_log"]:
     # creo que es más sencillo armar las columnas ahora y no ir creándolas cada vez que las necesito.
     
     #--------------------------------------------------------------------------------------------
+    
+    # Armo los gráficos de opinión en función del tiempo a base de los testigos.
+    
+    func.Graf_opi_vs_tiempo(Df_archivos, Conjunto_Direcciones, Carpeta)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    """
+    
+    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
+    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
+    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
+    
+    arrayN = np.unique(Df_archivos["n"])
+    arrayAlfa = np.unique(Df_archivos["alfa"])
+    arrayCdelta = np.unique(Df_archivos["cdelta"])
+    arrayMu = np.unique(Df_archivos["mu"])
+    
+    Tupla_total = [(n,alfa,cdelta,mu) for n in arrayN
+                   for alfa in arrayAlfa
+                   for cdelta in arrayCdelta
+                   for mu in arrayMu]
+    
+    
+    for AGENTES,ALFA,CDELTA,MU in Tupla_total:
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(Df_archivos.loc[((Df_archivos["tipo"]==TIPO) & 
+                                    (Df_archivos["n"]==AGENTES) & 
+                                    (Df_archivos["mu"]==MU) & 
+                                    (Df_archivos["cdelta"]==CDELTA) & 
+                                    (Df_archivos["alfa"]==ALFA), "nombre")])
+        
+        # Y acá está el truco, si la combinación de N, Alfas, Cdeltas y Mu no es una combinación existente,
+        # entonces el pandas estará vacío y listo, no hay archivos sobre los cuales iterar. Supongo que
+        # después podré armar esto de forma más particular de ser necesario para los mapas de colores.
+        
+        #-----------------------------------------------------------------------------------------
+    
+        """
+
+func.Tiempo(t0)

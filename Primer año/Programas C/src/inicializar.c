@@ -120,8 +120,8 @@ int Conectar_agentes(ps_Red ps_red, ps_Param ps_datos){
 	int i_F = ps_red->pi_Ady[0];
 	int i_C = ps_red->pi_Ady[1];
 	
-	i_indice = 0; // Uso esto para recorrer el vector de agentes libres
-	i_libres = 0; // Esto me indica cuántos agentes tengo "libres", es decir disponibles para conectarme
+	int i_indice = 0; // Uso esto para recorrer el vector de agentes libres
+	int i_libres = 0; // Esto me indica cuántos agentes tengo "libres", es decir disponibles para conectarme
 	
 	// Estas son las variables de double que uso para cálculos y para obtener probabilidades.
 	double d_distancia = 0; // Este es el valor escalar de distancia entre dos opiniones

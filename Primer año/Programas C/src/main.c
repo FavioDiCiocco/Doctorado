@@ -259,7 +259,7 @@ int main(int argc, char *argv[]){
 	fprintf(pa_archivo1,"Opiniones finales\n");
 	Escribir_d(ps_red->pd_Opi,pa_archivo1);
 	fprintf(pa_archivo1,"matriz de Adyacencia\n"); // Guardo esto para poder comprobar que la red sea conexa.
-	Escribir_i(ps_red->pi_Opi,pa_archivo1);
+	Escribir_i(ps_red->pi_Ady,pa_archivo1);
 	fprintf(pa_archivo1,"Semilla\n");
 	fprintf(pa_archivo1,"%ld\n",semilla);
 	
