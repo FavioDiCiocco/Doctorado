@@ -933,3 +933,29 @@ Mandemos a correr eso de nuevo y mientras ir trabajando el armado de un archivo
 de Python que prepare gráficos en base a esos datos, que estarán hechos cuando estén.
 Ya hice las correcciones de los archivos main.c tanto en pc de Oporto como en 
 mi pc.
+
+------------------------------------------------------------------------------------
+
+26/09/2022
+
+Estos días estuve trabajando en armar el código que me pidió Pablo sobre el modelo
+del Votante y el modelo de Deffuant, en preparar el TP de la materia de Mininni
+y en la charla que di en la reunión de grupo.
+
+Y además en un principio pensé que para no mezclar cosas lo mejor era no anotar
+el trabajo hecho sobre lo de Pablo acá, pero siendo que eso también lo voy a
+estar subiendo al Github, me parece que no tiene sentido no ir agregando notas.
+
+Cuestión, arranqué por el modelo del votante, el cual estoy armando sobre una grilla
+cuadrada. Este modelo evoluciona tomando un agente al azar y luego a un vecino de
+este agente. Definidos los dos agentes, al segundo le pongo el valor de opinión del
+primero. Este sistema evoluciona hasta que una sóla opinión domina.
+
+Actualmente el código genera la grilla, la puebla y evoluciona el sistema seleccionando
+agentes y copiando las opiniones. Para eso estoy usando el generador de grilla de 
+networkx y el generador aleatorio de Numpy. Estas cosas nuevas que estoy aprendiendo
+las estoy registrando en el código.
+
+El miércoles seguiré con esto. La idea es armar un gráfico que se actualice a medida
+que el sistema evoluciona y que eso me muestre el estado del sistema. Y después meter
+todo en funciones que estarán en un archivo separado que importaré usando import.
