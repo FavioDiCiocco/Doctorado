@@ -959,3 +959,28 @@ las estoy registrando en el código.
 El miércoles seguiré con esto. La idea es armar un gráfico que se actualice a medida
 que el sistema evoluciona y que eso me muestre el estado del sistema. Y después meter
 todo en funciones que estarán en un archivo separado que importaré usando import.
+
+--------------------------------------------------------------------------------------
+
+28/09/2022
+
+En la mañana trajeron los muebles nuevos, así que estuve trabajando en el cuaderno.
+A la tarde me puse a pasar el código hecho a la pc. Ya con eso logré hacer que las
+bases para el modelo del votante estén terminadas. Puedo generar la grilla, asignar
+las posturas de los agentes, evolucionar sus posturas, calcular la fracción de agentes
+activos y graficar el sistema. Lo que sigue es pasar todo el código a funciones
+externas que después importare. 
+
+Por otra parte, queda pendiente el desarrollar la parte del código donde se calcula
+la fracción de enlaces activos porque esta sección es sin duda la que más tarda del
+código. Se me ocurre que para que vaya más rápido podría la primera vez hacer la
+cuenta, con todo lo que eso puede tardar, y después a partir de ahí simplemente
+voy actualizando sólamente a los sujetos que flippean. De esta manera no necesito
+hacer tanto laburo de calcular, porque en cada iteración sólo cambia un sujeto a
+lo sumo. Además esa matriz eventualmente la necesito para graficar.
+Por el lado de armar un gráfico animado, eso va a ser un tema en sí mismo.
+
+Después quiero remarcar que debería actualizar las documentaciones de las carpetas
+que hay en Programas Python y en Imágenes porque hay más carpetas que las que dan 
+cuenta los archivos y pronto me voy a empezar a olvidar que etapa del trabajo iba
+antes de cuál.
