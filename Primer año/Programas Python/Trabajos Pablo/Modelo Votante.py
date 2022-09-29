@@ -34,47 +34,10 @@ p = 0.5 # Distribución de los agentes positivos y los negativos
 
 
 G = vote.Construccion_grilla_cuadrada(L,p) # Construyo la red y asigno las posturas
-vote.Graficar_y_guardar_sistema(G,L,0,"./") # Me guardo un gráfico del sistema.
-# Se le puede asignar un path para que guarde el archivo
+vote.Graficar_y_guardar_sistema(G,L,0) # Me guardo un gráfico del sistema.
+# Se le puede asignar un path para que guarde el archivo en la carpeta que quiera
 
 
-# Evolución del sistema
-#---------------------------------------------------------------
-
-# La idea es que tomo un agente al azar, luego tomo un vecino suyo 
-# al azar y de ahí pido que el primer vecino tenga la opinión del segundo.
-
-Nodos = G.nodes()
-
-# Al parecer hubo un cambio en las librerías de numpy y lo que se recomienda
-# es no usar randint, sino usar los generadores de números aleatorios en
-# el código nuevo. Para esto entonces la idea es primero crear un generador
-# de números aleatorios.
-
-rng = np.random.default_rng() # Esto es un objeto, es un generador de números aleatorios.
-# Este sujeto me permite generar ints, distribuciones normales y otras cosas también.
-
-for iteraciones in range(100000):
-    
-    # Tomo mi primer nodo al azar.
-    
-    nodo_i = tuple(rng.choice(Nodos)) # Choice toma un elemento al azar del array
-    
-    # Ahora elijo un vecino de ese nodo.
-    
-    Vecinos = [nodo for nodo in nx.neighbors(G,nodo_i)]
-    nodo_j = tuple(rng.choice(Vecinos))
-    
-    # Armo un dict para que el cambio de postura se realice de forma más prolija.
-    Cambio = dict()
-    Cambio[nodo_j] = nx.get_node_attributes(G,"Postura")[nodo_i]
-    
-    # Fijo la opinión del vecino j igual a la del vecino i.
-    
-    nx.set_node_attributes(G,Cambio, name = "Postura")
-
-print("Evolucioné un agente")
-func.Tiempo(t0)
 
 # Medición del parámetro de corte
 #-------------------------------------------------------------------------------

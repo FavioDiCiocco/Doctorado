@@ -23,6 +23,7 @@ import networkx as nx
 # Esta función recibe los parámetros del sistema, que son el largo de la grilla
 # y la fracción de individuos con postura 1. A partir de eso arma la grilla y
 # asigna las posturas a los agentes. Luego devuelve la grilla creada.
+
 def Construccion_grilla_cuadrada(L,p):
     G = nx.grid_2d_graph(L,L) # Me armo una grilla de L*L agentes
     Valores = dict() # Este es el diccionario con los valores que le asigno a los nodos
@@ -60,4 +61,24 @@ def Graficar_y_guardar_sistema(G,L,iteracion,path="../../Imagenes/Trabajos Pablo
     plt.savefig( path+"/Sistema_t={}.png".format(iteracion), bbox_inches = "tight")
     plt.close()
     
+#--------------------------------------------------------------------------------
+
+# Recibo la grilla del sistema y evoluciono su estado al elegir dos agentes al azar,
+# el primero lo elijo del total de agentes, el segundo lo elijo del grupo de vecinos
+# del primero. Luego copio la postura del primer agente al segundo agente.
+
+def Imitacion_postura(G):
+    rng = np.random.default_rng() # Objeto de numpy que genera distribuciones
+    # números aleatorios y sampleos.
+    
+    Nodos = G.nodes() # Defino la lista de nodos de mi grilla
+    nodo_i = tuple(rng.choice(Nodos)) # Elijo mi primer nodo al azar
+    Vecinos = [nodo for nodo in nx.neighbors(G,nodo_i)] # Armo la lista de vecinos del nodo_i
+    nodo_j = tuple(rng.choice(Vecinos)) # Elijo un vecino del nodo_i al azar
+    
+    # Armo un dict para que el cambio de postura se realice de forma más prolija.
+    Cambio = dict()
+    Cambio[nodo_j] = nx.get_node_attributes(G,"Postura")[nodo_i]
+    
+    nx.set_node_attributes(G,Cambio, name = "Postura") # Fijo la opinión del vecino j igual a la del vecino i.
     
