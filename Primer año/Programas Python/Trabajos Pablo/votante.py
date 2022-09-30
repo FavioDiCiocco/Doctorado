@@ -82,3 +82,15 @@ def Imitacion_postura(G):
     
     nx.set_node_attributes(G,Cambio, name = "Postura") # Fijo la opinión del vecino j igual a la del vecino i.
     
+#--------------------------------------------------------------------------------
+
+def Enlaces_activos(G):
+    Atributos = nx.get_node_attributes(G, "Postura") # Me guardo un diccionario de las posturas de cada agente
+    
+    # Lo siguiente es armar una lista con el producto de posturas entre todos los agentes que tengan
+    # un enlace. Si sus posturas son contrarias, entonces el resultado es -1. Por tanto, cuento todos
+    # los -1 obtenidos. activos es el número de enlaces cuyos extremos tienen posturas distintas
+    activos = [Atributos[i]*Atributos[j] for i,j in G.edges()].count(-1)
+    fraccion_activos = activos/len(G.edges()) # Esta es la fracción de enlaces activos del sistema
+    return fraccion_activos
+    

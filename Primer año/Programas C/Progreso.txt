@@ -984,3 +984,30 @@ Después quiero remarcar que debería actualizar las documentaciones de las carp
 que hay en Programas Python y en Imágenes porque hay más carpetas que las que dan 
 cuenta los archivos y pronto me voy a empezar a olvidar que etapa del trabajo iba
 antes de cuál.
+
+----------------------------------------------------------------------------------
+
+29/09/2022
+
+La mayor parte del día me dediqué a la materia de Mininni. A lo último dediqué
+unos minutitos a seguir un poco con el código del modelo del votante.
+
+----------------------------------------------------------------------------------
+
+30/09/2022
+
+En la mañana terminé el código del votante y lo mandé a correr. Al principio
+tardó mucho en converger, tenía una gran cantidad de agentes. Por consejo
+de Pablo le reduje el número de agentes y lo mandé a correr de nuevo y ahora
+sí converge. Cuestión, es un código que no va en una única dirección sino que
+oscila entre caer a un estado o al otro.
+
+Sobre el modelo de Deffuant, en el día varias cosas diversas me distrajeron un
+poco de eso, pero en definitiva ya tengo el esqueleto del código armado, ahora
+sólo tengo que organizarlo para que las funciones estén prolijamente anotadas y
+el código funcione correctamente. En este caso sólo armaré un gráfico del sistema,
+así que ese gráfico tiene que construirse con el array de opiniones que se va
+construyendo. Es decir, el armado del gráfico tiene que ser parte de la iteración
+del sistema, no puede estar al final.
+
+El lunes termino esto y ya veo que tal queda.
