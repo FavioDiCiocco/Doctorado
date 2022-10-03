@@ -8,9 +8,7 @@ Created on Fri Sep 30 14:08:53 2022
 
 import matplotlib.pyplot as plt
 import numpy as np
-import networkx as nx
 import time
-import funciones as func
 import deffuant as deff
 
 
@@ -29,54 +27,34 @@ t0 = time.time()
 # Definición de los parámetros del modelo
 #---------------------------------------------------------------------------
 
-N = 30 # Número de agentes
+N = 5000 # Número de agentes
 mu = 0.25 # Parámetro de convergencia
-epsilon = 0.6 # Tolerancia de opiniones
+epsilon = 0.25 # Tolerancia de opiniones
 
 Opiniones = deff.Distribucion_inicial(N) # Armo la distribución inicial de opiniones
+t = 0 # Este es el "paso temporal discreto" del sistema.
 
-
-# Evolución del sistema
-#----------------------------------------------------------------------------
-
-Opiniones_previas = np.array([opi for opi in Opiniones]) # Tengo que definir Opiniones_previas
-# así para que me los considere arrays separados, sino Opiniones_previas apunta al mismo
-# espacio de memoria.
-
-for iteracion in range(N):
-    # Elijo los dos agentes que van a interactuar
-    Agentes = rng.choice(np.arange(N),size=2,replace=False)
-    # Los agentes interactúan si sus opiniones se encuentran suficientemente cerca
-    distancia = Opiniones[Agentes[1]]-Opiniones[Agentes[0]] # Distancia entre las opiniones de los agentes
-    if np.abs(distancia) < epsilon:
-        # Evoluciono al primer agente
-        Opiniones[Agentes[0]] = Opiniones[Agentes[0]] + mu*(distancia)
-        # Evoluciono al segundo agente
-        Opiniones[Agentes[1]] = Opiniones[Agentes[1]] - mu*(distancia)
-        # El segundo tiene un menos porque quiero -diferencia, cosa de 
-        # que el segundo agente se acerque al primero
-
-# Parámetro de corte
-#---------------------------------------------------------------------------
-
-# El sistema debe llegar a un final en el que los agentes forman grupos, uno o varios.
-# Propongo usar la diferencia entre los vectores opinión para determinar
-# si el sistema llega a un estado estable
-desviacion_estandar = np.std(np.abs(Opiniones-Opiniones_previas))
-
-# Gráfico del sistema
-#----------------------------------------------------------------------------
-
-plt.rcParams.update({'font.size': 24})
+# Grafico la primer columna de datos
+plt.rcParams.update({'font.size': 24}) # Defino los tamaños de letras
 fig,ax = plt.subplots(figsize=(12,8)) # Creo la figura que voy a graficar
-
 T = np.ones(N)*t # Largo de mi grilla
-# Los valores de Y serán un array que contenga las opiniones de todos los agentes
-# en cada t. Es más, podría directamente graficar eso usando el array de Opiniones
-# Y no tener un array que crezca infinitamente.
+ax.plot(T,Opiniones,"xg",markersize=6) # Grafico el estado actual del sistema
 
-# Grafico
-ax.plot(T,Opiniones,"xg",markersize=4)
-plt.savefig( path+"/Deffuant_mu={}_eps={}.png".format(mu,epsilon), bbox_inches = "tight")
+criterio_corte = mu*epsilon*(3/2)*(1/1000) # Este es el criterio que definí
+# para decir que el sistema está en un estado estable
+desviacion_estandar = criterio_corte+1 # Fuerzo a que el while se ejecute una vez mínimo
+
+while desviacion_estandar > criterio_corte:
+    Opiniones_previas = np.array([opi for opi in Opiniones]) # Armo el array de opiniones del paso actual
+    for iteracion in range(N):
+        deff.Evolucion_sistema(Opiniones, N, epsilon, mu) # Evoluciono las opiniones de los agentes de forma aleatoria
+    t += 1 # Actualizo mi índice del tiempo
+    # Grafico la siguiente columna de datos
+    T = np.ones(N)*t # Largo de mi grilla
+    ax.plot(T,Opiniones,"xg",markersize=4) # Grafico el estado actual del sistema
+    desviacion_estandar = np.std(np.abs(Opiniones-Opiniones_previas)) # Esta es la desviación estándar
+    # de la diferencia entre el paso actual y el paso previo de las opiniones de los agentes
+
+# Cuando el sistema alcanzó un estado estable, guardo mi gráfico
+plt.savefig( "../../Imagenes/Trabajos Pablo/Deffuant_mu={}_eps={}.png".format(mu,epsilon), bbox_inches = "tight")
 plt.close()
-

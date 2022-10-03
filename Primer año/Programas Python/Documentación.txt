@@ -63,3 +63,24 @@ agentes, así que vuelvo a tener archivos de Opiniones_... y Testigos_... . La f
 realizar la selección del segundo agente es un tema a definir y de gran relevancia en
 la caracterización de la evolución de este sistema. Es posible que esta carpeta contenga
 varias sub carpetas.
+Al final para esto Pablo decía de arrancar desde un modelo inicial mucho más simplificado,
+con redes estáticas y partiendo del modelo de Baumann. Yo me había mandado a aplicar esto
+al modelo con el logaritmo.
+
+Din_log:
+--------
+Acá guardo los datos del modelo con el término logarítmico corregido. En la pc de la facultad
+tengo algunos archivos generados para probar que el programa corre y cuánto tarda cada
+archivo en generarse. Los archivos de verdad están armados en la pc de Oporto, ahí armé
+un barrido en el espacio de parámetros de mu, alfa y cdelta, barriendo mu [0.1, 1],
+alfa [0,1] y cdelta [0,1]. Todavía nunca revisé el comportamiento del sistema en
+este espacio de parámetros, tengo que armar gráficos al respecto.
+
+Trabajos Pablo:
+---------------
+Pablo me pidió que codeara en Python los modelos del votante y el de Deffuant. Esta carpeta
+contiene esos códigos en Python en los cuales además empecé a probar cómo es esto de definir
+funciones en archivos externos y después importarlas, todo con el objetivo de que los
+códigos se vean más limpios y mucho más fáciles de entender lo que están haciendo.
+Por tanto, para cada modelo tengo además armado un archivo con las funciones propias
+de ese modelo.

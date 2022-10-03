@@ -36,13 +36,14 @@ def Evolucion_sistema(Opiniones,N,epsilon,mu):
     # Los agentes interactúan si sus opiniones se encuentran suficientemente cerca
     distancia = Opiniones[Agentes[1]]-Opiniones[Agentes[0]] # Distancia entre las opiniones de los agentes
     if np.abs(distancia) < epsilon:
-        Interaccion_agentes(Opiniones,epsilon,mu)
+        Interaccion_agentes(Opiniones,Agentes,distancia,epsilon,mu)
         
-        
-# Esto lo pondré en una función aparte que voy a llamar interacción
-# # Evoluciono al primer agente
-# Opiniones[Agentes[0]] = Opiniones[Agentes[0]] + mu*(distancia)
-# # Evoluciono al segundo agente
-# Opiniones[Agentes[1]] = Opiniones[Agentes[1]] - mu*(distancia)
-# El segundo tiene un menos porque quiero -diferencia, cosa de 
-# que el segundo agente se acerque al primero
+#---------------------------------------------------------------------------------------
+
+def Interaccion_agentes(Opiniones,Agentes,distancia,epsilon,mu):
+    # Evoluciono al primer agente
+    Opiniones[Agentes[0]] = Opiniones[Agentes[0]] + mu*(distancia)
+    # Evoluciono al segundo agente
+    Opiniones[Agentes[1]] = Opiniones[Agentes[1]] - mu*(distancia)
+    # El segundo tiene un menos porque quiero -diferencia, cosa de 
+    # que el segundo agente se acerque al primero        

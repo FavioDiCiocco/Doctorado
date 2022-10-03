@@ -32,3 +32,12 @@ agentes, sólo que en este caso reemplazo la función cuadrática
 por un logaritmo. De ahí saco gráficos de opiniones finales
 en el espacio de tópicos, Opiniones en función del tiempo y
 Variación promedio. 
+
+.) Trabajos Pablo:
+------------------
+Los gráficos asociados al modelo del votante y al modelo de Deffuant que
+Pablo me pidió que armara los coloqué acá. El modelo de Deffuant tiene un
+sólo gráfico porque a cada simulación la puedo representar con un único
+gráfico. En cambio, el modelo del Votante tiene varios gráficos para poder
+representar la evolución de las posturas de los agentes distribuidos en
+la grilla.
