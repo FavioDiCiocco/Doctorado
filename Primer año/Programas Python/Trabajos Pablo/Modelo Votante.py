@@ -27,13 +27,13 @@ t0 = time.time()
 #---------------------------------------------------------------
 
 L = 30 # Ancho y largo de la grilla
-p = 0.5 # Distribución de los agentes positivos y los negativos
+p = 0.5 # Distribución de los agentes positivos
 
 # Evolución del modelo
 # ----------------------------------------------------------------
 
 G = vote.Construccion_grilla_cuadrada(L,p) # Construyo la red y asigno las posturas
-vote.Graficar_y_guardar_sistema(G,L,0) # Me guardo un gráfico del sistema.
+vote.Graficar_y_guardar_sistema(G,L,0,path="./") # Me guardo un gráfico del sistema.
 # Se le puede asignar un path para que guarde el archivo en la carpeta que quiera
 fraccion_activos = vote.Enlaces_activos(G) # Calculo la fracción actual de agentes activos.
 # N = len(G.nodes())

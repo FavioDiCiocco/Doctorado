@@ -1011,3 +1011,193 @@ construyendo. Es decir, el armado del gráfico tiene que ser parte de la iteraci
 del sistema, no puede estar al final.
 
 El lunes termino esto y ya veo que tal queda.
+
+------------------------------------------------------------------------------------
+
+03/10/2022
+
+Le hice los retoques finales al código del modelo del votante y lo mandé a correr
+con 10000 agentes. Estuvo toda la tarde corriendo y no convergía, el sistema osciló
+entre la solución de todos +1 a todos -1 y a todos +1 de nuevo, no parecía que fuera
+a converger nunca. Hablando con pablo me dijo que pruebe ponerle menos agentes y
+también le cambié para que no arme tantos gráficos. Esta vez convirgió rápido
+dentro de todo.
+
+Mientras todo esto corría, trabajé en el modelo de Deffuant y lo preparé para que
+corra y se vea el gráfico similar a lo que se ve en el paper de Statistical
+Physics. Logré que el programa funque, las funciones están dentro de todo prolijas
+y arma los gráficos.
+
+Por último actualicé la documentación de la carpeta de Programas Python y la de
+Imágenes.
+
+--------------------------------------------------------------------------------------
+
+04/10/2022
+
+Estuve toda la mañana leyendo el paper sobre Social Physics que me pasó Pablo, 
+la sección sobre Metapoblaciones. Leí la primera parte, mañana termino lo que
+falta. Tomé algunas notas en el archivo de Resumenes que está en la carpeta
+de Tesis Favio en el Drive. Mañana terminaré esto.
+
+----------------------------------------------------------------------------------------
+
+05/10/2022
+
+Terminé de leer la sección de metapoblaciones del paper de Social Physics y
+tomé unas notas en el archivo de Resumenes.
+
+Habiendo terminado el trabajo que me pidió Pablo y leído lo de Metapoblaciones
+ahora tengo los siguientes caminos para tomar en el trabajo:
+
+1) Revisar los archivos de simulaciones que armé y que están en la pc de
+Oporto.
+2) En sintonía con lo anterior, podría intentar emprolijar el archivo de
+Python que uso para armar gráficos y demás cosas. En particular considerando
+que no me gusta cómo funca la cosa porque siento que hay muchas indentaciones
+innecesarias.
+3) Modificar la función del segundo término de Baumann usando una función
+logística. Esto está bueno porque es una función en la que podemos modificar
+la pendiente más fácilmente.
+4) Repensar el modelo desde cero, partiendo en un modelo de un tópico.
+Pensar en las reglas que quiero que el modelo cumpla, luego pensaré en
+cómo armar una ecuación en torno a eso.
+5) Leer la bibliografía que tengo, ya sea el archivo de Social Physics completo,
+el de Statistical Physics o el de Detección de Comunidades.
+6) Armar algún concepto de un modelo o un estudio en base al Republia.
+
+Tengo las siguientes respuestas para organizar cuál debería ser el próximo trabajo
+a realizar.
+
+El 1 y 2 no los haría ahora, me parece que ya establecimos que la idea es volver
+a la mesa de trabajo y empezar el modelo de nuevo, arrancar con eso sería muy
+cercano a una pérdida de tiempo.
+La 3 creo que es un paso avanzado, lo haría si ya repensé el modelo primero.
+Ya estuve leyendo bibliografía, me gustaría tener algo sobre el modelo para
+conversar la próxima vez, así que quizás hasta la semana que viene dejaría
+el punto 5 de lado.
+El 6 lo empezaré a pensar en mi tiempo libre la semana que viene. Quizás me
+traiga el manual del juego a la oficina.
+
+Por tanto, lo razonable es empezar con el punto 4, y en la medida que tenga algo
+coherente pensado, intentar involucrar el punto 3 en eso. Ya la semana que viene
+volver a tomarme momentos para ir leyendo papers y traerme el manual para
+ir leyendo y pensando algo al respecto.
+
+---------------------------------------------------------------------------------
+
+13/10/2022
+
+El 06/10 fue el jueves antes del feriado largo de 4 días de octubre. Creo
+que arranqué con la guía 3 de Temas avanzados de fluídos. O quizás
+estuve charlando con Pablo sobre los modelos de votante y de Deffuant.
+Hice cosas pero no terminé nada.
+
+A la tarde fui a cursar la materia de Fluidos.
+
+Del 07/10 al 10/10 fue feriado y me dediqué a intentar preparar mi prueba
+de oposición para el concurso de ayudante de primera.
+
+El martes 11/10 a la mañana el internet no funcaba y la puerta hacia las oficinas
+estaba cerrada. Trabajé lo que pude en la prueba de oposición. Después fui al
+club de conversación de inglés en la mañana.
+Terminado eso, fui a dar una mano para preparar las cosas para la Giambiaggi.
+No fui a cursar la práctica pero sí la teórica de la materia de fluídos de Mininni.
+
+El miércoles 12/10 a la mañana ayudé con las acreditaciones de la Giambiaggi,
+estuve en las charlas de la mañana y después al mediodía me volví a casa
+para terminar durante el resto del día la prueba de oposición. Terminé
+la prueba a la noche.
+
+Hoy vine a la Giambiaggi durante la mañana y a la tarde fui a cursar la materia
+de Mininni, tanto la teórica como la práctica.
+
+-------------------------------------------------------------------------------------
+
+14/10/2022
+
+Hoy fue el último día de la Giambiaggi. Asistí a las charlas, ayudé con la
+organización y cosas y ya me fui a casa después de el brindis final.
+No hay mucho que decir, intenté prestar atención a las charlas y listo,
+eso es todo.
+
+-------------------------------------------------------------------------------------
+
+17/10/2022
+
+En la mañana llegué y me puse a leer mails. Después fui al curso de listening
+y speaking de inglés de los lunes. Más tarde seguí con lo que tenía para hacer 
+de mi trabajo.
+
+En la tarde resolví los temas pendientes del modelo del votante y de Deffuant
+que me había pedido Pablo. Al modelo del votante le agregué la posibilidad de
+usar diversos tipos de redes iniciales y modifiqué el gráfico para que se
+forme usando networkx de forma tal que se grafiquen todas las redes, no sólo
+la grilla 2d. A los nodos les agregué un nuevo atributo que es el color y usé
+eso para irlos coloreando en la red. Y también agregué una condición que se
+encargue de asegurarse que la red de Erdos-renyi sea conexa.
+
+En el modelo de Deffuant agregué el armado de un gráfico de las densidades
+de agentes que se suma al gráfico ya existente.
+
+---------------------------------------------------------------------------------------
+
+19/10/2022
+
+Hoy estuve haciendo trabajo en la carpeta, puramente lapiz y papel. Plantee
+las bases que me parecen correctas para el modelo en 1D y reduje los parámetros
+que me resultaron redundantes. Esto llevó a una simplificación del modelo
+con una implementación de la función logística en el segundo término. La forma
+de esta función y el hecho de que tenga un valor de "activación" permite agregar
+control sobre el desencadenamiento que lleva a que los agentes se sobre interesen
+en un tema.
+
+--------------------------------------------------------------------------------------
+
+21/10/2022
+
+Hoy hice muy poco, estuve con cosas de inglés, me reuní con Nahuel y fui a la charla
+de Serge Haroche, no estuve trabajando mucho. Anoté algunas cosas más en mi carpeta,
+pero poco más.
+
+--------------------------------------------------------------------------------------
+
+24/10/2022
+
+En la mañana fui al taller de inglés para el TOEFL. En la tarde estuve trabajando
+en el tema de tesis, le sigo dando vueltas al tema de la ecuación dinámica. No me
+cierra del todo el cómo usar la función logística. Estaba viendo que por como plantee
+la ecuación, una baja controversialidad no me lleva el interés de los agentes al
+0, sino al 0,5. Eso no sería tan malo, pero encierra un segundo problema más preocupante,
+los únicos temas en los que es accesible el interés nulo es en aquellos en los que
+la controversialidad es alta. Eso es totalmente raro.
+
+Lo que me tiene particularmente en conflicto es que aparece un nuevo parámetro que 
+un poco me da la sensación de que puedo absorberlo con el alfa, pero si lo pienso mejor
+es más útil al modelo si lo dejo como un parámetro aparte. La pregunta es cómo interpretarlo.
+Ese parámetro que multiplica a todo el argumento de mi función logística es un poco
+como un término de aprendizaje que define cuánto el agente absorbe de su entorno.
+Se parece a la influencia social, pero lo raro de eso es que si la suma de las opiniones
+de los vecinos es menor al umbral beta, entonces esa influencia social no potencia
+el efecto, sino que lo atenúa. Entonces ya no es tan claro el concepto de su funcionamiento.
+Aún así, sin interpretación, puede seguir siendo funcional al modelo y quizás valga la
+pena no absorberlo en el alfa.
+
+------------------------------------------------------------------------------------------
+
+28/10/2022
+
+Hagamos un repaso rápido.
+
+El 25/10 estuve trabajando en cosas de la materia de fluidos.
+
+El 26/10 me quedé en casa, organicé las carpetas de bibliografía en el drive.
+
+El 27/10 seguí con cosas de la materia de fluidos.
+
+Hoy a la mañana hice ejercicios de inglés, repasé un poco la ecuación dinámica del modelo,
+fui a la charla de Pablo, después al DF abierto y listo, fin del día.
+
+Espero la semana que viene dedicarme más. Pero estos talleres y cursadas están comiendo
+bastante del tiempo de trabajo. Tengo que considerar que si estuviera dando clases, la cosa
+sería así o peor.
