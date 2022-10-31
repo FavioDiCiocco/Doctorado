@@ -1201,3 +1201,19 @@ fui a la charla de Pablo, después al DF abierto y listo, fin del día.
 Espero la semana que viene dedicarme más. Pero estos talleres y cursadas están comiendo
 bastante del tiempo de trabajo. Tengo que considerar que si estuviera dando clases, la cosa
 sería así o peor.
+
+------------------------------------------------------------------------------------------
+
+31/10/2022
+
+En la mañana fui a la clase de inglés del curso de speaking para el TOEFL.
+
+En la tarde estuve planteando diferencias entre las dos ecuaciones dinámicas para
+el modelo de dinámica de opiniones. Pablo me dijo que me decante por la ecuación
+que tiene la sumatoria afuera de la función logística. Esa se tiene que normalizar
+usando el grado de cada agente. Dicho eso, el miércoles entonces puedo ponerme a revisar
+la estabilidad de los puntos fijos del sistema, arrancando por mirar el 0,5. (Creo que
+es el único punto fijo que fácilmente puedo mirar) Igual, sabiendo la estabilidad de
+este punto fijo puedo inferir la estabilidad de los otros dos. Lo importante es que
+este sistema tiene tres puntos fijos, uno cerca del cero, uno cerca del 1 y el otro
+en 0,5.
