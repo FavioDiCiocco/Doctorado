@@ -64,3 +64,17 @@ de los primeros 10 agentes de principio a fin de la simulación.
 En principio el código está para correrse, pero decidí dejar esto
 para más tarde.
 
+.) Din_log:
+-----------
+
+Tomo el modelo con el término logarítimico y lo aplico ahora a un sistema
+con N agentes. A diferencia de trans_ln el logaritmo tiene base 10 y 
+la sumatoria está dentro del logaritmo. El armado de los datos consiste
+en dos archivos, uno de Testigos y otro de Opiniones. El de Opiniones tiene
+el estado inicial del sistema, el varprom, el estado final del sistema,
+la red de adyacencia y la semilla de la simulación. En cambio Testigos lleva
+las opiniones de los primeros seis agentes a lo largo de toda la simulación.
+Armé varios datos de esto que están en la pc de Oporto, pero al final nunca
+los usé.
+
+

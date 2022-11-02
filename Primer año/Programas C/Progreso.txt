@@ -1217,3 +1217,48 @@ es el único punto fijo que fácilmente puedo mirar) Igual, sabiendo la estabili
 este punto fijo puedo inferir la estabilidad de los otros dos. Lo importante es que
 este sistema tiene tres puntos fijos, uno cerca del cero, uno cerca del 1 y el otro
 en 0,5.
+
+--------------------------------------------------------------------------------------------
+
+01/11/2022
+
+Hoy me voy a poner a trabajar en cosas de la materia de Mininni. Tenemos hasta el 15/11
+para hacer el TP4. Esta vez voy a arrancar a armar datos. De los cuatro puntos, sólo
+el cuarto es con simulación, los otros tres son teóricos. Mi idea hoy es ir probando armar
+datos y levantarlos, tomar notas de lo que estoy obteniendo y ya con eso ver que puedo
+hacer tres cosas importantes:
+
+1) Simular un sistema como el que pide el enunciado, logrando usar correctamente GHOST.
+2) Levantar los datos y analizarlos en Python.
+3) Armar gráficos e interpretarlos.
+
+Arranquemos por hacer las simulaciones para el punto 4 de la guía 4.
+Me tome un buen tiempo y fui cambiando uno por uno los parámetros al tiempo que iba anotando
+esos cambios. Para esta primera vez me parece bien, después no lo haré. Tengo consultas que
+revisar al respecto.
+
+Logré hacer que el código corriera. Lo que sí, el output del código no va todo a un único lugar,
+una parte se genera en la misma carpeta en la que se encuentra el binario del solver, la otra va
+al output designado. Mejor dejarlo todo junto y después moverlo.
+
+Después fui a la materia de Minnini e intenté prestar toda la atención posible.
+El jueves me conviene ponerme a trabajar sobre los ejercicios teóricos. Para eso estaría
+bueno descargar alguna bibliografía asociada para interpretar mejor esos ejercicios.
+
+--------------------------------------------------------------------------------------------
+
+02/11/2022
+
+Hoy voy a continuar con el trabajo del 31/10. La idea entonces sería ya definir la ecuación
+dinámica y empezar a armar un código en C que corra eso.
+
+Me parece que es una buena decisión en este momento aprovechar y cambiar los floats que
+tengo a doubles. No hay razón para seguir laburando con floats.
+
+Estuve queriendo armar una función que calcule la exponencial de la logística. Me acabo
+de dar cuenta que es al pedo, porque hacer eso como quería implica sobreescribir y borrar
+el Din1, lo cual es una mala idea. El viernes cuando arranque con esto, voy a ver si
+incorporo esto todo de una en Din2 o si hago una función aparte que sea la exponencial.
+Esa exponencial debería usar la sumatoria que aparece en Din2.
+
+

@@ -4,8 +4,11 @@ INFO DE LA CUENTA REMOTA:
 Usuario externo: faviodiciocco2@login.df.uba.ar
 Usuario interno: faviodic@setubal.df.uba.ar
 
-PARA ENTRAR:
+PARA ENTRAR DESDE CASA:
 ssh -J faviodiciocco2@login.df.uba.ar faviodic@setubal.df.uba.ar
+
+PARA ENTRAR DESDE LA PC DE LA FACULTAD:
+ssh faviodic@máquina.df.uba.ar
 
 PARA CORRER ARCHIVOS .PY:
 ./Proceso.py (Corre, pero si cerrás la terminal se cierra el programa)

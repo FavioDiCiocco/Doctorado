@@ -1,4 +1,4 @@
-// Voy a armar el código con el término de la ecuación logística
+// Acá viene el TP de Tesis. La idea es empezar a armar la red que voy a evaluar
 
 #include<stdio.h>
 #include<stdlib.h>
