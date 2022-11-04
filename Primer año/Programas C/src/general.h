@@ -17,12 +17,12 @@ typedef struct Red{
 	double *pd_Ang; // Matriz de superposición entre tópicos. Tiene tamaño T*T
 	double *pd_Act; // Vector de Actividad de cada agente.
 	double *pd_Km; // Vector de valores medios de la red.
+	double d_Varprom; // Esto es la Variación promedio del sistema. Es cuanto cambia en promedio cada opinión
 	int *pi_Ady; // Matriz de adyacencia que define mis conexiones. Tiene tamaño N*N
 	int *pi_Activados; //Vector con los agentes que se activaron
 	int i_agente; // Entero que representa el agente que estoy mirando. Es un valor que va entre 0 y N-1
 	int i_agente2; // Este es el segundo agente con el cual se pone en contacto el primero.
 	int i_topico; // Entero que representa el tópico que estoy mirando. Es un valor que va entre 0 y T-1
-	double d_Varprom; // Esto es la Variación promedio del sistema. Es cuanto cambia en promedio cada opinión
 	char s_Tred[50]; // Esto es el tipo de red, que puede ser de Barabasi, Erdos-Renyi o Random Regular
 }s_Red;
 
@@ -37,10 +37,12 @@ typedef struct Parametros{
 	double d_beta; // Exponente que regula el grado de homofilia
 	double d_mu; // Coeficiente que regula la intensidad con que los agentes caen al cero.
 	double d_campoext; // Valor que toma el campo externo que afecta al sistema.
-	float f_K; // Influencia social
-	float f_alfa; // Controversialidad de los temas
-	float f_dt; // Paso temporal de iteración del sistema
-	float f_Cosangulo; // Este es el coseno del ángulo entre los tópicos.
+	double d_K; // Influencia social
+	double d_alfa; // Controversialidad de los temas
+	double d_dt; // Paso temporal de iteración del sistema
+	double d_Cosangulo; // Este es el coseno del ángulo entre los tópicos
+	double d_m; // Amplificador de la presión social
+	double d_umbral; // Umbral que determina si el interés del vecino puede generarme más interés.
 	int i_Gradomedio; // Este es el grado medio de los agentes de la red.
 	int i_m; // Esto sería el número de conexiones que haría para cada agente que se activa.
 	int i_N; // Número de agentes en la red
@@ -58,6 +60,9 @@ double Random();
 double Gaussiana(float f_mu, float f_sigma);
 double Norma_d(double *pd_x);
 double RK4(double *pd_sistema ,ps_Red ps_var, ps_Param ps_par, double (*pf_funcion)(ps_Red ps_var, ps_Param ps_par));
+double Max(double d_a, double d_b);
+double Min(double d_a, double d_b);
+double Interpolacion(double d_y1, double d_y2, double d_x1,double d_x);
 int Visualizar_d(double *pd_vec);
 int Visualizar_f(float *pf_vec);
 int Visualizar_i(int *pi_vec);
@@ -65,9 +70,6 @@ int Escribir_d(double *pd_vec, FILE *pa_archivo);
 int Escribir_i(int *pi_vec, FILE *pa_archivo);
 int Tamano_Comunidad(int *pi_adyacencia,int i_inicial);
 int Delta_Vec_d(double *pd_x1, double *pd_x2, double *pd_Dx);
-double Max(double d_a, double d_b);
-double Min(double d_a, double d_b);
-double Interpolacion(double d_y1, double d_y2, double d_x1,double d_x);
 
 #endif
 

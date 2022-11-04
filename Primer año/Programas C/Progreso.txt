@@ -1261,4 +1261,29 @@ el Din1, lo cual es una mala idea. El viernes cuando arranque con esto, voy a ve
 incorporo esto todo de una en Din2 o si hago una función aparte que sea la exponencial.
 Esa exponencial debería usar la sumatoria que aparece en Din2.
 
+---------------------------------------------------------------------------------------------
 
+03/11/2022
+
+Estuve intentando leer el libro de P.A. Davidson sobre turbulencia y fluidos. La verdad,
+no es sencillo de leer. Y además, estoy con un sueño terrible hoy.
+
+Increíble pero lo que leí me quedó y logramos con Mauro hacer buena parte del TP 4 en la
+clase de la matería de Minnini. Después de eso fui a la teórica y listo.
+
+---------------------------------------------------------------------------------------------
+
+04/11/2022
+
+En la mañana estuve anotando las cosas en la "burocracia infinita" y después me puse a 
+resolver tarea de inglés. Aunque como en realidad la profe todavía no subió tarea
+al campus, lo que hice fue mirar los videos que me propuso para mejorar mi pronunciación.
+
+Ahora a la tarde voy a intentar ponerme a hacer algunas cosas con el código de python.
+Voy a empezar por la parte de cambiar los floats por doubles. Los floats que voy a
+cambiar son : f_K -> d_K; f_alfa -> d_alfa; f_dt -> d_dt, f_Cosangulo -> d_Cosangulo.
+
+Bien, ya cambié los floats. Ahora vamos a la parte de ir colocando la ecuación dinámica
+en la función Din1. Ya agregué en la función Din1 lo necesario para calcular la función
+logística. Ahora queda retocar la función Din2. Y después cambiar el armado de los parámetros
+en main. Porque nunca asigno valores a m o umbral.

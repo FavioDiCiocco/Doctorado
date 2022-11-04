@@ -34,10 +34,10 @@ int main(int argc, char *argv[]){
 	// Defino los parámetros de mi modelo. Esto va desde número de agentes hasta el paso temporal de integración.
 	ps_datos->i_N = strtol(argv[1],NULL,10); // Cantidad de agentes en el modelo
 	ps_datos->i_T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
-	ps_datos->f_K = 1; // Influencia social
-	ps_datos->f_dt = 0.01; // Paso temporal de iteración del sistema
+	ps_datos->d_K = 1; // Influencia social
+	ps_datos->d_dt = 0.01; // Paso temporal de iteración del sistema
 	ps_datos->d_mu = strtof(argv[4],NULL); // Coeficiente que regula la intensidad con que los agentes caen al cero.
-	ps_datos->f_alfa = strtof(argv[2],NULL); // Controversialidad de los tópicos
+	ps_datos->d_alfa = strtof(argv[2],NULL); // Controversialidad de los tópicos
 	ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	ps_datos->i_m = 10; // Cantidad de conexiones que hace el agente al activarse
 	ps_datos->d_epsilon = 0.01; // Mínimo valor de actividad de los agentes
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]){
 	ps_datos->d_beta = 3; // Esta es la potencia que determina el grado de homofilia.
 	ps_datos->d_CritCorte = 0.0005; // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
 	ps_datos->i_Itextra = 40; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
-	ps_datos->f_Cosangulo = strtof(argv[3],NULL); // Este es el coseno de Delta que define la relación entre tópicos.
+	ps_datos->d_Cosangulo = strtof(argv[3],NULL); // Este es el coseno de Delta que define la relación entre tópicos.
 	ps_datos->i_pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
 		
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
@@ -133,7 +133,7 @@ int main(int argc, char *argv[]){
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_archivo1[355];
 	sprintf(s_archivo1,"../Programas Python/Din_log/Opiniones_alfa=%.3f_N=%d_Cosd=%.3f_mu=%.3f_Iter=%d.file"
-		,ps_datos->f_alfa,ps_datos->i_N,ps_datos->f_Cosangulo,ps_datos->d_mu,i_iteracion);
+		,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_Cosangulo,ps_datos->d_mu,i_iteracion);
 	FILE *pa_archivo1=fopen(s_archivo1,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.

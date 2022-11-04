@@ -17,19 +17,33 @@
 // eso. Si resulta que tarda mucho el programa, consideraré agregarlo.
 
 
-// Esta función resuelve un término de los de la sumatoria.
+// Esta función resuelve un término de los de la sumatoria. Lo que va a hacer es el producto de la matriz
+// de superposición y luego calcular el valor de la función logística asociada usando ese producto en su exponente.
+// Más algunos otros parámetros relevantes.
 double Din1(ps_Red ps_var, ps_Param ps_par){
 	// Defino las variables locales de mi función
-	// d_opiniones_superpuestas es el producto de la matriz de superposición de tópicos con el vector opinión de un agente.
-	double d_opiniones_superpuestas = 0;
+	double d_opiniones_superpuestas = 0; // Es el producto de la matriz de superposición de tópicos con el vector opinión de un agente.
+	double d_resultado; // Es el valor que returnea la función
+	double d_exponente; // Exponente de la función exponencial
+	double d_denominador; // Denominador de la función logística
 	
 	// Obtengo el tamaño de columnas de mis dos matrices
 	int i_Co,i_Cs;
-	i_Co = (int) ps_var->pd_Opi[1];
-	i_Cs = (int) ps_var->pd_Ang[1];
+	i_Co = (int) ps_var->pd_Opi[1]; // Número de columnas en la matriz de opiniones
+	i_Cs = (int) ps_var->pd_Ang[1]; // Número de columnas en la matriz de superposición
 	
-	for(register int i_p=0; i_p<i_Cs; i_p++) d_opiniones_superpuestas += ps_var->pd_Ang[ps_var->i_topico*i_Cs+i_p+2]*ps_var->pd_Opi[ps_var->i_agente2*i_Co+i_p+2]; // Calculo previamente el producto de la matriz con el vector.
-	return d_opiniones_superpuestas; // La función devuelve el número que buscás, no te lo asigna en una variable.
+	// Calculo el producto de la matriz con el vector.
+	for(register int i_p=0; i_p<i_Cs; i_p++) d_opiniones_superpuestas += ps_var->pd_Ang[ps_var->i_topico*i_Cs+i_p+2]*ps_var->pd_Opi[ps_var->i_agente2*i_Co+i_p+2];
+	
+	// Calculo el exponente de la exponencial
+	d_exponente = ps_par->d_m*(ps_par->d_alfa*d_opiniones_superpuestas - ps_par->d_umbral);
+	
+	// Calculo el denominador de la logística
+	d_denominador = 1+exp(-d_exponente);
+	
+	// Ahora que tengo todo, calculo el resultado y returneo
+	d_resultado = 1/d_denominador;
+	return d_resultado; // La función devuelve el número que buscás, no te lo asigna en una variable.
 }
 
 // Esta es la segunda parte de la ecuación dinámica, con esto puedo realizar una iteración del sistema.
@@ -44,7 +58,7 @@ double Din2(ps_Red ps_var, ps_Param ps_par){
 	
 	// Obtengo el tamaño de Columnas de mi matriz de Vectores de opinión y calculo el valor del campo que define mi ecuación diferencial
 	int i_C = (int) ps_var->pd_Opi[1];
-	d_resultado = -ps_par->d_mu*ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2]+ps_par->f_K*ps_par->f_alfa*log10(d_sumatoria+1);
+	d_resultado = -ps_par->d_mu*ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2]+ps_par->d_K*ps_par->d_alfa*log10(d_sumatoria+1);
 	return d_resultado;
 }
 
