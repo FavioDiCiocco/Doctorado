@@ -1287,3 +1287,128 @@ Bien, ya cambié los floats. Ahora vamos a la parte de ir colocando la ecuación
 en la función Din1. Ya agregué en la función Din1 lo necesario para calcular la función
 logística. Ahora queda retocar la función Din2. Y después cambiar el armado de los parámetros
 en main. Porque nunca asigno valores a m o umbral.
+
+---------------------------------------------------------------------------------------------
+
+07/11/2022
+
+A la mañana hice una parte de la ejercitación del taller de inglés y después fui
+a cursar el taller.
+
+Antes de ponerme a trabajar en algo nuevo, voy a ponerme a anotar las ideas que
+tuve sobre el armado de un experimento en base al Republia.
+
+######################################
+######################################
+EXPERIMENTO EN BASE AL REPUBLIA
+######################################
+######################################
+
+Concepto base:
+--------------
+
+El Republia es un juego en el que cada jugador representa a un parlamentario
+asociado a un partido político. Estos parlamentarios deben debatir leyes
+y votar respecto a su aprobación. Las leyes que se voten modifican la tendencia
+política de la sociedad. Para ganar un jugador debe lograr que la tendencia
+política de la sociedad se alinee perfectamente con su partido, puede conseguir
+las condiciones necesarias para que su partido se alce al poder o puede
+ser el partido con mejor imagen pública llegado un caso de extremo descontento
+en el cual la población se vuelca hacia el partido político con el que presentan
+la mayor afinidad respecto del resto.
+
+Características:
+----------------
+
+El juego presenta varios elementos de juego. Por un lado tiene una punta de 
+manejo de recursos, representado por el uso de los puntos de poder político
+y las cartas de acción, las cuales indirectamente representan el uso de
+puntos de corrupción. El manejo de recursos sube un escalón de complejidad
+al habilitarse el canje en una partida.
+
+Luego hay una competencia por elementos comunes, como son la tendencia pública
+y la presión social. Estos dos elementos no afectan a un jugador por sí mismo,
+pero son algo que definen el estado de la partida y son elementos centrales
+en la definición de las condiciones de victoria.
+
+Como tercer elemento, y la característica que más nos interesaría estudiar,
+el juego propone interacciones de persuasión/negociación, en las cuales cada
+jugador presenta, si quiere, una ley al grupo. Al hacerlo debe dar un discurso
+que contenga como mínimo ciertas palabras, pero fuera de esto el o la expositora
+tiene total libertad de presentar la ley como desee o hablar tanto como quiera
+de ella, dando más o menos información. Luego de una primera exposición, el resto
+de jugadores y jugadoras tienen la opción de hacer una pregunta que el o la
+expositora original responderá. Luego las leyes se votan y de ser aprobadas, se
+agregan a la pila de leyes.
+
+Enfoque del experimento:
+------------------------
+
+Lo primero sería recortar los elementos que podrían empantanar el experimento
+al volverlo demasiado complejo. Por tanto yo propondría concentrarse en la 
+parte discursiva del juego, la parte de persuasión/negociación, y dejar de
+lado la parte de manejo de recursos, así como minimizar la parte de competencia
+sobre los elementos comunes a los jugadores.
+
+El experimento debería consistir en una interfaz en la cual los participantes
+puedan escribir sus discursos de negociación para convencer a los contrincantes.
+Cada participante empezaría siendo asignado a un partido de izquierda o derecha
+y luego le serían presentadas un conjunto de leyes, las cuales debe decidir
+cómo presentar a sus contrincantes. Los contrincantes así como el juego no
+serían reales, la idea es justamente quedarnos únicamente con el input de
+texto presentado por la persona. Para esto estaría bueno primero un cuestionario
+que ayude a definir la orientación política de las personas y luego a partir
+de eso que se le presenten un conjunto de leyes de izquierda y de derecha para 
+que la persona proponga.
+
+¿Qué nos interesaría medir de estos datos?:
+-------------------------------------------
+
+Los datos que obtendríamos entonces serían un custionario respondido por los
+participantes, así como una serie de discursos. El cuestionario debería servir
+para construir un perfil político del participante, mientras que de los discursos
+podríamos medir el tamaño de los discursos (cantidad de palabras), el sentiment,
+la percepción de los grupos representados a partir de las palabras utilizadas en
+los discursos.
+
+De esta manera podríamos intentar responder las siguientes preguntas:
+
+.) ¿Las personas de algún tipo de perfil son más tolerantes? Esto lo podríamos
+medir en términos de qué tan cómodas las personas se sienten al expresar ideas
+de facciones con un perfil político distinto al propio. Esa comodidad se puede
+intentar medir en términos de la sofisticación de los discursos o el tamaño
+de los discursos.
+
+.) ¿La gente debate temas con una violencia que depende del contexto? Podríamos
+dar ejemplos de discursos, a algunos grupos darle discursos con un mensaje más
+extremo y agresivo y ver si sus discursos responden a eso.
+
+.) ¿Cuál es la opinión que tienen de los grupos de perfil político contrario al
+propio? Para esto podemos usar un análisis de sentimiento de cada discurso asociado
+a los distintos perfiles políticos. De esta forma podríamos comparar si presentan
+un bias respecto de algunos ideales u otros.
+
+.) ¿Podemos entrenar a la gente para que realice mejores discursos, de forma que
+los debates que generen sean más interesantes y mejor fundamentados? Esto es algo
+más complejo, requeriría poder establecer un feedback respecto a cada discurso
+de cada uno de los agentes. Y está quizás la pregunta de si esto es del todo
+correcto o no.
+
+---------------------------------------------------------------------------------------------
+
+08/11/2022
+
+En la mañana los trenes no funcionaban, tuve que venir en bondi a la facultad. A la mañana
+revisé algunas facturas que tenía que pagar y después fuí al Conversation Club.
+
+En la tarde fui a la materia de Minnini y trabajamos con Mauro. Resolvimos lo que faltaba
+del TP4 y después fui a cursar la teórica. Nos contó que la Fanta la hicieron los nazis.
+
+---------------------------------------------------------------------------------------------
+
+09/11/2022
+
+A la mañana fui a comprar el colchón y también llevé la bici a reparar y a ponerle un
+portaequipajes. Cuando llegué a la facultad me puse a hacer la burocracia infinita,
+terminé de armar el concepto del experimento basado en el Republia y después me puse
+a revisar el TP4 de la materia de Minnini.
