@@ -32,16 +32,10 @@ typedef s_Red *ps_Red;
 typedef struct Parametros{
 	double d_NormDif; // Este es el factor de normalización de la Variación Promedio.
 	double d_CritCorte; // Este número es el piso que tiene que cruzar el Varprom para que se corte la iteración
-	double d_epsilon; // Actividad mínima de los agentes
-	double d_gamma; // Potencia de la distribución de probabilidades de la actividad. Es el valor positivo.
-	double d_beta; // Exponente que regula el grado de homofilia
-	double d_mu; // Coeficiente que regula la intensidad con que los agentes caen al cero.
-	double d_campoext; // Valor que toma el campo externo que afecta al sistema.
-	double d_K; // Influencia social
 	double d_alfa; // Controversialidad de los temas
 	double d_dt; // Paso temporal de iteración del sistema
 	double d_Cosangulo; // Este es el coseno del ángulo entre los tópicos
-	double d_m; // Amplificador de la presión social
+	double d_amp; // Amplificador de la presión social
 	double d_umbral; // Umbral que determina si el interés del vecino puede generarme más interés.
 	int i_Gradomedio; // Este es el grado medio de los agentes de la red.
 	int i_m; // Esto sería el número de conexiones que haría para cada agente que se activa.

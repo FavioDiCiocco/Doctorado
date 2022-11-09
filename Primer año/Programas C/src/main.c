@@ -33,17 +33,13 @@ int main(int argc, char *argv[]){
 		
 	// Defino los parámetros de mi modelo. Esto va desde número de agentes hasta el paso temporal de integración.
 	ps_datos->i_N = strtol(argv[1],NULL,10); // Cantidad de agentes en el modelo
-	ps_datos->i_T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
-	ps_datos->d_K = 1; // Influencia social
+	ps_datos->i_T = 1;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
 	ps_datos->d_dt = 0.01; // Paso temporal de iteración del sistema
-	ps_datos->d_mu = strtof(argv[4],NULL); // Coeficiente que regula la intensidad con que los agentes caen al cero.
 	ps_datos->d_alfa = strtof(argv[2],NULL); // Controversialidad de los tópicos
 	ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
-	ps_datos->i_m = 10; // Cantidad de conexiones que hace el agente al activarse
-	ps_datos->d_epsilon = 0.01; // Mínimo valor de actividad de los agentes
-	ps_datos->d_gamma = 2.1; // Esta es la potencia que define la distribución de actividad
-	ps_datos->d_beta = 3; // Esta es la potencia que determina el grado de homofilia.
 	ps_datos->d_CritCorte = 0.0005; // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
+	ps_datos->d_amp = 5; // Este es el amplificador de la presión social
+	ps_datos->d_umbral = 0.5; // Este es el umbral que determina si el interés del vecino puede generarme más interés.
 	ps_datos->i_Itextra = 40; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	ps_datos->d_Cosangulo = strtof(argv[3],NULL); // Este es el coseno de Delta que define la relación entre tópicos.
 	ps_datos->i_pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema

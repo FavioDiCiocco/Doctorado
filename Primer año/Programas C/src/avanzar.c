@@ -36,7 +36,7 @@ double Din1(ps_Red ps_var, ps_Param ps_par){
 	for(register int i_p=0; i_p<i_Cs; i_p++) d_opiniones_superpuestas += ps_var->pd_Ang[ps_var->i_topico*i_Cs+i_p+2]*ps_var->pd_Opi[ps_var->i_agente2*i_Co+i_p+2];
 	
 	// Calculo el exponente de la exponencial
-	d_exponente = ps_par->d_m*(ps_par->d_alfa*d_opiniones_superpuestas - ps_par->d_umbral);
+	d_exponente = ps_par->d_amp*(ps_par->d_alfa*d_opiniones_superpuestas - ps_par->d_umbral);
 	
 	// Calculo el denominador de la logística
 	d_denominador = 1+exp(-d_exponente);
@@ -48,17 +48,26 @@ double Din1(ps_Red ps_var, ps_Param ps_par){
 
 // Esta es la segunda parte de la ecuación dinámica, con esto puedo realizar una iteración del sistema.
 double Din2(ps_Red ps_var, ps_Param ps_par){
-	// Defino las variables locales de mi función. d_resultado es lo que voy a returnear.
-	// d_sumatoria es el total de la sumatoria del segundo término de la ecuación diferencial.
-	double d_resultado,d_sumatoria=0;
+	// Defino las variables locales de mi función.
+	double d_resultado; // d_resultado es lo que voy a returnear.
+	double d_sumatoria=0; // d_sumatoria es el total de la sumatoria del segundo término de la ecuación diferencial.
+	int i_grado = 0;  // i_grado es el grado del agente 1
+	
 	
 	// Calculo la sumatoria de la ecuación diferencial. Para esto es que existe la función Din1.
+	// Aprovecho este for y también calculo el grado del agente
 	// La sumatoria es sobre todos los agentes conectados en la red de adyacencia
-	for(ps_var->i_agente2=0; ps_var->i_agente2<ps_par->i_N; ps_var->i_agente2++) if(ps_var->pi_Ady[ps_var->i_agente*ps_var->pi_Ady[1]+ps_var->i_agente2+2] == 1) d_sumatoria += Din1(ps_var,ps_par);
+	for(ps_var->i_agente2=0; ps_var->i_agente2<ps_par->i_N; ps_var->i_agente2++){
+		if(ps_var->pi_Ady[ps_var->i_agente*ps_var->pi_Ady[1]+ps_var->i_agente2+2] == 1){
+			i_grado += 1; // Sumo un uno por cada agente con el cual el agente 1 está conectado
+			d_sumatoria += Din1(ps_var,ps_par); // Sumo los valores de las funciones logísticas
+		}
+	}
+	
 	
 	// Obtengo el tamaño de Columnas de mi matriz de Vectores de opinión y calculo el valor del campo que define mi ecuación diferencial
 	int i_C = (int) ps_var->pd_Opi[1];
-	d_resultado = -ps_par->d_mu*ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2]+ps_par->d_K*ps_par->d_alfa*log10(d_sumatoria+1);
+	d_resultado = - ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2] + d_sumatoria/i_grado;
 	return d_resultado;
 }
 

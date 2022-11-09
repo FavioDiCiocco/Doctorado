@@ -1412,3 +1412,21 @@ A la mañana fui a comprar el colchón y también llevé la bici a reparar y a p
 portaequipajes. Cuando llegué a la facultad me puse a hacer la burocracia infinita,
 terminé de armar el concepto del experimento basado en el Republia y después me puse
 a revisar el TP4 de la materia de Minnini.
+
+Ya terminé de revisar el TP4. Subí los archivos al Github. Ahora tengo una hora antes
+de que vayamos a Blest a la salida del grupo. Voy a intentar ponerme a revisar el
+código del trabajo de la tesis. De mis notas anteriores, dice que ya tengo armado el
+Din1, ahora debería retocar la función Din2 y el armado de los parámetros en el main.
+
+La función Din2 está retocada. Hagamos el tema de los parámetros. Ya actualicé el
+tema de los parámetros. Y saqué muchas cosas que no estoy usando. Si después
+las volviera a necesitar, puedo agregarlas o buscarlo de código viejos.
+
+Lo siguiente que debería hacer es revisar el código una vez más para asegurarme
+que todo funcione. Cambiar los path de la escritura de los files, armar las carpetas
+correspondientes, actualizar la documentación, ver que los archivos generados sean los
+deseados, ver que los inputs estén bien numerados, mandar a correr una vez el programa
+antes de usar el instanciar. Esas cosas.
+
+Y por otro lado, debería revisar la estabilidad de los puntos fijos. Ver cómo esto
+va a ciertos valores u a otros.
