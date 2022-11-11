@@ -84,3 +84,16 @@ funciones en archivos externos y después importarlas, todo con el objetivo de q
 códigos se vean más limpios y mucho más fáciles de entender lo que están haciendo.
 Por tanto, para cada modelo tengo además armado un archivo con las funciones propias
 de ese modelo.
+
+Logistica_1D:
+--------------
+Acá vienen los archivos construídos utilizando la ecuación dinámica con el modelo
+de la ecuación logística para el caso unidimensional. Estos archivos son Opiniones
+y Testigos. En el primero irán el estado inicial del sistema, variación promedio,
+estado final, matriz de adyacencia y semilla. En el segundo irán las opiniones de
+los primeros seis agentes. A diferencia de los modelos anteriores, ahora los parámetros
+son otros. Para empezar no hay cosdelta porque voy a trabajar con un único tópico.
+K y mu fueron ¿definitivamente? eliminados, y en su lugar introduje la amplificación
+social "amp", y el valor que determina cuando la suma de las opiniones de un vecino
+me aumenta o disminuye mi interés, "umbral". Preferí no seguir con la lógica de letras
+griegas. Demándenme.

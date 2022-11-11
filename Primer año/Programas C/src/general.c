@@ -108,7 +108,7 @@ double RK4(double *pd_sistema ,ps_Red ps_var, ps_Param ps_par, double (*pf_funci
 	// Defino las variables y vectores que voy a necesitar
 	int i_F = (int) *pd_sistema; // Este es el número de filas del vector principal
 	int i_C = (int) *(pd_sistema+1); // Este es el número de columnas del vector principal
-	float DT[4]; // Esto me ayuda a meter el paso temporal que se usa para calcular cada pendiente.
+	double DT[4]; // Esto me ayuda a meter el paso temporal que se usa para calcular cada pendiente.
 	double d_resultado = 0; // Este número es el que voy a returnear a la salida de la función
 	
 	double *pd_inicial; // Este me guarda las condiciones iniciales del vector, que las voy a necesitar al calcular cada paso del RK4
@@ -126,9 +126,9 @@ double RK4(double *pd_sistema ,ps_Red ps_var, ps_Param ps_par, double (*pf_funci
 	
 	// Armo mi vector DT. Este hay que armarlo uno por uno, si o si.
 	DT[0] = 0;
-	DT[1] = ps_par->f_dt*0.5;
-	DT[2] = ps_par->f_dt*0.5;
-	DT[3] = ps_par->f_dt;
+	DT[1] = ps_par->d_dt*0.5;
+	DT[2] = ps_par->d_dt*0.5;
+	DT[3] = ps_par->d_dt;
 		
 	// Acá hago las iteraciones del RK4 para hallar las pendientes k
 	for(register int i_j=0; i_j<4; i_j++){ // Esto itera para mis 4 k
@@ -141,7 +141,7 @@ double RK4(double *pd_sistema ,ps_Red ps_var, ps_Param ps_par, double (*pf_funci
 	for(register int i_i=0; i_i<i_F*i_C; i_i++) *(pd_sistema+i_i+2) = *(pd_inicial+i_i+2);
 	
 	// Ahora que tengo los 4 k calculados, avanzo al sujeto que quiero avanzar.
-	d_resultado = *(pd_inicial+ps_var->i_agente*i_C+ps_var->i_topico+2)+(ps_par->f_dt/6)*(*(pd_pendientes+3)+*(pd_pendientes+4)*2+*(pd_pendientes+5)*2+*(pd_pendientes+6));
+	d_resultado = *(pd_inicial+ps_var->i_agente*i_C+ps_var->i_topico+2)+(ps_par->d_dt/6)*(*(pd_pendientes+3)+*(pd_pendientes+4)*2+*(pd_pendientes+5)*2+*(pd_pendientes+6));
 	
 	
 	// Ahora hagamos algún mecanismo de visualización, para ver que todo esté correctamente calculado. Dios que esto va a ser un bardo.

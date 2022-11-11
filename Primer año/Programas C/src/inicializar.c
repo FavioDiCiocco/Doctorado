@@ -30,7 +30,7 @@ int GenerarAng(ps_Red ps_var, ps_Param ps_par){
 	i_C = (int) ps_var->pd_Ang[1];
 	
 	// Inicializo la matriz de Superposicion de mi sistema.
-	for(register int i_i=0; i_i<i_F; i_i++) for(register int i_j=0; i_j<i_i; i_j++) ps_var->pd_Ang[i_i*i_C+i_j+2] = ps_par->f_Cosangulo; //
+	for(register int i_i=0; i_i<i_F; i_i++) for(register int i_j=0; i_j<i_i; i_j++) ps_var->pd_Ang[i_i*i_C+i_j+2] = ps_par->d_Cosangulo; //
 	for(register int i_i=0; i_i<i_F; i_i++) ps_var->pd_Ang[i_i*i_C+i_i+2] = 1; // Esto me pone 1 en toda la diagonal
 	for(register int i_i=0; i_i<i_F; i_i++) for(register int i_j=i_i+1; i_j<i_C; i_j++) ps_var->pd_Ang[i_i*i_C+i_j+2] = ps_var->pd_Ang[i_j*i_C+i_i+2]; // Esta sola línea simetriza la matriz
 	return 0;
@@ -75,7 +75,10 @@ int Lectura_Adyacencia(int *pi_vec, FILE *pa_archivo){
 	return 0;
 }
 
-
+// Me saco estas funciones de encima, total por ahora no las voy a usar, voy a trabajar con redes estáticas
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/*
 // Programemos la función que debería devolver un valor de actividad
 int Actividad(double* pd_vec, double d_epsilon, double d_potencia){
 	// Defino las variables que voy a necesitar que son la probabilidad, la probabilidad mínima, La F del Epsilon
@@ -97,6 +100,9 @@ int Actividad(double* pd_vec, double d_epsilon, double d_potencia){
 }
 
 
+
+
+
 // Esta función va a recibir a la matriz de adyacencia y la va a armar según la actividad de los agentes
 // Creo que voy a cambiar esto en la función haciendo que directamente reciba los punteros de struct de Red
 // y de Parametros
@@ -110,6 +116,7 @@ int Adyacencia_Actividad(ps_Red ps_red, ps_Param ps_datos){
 	
 	return 0;
 }
+
 
 
 // Esta función recibe la matriz de Adyacencia y el agente, y lo conecta con m agentes.
@@ -192,7 +199,7 @@ int Conectar_agentes(ps_Red ps_red, ps_Param ps_datos){
 		// Voy a armar el calculo de las distancias de vectores no ortogonales acá como una única cuenta
 		// La suma es de la primer componente de la diferencia de vectores al cuadrado, más la segunda componente al cuadrado más el doble del producto
 		// de la primer componente por la segunda componente por coseno(delta). Y a todo eso le tomo raíz
-		d_distancia = sqrt(pow(*(pd_DifOpi+2),2)+pow(*(pd_DifOpi+1+2),2)+2*(*(pd_DifOpi+2))*(*(pd_DifOpi+1+2))*ps_datos->f_Cosangulo);
+		d_distancia = sqrt(pow(*(pd_DifOpi+2),2)+pow(*(pd_DifOpi+1+2),2)+2*(*(pd_DifOpi+2))*(*(pd_DifOpi+1+2))*ps_datos->d_Cosangulo);
 		if(d_distancia>0) *(pd_distbeta+i_indice+2) = pow(d_distancia,-ps_datos->d_beta); // Si la distancia es mayor a cero, calculo el valor de la distancia elevada a -beta
 		else *(pd_distbeta+i_indice+2) = 0; // Si la distancia es cero, pongo un cero para que no haya problemas en la cuenta.
 	}
@@ -251,5 +258,8 @@ int Conectar_agentes(ps_Red ps_red, ps_Param ps_datos){
 	free(pd_probabilidades);
 	return 0;
 }
+*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 

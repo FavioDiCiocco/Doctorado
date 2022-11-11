@@ -1430,3 +1430,61 @@ antes de usar el instanciar. Esas cosas.
 
 Y por otro lado, debería revisar la estabilidad de los puntos fijos. Ver cómo esto
 va a ciertos valores u a otros.
+
+---------------------------------------------------------------------------------------------
+
+10/11/2022
+
+A la mañana llevamos el colchón al departamento. A la tarde fui a la materia de fluidos.
+Terminamos de revisar el TP 4 y lo enviamos. El martes que viene arrancamos con la guía 5.
+
+---------------------------------------------------------------------------------------------
+
+11/11/2022
+
+Lo primero que hice a la mañana fue resolver ejercicios de inglés. Hice una parte de
+la tarea que había en la solapa Week 3. Todavía falta que la profe suba la tarea de
+la solapa Week 4. Ya veremos cómo laburar eso. Antes de ponerme a trabajar en lo
+de la tesis, voy a revisar un segundo si hay un segundo tema de Matthew Colville
+que me parezca copado tratar, algo más allá de Cargo-Cult Thinking. Al final voy a
+hacer una charla sobre Gell-Mann amnesia. Me parece copada la idea.
+
+Para trabajar en el tema de la tesis debería preparar las cosas y mandar a hacer una
+corrida, mientras que a la tarde me pondré a hacer el análisis sobre la ecuación
+dinámica. 
+
+Estoy notando ahora que las redes que estuve utilizando antes eran redes de actividad.
+Y ahora yo quiero trabajar con redes estáticas. Así que vamos a tener que sacar
+todo lo asociado a redes de actividad y arrancar desde cero. Tenemos que volver a usar
+el leer adyacencia.
+
+Estuve haciendo bastantes cosas, así que intentemos dejar un buen registro. Como dije,
+me di cuenta que seguía usando funciones que implicaban redes de actividad, así que
+saqué los parámetros asociados a eso y las funciones del main. Pero no borré las funciones
+en inicializar, sólo las comenté.
+Después me di cuenta que no tenía redes estáticas armadas, así que armé un archivo de
+python para fabricarlas. Esto requirió por tanto armar una nueva carpeta en Programas
+Python en la cual guardar estos archivos .file. Aunque ahora que lo pienso, podría
+guardarme eso en la carpeta de Programas C. En especial porque son simplemente
+archivos que después tengo que ir a buscar hasta ahí, y eso no tiene mucho sentido.
+####################################################################################
+De paso, no actualicé la documentación hablando sobre esa carpeta, tengo que agregar
+esa info después.
+####################################################################################
+Hecho eso, agregué la función para leer archivos y armar la función de adyacencia
+a partir de eso. Revisé nuevamente el código y ahora parecer estar bárbaro listo para
+funcionar. Habría que hacer una prueba y después mandarlo con el instanciar, aunque
+también está bueno tener en cuenta que las redes de Erdös-Renyi que armé son redes 
+con 1000 agentes, y mi idea es arrancar con dos agentes. Eso será un problema.
+
+Cuestión, cosas a hacer el lunes:
+1) Comentar la lectura de la matriz de Adyacencia, arrancar armando una matriz de
+Adyacencia a mano para 2 agentes.
+2) Mover la carpeta MARE a la carpeta de Programas C. Me parece que tiene mucho más
+sentido eso.
+3) Actualizar la Documentación pertinente sobre la naturaleza de esa carpeta.
+4) Modificar el Instanciar para que esto se pueda realizar en masa.
+5) Hacer un análisis de los puntos fijos del sistema, ver qué pasa con eso y comparar
+con los datos.
+6) Ahora sí, volver a laburar con los archivos de Python para que quede todo funcionando
+finalmente.
