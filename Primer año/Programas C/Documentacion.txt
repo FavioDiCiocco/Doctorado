@@ -89,6 +89,12 @@ las funciones, mientras que los archivos .h tienen la declaración de las funcio
 variables.
 En definitiva, no lo toques, funca bien. make all compila, make clean limpia el bin.
 
+.) MARE:
+--------
+Esta carpeta guarda los archivos con las matrices de adyacencia de redes estáticas.
+En particular tiene una carpeta con matrices de Adyacencia de redes de Erdös-Renyi.
+Estas son redes de grado medio 8 y 1000 agentes.
+
 .) Metainstanciacion.sh:
 --------------------------
 Este archivo se llama así porque controla a las Instanciaciones. Básicamente lo que hace

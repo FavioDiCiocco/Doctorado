@@ -96,7 +96,7 @@ for N in [1000]:
         # levanta CSV.
         
         Adyacencia = nx.to_numpy_matrix(graph1)
-        np.savetxt("../MARE/Erdos-Renyi/ErdosRenyi_N={}_ID={}.file".format(N,elemento),Adyacencia,fmt = "%d", delimiter = "\t", newline = "\t")
+        np.savetxt("../../Programas C/MARE/Erdos-Renyi/ErdosRenyi_N={}_ID={}.file".format(N,elemento),Adyacencia,fmt = "%d", delimiter = "\t", newline = "\t")
 
 # Con esto me guardo la matriz como un txt con una única fila y todos los elementos son enteros.
 

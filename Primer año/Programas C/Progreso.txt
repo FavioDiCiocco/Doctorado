@@ -1488,3 +1488,54 @@ sentido eso.
 con los datos.
 6) Ahora sí, volver a laburar con los archivos de Python para que quede todo funcionando
 finalmente.
+
+---------------------------------------------------------------------------------------------
+
+12/11/2022
+
+A la mañana revisé el segundo video de Laura sobre las palabras más comunes de
+inglés, fuimos al curso a estudiar y practicar cosas. Para la próxima clase practicar
+lo que mande la profe, hacer algunos de los ejercicios de present y past perfect,
+y preparar la charla sobre Gell-mann amnesia.
+
+Continuar con el trabajo anotado en la última entrada sobre el trabajo de tesis.
+Ya comenté la función de lectura de la matriz de adyacencia y coloqué la función
+de armado de una matriz de adyacencia conectada. También moví la carpeta MARE a
+la carpeta de Programas C y cambié el path de s_mady. Actualicé la documentación
+de la carpeta de Programas C.
+
+Estoy viendo de modificar el Instanciar, estoy considerando qué valores debería
+tomar el alfa o el amplificador. Si tomo alfa cero, el segundo término se vuelve
+costante porque ya no depende de las opiniones de los vecinos. Si tomo el amplificador
+igual a cero es igual, el segundo término se vuelve constante, pero ahora sé que
+suma 1/2. Así que lo razonable es que esos parámetros no sean nunca cero. Yo diría,
+para probar, que el amplificador vaya hasta 20 y el alfa vaya de 0.5 a 2.
+
+Hice unas pruebas, el código parece funcionar y generar correctamente los datos.
+Los .file generados van bien y parece tener el formato deseado. Lo menciono porque
+en un punto al principio parecía haber un pequeño error con un título que estaba
+mal posicionado, faltaba un salto de línea.
+
+Ya que voy a mandar a correr esto en el caso de dos agentes, tengo que asegurarme
+de ponerle un pause de un segundo en el final del código para que no me corra con
+la misma semilla constantemente.
+
+Hice correr el instanciar, tengo 20 simulaciones para un total de 24 combinaciones
+de parámetros, es decir, un total de 480 archivos con datos. Antes de ponerme a analizar
+los datos, yo primero haría el análisis de la ecuación dinámica, así sé qué espero
+ver.
+
+Hice un primer análisis de la ecuación dinámica y puedo observar que el sistema posee
+tres puntos fijos, pudiendo saber únicamente que hay un punto fijo en alfa*x = 0.5.
+Los otros dos son incalculables. La idea igual es que si conozco la estabilidad de ese
+punto fijo, conozco si el sistema tiende a él o si tiende a los otros dos. Ahora que lo
+pienso, hice un análisis malo de la estabilidad, revisalo haciendo derivadas sólo en x,
+ahí voy a conseguir una respuesta más razonable.
+
+También hice una revisión por arriba de los resultados, me armé una tabla en el cuaderno
+de los parámetros y los valores a los cuales tiende el sistema. Lo que puedo ver es que
+para bajos alfas, el sistema sólo decae, porque siempre se encuentra por debajo del punto
+fijo medio, el cuál, además, para alfa chicos es un repulsor. Y después, a medida que alfa
+crece, ocurre que en ciertas combinaciones de parámetros el sistema converge al punto central
+como un atractor y para otras combinaciones converge al punto fijo más grande o al más chico
+en función de las condiciones iniciales.

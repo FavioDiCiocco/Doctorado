@@ -45,15 +45,12 @@ int main(int argc, char *argv[]){
 	ps_datos->d_Cosangulo = 0; // Este es el coseno de Delta que define la relación entre tópicos.
 	ps_datos->d_dt = 0.01; // Paso temporal de iteración del sistema
 	ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
-	ps_datos->d_CritCorte = 0.0005; // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
+	ps_datos->d_CritCorte = pow(10,-4); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
 	ps_datos->d_umbral = 0.5; // Este es el umbral que determina si el interés del vecino puede generarme más interés.
 		
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
-	int i_testigos = 6; // Este es el número de testigos que registraré. Voy a registrar los testigos de 0 a 9
-	
-	// Defino variables para ver que la red crezca hasta volverse conexa
-	int i_tamano = 0; // Esto lo uso para medir el tamaño de la comunidad del primer agente
+	int i_testigos = 2; // Este es el número de testigos que registraré. Voy a registrar los testigos de 0 a 9
 		
 	// Voy a armar mi array de punteros, el cual voy a usar para guardar los datos de pasos previos del sistema
 	double* ap_OpinionesPrevias[ps_datos->i_pasosprevios];
@@ -116,21 +113,21 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_archivo1[355];
-	sprintf(s_archivo1,"../Programas Python/Logisitica_1D/Opiniones_alfa=%.3f_N=%d_amp=%.3f_umbral=%.3f_Iter=%d.file"
+	sprintf(s_archivo1,"../Programas Python/Logistica_1D/Opiniones_alfa=%.1f_N=%d_amp=%.1f_umbral=%.1f_Iter=%d.file"
 		,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_amp,ps_datos->d_umbral,i_iteracion);
 	FILE *pa_archivo1=fopen(s_archivo1,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_archivo2[355];
-	sprintf(s_archivo2,"../Programas Python/Logistica_1D/Testigos_alfa=%.3f_N=%d_amp=%.3f_umbral=%.3f_Iter=%d.file"
-		,ps_datos->f_alfa,ps_datos->i_N,ps_datos->d_amp,ps_datos->d_umbral,i_iteracion);
+	sprintf(s_archivo2,"../Programas Python/Logistica_1D/Testigos_alfa=%.1f_N=%d_amp=%.1f_umbral=%.1f_Iter=%d.file"
+		,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_amp,ps_datos->d_umbral,i_iteracion);
 	FILE *pa_archivo2=fopen(s_archivo2,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
-	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
-	char s_mady[355];
-	sprintf(s_mady,"../Programas Python/MARE/Erdos-Renyi/ErdosRenyi_N=%d_ID=%d.file"
-		,ps_datos->i_N,(int) i_iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
-	FILE *pa_mady=fopen(s_mady,"r");
+	// // Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
+	// char s_mady[355];
+	// sprintf(s_mady,"MARE/Erdos-Renyi/ErdosRenyi_N=%d_ID=%d.file"
+		// ,ps_datos->i_N,(int) i_iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
+	// FILE *pa_mady=fopen(s_mady,"r");
 	
 	// Puntero a la función que define mi ecuación diferencial
 	double (*pf_EcDin)(ps_Red var, ps_Param par) = &Din2;
@@ -141,15 +138,16 @@ int main(int argc, char *argv[]){
 	
 	GenerarOpi(ps_red,ps_datos); // Esto me inicializa mis vectores de opinión, asignándole a cada agente una opinión en cada tópico
 	GenerarAng(ps_red,ps_datos); // Esto me inicializa mi matriz de superposición, definiendo el solapamiento entre tópicos.
+	GenerarAdy_Conectada(ps_red,ps_datos); // Esto arma una red de adyacencia completamente conectada
 	
-	// Levanto mi red conexa a partir de un archivo txt donde estaba armada previamente. Si hubo un error en 
-	// el levantar la red, hago que corte todo ahora y además ya habrá mandado un mensaje. Luego cierro mi archivo.
-	// Tengo un poco de duda sobre usar el goto, pero confío que todo está bien.
-	if(Lectura_Adyacencia(ps_red->pi_Ady,pa_mady) == 1){
-		fclose(pa_mady);
-		goto Final;
-	}
-	fclose(pa_mady);
+	// // Levanto mi red conexa a partir de un archivo txt donde estaba armada previamente. Si hubo un error en 
+	// // el levantar la red, hago que corte todo ahora y además ya habrá mandado un mensaje. Luego cierro mi archivo.
+	// // Tengo un poco de duda sobre usar el goto, pero confío que todo está bien.
+	// if(Lectura_Adyacencia(ps_red->pi_Ady,pa_mady) == 1){
+		// fclose(pa_mady);
+		// goto Final;
+	// }
+	// fclose(pa_mady);
 	
 	
 	//################################################################################################################################
@@ -231,6 +229,7 @@ int main(int argc, char *argv[]){
 	// Guardo las últimas cosas, libero las memorias malloqueadas y luego termino
 	
 	// Guardo las opiniones finales, la matriz de adyacencia y la semilla en el primer archivo.
+	fprintf(pa_archivo1,"\n");
 	fprintf(pa_archivo1,"Opiniones finales\n");
 	Escribir_d(ps_red->pd_Opi,pa_archivo1);
 	fprintf(pa_archivo1,"matriz de Adyacencia\n"); // Guardo esto para poder comprobar que la red sea conexa.
@@ -238,7 +237,7 @@ int main(int argc, char *argv[]){
 	fprintf(pa_archivo1,"Semilla\n");
 	fprintf(pa_archivo1,"%ld\n",semilla);
 	
-	Final:
+	// Final:
 	
 	// Libero los espacios dedicados a mis vectores y cierro mis archivos
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++) free(ap_OpinionesPrevias[i_i]);
@@ -257,6 +256,7 @@ int main(int argc, char *argv[]){
 	time(&tt_fin);
 	f_tardanza = tt_fin-tt_prin;
 	printf("Tarde %.1f segundos \n",f_tardanza);
+	sleep(1);
 	
 	return 0;
  }
