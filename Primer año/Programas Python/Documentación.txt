@@ -10,6 +10,13 @@ Python
 -------
 Acá voy a poner los programas de Python que voy a estar usando para analizar mis datos.
 Lo separo para no tener tantos archivos dando vueltas.
+  Decidí poner una carpeta de Python dentro de cada una de
+las carpetas con datos. Voy a empezar a hacer esto a partir de la carpeta de 
+Logistica_1D. Esto lo hago porque a medida que cambie la fase del trabajo,
+los parámetros y datos que guarde irán variando, esto va a hacer que si quiero tener un
+archivo separado en el cuál guardar mis funciones, voy a tener que estar corrigiendo estas
+funciones con cada nueva fase. Y entonces no voy a poder retornar a fases viejas.
+Para evitar problemas es que pondré carpetas Python dentro de las carpetas con datos.
 
 Temporal
 --------
@@ -97,3 +104,5 @@ K y mu fueron ¿definitivamente? eliminados, y en su lugar introduje la amplific
 social "amp", y el valor que determina cuando la suma de las opiniones de un vecino
 me aumenta o disminuye mi interés, "umbral". Preferí no seguir con la lógica de letras
 griegas. Demándenme.
+  Cambié esto, siguiendo el consejo de Pablo saqué el parámetro de amplificación social y
+estoy sólamente variando los valores de alfa y el umbral.

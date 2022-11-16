@@ -48,10 +48,35 @@ sólo código.
 Exploracion.py
 --------------
 
-No  recordaba que tenía este archivo, imagino que su objetivo era
+No recordaba que tenía este archivo, imagino que su objetivo era
 revisar lo que estaba pasando con los archivos de Varprom.
 Si no me equivoco en estos casos me estaba pasando que el programa
 no terminaba de resolver el código nunca y me estaba generando archivos
 super gigantes. Luego, intenté revisar lo que había en los Varprom
 pero creo que los archivos eran demasiado grandes para revisar, así
 que ahí lo dejé.
+
+Din_log.py:
+-----------
+
+La idea con este código era revisar los datos obtenidos para el sistema
+en el caso de la ecuación dinámica con el término logarítmico. Igual eso
+fue total y completamente descartado, así que no hace falta prestarle
+mucha atención. Pero este código intenté rearmarlo y emprolijarlo. El plan
+quedó trunco. Para esto empecé a pasar las funciones que utilizaba a un
+archivo de python llamado funciones, el cual después importaba.
+
+funciones.py:
+-------------
+
+Este archivo es el que justamente tiene las funciones que utilizaba en el
+código anterior. Tiene las funciones generales que usé siempre, y empecé a
+traspasar el armado de gráficos a funciones específicas. Después tengo
+que readaptarlo a las nuevas fases del proyecto.
+
+Profunc.py:
+-----------
+
+Este es el código que uso para probar funciones y cosas nuevas. Tengo armado
+el código para generar archivos con los datos de las matrices de adyacencia
+que después voy a levantar.

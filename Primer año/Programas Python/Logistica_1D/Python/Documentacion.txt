@@ -1,0 +1,15 @@
+Registro de los archivos usados para analizar los datos de la
+carpeta Logistica_1D.
+
+Log_1D:
+-------
+
+
+
+funciones.py:
+-------------
+
+Este archivo tiene las funciones básicas y las de graficado de los datos
+obtenidos a partir de las simulaciones. El objetivo es tener modularizadas
+las funciones de graficación, cosa de que el archivo principal sea fácil
+de leer y que las funciones se vean más prolijas.

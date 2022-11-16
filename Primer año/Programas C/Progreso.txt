@@ -1491,7 +1491,7 @@ finalmente.
 
 ---------------------------------------------------------------------------------------------
 
-12/11/2022
+14/11/2022
 
 A la mañana revisé el segundo video de Laura sobre las palabras más comunes de
 inglés, fuimos al curso a estudiar y practicar cosas. Para la próxima clase practicar
@@ -1539,3 +1539,63 @@ fijo medio, el cuál, además, para alfa chicos es un repulsor. Y después, a me
 crece, ocurre que en ciertas combinaciones de parámetros el sistema converge al punto central
 como un atractor y para otras combinaciones converge al punto fijo más grande o al más chico
 en función de las condiciones iniciales.
+
+---------------------------------------------------------------------------------------------
+
+15/11/2022
+
+En la mañana estuve analizando la ecuación dinámica del modelo y después fui a 
+al Conversation Club. Hablé con la chica Carolina, que al parecer está trabajando
+en el labo de Goyanes, pero juraría que me dijo con Famá como directora. Justo
+leí que recibió un premio de L'oreal Unesco. ¿Me estaré confundiendo los nombres?
+
+En la tarde fui a cursar la materia de Minnini con Mauro, arrancamos el TP5
+y después fuimos a la teórica. Esta es la anteúltima teórica.
+
+---------------------------------------------------------------------------------------------
+
+16/11/2022
+
+En la mañana continué con el análisis de la ecuación dinámica del modelo.
+Charlé un poco con Pablo, me recomendó deshacerme del parámetro de la amplificación
+y quedarme sólo con la controversialidad y el umbral. Estos dos parámetros que
+van en el exponente de la función logística. A partir de eso estudié el punto fijo
+del sistema y su estabilidad. Con el cambio hecho, ahora la estabilidad del punto
+fijo (umbral/alfa) depende únicamente de alfa. Por otro lado, ese punto es fijo
+sólo si umbral/alfa = 1/2. En ese caso, el punto es atractor si alfa es menor
+a 4, pero es repulsor si alfa es mayor a 4. Me parece interesante estudiar entonces
+el comportamiento del sistema en el espacio de parámetros alfa - umbral. El sistema
+va a tener tres opciones. Converger a 1/2 si alfa = 2 umbral y alfa es menor a 4,
+o converger a uno de los dos puntos fijos extremos si resulta que alfa es mayor a 4.
+Para poder diferenciar estos dos casos, creo que lo mejor va a ser estudiar
+la dispersión de los datos. Eso va a ser importante. ¿Dispersión o varianza?
+
+Por otro lado, Pablo hablaba de incorporar un mecanismo para que los agentes
+pierdan su interés en una noticia o en un perfil, usando el modelo de Fitzhugh-Nagumo.
+Después tendré que leer al respecto y ver cómo se puede agregar eso.
+
+La idea del barrido de parámetros ya la tengo. Voy a mover el umbral entre 0,5 y 3
+de a 0,5. Mientras que el alfa lo voy a barrer entre 1 y 8, así para cada umbral
+paso por el valor en el cual alfa es el doble del umbral. Esto debería dar una buena
+primera idea del comportamiento del sistema, porque además alfa se vuelve mayor a
+4 y de esa forma el punto fijo de 1/2 pasaría en algún punto de ser estable a inestable.
+
+Mientras el código corre y arma los datos, me queda ponerme a preparar el archivo
+de Python. Empecemos armando el gráfico del mapa de color en función de alfa y el umbral.
+
+Me estoy dando cuenta que ya no es conveniente guardar todos los archivos de Python en
+una sola carpeta, así que lo mejor será ir armando carpetas con los programas de Python
+dentro de las carpetas con datos.
+
+Logré que el archivo de Python levante los datos de las simulaciones y realice unos
+gráficos de opinión versus tiempo. Para esto me armé una carpeta en imágenes donde
+poner los resultados. Arranqué con esto porque la función estaba básicamente armada
+y quería ir probando que el levantar datos estuviera funcionando bien. Todavía estoy
+acostumbrándome al uso de Pandas. En los gráficos hay una curva rara e interesante.
+Como que el sistema tiene dos regímenes diferentes de crecimiento. Eso me interesa.
+
+Ya que agregué una nueva carpeta en Imagenes, después tengo que actualizar la
+documentación. Lo siguiente ahora sería lograr armar un mapa de colores con los datos.
+El armado de esta función la dejé a mitad de camino. El viernes continuaré con esto.
+Hechos estos gráficos lo que quedará será ir planeando ya una corrida para realizar
+un barrido más fino. Y debería borrar los datos de la simulación con el término logarítmico.

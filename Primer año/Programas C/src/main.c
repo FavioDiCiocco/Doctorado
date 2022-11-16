@@ -35,7 +35,7 @@ int main(int argc, char *argv[]){
 	// Primero defino los parámetros que requieren un input.
 	ps_datos->i_N = strtol(argv[1],NULL,10); // Cantidad de agentes en el modelo
 	ps_datos->d_alfa = strtof(argv[2],NULL); // Controversialidad de los tópicos
-	ps_datos->d_amp = strtof(argv[3],NULL); // Este es el amplificador de la presión social
+	ps_datos->d_umbral = strtof(argv[3],NULL); // Este es el umbral que determina si el interés del vecino puede generarme más interés.
 	int i_iteracion = strtol(argv[4],NULL,10); // Número de instancia de la simulación.
 	
 	// Los siguientes son los parámetros que están dados en los structs
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]){
 	ps_datos->d_dt = 0.01; // Paso temporal de iteración del sistema
 	ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	ps_datos->d_CritCorte = pow(10,-4); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
-	ps_datos->d_umbral = 0.5; // Este es el umbral que determina si el interés del vecino puede generarme más interés.
+	ps_datos->d_amp = 1; // Este es el amplificador de la presión social. Este parámetro lo voy a sacar posiblemente
 		
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
@@ -113,14 +113,14 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_archivo1[355];
-	sprintf(s_archivo1,"../Programas Python/Logistica_1D/Opiniones_alfa=%.1f_N=%d_amp=%.1f_umbral=%.1f_Iter=%d.file"
-		,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_amp,ps_datos->d_umbral,i_iteracion);
+	sprintf(s_archivo1,"../Programas Python/Logistica_1D/Opiniones_alfa=%.1f_N=%d_umbral=%.1f_Iter=%d.file"
+		,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_umbral,i_iteracion);
 	FILE *pa_archivo1=fopen(s_archivo1,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_archivo2[355];
-	sprintf(s_archivo2,"../Programas Python/Logistica_1D/Testigos_alfa=%.1f_N=%d_amp=%.1f_umbral=%.1f_Iter=%d.file"
-		,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_amp,ps_datos->d_umbral,i_iteracion);
+	sprintf(s_archivo2,"../Programas Python/Logistica_1D/Testigos_alfa=%.1f_N=%d_umbral=%.1f_Iter=%d.file"
+		,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_umbral,i_iteracion);
 	FILE *pa_archivo2=fopen(s_archivo2,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// // Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
@@ -136,9 +136,9 @@ int main(int argc, char *argv[]){
 	
 	// Genero los datos de las matrices de mi sistema
 	
-	GenerarOpi(ps_red,ps_datos); // Esto me inicializa mis vectores de opinión, asignándole a cada agente una opinión en cada tópico
-	GenerarAng(ps_red,ps_datos); // Esto me inicializa mi matriz de superposición, definiendo el solapamiento entre tópicos.
-	GenerarAdy_Conectada(ps_red,ps_datos); // Esto arma una red de adyacencia completamente conectada
+	GenerarOpi(ps_red, ps_datos); // Esto me inicializa mis vectores de opinión, asignándole a cada agente una opinión en cada tópico
+	GenerarAng(ps_red, ps_datos); // Esto me inicializa mi matriz de superposición, definiendo el solapamiento entre tópicos.
+	GenerarAdy_Conectada(ps_red, ps_datos); // Esto arma una red de adyacencia completamente conectada
 	
 	// // Levanto mi red conexa a partir de un archivo txt donde estaba armada previamente. Si hubo un error en 
 	// // el levantar la red, hago que corte todo ahora y además ya habrá mandado un mensaje. Luego cierro mi archivo.
