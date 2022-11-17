@@ -1599,3 +1599,18 @@ documentación. Lo siguiente ahora sería lograr armar un mapa de colores con lo
 El armado de esta función la dejé a mitad de camino. El viernes continuaré con esto.
 Hechos estos gráficos lo que quedará será ir planeando ya una corrida para realizar
 un barrido más fino. Y debería borrar los datos de la simulación con el término logarítmico.
+
+---------------------------------------------------------------------------------------------
+
+17/11/2022
+
+En la mañana me puse a preparar las simulaciones para el trabajo final de la materia de
+Minnini. Realmente no creo que sea necesario esto, porque Mauro hará las simulaciones
+y trabajaremos sobre su pc al respecto. Pero confío en que es una buena práctica
+practicar simular los datos.
+
+Logré hacer correr todo en mi pc, aunque tomó bastante tiempo que los datos terminen de
+calcularse. Lo que sí vale destacar, me fui y la pc sigue laburando sin problemas
+si me voy por menos de tres horas. Creo que no suspende, sólo bloquea la pantalla.
+
+A la tarde labramos en la práctica y después tuvimos la última clase teórica con Pablo.
