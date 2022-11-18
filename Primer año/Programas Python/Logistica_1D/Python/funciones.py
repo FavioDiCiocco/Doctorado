@@ -187,4 +187,87 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2):
             
 #-----------------------------------------------------------------------------------------------
 
+# Esta función es la que arma los gráficos de los mapas de colores en el espacio de
+# parámetros de alfa y umbral. Me resulta poco general esta función. Pero lo importante
+# es armar una función que grafique, después la iremos generalizando. Lo otro que me molesta
+# es que esto no soluciona el tema de las incontables indentaciones. Es más organizado que
+# lo anterior, pero necesita una mejora. Fijate si después lo podés armar como una tupla
+# Se puede, después pensalo un poco.
+
+def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,T=2):
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Defino los arrays de parámetros diferentes
+    
+    arrayN = np.unique(DF["n"])
+    arrayAlfa = np.unique(DF["alfa"])
+    arrayUmbral = np.unique(DF["umbral"])
+    
+    #--------------------------------------------------------------------------------
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    
+    XX,YY = np.meshgrid(arrayUmbral,np.flip(arrayAlfa))
+    ZZ = np.zeros(XX.shape)
+    
+    #--------------------------------------------------------------------------------
+    
+    # Itero en los valores de mis parámetros alfa y umbral.
+    AGENTES = arrayN[0] # Actualmente tengo un sólo valor de N considerado
+    for fila,ALFA in enumerate(arrayAlfa):
+        for columna,UMBRAL in enumerate(arrayUmbral):
+            
+            # Me defino el array en el cual acumulo los datos de las opiniones finales de todas
+            # mis simulaciones
+            Opifinales = np.array([])
+            
+            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                        (DF["n"]==AGENTES) & 
+                                        (DF["umbral"]==UMBRAL) & 
+                                        (DF["alfa"]==ALFA), "nombre"])        
+    
+            #------------------------------------------------------------------------------------------
+            
+            for nombre in archivos:
+                
+                # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+                # Opinión Inicial del sistema
+                # Variación Promedio
+                # Opinión Final
+                # Matriz de Adyacencia
+                # Semilla
+                
+                # Levanto los datos del archivo
+                Datos = ldata("{}/{}".format(path,nombre))
+                
+                # Leo los datos de las Opiniones Finales
+                Opifinales = np.concatenate((Opifinales, np.array(Datos[5][:-1:], dtype="float")), axis = None)
+            
+            #------------------------------------------------------------------------------------------
+            # Con las opiniones finales de todas las simulaciones lo que hago es calcular la varianza
+            # de la distribución de opiniones.
+            ZZ[arrayAlfa.shape[0]-1-fila,columna] = np.var(Opifinales)
+            
+            # Cuando lo armé me había olvidado que las filas arrancan desde arriba, entonces
+            # me estaba armando el gráfico invertido respecto del eje y.
+    
+    
+    #--------------------------------------------------------------------------------
+    
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores
+    
+    plt.rcParams.update({'font.size': 24})
+    plt.figure("Varianza Opiniones",figsize=(20,15))
+    plt.xlabel("umbral")
+    plt.ylabel(r"$\alpha$")
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    
+    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "plasma")
+    plt.colorbar()
+    plt.savefig("../../../Imagenes/{}/Varianza Opiniones EP.png".format(carpeta), bbox_inches = "tight")
+    plt.close("Varianza Opiniones")
 

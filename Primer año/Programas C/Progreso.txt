@@ -1613,4 +1613,74 @@ Logré hacer correr todo en mi pc, aunque tomó bastante tiempo que los datos te
 calcularse. Lo que sí vale destacar, me fui y la pc sigue laburando sin problemas
 si me voy por menos de tres horas. Creo que no suspende, sólo bloquea la pantalla.
 
-A la tarde labramos en la práctica y después tuvimos la última clase teórica con Pablo.
+A la tarde laburamos en la práctica y después tuvimos la última clase teórica con Pablo.
+
+---------------------------------------------------------------------------------------------
+
+18/11/2022
+
+En la mañana me quedé en lo de mis viejos a abrirle a Lorena. Al mediodía fue a la facultad
+y ya me puse a laburar en el tema de tesis. Lo primero que tengo que hacer es armar
+el mapa de colores de la varianza en función de los parámetros alfa y beta.
+
+De paso, ayer hablando con Mauro me dijo sobre el uso de la función Path. Debería revisar
+eso a futuro.
+
+Ya tengo la función que arma los gráficos de los mapas de colores. Lo que se observa es que
+a partir de alfa 4, y para ciertos valores de umbrales a partir de 2, el sistema empieza a
+tener valores de varianza en su distribución mayores a cero. En particular el máximo de 
+varianza está en alfa 6 y umbral 3. Pero es importante notar que para ciertos valores
+de umbral, si el alfa se hace muy grande, la varianza vuelve a caer a cero.
+¿Tiene sentido todo esto? Por un lado, se cumple mi predicción, que a partir de alfa
+igual a 4 el punto fijo en el medio deja de ser estable. Por eso, todos los sistemas tienden
+al mismo valor y la varianza tiende a cero para los sistemas con alfa menor a 4. Hasta ahí
+explico la mitad de abajo del gráfico. ¿Pero por qué para alfas grandes y umbrales chicos
+el sistema tiene baja varianza? Bueno, para alfas grandes el punto fijo del medio deja de
+ser estable, pero lo que ocurre ahí es que el alfa es demasiado grande para que el umbral
+compita, entonces el sistema tiende a manijearse y converge siempre a altos valores de
+interés. Es decir, el punto fijo cambió, pero el sistema converge siempre a un mismo lugar
+y por eso la varianza es chica. Bien, vamos 3/4 de gráfico. ¿Y qué pasa en la región
+de alto alfa y alto umbral? Bueno, para empezar destacar que el sistema tiene su máximo
+de varianza en el caso de 2*alfa = umbral. Eso es porque en ese caso el punto fijo del
+medio es 0,5, entonces eso significa que el sistema tiene igual probabilidad de converger
+a cualquiera de los dos extremos, ya que esto depende únicamente de sus condiciones iniciales,
+las cuales son totalmente aleatorias. Por tanto lo que ocurre es que en función de la relación
+de alfa y beta, el punto fijo medio separa la región [0,1] en dos regiones de tamaños diferentes.
+Esto condiciona la relación de convergencia a cada uno de los puntos fijos.
+
+Espero que esto tenga sentido a futuro. Estaba pensando igual que quizás mejor que mirar la
+varianza es mirar la entropía. Para eso tendría que distribuir las opiniones en la región [0,1]
+y calcular la probabilidad de caer en cada región.
+
+Lo otro que estoy pensando que debería hacer es mandar a correr el programa y hacer un barrido interesante
+en alfa y umbral. Tipo barrer el umbral entre 0.1 y 10, barriendo de a 0.1 y alfa entre 1 y 30 de a 0.1.
+¿Aunque debería hacerlo de una o debería hacerlo ya con 1000 agentes?
+
+Antes de mandar a correr esto, pensémoslo un poco. Me parece que recorrer la región propuesta es mucho.
+Primero que nada, pensá que tenés 300 simulaciones por el alfa, eso multiplicado por 100 por el umbral,
+luego eso multiplicado por 5 por las iteraciones en cada hilo y eso multiplicado por tres por el tiempo
+que tarda cada simulación. Eso da un total de 450000 segundos. Dividido por 3600 da exactamente 125 horas,
+es decir 5 días aprox. Por no hablar de una cantidad absurda de archivos a revisar. Me parece importante
+que como esto va a ser un barrido más fino, pero tampoco la locura, debería no ser tan gede. No debería
+tomar más de dos días de corrida, y eso es mucho. Pensémoslo mejor y el lunes o martes venimos ya con una
+idea más clara de cuál es la región que queremos recorrer y de qué forma. Fuera de eso, está todo cargado
+en la pc de Oporto. Está el código en c, están las matrices de Adyacencia, está la nueva carpeta Logistica_1D
+en la cual van a ir los datos, está actualizado el archivo de Instanciar.sh y el de Metainstanciacion.sh
+tiene actualizadas las salidas. Básicamente si le mando un ./Metainstanciacion.sh 19 habré mandado a correr
+20 programas, que ocuparán los 20 hilos, y en total serán 100 iteraciones para cada combinación de alfa y
+umbral.
+
+En el main que subí a Oporto, y en el que tengo la pc de la facultad, ahora cargo la matriz de adyacencia
+de los archivos en la carpeta MARE, ajusté para que se guarden datos de seis testigos y creo que nada
+más.
+
+¿Que debería hacer el próximo miércoles? Podría por un lado ponerme a trabajar en la función de Python para
+que sea un poco más cómodo el armado del mapa de colores. Básicamente armar correctamente las tuplas para que
+no tenga tantos for molestos que dificultan la lectura del código. Lo otro que pensaba hacer es modificar
+el armado del mapa de colores para que en vez de graficar la varianza grafiquen la entropía de la distribución
+de opiniones. Resuelto eso, quedaría estudiar los resultados de mis simulaciones y ver el comportamiento del
+sistema en la región de estudio. A partir de eso, el siguiente paso sería intentar incorporar un mecanismo
+que permita que un agente pierda su interés en un tema luego de cierto tiempo.
+
+Y si aún así tuviera tiempo de sobra, podría ponerme a leer algunos papers como para no dejar que se me
+acumulen.

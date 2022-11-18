@@ -67,57 +67,14 @@ Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("
 
 # Armo los gráficos de opinión en función del tiempo a base de los testigos.
 
-func.Graf_opi_vs_tiempo(Df_archivos, Conjunto_Direcciones, Carpeta, T)
+# func.Graf_opi_vs_tiempo(Df_archivos, Conjunto_Direcciones, Carpeta, T)
 
-"""
+
 #----------------------------------------------------------------------------------------------
 
-# Armo el gráfico de la dispersión de las opiniones finales del sistema en el espacio
-# de parámetros alfa-umbral.
+# Armo los mapas de colores de la varianza de las opiniones en función
 
-# Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
-# me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
-# me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
+func.Mapa_Colores_Varianza_opiniones(Df_archivos, Conjunto_Direcciones, Carpeta)
 
-# Como graficar en todas las combinaciones de parámetros implica muchos gráficos, voy a 
-# simplemente elegir tres valores de cada array, el primero, el del medio y el último.
-
-arrayN = np.unique(DF["n"])
-arrayAlfa = np.unique(DF["alfa"])
-arrayUmbral = np.unique(DF["umbral"])
-
-# Defino el tipo de archivo del cuál tomaré los datos
-TIPO = "Opiniones"
-
-
-# Construyo las grillas que voy a necesitar para el pcolormesh.
-
-arrayAlfa.reverse() # Lo invierto para que me quede el máximo arriba y no abajo
-
-XX,YY = np.meshgrid(arrayUmbral,arrayAlfa)
-ZZ = np.zeros(XX.shape)
-
-arrayAlfa.reverse() # Lo vuelvo a invertir para que quede correctamente ordenado
-
-# Me defino el array en el cual acumulo los datos de las opiniones finales de todas
-# mis simulaciones
-
-Opifinales = np.array([])
-
-# Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-# Opinión Inicial del sistema
-# Variación Promedio
-# Opinión Final
-# Matriz de Adyacencia
-# Semilla
-
-# Levanto los datos del archivo
-Datos = ldata("{}/{}".format(Conjunto_Direcciones[0],nombre))
-
-# Leo los datos de las Opiniones Finales
-Opifinales = np.concatenate((Opifinales, np.array(Datos[5][1::], dtype="float")), axis = None)
-
-
-"""
 
 func.Tiempo(t0)

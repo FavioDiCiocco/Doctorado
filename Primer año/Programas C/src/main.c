@@ -50,7 +50,7 @@ int main(int argc, char *argv[]){
 		
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
-	int i_testigos = 2; // Este es el número de testigos que registraré. Voy a registrar los testigos de 0 a 9
+	int i_testigos = 6; // Este es el número de testigos que registraré. Voy a registrar los testigos de 0 a 9
 		
 	// Voy a armar mi array de punteros, el cual voy a usar para guardar los datos de pasos previos del sistema
 	double* ap_OpinionesPrevias[ps_datos->i_pasosprevios];
@@ -123,11 +123,11 @@ int main(int argc, char *argv[]){
 		,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_umbral,i_iteracion);
 	FILE *pa_archivo2=fopen(s_archivo2,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
-	// // Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
-	// char s_mady[355];
-	// sprintf(s_mady,"MARE/Erdos-Renyi/ErdosRenyi_N=%d_ID=%d.file"
-		// ,ps_datos->i_N,(int) i_iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
-	// FILE *pa_mady=fopen(s_mady,"r");
+	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
+	char s_mady[355];
+	sprintf(s_mady,"MARE/Erdos-Renyi/ErdosRenyi_N=%d_ID=%d.file"
+		,ps_datos->i_N,(int) i_iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
+	FILE *pa_mady=fopen(s_mady,"r");
 	
 	// Puntero a la función que define mi ecuación diferencial
 	double (*pf_EcDin)(ps_Red var, ps_Param par) = &Din2;
@@ -138,16 +138,9 @@ int main(int argc, char *argv[]){
 	
 	GenerarOpi(ps_red, ps_datos); // Esto me inicializa mis vectores de opinión, asignándole a cada agente una opinión en cada tópico
 	GenerarAng(ps_red, ps_datos); // Esto me inicializa mi matriz de superposición, definiendo el solapamiento entre tópicos.
-	GenerarAdy_Conectada(ps_red, ps_datos); // Esto arma una red de adyacencia completamente conectada
+	Lectura_Adyacencia(ps_red->pi_Ady, pa_mady);
 	
-	// // Levanto mi red conexa a partir de un archivo txt donde estaba armada previamente. Si hubo un error en 
-	// // el levantar la red, hago que corte todo ahora y además ya habrá mandado un mensaje. Luego cierro mi archivo.
-	// // Tengo un poco de duda sobre usar el goto, pero confío que todo está bien.
-	// if(Lectura_Adyacencia(ps_red->pi_Ady,pa_mady) == 1){
-		// fclose(pa_mady);
-		// goto Final;
-	// }
-	// fclose(pa_mady);
+	fclose(pa_mady); // Aprovecho y cierro el puntero al archivo de la matriz de adyacencia
 	
 	
 	//################################################################################################################################
@@ -237,8 +230,6 @@ int main(int argc, char *argv[]){
 	fprintf(pa_archivo1,"Semilla\n");
 	fprintf(pa_archivo1,"%ld\n",semilla);
 	
-	// Final:
-	
 	// Libero los espacios dedicados a mis vectores y cierro mis archivos
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++) free(ap_OpinionesPrevias[i_i]);
 	free(ps_red->pd_Act);
@@ -256,7 +247,6 @@ int main(int argc, char *argv[]){
 	time(&tt_fin);
 	f_tardanza = tt_fin-tt_prin;
 	printf("Tarde %.1f segundos \n",f_tardanza);
-	sleep(1);
 	
 	return 0;
  }
