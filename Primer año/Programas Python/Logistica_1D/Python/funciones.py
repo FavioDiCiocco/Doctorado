@@ -12,6 +12,7 @@ from matplotlib.pyplot import cm
 import numpy as np
 import time
 import math
+from pathlib import Path
 
 ##################################################################################
 ##################################################################################
@@ -157,7 +158,7 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2):
             # De los archivos de Testigos levanto las opiniones de todos los agentes a lo largo de todo el proceso.
             # Estos archivos tienen las opiniones de dos agentes.
             
-            Datos = ldata("{}/{}".format(path,nombre))
+            Datos = ldata(path / nombre)
             
             Testigos = np.zeros((len(Datos)-2,len(Datos[1])-1)) # Inicializo mi array donde pondré las opiniones de los testigos.
             
@@ -170,6 +171,7 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2):
             
             # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
             repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+            direccion_guardado = Path("../../../Imagenes/{}/OpivsT_N={:.0f}_alfa={:.1f}_umbral={:.1f}_sim={}.png".format(carpeta,AGENTES,ALFA,UMBRAL,repeticion))
             
             if repeticion in [0,1]:
             
@@ -182,17 +184,14 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2):
                 plt.xlabel("Tiempo")
                 plt.ylabel("Tópico")
                 plt.grid(alpha = 0.5)
-                plt.savefig("../../../Imagenes/{}/OpivsT_N={:.0f}_alfa={:.1f}_umbral={:.1f}_sim={}.png".format(carpeta,AGENTES,ALFA,UMBRAL,repeticion),bbox_inches = "tight")
+                plt.savefig(direccion_guardado ,bbox_inches = "tight")
                 plt.close("Topico")
-            
+
+        
 #-----------------------------------------------------------------------------------------------
 
 # Esta función es la que arma los gráficos de los mapas de colores en el espacio de
-# parámetros de alfa y umbral. Me resulta poco general esta función. Pero lo importante
-# es armar una función que grafique, después la iremos generalizando. Lo otro que me molesta
-# es que esto no soluciona el tema de las incontables indentaciones. Es más organizado que
-# lo anterior, pero necesita una mejora. Fijate si después lo podés armar como una tupla
-# Se puede, después pensalo un poco.
+# parámetros de alfa y umbral usando la varianza de las opiniones como métrica.
 
 def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,T=2):
     
@@ -205,6 +204,12 @@ def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,T=2):
     arrayAlfa = np.unique(DF["alfa"])
     arrayUmbral = np.unique(DF["umbral"])
     
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    
+    Tupla_total = [(n,i,alfa,j,umbral) for n in arrayN
+                   for i,alfa in enumerate(arrayAlfa)
+                   for j,umbral in enumerate(arrayUmbral)]
+    
     #--------------------------------------------------------------------------------
     
     # Construyo las grillas que voy a necesitar para el pcolormesh.
@@ -215,49 +220,43 @@ def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,T=2):
     #--------------------------------------------------------------------------------
     
     # Itero en los valores de mis parámetros alfa y umbral.
-    AGENTES = arrayN[0] # Actualmente tengo un sólo valor de N considerado
-    for fila,ALFA in enumerate(arrayAlfa):
-        for columna,UMBRAL in enumerate(arrayUmbral):
+    for AGENTES,fila,ALFA,columna,UMBRAL in Tupla_total:
+        
+        # Me defino el array en el cual acumulo los datos de las opiniones finales de todas mis simulaciones
+        Opifinales = np.array([])
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                    (DF["n"]==AGENTES) & 
+                                    (DF["umbral"]==UMBRAL) & 
+                                    (DF["alfa"]==ALFA), "nombre"])        
+
+        #------------------------------------------------------------------------------------------
+        
+        for nombre in archivos:
             
-            # Me defino el array en el cual acumulo los datos de las opiniones finales de todas
-            # mis simulaciones
-            Opifinales = np.array([])
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
+            # Matriz de Adyacencia
+            # Semilla
             
-            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
-            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
-                                        (DF["n"]==AGENTES) & 
-                                        (DF["umbral"]==UMBRAL) & 
-                                        (DF["alfa"]==ALFA), "nombre"])        
-    
-            #------------------------------------------------------------------------------------------
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
             
-            for nombre in archivos:
-                
-                # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-                # Opinión Inicial del sistema
-                # Variación Promedio
-                # Opinión Final
-                # Matriz de Adyacencia
-                # Semilla
-                
-                # Levanto los datos del archivo
-                Datos = ldata("{}/{}".format(path,nombre))
-                
-                # Leo los datos de las Opiniones Finales
-                Opifinales = np.concatenate((Opifinales, np.array(Datos[5][:-1:], dtype="float")), axis = None)
-            
-            #------------------------------------------------------------------------------------------
-            # Con las opiniones finales de todas las simulaciones lo que hago es calcular la varianza
-            # de la distribución de opiniones.
-            ZZ[arrayAlfa.shape[0]-1-fila,columna] = np.var(Opifinales)
-            
-            # Cuando lo armé me había olvidado que las filas arrancan desde arriba, entonces
-            # me estaba armando el gráfico invertido respecto del eje y.
-    
-    
+            # Leo los datos de las Opiniones Finales
+            Opifinales = np.concatenate((Opifinales, np.array(Datos[5][:-1:], dtype="float")), axis = None)
+        
+        #------------------------------------------------------------------------------------------
+        # Con las opiniones finales de todas las simulaciones lo que hago es calcular la varianza
+        # de la distribución de opiniones.
+        ZZ[arrayAlfa.shape[0]-1-fila,columna] = np.var(Opifinales)
+        
     #--------------------------------------------------------------------------------
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
+    direccion_guardado = Path("../../../Imagenes/{}/Varianza Opiniones EP.png".format(carpeta))
     
     plt.rcParams.update({'font.size': 24})
     plt.figure("Varianza Opiniones",figsize=(20,15))
@@ -268,6 +267,163 @@ def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,T=2):
     
     plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "plasma")
     plt.colorbar()
-    plt.savefig("../../../Imagenes/{}/Varianza Opiniones EP.png".format(carpeta), bbox_inches = "tight")
+    plt.title("Varianza de opiniones en Espacio de Parametros")
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close("Varianza Opiniones")
 
+
+#-----------------------------------------------------------------------------------------------
+
+# Esta función es la que arma los gráficos de los mapas de colores en el espacio de
+# parámetros de alfa y umbral usando la entropía como métrica.
+
+def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,T=2):
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Defino los arrays de parámetros diferentes
+    
+    arrayN = np.unique(DF["n"])
+    arrayAlfa = np.unique(DF["alfa"])
+    arrayUmbral = np.unique(DF["umbral"])
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    
+    Tupla_total = [(n,i,alfa,j,umbral) for n in arrayN
+                   for i,alfa in enumerate(arrayAlfa)
+                   for j,umbral in enumerate(arrayUmbral)]
+    
+    #--------------------------------------------------------------------------------
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    
+    XX,YY = np.meshgrid(arrayUmbral,np.flip(arrayAlfa))
+    ZZ = np.zeros(XX.shape)
+    
+    #--------------------------------------------------------------------------------
+    for AGENTES,fila,ALFA,columna,UMBRAL in Tupla_total:
+        
+        # Me defino el array en el cual acumulo los datos de las opiniones finales de todas
+        # mis simulaciones
+        Opifinales = np.array([])
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                    (DF["n"]==AGENTES) & 
+                                    (DF["umbral"]==UMBRAL) & 
+                                    (DF["alfa"]==ALFA), "nombre"])        
+
+        #------------------------------------------------------------------------------------------
+        
+        for nombre in archivos:
+            
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
+            # Matriz de Adyacencia
+            # Semilla
+            
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
+            
+            # Leo los datos de las Opiniones Finales
+            Opifinales = np.concatenate((Opifinales, np.array(Datos[5][:-1:], dtype="float")), axis = None)
+        
+        #------------------------------------------------------------------------------------------
+        # Con las opiniones finales de todas las simulaciones lo que hago es calcular la entropia
+        # de la distribución de las opiniones. Esto es una segunda métrica para ver si las opiniones
+        # finales de los agentes están dispersas en dos puntos grandes, o no. Además, esto sería
+        # sensible a cómo es esa distribución.
+        
+        ZZ[arrayAlfa.shape[0]-1-fila,columna] = Entropia(Opifinales)
+    
+    #--------------------------------------------------------------------------------
+    
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores
+    direccion_guardado = Path("../../../Imagenes/{}/Entropia Opiniones EP.png".format(carpeta))
+    
+    plt.rcParams.update({'font.size': 24})
+    plt.figure("Entropia Opiniones",figsize=(20,15))
+    plt.xlabel("umbral")
+    plt.ylabel(r"$\alpha$")
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    
+    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "viridis")
+    plt.colorbar()
+    plt.title("Entropía de opiniones en Espacio de Parametros")
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("Entropia Opiniones")
+
+
+#-----------------------------------------------------------------------------------------------
+
+def Entropia(Array):
+    
+    # Primero tengo que binnear mi distribución. Como sé que mi distribución va de 0 a 1,
+    # voy a separar eso en 20 bines. Hist tiene la cantidad de datos que caen en ese bin.
+    Hist,Bines = np.histogram(Array, bins = 20, range = (0,1))
+    
+    # Calculo la proba de que los valores de mi distribución caigan en cada bin
+    Probas = Hist[Hist != 0] / Array.shape[0] # Saco los ceros para no calcularles logs
+    
+    # Calculo la entropía y la returneo
+    return np.matmul(Probas, np.log2(Probas))*(-1)
+
+
+#-----------------------------------------------------------------------------------------------
+
+# Esta función es la que arma los gráficos de los mapas de colores en el espacio de
+# parámetros de alfa y umbral usando la entropía como métrica.
+
+def Grafico_histograma(DF,path,carpeta,T=2):
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Defino los arrays de parámetros diferentes
+    
+    arrayN = np.unique(DF["n"])
+    arrayAlfa = np.unique(DF["alfa"])
+    arrayUmbral = np.unique(DF["umbral"])
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    
+    Tupla_total = [(n,alfa,umbral) for n in arrayN
+                   for alfa in arrayAlfa
+                   for umbral in arrayUmbral]
+    
+    #--------------------------------------------------------------------------------
+    for AGENTES,ALFA,UMBRAL in Tupla_total:
+        
+        # Me defino el array en el cual acumulo los datos de las opiniones finales de todas mis simulaciones
+        Opifinales = np.array([])
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                    (DF["n"]==AGENTES) & 
+                                    (DF["umbral"]==UMBRAL) & 
+                                    (DF["alfa"]==ALFA), "nombre"])        
+
+        #------------------------------------------------------------------------------------------
+        
+        for nombre in archivos:
+            
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
+            # Matriz de Adyacencia
+            # Semilla
+            
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
+            
+            # Leo los datos de las Opiniones Finales
+            Opifinales = np.concatenate((Opifinales, np.array(Datos[5][:-1:], dtype="float")), axis = None)
+            
+        #------------------------------------------------------------------------------------------
+        
+        # Tengo que pensar cómo hacer los gráficos uno para cada ALFA, mientras mantengo el for de la Tupla_total

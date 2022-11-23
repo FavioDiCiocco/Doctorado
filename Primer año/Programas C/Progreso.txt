@@ -1684,3 +1684,76 @@ que permita que un agente pierda su interés en un tema luego de cierto tiempo.
 
 Y si aún así tuviera tiempo de sobra, podría ponerme a leer algunos papers como para no dejar que se me
 acumulen.
+
+---------------------------------------------------------------------------------------------
+
+22/11/2022
+
+La mañana arranca con la derrota de Argentina contra Arabia Saudita 2-1. Si no entramos por la ventana,
+no sería Argentina. Bueno, volviendo al trabajo, antes de ponerme a trabajar en la guía de fluidos,
+corresponde que primero me ponga a revisar el tema de mandar a correr los datos en la pc de Oporto.
+Fede mandó a correr algo y está ocupando 3 hilos. Debería no ocupar todo entonces, sólo 15 hilos.
+
+Pensándolo de nuevo, no necesito barrer un espacio taan grande. Podemos reducir el umbral para que
+barra entre 2 y 6. Cualquier cosa después le agrego datos. Por el lado del alfa, lo puedo hacer
+correr entre 3 y 14, y en vez de moverme de a 0.1, moverme de a 0.2. Eso significa que tengo
+41 valores de umbral y eso lo multiplico por 56 valores de alfa. Luego eso lo multiplico
+por 90 iteraciones y lo multiplico por 10 segundos cada una. Aproximadamente eso me da
+38 horas. Razonable.
+
+Mandé a correr esto, ahora a esperar los resultados. Me hago un café y arranco con el trabajo del
+punto 1 de la guía 5. Después fui al curso con Sofi, comimos con Lupi y me fui a trabajar con Mauro.
+Me re dormí durante la primer hora, no puedo creer que haya sido tan fuerte. Una re vergüenza.
+
+---------------------------------------------------------------------------------------------
+
+23/11/2022
+
+Ya revisé y los datos que mandé a correr ayer siguen calculándose. Parece que ya se completaron la
+mitad de los datos, así que para mañana deberían estar. Lo que puedo hacer hoy es dejar preparado
+el archivo que arma los gráficos cosa de que ya mañana simplemente me paro en la pc de oporto y lo
+mando a correr. Me dejo anotado el instructivo de cómo mandarlo a correr de paso.
+
+Ahí estoy viendo el tema del pahtlib, voy a ver de implementarlo al código de funciones. Ese es un
+primer objetivo de hoy. Lo segundo es armar una función que grafique usando la entropía de las
+distribuciones. Lo tercero sería que el gráfico de las cosas no tenga tantos for, sino que itere
+sobre una tupla que ya organice los parámetros. El objetivo de eso es que el código sea más legible.
+Lo cuarto sería pensar un poco el tema de cómo visualizar a donde converge el sistema en general. Se
+me ocurre armar histogramas para eso, suena lo más razonable. ¿Pero pretendo tener taaantos histogramas?
+Lo quinto sería estudiar la dinámica de la ecuación, pero para muchos agentes. Mi intuición es que
+no va a cambiar la dinámica del sistema para nada, porque como normalizo por el número de vecinos de
+cada agente, siempre la opinión de un agente se ve afectada por un mismo factor. Quizás, como sexto,
+podemos considerar la idea de usar la opinión varios pasos en el pasado como mecanismo para que 
+el interés decaiga luego de cierto tiempo.
+  También hay que actualizar la documentación en la carpeta de imágenes.
+  
+Punto 1 hecho, incorporé Path al código, todo parece funcionar igual. Lo siguiente es una función que
+grafique el mapa de colores usando la entropía. Para hacer los gráficos de entropía, decidí armar una
+función que calcule la entropía dado un array. Esa función la acabo de probar y funca perfecto. Podría
+ver de cambiar el tamaño del bineado a gusto. Eso cambiaría el valor de la entropía, ¿Pero lo hace mejor?
+No estoy seguro de la respuesta, no creo que valga la pena preocuparse por eso ahora. Ya logré que
+se grafique la entropía. 
+
+Eso es bueno, y lo interesante es que la entropía muestra otras cosas que la varianza no. 
+Por ejemplo, el punto con alfa = 4 y umbral = 2 es el de máxima entropía, mientras
+que el punto de máxima varianza es el de alfa = 6 y umbral = 3. Eso tiene sentido, en alfa = 4 está
+la transición entre un punto fijo estable y un punto fijo inestable. Por eso la entropía es máxima
+ahí, porque en ese valor el sistema tiende al punto fijo central y a los extremos en iguales cantidades,
+en cuanto alfa sale de ese punto, tiende a un conjunto de los puntos fijos por encima de los otros.
+En cambio, el punto de alfa = 6  y umbral = 3 es el de máxima varianza porque como los parámetros son
+más grandes en ese caso, los puntos fijos extremos están más separados.
+
+Pensando el tema de los histogramas, se me ocurren tres ideas al respecto. La primera, y que la voy a implementar,
+es armar gráficos de histograma para un dado alfa y para todos los umbrales. Esto sería un problema
+si tengo muchos umbrales, porque entonces al poner el plt.legend, se me llena el gráfico. Si no lo pongo, 
+no sé qué son esas curvas. Aunque quizás la idea sea simplemente observar este gráfico como complemento al
+gráfico de entropía. La segunda idea es que esta función arme los gráficos de histogramas para un dado valor
+de alfa y umbral determinado previamente. Eso lo agregaría después. La tercera es que los gráficos no sean
+gráficos de barras, sino curvas. Eso hará que sea más fácil de seguir. Hagamos eso.
+
+Me quedé trabado en el tema de los histogramas, porque quiero que se armen los histogramas para un dado valor
+de alfa, pero para todos los umbrales. Eso me significa que necesito de alguna manera que se armen y guarden
+gráficos cada vez que se cambia el valor de alfa. Esto no es tan natural en el caso de tener un for que
+integra en un único elemento los alfa, n y los umbrales. Se me ocurre formas de resolver eso usando ifs,
+pero siento que si lo hago medio que es un bardo y para hacer eso puedo simplemente meter fors separados
+y listo. Después lo pensaré mejor. 

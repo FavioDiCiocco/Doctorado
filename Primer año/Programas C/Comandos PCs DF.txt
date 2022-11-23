@@ -57,5 +57,26 @@ contraseña: eYESHIELD21
 -------------------------------------------------------------------------------------------------------------
 Cuenta nueva en Algarve: (20 hilos)
 
+
+
+#####################################################################################################################
+#####################################################################################################################
+
+USO DE CONDA EN LA PC DE LA FACULTAD
+
+PARA CREAR NUEVOS ENVIRONMENTS
+conda create --name myenv
+
+PARA ACTIVAR ENVIRONMENTS
+conda activate myenv
+
+PARA DESACTIVAR ENVIRONMENTS (Tengo que estar dentro del environment)
+conda deactivate
+
+LISTA DE ENVIRONMENTS:
+-) fluidos (Este tiene instalado make, fftw y compiladores de fortran)
+-) python (Este tiene instalado spyder)
+-) notebooks (Este tiene instalado jupyter-notebook)
+
 faviodic@algarve.df.uba.ar
 contraseña: No1olvi2dar3

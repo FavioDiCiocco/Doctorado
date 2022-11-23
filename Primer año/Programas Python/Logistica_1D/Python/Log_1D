@@ -14,6 +14,7 @@ import time
 import math
 import os
 import funciones as func
+from pathlib import Path
 
 # Importo todas las librerías que voy a usar en el programa. Estas son las que
 # uso en los tres programas, por lo que no debería necesitar nada más.
@@ -26,7 +27,7 @@ Carpeta = "Logistica_1D" # Defino la carpeta en la que estoy trabajando
 
 # CÓDIGO PARA LEVANTAR ARCHIVOS DE UNA CARPETA QUE TIENE DATOS Y UNA CARPETA
  
-CarpCheck=[[root,files] for root,dirs,files in os.walk("../")]
+CarpCheck=[[root,files] for root,dirs,files in os.walk(Path("../"))]
 
 # Creo que puedo asumir que el CarpCheck siempre arranca con el "../"
 # como primera carpeta a investigar. Si considero eso, el armado del
@@ -35,7 +36,7 @@ CarpCheck=[[root,files] for root,dirs,files in os.walk("../")]
 # carpetas dentro de una carpeta de datos.
 
 Archivos_Datos = [nombre for nombre in CarpCheck[0][1]]
-Archivos_Datos.insert(0,CarpCheck[0][0])
+Archivos_Datos.insert(0,Path(CarpCheck[0][0]))
 
 #-------------------------------------------------------------------------------------------------------
 
@@ -67,7 +68,7 @@ Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("
 
 # Armo los gráficos de opinión en función del tiempo a base de los testigos.
 
-# func.Graf_opi_vs_tiempo(Df_archivos, Conjunto_Direcciones, Carpeta, T)
+func.Graf_opi_vs_tiempo(Df_archivos, Conjunto_Direcciones, Carpeta, T)
 
 
 #----------------------------------------------------------------------------------------------
@@ -75,6 +76,14 @@ Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("
 # Armo los mapas de colores de la varianza de las opiniones en función
 
 func.Mapa_Colores_Varianza_opiniones(Df_archivos, Conjunto_Direcciones, Carpeta)
+
+
+#----------------------------------------------------------------------------------------------
+
+# Armo los mapas de colores de la varianza de las opiniones en función
+
+func.Mapa_Colores_Entropia_opiniones(Df_archivos, Conjunto_Direcciones, Carpeta)
+
 
 
 func.Tiempo(t0)
