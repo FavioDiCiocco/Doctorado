@@ -41,3 +41,13 @@ sólo gráfico porque a cada simulación la puedo representar con un único
 gráfico. En cambio, el modelo del Votante tiene varios gráficos para poder
 representar la evolución de las posturas de los agentes distribuidos en
 la grilla.
+
+.) Logistica_1D:
+-----------------
+El código genera ddatos con una ecuación dinámica que en el segundo término
+tiene una función logística. Esto trabaja para un modelo con un sólo tópico.
+En esta pc trabajé con sólo 2 agentes, en Oporto trabajé con 1000. Básicamente
+esto es una prueba para ver que el modelo esté funcionando bien y que el
+código que grafica funcione. Estuve guardando gráficos de opiniones en función
+del tiempo, mapas de colores de varianza y entropía e histogramas. Si se me
+ocurre algo más que graficar, después lo pondré acá.

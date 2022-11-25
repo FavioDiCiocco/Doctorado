@@ -84,6 +84,12 @@ func.Mapa_Colores_Varianza_opiniones(Df_archivos, Conjunto_Direcciones, Carpeta)
 
 func.Mapa_Colores_Entropia_opiniones(Df_archivos, Conjunto_Direcciones, Carpeta)
 
+#----------------------------------------------------------------------------------------------
+
+# Armo los histogramas de las opiniones finales, juntando varios valroes de umbrales y un único alfa
+
+func.Grafico_histograma(Df_archivos, Conjunto_Direcciones, Carpeta)
+
 
 
 func.Tiempo(t0)

@@ -1757,3 +1757,52 @@ gráficos cada vez que se cambia el valor de alfa. Esto no es tan natural en el 
 integra en un único elemento los alfa, n y los umbrales. Se me ocurre formas de resolver eso usando ifs,
 pero siento que si lo hago medio que es un bardo y para hacer eso puedo simplemente meter fors separados
 y listo. Después lo pensaré mejor. 
+
+---------------------------------------------------------------------------------------------
+
+24/11/2022
+
+Primero armé el speech sobre amnesia de Gell-mann, así ya lo tengo listo para charlar mañana con Sofi.
+Después me iba a poner a leer el libro de turbulencias de Davidson, pero Pablo y Seba me llevaron a
+la celebración de recibida de Ariel. Agradable sujeto. Morfé y me dejé mi comida en la heladera de la
+facultad para mañana. Después de comer fui al coloquio de Machine Learning. Que nadie se entere que
+no presté tanta atención como me hubiera gustado.
+
+A la tarde fui a cursar la práctica y charlamos con Mauro sobre el TP. Yo estuve leyendo el libro de
+Davidson para sacar ideas. A la vuelta estaban reunidos en la oficina Pablo, Sebas y Fede, así que 
+me fui a dar una vuelta y tomar un café.
+
+---------------------------------------------------------------------------------------------
+
+25/11/2022
+
+Hice un poco de Burocracia infinita a la mañana y después me puse con el código de Python para
+estudiar los datos del sistema para la fase de la función logística_1D. Es importante mencionar
+que ayer hubo un problema con el aire acondicionado del cluster de pcs, así que ahora están inaccesibles.
+Los datos se calcularon bien, pero igual no puedo utilizarlos. Habrá que ponerse con otra cosa.
+Más tarde vendrá Sofi e iremos arreglando para charlar.
+
+Ahora voy a continuar con las cosas que quedaron pendientes del 23/11. Para arrancar, el tema de los
+histogramas. Después vemos el resto de los puntos anotados, que están en el segundo párrafo.
+
+Nos juntamos a charlar con Sofi sobre lo de inglés. Mientras tanto estuve trabajando sobre la función
+de histogramas. Ya grafica correctamente, junta varias curvas y guarda bien. Lo que sí,
+tuve unos problemas en la visualización al principio porque se superponían varias curvas y entonces
+no se entendía que pasaba con ciertas simulaciones. Aumenté el tamaño del binneado y la cosa dió
+mucho mejor. Claramente lo que se ve es que los picos de convergencia se acercan al cero a medida
+que el umbral crece, mientras que los picos se corren a la derecha si crece alfa.
+
+Lo siguiente es estudiar la dinámica del modelo para muchos agentes. Arranquemos con eso.
+Anoté la ecuación y revisé lo que me queda luego de tomar la aproximación de que los agentes tienden
+a los mismos valores. Al hacer eso, la sumatoria en j se anula con el grado del agente i. De esta
+manera no necesito tomar la aproximación que hacía en campo medio de que la suma en j era el 
+grado medio de la red. Esto lleva a que la ecuación dinámica del sistema es exactamente la misma
+que la que tenía en el caso de dos agentes. Lo cual es bueno, porque entonces los valores a los
+cuales tienden los agentes ya no dependen de la cantidad de agentes, ahora sólo dependen de los
+parámetros, y por tanto el sistema se mantiene en mi región de [0,1].
+
+Voy a dejar el tema de pensar en utilizar la opinión de pasos previos para generar caídas en la opinión
+como algo a tratar la semana que viene. Mejor charlarlo con Pablo, para tener una primer idea al
+respecto. Así no lo laburo al pedo.
+
+Hagamos lo de actualizar la documentación en la carpeta de imágenes. Hecho, podemos cortar por hoy.

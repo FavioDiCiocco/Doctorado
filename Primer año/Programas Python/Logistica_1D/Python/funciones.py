@@ -193,7 +193,7 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2):
 # Esta función es la que arma los gráficos de los mapas de colores en el espacio de
 # parámetros de alfa y umbral usando la varianza de las opiniones como métrica.
 
-def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,T=2):
+def Mapa_Colores_Varianza_opiniones(DF,path,carpeta):
     
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Opiniones"
@@ -277,7 +277,7 @@ def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,T=2):
 # Esta función es la que arma los gráficos de los mapas de colores en el espacio de
 # parámetros de alfa y umbral usando la entropía como métrica.
 
-def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,T=2):
+def Mapa_Colores_Entropia_opiniones(DF,path,carpeta):
     
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Opiniones"
@@ -378,7 +378,7 @@ def Entropia(Array):
 # Esta función es la que arma los gráficos de los mapas de colores en el espacio de
 # parámetros de alfa y umbral usando la entropía como métrica.
 
-def Grafico_histograma(DF,path,carpeta,T=2):
+def Grafico_histograma(DF,path,carpeta):
     
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Opiniones"
@@ -391,12 +391,23 @@ def Grafico_histograma(DF,path,carpeta,T=2):
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
     
-    Tupla_total = [(n,alfa,umbral) for n in arrayN
-                   for alfa in arrayAlfa
+    Tupla_total = [(n,i,alfa,umbral) for n in arrayN
+                   for i,alfa in enumerate(arrayAlfa)
                    for umbral in arrayUmbral]
     
+    # Me preparo mis figuras antes de arrancar.
+    plt.rcParams.update({'font.size': 24})
+    for i in range(arrayAlfa.shape[0]):
+        plt.figure(i,figsize=(20,15))
+        plt.ylabel("Probabilidad")
+        plt.xlabel("Interés")
+        plt.grid()
+
+
     #--------------------------------------------------------------------------------
-    for AGENTES,ALFA,UMBRAL in Tupla_total:
+    
+    
+    for AGENTES,ialfa,ALFA,UMBRAL in Tupla_total:
         
         # Me defino el array en el cual acumulo los datos de las opiniones finales de todas mis simulaciones
         Opifinales = np.array([])
@@ -426,4 +437,31 @@ def Grafico_histograma(DF,path,carpeta,T=2):
             
         #------------------------------------------------------------------------------------------
         
-        # Tengo que pensar cómo hacer los gráficos uno para cada ALFA, mientras mantengo el for de la Tupla_total
+        # Tomo los datos de opiniones finales, los distribuyo en un histograma y con eso armo una
+        # curva. La idea es tener una curva para cada umbral.
+        
+        Hist,Bines = np.histogram(Opifinales, bins = 60, range = (0,1))
+        Y = Hist / Opifinales.shape[0]
+        X = (Bines[1::]+Bines[:-1])/2
+        
+        
+        # Abro la figura correspondiente para graficarla
+        plt.figure(ialfa)
+        plt.plot(X,Y,"--", linewidth = 4,label = "Umbral = {}".format(UMBRAL))
+        
+    #-----------------------------------------------------------------------------------------------
+    
+    # Ya revisé todos los datos, ahora cierro los gráficos y los guardo
+    
+    for indice,ALFA in enumerate(arrayAlfa):
+        
+        # Defino el path de guardado del archivo
+        direccion_guardado = Path("../../../Imagenes/{}/Histograma_alfa={}.png".format(carpeta,ALFA))
+        
+        # Hago los retoques finales, guardo las figuras y cierro todo.
+        plt.figure(indice)
+        plt.legend(ncols = 2)
+        plt.title(" Alfa = {}".format(ALFA))
+        plt.xlim(0,1)
+        plt.savefig(direccion_guardado , bbox_inches = "tight")
+        plt.close(indice)
