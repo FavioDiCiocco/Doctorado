@@ -90,6 +90,11 @@ func.Mapa_Colores_Entropia_opiniones(Df_archivos, Conjunto_Direcciones, Carpeta)
 
 func.Grafico_histograma(Df_archivos, Conjunto_Direcciones, Carpeta)
 
+#----------------------------------------------------------------------------------------------
+
+# Armo los mapas de colores de los promedios de las opiniones en función
+
+func.Mapa_Colores_Promedio_opiniones(Df_archivos, Conjunto_Direcciones, Carpeta)
 
 
 func.Tiempo(t0)

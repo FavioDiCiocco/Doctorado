@@ -77,4 +77,26 @@ las opiniones de los primeros seis agentes a lo largo de toda la simulación.
 Armé varios datos de esto que están en la pc de Oporto, pero al final nunca
 los usé.
 
+.) Logistica_1D:
+----------------
 
+Dejamos atrás el modelo logarítmico, ahora el término final de la ecuación
+dinámica tiene una función logística. La idea del modelo ahora es arrancar
+de cero, redes fijas, la menor cantidad de parámetros posibles y forzando
+al sistema a mantenerse en la región [0,1]. Para eso el segundo término
+se normaliza por el grado del agente. Además arrancamos probando esto para
+dos agentes y después de eso lo mandamos para varios. Como el nombre indica,
+obviamente todo esto corre con un sólo tópico.
+  El objetivo de este código es ver que tal funca este modelo, explorar su
+comportamiento en el espacio de fases y ganar intuición sobre el mismo.
+  Es importante notar que borré muchos parámetros viejos y cosas no utilizadas
+en este modelo que estaba cargando de modelos viejos. Eso es porque quería
+simplificar el código y emprolijarlo. Los parámetros importantes en este
+modelo son el alfa y el umbral, que eventualmente empecé a llamar Chi.
+Espero no cambiar de idea pronto y armar un quilombo. Este código suelta
+archivos de "Opiniones" y "Testigos", como la mayoría. Con esos datos
+me armé funciones que grafican mapas de colores e histogramas. Esas funciones
+están ahora colocadas en un archivo python de funciones, que va aparte del 
+archivo que grafica. Eso está muy bueno, la verdad que me hace todo mucho
+más fácil de correr y de ir compartimentando en distintas funciones particulares.
+Soy un boludo por no hacer esto antes.

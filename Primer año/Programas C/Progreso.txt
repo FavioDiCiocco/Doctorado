@@ -1806,3 +1806,111 @@ como algo a tratar la semana que viene. Mejor charlarlo con Pablo, para tener un
 respecto. Así no lo laburo al pedo.
 
 Hagamos lo de actualizar la documentación en la carpeta de imágenes. Hecho, podemos cortar por hoy.
+
+-------------------------------------------------------------------------------------------------
+
+28/11/2022
+
+A la mañana repasé la charla de Gell-Mann amnesia y después me fui a la clase del taller de inglés.
+Estuvo linda, dimos las charlas, después hicimos unos ejercicios del TOEFL y revisamos los audios
+que armamos de respuesta.
+
+En la tarde me puse con el tema de tesis. La computadora de Oporto parece estar encendida, me parece
+una buena idea intentar entrarle y ver qué pasa. Revisando, el archivo de Python parece funcar
+bárbaro, así que simplemente tengo que moverlo a la pc de Logistica_1D en la pc de Oporto, armar
+una nueva carpeta en imágenes para recibir los gráficos, y listo.
+
+Estuve un buen rato intentando no dormirme, pero al final pude pasar el archivo a la pc de Oporto
+y ponerlo a correr. Cuando se terminen de armar los gráficos, me los descargo. Lo siguiente es el
+tema de cómo incorporar un mecanismo que haga que las opiniones de los agentes luego de saturar
+vuelvan a decaer. Mi primer idea es usar la opinión del agente en un tiempo previo, de manera que
+si el agente tenía un interés bajo y saturo, por un período delta ese término no aporta. Luego
+del tiempo delta, el interés retardado sube y el interés actual baja. Esto hace que ahora el interés
+se mantenga abajo por un rato. La única pregunta al respecto es cómo evitar que esto tire las opiniones
+de los agentes a valores negativos. ¿Dependerá de delta?
+
+Hablando con Seba me recomendó un paper llamado "Accelerating dynamics of collective attention". Ahí
+utilizan un término no lineal para modelar la saturación del interés en un tópico. Eso suena más
+copado y mejor que la idea de usar una opinión retardada. Así que lo próximo que voy a hacer es leer
+cómo funca. Después veré de implementarlo en C y ver qué resultados da para el caso de 2 agentes.
+Recordá que el caso de muchos agentes con un sólo tópico ya lo tenés visto, los datos están en la
+pc de Oporto. Cuando estén listos los gráficos estudiamos ese caso.
+
+También un detalle importante, armaste un environment en la carpeta Python dentro de Logistica_1D.
+Fijate que los environment sólo se pueden abrir desde la carpeta indicada, no desde cualquier carpeta.
+Para deshacer un environment, simplemente mandá deactivate.
+
+Intenté leer el paper, pero hoy estoy muerto, mañana intentaré prestar más atención. Aunque mañana
+voy a estar con el TP de la materia de fluídos. Ojalá terminemos eso temprano.
+
+-------------------------------------------------------------------------------------------------
+
+29/11/2022
+
+Me levanté sintiéndome muy mal, me quedé en casa descansando. En la mañana dormí, en la tarde
+me puse a leer un poco del paper que Seba me pasó. Tengo una idea de cómo hacer funcionar este
+término de saturación, parece muy simple de implementar. Requeriría tener una segunda ecuación
+dinámica que evolucionar con un proceso de un Runge-Kutta. Entonces tendría que primero
+evolucionar mi término de saturación y LUEGO evolucionar la dinámica del sistema. La idea es
+bastante interesante. Presentárselo a Pablo en orden, contándole primero la idea de la opinión
+con retardo y después esta otra opción que me mostró Seba.
+
+-------------------------------------------------------------------------------------------------
+
+30/11/2022
+
+En la mañana me puse a mirar el TP de Fluídos, Mauro había subido al Github todo hecho, dijo que había
+que revisar unas cosas del punto 2 pero que los gráficos estaban hechos. Queda justificarlos. Estuve
+leyendo el Davidson para hacerme unas ideas de cómo justificar esos puntos. A la tarde posiblemente
+me junte con Mauro para resolver esto antes del partido de Argentina.
+
+Logré hacer los gráficos con los datos que simulé en la pc de Oporto y ya me bajé los gráficos a la pc.
+Con lo que tengo se observa que el sistema efectivamente tiene una curva que separa dos estados en
+el espacio de fases alfa-chi. Esa curva es la de alfa = 2*chi. En esa curva, el punto fijo central
+coincide con ser 1/2. Fuera de esa curva, el punto fijo central sabemos que va a depender con alfa y
+chi, pero no exactamente cómo. Sé que mientras más grande sea chi, más se corre a la derecha eso.
+Y mientras más grande sea alfa, más se corre a la izquierda. Un alfa grande aumenta la pendiente
+de la logística, y por tanto una logística corrida a la derecha interseca con la recta antes de lo
+que su corrimiento indica.
+  Creo que esto explica el comportamiento del sistema. Si alfa es menor a 4, el sistema tiende al punto
+fijo central. Si alfa es mayor a 4, el sistema tiende a los puntos fijos extremos. Este segundo caso
+se abre en dos opciones más. Si alfa es menor al doble de chi, entonces la tendencia del sistema es
+ir al punto fijo menor, ya que el punto fijo del medio está más cerca de 1 que del medio, y esto
+establece un bias en las condiciones iniciales de manera que la mayoría de las condiciones iniciales
+van a ese valor. Si por el contrario, alfa es mayor al doble de chi, entonces el sistema tenderá en
+general al punto fijo mayor porque el punto fijo central se corrió a la izquierda y eso establece un
+bias en la dirección contraria de las condiciones iniciales.
+
+Tendría que rearmar esos gráficos de histograma, honestamente se ven re chotos. Podría sacar
+el cuadro con la leyenda de los valores de chi. Lo malo ahí es que no tenés idea de qué son
+todas las curvas, pero podés mirar todos los gráficos juntos y ver que a medida que aumentás
+alfa las curvas se van corriendo a la derecha.
+
+Ya me junté con mauro y repasamos el punto 2. Creo que está bastante bien. Mañana a la mañana le
+hago una última repasada antes de mandarlo.
+
+Mandé a rehacer los gráficos, cosa de que no tenga el cuadro de leyendas en el medio. Voy a ver
+parte del primer tiempo, después meriendo y después decido con qué continuo. Por ahora el partido
+va 0-0, pero con la ofensiva de Argentina todo parece mostrar que el gol argentino es inminente.
+
+Volviendo a lo nuestro, por lo que queda de hoy, me voy a poner a leer un paper o algo. Ya mañana
+me pondré con implementar el nuevo término. Aunque para eso, prefiero primero hablar con Pablo.
+Veré si viene mañana, si tiene un ratito para charlar al respecto.
+
+-------------------------------------------------------------------------------------------------
+
+01/12/2022
+
+Lo primero que hice a la mañana fue revisar el tp de la materia de Fluidos. No será perfecto, pero
+creo que está para entregarse. La verdad, tengo que hacerle un monumento a Mauro, un capo.
+
+Después hablé con Pablo sobre el tema de implementar el mecanismo de saturación a partir del paper
+que me mostró Seba y la idea le copa, así que podría ponerme a trabajar en eso ya. Pero antes de
+eso Pablo me dijo que haga un mapa de colores del valor promedio al cuál tiende el sistema.
+
+Antes de trabajar en nada de la tesis, me voy a poner a hacer la burocracia infinita, y después a 
+laburar.
+
+Ya mandé a armar los mapas de colores en función del promedio de las opiniones de los agentes.
+La idea sería poder distinguir las regiones en las que el sistema cae a cero, de las que tiende
+a valores altos y de las que tiende al punto fijo central. Veremos qué tal da.

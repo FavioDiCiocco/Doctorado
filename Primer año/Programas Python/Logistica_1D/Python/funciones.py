@@ -460,8 +460,92 @@ def Grafico_histograma(DF,path,carpeta):
         
         # Hago los retoques finales, guardo las figuras y cierro todo.
         plt.figure(indice)
-        plt.legend(ncols = 2)
+        # plt.legend(ncols = 2)
         plt.title(" Alfa = {}".format(ALFA))
         plt.xlim(0,1)
         plt.savefig(direccion_guardado , bbox_inches = "tight")
         plt.close(indice)
+
+#-----------------------------------------------------------------------------------------------
+
+# Esta función es la que arma los gráficos de los mapas de colores en el espacio de
+# parámetros de alfa y umbral usando el valor medio de la opinión.
+
+def Mapa_Colores_Promedio_opiniones(DF,path,carpeta):
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Defino los arrays de parámetros diferentes
+    
+    arrayN = np.unique(DF["n"])
+    arrayAlfa = np.unique(DF["alfa"])
+    arrayUmbral = np.unique(DF["umbral"])
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    
+    Tupla_total = [(n,i,alfa,j,umbral) for n in arrayN
+                   for i,alfa in enumerate(arrayAlfa)
+                   for j,umbral in enumerate(arrayUmbral)]
+    
+    #--------------------------------------------------------------------------------
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    
+    XX,YY = np.meshgrid(arrayUmbral,np.flip(arrayAlfa))
+    ZZ = np.zeros(XX.shape)
+    
+    #--------------------------------------------------------------------------------
+    for AGENTES,fila,ALFA,columna,UMBRAL in Tupla_total:
+        
+        # Me defino el array en el cual acumulo los datos de las opiniones finales de todas
+        # mis simulaciones
+        Opifinales = np.array([])
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                    (DF["n"]==AGENTES) & 
+                                    (DF["umbral"]==UMBRAL) & 
+                                    (DF["alfa"]==ALFA), "nombre"])        
+
+        #------------------------------------------------------------------------------------------
+        
+        for nombre in archivos:
+            
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
+            # Matriz de Adyacencia
+            # Semilla
+            
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
+            
+            # Leo los datos de las Opiniones Finales
+            Opifinales = np.concatenate((Opifinales, np.array(Datos[5][:-1:], dtype="float")), axis = None)
+        
+        #------------------------------------------------------------------------------------------
+        # Con las opiniones finales de todas las simulaciones lo que hago es calcular el promedio de
+        # las opiniones. No hago distinción de tópicos porque al considero que los agentes tenderán
+        # a los mismos valores en todos sus tópicos.
+        
+        ZZ[arrayAlfa.shape[0]-1-fila,columna] = np.mean(Opifinales)
+    
+    #--------------------------------------------------------------------------------
+    
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores
+    direccion_guardado = Path("../../../Imagenes/{}/Promedio Opiniones EP.png".format(carpeta))
+    
+    plt.rcParams.update({'font.size': 24})
+    plt.figure("Promedio Opiniones",figsize=(20,15))
+    plt.xlabel("umbral")
+    plt.ylabel(r"$\alpha$")
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    
+    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "cividis")
+    plt.colorbar()
+    plt.title("Promedio de opiniones en Espacio de Parametros")
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("Promedio Opiniones")

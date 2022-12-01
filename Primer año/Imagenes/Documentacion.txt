@@ -44,7 +44,7 @@ la grilla.
 
 .) Logistica_1D:
 -----------------
-El código genera ddatos con una ecuación dinámica que en el segundo término
+El código genera datos con una ecuación dinámica que en el segundo término
 tiene una función logística. Esto trabaja para un modelo con un sólo tópico.
 En esta pc trabajé con sólo 2 agentes, en Oporto trabajé con 1000. Básicamente
 esto es una prueba para ver que el modelo esté funcionando bien y que el
