@@ -35,7 +35,7 @@ int main(int argc, char *argv[]){
 	// Primero defino los parámetros que requieren un input.
 	ps_datos->i_N = strtol(argv[1],NULL,10); // Cantidad de agentes en el modelo
 	ps_datos->d_alfa = strtof(argv[2],NULL); // Controversialidad de los tópicos
-	ps_datos->d_umbral = strtof(argv[3],NULL); // Este es el umbral que determina si el interés del vecino puede generarme más interés.
+	ps_datos->d_chi = strtof(argv[3],NULL); // Este es el umbral que determina si el interés del vecino puede generarme más interés.
 	int i_iteracion = strtol(argv[4],NULL,10); // Número de instancia de la simulación.
 	
 	// Los siguientes son los parámetros que están dados en los structs
@@ -46,7 +46,6 @@ int main(int argc, char *argv[]){
 	ps_datos->d_dt = 0.01; // Paso temporal de iteración del sistema
 	ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	ps_datos->d_CritCorte = pow(10,-4); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
-	ps_datos->d_amp = 1; // Este es el amplificador de la presión social. Este parámetro lo voy a sacar posiblemente
 		
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
@@ -73,9 +72,9 @@ int main(int argc, char *argv[]){
 	ps_red->pd_Opi = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Lista de vectores de opinión de la red, Tengo T elementos para cada agente.
 	
 	// También hay una matriz de paso posterior del sistema, un vector para guardar la diferencia entre 
-	// el paso previo y el actual y un vector con la actividad de cada uno d elos agentes
-	ps_red->pd_OpiPosterior = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Paso previo del sistema antes de iterar.
+	// el paso previo y el actual
 	ps_red->pd_Diferencia = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Vector que guarda la diferencia entre dos pasos del sistema
+	ps_red->pd_Sat = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Lista de valores de la variable auxiliar de saturación.
 	
 	// Inicializo mis cinco "matrices".
 	// Matriz de Adyacencia. Es de tamaño N*N
@@ -87,21 +86,21 @@ int main(int argc, char *argv[]){
 	for(register int i_i=0; i_i<ps_datos->i_T*ps_datos->i_T+2; i_i++) ps_red->pd_Ang[i_i] = 0;
 	ps_red->pd_Ang[0] = ps_datos->i_T; // Pongo el número de filas en la primer coordenada
 	ps_red->pd_Ang[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
-			
+	
 	// Matriz de vectores de opinión. Es de tamaño N*T
 	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_Opi[i_i] = 0; // Inicializo la matriz
 	ps_red->pd_Opi[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
 	ps_red->pd_Opi[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
 	
-	// Matriz de vectores de opinión en el paso temporal Posterior. Es de tamaño N*T
-	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_OpiPosterior[i_i] = 0; // Inicializo la matriz
-	ps_red->pd_OpiPosterior[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
-	ps_red->pd_OpiPosterior[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
-	
 	// Matriz de diferencia entre los vectores Opi y PreOpi. Es de tamaño N*T
 	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_Diferencia[i_i] = 0; // Inicializo la matriz
 	ps_red->pd_Diferencia[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
 	ps_red->pd_Diferencia[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
+	
+	// Matriz de valores de la variable de saturación. Es de tamaño N*T
+	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_Sat[i_i] = 0; // Inicializo la matriz
+	ps_red->pd_Sat[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
+	ps_red->pd_Sat[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
 	
 	//################################################################################################################################
 	
@@ -114,13 +113,13 @@ int main(int argc, char *argv[]){
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_archivo1[355];
 	sprintf(s_archivo1,"../Programas Python/Logistica_1D/Opiniones_alfa=%.1f_N=%d_umbral=%.1f_Iter=%d.file"
-		,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_umbral,i_iteracion);
+		,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_chi,i_iteracion);
 	FILE *pa_archivo1=fopen(s_archivo1,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_archivo2[355];
 	sprintf(s_archivo2,"../Programas Python/Logistica_1D/Testigos_alfa=%.1f_N=%d_umbral=%.1f_Iter=%d.file"
-		,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_umbral,i_iteracion);
+		,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_chi,i_iteracion);
 	FILE *pa_archivo2=fopen(s_archivo2,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
@@ -130,7 +129,7 @@ int main(int argc, char *argv[]){
 	FILE *pa_mady=fopen(s_mady,"r");
 	
 	// Puntero a la función que define mi ecuación diferencial
-	double (*pf_EcDin)(ps_Red var, ps_Param par) = &Din2;
+	double (*pf_EcDin)(ps_Red var, ps_Param par) = &Din_interes;
 	
 	//################################################################################################################################
 	
@@ -156,7 +155,7 @@ int main(int argc, char *argv[]){
 	
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar	
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
-		Iteracion(ps_red->pd_Opi,ps_red,ps_datos,pf_EcDin); // Itero mi sistema
+		RK4(ps_red->pd_Opi,pf_EcDin,ps_red,ps_datos); // Itero mi sistema
 		// Me guardo los valores de opinión de mis agentes testigo
 		for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo2,"%lf\t",ps_red->pd_Opi[i_j*ps_datos->i_T+i_k+2]);
 		fprintf(pa_archivo2,"\n");
@@ -180,7 +179,7 @@ int main(int argc, char *argv[]){
 		// Evoluciono el sistema hasta que se cumpla el criterio de corte
 		do{
 			// Evolución
-			Iteracion(ps_red->pd_Opi,ps_red,ps_datos,pf_EcDin); // Itero mi sistema
+			RK4(ps_red->pd_Opi,pf_EcDin,ps_red,ps_datos); // Itero mi sistema
 			// Cálculos derivados
 			Delta_Vec_d(ps_red->pd_Opi,ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios],ps_red->pd_Diferencia); // Veo la diferencia entre $i_pasosprevios pasos anteriores y el actual en las opiniones
 			for(register int i_p=0; i_p<ps_datos->i_N*ps_datos->i_T; i_p++) *(ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios]+i_p+2) = ps_red->pd_Opi[i_p+2]; // Me guardo el estado actual en la posición correspondiente de ap_OpinionesPrevias
@@ -198,7 +197,7 @@ int main(int argc, char *argv[]){
 		
 		while(i_contador < ps_datos->i_Itextra && ps_red->d_Varprom <= ps_datos->d_CritCorte ){
 			// Evolución
-			Iteracion(ps_red->pd_Opi,ps_red,ps_datos,pf_EcDin); // Itero mi sistema
+			RK4(ps_red->pd_Opi,pf_EcDin,ps_red,ps_datos); // Itero mi sistema
 			// Cálculos derivados
 			Delta_Vec_d(ps_red->pd_Opi,ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios],ps_red->pd_Diferencia); // Veo la diferencia entre $i_pasosprevios pasos anteriores y el actual en las opiniones
 			for(register int i_p=0; i_p<ps_datos->i_N*ps_datos->i_T; i_p++) *(ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios]+i_p+2) = ps_red->pd_Opi[i_p+2]; // Me guardo el estado actual en la posición correspondiente de ap_OpinionesPrevias
@@ -236,8 +235,8 @@ int main(int argc, char *argv[]){
 	free(ps_red->pd_Ang);
 	free(ps_red->pi_Ady);
 	free(ps_red->pd_Opi);
-	free(ps_red->pd_OpiPosterior);
 	free(ps_red->pd_Diferencia);
+	free(ps_red->pd_Sat);
 	free(ps_red);
 	free(ps_datos);
 	fclose(pa_archivo1);

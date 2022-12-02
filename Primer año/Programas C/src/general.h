@@ -11,12 +11,10 @@
 // Acá vienen los structs.
 // El struct Red tiene los datos que definen mi red, y la info de la red
 typedef struct Red{
-	double *pd_OpiPosterior; // Vector que guarda la matriz de opiniones del sistema en el paso temporal Previo.
 	double *pd_Diferencia; // Vector que guarda las diferencias entre PreOpi y Opi.
 	double *pd_Opi; // Vector de opinión de cada individuo
 	double *pd_Ang; // Matriz de superposición entre tópicos. Tiene tamaño T*T
-	double *pd_Act; // Vector de Actividad de cada agente.
-	double *pd_Km; // Vector de valores medios de la red.
+	double *pd_Sat; // Matriz de valores de la variable auxiliar de saturación
 	double d_Varprom; // Esto es la Variación promedio del sistema. Es cuanto cambia en promedio cada opinión
 	int *pi_Ady; // Matriz de adyacencia que define mis conexiones. Tiene tamaño N*N
 	int *pi_Activados; //Vector con los agentes que se activaron
@@ -35,8 +33,8 @@ typedef struct Parametros{
 	double d_alfa; // Controversialidad de los temas
 	double d_dt; // Paso temporal de iteración del sistema
 	double d_Cosangulo; // Este es el coseno del ángulo entre los tópicos
-	double d_amp; // Amplificador de la presión social
-	double d_umbral; // Umbral que determina si el interés del vecino puede generarme más interés.
+	double d_chi; // Umbral que determina si el interés del vecino puede generarme más interés.
+	double d_gamma; // Constante asociada a la evolución del término de saturación
 	int i_Gradomedio; // Este es el grado medio de los agentes de la red.
 	int i_m; // Esto sería el número de conexiones que haría para cada agente que se activa.
 	int i_N; // Número de agentes en la red
@@ -53,7 +51,7 @@ typedef s_Param *ps_Param;
 double Random();
 double Gaussiana(float f_mu, float f_sigma);
 double Norma_d(double *pd_x);
-double RK4(double *pd_sistema ,ps_Red ps_var, ps_Param ps_par, double (*pf_funcion)(ps_Red ps_var, ps_Param ps_par));
+double RK4(double *pd_sistema, double (*pf_funcion)(ps_Red ps_var, ps_Param ps_par) ,ps_Red ps_var, ps_Param ps_par);
 double Max(double d_a, double d_b);
 double Min(double d_a, double d_b);
 double Interpolacion(double d_y1, double d_y2, double d_x1,double d_x);

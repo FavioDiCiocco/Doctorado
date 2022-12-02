@@ -1914,3 +1914,33 @@ laburar.
 Ya mandé a armar los mapas de colores en función del promedio de las opiniones de los agentes.
 La idea sería poder distinguir las regiones en las que el sistema cae a cero, de las que tiende
 a valores altos y de las que tiende al punto fijo central. Veremos qué tal da.
+
+-------------------------------------------------------------------------------------------------
+
+02/12/2022
+
+Empecemos descargando el gráfico del promedio de opiniones en el espacio de parámetros.
+Bien, se ve como una bandera. No capta la línea horizontal del alfa = 4. Eso es algo a
+preguntarse, cómo lo identifico.
+
+Pero bueno, eso queda para otro momento, pongámonos a trabajar en implementar el término
+de saturación. Lo primero que voy a hacer es cambiar el nombre de las funciones dinámicas que
+tengo, porque ahora no hay una única función dinámica. Voy a cambiar los nombres de Din2 y
+Din1 a Din_interes y Din_sumatoria. Y la nueva función será Din_saturacion.
+
+Ya rearmé la función de RK4 para que evolucione todo el array pasado como sistema y que no
+devuelva nada. Tengo que probar si no hay un error de que falte una variable o algo así,
+pero para eso tengo que revisar de nuevo el header. El cambio de la función lo hice básicamente
+cambiando el puntero double de pendientes y transformándolo en un array de punteros double.
+Después me encargué de que en el RK4 se realizaran los for de agentes y tópicos, en vez de
+hacerse por fuera. Ahora que volví a metir estos for dentro del RK4 estoy empezando a recordar
+por qué la otra versión me parecía más modular. Siempre y cuando no tenga que evolucionar vectores
+de tamaños distintos, esto viene bien. En caso de tener que hacer eso, tendré que repensar esto.
+Por suerte no borré la función anterior. Con el compilador encontré algunos errores y los corregí.
+Parece que funca bárbaro. A lo que sigue.
+
+Cambié la función RK4 para que evolucione todo el vector en una sola vez. También borré la función
+Iteración y reemplacé eso por la función RK4 en el main. Lo siguiente ahora es eliminar el array
+de Opiposterior e introducir el array de saturación. Hagamos eso.
+
+Con el array de Saturación creado, ahora puedo ponerme a armar la función dinámica de saturación.
