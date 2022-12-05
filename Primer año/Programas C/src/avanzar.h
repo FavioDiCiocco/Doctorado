@@ -6,6 +6,6 @@
 
 double Din_sumatoria(ps_Red ps_var, ps_Param ps_par);
 double Din_interes(ps_Red ps_var, ps_Param ps_par);
-int Iteracion(double *pd_sistema,ps_Red ps_var, ps_Param ps_par, double (*pf_Dinamica)(ps_Red ps_var, ps_Param ps_par));
+double Din_saturacion(ps_Red ps_var, ps_Param ps_par);
 
 #endif

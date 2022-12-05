@@ -1944,3 +1944,69 @@ Iteración y reemplacé eso por la función RK4 en el main. Lo siguiente ahora e
 de Opiposterior e introducir el array de saturación. Hagamos eso.
 
 Con el array de Saturación creado, ahora puedo ponerme a armar la función dinámica de saturación.
+
+También tuvimos una charla con Perotti sobre la idea de poder armar un trabajo en colaboración
+tomando en cuenta lo que contó sobre los complejos simpliciales. Esto al parecer mezcla
+ideas de geomtería diferencial con redes para poder acoplar las interacciones entre los
+agentes de la red utilizando estructura de derivadas. O algo así entendí.
+
+-------------------------------------------------------------------------------------------------
+
+05/12/2022
+
+Lo primero que hice a la mañana fue leer un poco del paper de "Discrete Hodge Theory on Graphs",
+después me puse a hacer burocracia infinita y lo siguiente fue ponerme con la implementación
+del término de saturación en la ecuación dinámica.
+
+Pongamos en orden lo que tengo:
+.) La función RK4 recibe los punteros a structs, un puntero a un array y un puntero a una función.
+La idea es que el puntero a array es el que evoluciona y el puntero a función es la función
+dinámica que usa para evolucionar el array.
+.) Tengo armado el array de Saturación, inicializado y todo. Si no me equivoco, lo razonable es
+inicializarlo en 0, y de ahí dejar que la dinámica lo haga crecer. Pero en el paper mencionan
+que memoria 0 es hacer que la condición inicial de Saturación sea igual al interés inicial.
+Otra cosa que hacen igual es darle un tiempo de evolución al sistema para que termalice.
+Así que supongo que eso tengo que hacer ahora, inicializar los valores de Saturación copiando
+los valores de interés y después termalizar el sistema. Me parece razonable aprovechar los
+pasos previo que ya uso del sistema, así que mezclemos eso.
+Pensándolo, lo mejor es no mezclarlo, porque justamente no quiero tomar info de la termalización
+hacia el sistema.
+.) Cambie los nombres a las funciones dinámicas para diferenciar las que se encargan de la evolución
+del interés y las que se encargan de la evolución de la saturación. Lo que no hice todavía es actualizar
+las ecuaciones dinámicas para que incorporen el término de saturación.
+
+Bien, la ecuación dinámica ya incorpora el término correctamente. Anotemos lo que falta hacer, porque me
+estoy perdiendo mucho en lo que tengo y lo que falta. Agregué el parámetro gamma que mide la memoria
+de los agentes respecto de su interés previo. Después inicializo el puntero al vector colocando
+ceros en todas las posiciones. Esto después se cambia. Hecho eso, defino los punteros a mis dos
+ecuaciones dinámicas, la de saturación y la de interés. Incializo el vector de saturación
+copiando los valores de interés en el vector de saturación. Esto es inicializar el vector en
+el valor de memoria nula según el paper. Luego itero primero la saturación y luego el interés. Es
+importante evolucionar los vectores en ese orden para que la saturación se actualice al valor
+correspondiente al paso temporal t, que es lo que necesito para calcular la opinión a tiempo t.
+
+Parece estar todo bien, así que ahora me voy a encargar de hacer unos datos de prueba en la
+pc. Primero una sóla simulación, para ver que esto finaliza en algún momento. Luego una tanda
+de datos para ver el comportamiento general del sistema. Por último, un barrido más grande
+en la pc de Oporto si todo va bien.
+
+Bueno, no estaba todo tan bien como parecía. Las opiniones de los agentes no están evolucionando
+como deberían. Si armo un sistema de dos agentes, me evoluciona sólo el primero. Y de tres agentes
+el sistema no corre.
+
+Ahí lo corregí, mi problema fue que al recorrer los elementos del puntero pasaba a las distintas
+filas haciendo saltos de tamaño "cantidad de filas" en vez de "cantidad de columnas". Eso hacía
+que intentar acceder a espacios de memoria que quedaban por fuera del espacio malloqueado del
+puntero.
+
+Mañana puedo a primera hora mandar a correr esto con un Instanciar, así ya puedo examinar un poco
+el comportamiento del sistema. Después me queda el tema de estudiar el comportamiento del sistema
+de forma analítica. Tener una idea de a dónde tiende el sistema con este nuevo término.
+
+Armado con esta información, recién entonces haré un barrido más fino en las pc's de Oporto.
+De paso, mañana debería actualizar la documentación en la carpeta de Programas Python. Y además,
+debería copiar la carpeta Python al interior de Saturacion_1D, así tengo mis programas de Python
+ahí dentro. Y algo que valdría la pena hacer es armar un environment de Python parado en la carpeta
+de Programas Python dentro de Oporto. Eso serviría para no tener que armar un nuevo environment
+para cada nueva fase. Eso significaría cargar las librerías de Numpy, Pandas, Matplotlib, Networkx
+y Pathlib. Ya veré si me acuerdo de alguna otra que necesite.

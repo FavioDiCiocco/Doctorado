@@ -67,16 +67,18 @@ double Din_interes(ps_Red ps_var, ps_Param ps_par){
 	
 	// Obtengo el tamaño de Columnas de mi matriz de Vectores de opinión y calculo el valor del campo que define mi ecuación diferencial
 	int i_C = (int) ps_var->pd_Opi[1];
-	d_resultado = - ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2] + d_sumatoria/i_grado;
+	d_resultado = ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2] *(-1-ps_var->pd_Sat[ps_var->i_agente*i_C+ps_var->i_topico+2]) + d_sumatoria/i_grado;
 	return d_resultado;
 }
+
 
 double Din_saturacion(ps_Red ps_var, ps_Param ps_par){
 	// Defino las variables locales de mi función
 	double d_resultado; // d_resultado es lo que voy a returnear.
+	int i_C = (int) ps_var->pd_Opi[1]; // Tamaño de columnas de mi vector de opiniones
 	
 	// Hago la cuenta de la ecuación dinámica
 	d_resultado = ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2] - ps_par->d_gamma * ps_var->pd_Sat[ps_var->i_agente*i_C+ps_var->i_topico+2];
 	
-	return d_resultado
+	return d_resultado;
 }
