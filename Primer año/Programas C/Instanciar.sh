@@ -14,7 +14,7 @@ echo "El ID del script es $$"
 # Voy a Hardcodear algunos Arrays
 
 Arr_Agentes=(2)
-# Arr_Alfas=(0.5 1 1.5 2)
+Arr_Alfas=(1 2 3 4 5 6 7 8)
 Arr_Umbrales=(0.5 1 1.5 2 2.5 3)
 
 
@@ -24,7 +24,7 @@ then
 	do
 		for iteracion in {0..30}
 		do
-			for Alfa in {1..8}
+			for Alfa in ${Arr_Alfas[@]}
 			do
 				for Umbral in ${Arr_Umbrales[@]}
 				do

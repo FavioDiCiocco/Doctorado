@@ -46,12 +46,12 @@ int main(int argc, char *argv[]){
 	ps_datos->d_dt = 0.01; // Paso temporal de iteración del sistema
 	ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	ps_datos->d_CritCorte = pow(10,-4); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
-	ps_datos->d_gamma = 0.005; // Este parámetro mide la memoria de los agentes respecto de sus intereses previos. Mientras más grande, menos memoria.
+	ps_datos->d_lambda = 0.1; // Este parámetro mide la memoria de los agentes respecto de sus intereses previos. Mientras más grande, menos memoria.
 		
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
 	int i_testigos = 2; // Este es el número de testigos que registraré. Voy a registrar los testigos de 0 a 9
-	int i_termalizacion = 500; // Esta es la cantidad de pasos de termalización que voy a hacer antes de empezar a simular el sistema.
+	int i_termalizacion = 0; // Esta es la cantidad de pasos de termalización que voy a hacer antes de empezar a simular el sistema.
 	
 	// Voy a armar mi array de punteros, el cual voy a usar para guardar los datos de pasos previos del sistema
 	double* ap_OpinionesPrevias[ps_datos->i_pasosprevios];
@@ -114,13 +114,13 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_archivo1[355];
-	sprintf(s_archivo1,"../Programas Python/Saturacion_1D/Opiniones_alfa=%.1f_N=%d_umbral=%.1f_Iter=%d.file"
+	sprintf(s_archivo1,"../Programas Python/Saturacion_1D/Lambda_01/Opiniones_alfa=%.1f_N=%d_umbral=%.1f_Iter=%d.file"
 		,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_chi,i_iteracion);
 	FILE *pa_archivo1=fopen(s_archivo1,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_archivo2[355];
-	sprintf(s_archivo2,"../Programas Python/Saturacion_1D/Testigos_alfa=%.1f_N=%d_umbral=%.1f_Iter=%d.file"
+	sprintf(s_archivo2,"../Programas Python/Saturacion_1D/Lambda_01/Testigos_alfa=%.1f_N=%d_umbral=%.1f_Iter=%d.file"
 		,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_chi,i_iteracion);
 	FILE *pa_archivo2=fopen(s_archivo2,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	/*

@@ -78,7 +78,7 @@ double Din_saturacion(ps_Red ps_var, ps_Param ps_par){
 	int i_C = (int) ps_var->pd_Opi[1]; // Tamaño de columnas de mi vector de opiniones
 	
 	// Hago la cuenta de la ecuación dinámica
-	d_resultado = ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2] - ps_par->d_gamma * ps_var->pd_Sat[ps_var->i_agente*i_C+ps_var->i_topico+2];
+	d_resultado = ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2] - ps_par->d_lambda * ps_var->pd_Sat[ps_var->i_agente*i_C+ps_var->i_topico+2];
 	
 	return d_resultado;
 }

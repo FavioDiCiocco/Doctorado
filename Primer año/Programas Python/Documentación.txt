@@ -100,9 +100,27 @@ y Testigos. En el primero irán el estado inicial del sistema, variación promed
 estado final, matriz de adyacencia y semilla. En el segundo irán las opiniones de
 los primeros seis agentes. A diferencia de los modelos anteriores, ahora los parámetros
 son otros. Para empezar no hay cosdelta porque voy a trabajar con un único tópico.
-K y mu fueron ¿definitivamente? eliminados, y en su lugar introduje la amplificación
-social "amp", y el valor que determina cuando la suma de las opiniones de un vecino
-me aumenta o disminuye mi interés, "umbral". Preferí no seguir con la lógica de letras
-griegas. Demándenme.
-  Cambié esto, siguiendo el consejo de Pablo saqué el parámetro de amplificación social y
-estoy sólamente variando los valores de alfa y el umbral.
+K y mu fueron ¿definitivamente? eliminados, y en su lugar introduje el valor que determina
+cuando la suma de las opiniones de un vecino me aumenta o disminuye mi interés, "umbral".
+Preferí no seguir con la lógica de letras griegas. Demándenme.
+
+Saturacion_1D:
+--------------
+En esta etapa el modelo tiene una función logística en el segundo término de la ecuación
+dinámica y además tiene un término de saturación cuyo objetivo es hacer que la opinión de
+los agentes decaiga eventualmente, de forma que el punto fijo del sistema no esté en
+1, sino que esté en 0. Los archivos generados en este caso son archivos de Opiniones y
+archivos de Testigos. En el primero irán el estado inicial del sistema, variación promedio,
+estado final, matriz de adyacencia y semilla. En el segundo irán las opiniones de
+los primeros seis agentes. Los parámetros importantes de este modelo son alfa y chi, siendo
+este último el "umbral".
+ Voy a empezar a separar los datos en carpetas. La ventaja de esto por un lado es que puedo
+explorar las carpetas con los datos sin que se me trabe tanto la pc por tener que cargar tantos
+archivos. Por otro lado, lo hago esto para poder comparar el comportamiento del sistema ante
+distintas variaciones. Y así no me olvido cuáles son esas variaciones.
+ .) Sin_terma: En este caso evoluciono el sistema con lambda = 0.005, termalización cero y
+con memoria inicial igual al interés inicial.
+ .) Mem_cero: En este caso evoluciono el sistema con lambda = 0.005, termalización cero y
+con memoria inicial igual a cero.
+ .) Lambda_01: En este caso evoluciono el sistema con lambda = 0.1, termalización cero y
+con memoria inicial igual al interés inicial.

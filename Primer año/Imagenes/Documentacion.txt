@@ -51,3 +51,18 @@ esto es una prueba para ver que el modelo esté funcionando bien y que el
 código que grafica funcione. Estuve guardando gráficos de opiniones en función
 del tiempo, mapas de colores de varianza y entropía e histogramas. Si se me
 ocurre algo más que graficar, después lo pondré acá.
+
+.) Saturacion_1D:
+-----------------
+Al código que tiene la ecuación dinámica con una función logística en el segundo
+término le agregué un tercer término de saturación. El objetivo de este término
+es hacer que el interés de los agentes eventualmente decaiga y se vaya a cero.
+En esta pc trabajé con sólo 2 agentes, pero la idea es usar 1000 en Oporto.
+Los gráficos armados son los de Opinión vs tiempo, histogramas y mapas de colores
+con Promedio de opiniones, Varianza y Entropía.
+ Armé tres carpetas para separar los gráficos de tres tipos de datos distintos.
+Está la carpeta de Sin_terma, los datos esos son del sistema sin tiempo de
+termalización. La carpeta de Mem_cero, donde aparte de quitar termalización
+inicializo los valores de memoria en cero y por último está Lambda_01, donde
+no tengo termalización, la memoria se inicializa igual que los intereses,
+pero fijo el valor de lambda a 0,1.

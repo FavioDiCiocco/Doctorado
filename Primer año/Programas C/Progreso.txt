@@ -2010,3 +2010,68 @@ ahí dentro. Y algo que valdría la pena hacer es armar un environment de Python
 de Programas Python dentro de Oporto. Eso serviría para no tener que armar un nuevo environment
 para cada nueva fase. Eso significaría cargar las librerías de Numpy, Pandas, Matplotlib, Networkx
 y Pathlib. Ya veré si me acuerdo de alguna otra que necesite.
+
+-------------------------------------------------------------------------------------------------
+
+06/12/2022
+
+Ya mandé a correr el Instanciar, estoy recorriendo el mismo espacio que antes, con alfa entre 1 y 8
+y chi entre 0.5 y 3. Lo que queda hacer ahora entonces es realizar un análisis de las ecuaciones
+dinámicas y ver a dónde tiende el sistema. Esto es importante para entender los puntos fijos del
+sistema. Me alegra que por lo menos las simulaciones terminan y no evolucionan eternamente.
+
+Antes que nada, hagamos la parte de la documentación, así resuelvo esto.
+Listo, ya modifiqué todas las documentaciones. Ahora analicemos los datos que tenemos. 
+Ocurren varias cosas raras. 
+
+.) Primero, por alguna razón la entropía sólo despega en el valor de
+chi = 1.5. No comprendo por qué, pero habrá que ver qué pasa ahí. 
+
+.) Segundo, si bien todos los sistemas
+caen a cero, según los valores promedios pareciera ser que el valor promedio de interés al que tiende
+el sistema depende únicamente de chi, no depende para nada de alfa.
+
+.) Tercero, la varianza parece ser máxima en el mayor valor de chi. Igual, son todos valores muy
+chicos, no sé si es significativo eso.
+
+.) Los histogramas todos van a cero, eso es genial. Y los gráficos de opinión vs tiempo decaen siguiendo
+casi el comportamiento de exponenciales. Digo casi porque no me animo a decir otra cosa.
+
+Me parece que el tiempo de termalización es mucho. Probemos a ver qué pasa sin termalización.
+
+Intenté estudiar la dinámica del sistema, pero la verdad no saqué mucho. Lo que pude ver es que
+tengo dos estados, puedo tener un punto fijo o tres, eso depende de la relación entre alfa y lambda.
+Debería llamar gamma al lambda. O cambiarle el nombre en el programa. Cuestión que si tengo un alfa
+grande, la función logística tiene una pendiente más empinada, mientras que si lambda es más grande,
+la función cuadrática es más ancha. Entonces, hay un punto en el cual alfa y lambda son tales que
+el lo logística corta a la cuadrática abajo, luego la corta al subir y después la vuelve a cortar
+cuando va para la derecha. En cambio, si la pendiente de la logística no es muy empinada, puede
+pasar que la logística sólo corta a la cuadrática al principio abajo y listo.
+
+Ahora, no tengo idea de la estabilidad de esos puntos fijos. Por lo que se ve en los datos que tengo,
+el sistema pareciera simplemente caer a cero, independientemente de todo. Y hablando de eso.
+
+Probé mandar el sistema a correr sin termalización. Creo que lo mejor va a ser tener el programa corriendo
+sin termalizar. O podría probar inicializar la memoria en cero. La otra es ir moviendo el parámetro de
+lambda y ver qué pasa en esos casos. Me gustaría ver qué pasa si tomo un valor más alto de memoria, tipo
+0.1. Ahí quizás la cosa caiga más lento. Si voy a trabajar todas estas ideas. Ahora, necesito organizar
+esto para ver qué pasa y poder comparar. Ahora mismo los datos que tengo son sin termalizar.
+Necesito dos carpetas más:
+.) Datos con memoria en cero
+.) Datos con memoria en 0.1
+
+La paja de esto es que tengo que rearmar el código para que levante datos de tres carpetas distintas.
+Pero quizás sea para lo mejor, a partir de ahora puedo ir separando los datos en carpertas y eso haría
+que esto funque mejor, no tendría que pelearme con los cinco minutos de entrar a las carpetas cuando
+están llenas de archivos. Ok, hagamos esto.
+
+Separé los datos en tres carpetas. Recién hice la simulación para el caso de Mem_cero y lo sobreescribí en
+los datos de Sin_terma, así que estoy re armando los datos de Sin_terma, después haré Mem_cero y por último
+los de Lambda_01. Resuelto eso, compararé lo que tengo y de ahí veré qué barrido particular hago en las pc's
+de Oporto.
+
+Dicho esto, ahora mismo no tengo mucho más que hacer. Ya hice la documentación asociada y ya intenté analizar
+la ecuación dinámica. Ahora puedo ponerme a leer unos papers mientras se arman los datos faltantes.
+
+Ya armé todos los datos, mañana a la mañana mando a armar los gráficos y ya los empiezo a analizar.
+Teniendo eso, ya podré decidir cómo hacer el barrido fino y para dónde ir con esto.
