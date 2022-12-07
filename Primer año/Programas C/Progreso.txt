@@ -2075,3 +2075,104 @@ la ecuación dinámica. Ahora puedo ponerme a leer unos papers mientras se arman
 
 Ya armé todos los datos, mañana a la mañana mando a armar los gráficos y ya los empiezo a analizar.
 Teniendo eso, ya podré decidir cómo hacer el barrido fino y para dónde ir con esto.
+
+-------------------------------------------------------------------------------------------------
+
+07/12/2022
+
+A la mañana los trenes no andaban por un siniestro. Así que me quedé en casa leyendo el paper de Social
+Physics. Leí la sección sobre diseño urbano. Así que eso son 10 páginas adentro. La verdad se lee rápido
+eso, no tiene cuentas muy difíciles o complejas, es más que nada una idea bien superficial de muchos temas.
+Para saber más hay que leer los papers citados.
+
+Ya tengo todos los datos de ayer del sistema con saturación_1D y las distintas modificaciones, así que
+analicemos eso y veamos qué da. Esta es la parte difícil.
+
+Sin_terma:
+----------
+Por un lado, el no usar termalización no parece tener un impacto negativo de ninguna forma en los datos.
+Incluso, es mejor, porque justamente puedo ver todo el comportamiento transitorio del sistema. Antes,
+con la termalización, arrancaba en el final del sistema, cuando ya estaba decayendo a cero hace bastante.
+Al igual que antes, se observa una disparada de la entropía en el valor de chi = 1,5. Esto indica que el
+sistema tiene picos más anchos y petisos. No logro comprender por qué el valor de chi=1.5 es tan especial.
+Pero por alguna razón los máximos de entropía se fijan ahí. Igual me parece que no resulta significativo
+de los gráficos.
+
+De la misma forma, los gráficos de varianza toman muy valores chicos, lo cuál simplemente habla de que
+los picos son angostos en general. El promedio de opiniones muestra que el valor al cual tiende el sistema
+no depende de alfa, sino puramente de chi. Esto es cierto, pero al mismo tiempo vale porque las opiniones
+promedio del sistema son muy bajas para todo alfa, entonces cambiar el umbral hace que todo el sistema tienda
+a valores bajos. Eso es lo que me cambia el valor promedio.
+
+En los gráficos de opiniones versus tiempo vemos que los agentes que arrancan con interés bajo, y por tanto
+memoria baja, son los que más logran aumentar su interés, mientras que los que arrancan con interés alto
+sólo descienden, nunca incrementan su interés. Esto es porque básicamente la memoria asociada al valor
+de su interés mata totalmente el término de la función logística y el interés sólo puede descender.
+
+Mem_cero:
+---------
+En este caso tengo termalización cero y memoria inicial (vector Sat) cero. Recordá siempre que Sat
+está dado por una integral desde menos infinito hasta t, a medida que el tiempo pasa, eso debería
+crecer, y sólo si pasa mucho tiempo con valor de interés bajo eso decaería. Entonces la diferencia
+clave con el caso anterior es que como esto arranca en cero, en una primera etapa tiene que ir
+acumulando saturación para llegar a lo mismo de lo que parte el sistema en Sin_terma.
+
+Dicho eso, la entropía presenta una disparada en el valor de chi = 1.5, pero en este caso lo
+hace solo para los alfas menores a 4, que en el caso sin saturación correspondían a los alfas
+en los cuales el sistema convergía al punto fijo central.
+
+En los gráficos de Opinión vs Tiempo, creo que se puede afirmar que hay una mayor tendencia de
+los agentes a aumentar su interés en los primeros pasos, a diferencia del caso anterior en el
+cual los agentes con alto interés directamente caían.
+ 
+Los gráficos de promedio se ven idénticos, pero el de varianza ahora tiene un máximo en el alfa
+máximo y máximo umbral. Igual, la varianza considerada es mínima, lo cual es nimio. Incluso, la 
+varianza esa habla de una diferencia respecto del valor medio para cada medición que está a
+10^(-3) de distancia del valor medio. Lo cual es una tontera, porque el criterio de corte es
+que el sistema varíe menos de 10^(-4) entre pasos. Es decir, estoy tan lejos como mi criterio
+de corte me lo permite. Un criterio de corte más bajo permitiría ver una varianza más pequeña.
+
+Lambda_01:
+----------
+En este caso la termalización también es cero, la memoria (vector Sat) se inicializa igual que
+el interés de los agentes y el valor del parámetro que regula la variación de la memoria, lambda,
+se fija en 0,1 en vez de 0,005. La diferencia entre este caso y los otros es que ahora el valor
+de memoria crecería a un valor más pequeño y por tanto la saturación no llegaría a cancelar tanto
+el término de la logística. Es decir, los agentes no tienen tanta memoria, no guardan tanta info
+del pasado.
+
+El gráfico de la entropía es bastante distinto, no parece seguir un comportamiento claro. Honestamente
+no sé qué extraer de eso, cuál es el motivo de que el gráfico se vea de esa forma. Quizás un
+barrido más fino ayude a dilucidar lo que pasa ahí.
+
+Los histogramas ya no dan valores tan pegados al cero, lo cual se observa también en el gráfico de
+promedios. El valor de lambda alto hace que la saturación no pueda alcanzar valores tan altos,
+es decir que la saturación no alcanza valores altos.
+
+El crecimiento de los intereses en función del tiempo no se ven sustancialmente distintos,
+los agentes con poco interés logran crecer, los demás no.
+
+La varianza sigue dando muy chico.
+
+############################################
+
+Hablando con Seba, me tiró la idea de que podría estar bueno cambiar el signo del término lineal,
+o quizás sacarlo. Total ese término tiraba al agente al cero. Ahora, con la saturación el agente
+cae al cero de una. Quizás sin eso o con un término lineal positivo el agente pasa maś tiempo
+en valores altos de interés antes de decaer.
+
+Otra idea interesante sería restringir los valores de interés iniciales a 0,5, interpretando que
+los agentes no arrancan interesados en el tema de una, sino que ganan el interés.
+
+Una tercera idea copada sería estudiar si en una red de todos con todos o una Random Regular
+un único agente interesado dispara una ola de interés en el resto de la red, y luego esa ola
+cae a 0 por la saturación.
+
+Charlemos todo esto con Pablo y vamos viendo a dónde dispara esto. Lo importante entonces es
+tener una idea de cómo funciona esto, qué quiero ver y cómo lo voy a medir. Yo diría que esto
+que hice ahora tiene un propósito. Puedo concluir que:
+1) El sistema no necesita termalización, eso va en contra de mis intereses.
+2) La Saturación tiene que inicializarse en cero, no en el valor del interés.
+3) La memoria, el lambda, (necesita un mejor nombre) debería tener un valor
+definido entre 0,005 y 0,1. 0,1 me parece mucho, porque el sistema ya no
+tiende tan cerca de 0. Quizás podamos seguir con 0,005. O quizás siga con 0,01.
