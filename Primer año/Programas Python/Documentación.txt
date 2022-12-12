@@ -124,3 +124,6 @@ con memoria inicial igual al interés inicial.
 con memoria inicial igual a cero.
  .) Lambda_01: En este caso evoluciono el sistema con lambda = 0.1, termalización cero y
 con memoria inicial igual al interés inicial.
+ .) Sin_lineal: El sistema tiene lambda = 0,01, saqué la termalización, la saturación
+arranca en cero, armo archivos para guardar los datos de saturación, los intereses iniciales
+están restringidos a la región [0,0.3] y removí el término lineal.

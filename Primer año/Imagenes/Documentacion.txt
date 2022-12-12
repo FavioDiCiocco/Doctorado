@@ -66,3 +66,7 @@ termalización. La carpeta de Mem_cero, donde aparte de quitar termalización
 inicializo los valores de memoria en cero y por último está Lambda_01, donde
 no tengo termalización, la memoria se inicializa igual que los intereses,
 pero fijo el valor de lambda a 0,1.
+ Agregué una carpeta para estudiar qué pasa con el modelo en el caso de que 
+el término lineal sea removido. Estos datos no termalizan, tienen lambda
+0,01, saturación inicial en cero y guarda datos de la saturación de los testigos,
+por lo que permite hacer gráficos de la saturación en función del tiempo.

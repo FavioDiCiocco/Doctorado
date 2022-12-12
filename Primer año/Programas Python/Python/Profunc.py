@@ -62,7 +62,8 @@ for N in [1000]:
     gmedio = 8
     for elemento in range(100):
         probabilidad = gmedio/(N-1)
-        graph1 = nx.erdos_renyi_graph(n=N,p=probabilidad)
+        # graph1 = nx.erdos_renyi_graph(n=N,p=probabilidad)
+        graph1 = nx.random_regular_graph(4,N)
 
         #--------------------------------------------------------------------------------------------------
 
@@ -91,12 +92,10 @@ for N in [1000]:
         #----------------------------------------------------------------------------------------------------
 
         # Una vez que tengo la red correctamente armada, ahora necesito obtener la matriz de adyacencia
-        # como algo que después pueda pasar a C. Supongo que tenerla como un archivo txt sería lo mejor.
-        # ¿O puedo levantar correctamente CSV en C? Creo que cualquier programa que levanta texto
-        # levanta CSV.
+        # como algo que después pueda pasar a C.
         
         Adyacencia = nx.to_numpy_matrix(graph1)
-        np.savetxt("../../Programas C/MARE/Erdos-Renyi/ErdosRenyi_N={}_ID={}.file".format(N,elemento),Adyacencia,fmt = "%d", delimiter = "\t", newline = "\t")
+        np.savetxt("../../Programas C/MARE/Random_Regulars/Random-regular_N={}_ID={}.file".format(N,elemento),Adyacencia,fmt = "%d", delimiter = "\t", newline = "\t")
 
 # Con esto me guardo la matriz como un txt con una única fila y todos los elementos son enteros.
 

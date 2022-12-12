@@ -67,7 +67,7 @@ double Din_interes(ps_Red ps_var, ps_Param ps_par){
 	
 	// Obtengo el tamaño de Columnas de mi matriz de Vectores de opinión y calculo el valor del campo que define mi ecuación diferencial
 	int i_C = (int) ps_var->pd_Opi[1];
-	d_resultado = ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2] *(-1-ps_var->pd_Sat[ps_var->i_agente*i_C+ps_var->i_topico+2]) + d_sumatoria/i_grado;
+	d_resultado = -ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2] * ps_var->pd_Sat[ps_var->i_agente*i_C+ps_var->i_topico+2] + d_sumatoria/i_grado;
 	return d_resultado;
 }
 

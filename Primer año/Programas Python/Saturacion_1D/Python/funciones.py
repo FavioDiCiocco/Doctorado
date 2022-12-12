@@ -549,3 +549,73 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta):
     plt.title("Promedio de opiniones en Espacio de Parametros")
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close("Promedio Opiniones")
+    
+    
+#--------------------------------------------------------------------------------
+
+# Esta función me construye el gráfico de Saturación en función del tiempo
+# para cada tópico para los agentes testigos.
+
+def Graf_sat_vs_tiempo(DF,path,carpeta,T=2):
+    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
+    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
+    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
+    
+    # Como graficar en todas las combinaciones de parámetros implica muchos gráficos, voy a 
+    # simplemente elegir tres valores de cada array, el primero, el del medio y el último.
+    
+    arrayN = np.unique(DF["n"])
+    arrayAlfa = np.unique(DF["alfa"])[::math.floor((len(np.unique(DF["alfa"]))-1)/2)]
+    arrayUmbral = np.unique(DF["umbral"])[::math.floor((len(np.unique(DF["umbral"]))-1)/2)]
+    
+    Tupla_total = [(n,alfa,umbral) for n in arrayN
+                   for alfa in arrayAlfa
+                   for umbral in arrayUmbral]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Saturacion"
+    
+    for AGENTES,ALFA,UMBRAL in Tupla_total:
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                    (DF["n"]==AGENTES) & 
+                                    (DF["umbral"]==UMBRAL) & 
+                                    (DF["alfa"]==ALFA), "nombre"])
+
+        #-----------------------------------------------------------------------------------------
+        
+        for nombre in archivos:
+            
+            # De los archivos de Testigos levanto las opiniones de todos los agentes a lo largo de todo el proceso.
+            # Estos archivos tienen las opiniones de dos agentes.
+            
+            Datos = ldata(path / nombre)
+            
+            Testigos = np.zeros((len(Datos)-2,len(Datos[1])-1)) # Inicializo mi array donde pondré las opiniones de los testigos.
+            
+            for i,fila in enumerate(Datos[1:-1:]):
+                Testigos[i] = fila[:-1]
+            
+            # De esta manera tengo mi array que me guarda los datos de los agentes a lo largo de la evolución del sistema.
+            
+            #----------------------------------------------------------------------------------------------------------------------------------
+            
+            # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
+            repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+            direccion_guardado = Path("../../../Imagenes/{}/SatvsT_N={:.0f}_alfa={:.1f}_umbral={:.1f}_sim={}.png".format(carpeta,AGENTES,ALFA,UMBRAL,repeticion))
+            
+            if repeticion in [0,1]:
+            
+                plt.rcParams.update({'font.size': 32})
+                plt.figure("Saturacion",figsize=(20,15))
+                X = np.arange(Testigos.shape[0])*0.01
+                for sujeto in range(int(Testigos.shape[1]/T)):
+                    for topico in range(T):
+                        plt.plot(X,Testigos[:,sujeto*T+topico], linewidth = 6)
+                plt.xlabel("Tiempo")
+                plt.ylabel("Saturación")
+                plt.grid(alpha = 0.5)
+                plt.savefig(direccion_guardado ,bbox_inches = "tight")
+                plt.close("Saturacion")
+

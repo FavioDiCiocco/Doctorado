@@ -2176,3 +2176,103 @@ que hice ahora tiene un propósito. Puedo concluir que:
 3) La memoria, el lambda, (necesita un mejor nombre) debería tener un valor
 definido entre 0,005 y 0,1. 0,1 me parece mucho, porque el sistema ya no
 tiende tan cerca de 0. Quizás podamos seguir con 0,005. O quizás siga con 0,01.
+
+-------------------------------------------------------------------------------------------------
+
+12/12/2022
+
+Para continuar con el trabajo me parece importante pensar un segundo lo que siempre me dice
+Seba sobre qué es lo que espero que hagan los agentes a interactuar y derivar un modelo en
+base a lo que espero que ocurra.
+ Ante eso, mi respuesta es que mi intención es que los agentes arranquen con un interés bajo
+a medio en el tema. Luego interactúen entre ellos aumentando su interés hasta que se saturen
+del tema y lo abandonen. Por ahora, como sólo tengo un tópico, ese es todo mi objetivo.
+
+Dicho esto, puedo ver que mi ecuación necesita sólo dos términos, el de generación y
+transmisión de interés (la función logística) y el de saturación (el cual se evoluciona
+con su propia ecuación dinámica). Por tanto sacar el término lineal suena lo más razonable.
+No creo necesario hacer una prueba con el término ese en positivo, porque eso es un deseo
+innato de investigar el tema que no me parece que tenga mucho sentido. Es proponer que
+la gente quiere buscar el tema sólo porque sí.
+
+¿Cuáles son los cambios que haré sobre el código?
+-------------------------------------------------
+.) Las opiniones iniciales las voy a restringir a la región [0,0.3]. Eso suena correctamente
+a interés bajo a medio.
+.) Voy a sacar el término lineal, no tiene que estar en el modelo.
+.) Sacaré la parte de termalización del código, definitivamente innecesaria.
+.) Inicializo la saturación en cero. Inicializarla en otro lado es arrancar 
+creyendo que los agentes ya vienen estudiando el tema de antes, no es mi idea.
+.) Fijo el olvido en 0,01, confío en que ese es un valor razonable.
+.) Guardar datos de la saturación.
+
+
+Charla con Pablo:
+-----------------
+
+Pablo me dijo que haga dos cosas:
+1) Comparar los resultados del modelo sin el término de saturación con el modelo de Baumann
+unidimensional. Estaría bueno ver cuáles parámetros utiliza y qué podemos extraer nosotros
+de ahí.
+2) Que pruebe ver qué ocurre con la idea de un agente esparciendo una ola de interés en el
+resto usando redes de Erdös-Renyi (creo que le haré caso a Seba con las Random Regulars)
+con 1000 agentes.
+
+
+Yo propuse poner un parámetro que reduzca el efecto del interés propio en el incremento
+de la saturación, pero honestamente me parece que no tiene sentido, para eso simplemente
+aumento el valor del olvido y listo.
+
+Hagamos la burocracia infinita mientras mando a hacer los datos para el análisis del código
+sin el término lineal. Mandé a hacer los datos de la fase Sin_lineal. 
+También armé unas redes de Random Regulars para hacer lo segundo que me dijo Pablo.
+
+Ahora debería actualizar la Documentación en Programas Python, agregar una nueva carpeta
+en Imagenes, actualizar la Documentación de Imagenes y armar una función para graficar
+la Saturación en función del tiempo.
+
+Mirando los gráficos, parece ir bastante mejor el modelo sin el término lineal. Presenta
+una buena curva en la cual arranca abajo, alcanza un máximo y después cae a cero. Creo
+que tiene un buen tiempo la curva. Las curvas de saturación muestran que la evolución
+de esta variable es razonable. La saturación arranca con un crecimiento fuerte en
+la primera parte y después de que el interés alcanzó un pico y cayó, la saturación
+empieza a crecer mucho más lento.
+
+La implementación del modelo en esta forma parece funcionar. ¿Qué quiero hacer ahora?
+Peguémosle una leída al paper de Baumann unidimensional y anotemos unas conclusiones.
+
+Repasando el trabajo unidimensional de Baumann, podemos arrancar diciendo que su modelo
+presenta 4 parámetros principales. Alfa (controversialidad del tópico), K (fuerza de
+la interacción social), beta (intensidad de la homofilia) y r (probabilidad de reciprocidad
+al interactuar con un vecino). Aunque de estos 4 parámetros, los verdaderamente
+principales son alfa y K. Hace estudios variando los otros dos, pero para los estudios que
+muestra el barrido se produce en estos dos y los otros dos se dejan fijos.
+
+Lo que obtiene de este modelo son tres tipos de soluciones. Para bajo alfa y homofilia,
+los agentes tienden a un consenso neutral, con todas las opiniones cayendo a cero.
+Para alto alfa y baja homofilia una de las posturas gana y todos los agentes se
+radicalizan en una dirección. Para alto alfa y alta homofilia el sistema presenta estados
+finales de polarización.
+
+El pase de estados de consenso neutral a polarización y radicalización depende de la relación
+entre alfa y K. Básicamente una influencia suficientemente grande o tópicos suficientemente
+controversiales son necesarios para que el sistema no decaiga a consensos neutrales.
+
+Dicho esto, ¿Qué podría hacer con esto para armar una presentación como me pidió Pablo?
+Lo que se me ocurre es tomar primero la ecuación dinámica del modelo de Baumann y mostrarla
+en comparación con la que tengo yo. Luego, podría mostrar los estados finales que genera
+el sistema en el caso de Baumann y compararlo con mis estados finales. Para eso estaría
+bueno tener entonces un sistema con muchos agentes para comparar el sistema de Baumann
+a igualdad de tamaño. De ahí yo podría armar gráficos similares del comportamiento de
+mis agentes a lo largo del tiempo. En ese caso necesitaría armar archivos de testigos 
+mucho más grandes. Quizás tomar 100 agentes como testigos sería razonable.
+Y por el otro lado comparar el gráfico de valor promedio de opiniones de Baumann contra
+el de valor promedio de intereses. Eso daría una buena muestra de la diferencia de los
+sistemas.
+Y creo que la mayor conclusión a sacar acá es que Baumann no tiene tantos parámetros 
+en este modelo y habría que considerar cómo haría para que nuestro modelo tenga más posibilidades
+de algo interesante para ver.
+
+Entonces el plan mañana es primero armar el código para estudiar el esparcimiento de la ola
+de interés. Después estaría bueno ver de ir armando la presentación que me dijo Pablo.
+Hechas esas dos cosas, lo siguiente sería... ahora no se me ocurre. Pensaré eso más tarde.

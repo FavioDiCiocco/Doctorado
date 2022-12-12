@@ -94,6 +94,8 @@ En definitiva, no lo toques, funca bien. make all compila, make clean limpia el 
 Esta carpeta guarda los archivos con las matrices de adyacencia de redes estáticas.
 En particular tiene una carpeta con matrices de Adyacencia de redes de Erdös-Renyi.
 Estas son redes de grado medio 8 y 1000 agentes.
+Agregué una carpeta con matrices de Adyacencia de redes Random-Regulars. Estas
+redes tienen 1000 agentes y grado 4 para cada uno de los agentes.
 
 .) Metainstanciacion.sh:
 --------------------------

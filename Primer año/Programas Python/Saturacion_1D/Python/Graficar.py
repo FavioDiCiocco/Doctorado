@@ -22,7 +22,7 @@ T=1 # Defino el número de tópicos
 Etapa = Path("Saturacion_1D") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Sin_terma","Mem_cero","Lambda_01"]
+Carpetas = ["Sin_lineal"]
 
 for carp in Carpetas:
     
@@ -41,7 +41,8 @@ for carp in Carpetas:
     #-------------------------------------------------------------------------------------------------------
     
     # Es importante partir del hecho de que mis archivos llevan por nombre: "Opiniones_alfa=$_N=$_umbral=$_Iter=$.file"
-    # También tengo otros archivos llamados "Testigos_alfa=$_N=$_umbral=$_Iter=$.file"
+    # También tengo otros archivos llamados "Testigos_alfa=$_N=$_umbral=$_Iter=$.file" y
+    # "Saturacion_alfa=$_N=$_umbral=$_Iter=$.file"
 
     # Voy a trabajar mi lista de archivos usando pandas, creo que va a ser mucho más claro lo que
     # está pasando y además va a ser más orgánico.
@@ -90,6 +91,12 @@ for carp in Carpetas:
     # Armo los mapas de colores de los promedios de las opiniones en función
     
     func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta)
+    
+    #--------------------------------------------------------------------------------------------
+    
+    # Armo los gráficos de saturación en función del tiempo a base de los testigos.
+    
+    func.Graf_sat_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta, T)
     
 
 func.Tiempo(t0)
