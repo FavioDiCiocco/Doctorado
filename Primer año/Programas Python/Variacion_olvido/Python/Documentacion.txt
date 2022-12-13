@@ -1,0 +1,21 @@
+Registro de los archivos usados para analizar los datos de la
+carpeta Saturacion_1D.
+
+Graficar:
+-------
+Este es un código simple que levanta los datos de los archivos y después arma
+los gráficos. Lo lindo de esto es que las funciones que arman los gráficos están
+definidas afuera, y si quiero que no grafique algo, eso lo puedo hacer simplemente
+comentando una línea.
+
+
+funciones.py:
+-------------
+
+Este archivo tiene las funciones básicas y las de graficado de los datos
+obtenidos a partir de las simulaciones. El objetivo es tener modularizadas
+las funciones de graficación, cosa de que el archivo principal sea fácil
+de leer y que las funciones se vean más prolijas.
+
+Tiene la graficación de los mapas de colores, Opiniones vs tiempo y
+el armado de los histogramas.

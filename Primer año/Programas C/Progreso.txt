@@ -2276,3 +2276,74 @@ de algo interesante para ver.
 Entonces el plan mañana es primero armar el código para estudiar el esparcimiento de la ola
 de interés. Después estaría bueno ver de ir armando la presentación que me dijo Pablo.
 Hechas esas dos cosas, lo siguiente sería... ahora no se me ocurre. Pensaré eso más tarde.
+
+-------------------------------------------------------------------------------------------------
+
+13/12/2022
+
+Primero quiero hacer una prueba más sin el término lineal. Quiero ver si puedo manipular 
+mejor el término de saturación. Se me ocurre que podría meter un factor 1/2 en la ecuación
+dinámica de la saturación. Eso podría hacer que la campana se estire al doble de tiempo.
+Me interesa. ¿Lo pongo en una carpeta aparte? Dale, hagamos eso.
+
+Usé el factor de 1/2, pero esto me generó un problema. El problema es que como la saturación
+crece lento, los intereses de los agentes logran cruzar el valor de 1. Esto me marca la
+importancia del término lineal en la ecuación dinámica. Ese término se asegura que el sistema
+nunca pueda pasar el valor de 1, porque para cuando llega a esa zona, la lineal le gana
+a la logística. Entonces reincorporarlo suena razonable. Y la lógica detrás de ese
+término tiene sentido, un agente dejado por sí sólo va perdiendo interés o memoria
+de un tema. Pero justamente, la pérdida de interés o memoria es el término de saturación.
+Proponer que la pérdida de memoria en el tema genera desinterés mientras que al mismo tiempo
+propongo que la saturación por tener al tema muy presente en la memoria TAMBIÉN genera
+desinterés es contradictorio como mínimo. Se me ocurren otras formas menos generosas de
+describir eso.
+
+No, sostengo que si tengo el término de saturación, entonces no necesito el término lineal
+que hace que la persona pierda interés. Pero esto me lleva a una gran duda. ¿El término
+de saturación me garantiza no cruzar el valor de interés de 1? Por lo visto, claramente
+no, porque si la saturación crece lento, entonces el interés va a crecer hasta que la
+saturación compense y de ahí cae. ¿Tengo una forma de agregar un término que garantice
+que esto no cruce el 1? Se me ocurre que podría poner un término lineal que esté afectado
+por cuánto vale la saturación y que al principio del modelo el término lineal domine y
+a medida que la saturación crece, este término se ve reducido mientras la saturación
+pasa a dominar el decaimiento. Suena lindo y hasta realizable, tipo con una tanh().
+Ahora andá a encontrar una justificación de eso. Me parecería más razonable justificar
+que la saturación arranque con cierto valor.
+ Todo esto gira sobre el hecho de que el término logístico que hace crecer a los agentes
+como mucho vale 1, en cambio la saturación puede alcanzar valores cercanos a 6. Entonces,
+una vez que la saturación supera el 1, estamos tranquilos que no hay chances de que no
+hay forma de que esto cruce. La pregunta es: ¿Hay un valor correcto de olvido que usar
+para garantizar que el sistema no cruza el 1 de interés? ¿Hay una franja? Podría estudiar
+eso y ver qué pasa en la medida en que varío el olvido. Hagamos eso y veamos el gráfico
+del promedio del sistema en función del olvido.
+
+Para estudiar esto voy a definir una nueva etapa del trabajo. Me parece importante esto
+separarlo de lo anterior porque ahora sí voy a hacer un cambio importante en el código,
+cambiando los inputs y los tipos de archivos que voy a generar, por eso me parece
+importante diferenciar esto.
+
+Me armé los datos, los analicé y grafiqué. Efectivamente al aumentar el olvido, el sistema
+alcanza cada vez valores más grandes de interés como valor máximo. Esto me marca que con
+los términos que tengo, sólo tengo al sistema confinado por encima del cero. Ahora mismo
+no tengo forma de evitar que cruce el 1. El término lineal se encargaba de eso antes.
+¿Es una buena idea sacarlo y deshacerse de eso? Voy por un café y después haré lo que
+sigue, dejándome esto para charlarlo con Pablo o Seba en la próxima. No creo que haya
+sido tiempo desperdiciado esto, el gráfico va a ser una forma fácil y rápida de transmitir
+esta idea de que fijado el olvido en algún valor, el sistema crece hasta que la saturación
+lo alcanza.
+
+Arranquemos con el esparcimiento de la ola de interés. Para eso tengo que hacer algunos
+cambios en el código:
+.) Usar redes Random Regulars. Confío en que redes de grado 4 están bien. Podría hacerlas
+de mayor grado, pero no sé si valga la pena.
+.) Cambiar la inicialización del interés para que todos menos uno estén en 0.
+.) Dirigir los resultados a una nueva carpeta
+.) Guardar las opiniones de todos los agentes en el archivo de testigos. ¿Eso sería un
+problema para la función que grafica Opi_vs_tiempo?
+
+Hice estos cambios, comentando varios elementos que preferí no borrar, como el sleep al
+final, el armado del archivo de Saturación y el automatizado de la cantidad de testigos.
+Voy a hacer una prueba del código y mañana veo qué tal
+
+El código corrió sin problemas, una sola iteración tardó 14 segundos. Después veo si lo
+hago acá o en la pc de Oporto.

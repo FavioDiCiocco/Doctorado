@@ -22,7 +22,7 @@ T=1 # Defino el número de tópicos
 Etapa = Path("Saturacion_1D") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Sin_lineal"]
+Carpetas = ["Sat_lenta"]
 
 for carp in Carpetas:
     
@@ -60,31 +60,17 @@ for carp in Carpetas:
     # de N, alfa, umbral y todo lo demás en columnas que me van a servir para filtrar esos archivos. Honestamente
     # creo que es más sencillo armar las columnas ahora y no ir creándolas cada vez que las necesito.
     
-    #--------------------------------------------------------------------------------------------
-    
-    # Armo los gráficos de opinión en función del tiempo a base de los testigos.
-    
-    func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta, T)
-    
-    
     #----------------------------------------------------------------------------------------------
     
     # Armo los mapas de colores de la varianza de las opiniones en función
     
     func.Mapa_Colores_Varianza_opiniones(Df_archivos, Direccion, Etapa/carpeta)
     
-    
     #----------------------------------------------------------------------------------------------
     
     # Armo los mapas de colores de la varianza de las opiniones en función
     
     func.Mapa_Colores_Entropia_opiniones(Df_archivos, Direccion, Etapa/carpeta)
-    
-    #----------------------------------------------------------------------------------------------
-    
-    # Armo los histogramas de las opiniones finales, juntando varios valores de umbrales y un único alfa
-    
-    func.Grafico_histograma(Df_archivos, Direccion, Etapa/carpeta)
     
     #----------------------------------------------------------------------------------------------
     
@@ -97,6 +83,18 @@ for carp in Carpetas:
     # Armo los gráficos de saturación en función del tiempo a base de los testigos.
     
     func.Graf_sat_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta, T)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    # Armo los histogramas de las opiniones finales, juntando varios valores de umbrales y un único alfa
+    
+    func.Grafico_histograma(Df_archivos, Direccion, Etapa/carpeta)
+    
+    #--------------------------------------------------------------------------------------------
+    
+    # Armo los gráficos de opinión en función del tiempo a base de los testigos.
+    
+    func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta, T)
     
 
 func.Tiempo(t0)

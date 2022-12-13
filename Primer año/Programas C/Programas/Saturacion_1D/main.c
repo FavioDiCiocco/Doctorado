@@ -50,9 +50,9 @@ int main(int argc, char *argv[]){
 		
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
-	int i_testigos = ps_datos->i_N; // Este es el número de testigos que registraré. Voy a registrar los testigos de 0 a 9
-	// if(ps_datos->i_N > 6) i_testigos = 6;
-	// else i_testigos = ps_datos->i_N;
+	int i_testigos; // Este es el número de testigos que registraré. Voy a registrar los testigos de 0 a 9
+	if(ps_datos->i_N > 6) i_testigos = 6;
+	else i_testigos = ps_datos->i_N;
 	
 	// Voy a armar mi array de punteros, el cual voy a usar para guardar los datos de pasos previos del sistema
 	double* ap_OpinionesPrevias[ps_datos->i_pasosprevios];
@@ -116,29 +116,29 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_archivo1[355];
-	sprintf(s_archivo1,"../Programas Python/Saturacion_1D/Ola_interes/Opiniones_alfa=%.1f_N=%d_umbral=%.1f_Iter=%d.file"
+	sprintf(s_archivo1,"../Programas Python/Saturacion_1D/Sat_lenta/Opiniones_alfa=%.1f_N=%d_umbral=%.1f_Iter=%d.file"
 		,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_chi,i_iteracion);
 	FILE *pa_archivo1=fopen(s_archivo1,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_archivo2[355];
-	sprintf(s_archivo2,"../Programas Python/Saturacion_1D/Ola_interes/Testigos_alfa=%.1f_N=%d_umbral=%.1f_Iter=%d.file"
+	sprintf(s_archivo2,"../Programas Python/Saturacion_1D/Sat_lenta/Testigos_alfa=%.1f_N=%d_umbral=%.1f_Iter=%d.file"
 		,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_chi,i_iteracion);
 	FILE *pa_archivo2=fopen(s_archivo2,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
-	// char s_archivo3[355];
-	// sprintf(s_archivo3,"../Programas Python/Saturacion_1D/Sat_lenta/Saturacion_alfa=%.1f_N=%d_umbral=%.1f_Iter=%d.file"
-		// ,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_chi,i_iteracion);
-	// FILE *pa_archivo3=fopen(s_archivo3,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
+	char s_archivo3[355];
+	sprintf(s_archivo3,"../Programas Python/Saturacion_1D/Sat_lenta/Saturacion_alfa=%.1f_N=%d_umbral=%.1f_Iter=%d.file"
+		,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_chi,i_iteracion);
+	FILE *pa_archivo3=fopen(s_archivo3,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
-	
+	/*
 	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
 	char s_mady[355];
-	sprintf(s_mady,"MARE/Random_Regulars/Random-regular_N=%d_ID=%d.file"
+	sprintf(s_mady,"MARE/Erdos-Renyi/ErdosRenyi_N=%d_ID=%d.file"
 		,ps_datos->i_N,(int) i_iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
 	FILE *pa_mady=fopen(s_mady,"r");
-	
+	*/
 	// Puntero a la función que define mi ecuación diferencial
 	double (*pf_Din_Sat)(ps_Red var, ps_Param par) = &Din_saturacion;
 	double (*pf_Din_Int)(ps_Red var, ps_Param par) = &Din_interes;
@@ -147,16 +147,13 @@ int main(int argc, char *argv[]){
 	
 	// Genero los datos de las matrices de mi sistema
 	
-	// GenerarOpi(ps_red, ps_datos); // Esto me inicializa mis vectores de opinión, asignándole a cada agente una opinión en cada tópico
+	GenerarOpi(ps_red, ps_datos); // Esto me inicializa mis vectores de opinión, asignándole a cada agente una opinión en cada tópico
 	GenerarAng(ps_red, ps_datos); // Esto me inicializa mi matriz de superposición, definiendo el solapamiento entre tópicos.
-	// GenerarAdy_Conectada(ps_red, ps_datos); // Inicializo la matriz de dos agentes conectados
-	
-	// Todos los agentes tienen interés cero en el tópico. Elijo al primero para que tenga interés moderado en el tópico
-	ps_red->pd_Opi[2] = 0.8; // Elegí 0.8 arbitrariamente. Esto podría ser un parámetro del modelo
+	GenerarAdy_Conectada(ps_red, ps_datos); // Inicializo la matriz de dos agentes conectados
 	
 	
-	Lectura_Adyacencia(ps_red->pi_Ady, pa_mady);
-	fclose(pa_mady); // Aprovecho y cierro el puntero al archivo de la matriz de adyacencia
+	// Lectura_Adyacencia(ps_red->pi_Ady, pa_mady);
+	// fclose(pa_mady); // Aprovecho y cierro el puntero al archivo de la matriz de adyacencia
 	
 	
 	//################################################################################################################################
@@ -169,7 +166,7 @@ int main(int argc, char *argv[]){
 	Escribir_d(ps_red->pd_Opi,pa_archivo1);
 	
 	fprintf(pa_archivo2,"Opiniones Testigos\n");
-	// fprintf(pa_archivo3,"Saturacion Testigos\n");
+	fprintf(pa_archivo3,"Saturacion Testigos\n");
 	
 	
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar
@@ -179,8 +176,8 @@ int main(int argc, char *argv[]){
 		// Me guardo los valores de opinión de mis agentes testigo y sus valores de saturación
 		for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo2,"%lf\t",ps_red->pd_Opi[i_j*ps_datos->i_T+i_k+2]);
 		fprintf(pa_archivo2,"\n");
-		// for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo3,"%lf\t",ps_red->pd_Sat[i_j*ps_datos->i_T+i_k+2]);
-		// fprintf(pa_archivo3,"\n");
+		for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo3,"%lf\t",ps_red->pd_Sat[i_j*ps_datos->i_T+i_k+2]);
+		fprintf(pa_archivo3,"\n");
 		// Registro el estado actual en el array de OpinionesPrevias.
 		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) *(ap_OpinionesPrevias[i_i]+i_j+2) = ps_red->pd_Opi[i_j+2];
 	}
@@ -211,8 +208,8 @@ int main(int argc, char *argv[]){
 			fprintf(pa_archivo1, "%lf\t",ps_red->d_Varprom); // Guardo el valor de variación promedio
 			for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo2,"%lf\t",ps_red->pd_Opi[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de opinión de mis agentes testigo
 			fprintf(pa_archivo2,"\n");
-			// for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo3,"%lf\t",ps_red->pd_Sat[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de Saturación de los agentes testigo
-			// fprintf(pa_archivo3,"\n");
+			for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo3,"%lf\t",ps_red->pd_Sat[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de Saturación de los agentes testigo
+			fprintf(pa_archivo3,"\n");
 			// Actualización de índices
 			i_IndiceOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
 		}
@@ -232,8 +229,8 @@ int main(int argc, char *argv[]){
 			fprintf(pa_archivo1, "%lf\t",ps_red->d_Varprom); // Guardo el valor de variación promedio 
 			for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo2,"%lf\t",ps_red->pd_Opi[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de opinión de mis agentes testigo
 			fprintf(pa_archivo2,"\n");
-			// for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo3,"%lf\t",ps_red->pd_Sat[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de Saturación de los agentes testigo
-			// fprintf(pa_archivo3,"\n");
+			for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo3,"%lf\t",ps_red->pd_Sat[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de Saturación de los agentes testigo
+			fprintf(pa_archivo3,"\n");
 			// Actualización de índices
 			i_IndiceOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
 			i_contador +=1; // Avanzo el contador para que el sistema haga una cantidad $i_Itextra de iteraciones extras
@@ -268,12 +265,12 @@ int main(int argc, char *argv[]){
 	free(ps_datos);
 	fclose(pa_archivo1);
 	fclose(pa_archivo2);
-	// fclose(pa_archivo3);
+	fclose(pa_archivo3);
 	
 	// Finalmente imprimo el tiempo que tarde en ejecutar todo el programa
 	time(&tt_fin);
 	f_tardanza = tt_fin-tt_prin;
-	// sleep(1);
+	sleep(1);
 	printf("Tarde %.1f segundos \n",f_tardanza);
 	
 	return 0;

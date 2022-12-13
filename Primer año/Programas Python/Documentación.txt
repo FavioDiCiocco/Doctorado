@@ -127,3 +127,18 @@ con memoria inicial igual al interés inicial.
  .) Sin_lineal: El sistema tiene lambda = 0,01, saqué la termalización, la saturación
 arranca en cero, armo archivos para guardar los datos de saturación, los intereses iniciales
 están restringidos a la región [0,0.3] y removí el término lineal.
+ .) Sat_lenta: Es igual a Sin_lineal, pero le agregué un factor 0.5 a la ecuación dinámica de
+la saturación. Mi idea es que con eso la saturación crezca más lento y entonces el sistema
+dure más tiempo en su pico de interés. No fue tan iluminador como esperaba, así que después
+cambié los datos y simplemente cambié el lambda a 0.005.
+
+Variacion_olvido:
+-----------------
+Quise hacer una etapa aparte en la cual pueda ver claramente cómo cambia el máximo interés al
+cual llegan los agentes en función del olvido. Para eso me guardé en una carpeta de Datos (eso
+va a ser el default a menos que una etapa se divida en varias partes distintas) los archivos
+de Opiniones, Testigos y Saturación. Realmente igual sólo usé los archivos de Testigos, el
+resto no me servía. Y además no podía usar las funciones de graficación ya armadas sin retocarlas
+un poco. No es que sea imposible o muy difícil, pero me pareció que no valía la pena hacer eso.
+ Los datos estos los hice con la ecuación dinámica con el término logístico y el de saturación,
+sin el término lineal.

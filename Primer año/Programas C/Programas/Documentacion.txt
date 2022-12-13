@@ -100,3 +100,38 @@ están ahora colocadas en un archivo python de funciones, que va aparte del
 archivo que grafica. Eso está muy bueno, la verdad que me hace todo mucho
 más fácil de correr y de ir compartimentando en distintas funciones particulares.
 Soy un boludo por no hacer esto antes.
+
+.) Saturacion_1D:
+-----------------
+
+Al modelo de Logistica_1D le agregué un nuevo término, el término de Saturación.
+Este término lo saqué del paper de Accelerating Dynamics of Collective Attention.
+La idea es que es un término no lineal que se multiplica por el interés actual
+del agente y que se "integra" tomando en cuenta los valores previos de interés
+del agente. Es un término distinto para cada agente, y lo sería también para
+cada tópico si tuviera diversos tópicos. Aunque decir que se integra es un
+poco una mentira, ya que en realidad lo que se hace es evolucionar el término
+con una ecuación dinámica. Claramente es mejor esto, porque la integración
+sería un bardo, en especial considerando que necesitaría en algún lugar guardar
+la info de los pasos previos.
+ La idea del término de saturación es que los agentes no se queden en un máximo
+de interés eternamente, sino que eventualmente decaigan.
+ Para este modelo vale aclarar que modifiqué la función de Runge-Kutta y le cambié
+los nombres a las funciones dinámicas, comprendiendo que ahroa tengo más de una
+ecuación dinámica y entonces necesitaba armar punteros para ambas. Espero que el
+cambio sobre la función de RK4 haya sido para mejor, pero no estoy seguro que
+realmente la función ahora sea más general que antes. Quizás después vuelva a
+lo que tenía antes. Sólo el tiempo dirá.
+
+.) Variacion_olvido:
+--------------------
+
+Quería ver cómo cambiaban los valores máximos a los que tendían los agentes en
+función del valor de olvido. Para eso utilicé la ecuación dinámica con el término
+de saturación y el logístico, fijé alfa en 7 y chi en 2 y varié los valores de
+olvido entre 0.001 y 1 Para eso armé un paso bastante particular, pero los detalles
+no son importantes, simplemente recorrí bastantes valores en el camino cosa de 
+que quede una curva razonable. Luego cambié los inputs de la función, obviamente
+cambié el Instanciar.sh y cambié los nombres de salida de los archivos de forma
+que se registren según cómo varían los valores de Lambda y no los valores de
+alfa y chi que están fijos.

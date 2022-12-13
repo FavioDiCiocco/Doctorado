@@ -70,3 +70,23 @@ pero fijo el valor de lambda a 0,1.
 el término lineal sea removido. Estos datos no termalizan, tienen lambda
 0,01, saturación inicial en cero y guarda datos de la saturación de los testigos,
 por lo que permite hacer gráficos de la saturación en función del tiempo.
+ La siguiente carpeta que agregué es la de Sat_lenta, en la que hice unas
+modificaciones en la ecuación dinámica de la saturación. Mi intención es que
+esto me permita más fácilmente modificar el tiempo en que el agente permanece
+en su pico de interés. Si esto resulta útil, después podría cambiar el 
+olvido (lambda) para que el sistema pueda converger más a cero. Todo esto
+afecta en que el sistema tardará bastante más en converger a un estado final,
+pero confío en que lo vale. Y experimentar me da un poco de cancha sobre 
+cómo manipular mis parámetros para que el modelo cumpla lo que espero.
+Cambié los datos y simplemente cambié el olvido a 0.005, así que Sat_lenta
+simplemente tiene ese cambio.
+
+.) Variacion_olvido:
+--------------------
+Lo único que quería mirar en esta etapa es cómo variaba el máximo que el sistema
+alcanzaba con el valor del olvido. Para esto fije alfa en 7 y chi en 2.
+Con los datos que tomé me armé un sólo gráfico, el del promedio de los máximos
+de interés en función de los valores de lambda. Para eso hice algunos pequeños
+cambios en el main y por eso es que separé esta etapa de la anterior. Pero
+fuera de fija alfa y chi y de cambiarles los nombres los archivos de Opiniones,
+Testigos y Saturación, el resto fue igual a lo anterior.
