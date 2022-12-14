@@ -22,7 +22,7 @@ T=1 # Defino el número de tópicos
 Etapa = Path("Saturacion_1D") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Sat_lenta"]
+Carpetas = ["Sin_lineal"]
 
 for carp in Carpetas:
     

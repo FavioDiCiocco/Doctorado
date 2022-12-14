@@ -2347,3 +2347,23 @@ Voy a hacer una prueba del código y mañana veo qué tal
 
 El código corrió sin problemas, una sola iteración tardó 14 segundos. Después veo si lo
 hago acá o en la pc de Oporto.
+
+-------------------------------------------------------------------------------------------------
+
+13/12/2022
+
+Ya sé qué voy a hacer. Antes de empezar con el tema de la ola de interés, en el cuál podría
+variar alfa y el interés inicial del agente, creo que lo mejor será armar la presentación 
+que me dijo Pablo. Además puedo en esa presentación plantear el tema de si debería o no
+mantener el término lineal. Más que nada en términos de cómo justificarlo digo.
+
+Creo que tengo la mitad de la presentación hecha. Hoy estuve con varias cosas que me fueron
+frenando, más que anda firmar cosas y mandar mails o mensajes. Veré de tenerla terminada mañana.
+
+Me parece importante agregar algunas diapositivas explicando el razonamiento de lo que hice,
+y quizás repasar si las cosas que estuve viendo son interesantes de contar. De paso, me 
+parece que no es mala idea mostrar por qué empecé a hacer cuentas sin el término lineal y
+por qué diría de reincorporarlo, incluso haciendo uso del término con tanh() para que 
+el término lineal pese al principio y desaparezca al final.
+
+Mañana pensaré sobre la ola de interés, cuánto tiempo puede tardar y qué quiero medir de eso.

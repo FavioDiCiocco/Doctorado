@@ -539,7 +539,7 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta):
     
     plt.rcParams.update({'font.size': 24})
     plt.figure("Promedio Opiniones",figsize=(20,15))
-    plt.xlabel("umbral")
+    plt.xlabel(r"$\chi$")
     plt.ylabel(r"$\alpha$")
     
     # Hago el ploteo del mapa de colores con el colormesh
