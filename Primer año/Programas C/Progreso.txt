@@ -2350,7 +2350,7 @@ hago acá o en la pc de Oporto.
 
 -------------------------------------------------------------------------------------------------
 
-13/12/2022
+14/12/2022
 
 Ya sé qué voy a hacer. Antes de empezar con el tema de la ola de interés, en el cuál podría
 variar alfa y el interés inicial del agente, creo que lo mejor será armar la presentación 
@@ -2367,3 +2367,94 @@ por qué diría de reincorporarlo, incluso haciendo uso del término con tanh() 
 el término lineal pese al principio y desaparezca al final.
 
 Mañana pensaré sobre la ola de interés, cuánto tiempo puede tardar y qué quiero medir de eso.
+
+-------------------------------------------------------------------------------------------------
+
+15/12/2022
+
+En la mañana terminé de preparar la presentación que le iba a mostrar a Pablo. Seba me dijo
+que prepare algunas diapos con cómo se comporta la función logística en función de alfa y
+chi. Me parece razonable, y veré de hacerlo mañana.
+
+Sobre el tema de estudiar la ola de interés, 
+se me ocurren dos gráficos que serían interesantes para mirar. Uno sería el de tiempo que 
+tarda el agente en alcanzar el interés máximo en función de que tan lejos está del agente
+originalmente interesado. El segundo sería un gráfico en el cual graficaría la curva de
+interés en función del tiempo para un agente (al azar) según la distancia con el agente
+original. Mi idea es a esto incorporarle el término lineal, pero no sé si sea buena idea.
+Quizás necesite tantear un poco más el terreno para eso. Porque con el término lineal 
+presente quizás la función no crezca tanto, entonces convendría tener un mayor olvido,
+o meter un factor que haga más lenta la variación del término de saturación.
+
+Hablando con Seba, él me propone que por ahora descanse un poco de la idea del término
+de saturación y que vuelva al término lineal. Su argumento es que el término de saturación
+lo que hace es simplemente romper el estado final de los agentes con un alto nivel de interés
+eterno que no decae. Esto se condice con lo que uno espera ver, porque tarde o temprano
+el interés en un tópico termina cuando surge un nuevo tópico. Es decir que es un término
+que importa a largo plazo, pero no hace falta preocuparse por eso ahora y que más importante
+es volver a trabajar con más de un tópico. Tendré eso en cuenta, así que ahora tengo que
+tomar el código y preparar una etapa nueva para la ola de interés. Podría armar una primer
+etapa 1D y luego una de 2 tópicos. Con término lineal, sin saturación. Luego la idea
+es medir lo que dije que iba a medir, eso me cierra bárbaro.
+
+Ahora, hay que pensar en términos de cuántos datos almaceno, cuáles son los parámetros que
+voy a variar y qué pretendo mirar exactamente. Para la última pregunta tengo un poco
+una respuesta, considerando los dos gráficos que dije de armar. Esos me van a dar una
+buena idea de los tiempos que el sistema tarda en esparcir el interés.
+
+.) En lo que a los parámetros respecta, razonable es que voy a variar la controversialidad
+de los tópicos. Si no hay término de saturación, el olvido se descarta como opción. Pero
+lo otro que puedo manejar es el interés inicial que presenta el agente que empieza interesado.
+Podría variarlo entre 0,5 y 0,9, por ejemplo. También podría variar el chi supongo. Entonces
+ahí tengo tres parámetros para variar, eso significarían tres gráficos para armar mapas
+de colores. Yo empezaría variando la controversialidad y el interés inicial.
+
+.) La pregunta final es la más difícil. ¿Cuánto tiempo va a tardar esto y cuántos datos
+almaceno? En tiempo, una simulación que hice ayer tardó 14 segundos. Supongamos 80 o 100
+simulaciones, variando alfa entre 2 y 6 (pondría chi = 1) tomaría 50 valores de alfa y
+variando el interés inicial entre 0.5 y 1 tomaría 13 valores. Eso serían 65000, con un
+promedio de 25 segundos cada una, eso es un total de 451 horas. Si divido eso en 20
+hilos me da 22 horas. Tranca.
+¿Pero y qué pasa con el almacenamiento? El tema es que para medir cuánto le tarda a 
+cada agente en llegar el interés, necesito tener el registro de la evolución de las
+opiniones de todos los agentes en todo momento. Pero un sólo archivo de Testigos me
+consume 25 megas. Así que necesito 1000 gigas y cosa para guardar todo eso. Imposible.
+
+Se me ocurre algo más razonable, que es guardar datos de agentes según su distancia con
+el agente inicial. Para eso tengo dos posibilidades. Una es cambiar el código de Python
+para que al armar las matrices de Adyacencia, en el mismo archivo txt se me guarden los
+conjuntos de agentes según su distancia al agente principal. La otra opción es armar una
+función en C que a partir de la matriz de Adyacencia identifique los grupos a los que
+pertenece cada agente, luego con eso me arme un vector que cataloga a los agentes y otro
+vector que marque cuántos agentes hay en cada conjunto. Luego, la idea sería tomar dos o
+tres agentes de cada conjunto. Eso sería mucho mejor, total en una red de grado medio 4
+Random Regulars, a distancia 3 del primer agente hay 4³ agentes, es decir 64. A distancia
+5 ya considero 1024 nodos. No confundir con que sean todos distintos, podría pasar que haya
+muchos repetidos. Pero la idea es que tengo como máximo esa cantidad, y ya a distancia 6 son 
+4096 nodos. Creo que puedo razonar fácilmente que no puede haber nodos con distancia mayor
+a 6, porque aunque haya dos nodos que tengan los mismos 4 vecinos, eso haría que en vez
+de sumar 8 sujetos reales a ese conjunto, en realidad sumo 4. Me estoy enredando con esto
+al pedo, porque técnicamente podría pasar que varios agentes sumen unos mismos pocos
+agentes, entonces no es tan sencillo. No sé si más razonable sería pensar en términos
+de todos los grafos posibles armables y de ahí calcular la distancia media del sistema.
+Pero dejemos eso para alguien que entienda más de esto, vamos a los bifes.
+
+La conclusión es que suponiendo que el tamaño de la red sea con 6 agentes de distancia,
+si tomo dos o tres agentes por cada anillo, eso serían 18 agentes como máximo. Eso
+es un 2% de los 1000, lo cual es algo mucho más razonable para guardar de datos.
+Armemos el plan para mañana:
+
+.) Iniciar una nueva etapa. Borro la carpeta de Ola_interes en Saturacion_1D y me preparo
+una nueva etapa que sea Ola_interes con una primera carpeta que sea topico=1.
+.) Me aseguro de tener bien guardado el código de Saturacion_1D.
+.) Armo una nueva función en C que catalogue a los agentes según su distancia a un cierto
+agente y que me marque cuántos agentes tengo en cada conjunto.
+.) Agrego líneas para modificar la escritura de mis archivos de forma tal que se 
+guarden los intereses de un pequeño grupo de agentes.
+.) También tengo que guardarme los agentes y los conjuntos a los que pertenecen
+cada uno. Eso va a estar bueno para comparar con Python que realmente están
+bien catalogados los agentes antes de mandar esto a funcionar largo.
+.) Desconecto las funciones dinámicas asociadas al término de saturación.
+.) Vuelvo a agregar el término lineal.
+.) Redirijo los archivos a la carpeta correcta.
+
