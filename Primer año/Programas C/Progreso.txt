@@ -2458,3 +2458,14 @@ bien catalogados los agentes antes de mandar esto a funcionar largo.
 .) Vuelvo a agregar el término lineal.
 .) Redirijo los archivos a la carpeta correcta.
 
+-------------------------------------------------------------------------------------------------
+
+16/12/2022
+
+A la mañana no hice mucho, como ayer hicimos la jutnada de fin de año, llegué tarde
+a casa y hoy me levanté más tarde.
+
+Ahora a la tarde voy a seguir con lo que anoté ayer. Armé una función que categoriza
+a los agentes según su distancia al nodo inicial, que es el primero. Ahora lo que 
+me queda es ver si esta categorización está bien hecha. Para eso lo que haré es comparar
+lo obtenido con lo que pueda hacer en Python al respecto.
