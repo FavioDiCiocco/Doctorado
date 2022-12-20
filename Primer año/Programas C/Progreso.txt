@@ -2469,3 +2469,33 @@ Ahora a la tarde voy a seguir con lo que anoté ayer. Armé una función que cat
 a los agentes según su distancia al nodo inicial, que es el primero. Ahora lo que 
 me queda es ver si esta categorización está bien hecha. Para eso lo que haré es comparar
 lo obtenido con lo que pueda hacer en Python al respecto.
+
+-------------------------------------------------------------------------------------------------
+
+19/12/2022
+
+Creo que debe haber notas en la facultad sobre esto. Después veré cuando vaya el 21.
+
+-------------------------------------------------------------------------------------------------
+
+20/12/2022
+
+Hoy es feriado, voy a laburar un poco en casa y después mañana sigo con lo que tengo.
+Hoy quiero solucionar la función que cataloga a los agentes en C.
+
+De paso, creo que comitee pero no pushee los datos ayer, por eso no están las últimas
+actualizaciones subidas. Definitivamente eso fue lo que pasó. Bueno, voy a solucionar 
+el tema de la función en C para que correctamente catalogue a los agentes, luego voy a 
+revisar el archivo y después tomaré notas. Mañana antes de commitear y pusehar o pullear
+nada, corregiré esas cosas a mano y revisaré que el pull no arruine nada.
+Cosas que se me ocurre puede arruinar:
+.) Las notas de Progreso
+.) El archivo de Python armado en la carpeta "Ola_interes"
+
+Modifiqué el código y ahora parece funcionar bien. Por lo menos ahora reconoce que la
+red tiene distancia máxima 9, que es creo que la misma que vi en el archivo de Python
+de la facultad. Pero no puedo saber si funciona bien porque no tengo el código de Python
+que armé ayer. Y además la red que tengo ahora en mi pc es distinta que la red en la
+facultad. Mañana tendré que comprobar que todo funciona bien.
+
+No voy a avanzar más hoy para no complejizar las cosas que se van a sobreescribir.
