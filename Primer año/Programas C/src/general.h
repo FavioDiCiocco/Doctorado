@@ -17,7 +17,8 @@ typedef struct Red{
 	double *pd_Sat; // Matriz de valores de la variable auxiliar de saturación
 	double d_Varprom; // Esto es la Variación promedio del sistema. Es cuanto cambia en promedio cada opinión
 	int *pi_Ady; // Matriz de adyacencia que define mis conexiones. Tiene tamaño N*N
-	int *pi_Activados; //Vector con los agentes que se activaron
+	int *pi_Sep; // Vector con la distancia de cada agente al primer agente.
+	int *pi_Cant; // Vector con la cantidad de agentes a las distintas distancias del primer agente.
 	int i_agente; // Entero que representa el agente que estoy mirando. Es un valor que va entre 0 y N-1
 	int i_agente2; // Este es el segundo agente con el cual se pone en contacto el primero.
 	int i_topico; // Entero que representa el tópico que estoy mirando. Es un valor que va entre 0 y T-1
@@ -62,6 +63,7 @@ int Escribir_d(double *pd_vec, FILE *pa_archivo);
 int Escribir_i(int *pi_vec, FILE *pa_archivo);
 int Tamano_Comunidad(int *pi_adyacencia,int i_inicial);
 int Delta_Vec_d(double *pd_x1, double *pd_x2, double *pd_Dx);
+int Distancia_agentes(int *pi_ady, int *pi_sep);
 
 #endif
 

@@ -2474,7 +2474,24 @@ lo obtenido con lo que pueda hacer en Python al respecto.
 
 19/12/2022
 
-Creo que debe haber notas en la facultad sobre esto. Después veré cuando vaya el 21.
+Lo primero que voy a hacer hoy es armar un código que levante el archivo de la
+red de adyacencia de Random Regulars y que levante los datos del archivo que armé
+y me permita compararlos. Ahora que lo pienso, no necesito un código para eso,
+tengo simplemente que levantarlos y empezar a compararlos.
+
+Logré armar un código en Python que a partir de la matriz de Adyacencia cataloga
+a los agentes según su distancia al agente inicial. A partir de esto, puedo
+ver que el código hecho en C no funciona tan bien. Para arrancar, el código
+en C registra a distancia 2 53 agentes, cuando lo máximo es 16, y a distancia
+3 registra 618, cuando lo máximo es 64. Hay que revisar el código en C.
+
+El error en el código C está en que estoy visitando a los agentes a distancia
+2, marcando para visitar a sus vecinos, y antes de terminar la segunda pasada
+de agentes a visitar, estoy visitando los vecinos que estarían a distancia
+3. Entonces no estoy siendo organizado. Creo que lo mejor sería agregar un
+segundo vector que sea inmutable durante las pasadas, y que por otro lado
+el vector de Visitar sea el que acumule las marcas de a quién ir a visitar
+más tarde. Pero hagamos eso en casa mañana, hoy volvamos temprano.
 
 -------------------------------------------------------------------------------------------------
 
@@ -2499,3 +2516,26 @@ que armé ayer. Y además la red que tengo ahora en mi pc es distinta que la red
 facultad. Mañana tendré que comprobar que todo funciona bien.
 
 No voy a avanzar más hoy para no complejizar las cosas que se van a sobreescribir.
+
+------------------------------------------------------------------------------------------------
+
+21/12/2022
+
+Lo primero que hice fue organizar el pusheado y pulleado de github. Intenté que no se perdiera
+nada. Lo interesante es que descubrí que Github en estos casos guarda los archivos que no
+son compatibles en un "stash", y luego te permite volver a pushearlos más tarde.
+
+Hecho esto, simplemente puse a prueba mi código en C y el código en Python. Ahora sí los dos
+catalogan lo mismo. Ven los mismos agentes a las mismas distancias. Ahora que esto funciona,
+puedo implementar la función y avanzar con la etapa de Ola_interes.
+
+Lo siguiente a hacer es esto:
+.) Agregar unas líneas que marquen cuántos agentes tengo en cada conjunto.
+.) Agrego líneas para modificar la escritura de mis archivos de forma tal que se 
+guarden los intereses de un pequeño grupo de agentes.
+.) También tengo que guardarme los agentes y los conjuntos a los que pertenecen
+cada uno. Eso va a estar bueno para comparar con Python que realmente están
+bien catalogados los agentes antes de mandar esto a funcionar largo.
+.) Desconecto las funciones dinámicas asociadas al término de saturación.
+.) Vuelvo a agregar el término lineal.
+.) Redirijo los archivos a la carpeta correcta.

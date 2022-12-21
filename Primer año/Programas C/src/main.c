@@ -74,12 +74,15 @@ int main(int argc, char *argv[]){
 	ps_red->pd_Ang = (double*) malloc((2+ps_datos->i_T*ps_datos->i_T)*sizeof(double)); // Matriz simétrica de superposición entre tópicos.
 	ps_red->pd_Opi = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Lista de vectores de opinión de la red, Tengo T elementos para cada agente.
 	
-	// También hay una matriz de paso posterior del sistema, un vector para guardar la diferencia entre 
-	// el paso previo y el actual
+	// También hay un vector para guardar la diferencia entre el paso previo y el actual, un vector con los valores de saturación,
+	// un vector con la distancia de cada agente al primero y otro con la cantidad de agentes a cada distancia del primer agente.
 	ps_red->pd_Diferencia = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Vector que guarda la diferencia entre dos pasos del sistema
 	ps_red->pd_Sat = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Lista de valores de la variable auxiliar de saturación.
+	ps_red->pi_Sep = (int*) malloc((2+ps_datos->i_N)*sizeof(int)); // Vector con la distancia de cada agente al vector primero
+	ps_red->pi_Cant = (int*) malloc((2+)*sizeof(int)); // Vector con la cantidad de agentes a cada distancia
 	
-	// Inicializo mis cinco "matrices".
+	
+	// Inicializo mis siete "matrices".
 	// Matriz de Adyacencia. Es de tamaño N*N
 	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_N+2; i_i++) ps_red->pi_Ady[i_i] = 0; // Inicializo la matriz
 	ps_red->pi_Ady[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
@@ -104,6 +107,11 @@ int main(int argc, char *argv[]){
 	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_Sat[i_i] = 0; // Inicializo la matriz
 	ps_red->pd_Sat[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
 	ps_red->pd_Sat[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
+	
+	// Vector con la distancia de los agentes al primer agente
+	for(register int i_i=0; i_i<ps_datos->i_N+2; i_i++) ps_red->pi_Sep[i_i] = 0; // Inicializo la matriz
+	ps_red->pi_Sep[0] = 1; // Pongo el número de filas en la primer coordenada
+	ps_red->pi_Sep[1] = ps_datos->i_N; // Pongo el número de columnas en la segunda coordenada
 	
 	//################################################################################################################################
 	

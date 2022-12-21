@@ -10,6 +10,7 @@
 
 int Lectura_Adyacencia(int *pi_vec, FILE *pa_archivo);
 int Distancia_agentes(int *pi_ady, int *pi_sep);
+int Cantidad_agentes_conjuntos(int *pi_conj, int *pi_cant);
 int Escribir_i(int *pi_vec, FILE *pa_archivo);
 
 // Mi objetivo es construir una función que a partir de la matriz de adyacencia recorra la red e identifique a cada agente con
@@ -50,9 +51,18 @@ int main(int argc, char *argv[]){
 	*pi_separacion = 1; // Fijo las filas
 	*(pi_separacion+1) = i_N; // Fijo las columnas
 	
+	// Defino el puntero que tendrá las etiquetas de la distancia a la que se encuentra cada agente
+	int *pi_;
+	pi_separacion = (int*) malloc((2+i_N)*sizeof(int));
+	
+	// Lo inicializo
+	for(register int i_i = 0; i_i<2+i_N; i_i++) *(pi_separacion+i_i) = 0;
+	*pi_separacion = 1; // Fijo las filas
+	*(pi_separacion+1) = i_N; // Fijo las columnas
+	
 	// Preparo el puntero para levantar los datos de la matriz de adyacencia
 	char s_archivo1[350]; // Defino el string
-	sprintf(s_archivo1, "./MARE/Random_Regulars/Random-regular_N=1000_ID=0.file");  // Asigno la dirección del archivo al string
+	sprintf(s_archivo1, "./MARE/Random_Regulars/Random-regular_N=1000_ID=1.file");  // Asigno la dirección del archivo al string
 	FILE *pa_archivo1 = fopen(s_archivo1,"r");  // Abro el archivo para lectura
 	
 	Lectura_Adyacencia(pi_adyacencia, pa_archivo1); // Levanto los datos de la matriz del archivo de texto
@@ -78,11 +88,9 @@ int main(int argc, char *argv[]){
 	printf("La distancia máxima al agente inicial es %d\n", i_distmax);
 	
 	// Ejecuto los comandos finales para medir el tiempo y liberar memoria
-
 	fclose(pa_archivo2);
 	free(pi_adyacencia);
 	free(pi_separacion);
-	
 	
 	time(&tt_fin);
 	i_tardanza = tt_fin-tt_prin;
@@ -121,6 +129,8 @@ int Lectura_Adyacencia(int *pi_vec, FILE *pa_archivo){
 	return 0;
 }
 
+
+// Esta función recibe la matriz de adyacencia y a partir de eso coloca en el vector pi_sep la distancia de cada agente al agente cero.
 int Distancia_agentes(int *pi_ady, int *pi_sep){
 	// Defino las variables necesarias para mi función
 	int i_distmax,i_F,i_restantes, i_distancia;
@@ -192,7 +202,6 @@ int Distancia_agentes(int *pi_ady, int *pi_sep){
 	free(pi_Marcados);
 	*(pi_sep+2) = 0; // La distancia del primer nodo a sí mismo es cero.
 	i_distmax = i_distancia-1; // El while termina en distancia una unidad extra de la distancia recorrida.
-	
 	
 	return i_distmax;
 }

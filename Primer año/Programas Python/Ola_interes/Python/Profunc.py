@@ -25,7 +25,7 @@ N = 1000
 
 # Cargo el archivo con la matriz de adyacencia Random Regulars
 
-Datos = func.ldata("../../../Programas C/MARE/Random_Regulars/Random-regular_N=1000_ID=0.file")
+Datos = func.ldata("../../../Programas C/MARE/Random_Regulars/Random-regular_N=1000_ID=1.file")
 Adyacencia  = np.reshape(np.array([i for i in Datos[0][:-1:]],dtype = "int"),(N,N))
 
 # Armo el grafo a partir de la matriz de Adyacencia

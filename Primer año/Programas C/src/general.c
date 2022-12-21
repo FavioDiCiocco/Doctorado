@@ -326,6 +326,82 @@ double Interpolacion(double d_y1, double d_y2,double d_x1,double d_x){
 }
 
 
+// Esta función recibe la matriz de adyacencia y a partir de eso coloca en el vector pi_sep la distancia de cada agente al agente cero.
+int Distancia_agentes(int *pi_ady, int *pi_sep){
+	// Defino las variables necesarias para mi función
+	int i_distmax,i_F,i_restantes, i_distancia;
+	i_F = *pi_ady; // Número de filas de la matriz de Adyacencia.
+	i_distancia = 2; // Este valor lo uso para asignar la distancia de los agentes al nodo principal.
+	
+	//################################################################################################################################
+	
+	// Defino un puntero con los sujetos que voy a visitar. Lo hago de tamao i_F para poder asignar un 1 al visitar el agente en cada posición correcta.
+	int *pi_Visitar;
+	pi_Visitar = (int*) malloc((2+i_F)*sizeof(int));
+	
+	// Lo inicializo
+	*pi_Visitar = 1;
+	*(pi_Visitar+1) = i_F;
+	for(register int i_i=0; i_i<i_F; i_i++) *(pi_Visitar+i_i+2) = 0;
+	
+	// Defino un puntero que me marque los sujetos a visitar en la próxima iteración. Lo hago de tamao i_F para poder asignar un 1 al visitar el agente en cada posición correcta.
+	int *pi_Marcados;
+	pi_Marcados = (int*) malloc((2+i_F)*sizeof(int));
+	
+	// Lo inicializo
+	*pi_Marcados = 1;
+	*(pi_Marcados+1) = i_F;
+	for(register int i_i=0; i_i<i_F; i_i++) *(pi_Marcados+i_i+2) = 0;
+	
+	// Empiezo recorriendo la matriz desde un nodo inicial, que será el primero siempre.
+	// Esto pondrá un 1 en los agentes que son los primeros vecinos del primer nodo.
+	for(register int i_i=0; i_i<i_F; i_i++){
+		*(pi_Marcados+i_i+2) = *(pi_ady+i_i+2);
+		*(pi_sep+i_i+2) = *(pi_ady+i_i+2);
+	}
+	
+	// Marco al primer agente con un número, sólo para que no sea visitado al pedo
+	*(pi_sep+2) = -1;
+	
+	do{
+		i_restantes = 0; // Lo vuelvo a cero para después contar los agentes restantes
+		for(register int i_i=0; i_i<i_F; i_i++) *(pi_Visitar+i_i+2) = *(pi_Marcados+i_i+2);  // Paso todos los agentes marcados a la lista de Visitar
+		for(register int i_i=0; i_i<i_F; i_i++) *(pi_Marcados+i_i+2) = 0; // Limpio mi lista de marcados
+		
+		// Primero reviso mi lista de gente por visitar
+		for(register int i_agente=0; i_agente<i_F; i_agente++){
+			// Si encuentro un uno en la lista, reviso esa fila de la matriz de adyacencia. Es decir, la fila i_agente
+			if(*(pi_Visitar+i_agente+2) == 1){
+				
+				// Si en esa fila encuentro un uno, tengo que agregar eso a la lista de Visitar. Pero no siempre.
+				// La idea es: Si el sujeto no estaba marcado en separación, entonces lo visito y lo marco en separación.
+				// Si ya estaba marcado, es porque lo visité o está en mi lista de Marcados.
+				// La idea de esto es no revisitar nodos ya visitados.
+				for(register int i_vecino=0; i_vecino<i_F; i_vecino++){
+					if(*(pi_ady+i_vecino+i_agente*i_F+2) == 1){
+						if(*(pi_sep+i_vecino+2) == 0){ 
+							*(pi_Marcados+i_vecino+2) = 1; // Esta línea me agrega el sujeto a visitar sólo si no estaba en el grupo
+							*(pi_sep+i_vecino+2) = i_distancia; // Esta línea me marca al sujeto en el grupo, porque al final si ya había un uno ahí, simplemente lo vuelve a escribir.
+						}
+					}
+				}
+				*(pi_Visitar+i_agente+2) = 0; // Visitado el agente, lo remuevo de mi lista
+			}
+		}
+		i_distancia++; // Paso a revisar a los vecinos que se encuentran a un paso más de distancia
+		for(int register i_i=0; i_i<i_F; i_i++) i_restantes += *(pi_Marcados+i_i+2);
+	}
+	while(i_restantes > 0);
+	
+	// Los agentes están catalogados según su distancia al centro. Queda liberar espacios de memoria y últimos detalles.
+	free(pi_Visitar);
+	free(pi_Marcados);
+	*(pi_sep+2) = 0; // La distancia del primer nodo a sí mismo es cero.
+	i_distmax = i_distancia-1; // El while termina en distancia una unidad extra de la distancia recorrida.
+	
+	return i_distmax;
+}
+
 
 /*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
