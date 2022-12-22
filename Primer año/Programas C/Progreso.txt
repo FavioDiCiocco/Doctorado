@@ -2539,3 +2539,47 @@ bien catalogados los agentes antes de mandar esto a funcionar largo.
 .) Desconecto las funciones dinámicas asociadas al término de saturación.
 .) Vuelvo a agregar el término lineal.
 .) Redirijo los archivos a la carpeta correcta.
+
+Al mediodía fui a comer al brindis que dió el rector en frente del Pabellón 2 y después
+me fui temprano porque tenía turno con la dentista. Antes de irme completé la burocracia
+infinita. Mañana continuo con esto.
+
+------------------------------------------------------------------------------------------------
+
+22/12/2022
+
+En la mañana no hice nada del proyecto porque cuando llegué me di cuenta que me había olvidado
+la llave en la oficina, así que estuve esperando hasta que abrieran secretaría, les pedí
+una llave, conseguí la mía y me puse a trabajar.
+
+Pero antes que nada, estuve anotándome en cosas, con lo que me anoté para lo de la ley Yolanda
+(en lo cual completé un código que saqué del Sigeva de Conicet) y después me anoté para dar
+curso de matemática para ingresantes del CBC.
+
+Ahora sigamos con lo de ayer. Agregué el nuevo vector pi_Cant, el cual voy a usar para llevar
+cuenta de cuántos agentes tengo a distancia d de mi primer agente. Para poder inicializar este
+vector, necesito conocer la distancia máxima a la cual un agente puede encontrarse del agente
+inicial. Estaba teniendo problemas porque la función Distancia_agentes returneaba ese número,
+pero el número me quedaba uno por encima y no entendía por qué, pero ahora me di cuenta.
+Lo que pasa es que, supongamos que mi sistema tiene agentes con separación siete del primer
+agente. Entonces, cuando estoy revisando los agentes a distancia seis, el código está marcando
+a los agentes a distancia siete. Antes de hacer una nueva pasada, el while avanza la distancia
+a ocho. Luego revisa a los agentes a distancia siete y revisa si alguno de sus vecinos está
+a distancia ocho para marcarlo, pero como todos los vecinos de los agentes a distancia siete
+ya fueron marcados, no marca a nadie. No queda nadie más por visitar, así que el while va
+a terminar acá, pero antes de terminar, vuelve a incrementar la distancia a nueve. Y por eso,
+a pesar de que sólo hay agentes hasta distancia siete, el sistema termina con el valor de distancia
+en nueve. Veré de cambiar eso, creo que es complejo al pedo. Es una cuestión de prolijidad.
+
+Después de comer fuimos a una charla sobre el modelo de Ising. Al final hoy no pude trabajar
+mucho, pero puedo decir que avancé en ir organizando el código para la medición de la Ola de interés.
+Me quedé en armar un vector que registre quiénes van a ser los agentes testigos. Es decir, el
+vector tiene que tener en sus coordenadas los números de los agentes testigos. Para eso mi idea
+es seleccionar a los agentes en orden recorriendo el vector de Sep. En principio tomaría tres
+agentes testigos, después podría intentar tomar más. Pero nada me garantiza que siempre
+tenga suficientes agentes para lo que yo quiera. Tipo, tengo un sólo agente a distancia cero
+y 4 a distancia 1, eso siempre. Entonces tengo que considerar que si i_testigos es la cantidad
+de testigos que planeo tomar de cada conjunto, entonces puede que no haya esa cantidad de agentes
+en ese conjunto. Mi mayor miedo con esto es que después a la hora de levantar datos, no va a ser
+tan obvio si la cantidad de agentes a cada distancia es variable. Pero bueno, eso será un problema
+para el Python. Confío en que si soy prolijo y coherente, eso tiene solución.

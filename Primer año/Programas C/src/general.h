@@ -19,10 +19,10 @@ typedef struct Red{
 	int *pi_Ady; // Matriz de adyacencia que define mis conexiones. Tiene tamaño N*N
 	int *pi_Sep; // Vector con la distancia de cada agente al primer agente.
 	int *pi_Cant; // Vector con la cantidad de agentes a las distintas distancias del primer agente.
+	int *pi_Tes; // Estos son los agentes que voy a usar como testigos para extraer datos.
 	int i_agente; // Entero que representa el agente que estoy mirando. Es un valor que va entre 0 y N-1
 	int i_agente2; // Este es el segundo agente con el cual se pone en contacto el primero.
 	int i_topico; // Entero que representa el tópico que estoy mirando. Es un valor que va entre 0 y T-1
-	char s_Tred[50]; // Esto es el tipo de red, que puede ser de Barabasi, Erdos-Renyi o Random Regular
 }s_Red;
 
 typedef s_Red *ps_Red;
@@ -43,6 +43,7 @@ typedef struct Parametros{
 	int i_Itextra; // Esta es la cantidad de iteraciones extra que el sistema tiene que hacer para asegurarme de que el estado alcanzado realmente es estable
 	int i_ID; // Esto me va a servir para elegir las distintas redes entre el conjunto de redes estáticas armadas previamente.
 	int i_pasosprevios; // Esto es la cantidad de pasos previos que voy a guardar para comparar la variación con el paso actual
+	int i_agentes_registrar; // Esta es la cantidad de agentes de los cuales voy a guardar datos.
 }s_Param;
 
 typedef s_Param *ps_Param;

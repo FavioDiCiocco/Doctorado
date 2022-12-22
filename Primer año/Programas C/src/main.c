@@ -47,10 +47,12 @@ int main(int argc, char *argv[]){
 	ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	ps_datos->d_CritCorte = pow(10,-4); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
 	ps_datos->d_lambda = 0.005; // Este parámetro mide la memoria de los agentes respecto de sus intereses previos. Mientras más grande, menos memoria.
+	ps_datos->i_registrar = 0; // Este número lo uso para identificar la cantidad de agentes de los cuales voy a guardar datos.
 		
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
-	int i_testigos = ps_datos->i_N; // Este es el número de testigos que registraré. Voy a registrar los testigos de 0 a 9
+	int i_testigos = 3; // Este es el número de testigos que registraré de cada distancia, como máximo
+	int i_distmax = 0; // Máxima distancia al primer agente
 	// if(ps_datos->i_N > 6) i_testigos = 6;
 	// else i_testigos = ps_datos->i_N;
 	
@@ -75,11 +77,10 @@ int main(int argc, char *argv[]){
 	ps_red->pd_Opi = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Lista de vectores de opinión de la red, Tengo T elementos para cada agente.
 	
 	// También hay un vector para guardar la diferencia entre el paso previo y el actual, un vector con los valores de saturación,
-	// un vector con la distancia de cada agente al primero y otro con la cantidad de agentes a cada distancia del primer agente.
+	// y un vector con la distancia de cada agente al primero
 	ps_red->pd_Diferencia = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Vector que guarda la diferencia entre dos pasos del sistema
 	ps_red->pd_Sat = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Lista de valores de la variable auxiliar de saturación.
 	ps_red->pi_Sep = (int*) malloc((2+ps_datos->i_N)*sizeof(int)); // Vector con la distancia de cada agente al vector primero
-	ps_red->pi_Cant = (int*) malloc((2+)*sizeof(int)); // Vector con la cantidad de agentes a cada distancia
 	
 	
 	// Inicializo mis siete "matrices".
@@ -155,30 +156,57 @@ int main(int argc, char *argv[]){
 	
 	// Genero los datos de las matrices de mi sistema
 	
-	// GenerarOpi(ps_red, ps_datos); // Esto me inicializa mis vectores de opinión, asignándole a cada agente una opinión en cada tópico
 	GenerarAng(ps_red, ps_datos); // Esto me inicializa mi matriz de superposición, definiendo el solapamiento entre tópicos.
-	// GenerarAdy_Conectada(ps_red, ps_datos); // Inicializo la matriz de dos agentes conectados
-	
 	// Todos los agentes tienen interés cero en el tópico. Elijo al primero para que tenga interés moderado en el tópico
 	ps_red->pd_Opi[2] = 0.8; // Elegí 0.8 arbitrariamente. Esto podría ser un parámetro del modelo
-	
-	
-	Lectura_Adyacencia(ps_red->pi_Ady, pa_mady);
+	Lectura_Adyacencia(ps_red->pi_Ady, pa_mady); // Leo el archivo de la red estática y lo traslado a la matriz de adyacencia
 	fclose(pa_mady); // Aprovecho y cierro el puntero al archivo de la matriz de adyacencia
+	// Catalogo a los agentes según su distancia al primer nodo
+	i_distmax = Distancia_agentes(ps_red->pi_Ady, pi_red->pi_Sep);
+	
+	
+	// Preparo los dos vectores que faltan
+	
+	// Inicializo el vector con la cantidad de agentes a cada distancia.
+	ps_red->pi_Cant = (int*) malloc((2+(i_distmax+1))*sizeof(int)); // Le pongo tamaño i_distmax+1 porque los agentes están separados en distancias que van desde 0 a i_distmax.
+	// Vector con la cantidad de agentes a cada distancia del primer agente
+	for(register int i_i=0; i_i<ps_datos->(i_distmax+1)+2; i_i++) ps_red->pi_Cant[i_i] = 0; // Inicializo la matriz
+	ps_red->pi_Cant[0] = 1; // Pongo el número de filas en la primer coordenada
+	ps_red->pi_Cant[1] = i_distmax+1; // Pongo el número de columnas en la segunda coordenada
+	// Cuento cuántos agentes tengo a cada distancia del primero
+	for(register int i_i=0; i_i<ps_datos->i_N; i_i++) ps_red->pi_Cant[ps_red->pi_Sep[i_i+2]+2]++;
+	
+	// Para el vector que define quiénes van a ser los testigos voy a tomar los primeros tres agentes que sean de cada distancia. Sí es que
+	// hay tres agentes, si hay menos tomo menos. ESTO VA A UNA FUNCIÓN, DE CABEZA. PERO ESTO NO TIENE SENTIDO, PARA
+	// ESTO SIMPLEMENTE USO EL VECTOR DE CANTIDAD DE AGENTES EN CADA CONJUNTO.
+	for(register int i_distancia=0; i_distancia< i_distmax+1; i_distancia++){
+		i_contador = 0;
+		for(register int i_tes=0; i_tes<ps_datos->i_N; i_tes++){
+			if(ps_red->pi_Sep[i_tes+2] == i_distancia){
+				i_contador++;
+				ps_datos->i_registrar++;
+			}
+			if(i_contador == i_testigos) break;
+		}
+	}
+	
+	// Inicializo el vector con la cantidad de agentes a cada distancia.
+	ps_red->pi_Tes = (int*) malloc((2+(i_distmax+1))*sizeof(int)); // Le pongo tamaño i_distmax+1 porque los agentes están separados en distancias que van desde 0 a i_distmax.
+	// Vector con la cantidad de agentes a cada distancia del primer agente
+	for(register int i_i=0; i_i<ps_datos->(i_distmax+1)+2; i_i++) ps_red->pi_Tes[i_i] = 0; // Inicializo la matriz
+	ps_red->pi_Tes[0] = 1; // Pongo el número de filas en la primer coordenada
+	ps_red->pi_Tes[1] = i_distmax+1; // Pongo el número de columnas en la segunda coordenada
 	
 	
 	//################################################################################################################################
 
-	// Acá voy a hacer las simulaciones de pasos previos del sistema y también voy a evolucionar el sistema hasta tener una red conexa.
-	// Primero que nada arranco guardando las opiniones iniciales.
+	// Acá voy a hacer las simulaciones de pasos previos del sistema	
 	
-	// Guardo la distribución inicial de las opiniones de mis agentes y preparo para guardar la Varprom.
-	fprintf(pa_archivo1,"Opiniones Iniciales\n");
-	Escribir_d(ps_red->pd_Opi,pa_archivo1);
-	
-	fprintf(pa_archivo2,"Opiniones Testigos\n");
-	// fprintf(pa_archivo3,"Saturacion Testigos\n");
-	
+	for(register int i_distancia=0; i_distancia<i_distmax+1; i_distancia++){
+		if(ps_red->pi_Cant[i_distancia+2] < 3){
+			for(register int i_tes=0; i_tes<ps_red->pi_Cant[i_distancia+2]; i_tes++) // Le pongo tes porque testigos ya está tomado
+			fprintf(pa_archivo2,"D%d",)
+	}
 	
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){

@@ -51,18 +51,9 @@ int main(int argc, char *argv[]){
 	*pi_separacion = 1; // Fijo las filas
 	*(pi_separacion+1) = i_N; // Fijo las columnas
 	
-	// Defino el puntero que tendrá las etiquetas de la distancia a la que se encuentra cada agente
-	int *pi_;
-	pi_separacion = (int*) malloc((2+i_N)*sizeof(int));
-	
-	// Lo inicializo
-	for(register int i_i = 0; i_i<2+i_N; i_i++) *(pi_separacion+i_i) = 0;
-	*pi_separacion = 1; // Fijo las filas
-	*(pi_separacion+1) = i_N; // Fijo las columnas
-	
 	// Preparo el puntero para levantar los datos de la matriz de adyacencia
 	char s_archivo1[350]; // Defino el string
-	sprintf(s_archivo1, "./MARE/Random_Regulars/Random-regular_N=1000_ID=1.file");  // Asigno la dirección del archivo al string
+	sprintf(s_archivo1, "MARE/Random_Regulars/Random-regular_N=1000_ID=1.file");  // Asigno la dirección del archivo al string
 	FILE *pa_archivo1 = fopen(s_archivo1,"r");  // Abro el archivo para lectura
 	
 	Lectura_Adyacencia(pi_adyacencia, pa_archivo1); // Levanto los datos de la matriz del archivo de texto
@@ -135,7 +126,7 @@ int Distancia_agentes(int *pi_ady, int *pi_sep){
 	// Defino las variables necesarias para mi función
 	int i_distmax,i_F,i_restantes, i_distancia;
 	i_F = *pi_ady; // Número de filas de la matriz de Adyacencia.
-	i_distancia = 2; // Este valor lo uso para asignar la distancia de los agentes al nodo principal.
+	i_distancia = 1; // Este valor lo uso para asignar la distancia de los agentes al nodo principal.
 	
 	//################################################################################################################################
 	
@@ -171,6 +162,7 @@ int Distancia_agentes(int *pi_ady, int *pi_sep){
 		i_restantes = 0; // Lo vuelvo a cero para después contar los agentes restantes
 		for(register int i_i=0; i_i<i_F; i_i++) *(pi_Visitar+i_i+2) = *(pi_Marcados+i_i+2);  // Paso todos los agentes marcados a la lista de Visitar
 		for(register int i_i=0; i_i<i_F; i_i++) *(pi_Marcados+i_i+2) = 0; // Limpio mi lista de marcados
+		i_distancia++; // Paso a revisar a los vecinos que se encuentran a un paso más de distancia
 		
 		// Primero reviso mi lista de gente por visitar
 		for(register int i_agente=0; i_agente<i_F; i_agente++){
@@ -192,7 +184,6 @@ int Distancia_agentes(int *pi_ady, int *pi_sep){
 				*(pi_Visitar+i_agente+2) = 0; // Visitado el agente, lo remuevo de mi lista
 			}
 		}
-		i_distancia++; // Paso a revisar a los vecinos que se encuentran a un paso más de distancia
 		for(int register i_i=0; i_i<i_F; i_i++) i_restantes += *(pi_Marcados+i_i+2);
 	}
 	while(i_restantes > 0);
