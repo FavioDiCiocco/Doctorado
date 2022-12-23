@@ -43,7 +43,9 @@ typedef struct Parametros{
 	int i_Itextra; // Esta es la cantidad de iteraciones extra que el sistema tiene que hacer para asegurarme de que el estado alcanzado realmente es estable
 	int i_ID; // Esto me va a servir para elegir las distintas redes entre el conjunto de redes estáticas armadas previamente.
 	int i_pasosprevios; // Esto es la cantidad de pasos previos que voy a guardar para comparar la variación con el paso actual
-	int i_agentes_registrar; // Esta es la cantidad de agentes de los cuales voy a guardar datos.
+	int i_distmax; // Esta es la máxima distancia de un nodo al primer agente.
+	int i_testigos; // Esta es la cantidad de agentes de cada distancia que voy registrar como máximo
+	int i_total_testigos; // Esta es la cantidad total de testigos de los cuales voy a guardar datos.
 }s_Param;
 
 typedef s_Param *ps_Param;
@@ -65,6 +67,7 @@ int Escribir_i(int *pi_vec, FILE *pa_archivo);
 int Tamano_Comunidad(int *pi_adyacencia,int i_inicial);
 int Delta_Vec_d(double *pd_x1, double *pd_x2, double *pd_Dx);
 int Distancia_agentes(int *pi_ady, int *pi_sep);
+int Lista_testigos(ps_Red ps_red, ps_Param ps_datos);
 
 #endif
 

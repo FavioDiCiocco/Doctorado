@@ -48,13 +48,12 @@ int main(int argc, char *argv[]){
 	ps_datos->d_CritCorte = pow(10,-4); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
 	ps_datos->d_lambda = 0.005; // Este parámetro mide la memoria de los agentes respecto de sus intereses previos. Mientras más grande, menos memoria.
 	ps_datos->i_registrar = 0; // Este número lo uso para identificar la cantidad de agentes de los cuales voy a guardar datos.
+	ps_datos->i_distmax = 0; // Esta es la máxima distancia de un nodo al primer agente.
+	ps_datos->i_testigos = 3; // Esta es la cantidad de agentes de cada distancia que voy registrar como máximo
+	ps_datos->i_total_testigos = 0; // Esta es la cantidad total de testigos de los cuales voy a guardar datos.
 		
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
-	int i_testigos = 3; // Este es el número de testigos que registraré de cada distancia, como máximo
-	int i_distmax = 0; // Máxima distancia al primer agente
-	// if(ps_datos->i_N > 6) i_testigos = 6;
-	// else i_testigos = ps_datos->i_N;
 	
 	// Voy a armar mi array de punteros, el cual voy a usar para guardar los datos de pasos previos del sistema
 	double* ap_OpinionesPrevias[ps_datos->i_pasosprevios];
@@ -157,10 +156,13 @@ int main(int argc, char *argv[]){
 	// Genero los datos de las matrices de mi sistema
 	
 	GenerarAng(ps_red, ps_datos); // Esto me inicializa mi matriz de superposición, definiendo el solapamiento entre tópicos.
+	
 	// Todos los agentes tienen interés cero en el tópico. Elijo al primero para que tenga interés moderado en el tópico
 	ps_red->pd_Opi[2] = 0.8; // Elegí 0.8 arbitrariamente. Esto podría ser un parámetro del modelo
+	
 	Lectura_Adyacencia(ps_red->pi_Ady, pa_mady); // Leo el archivo de la red estática y lo traslado a la matriz de adyacencia
 	fclose(pa_mady); // Aprovecho y cierro el puntero al archivo de la matriz de adyacencia
+	
 	// Catalogo a los agentes según su distancia al primer nodo
 	i_distmax = Distancia_agentes(ps_red->pi_Ady, pi_red->pi_Sep);
 	
@@ -170,32 +172,24 @@ int main(int argc, char *argv[]){
 	// Inicializo el vector con la cantidad de agentes a cada distancia.
 	ps_red->pi_Cant = (int*) malloc((2+(i_distmax+1))*sizeof(int)); // Le pongo tamaño i_distmax+1 porque los agentes están separados en distancias que van desde 0 a i_distmax.
 	// Vector con la cantidad de agentes a cada distancia del primer agente
-	for(register int i_i=0; i_i<ps_datos->(i_distmax+1)+2; i_i++) ps_red->pi_Cant[i_i] = 0; // Inicializo la matriz
+	for(register int i_i=0; i_i<(i_distmax+1)+2; i_i++) ps_red->pi_Cant[i_i] = 0; // Inicializo la matriz
 	ps_red->pi_Cant[0] = 1; // Pongo el número de filas en la primer coordenada
 	ps_red->pi_Cant[1] = i_distmax+1; // Pongo el número de columnas en la segunda coordenada
 	// Cuento cuántos agentes tengo a cada distancia del primero
 	for(register int i_i=0; i_i<ps_datos->i_N; i_i++) ps_red->pi_Cant[ps_red->pi_Sep[i_i+2]+2]++;
 	
-	// Para el vector que define quiénes van a ser los testigos voy a tomar los primeros tres agentes que sean de cada distancia. Sí es que
-	// hay tres agentes, si hay menos tomo menos. ESTO VA A UNA FUNCIÓN, DE CABEZA. PERO ESTO NO TIENE SENTIDO, PARA
-	// ESTO SIMPLEMENTE USO EL VECTOR DE CANTIDAD DE AGENTES EN CADA CONJUNTO.
-	for(register int i_distancia=0; i_distancia< i_distmax+1; i_distancia++){
-		i_contador = 0;
-		for(register int i_tes=0; i_tes<ps_datos->i_N; i_tes++){
-			if(ps_red->pi_Sep[i_tes+2] == i_distancia){
-				i_contador++;
-				ps_datos->i_registrar++;
-			}
-			if(i_contador == i_testigos) break;
-		}
-	}
+	// Identifico la cantidad de agentes testigos que voy a necesitar
+	for(int register i_distancia=0; i_distancia<i_distmax+1; i_distancia++) ps_datos->i_total_testigos += (int) fmin(i_testigos, pi_cantidad[i_distancia+2]);
 	
 	// Inicializo el vector con la cantidad de agentes a cada distancia.
-	ps_red->pi_Tes = (int*) malloc((2+(i_distmax+1))*sizeof(int)); // Le pongo tamaño i_distmax+1 porque los agentes están separados en distancias que van desde 0 a i_distmax.
+	ps_red->pi_Tes = (int*) malloc((2+i_total_testigos)*sizeof(int)); // Le pongo tamaño i_distmax+1 porque los agentes están separados en distancias que van desde 0 a i_distmax.
 	// Vector con la cantidad de agentes a cada distancia del primer agente
-	for(register int i_i=0; i_i<ps_datos->(i_distmax+1)+2; i_i++) ps_red->pi_Tes[i_i] = 0; // Inicializo la matriz
+	for(register int i_i=0; i_i<i_total_testigos+2; i_i++) ps_red->pi_Tes[i_i] = 0; // Inicializo la matriz
 	ps_red->pi_Tes[0] = 1; // Pongo el número de filas en la primer coordenada
-	ps_red->pi_Tes[1] = i_distmax+1; // Pongo el número de columnas en la segunda coordenada
+	ps_red->pi_Tes[1] = i_total_testigos; // Pongo el número de columnas en la segunda coordenada
+	
+	// Asigno al vector de testigos los agentes que voy a usar para guardar datos.
+	Lista_testigos(ps_red, ps_datos);
 	
 	
 	//################################################################################################################################

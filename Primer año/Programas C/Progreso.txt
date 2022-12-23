@@ -2583,3 +2583,25 @@ de testigos que planeo tomar de cada conjunto, entonces puede que no haya esa ca
 en ese conjunto. Mi mayor miedo con esto es que después a la hora de levantar datos, no va a ser
 tan obvio si la cantidad de agentes a cada distancia es variable. Pero bueno, eso será un problema
 para el Python. Confío en que si soy prolijo y coherente, eso tiene solución.
+
+------------------------------------------------------------------------------------------------
+
+22/12/2022
+
+Hoy declararon asueto en la facultad, así que hoy laburo desde casa. Lo primero
+que quiero hacer es armar una función que tome el vector de testigos y le asigne los
+agentes que serán los testigos de los cuales guardaré los datos de interés durante la
+evolución del sistema.
+
+Armé el código, ahora estoy listo para implementarlo. De paso, estoy considerando tomar
+el consejo de code aesthetic a la hora de nombrar variables y agrandar los nombres de
+las variables y empezar a usar un poco más el auto completar. Aunque tendré que ver que
+tanto me acostumbro a eso. Y si vale la pena hacer eso con un código tan largo como el que
+ya tengo. Supongo que podría ir cambiando estas cosas en Enero, que no voy a estar yendo
+a la facultad.
+
+Una vez que implemente esto, no me tengo que olvidar de pasar el código que acabo de armar
+al Archivo, así lo tengo ahí guardado todo esto.
+Ya guardé el código en Archivo, así como ya implementé la función de Lista_testigos en el
+main. Ahora queda seguir con las demás instrucciones. Y por último queda revisar que toda la
+dinámica se resuelva con sentido.

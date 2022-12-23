@@ -331,7 +331,7 @@ int Distancia_agentes(int *pi_ady, int *pi_sep){
 	// Defino las variables necesarias para mi función
 	int i_distmax,i_F,i_restantes, i_distancia;
 	i_F = *pi_ady; // Número de filas de la matriz de Adyacencia.
-	i_distancia = 2; // Este valor lo uso para asignar la distancia de los agentes al nodo principal.
+	i_distancia = 1; // Este valor lo uso para asignar la distancia de los agentes al nodo principal.
 	
 	//################################################################################################################################
 	
@@ -367,6 +367,7 @@ int Distancia_agentes(int *pi_ady, int *pi_sep){
 		i_restantes = 0; // Lo vuelvo a cero para después contar los agentes restantes
 		for(register int i_i=0; i_i<i_F; i_i++) *(pi_Visitar+i_i+2) = *(pi_Marcados+i_i+2);  // Paso todos los agentes marcados a la lista de Visitar
 		for(register int i_i=0; i_i<i_F; i_i++) *(pi_Marcados+i_i+2) = 0; // Limpio mi lista de marcados
+		i_distancia++; // Paso a revisar a los vecinos que se encuentran a un paso más de distancia
 		
 		// Primero reviso mi lista de gente por visitar
 		for(register int i_agente=0; i_agente<i_F; i_agente++){
@@ -388,7 +389,6 @@ int Distancia_agentes(int *pi_ady, int *pi_sep){
 				*(pi_Visitar+i_agente+2) = 0; // Visitado el agente, lo remuevo de mi lista
 			}
 		}
-		i_distancia++; // Paso a revisar a los vecinos que se encuentran a un paso más de distancia
 		for(int register i_i=0; i_i<i_F; i_i++) i_restantes += *(pi_Marcados+i_i+2);
 	}
 	while(i_restantes > 0);
@@ -400,6 +400,29 @@ int Distancia_agentes(int *pi_ady, int *pi_sep){
 	i_distmax = i_distancia-1; // El while termina en distancia una unidad extra de la distancia recorrida.
 	
 	return i_distmax;
+}
+
+
+// Esta función recibe el vector separación de los agentes al nodo inicial, el de cantidad de agentes
+// a cada distancia y el de testigos, y me agarra los primeros tres agentes que se encuentran a esa
+// distancia. Si no hay tres, agarra los que haya.
+int Lista_testigos(ps_Red ps_red, ps_Param ps_datos){
+	// Preparo las variables con las que inicio mi código
+	int i_agente_guardar=0; // Esta variable representa a los agentes que voy a anotar para guardar sus datos
+	int i_posicion_testigo=0; // Esta variable es la posición en el vector de Testigos a medida que voy completando el vector.
+	
+	// Hago todo el proceso de anotar agentes de cada una de las distancias. Me anoto i_testigos o pi_cantidad de agentes, lo que sea menor.
+	for(register int i_distancia=0; i_distancia<ps_datos->i_distmax+1; i_distancia++){
+		i_agente_guardar = 0;
+		for(register int i_iteracion_testigo=0; i_iteracion_testigo<fmin(ps_datos->i_testigos, ps_red->pi_Cant[i_distancia+2]); i_iteracion_testigo++){
+			while(ps_red->pi_Sep[i_agente_guardar+2] != i_distancia) i_agente_guardar++;
+			ps_red->pi_Tes[i_posicion_testigo+2] = i_agente_guardar;
+			i_agente_guardar++;
+			i_posicion_testigo++;
+		}
+	}
+	
+	return 0;
 }
 
 

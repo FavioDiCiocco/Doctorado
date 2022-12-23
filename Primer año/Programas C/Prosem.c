@@ -11,7 +11,9 @@
 int Lectura_Adyacencia(int *pi_vec, FILE *pa_archivo);
 int Distancia_agentes(int *pi_ady, int *pi_sep);
 int Cantidad_agentes_conjuntos(int *pi_conj, int *pi_cant);
+int Lista_testigos(int *pi_separacion,int *pi_cantidad,int *pi_testigos, int i_distmax, int i_testigos);
 int Escribir_i(int *pi_vec, FILE *pa_archivo);
+int Visualizar_i(int *pi_vec);
 
 // Mi objetivo es construir una función que a partir de la matriz de adyacencia recorra la red e identifique a cada agente con
 // la distancia a la que se encuentra del agente central.
@@ -32,6 +34,9 @@ int main(int argc, char *argv[]){
 	// Defino algunas variables iniciales
 	int i_N = 1000; // Cantidad de agentes
 	int i_distmax = 0; // Máxima distancia al primer nodo
+	int i_testigos = 3; // Esta es la cantidad máxima de agentes a cada distancia que voy a tomar.
+	int i_total_testigos = 0; // Esta es la cantidad de testigos de los que voy a guardar datos
+	
 	
 	// Defino el puntero que tendrá la matriz de adyacencia.
 	int *pi_adyacencia;
@@ -64,24 +69,54 @@ int main(int argc, char *argv[]){
 	// Uso la función para etiquetar a los agentes según su distancia al primer agente.
 	i_distmax = Distancia_agentes(pi_adyacencia, pi_separacion);
 	
-	// Para ver que esto funque, voy a guardar los datos en un archivo y listo. Primero abro el archivo
-	char s_archivo2[350]; // Defino el string
-	sprintf(s_archivo2, "../Programas Python/Ola_interes/categorizacion_prueba.file");  // Asigno la dirección del archivo al string
-	FILE *pa_archivo2 = fopen(s_archivo2,"w");  // Abro el archivo para escritura
+	// Inicializo el vector con la cantidad de agentes a cada distancia.
+	int *pi_cantidad;
+	pi_cantidad = (int*) malloc((2+(i_distmax+1))*sizeof(int)); // Le pongo tamaño i_distmax+1 porque los agentes están separados en distancias que van desde 0 a i_distmax.
+	// Vector con la cantidad de agentes a cada distancia del primer agente
+	for(register int i_i=0; i_i<(i_distmax+1)+2; i_i++) pi_cantidad[i_i] = 0; // Inicializo la matriz
+	pi_cantidad[0] = 1; // Pongo el número de filas en la primer coordenada
+	pi_cantidad[1] = i_distmax+1; // Pongo el número de columnas en la segunda coordenada
+	// Cuento cuántos agentes tengo a cada distancia del primero
+	for(register int i_i=0; i_i<i_N; i_i++) pi_cantidad[pi_separacion[i_i+2]+2]++;
 	
-	// Con esto me guardo los datos en un archivo
-	fprintf(pa_archivo2,"Categorias de los agentes\n");
-	for(register int i_i = 0; i_i<i_N; i_i++) fprintf(pa_archivo2, "%d\t", i_i);
-	fprintf(pa_archivo2, "\n");
-	Escribir_i(pi_separacion, pa_archivo2);
+	// Identifico la cantidad de agentes testigos que voy a necesitar
+	for(int register i_distancia=0; i_distancia<i_distmax+1; i_distancia++) i_total_testigos += (int) fmin(i_testigos, pi_cantidad[i_distancia+2]);
+	
+	// Con la cantidad total de agentes testigos ahora puedo inicializar mi vector de testigos
+	int *pi_testigos;
+	pi_testigos = (int*) malloc((2+i_total_testigos)*sizeof(int));
+	for(register int i_i=0; i_i<i_total_testigos; i_i++) pi_testigos[i_i+2] = 0; // Inicializo la matriz
+	*pi_testigos = 1; // Pongo el número de filas en la primer coordenada
+	*(pi_testigos+1) = i_total_testigos;// Pongo el número de columnas en la segunda coordenada
+	
+	Lista_testigos(pi_separacion, pi_cantidad, pi_testigos, i_distmax, i_testigos);
+	
+	printf("Los agentes testigos son:\n");
+	Visualizar_i(pi_testigos);
+	printf("Y sus distancias al nodo original son:\n");
+	for(register int i_i=0; i_i<i_total_testigos; i_i++) printf("%d\t",*(pi_separacion+*(pi_testigos+i_i+2)+2));
+	printf("\n");
+	
+	// // Para ver que esto funque, voy a guardar los datos en un archivo y listo. Primero abro el archivo
+	// char s_archivo2[350]; // Defino el string
+	// sprintf(s_archivo2, "../Programas Python/Ola_interes/categorizacion_prueba.file");  // Asigno la dirección del archivo al string
+	// FILE *pa_archivo2 = fopen(s_archivo2,"w");  // Abro el archivo para escritura
+	
+	// // Con esto me guardo los datos en un archivo
+	// fprintf(pa_archivo2,"Categorias de los agentes\n");
+	// for(register int i_i = 0; i_i<i_N; i_i++) fprintf(pa_archivo2, "%d\t", i_i);
+	// fprintf(pa_archivo2, "\n");
+	// Escribir_i(pi_separacion, pa_archivo2);
 	
 	// Quiero ver cuál es la distancia máxima al agente inicial
 	printf("La distancia máxima al agente inicial es %d\n", i_distmax);
 	
 	// Ejecuto los comandos finales para medir el tiempo y liberar memoria
-	fclose(pa_archivo2);
+	// fclose(pa_archivo2);
 	free(pi_adyacencia);
 	free(pi_separacion);
+	free(pi_cantidad);
+	free(pi_testigos);
 	
 	time(&tt_fin);
 	i_tardanza = tt_fin-tt_prin;
@@ -198,6 +233,29 @@ int Distancia_agentes(int *pi_ady, int *pi_sep){
 }
 
 
+// Esta función recibe el vector separación de los agentes al nodo inicial, el de cantidad de agentes
+// a cada distancia y el de testigos, y me agarra los primeros tres agentes que se encuentran a esa
+// distancia. Si no hay tres, agarra los que haya.
+int Lista_testigos(int *pi_separacion,int *pi_cantidad,int *pi_testigos, int i_distmax, int i_testigos){
+	// Preparo las variables con las que inicio mi código
+	int i_agente_guardar=0; // Esta variable representa a los agentes que voy a anotar para guardar sus datos
+	int i_posicion_testigo=0; // Esta variable es la posición en el vector de Testigos a medida que voy completando el vector.
+	
+	// Hago todo el proceso de anotar agentes de cada una de las distancias. Me anoto i_testigos o pi_cantidad de agentes, lo que sea menor.
+	for(register int i_distancia=0; i_distancia<i_distmax+1; i_distancia++){
+		i_agente_guardar = 0;
+		for(register int i_iteracion_testigo=0; i_iteracion_testigo<fmin(i_testigos, pi_cantidad[i_distancia+2]); i_iteracion_testigo++){
+			while(pi_separacion[i_agente_guardar+2] != i_distancia) i_agente_guardar++;
+			pi_testigos[i_posicion_testigo+2] = i_agente_guardar;
+			i_agente_guardar++;
+			i_posicion_testigo++;
+		}
+	}
+	
+	return 0;
+}
+
+
 // Esta función va a recibir un vector int y va a escribir ese vector en mi archivo.
 int Escribir_i(int *pi_vec, FILE *pa_archivo){
 	// Defino las variables del tamao de mi vector
@@ -208,6 +266,24 @@ int Escribir_i(int *pi_vec, FILE *pa_archivo){
 	// Ahora printeo todo el vector en mi archivo
 	for(register int i_i=0; i_i<i_C*i_F; i_i++) fprintf(pa_archivo,"%d\t",*(pi_vec+i_i+2));
 	fprintf(pa_archivo,"\n");
+	
+	return 0;
+}
+
+
+// Esta función es para observar los vectores int
+int Visualizar_i(int *pi_vec){
+	// Defino las variables que voy a necesitar.
+	int i_F,i_C;
+	i_F = *pi_vec;
+	i_C = *(pi_vec+1);
+	
+	// Printeo mi vector
+	for(register int i_i=0; i_i<i_F; i_i++){
+		for(register int i_j=0; i_j<i_C; i_j++) printf("%d\t",*(pi_vec+i_i*i_C+i_j+2));
+		printf("\n");
+	}
+	printf("\n");
 	
 	return 0;
 }
