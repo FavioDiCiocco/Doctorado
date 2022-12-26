@@ -2586,7 +2586,7 @@ para el Python. Confío en que si soy prolijo y coherente, eso tiene solución.
 
 ------------------------------------------------------------------------------------------------
 
-22/12/2022
+23/12/2022
 
 Hoy declararon asueto en la facultad, así que hoy laburo desde casa. Lo primero
 que quiero hacer es armar una función que tome el vector de testigos y le asigne los
@@ -2605,3 +2605,38 @@ al Archivo, así lo tengo ahí guardado todo esto.
 Ya guardé el código en Archivo, así como ya implementé la función de Lista_testigos en el
 main. Ahora queda seguir con las demás instrucciones. Y por último queda revisar que toda la
 dinámica se resuelva con sentido.
+
+------------------------------------------------------------------------------------------------
+
+26/12/2022
+
+En la mañana llegué y charlé con Pablo. El plan es poner en StandBy el trabajo de Ola_interes.
+Vamos a ponernos a laburar reduciendo los parámetros en el exponente de la función logística
+y agregando un parámetro que regule la relación entre el término lineal y el logístico.
+
+Ya registré las cosas de Ola_interes, empecemos con el trabajo de lo que dijo Pablo. Para eso
+tengo que tomar el código que tengo y hacer lo siguiente:
+.) Voy a unir el alfa y el chi en un único parámetro. Eso es un cambio que haré en la ecuación
+dinámica, pero en principio no voy a borrar el parámetro alfa, ese lo voy a usar para separar
+los conjuntos de datos y así hacer una primera verificación del comportamiento del sistema
+con alfa. Básicamente veré qué tal se comporta con alfa en 2, alfa en 4 y alfa en 6.
+.) No voy a borrar, pero sí a comentar todo lo relacionado con el término de saturación.
+Esto implica la matriz de Saturación y los parámetros asociados a su ecuación dinámica.
+.) Voy a sacar los vectores asociados al tema de seleccionar testigos específicos, eso
+es innecesario por ahora y complejiza el código al pedo.
+.) Tengo que redirigir los archivos a la nueva carpeta de la nueva etapa.
+.) ¿Hago esto con dos agentes o con 1000? Lo haré con dos en mi pc. Así que tengo que comentar
+la parte donde tomo la red de MARE.
+.) Donde pueda, voy a empezar a cambiar nombres de las variables y punteros para que sean más
+claros.
+
+El nombre de la nueva etapa es Cambios_parametros. Hice bastantes cambios respecto de los códigos,
+escribiendo de forma completa los nombres de las cosas, como por ejemplo llamando las matrices
+Ady->Adyacencia, Ang->Angulos, etc., también cambié los punteros a struct para que sean 
+ps_var->ps_variable y ps_par->ps_parametro. Espero que no haya "s" dando vueltas por ahí.
+
+Ya armé el código para estudiar el comportamiento del sistema en el espacio de amplitud vs epsilon.
+Lo probé y parece funcionar sin problemas, mañana lo mando a correr con Instanciar, la idea sería
+estudiar el comportamiento del sistema para dos agentes con tres valores de alfas distintos y ver
+a qué valores tiende el sistema. Visto eso, se lo comento a Pablo y vemos si lo mando a la pc de
+Oporto o si le implemento el término de saturación.

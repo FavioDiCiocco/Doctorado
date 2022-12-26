@@ -135,3 +135,21 @@ que quede una curva razonable. Luego cambié los inputs de la función, obviamen
 cambié el Instanciar.sh y cambié los nombres de salida de los archivos de forma
 que se registren según cómo varían los valores de Lambda y no los valores de
 alfa y chi que están fijos.
+
+.) Ola_interes:
+---------------
+
+La idea de este código era estudiar el caso de un agente con un alto valor de interés
+en una red con todos los agentes con un interés nulo. Para hacer esto, necesitaba estudiar
+la variación en el tiempo de varios agentes y mi problema es que si quería guardar las
+opiniones de todos los agentes, el espacio de memoria necesario para guardar todos
+los datos se hacía insosteniblemente grande. Por eso estuve trabajando en armar
+funciones en C que identifiquen a los agentes según su distancia al agente inicial
+con un alto interés. La idea es que la mayor variación en el comportamiento se
+observaría según la distancia. Mi plan era armar un gráfico de interés en función
+del tiempo con una curva para cada distancia. Mi intuición es que lo que vería
+sería que cada curva crece al 1 a un tiempo que crece con la distancia.
+ Este código tenía como parámetros Alfa y el valor de opinión inicial, probablemente.
+Admito que no terminé de decidirme, básicamente porque no terminé de armar el código.
+ De paso, con este código la idea era retornar al uso de la función logística y el
+término lineal, no pretendía utilizar el término de saturación.

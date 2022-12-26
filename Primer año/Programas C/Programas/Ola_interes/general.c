@@ -44,15 +44,15 @@ double Norma_d(double *pd_x){
 //Funciones de Visualización
 //---------------------------------------------------------------------------------------------------------------------------------------
 // Esta función es para observar los vectores double
-int Visualizar_d(double *pd_vector){
+int Visualizar_d(double *pd_vec){
 	// Defino las variables que voy a necesitar.
 	int i_F,i_C;
-	i_F = *pd_vector;
-	i_C = *(pd_vector+1);
+	i_F = *pd_vec;
+	i_C = *(pd_vec+1);
 	
 	// Printeo mi vector
 	for(register int i_i=0; i_i<i_F; i_i++){
-		for(register int i_j=0; i_j<i_C; i_j++) printf("%lf\t",*(pd_vector+i_i*i_C+i_j+2));
+		for(register int i_j=0; i_j<i_C; i_j++) printf("%lf\t",*(pd_vec+i_i*i_C+i_j+2));
 		printf("\n");
 	}
 	printf("\n");
@@ -61,15 +61,15 @@ int Visualizar_d(double *pd_vector){
 }
 
 // Esta función es para observar los vectores float
-int Visualizar_f(float *pf_vector){
+int Visualizar_f(float *pf_vec){
 	// Defino las variables que voy a necesitar.
 	int i_F,i_C;
-	i_F = *pf_vector;
-	i_C = *(pf_vector+1);
+	i_F = *pf_vec;
+	i_C = *(pf_vec+1);
 	
 	// Printeo mi vector
 	for(register int i_i=0; i_i<i_F; i_i++){
-		for(register int i_j=0; i_j<i_C; i_j++) printf("%lf\t",*(pf_vector+i_i*i_C+i_j+2));
+		for(register int i_j=0; i_j<i_C; i_j++) printf("%lf\t",*(pf_vec+i_i*i_C+i_j+2));
 		printf("\n");
 	}
 	printf("\n");
@@ -78,15 +78,15 @@ int Visualizar_f(float *pf_vector){
 }
 
 // Esta función es para observar los vectores int
-int Visualizar_i(int *pi_vector){
+int Visualizar_i(int *pi_vec){
 	// Defino las variables que voy a necesitar.
 	int i_F,i_C;
-	i_F = *pi_vector;
-	i_C = *(pi_vector+1);
+	i_F = *pi_vec;
+	i_C = *(pi_vec+1);
 	
 	// Printeo mi vector
 	for(register int i_i=0; i_i<i_F; i_i++){
-		for(register int i_j=0; i_j<i_C; i_j++) printf("%d\t",*(pi_vector+i_i*i_C+i_j+2));
+		for(register int i_j=0; i_j<i_C; i_j++) printf("%d\t",*(pi_vec+i_i*i_C+i_j+2));
 		printf("\n");
 	}
 	printf("\n");
@@ -101,7 +101,7 @@ int Visualizar_i(int *pi_vector){
 // los punteros a struct con la info relevante para pasar a la ecuación dinámica y luego con eso evoluciona mi sistema.
 // La idea es evolucionar TODO el array en una sola llamada de RK4, a diferencia de implementaciones anteriores.
 
-double RK4(double *pd_sistema, double (*pf_funcion)(ps_Red ps_variable, ps_Param ps_parametro), ps_Red ps_variable, ps_Param ps_parametro){
+double RK4(double *pd_sistema, double (*pf_funcion)(ps_Red ps_var, ps_Param ps_par), ps_Red ps_var, ps_Param ps_par){
 	// Defino las variables y vectores que voy a necesitar
 	int i_F = (int) *pd_sistema; // Este es el número de filas del vector principal
 	int i_C = (int) *(pd_sistema+1); // Este es el número de columnas del vector principal
@@ -127,29 +127,29 @@ double RK4(double *pd_sistema, double (*pf_funcion)(ps_Red ps_variable, ps_Param
 	
 	// Armo mi vector DT. Este hay que armarlo uno por uno, si o si.
 	DT[0] = 0;
-	DT[1] = ps_parametro->d_dt*0.5;
-	DT[2] = ps_parametro->d_dt*0.5;
-	DT[3] = ps_parametro->d_dt;
+	DT[1] = ps_par->d_dt*0.5;
+	DT[2] = ps_par->d_dt*0.5;
+	DT[3] = ps_par->d_dt;
 	
 	// Acá hago las iteraciones del RK4 para hallar las pendientes k
 	for(register int i_j=0; i_j<4; i_j++){
 		
 		// Avanzo en todos los agentes
-		for(ps_variable->i_agente=0; ps_variable->i_agente<i_F; ps_variable->i_agente++){
+		for(ps_var->i_agente=0; ps_var->i_agente<i_F; ps_var->i_agente++){
 			
 			// Avanzo en todos los tópicos
-			for(ps_variable->i_topico=0; ps_variable->i_topico<i_C; ps_variable->i_topico++){
+			for(ps_var->i_topico=0; ps_var->i_topico<i_C; ps_var->i_topico++){
 				
 				// Calculo el elemento de la pendiente k(i_j+1)
-				for(register int i_i=0; i_i<i_F*i_C; i_i++) *(pd_sistema+i_i+2) = *(pd_inicial+i_i+2)+*(ap_pendientes[i_j]+ps_variable->i_agente*i_C+ps_variable->i_topico+2)*DT[i_j];
-				*(ap_pendientes[i_j+1]+ps_variable->i_agente*i_C+ps_variable->i_topico+2) = (*pf_funcion)(ps_variable,ps_parametro);
+				for(register int i_i=0; i_i<i_F*i_C; i_i++) *(pd_sistema+i_i+2) = *(pd_inicial+i_i+2)+*(ap_pendientes[i_j]+ps_var->i_agente*i_C+ps_var->i_topico+2)*DT[i_j];
+				*(ap_pendientes[i_j+1]+ps_var->i_agente*i_C+ps_var->i_topico+2) = (*pf_funcion)(ps_var,ps_par);
 				
 			}
 		}
 	}
 	
 	// Reescribo el vector de mi sistema con los valores luego de haber hecho la evolución dinámica
-	for(register int i_i=0; i_i<i_F*i_C; i_i++) *(pd_sistema+i_i+2) = *(pd_inicial+i_i+2) +	(ps_parametro->d_dt/6)*(*(ap_pendientes[1]+i_i+2)+*(ap_pendientes[2]+i_i+2)*2+*(ap_pendientes[3]+i_i+2)*2+*(ap_pendientes[4]+i_i+2));
+	for(register int i_i=0; i_i<i_F*i_C; i_i++) *(pd_sistema+i_i+2) = *(pd_inicial+i_i+2) +	(ps_par->d_dt/6)*(*(ap_pendientes[1]+i_i+2)+*(ap_pendientes[2]+i_i+2)*2+*(ap_pendientes[3]+i_i+2)*2+*(ap_pendientes[4]+i_i+2));
 	
 	// Libero el espacio de memoria ocupada por los arrays.
 	free(pd_inicial);
@@ -165,28 +165,28 @@ double RK4(double *pd_sistema, double (*pf_funcion)(ps_Red ps_variable, ps_Param
 // Las siguientes funciones son complementos para escribir datos en un archivo
 
 // Esta función va a recibir un vector double y va a escribir ese vector en mi archivo.
-int Escribir_d(double *pd_vector, FILE *pa_archivo){
+int Escribir_d(double *pd_vec, FILE *pa_archivo){
 	// Defino las variables del tamao de mi vector
 	int i_C,i_F;
-	i_F = *pd_vector;
-	i_C = *(pd_vector+1);
+	i_F = *pd_vec;
+	i_C = *(pd_vec+1);
 	
 	// Ahora printeo todo el vector en mi archivo
-	for(register int i_i=0; i_i<i_C*i_F; i_i++) fprintf(pa_archivo,"%.6lf\t",*(pd_vector+i_i+2));
+	for(register int i_i=0; i_i<i_C*i_F; i_i++) fprintf(pa_archivo,"%.6lf\t",*(pd_vec+i_i+2));
 	fprintf(pa_archivo,"\n");
 	
 	return 0;
 }
 
 // Esta función va a recibir un vector int y va a escribir ese vector en mi archivo.
-int Escribir_i(int *pi_vector, FILE *pa_archivo){
+int Escribir_i(int *pi_vec, FILE *pa_archivo){
 	// Defino las variables del tamao de mi vector
 	int i_C,i_F;
-	i_F = *pi_vector;
-	i_C = *(pi_vector+1);
+	i_F = *pi_vec;
+	i_C = *(pi_vec+1);
 	
 	// Ahora printeo todo el vector en mi archivo
-	for(register int i_i=0; i_i<i_C*i_F; i_i++) fprintf(pa_archivo,"%d\t",*(pi_vector+i_i+2));
+	for(register int i_i=0; i_i<i_C*i_F; i_i++) fprintf(pa_archivo,"%d\t",*(pi_vec+i_i+2));
 	fprintf(pa_archivo,"\n");
 	
 	return 0;
@@ -257,20 +257,20 @@ int Tamano_Comunidad(int *pi_adyacencia, int i_inicial){
 }
 
 // Esta función me calcula la diferencia entre dos vectores
-int Delta_Vec_d(double *pd_restado, double *pd_restar, double *pd_resultado){
+int Delta_Vec_d(double *pd_x1, double *pd_x2, double *pd_Dx){
 	// Compruebo primero que mis dos vectores sean iguales en tamao
-	if(*pd_restado!=*pd_restar || *(pd_restado+1)!=*(pd_restar+1) || *pd_restado!=*pd_resultado || *(pd_restado+1)!=*(pd_resultado+1)){
-		printf("Los vectores son de tamaños distintos, no puedo restarlos\n");
+	if(*pd_x1!=*pd_x2 || *(pd_x1+1)!=*(pd_x2+1) || *pd_x1!=*pd_Dx || *(pd_x1+1)!=*(pd_Dx+1)){
+		printf("Los vectores son de tamaos distintos, no puedo restarlos\n");
 		return 0;
 	}
 	
 	// Defino las variables de tamao de mis vectores
 	int i_C,i_F;
-	i_F = *pd_restado;
-	i_C = *(pd_restado+1);
+	i_F = *pd_x1;
+	i_C = *(pd_x1+1);
 	
 	// Calculo la diferencia entre dos vectores
-	for(register int i_i=0; i_i<i_C*i_F; ++i_i) *(pd_resultado+i_i+2) = *(pd_restado+i_i+2)-*(pd_restar+i_i+2);
+	for(register int i_i=0; i_i<i_C*i_F; ++i_i) *(pd_Dx+i_i+2) = *(pd_x1+i_i+2)-*(pd_x2+i_i+2);
 	
 	// Me anoto la diferencia en un vector que está en el main del programa, y luego libero el espacio usado.
 	return 0;
@@ -326,16 +326,11 @@ double Interpolacion(double d_y1, double d_y2,double d_x1,double d_x){
 }
 
 
-/*
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 // Esta función recibe la matriz de adyacencia y a partir de eso coloca en el vector pi_sep la distancia de cada agente al agente cero.
-int Distancia_agentes(int *pi_adyacencia, int *pi_separacion){
+int Distancia_agentes(int *pi_ady, int *pi_sep){
 	// Defino las variables necesarias para mi función
 	int i_distmax,i_F,i_restantes, i_distancia;
-	i_F = *pi_adyacencia; // Número de filas de la matriz de Adyacencia.
+	i_F = *pi_ady; // Número de filas de la matriz de Adyacencia.
 	i_distancia = 1; // Este valor lo uso para asignar la distancia de los agentes al nodo principal.
 	
 	//################################################################################################################################
@@ -361,12 +356,12 @@ int Distancia_agentes(int *pi_adyacencia, int *pi_separacion){
 	// Empiezo recorriendo la matriz desde un nodo inicial, que será el primero siempre.
 	// Esto pondrá un 1 en los agentes que son los primeros vecinos del primer nodo.
 	for(register int i_i=0; i_i<i_F; i_i++){
-		*(pi_Marcados+i_i+2) = *(pi_adyacencia+i_i+2);
-		*(pi_separacion+i_i+2) = *(pi_adyacencia+i_i+2);
+		*(pi_Marcados+i_i+2) = *(pi_ady+i_i+2);
+		*(pi_sep+i_i+2) = *(pi_ady+i_i+2);
 	}
 	
 	// Marco al primer agente con un número, sólo para que no sea visitado al pedo
-	*(pi_separacion+2) = -1;
+	*(pi_sep+2) = -1;
 	
 	do{
 		i_restantes = 0; // Lo vuelvo a cero para después contar los agentes restantes
@@ -384,10 +379,10 @@ int Distancia_agentes(int *pi_adyacencia, int *pi_separacion){
 				// Si ya estaba marcado, es porque lo visité o está en mi lista de Marcados.
 				// La idea de esto es no revisitar nodos ya visitados.
 				for(register int i_vecino=0; i_vecino<i_F; i_vecino++){
-					if(*(pi_adyacencia+i_vecino+i_agente*i_F+2) == 1){
-						if(*(pi_separacion+i_vecino+2) == 0){ 
+					if(*(pi_ady+i_vecino+i_agente*i_F+2) == 1){
+						if(*(pi_sep+i_vecino+2) == 0){ 
 							*(pi_Marcados+i_vecino+2) = 1; // Esta línea me agrega el sujeto a visitar sólo si no estaba en el grupo
-							*(pi_separacion+i_vecino+2) = i_distancia; // Esta línea me marca al sujeto en el grupo, porque al final si ya había un uno ahí, simplemente lo vuelve a escribir.
+							*(pi_sep+i_vecino+2) = i_distancia; // Esta línea me marca al sujeto en el grupo, porque al final si ya había un uno ahí, simplemente lo vuelve a escribir.
 						}
 					}
 				}
@@ -401,40 +396,37 @@ int Distancia_agentes(int *pi_adyacencia, int *pi_separacion){
 	// Los agentes están catalogados según su distancia al centro. Queda liberar espacios de memoria y últimos detalles.
 	free(pi_Visitar);
 	free(pi_Marcados);
-	*(pi_separacion+2) = 0; // La distancia del primer nodo a sí mismo es cero.
+	*(pi_sep+2) = 0; // La distancia del primer nodo a sí mismo es cero.
 	i_distmax = i_distancia-1; // El while termina en distancia una unidad extra de la distancia recorrida.
 	
 	return i_distmax;
 }
 
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 // Esta función recibe el vector separación de los agentes al nodo inicial, el de cantidad de agentes
 // a cada distancia y el de testigos, y me agarra los primeros tres agentes que se encuentran a esa
 // distancia. Si no hay tres, agarra los que haya.
-// int Lista_testigos(ps_Red ps_red, ps_Param ps_datos){
-	// // Preparo las variables con las que inicio mi código
-	// int i_agente_guardar=0; // Esta variable representa a los agentes que voy a anotar para guardar sus datos
-	// int i_posicion_testigo=0; // Esta variable es la posición en el vector de Testigos a medida que voy completando el vector.
+int Lista_testigos(ps_Red ps_red, ps_Param ps_datos){
+	// Preparo las variables con las que inicio mi código
+	int i_agente_guardar=0; // Esta variable representa a los agentes que voy a anotar para guardar sus datos
+	int i_posicion_testigo=0; // Esta variable es la posición en el vector de Testigos a medida que voy completando el vector.
 	
-	// // Hago todo el proceso de anotar agentes de cada una de las distancias. Me anoto i_testigos o pi_cantidad de agentes, lo que sea menor.
-	// for(register int i_distancia=0; i_distancia<ps_datos->i_distmax+1; i_distancia++){
-		// i_agente_guardar = 0;
-		// for(register int i_iteracion_testigo=0; i_iteracion_testigo<fmin(ps_datos->i_testigos, ps_red->pi_Cant[i_distancia+2]); i_iteracion_testigo++){
-			// while(ps_red->pi_Sep[i_agente_guardar+2] != i_distancia) i_agente_guardar++;
-			// ps_red->pi_Tes[i_posicion_testigo+2] = i_agente_guardar;
-			// i_agente_guardar++;
-			// i_posicion_testigo++;
-		// }
-	// }
+	// Hago todo el proceso de anotar agentes de cada una de las distancias. Me anoto i_testigos o pi_cantidad de agentes, lo que sea menor.
+	for(register int i_distancia=0; i_distancia<ps_datos->i_distmax+1; i_distancia++){
+		i_agente_guardar = 0;
+		for(register int i_iteracion_testigo=0; i_iteracion_testigo<fmin(ps_datos->i_testigos, ps_red->pi_Cant[i_distancia+2]); i_iteracion_testigo++){
+			while(ps_red->pi_Sep[i_agente_guardar+2] != i_distancia) i_agente_guardar++;
+			ps_red->pi_Tes[i_posicion_testigo+2] = i_agente_guardar;
+			i_agente_guardar++;
+			i_posicion_testigo++;
+		}
+	}
 	
-	// return 0;
-// }
+	return 0;
+}
 
 
-
+/*
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

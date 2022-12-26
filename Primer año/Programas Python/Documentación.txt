@@ -142,3 +142,13 @@ resto no me servía. Y además no podía usar las funciones de graficación ya a
 un poco. No es que sea imposible o muy difícil, pero me pareció que no valía la pena hacer eso.
  Los datos estos los hice con la ecuación dinámica con el término logístico y el de saturación,
 sin el término lineal.
+
+Ola_interes:
+------------
+Por ahora esta etapa se encuentra en StandBy. La idea era estudiar cómo se propaga la ola de
+interés en un grupo de agentes en el cual la mayoría arrancaba con un bajo valor de interés
+y uno sólo arrancaba con un valor alto. Los archivos que iba a guardar iban a tener que contener
+el interés en función del tiempo de varios agentes. Estos archivos arrancarían con una fila que
+se encargara de determinar para cada columna la distancia del agente. Es decir, los archivos
+de Testigos se reestructurarían y serían de lo más importante en esta etapa. Todavía no hice
+nada igual porque por ahora dejo esto para otro momento.

@@ -12,10 +12,14 @@
 // El struct Red tiene los datos que definen mi red, y la info de la red
 typedef struct Red{
 	double *pd_Diferencia; // Vector que guarda las diferencias entre PreOpi y Opi.
-	double *pd_Opiniones; // Vector de opinión de cada individuo
-	double *pd_Angulos; // Matriz de superposición entre tópicos. Tiene tamaño T*T
-	double d_Variacion_promedio; // Esto es la Variación promedio del sistema. Es cuanto cambia en promedio cada opinión
-	int *pi_Adyacencia; // Matriz de adyacencia que define mis conexiones. Tiene tamaño N*N
+	double *pd_Opi; // Vector de opinión de cada individuo
+	double *pd_Ang; // Matriz de superposición entre tópicos. Tiene tamaño T*T
+	double *pd_Sat; // Matriz de valores de la variable auxiliar de saturación
+	double d_Varprom; // Esto es la Variación promedio del sistema. Es cuanto cambia en promedio cada opinión
+	int *pi_Ady; // Matriz de adyacencia que define mis conexiones. Tiene tamaño N*N
+	int *pi_Sep; // Vector con la distancia de cada agente al primer agente.
+	int *pi_Cant; // Vector con la cantidad de agentes a las distintas distancias del primer agente.
+	int *pi_Tes; // Estos son los agentes que voy a usar como testigos para extraer datos.
 	int i_agente; // Entero que representa el agente que estoy mirando. Es un valor que va entre 0 y N-1
 	int i_agente2; // Este es el segundo agente con el cual se pone en contacto el primero.
 	int i_topico; // Entero que representa el tópico que estoy mirando. Es un valor que va entre 0 y T-1
@@ -30,17 +34,18 @@ typedef struct Parametros{
 	double d_alfa; // Controversialidad de los temas
 	double d_dt; // Paso temporal de iteración del sistema
 	double d_Cosangulo; // Este es el coseno del ángulo entre los tópicos
-	double d_epsilon; // Umbral que determina si el interés del vecino puede generarme más interés.
+	double d_chi; // Umbral que determina si el interés del vecino puede generarme más interés.
 	double d_lambda; // Constante asociada a la evolución del término de saturación
-	double d_amplitud; // Esta amplitud regula la relación entre el término lineal y el término logístico
 	int i_Gradomedio; // Este es el grado medio de los agentes de la red.
 	int i_m; // Esto sería el número de conexiones que haría para cada agente que se activa.
 	int i_N; // Número de agentes en la red
 	int i_T; // Cantidad de tópicos
-	int i_Iteraciones_extras; // Esta es la cantidad de iteraciones extra que el sistema tiene que hacer para asegurarme de que el estado alcanzado realmente es estable
+	int i_Itextra; // Esta es la cantidad de iteraciones extra que el sistema tiene que hacer para asegurarme de que el estado alcanzado realmente es estable
 	int i_ID; // Esto me va a servir para elegir las distintas redes entre el conjunto de redes estáticas armadas previamente.
 	int i_pasosprevios; // Esto es la cantidad de pasos previos que voy a guardar para comparar la variación con el paso actual
+	int i_distmax; // Esta es la máxima distancia de un nodo al primer agente.
 	int i_testigos; // Esta es la cantidad de agentes de cada distancia que voy registrar como máximo
+	int i_total_testigos; // Esta es la cantidad total de testigos de los cuales voy a guardar datos.
 }s_Param;
 
 typedef s_Param *ps_Param;
@@ -50,19 +55,19 @@ typedef s_Param *ps_Param;
 double Random();
 double Gaussiana(float f_mu, float f_sigma);
 double Norma_d(double *pd_x);
-double RK4(double *pd_sistema, double (*pf_funcion)(ps_Red ps_variable, ps_Param ps_parametro) ,ps_Red ps_variable, ps_Param ps_parametro);
+double RK4(double *pd_sistema, double (*pf_funcion)(ps_Red ps_var, ps_Param ps_par) ,ps_Red ps_var, ps_Param ps_par);
 double Max(double d_a, double d_b);
 double Min(double d_a, double d_b);
 double Interpolacion(double d_y1, double d_y2, double d_x1,double d_x);
-int Visualizar_d(double *pd_vector);
-int Visualizar_f(float *pf_vector);
-int Visualizar_i(int *pi_vector);
-int Escribir_d(double *pd_vector, FILE *pa_archivo);
-int Escribir_i(int *pi_vector, FILE *pa_archivo);
+int Visualizar_d(double *pd_vec);
+int Visualizar_f(float *pf_vec);
+int Visualizar_i(int *pi_vec);
+int Escribir_d(double *pd_vec, FILE *pa_archivo);
+int Escribir_i(int *pi_vec, FILE *pa_archivo);
 int Tamano_Comunidad(int *pi_adyacencia,int i_inicial);
-int Delta_Vec_d(double *pd_restado, double *pd_restar, double *pd_resultado);
-// int Distancia_agentes(int *pi_adyacencia, int *pi_separacion);
-// int Lista_testigos(ps_Red ps_red, ps_Param ps_datos);
+int Delta_Vec_d(double *pd_x1, double *pd_x2, double *pd_Dx);
+int Distancia_agentes(int *pi_ady, int *pi_sep);
+int Lista_testigos(ps_Red ps_red, ps_Param ps_datos);
 
 #endif
 
