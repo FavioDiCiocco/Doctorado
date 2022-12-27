@@ -212,23 +212,23 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2):
     # simplemente elegir tres valores de cada array, el primero, el del medio y el último.
     
     arrayN = np.unique(DF["n"])
-    arrayAlfa = np.unique(DF["alfa"])[::math.floor((len(np.unique(DF["alfa"]))-1)/2)]
-    arrayUmbral = np.unique(DF["umbral"])[::math.floor((len(np.unique(DF["umbral"]))-1)/2)]
+    arrayAmplitud = np.unique(DF["amplitud"])[::math.floor((len(np.unique(DF["amplitud"]))-1)/2)]
+    arrayEpsilon = np.unique(DF["epsilon"])[::math.floor((len(np.unique(DF["epsilon"]))-1)/2)]
     
-    Tupla_total = [(n,alfa,umbral) for n in arrayN
-                   for alfa in arrayAlfa
-                   for umbral in arrayUmbral]
+    Tupla_total = [(n,amplitud,epsilon) for n in arrayN
+                   for amplitud in arrayAmplitud
+                   for epsilon in arrayEpsilon]
     
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Testigos"
     
-    for AGENTES,ALFA,UMBRAL in Tupla_total:
+    for AGENTES,AMPLITUD,EPSILON in Tupla_total:
         
         # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
         archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                     (DF["n"]==AGENTES) & 
-                                    (DF["umbral"]==UMBRAL) & 
-                                    (DF["alfa"]==ALFA), "nombre"])
+                                    (DF["epsilon"]==EPSILON) & 
+                                    (DF["amplitud"]==AMPLITUD), "nombre"])
 
         #-----------------------------------------------------------------------------------------
         
@@ -250,7 +250,7 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2):
             
             # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
             repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-            direccion_guardado = Path("../../../Imagenes/{}/OpivsT_N={:.0f}_alfa={:.1f}_umbral={:.1f}_sim={}.png".format(carpeta,AGENTES,ALFA,UMBRAL,repeticion))
+            direccion_guardado = Path("../../../Imagenes/{}/OpivsT_N={:.0f}_amplitud={:.2f}_epsilon={:.1f}_sim={}.png".format(carpeta,AGENTES,AMPLITUD,EPSILON,repeticion))
             
             if repeticion in [0,1]:
             
@@ -558,24 +558,24 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta):
     # Defino los arrays de parámetros diferentes
     
     arrayN = np.unique(DF["n"])
-    arrayAlfa = np.unique(DF["alfa"])
-    arrayUmbral = np.unique(DF["umbral"])
+    arrayAmplitud = np.unique(DF["amplitud"])
+    arrayEpsilon = np.unique(DF["epsilon"])
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
     
-    Tupla_total = [(n,i,alfa,j,umbral) for n in arrayN
-                   for i,alfa in enumerate(arrayAlfa)
-                   for j,umbral in enumerate(arrayUmbral)]
+    Tupla_total = [(n,i,amplitud,j,epsilon) for n in arrayN
+                   for i,amplitud in enumerate(arrayAmplitud)
+                   for j,epsilon in enumerate(arrayEpsilon)]
     
     #--------------------------------------------------------------------------------
     
     # Construyo las grillas que voy a necesitar para el pcolormesh.
     
-    XX,YY = np.meshgrid(arrayUmbral,np.flip(arrayAlfa))
+    XX,YY = np.meshgrid(arrayEpsilon,np.flip(arrayAmplitud))
     ZZ = np.zeros(XX.shape)
     
     #--------------------------------------------------------------------------------
-    for AGENTES,fila,ALFA,columna,UMBRAL in Tupla_total:
+    for AGENTES,fila,AMPLITUD,columna,EPSILON in Tupla_total:
         
         # Me defino el array en el cual acumulo los datos de las opiniones finales de todas
         # mis simulaciones
@@ -584,15 +584,15 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta):
         # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
         archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                     (DF["n"]==AGENTES) & 
-                                    (DF["umbral"]==UMBRAL) & 
-                                    (DF["alfa"]==ALFA), "nombre"])        
+                                    (DF["epsilon"]==EPSILON) & 
+                                    (DF["amplitud"]==AMPLITUD), "nombre"])        
 
         #------------------------------------------------------------------------------------------
         
         for nombre in archivos:
             
             # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-            # Opinión Inicial del sistema
+            # Opinión Inicial del sistema <- (La primera corrida en casa no tiene estos datos)
             # Variación Promedio
             # Opinión Final
             # Matriz de Adyacencia
@@ -602,14 +602,14 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta):
             Datos = ldata(path / nombre)
             
             # Leo los datos de las Opiniones Finales
-            Opifinales = np.concatenate((Opifinales, np.array(Datos[5][:-1:], dtype="float")), axis = None)
+            Opifinales = np.concatenate((Opifinales, np.array(Datos[3][:-1:], dtype="float")), axis = None)
         
         #------------------------------------------------------------------------------------------
         # Con las opiniones finales de todas las simulaciones lo que hago es calcular el promedio de
-        # las opiniones. No hago distinción de tópicos porque al considero que los agentes tenderán
+        # las opiniones. No hago distinción de tópicos porque considero que los agentes tenderán
         # a los mismos valores en todos sus tópicos.
         
-        ZZ[arrayAlfa.shape[0]-1-fila,columna] = np.mean(Opifinales)
+        ZZ[arrayAmplitud.shape[0]-1-fila,columna] = np.mean(Opifinales)
     
     #--------------------------------------------------------------------------------
     
@@ -618,8 +618,8 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta):
     
     plt.rcParams.update({'font.size': 24})
     plt.figure("Promedio Opiniones",figsize=(20,15))
-    plt.xlabel("umbral")
-    plt.ylabel(r"$\alpha$")
+    plt.xlabel(r"$\epsilon$")
+    plt.ylabel("Ampltiud")
     
     # Hago el ploteo del mapa de colores con el colormesh
     

@@ -47,8 +47,7 @@ int main(int argc, char *argv[]){
 	ps_datos->d_dt = 0.01; // Paso temporal de iteración del sistema
 	ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	ps_datos->d_CritCorte = pow(10,-4); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
-	ps_datos->i_testigos = 6; // Esta es la cantidad de agentes de cada distancia que voy registrar como máximo
-	if(ps_datos->i_N < 6) ps_datos->i_testigos = ps_datos->i_N;
+	ps_datos->i_testigos = fmin(ps_datos->i_N,6); // Esta es la cantidad de agentes de cada distancia que voy registrar
 	
 	// Términos asociados a la saturación
 	// ps_datos->d_lambda = 0.005; // Este parámetro mide la memoria de los agentes respecto de sus intereses previos. Mientras más grande, menos memoria.
@@ -81,7 +80,7 @@ int main(int argc, char *argv[]){
 	// ps_red->pd_Sat = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Lista de valores de la variable auxiliar de saturación.
 	
 	
-	// Inicializo mis siete "matrices".
+	// Inicializo mis cuatro "matrices".
 	// Matriz de Adyacencia. Es de tamaño N*N
 	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_N+2; i_i++) ps_red->pi_Adyacencia[i_i] = 0; // Inicializo la matriz
 	ps_red->pi_Adyacencia[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
@@ -118,14 +117,14 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_Opiniones[355];
-	sprintf(s_Opiniones,"../Programas Python/Cambios_parametros/Alfa=%d/Opiniones_N=%d_umbral=%.1f_Iter=%d.file"
-		,(int) ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_epsilon,i_iteracion);
+	sprintf(s_Opiniones,"../Programas Python/Cambios_parametros/Alfa=%d/Opiniones_N=%d_amplitud=%.2f_epsilon=%.1f_Iter=%d.file"
+		,(int) ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_amplitud,ps_datos->d_epsilon,i_iteracion);
 	FILE *pa_Opiniones=fopen(s_Opiniones,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_Testigos[355];
-	sprintf(s_Testigos,"../Programas Python/Cambios_parametros/Alfa=%d/Testigos_N=%d_umbral=%.1f_Iter=%d.file"
-		,(int) ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_epsilon,i_iteracion);
+	sprintf(s_Testigos,"../Programas Python/Cambios_parametros/Alfa=%d/Testigos_N=%d_amplitud=%.2f_epsilon=%.1f_Iter=%d.file"
+		,(int) ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_amplitud,ps_datos->d_epsilon,i_iteracion);
 	FILE *pa_Testigos=fopen(s_Testigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
@@ -160,6 +159,12 @@ int main(int argc, char *argv[]){
 	//################################################################################################################################
 
 	// Acá voy a hacer las simulaciones de pasos previos del sistema
+	
+	// Guardo la distribución inicial de las opiniones de mis agentes y preparo para guardar la Varprom.
+	fprintf(pa_Opiniones,"Opiniones Iniciales\n");
+	Escribir_d(ps_red->pd_Opi,pa_Opiniones);
+	
+	fprintf(pa_Testigos,"Opiniones Testigos\n");
 	
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
@@ -262,7 +267,7 @@ int main(int argc, char *argv[]){
 	// Finalmente imprimo el tiempo que tarde en ejecutar todo el programa
 	time(&tt_fin);
 	f_tardanza = tt_fin-tt_prin;
-	// sleep(1);
+	sleep(1);
 	printf("Tarde %.1f segundos \n",f_tardanza);
 	
 	return 0;

@@ -19,10 +19,10 @@ from pathlib import Path
 t0 = time.time()
 
 T=1 # Defino el número de tópicos
-Etapa = Path("Variacion_olvido") # Defino el nombre de la etapa del trabajo en la que estoy
+Etapa = Path("Cambios_parametros") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Datos"]
+Carpetas = ["Alfa=2","Alfa=4","Alfa=6"]
 
 for carp in Carpetas:
     
@@ -40,9 +40,8 @@ for carp in Carpetas:
     
     #-------------------------------------------------------------------------------------------------------
     
-    # Es importante partir del hecho de que mis archivos llevan por nombre: "Opiniones_N=$_Lambda=$_Iter=$.file"
-    # También tengo otros archivos llamados "Testigos_N=$_Lambda=$_Iter=$.file" y
-    # "Saturacion_N=$_Lambda=$_Iter=$.file"
+    # Es importante partir del hecho de que mis archivos llevan por nombre: "Opiniones_N=$_amplitud=$_epsilon=$_Iter=$.file"
+    # También tengo otros archivos llamados "Testigos_N=$_amplitud=$_epsilon=$_Iter=$.file" y
 
     # Voy a trabajar mi lista de archivos usando pandas, creo que va a ser mucho más claro lo que
     # está pasando y además va a ser más orgánico.
@@ -52,8 +51,9 @@ for carp in Carpetas:
     # Hecho mi dataframe, voy a armar columnas con los parámetros que varían en los nombres de mis archivos
     Df_archivos["tipo"] = Df_archivos["nombre"].apply(lambda x: x.split("_")[0])
     Df_archivos["n"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[1].split("=")[1]))
-    Df_archivos["lambda"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
-    Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1].strip(".file")))
+    Df_archivos["amplitud"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
+    Df_archivos["epsilon"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
+    Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1].strip(".file")))
     
     # Con esto tengo hecho un DF con los nombres de todos los archivos y además tengo separados los valores
     # de N, lambda e iteración en columnas que me van a servir para filtrar esos archivos. Honestamente
@@ -61,10 +61,17 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    # Lo único que me interesa graficar en este caso son los valores promedios de interés
-    # a los que tiende el sistema en función del olvido
+    # Grafico el promedio en función de la amplitud y el epsilon, armando mi mapa de colores.
     
-    func.MaxProm_vs_olvido(Df_archivos, Direccion, Etapa / carpeta)
+    func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    # Para tener una mejor idea de lo que estoy viendo, voy a hacer los gráficos de Opi_vs_tiempo
+    
+    func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta,T=1)
+    
+    
     
 
 func.Tiempo(t0)

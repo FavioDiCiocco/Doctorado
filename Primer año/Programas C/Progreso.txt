@@ -2640,3 +2640,33 @@ Lo probé y parece funcionar sin problemas, mañana lo mando a correr con Instan
 estudiar el comportamiento del sistema para dos agentes con tres valores de alfas distintos y ver
 a qué valores tiende el sistema. Visto eso, se lo comento a Pablo y vemos si lo mando a la pc de
 Oporto o si le implemento el término de saturación.
+
+------------------------------------------------------------------------------------------------
+
+27/12/2022
+
+Hoy me sentía medio mal, creo que comí demasiado en las fiestas y me indigesté. Así que ahora
+queda esperar a que se me pase. Estoy revisando el archivo para ver que todo funcione bien.
+Debería mandar a correr Instanciar.sh. Para eso, necesito definir los valores que voy a barrer.
+Voy a usar alfa {2,4,6} para probar que con alfa por debajo de 4 el sistema sólo tiende al punto
+fijo intermedio, mientras que para alfas por encima el sistema puede tender a los puntos fijos
+extremos.
+ El epsilon, que es el umbral, lo tengo que mover entre valores que sean menos que el alfa y el
+doble de alfa. Yo diría de mover el umbral de a 1, entre 1 y 14.
+ La amplitud en cambio la voy a mover entre varios valores, algunos por debajo de 1 y otros por
+encima. Tomaré {0.5,0.6,0.75,0.9,1,1.25,1.5,2,3}
+Al final reduje un poco eso, porque era mucho para simular en algo que sólo quiero hacer una
+inspección rápida. El Epsilon lo muevo entre 1 y 14 pero saltando de a números pares y tomando
+el 1. Para la amplitud tomé {0.5, 0.75, 1, 1.5, 2, 3}
+
+Ya mandé a correr y obtuve los datos. Ahora mi interés sería primero armar gráficos de promedio
+de los valores finales en el espacio de fases. Para eso tengo que considerar que los archivos ahora
+tienen otros nombres y por tanto otros parámetros.
+
+Ahora me doy cuenta que pensé el tema de los epsilon totalmente al revés. La idea es que alfa sea más
+del doble de epsilon. Entonces debería manejar un alto valor de alfa y de ahí mover el epsilon por debajo
+de la mitad de ese alfa.
+
+Me parece que antes de mostrárselo a Pablo, debería armar datos nuevos. Así que mañana, si voy a la
+facultad, me voy a poner a armar una nueva tanda de datos y simplemente mando a correr el archivo
+que los grafica.
