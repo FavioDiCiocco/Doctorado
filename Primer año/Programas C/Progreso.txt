@@ -2670,3 +2670,88 @@ de la mitad de ese alfa.
 Me parece que antes de mostrárselo a Pablo, debería armar datos nuevos. Así que mañana, si voy a la
 facultad, me voy a poner a armar una nueva tanda de datos y simplemente mando a correr el archivo
 que los grafica.
+
+------------------------------------------------------------------------------------------------
+
+28/12/2022
+
+Sigo sintiéndome medio mal, así que me quedé en casa. En la mañana descansé, a ver si así para
+mañana me encuentro mejor. Pablo me dijo que directo me reincorpore en Enero, pero veré
+qué hago mañana.
+
+Volviendo al trabajo, ayer me di cuenta que hice un montón de simulaciones mal armadas, porque
+moví al epsilon hasta valores que son el doble de alfa, pero la curva que determina si el sitema
+cae al punto fijo mínimo o al máximo es 2*alfa = epsilon. Es decir, epsilon debería moverse entre
+valores que son la mitad de alfa como máximo. Entonces voy a cambiar los valores de epsilon para
+que se muevan entre 0.5 y 3 de a 0.25.
+
+Ahora se están armando los datos. Esto podría tomar una o dos horas. Debí haberlo pensado y mandar
+a hacer esto durante el almuerzo. ¿Qué hago ahora? Puedo ponerme a corregir los nombres en las
+funciones de Python; leer el paper de SocioPhysics; o intentar planear el próximo paso de este
+modelo cuando los datos estén hechos. Intentemos arrancar con esto último.
+
+El modelo tiene dos términos, uno lineal y uno logístico. Vimos que en el logístico, la relación
+entre la controversialidad alfa y el umbral de interés epsilon es lineal en lo que la tendencia al
+último punto fijo del sistema refiere. Por tanto, decidimos fijar alfa en un valor y variar sólo el
+epsilon. Pablo estaba un poco en duda de por qué armé mis simulaciones a partir de alfa=4, así que
+para mostrar que en casos de alfa bajos el sistema tiende al punto fijo intermedio, es que armé 
+simulaciones con alfa=2, y también armé otras con alfa en 4 y en 6 para ver que ahí el sistema sí
+converge al punto fijo máximo.
+ ¿Qué espero ver en el mapa de color de promedios? Lo que espero sería que para alfa menor a 4 el sistema
+converja al cero o cercano para cualquier epsilon y que si la amplitud es muy grande entonces logre
+converger a un valor alto. Entonces, sólo espero que la franja de arriba logre converger a valores
+"lejanos" del cero. En cambio, para alfa=4 espero que el sistema converja al punto fijo máximo para
+epsilons menores a 2 y al punto fijo mínimo para epsilons mayores a dos. Entonces la franja inferior
+y una parte un poco más grande de la derecha debería converger al cero o cercano. Finalmente, en
+alfa 6 el esta franja inferior debería achicarse y la región a la derecha debería correr su inicio más
+a la derecha.
+
+Suponiendo que esto se ve bien, sería una buena idea mandar a hacer unos gráficos más copados en Oporto.
+Pero hecho eso, ya tendré entonces una buena idea de cómo funciona el modelo. La pregunta importante es:
+¿Qué quiero hacer con esto? Llevamos un año preguntando cómo modificar el modelo para "mejorarlo", pero
+nunca queda claro qué sería "mejorarlo". Probamos hacer lo de la transcrítica con una función cuadrática,
+después probamos con una logarítmica, después probamos con la logística, metimos un término de saturación,
+sacamos el lineal, metimos el lineal y sacamos el de saturación y después volvimos a reducir los parámetros
+para reinsertar un parámetro de presión social que otra vez nos saca de la región [0,1]. ¿Qué estamos
+queriendo ver acá? ¿Qué datos usaríamos para contrastar si el modelo va bien? Creo que la constante
+sensación de: "Implementé en el código el nuevo término, ¿Ahora qué?" viene de acá. La idea de medir la
+Ola de interés, que posiblemente no es una idea tan interesante, aún así era una primera idea de algo
+qué hacer con el modelo. El término de saturación también proponía una idea viable en medición al poder
+intentar medir cuánto tiempo tarda en decaer el interés e intentar ajustar al sistema con eso.
+
+Por enésima vez, volvamos a las bases. Tengo un modelo multidimensional de interacción entre agentes.
+Estos agentes poseen "interés" (voluntad de investigar o consumir contenido de un tópico) para cada uno
+de los tópicos considerados. Como el interés en un tema sólo puede ser positivo, al interactuar dos
+agentes lo único que pueden hacer es potenciar su interés en el tópico, o si ambos tienen un bajo
+interés se mantienen desinteresados porque ninguno está lo suficientemente manija para motivar al
+otro. Los agentes interactúan con todos sus vecinos de forma simultánea y el interés de cada uno
+se promedia para generar un único término que acrecenta el interés. Este término compite con un término
+lineal que impulsa el interés a cero si el agente no interactúa con nadie.
+
+Actualmente estoy haciendo pruebas del modelo en una dimensión, es decir un sólo tópico, y por tanto
+tengo dos parámetros para variar. El umbral de interés Epsilon y la presión social Kappa (Debería 
+cambiarle el nombre en el código). Ahora estoy explorando el comportamiento del sistema en función de
+estos dos parámetros. Pero la idea sería entonces pasar a dos agentes y ver el comportamiento del
+sistema también en función de Delta. Lo que me imagino que hará esto será trastocar la relación de
+valores de epsilon para los cuales el sistema converge al punto fijo mínimo, ya que entonces la suma
+de intereses de los vecinos se verá potenciada por los intereses en otros tópicos. OK, tendré eso,
+¿y después qué? Me parece importante tener un objetivo para después, porque en definitiva lo que veré
+es un decepcionante (suelen serlo) mapa de colores del sistema en función de Delta y Epsilon (me parece
+que son los parámetros que vale la pena utilizar como variables). Esta es una charla para llevarle a 
+Pablo de a qué queremos ir, porque sino siento que vamos a seguir haciendo cosas y buscando "soluciones"
+sin conocer nuestro problema.
+
+Creo que esta es una charla para tener con Pablo, pero me parece que si voy a la charla debería ir con
+una propuesta, no simplemente caer con: "Tengo un problema, ¿Ahora qué hago?" Me parece importante entonces
+tener armados datos del sistema tanto para un tópico como para dos. Así que yo diría de mandar a
+armar datos en Oporto. Si eso va bien, ya mañana empezaré a modificar el código para dos agentes.
+Luego de eso, empezaremos la charla con Pablo sobre esto.
+
+Antes de terminar el día mi plan es mandar a correr el código en Oporto. Para eso necesito definir
+la región en la cuál voy a variar mis parámetros. Usaré tres alfas igual que antes, armaré 80
+iteraciones, y queda definir de dónde a dónde se mueven los kappa y los epsilon.
+
+Voy a mover Kappa y Epsilon en la región entre 0.5 y 3 de a 0.1, lo cual significa 26 valores para
+cada uno. Luego, voy a hacer 100 iteraciones, y por lo que vi cada simulación debería tardar entre
+3 y 4 segundos. Entonces si mis cuentas están correctas, hacer esto debería tardar aproximadamente unas
+nueve horas. Si lo mando ahora, ya mañana está. Listo, ya está mandado a correr. Mañana vemos qué pasó.

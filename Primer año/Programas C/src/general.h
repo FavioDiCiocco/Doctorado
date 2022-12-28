@@ -32,7 +32,7 @@ typedef struct Parametros{
 	double d_Cosangulo; // Este es el coseno del ángulo entre los tópicos
 	double d_epsilon; // Umbral que determina si el interés del vecino puede generarme más interés.
 	double d_lambda; // Constante asociada a la evolución del término de saturación
-	double d_amplitud; // Esta amplitud regula la relación entre el término lineal y el término logístico
+	double d_kappa; // Esta amplitud regula la relación entre el término lineal y el término logístico
 	int i_Gradomedio; // Este es el grado medio de los agentes de la red.
 	int i_m; // Esto sería el número de conexiones que haría para cada agente que se activa.
 	int i_N; // Número de agentes en la red

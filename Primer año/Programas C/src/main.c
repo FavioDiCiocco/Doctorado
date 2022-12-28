@@ -36,7 +36,7 @@ int main(int argc, char *argv[]){
 	ps_datos->i_N = strtol(argv[1],NULL,10); // Cantidad de agentes en el modelo
 	ps_datos->d_alfa = strtof(argv[2],NULL); // Controversialidad de los tópicos
 	ps_datos->d_epsilon = strtof(argv[3],NULL); // Este es el umbral que determina si el interés del vecino puede generarme más interés.
-	ps_datos->d_amplitud = strtof(argv[4],NULL); // Esta amplitud regula la relación entre el término lineal y el término logístico
+	ps_datos->d_kappa = strtof(argv[4],NULL); // Esta amplitud regula la relación entre el término lineal y el término logístico
 	int i_iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
 	
 	// Los siguientes son los parámetros que están dados en los structs
@@ -117,14 +117,14 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_Opiniones[355];
-	sprintf(s_Opiniones,"../Programas Python/Cambios_parametros/Alfa=%d/Opiniones_N=%d_amplitud=%.2f_epsilon=%.1f_Iter=%d.file"
-		,(int) ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_amplitud,ps_datos->d_epsilon,i_iteracion);
+	sprintf(s_Opiniones,"../Programas Python/Cambios_parametros/Alfa=%d/Opiniones_N=%d_kappa=%.2f_epsilon=%.2f_Iter=%d.file"
+		,(int) ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_epsilon,i_iteracion);
 	FILE *pa_Opiniones=fopen(s_Opiniones,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_Testigos[355];
-	sprintf(s_Testigos,"../Programas Python/Cambios_parametros/Alfa=%d/Testigos_N=%d_amplitud=%.2f_epsilon=%.1f_Iter=%d.file"
-		,(int) ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_amplitud,ps_datos->d_epsilon,i_iteracion);
+	sprintf(s_Testigos,"../Programas Python/Cambios_parametros/Alfa=%d/Testigos_N=%d_kappa=%.2f_epsilon=%.2f_Iter=%d.file"
+		,(int) ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_epsilon,i_iteracion);
 	FILE *pa_Testigos=fopen(s_Testigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
@@ -135,10 +135,10 @@ int main(int argc, char *argv[]){
 	
 	
 	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
-	// char s_mady[355];
-	// sprintf(s_mady,"MARE/Random_Regulars/Random-regular_N=%d_ID=%d.file"
-		// ,ps_datos->i_N,(int) i_iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
-	// FILE *pa_mady=fopen(s_mady,"r");
+	char s_matriz_adyacencia[355];
+	sprintf(s_matriz_adyacencia,"MARE/Random_Regulars/Random-regular_N=%d_ID=%d.file"
+		,ps_datos->i_N,(int) i_iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
+	FILE *pa_matriz_adyacencia=fopen(s_matriz_adyacencia,"r");
 	
 	// Puntero a la función que define mi ecuación diferencial
 	// double (*pf_Din_Sat)(ps_Red var, ps_Param par) = &Din_saturacion;
@@ -152,8 +152,8 @@ int main(int argc, char *argv[]){
 	GenerarAng(ps_red, ps_datos); // Esto me inicializa mi matriz de superposición, definiendo el solapamiento entre tópicos.
 	GenerarAdy_Conectada(ps_red, ps_datos); // Esto me produce una matriz de adyacencia completamente conectada
 	
-	// Lectura_Adyacencia(ps_red->pi_Ady, pa_mady); // Leo el archivo de la red estática y lo traslado a la matriz de adyacencia
-	// fclose(pa_mady); // Aprovecho y cierro el puntero al archivo de la matriz de adyacencia
+	Lectura_Adyacencia(ps_red->pi_Adyacencia, pa_matriz_adyacencia); // Leo el archivo de la red estática y lo traslado a la matriz de adyacencia
+	fclose(pa_matriz_adyacencia); // Aprovecho y cierro el puntero al archivo de la matriz de adyacencia
 	
 	
 	//################################################################################################################################
@@ -162,7 +162,7 @@ int main(int argc, char *argv[]){
 	
 	// Guardo la distribución inicial de las opiniones de mis agentes y preparo para guardar la Varprom.
 	fprintf(pa_Opiniones,"Opiniones Iniciales\n");
-	Escribir_d(ps_red->pd_Opi,pa_Opiniones);
+	Escribir_d(ps_red->pd_Opiniones,pa_Opiniones);
 	
 	fprintf(pa_Testigos,"Opiniones Testigos\n");
 	

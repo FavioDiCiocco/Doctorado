@@ -40,8 +40,8 @@ for carp in Carpetas:
     
     #-------------------------------------------------------------------------------------------------------
     
-    # Es importante partir del hecho de que mis archivos llevan por nombre: "Opiniones_N=$_amplitud=$_epsilon=$_Iter=$.file"
-    # También tengo otros archivos llamados "Testigos_N=$_amplitud=$_epsilon=$_Iter=$.file" y
+    # Es importante partir del hecho de que mis archivos llevan por nombre: "Opiniones_N=$_kappa=$_epsilon=$_Iter=$.file"
+    # También tengo otros archivos llamados "Testigos_N=$_kappa=$_epsilon=$_Iter=$.file" y
 
     # Voy a trabajar mi lista de archivos usando pandas, creo que va a ser mucho más claro lo que
     # está pasando y además va a ser más orgánico.
@@ -51,7 +51,7 @@ for carp in Carpetas:
     # Hecho mi dataframe, voy a armar columnas con los parámetros que varían en los nombres de mis archivos
     Df_archivos["tipo"] = Df_archivos["nombre"].apply(lambda x: x.split("_")[0])
     Df_archivos["n"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[1].split("=")[1]))
-    Df_archivos["amplitud"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
+    Df_archivos["kappa"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
     Df_archivos["epsilon"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
     Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1].strip(".file")))
     
@@ -64,6 +64,12 @@ for carp in Carpetas:
     # Grafico el promedio en función de la amplitud y el epsilon, armando mi mapa de colores.
     
     func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    # Grafico el promedio en función de la amplitud y el epsilon, armando mi mapa de colores.
+    
+    func.Mapa_Colores_Entropia_opiniones(Df_archivos, Direccion, Etapa/carpeta)
     
     #----------------------------------------------------------------------------------------------
     
