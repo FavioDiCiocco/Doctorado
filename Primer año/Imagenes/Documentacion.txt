@@ -90,3 +90,11 @@ de interés en función de los valores de lambda. Para eso hice algunos pequeño
 cambios en el main y por eso es que separé esta etapa de la anterior. Pero
 fuera de fija alfa y chi y de cambiarles los nombres los archivos de Opiniones,
 Testigos y Saturación, el resto fue igual a lo anterior.
+
+.) Cambios_parametros:
+----------------------
+Acá reduje los parámetros alfa y chi e introduje epsilon y kappa, siendo epsilon
+como el umbral de interés de antes, pero ahora alfa es una constante, y kappa es
+el valor de la presión social que afecta al segundo término de la ecuación.
+Lo que más me importa ver de estos datos es el promedio de opiniones en el espacio
+de parámetros.

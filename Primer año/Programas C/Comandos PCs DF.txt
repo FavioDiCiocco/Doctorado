@@ -40,7 +40,7 @@ virtualenv -p /usr/bin/python3 environment
 PARA ACTIVAR EL AMBIENTE DE PYTHON
 source environment/bin/activate
 
-PARA DESACTIVAR EL AMBIENTE DE PYTHON
+PARA DESACTIVAR EL AMBIENTE DE PYTHON (No me funcionó la última vez)
 source environment/bin/deactivate
 
 PARA CORRER COSAS EN EL AMBIENTE DE PYTHON en el background

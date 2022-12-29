@@ -2755,3 +2755,46 @@ Voy a mover Kappa y Epsilon en la región entre 0.5 y 3 de a 0.1, lo cual signif
 cada uno. Luego, voy a hacer 100 iteraciones, y por lo que vi cada simulación debería tardar entre
 3 y 4 segundos. Entonces si mis cuentas están correctas, hacer esto debería tardar aproximadamente unas
 nueve horas. Si lo mando ahora, ya mañana está. Listo, ya está mandado a correr. Mañana vemos qué pasó.
+
+------------------------------------------------------------------------------------------------
+
+29/12/2022
+
+Hoy me siento mejor, así que vine a la facultad. El código en Oporto sigue laburando. Parece que va a tomar
+dos días en terminarse. El problema está en que yo planee que cada código tardara unos cuatros segundos
+aprox. en terminarse, sin embargo están tardando entre tres y cinco veces ese tiempo en promeido, por eso
+es que va a tardar el triple o cuádruple de tiempo en terminarse. Y considerando que mis cálculos daban
+9 horas, entonces en realidad esto tardará entre 27 y 36 horas más o menos. Quizás más cerca de 40.
+
+Así que no voy a poder analizar esos datos hoy. Lo que puedo hacer es mandar a correr datos en la pc de
+la facultad para poder analizar eso y mostrárselos a Pablo. Después podría preparar el tema del environment
+y de los archivos de Python para tener en la pc de Oporto cosa de que una vez que los datos estén listos poder
+sacar los gráficos de una. Y si me sobra el tiempo, suena a que sí, debería intentar ponerme a preparar el 
+código para estudiar el caso 2D.
+
+Ya preparé el environment en la carpeta de Programas Python y me pasé la carpeta de Python a la pc de oporto.
+Igual posiblemente la tenga que modificar para observar algunos otros datos. Mientras las demaś cosas terminan
+de armar datos, voy a hacer la burocracia infinita y la documentación de los datos.
+
+Ya revisé los datos que tengo en la pc de la facultad, efectivamente pareciera observarse que a medida que alfa
+aumenta se va generando una curva en el espacio de parámetros que separa el sistema que tiende al punto fijo
+máximo del que tiende al punto fijo mínimo. Quizás convenga observar algunos valores más altos de epsilon para
+ver mejor la curva en los alfas más altos.
+
+Mirando el gráfico, creo que podría tomar entonces alfa=4, kappa=1 (no tengo un gran motivo para hacerlo, pero
+creo que esos datos podrían llegar a ser más generales en ese caso), y pasar el sistema a un caso de dos tópicos,
+así vemos como el sistema varía en función de cos(delta) y epsilon.
+
+Hagamos el pase a 2 tópicos. Para eso primero guardemos el código de 1 tópico. El pase a 2 tópicos únicamente
+requiere cambiar la dirección en la que se guardan los archivos, verdad? Porque en el código es tan simple como
+cambiar i_T=2.
+
+Bien, ya hice las correcciones para que el sistema labure en el caso de 2 tópicos. Ahora queda esperar que se
+armen los datos y después empezar a analizarlos. Si esto funca, podría mandar a revisar esto en Oporto. Si
+estuviera apurado de datos, mandaría a hacer esto en otra pc, tipo Algarve o Setubal, así labura todo junto.
+
+Ahora me voy a dedicar a leer el paper de Sociphysics. Quizás eso me ayude a abrir la mente y ver ideas de
+a dónde guiar el tp.
+
+Lo último que me dijo Pablo es de agregar el término de saturación a esto. Creo que también dijo de usar más
+de un tópico. O no estoy recordando que fue lo segundo que me dijo. Igual ya tendremos para hablar.

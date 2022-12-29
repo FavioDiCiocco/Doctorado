@@ -153,3 +153,18 @@ sería que cada curva crece al 1 a un tiempo que crece con la distancia.
 Admito que no terminé de decidirme, básicamente porque no terminé de armar el código.
  De paso, con este código la idea era retornar al uso de la función logística y el
 término lineal, no pretendía utilizar el término de saturación.
+
+.) Cambios_parametros:
+----------------------
+
+En esta etapa la idea es reducir los parámetros alfa y chi a un sólo parámetro, ya que el
+comportamiento del sistema en función de estos dos valores era lineal, y por encima de
+cierto valor el sistema convergía al punto fijo máximo y por debajo convergía al punto
+fijo mínimo. Ese nuevo parámetro lo renombré epsilon, en donde estaba el alfa la idea 
+es colocar un valor mayor a 4 de forma de que el sistema tienda a los puntos fijos extremos
+y además epsilon debería ser menor a la mitad del valor que ponga donde iba el alfa.
+ Por otro lado agrego un párametro al segundo término, el kappa, el cual modula la presión
+social. De esta manera la convergencia del sistema a los valores altos de interés no depende
+enteramente del epsilon.
+ Armo dos carpetas, 1D y 2D para diferenciar las fases de esta etapa en las que trabajé
+con un solo tópico y la que trabajé con dos.

@@ -152,3 +152,19 @@ el interés en función del tiempo de varios agentes. Estos archivos arrancaría
 se encargara de determinar para cada columna la distancia del agente. Es decir, los archivos
 de Testigos se reestructurarían y serían de lo más importante en esta etapa. Todavía no hice
 nada igual porque por ahora dejo esto para otro momento.
+
+Cambios_parametros:
+-------------------
+En esta etapa la idea es reducir los parámetros alfa y chi a un sólo parámetro, ya que el
+comportamiento del sistema en función de estos dos valores era lineal, y por encima de
+cierto valor el sistema convergía al punto fijo máximo y por debajo convergía al punto
+fijo mínimo. Ese nuevo parámetro lo renombré epsilon, en donde estaba el alfa la idea 
+es colocar un valor mayor a 4 de forma de que el sistema tienda a los puntos fijos extremos
+y además epsilon debería ser menor a la mitad del valor que ponga donde iba el alfa.
+ Por otro lado agrego un párametro al segundo término, el kappa, el cual modula la presión
+social. De esta manera la convergencia del sistema a los valores altos de interés no depende
+enteramente del epsilon.
+ Los archivos generados por el código son archivos de Opiniones y Testigos. Lo primero que
+hice fue trabajar con un único tópico y aparte de variar los parámetros kappa y epsilon,
+también varié alfa entre los valores 2,4 y 6, cosa de observar si había un valor particular
+en el que conviniera colocar a esta constante.
