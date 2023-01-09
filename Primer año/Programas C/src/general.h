@@ -14,6 +14,7 @@ typedef struct Red{
 	double *pd_Diferencia; // Vector que guarda las diferencias entre PreOpi y Opi.
 	double *pd_Opiniones; // Vector de opinión de cada individuo
 	double *pd_Angulos; // Matriz de superposición entre tópicos. Tiene tamaño T*T
+	double *pd_Saturacion; // Lista de valores de la variable auxiliar de saturación.
 	double d_Variacion_promedio; // Esto es la Variación promedio del sistema. Es cuanto cambia en promedio cada opinión
 	int *pi_Adyacencia; // Matriz de adyacencia que define mis conexiones. Tiene tamaño N*N
 	int i_agente; // Entero que representa el agente que estoy mirando. Es un valor que va entre 0 y N-1

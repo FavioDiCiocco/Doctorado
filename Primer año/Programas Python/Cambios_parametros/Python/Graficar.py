@@ -22,7 +22,7 @@ T=1 # Defino el número de tópicos
 Etapa = Path("Cambios_parametros") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Alfa=2","Alfa=4","Alfa=6"]
+Carpetas = ["2D"]
 
 for carp in Carpetas:
     
@@ -76,8 +76,6 @@ for carp in Carpetas:
     # Para tener una mejor idea de lo que estoy viendo, voy a hacer los gráficos de Opi_vs_tiempo
     
     func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta,T=1)
-    
-    
     
 
 func.Tiempo(t0)

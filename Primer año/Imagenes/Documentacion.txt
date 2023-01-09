@@ -98,3 +98,6 @@ como el umbral de interés de antes, pero ahora alfa es una constante, y kappa e
 el valor de la presión social que afecta al segundo término de la ecuación.
 Lo que más me importa ver de estos datos es el promedio de opiniones en el espacio
 de parámetros.
+ Tengo tres carpetas con distintos valores de alfa, eso es lo que observé para
+el sistema con un único tópico. Luego armé una cuarta carpeta llamada 2D, la cual
+uso para guardar los gráficos del sistema aplicado a un espacio de 2 tópicos.

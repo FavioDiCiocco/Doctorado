@@ -168,3 +168,5 @@ social. De esta manera la convergencia del sistema a los valores altos de inter�
 enteramente del epsilon.
  Armo dos carpetas, 1D y 2D para diferenciar las fases de esta etapa en las que trabajé
 con un solo tópico y la que trabajé con dos.
+ Para el código de la carpeta 2, utilicé alfa = 4 y kappa = 1 a la hora de armar mis datos.
+Los parámetros que varié son Epsilon y Cosdelta.

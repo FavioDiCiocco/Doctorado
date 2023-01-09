@@ -168,3 +168,6 @@ enteramente del epsilon.
 hice fue trabajar con un único tópico y aparte de variar los parámetros kappa y epsilon,
 también varié alfa entre los valores 2,4 y 6, cosa de observar si había un valor particular
 en el que conviniera colocar a esta constante.
+ Lo siguiente fue trabajar con dos tópicos, dejando fijo el valor de alfa y Kappa. Para
+esta fase los parámetros a variar fueron Epsilon y Cosdelta. Los datos los guardé en la
+carpeta 2D.

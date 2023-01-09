@@ -2762,7 +2762,7 @@ nueve horas. Si lo mando ahora, ya mañana está. Listo, ya está mandado a corr
 
 Hoy me siento mejor, así que vine a la facultad. El código en Oporto sigue laburando. Parece que va a tomar
 dos días en terminarse. El problema está en que yo planee que cada código tardara unos cuatros segundos
-aprox. en terminarse, sin embargo están tardando entre tres y cinco veces ese tiempo en promeido, por eso
+aprox. en terminarse, sin embargo están tardando entre tres y cinco veces ese tiempo en promedio, por eso
 es que va a tardar el triple o cuádruple de tiempo en terminarse. Y considerando que mis cálculos daban
 9 horas, entonces en realidad esto tardará entre 27 y 36 horas más o menos. Quizás más cerca de 40.
 
@@ -2798,3 +2798,83 @@ a dónde guiar el tp.
 
 Lo último que me dijo Pablo es de agregar el término de saturación a esto. Creo que también dijo de usar más
 de un tópico. O no estoy recordando que fue lo segundo que me dijo. Igual ya tendremos para hablar.
+
+------------------------------------------------------------------------------------------------
+
+09/01/2023
+
+Luego de mi semana de vacaciones, vuelvo al trabajo. Lo primero que estoy haciendo es revisar en qué quedé
+y continuar desde ahí. Había mandado a hacer unos datos, y creo que faltaba armar los gráficos a partir
+de eso, así que estoy en eso, en armar los gráficos.
+
+También había dejado armado el código para correr datos para el caso del sistema en 2D. Así que tendría
+que mandar a correr esos datos también en Oporto. Eso va a tomar unos días, pero sería importante entonces
+revisar bien la región en la que voy a analizar esto.
+
+Teniendo esos datos armándose, lo siguiente sería lo de incorporar el término de saturación a la ecuación.
+Y finalizado eso, simplemente puedo ponerme con preparar una charla con Pablo al respecto, sobre qué
+hacer con el trabajo a partir de ahora.
+
+El código está listo para correr con 2 tópicos. Así que lo que voy a hacer es mandarlo a Oporto y pensar
+la región en la cual voy a correr los datos. Pero tengo un hilo que está siendo usado para graficar los
+datos de la tanda anterior. Así que voy a tener 19 hilos. Entonces armaré un poco menos de las simulaciones
+que pensaba, cualquier cosa después agrego. Después me armaré el código agregando el término de saturación
+y mandaré a correr los datos en Algarve, así no tengo que esperar a que esto termine y para el fin de la
+semana ya tengo todo visto y preparado.
+
+Pensemos la región que voy a explorar. Tengo kappa definido en 1, así que los intereses se encuentran
+restringidos a la región [0,1]. Los parámetros que voy a variar son Epsilon y Cosdelta. Alfa está
+definido en 4. Por los datos que armé en la pc, para Epsilon con 1 o menor, el sistema prácticamente
+llega a 1, no vale la pena mirar esa región. Recién en Epsilon=2 el sistema empieza a caer al cero.
+Yo movería el epsilon entre 1.5 y 3.5, creo que esa sería una región interesante.
+El cosdelta lo voy a mover entre 0 y 1 de a 0,05, mientras que el epsilon lo voy a mover entre 1,5 y 3,5
+de a 0,1. De esa manera, ambos parámetros recorren 21 valores. Luego voy a querer hacer 6 iteraciones
+por cada hilo, y siendo que tengo 19 hilos disponibles, eso son 114 iteraciones. Y cada simulación en
+promedio parece tardar 10 segundos. Mandar a correr esto parece que va a tardar unas 8 horas aprox.
+Agrandemos epsilon para que vaya hasta 4 entonces, total el tiempo lo tenemos.
+
+Ya lo mandé a correr, aunque parece que va a tardar entre tres y cuatro veces lo que dije, porque 
+pareciera que las simulaciones no tardan 10 segundos, sino 30 en promedio. Así que eso es un día entero,
+mañana a la tarde estarán esos datos. Ahora que eso ya está corriendo, lo que queda es pasar el archivo
+de Python a Oporto para realizar el análisis de los datos. Pero mejor dejar esto para después, porque
+no creo que sea buena idea modificar el archivo de Python mientras está siendo ejecutado.
+
+Por tanto, lo siguiente es reincorporar el término de saturación y hacer unas mediciones con eso. Si
+lo que veo en la pc va bien, podría empezar a subir esto a Algarve, cosa de tener estos datos armándose
+en simultáneo a los del sistema en 2D. Y ya que estoy, si hago eso, debería separar los códigos en
+la carpeta y realizar la documentación correspondiente.
+
+Mandé a correr unos datos en la pc de la facultad, pero cada simulación tarda un minuto aproximadamente.
+Es complicado armar suficientes datos rápido. Hoy voy a armar algunos y mañana armo el resto. Ahora me
+parece que lo mejor es empezar a subir los archivos a la pc de Algarve para poder correr los datos ahí.
+
+Creo que tengo todo lo necesario en Algarve como para empezar a simular datos en Algarve. Aunque ahí
+está Ale también, debería no consumir todos los hilos.
+
+Ahora que tengo mi café, pongamos las cosas en orden. Creo que estoy muy lentamente recuperando ritmo
+y me parece que hay que acelerar un poco las cosas. 
+
+.)Por un lado tengo los datos que mandé a hacer para el modelo con el termino logístico, 
+parámetros Kappa y epsilon y con un único tópico. Cuando tenga armados los gráficos, los
+paso a la pc para mirarlos. Parece que se va a tomar unas buenas horas en eso.
+.) Por otro lado, también en Oporto, estoy armando datos para el sistema en el caso de dos tópicos.
+En esta fase los parámetros son el Cosdelta y Epsilon. Kappa está fijado a 1 y alfa está fijado a 4.
+Los datos deberían terminarse para mañana.
+.) También estoy armando unos datos del sistema con el término de saturación, eliminando el término
+lineal. Esto lo tengo en la pc de la facultad, pero como en el resto de la semana no voy a venir, creo
+que son bastante al pedo. Me parece que mejor va a ser mandar a correr esto en Algarve directo y ya ahí
+ver que hacer con eso.
+.) Dicho esto, necesitaría tener en Oporto el archivo de Graficar.py para graficar los datos de mi sistema
+con dos tópicos. Entonces primero tendría que cambiar mi archivo de graficación en la pc y después pasar
+el archivo cambiado a Oporto.
+.) Además, como voy a tener un poco de tiempo en lo que se terminan estas corridas de datos, podría mandar
+a hacer una corrida más que si contenga el término lineal. Creo que eso valdría la pena mandarlo en Oporto.
+.) Teniendo todo esto, creo que corresponde entonces armar una presentación donde junte los gráficos importantes
+y ya decirle a Pablo de tener una charla, primero para hablar de los resultados obtenidos, y segundo para
+hablar de a dónde llevar el trabajo, porque siento que si resuelvo estas cosas, entonces no sé a dónde quiero
+ir después.
+
+No puedo mandar a correr en Algarve, Ale está usando todos los hilos. Podría pensar de quizás mandar a correr
+en Setubal sino. Mañana lo que voy a hacer es cargar los datos del modelo con Saturacion en Oporto y mandar
+a correr eso mientras grafico los datos del sistema con 2 tópicos y me descargo los gráficos del sistema con
+1 tópico.Hecho eso, me pondré con los archivos de Python. Y luego, arrancaré con el tema del final de Minnini.
