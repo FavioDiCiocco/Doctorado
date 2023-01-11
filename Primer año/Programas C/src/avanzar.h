@@ -6,6 +6,6 @@
 
 double Dinamica_sumatoria(ps_Red ps_variable, ps_Param ps_parametro);
 double Dinamica_interes(ps_Red ps_variable, ps_Param ps_parametro);
-// double Din_saturacion(ps_Red ps_variable, ps_Param ps_parametro);
+double Dinamica_saturacion(ps_Red ps_variable, ps_Param ps_parametro);
 
 #endif

@@ -2912,3 +2912,34 @@ cambiar cuál va al eje X y cuál al eje Y simplemente cambiando los nombres en 
 Creo, podría eventualmente probarlo.
 
 Y ahora no puedo mandar a correr nada en Oporto tampoco, Fede copó el cluster.
+
+------------------------------------------------------------------------------------------------
+
+11/01/2023
+
+Ya subí los archivos para armar la simulación en el caso de Saturación a la pc de oporto. Actualmente nadie está
+usando el cluster. Así que mi plan es ocupar 19 hilos en simulaciones y uno en armar los gráficos con los datos
+que estuve armando el otro día. Mi pregunta ahora es: No tengo una buena idea de cuál es la región en la que
+debería investigar el modelo con saturación. Además, no creo que vaya a ver algo interesante en el gráfico
+de promedio de opiniones, lo más seguro es que vea que todo cae a valores bajos de opinión, independiente
+de todo. Voy a mover Epsilon entre 1 y 3 esta vez, porque como sé que el sistema va a caer, o por lo menos
+sospecho que los intereses van a ir a cero, entonces me parece que lo mejor es usar un epsilon más chico
+para permitir que el sistema pueda crecer un poco más. Y de ahí vemos qué pasa. Y el cosdelta lo voy
+a mover entre 0 y 1 de a 0,1, como para medir qué pasa nomás. Debería tardar menos que lo anterior, porque
+es bastante menos cantidad de simulaciones. Después si necesito, expando los datos haciendo los cálculos
+para los cosdelta intermedios.
+
+Ya mandé a armarse los datos en la pc de Oporto. En total estoy haciendo 11 (Cosdelta) * 21 (Epsilon) * 6 (iteraciones)
+simulaciones en cada hilo. Eso significa 1386 simulaciones por hilo. Como cada simulación en promedio está
+tardando 180 segundos, entonces eso son 70 horas aprox. Así que va a estar unos 3 días haciendo esto.
+El finde tengo que mandar a hacer los gráficos, así el lunes ya tengo esto visto. Y también tengo que mandar
+a hacer los datos en el caso con el término lineal. Podría hacer algunos de esos datos en la pc ahora.
+
+Mientras se resuelven las simulaciones que mandé a hacer, lo que queda es ponerme a preparar el final de Mininni.
+Avancé hasta la página 4 con lo de Mininni.
+
+Por otro lado estuve hablando con Pablo sobre el TP, me dijo de armar una presentación para el lunes con el trabajo
+hecho, hablamos sobre revisar el tema de por qué para alfa menor a 4 el sistema tiene una región de transición que
+supuestamente no debería tener y también me propuso lo de ver si hay una relación entre kappa versus epsilon sobre alfa
+o alfa a la algo. Esto está mejor anotado en el cuaderno. La pregunta resulta interesante, porque estaría bueno ver
+si en verdad las tres curvas de transición que observo en realidad colapsan a una misma curva.

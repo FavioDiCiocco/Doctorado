@@ -23,7 +23,7 @@ if [ -z $decision ]
 then
 	for N in ${Arr_Agentes[@]}
 	do
-		for iteracion in {0..20}
+		for iteracion in {0..5}
 		do
 			for Epsilon in ${Arr_Epsilons[@]}
 			do
