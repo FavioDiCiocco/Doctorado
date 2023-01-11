@@ -68,18 +68,18 @@ double Dinamica_interes(ps_Red ps_variable, ps_Param ps_parametro){
 	// Obtengo el tamaño de Columnas de mi matriz de Vectores de opinión y calculo el valor del campo que define mi ecuación diferencial
 	int i_C = (int) ps_variable->pd_Opiniones[1];
 	// d_resultado = -ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2] * ps_var->pd_Sat[ps_var->i_agente*i_C+ps_var->i_topico+2] + d_sumatoria/i_grado; // Término con saturación
-	d_resultado = -ps_variable->pd_Opiniones[ps_variable->i_agente*i_C+ps_variable->i_topico+2] + ps_parametro->d_kappa*(d_sumatoria/i_grado);
+	d_resultado = -ps_variable->pd_Opiniones[ps_variable->i_agente*i_C+ps_variable->i_topico+2] * ps_variable->pd_Saturacion[ps_variable->i_agente*i_C+ps_variable->i_topico+2] + ps_parametro->d_kappa*(d_sumatoria/i_grado);
 	return d_resultado;
 }
 
 
-// double Dinamica_saturacion(ps_Red ps_variable, ps_Param ps_parametro){
-	// // Defino las variables locales de mi función
-	// double d_resultado; // d_resultado es lo que voy a returnear.
-	// int i_C = (int) ps_variable->pd_Opiniones[1]; // Tamaño de columnas de mi vector de opiniones
+double Dinamica_saturacion(ps_Red ps_variable, ps_Param ps_parametro){
+	// Defino las variables locales de mi función
+	double d_resultado; // d_resultado es lo que voy a returnear.
+	int i_C = (int) ps_variable->pd_Opiniones[1]; // Tamaño de columnas de mi vector de opiniones
 	
-	// // Hago la cuenta de la ecuación dinámica
-	// d_resultado = ps_variable->pd_Opiniones[ps_variable->i_agente*i_C+ps_variable->i_topico+2] - ps_parametro->d_lambda * ps_variable->pd_Saturacion[ps_variable->i_agente*i_C+ps_variable->i_topico+2];
+	// Hago la cuenta de la ecuación dinámica
+	d_resultado = ps_variable->pd_Opiniones[ps_variable->i_agente*i_C+ps_variable->i_topico+2] - ps_parametro->d_lambda * ps_variable->pd_Saturacion[ps_variable->i_agente*i_C+ps_variable->i_topico+2];
 	
-	// return d_resultado;
-// }
+	return d_resultado;
+}

@@ -170,3 +170,7 @@ enteramente del epsilon.
 con un solo tópico y la que trabajé con dos.
  Para el código de la carpeta 2, utilicé alfa = 4 y kappa = 1 a la hora de armar mis datos.
 Los parámetros que varié son Epsilon y Cosdelta.
+ Saturación toma el código de 2D y le agrega el término de saturación a la ecuación dinámica.
+Esto implica también el descomentar las funciones en el main y en avanzar. Lo voy a usar tanto
+para el caso en el que agrego el término lineal como en el caso en que lo saco. Ambos casos se
+diferencian poniendo un (-1+...) en la ecuación dinámica, es una línea de código nomás.

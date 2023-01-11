@@ -10,7 +10,7 @@ Created on Wed Nov 16 14:21:12 2022
 import pandas as pd
 import time
 import os
-import funciones as func
+import funciones2D as func
 from pathlib import Path
 
 # Importo todas las librerías que voy a usar en el programa. Estas son las que
@@ -40,8 +40,8 @@ for carp in Carpetas:
     
     #-------------------------------------------------------------------------------------------------------
     
-    # Es importante partir del hecho de que mis archivos llevan por nombre: "Opiniones_N=$_kappa=$_epsilon=$_Iter=$.file"
-    # También tengo otros archivos llamados "Testigos_N=$_kappa=$_epsilon=$_Iter=$.file" y
+    # Es importante partir del hecho de que mis archivos llevan por nombre: "Opiniones_N=$_Cosd=$_epsilon=$_Iter=$.file"
+    # También tengo otros archivos llamados "Testigos_N=$_Cosd=$_epsilon=$_Iter=$.file" y
 
     # Voy a trabajar mi lista de archivos usando pandas, creo que va a ser mucho más claro lo que
     # está pasando y además va a ser más orgánico.
@@ -51,8 +51,8 @@ for carp in Carpetas:
     # Hecho mi dataframe, voy a armar columnas con los parámetros que varían en los nombres de mis archivos
     Df_archivos["tipo"] = Df_archivos["nombre"].apply(lambda x: x.split("_")[0])
     Df_archivos["n"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[1].split("=")[1]))
-    Df_archivos["kappa"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
-    Df_archivos["epsilon"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
+    Df_archivos["parametro_1"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
+    Df_archivos["parametro_2"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
     Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1].strip(".file")))
     
     # Con esto tengo hecho un DF con los nombres de todos los archivos y además tengo separados los valores
@@ -61,21 +61,33 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    # Grafico el promedio en función de la amplitud y el epsilon, armando mi mapa de colores.
+    # Modifiqué los archivos de graficación considerando que siempre que grafique lo haré teniendo dos
+    # parámetros libres. Entonces la idea es que le pase los nombres de esos parámetros a las funciones
+    # para que los pongan en los nombres de los archivos o que los pongan en los gráficos. Fuera de eso
+    # el programa trabaja pensando en parámetro 1 y 2, siendo el parámetro 1 el que se grafica sobre
+    # el eje Y mientras que el 2 se grafica sobre el eje X, siempre que corresponda.
     
-    func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta)
+    # Por un lado necesito los nombres que pasaré a los títulos de los archivos
+    
+    nombre_parametro_1 = "epsilon"
+    nombre_parametro_2 = "cosdelta"
+    
+    # Lo otro que necesito es el nombre que pasaré a los ejes de los gráficos de las funciones
+    
+    titulo_parametro_1 = "cos(\delta)"
+    titulo_parametro_2 = "\epsilon"
     
     #----------------------------------------------------------------------------------------------
     
     # Grafico el promedio en función de la amplitud y el epsilon, armando mi mapa de colores.
     
-    func.Mapa_Colores_Entropia_opiniones(Df_archivos, Direccion, Etapa/carpeta)
-    
+    func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta, titulo_parametro_1, titulo_parametro_2)
+
     #----------------------------------------------------------------------------------------------
     
     # Para tener una mejor idea de lo que estoy viendo, voy a hacer los gráficos de Opi_vs_tiempo
     
-    func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta,T=1)
+    func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta,T, nombre_parametro_1, nombre_parametro_2)
     
 
 func.Tiempo(t0)

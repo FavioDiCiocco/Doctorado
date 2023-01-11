@@ -2877,4 +2877,38 @@ ir después.
 No puedo mandar a correr en Algarve, Ale está usando todos los hilos. Podría pensar de quizás mandar a correr
 en Setubal sino. Mañana lo que voy a hacer es cargar los datos del modelo con Saturacion en Oporto y mandar
 a correr eso mientras grafico los datos del sistema con 2 tópicos y me descargo los gráficos del sistema con
-1 tópico.Hecho eso, me pondré con los archivos de Python. Y luego, arrancaré con el tema del final de Minnini.
+1 tópico. Hecho eso, me pondré con los archivos de Python. Y luego, arrancaré con el tema del final de Minnini.
+
+
+------------------------------------------------------------------------------------------------
+
+10/01/2023
+
+Lo primero que hice fue descargar los gráficos de mapas de colores de Promedio de Opiniones.
+Se ven bastante bien, pareciera haber una relación no lineal entre el Kappa y el Epsilon.
+
+Después seguí con el armado de los archivos de Python para graficar los datos del sistema en el
+caso de dos tópicos. La mayor diferencia que tengo que hacer es que ahora el kappa está fijo, entonces
+mi parámetro es el Cosdelta y tengo que cambiar los nombres de todo. Acabo de pensar esto y me di cuenta
+de la boludez que es. Lo que se me ocurre es primero hacer los gráficos. Si eso va bien, pasaré a cambiar
+esto considerando que mis gráficos van sobre dos parámetros. Entonces, haré esto de forma genérica llamando
+a las columnas del DF "parametro 1" y "parametro 2". Luego con eso armo las funciones de python, y después
+le voy pasando los nombres que poner en los gráficos, eso funciona mejor.
+
+Ahora que lo pienso, no puedo probar el archivo de Python porque no tengo datos en los cuales probar esto.
+Bueno, voy a guardar mi código de saturación, armaré datos para la fase 2D y pruebo el código de python.
+Si eso funca, probaré mi idea de renombrar esto de forma más general.
+
+Quise probar entrar a la pc de Setubal, pero no estoy encontrando la clave. Eso es una paja.
+Voy a ver si puedo recuperar esa clave de alguna forma.
+
+Por otro lado, cambié los archivos de Python para que tomen en cuenta que los datos que armo
+se hacen sobre la base de que haya dos parámetros que se barren. Por tanto decidí nombrar de
+forma general a estos parámetros 1 y 2, y ahora los archivos reciben unos strings que utilizan para
+poner nombre en los gráficos y en los archivos a estos parámetros, pero en el interior operan
+considerándolos simplemente parámetro 1 y 2. Lo importante es que el parámetro 1 es el que se
+grafica en el eje Y mientras que el 2 es el que se grafica en el eje X. Lo interesante es que podría
+cambiar cuál va al eje X y cuál al eje Y simplemente cambiando los nombres en el armado del dataframe.
+Creo, podría eventualmente probarlo.
+
+Y ahora no puedo mandar a correr nada en Oporto tampoco, Fede copó el cluster.

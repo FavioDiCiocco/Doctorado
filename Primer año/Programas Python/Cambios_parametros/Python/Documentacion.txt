@@ -19,3 +19,10 @@ de leer y que las funciones se vean más prolijas.
 
 Tiene la graficación de los mapas de colores, Opiniones vs tiempo y
 el armado de los histogramas.
+
+Lo intenté generalizar un poco más tomando en consideración que todos mis datos
+en general barren respecto de dos parámetros. Entonces lo que hice fue definir
+estos dos parámetros como parámetro 1 y 2 en el dataframe. Luego, en las funciones
+trabajo esos datos de esa manera y para poner los nombres de los parámetros en los
+ejes de los gráficos o en los títulos de los archivos, paso aparte strings con esa
+info a las funciones.

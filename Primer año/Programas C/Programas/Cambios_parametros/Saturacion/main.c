@@ -50,7 +50,7 @@ int main(int argc, char *argv[]){
 	ps_datos->i_testigos = fmin(ps_datos->i_N,6); // Esta es la cantidad de agentes de cada distancia que voy registrar
 	
 	// Términos asociados a la saturación
-	// ps_datos->d_lambda = 0.005; // Este parámetro mide la memoria de los agentes respecto de sus intereses previos. Mientras más grande, menos memoria.
+	ps_datos->d_lambda = 0.005; // Este parámetro mide la memoria de los agentes respecto de sus intereses previos. Mientras más grande, menos memoria.
 		
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
@@ -77,7 +77,7 @@ int main(int argc, char *argv[]){
 	
 	// También hay un vector para guardar la diferencia entre el paso previo y el actual, un vector con los valores de saturación,
 	ps_red->pd_Diferencia = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Vector que guarda la diferencia entre dos pasos del sistema
-	// ps_red->pd_Sat = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Lista de valores de la variable auxiliar de saturación.
+	ps_red->pd_Saturacion = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Lista de valores de la variable auxiliar de saturación.
 	
 	
 	// Inicializo mis cuatro "matrices".
@@ -102,28 +102,27 @@ int main(int argc, char *argv[]){
 	ps_red->pd_Diferencia[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
 	
 	// // Matriz de valores de la variable de saturación. Es de tamaño N*T
-	// for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_Sat[i_i] = 0; // Inicializo la matriz
-	// ps_red->pd_Sat[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
-	// ps_red->pd_Sat[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
+	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_Saturacion[i_i] = 0; // Inicializo la matriz
+	ps_red->pd_Saturacion[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
+	ps_red->pd_Saturacion[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
 	
 	//################################################################################################################################
 	
 	// Abro los archivos en los que guardo datos y defino mi puntero a función.
 	
-	// Voy a abrir dos archivos. En el primero guardo la opinión inicial, la Varprom, la opinión final y la semilla
+	// Voy a abrir tres archivos. En el primero guardo la opinión inicial, la Varprom, la opinión final y la semilla
 	// En el segundo me anoto la evolución de las opiniones de los testigos.
-	
-	// En el cuarto me anoto la dirección del archivo de texto con la matriz de adyacencia.
+	// En el tercero me anoto la dirección del archivo de texto con la matriz de adyacencia.
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_Opiniones[355];
-	sprintf(s_Opiniones,"../Programas Python/Cambios_parametros/2D/Opiniones_N=%d_Cosd=%.1f_epsilon=%.2f_Iter=%d.file"
+	sprintf(s_Opiniones,"../Programas Python/Cambios_parametros/Saturacion_Sin_Lineal/Opiniones_N=%d_Cosd=%.1f_epsilon=%.2f_Iter=%d.file"
 		,ps_datos->i_N,ps_datos->d_Cosangulo,ps_datos->d_epsilon,i_iteracion);
 	FILE *pa_Opiniones=fopen(s_Opiniones,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_Testigos[355];
-	sprintf(s_Testigos,"../Programas Python/Cambios_parametros/2D/Testigos_N=%d_Cosd=%.1f_epsilon=%.2f_Iter=%d.file"
+	sprintf(s_Testigos,"../Programas Python/Cambios_parametros/Saturacion_Sin_Lineal/Testigos_N=%d_Cosd=%.1f_epsilon=%.2f_Iter=%d.file"
 		,ps_datos->i_N,ps_datos->d_Cosangulo,ps_datos->d_epsilon,i_iteracion);
 	FILE *pa_Testigos=fopen(s_Testigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
@@ -141,7 +140,7 @@ int main(int argc, char *argv[]){
 	FILE *pa_matriz_adyacencia=fopen(s_matriz_adyacencia,"r");
 	
 	// Puntero a la función que define mi ecuación diferencial
-	// double (*pf_Din_Sat)(ps_Red var, ps_Param par) = &Din_saturacion;
+	double (*pf_Dinamica_Saturacion)(ps_Red ps_variables, ps_Param ps_parametros) = &Dinamica_saturacion;
 	double (*pf_Dinamica_Interaccion)(ps_Red ps_variables, ps_Param ps_parametros) = &Dinamica_interes;
 	
 	//################################################################################################################################
@@ -168,7 +167,7 @@ int main(int argc, char *argv[]){
 	
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
-		// RK4(ps_red->pd_Sat, pf_Din_Sat, ps_red, ps_datos); // Itero la saturación
+		RK4(ps_red->pd_Saturacion, pf_Dinamica_Saturacion, ps_red, ps_datos); // Itero la saturación
 		RK4(ps_red->pd_Opiniones, pf_Dinamica_Interaccion, ps_red, ps_datos); // Itero los intereses
 		// Me guardo los valores de opinión de mis agentes testigo y sus valores de saturación
 		for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]);
@@ -195,7 +194,7 @@ int main(int argc, char *argv[]){
 		// Evoluciono el sistema hasta que se cumpla el criterio de corte
 		do{
 			// Evolución
-			// RK4(ps_red->pd_Sat, pf_Din_Sat, ps_red, ps_datos); // Itero la saturación
+			RK4(ps_red->pd_Saturacion, pf_Dinamica_Saturacion, ps_red, ps_datos); // Itero la saturación
 			RK4(ps_red->pd_Opiniones, pf_Dinamica_Interaccion, ps_red, ps_datos); // Itero los intereses
 			// Cálculos derivados
 			Delta_Vec_d(ps_red->pd_Opiniones,ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios],ps_red->pd_Diferencia); // Veo la diferencia entre $i_pasosprevios pasos anteriores y el actual en las opiniones
@@ -216,7 +215,7 @@ int main(int argc, char *argv[]){
 		
 		while(i_contador < ps_datos->i_Iteraciones_extras && ps_red->d_Variacion_promedio <= ps_datos->d_CritCorte ){
 			// Evolución
-			// RK4(ps_red->pd_Sat, pf_Din_Sat, ps_red, ps_datos); // Itero la saturación
+			RK4(ps_red->pd_Saturacion, pf_Dinamica_Saturacion, ps_red, ps_datos); // Itero la saturación
 			RK4(ps_red->pd_Opiniones, pf_Dinamica_Interaccion, ps_red, ps_datos); // Itero los intereses
 			// Cálculos derivados
 			Delta_Vec_d(ps_red->pd_Opiniones,ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios],ps_red->pd_Diferencia); // Veo la diferencia entre $i_pasosprevios pasos anteriores y el actual en las opiniones
@@ -257,7 +256,7 @@ int main(int argc, char *argv[]){
 	free(ps_red->pi_Adyacencia);
 	free(ps_red->pd_Opiniones);
 	free(ps_red->pd_Diferencia);
-	// free(ps_red->pd_Sat);
+	free(ps_red->pd_Saturacion);
 	free(ps_red);
 	free(ps_datos);
 	fclose(pa_Opiniones);
