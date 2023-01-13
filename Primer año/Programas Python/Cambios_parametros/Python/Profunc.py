@@ -6,10 +6,9 @@ Created on Mon Dec 19 10:04:40 2022
 @author: favio
 """
 
-import pandas as pd
+import matplotlib.pyplot as plt
 import numpy as np
-import networkx as nx
-from pathlib import Path
+import math
 import time
 import funciones as func
 
@@ -77,7 +76,7 @@ Categorias = np.array(Datos[2][:-1],dtype = "int")
 
 Epsilon = np.arange(0.5,3.1,0.1) # Estos son los valores de Epsilon graficados
 
-#----------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
 
 # Defino a ojo los valores de Kappa asociados y los voy anotando uno a uno
 
@@ -111,7 +110,7 @@ Datos_Alfa_2[23] = 3.6
 Datos_Alfa_2[24] = 3.8
 Datos_Alfa_2[25] = 4
 
-#----------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
 
 # Alfa = 4
 
@@ -144,7 +143,7 @@ Datos_Alfa_4[24] = 1.8
 Datos_Alfa_4[25] = 2.1
 
 
-#----------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
 
 # Alfa = 6
 
@@ -175,6 +174,57 @@ Datos_Alfa_6[22] = 1
 Datos_Alfa_6[23] = 1.1
 Datos_Alfa_6[24] = 1.2
 Datos_Alfa_6[25] = 1.4
+
+#------------------------------------------------------------------------------------------------------------
+
+# Teniendo los datos, ahora relizo el ajuste para obtener el exponente asociado al alfa
+# Supongo que kappa sigue la siguiente relación: K = \frac{epsilon}{alpha^r}+C
+
+Resultados = dict()
+
+for indice,Datos in enumerate([Datos_Alfa_2,Datos_Alfa_4,Datos_Alfa_6]):
+
+    Y = np.reshape(Datos, (Epsilon.shape[0],1)) # Lo transformo en un vector columna
+    
+    X = np.ones((Y.shape[0],2)) # Armo la matriz X
+    X[:,1] = Epsilon
+    
+    # Calculo los parámetros
+    
+    Resultados[(indice+1)*2] = np.matmul(np.linalg.inv(np.matmul(np.transpose(X),X)),np.matmul(np.transpose(X),Y))
+    
+    # Calculo el error
+    
+    err = math.sqrt(np.matmul(np.transpose(Y-np.matmul(X,Resultados[(indice+1)*2])),Y-np.matmul(X,Resultados[(indice+1)*2]))/Y.shape[0])
+    
+    # Calculo el valor de r
+    
+    r = -math.log(Resultados[(indice+1)*2][1])/math.log((indice+1)*2)
+    
+    print(r"El valor de r asociado al alfa={} es: {} $\pm$ {}".format((indice+1)*2, r, err))
+ 
+
+#------------------------------------------------------------------------------------------------------------
+    
+# Ploteo las curvas reales contra las curvas ajustadas
+
+plt.rcParams.update({'font.size': 32})
+plt.figure("Curva_transicion",figsize=(20,15))
+colores = ["b","g","r"]
+for indice,Y in enumerate([Datos_Alfa_2,Datos_Alfa_4,Datos_Alfa_6]):
+    plt.plot(Epsilon,Y,color = colores[indice], marker = "*", linestyle = "None" , markersize = 8)
+    
+    X = np.ones((Y.shape[0],2)) # Armo la matriz X
+    X[:,1] = Epsilon
+    
+    plt.plot(Epsilon, np.matmul(X,Resultados[(indice+1)*2]), label = r"$\alpha =$ {}".format((indice+1)*2),color = colores[indice], linewidth=4)
+plt.xlabel(r"$\epsilon$")
+plt.ylabel(r"$\kappa$")
+plt.legend()
+plt.grid(alpha = 0.5)
+plt.show()
+
+
 
 
 func.Tiempo(t0)

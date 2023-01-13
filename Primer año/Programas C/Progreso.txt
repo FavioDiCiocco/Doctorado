@@ -2979,3 +2979,33 @@ Ahí mandé a corregir eso en Oporto, eso no debería tardar tanto.
 Los siguiente que debería hacer entonces es armar tablas de valores que voy a usar para graficar las curvas
 que delimiten la región de transición. Así tengo las curvas de Kappa en función de Epsilon y alfa.
 
+------------------------------------------------------------------------------------------------
+
+13/01/2023
+
+Armé el gráfico con las tres curvas, Se ve un poco más esto que decía Pablo, vamos a ver si se puede
+hallar esta relación que él propone. Algo que me gustaría hacer es mandar a correr algunos datos más
+en la pc de Oporto, para poder observar cómo la curva se mueve entre 2,5 y 3 Epsilon para alfa = 2.
+
+Ya mandé a correr estos datos en la pc de Oporto, después veré de armar el gráfico actualizado de eso.
+
+Ahora debería ver si la idea de lo que me dijo Pablo tiene sentido. Empecemos planteando esto en el
+cuaderno.
+
+Hice el planteo en el cuaderno siguiendo lo que dijo Pablo. Grafiqué los datos y por encima de eso grafiqué
+los ajustes. Cuando terminé de hacer el ajuste me di cuenta que estaba ajustando los datos por rectas.
+Eso no va a funcionar. Así que tengo que buscar otras formas de ajustar esto y ver qué tal. 
+(También había notado que había hecho todo mal en el armado del ajuste, tema aparte).
+Cuestión, estuve pensando en que si quiero hacer el ajuste necesitaría incrementar mis datos. Voy a ver
+si el finde puedo mandar a correr más datos. Voy a necesitar aumentar en las siguientes regiones:
+.) Para los tres alfas, tengo que agregar datos para Kappa entre [0; 0,5] para Epsilon entre [0;3]
+.) Para los tres alfas, tengo que agregar datos para Kappa entre [0,5;3] para Epsilon entre [0;0,5]
+.) Para Alfa=2, tengo que agregar datos para Kappa entre [3;5], para Epsilon entre [0;0,5]
+
+Después voy a hacer un dibujo de las regiones que tengo que agregar datos, así no me queda esto en la
+cabeza y no me pierdo de nada.
+
+Querría mandarlo a correr ya, pero con Fede saturamos la pc de Oporto. Ahora queda esperar a ver cuándo
+puedo mandar más datos.
+
+Intentemos la semana que viene concentrarnos más en el laburo.
