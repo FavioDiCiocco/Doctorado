@@ -10,7 +10,7 @@ Created on Wed Nov 16 14:21:12 2022
 import pandas as pd
 import time
 import os
-import funciones2D as func
+import funciones as func
 from pathlib import Path
 
 # Importo todas las librerías que voy a usar en el programa. Estas son las que
@@ -69,8 +69,8 @@ for carp in Carpetas:
     
     # Por un lado necesito los nombres que pasaré a los títulos de los archivos
     
-    nombre_parametro_1 = "epsilon"
-    nombre_parametro_2 = "cosdelta"
+    nombre_parametro_1 = "cosdelta"
+    nombre_parametro_2 = "epsilon"
     
     # Lo otro que necesito es el nombre que pasaré a los ejes de los gráficos de las funciones
     

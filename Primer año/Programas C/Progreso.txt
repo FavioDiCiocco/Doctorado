@@ -2943,3 +2943,39 @@ hecho, hablamos sobre revisar el tema de por qué para alfa menor a 4 el sistema
 supuestamente no debería tener y también me propuso lo de ver si hay una relación entre kappa versus epsilon sobre alfa
 o alfa a la algo. Esto está mejor anotado en el cuaderno. La pregunta resulta interesante, porque estaría bueno ver
 si en verdad las tres curvas de transición que observo en realidad colapsan a una misma curva.
+
+------------------------------------------------------------------------------------------------
+
+12/01/2023
+
+Ahora mismo estoy en duda de qué datos necesito y cuáles no, así que frenemos un segundo. Tengo datos
+del modelo aplicado a 1 tópico, tengo datos del modelo en 2 tópicos y actualmente se están simulando
+datos del modelo con 2 tópicos y saturación. La implementación de la saturación la podemos dejar para
+después. Hablando con Pablo, ahora es más importante revisar el comportamiento del sistema, caracterizar
+la región de transición en función de los parámetros. Tengo dos caminos para tomar. Por un lado, podría
+revisar bajo cuáles condiciones ciertos puntos fijos tienen estabilidad y qué significa eso,
+y por el otro lado puedo hacer lo de revisar el comportamiento de Kappa en función de de alfa y epsilon.
+Voy a empezar revisando lo del punto fijo, creo que la respuesta no debe ser muy compleja.
+Después voy a bajar los gráficos hechos en Oporto sobre el caso 2D. Por último me pondré a hacer lo de
+la relación entre Kappa y Epsilon/alfa.
+
+Una primera idea interesante que se me ocurre es tomar los datos de Logistica_1D y sumarle datos para valores
+Umbral menores a 2. Quiero ver qué pasa en ese caso con el modelo. Eso ayudaría a esclarecer mi idea de
+si realmente el sistema necesita mínimamente un valor de alfa=4 para converger a los valores altos de
+interés.
+
+Ahí revisé el tema de la convergencia del sistema a diferentes valores, tiene todo el sentido, no hay nada
+mal con el código o con el comportamiento del sistema. Simplemente la interpretación no es tan simple como
+"Por encima de este valor va a 1, por debajo va a cero".
+
+Lo siguiente que voy a hacer es descargar los gráficos del sistema en el caso 2D, para poder ver el
+comportamiento del sistema. Mañana analizaré la ecuación de eso. Primero me resulta más importante
+ver el tema del kappa y lo otro ahora.
+
+Mirando los gráficos, los gráficos de Opi vs Tiempo tienen mal escritos los parámetros en los nombres.
+Fuera de eso, el gráfico de opiniones se ve interesante, hay una región de transición bien marcada.
+Ahí mandé a corregir eso en Oporto, eso no debería tardar tanto.
+
+Los siguiente que debería hacer entonces es armar tablas de valores que voy a usar para graficar las curvas
+que delimiten la región de transición. Así tengo las curvas de Kappa en función de Epsilon y alfa.
+
