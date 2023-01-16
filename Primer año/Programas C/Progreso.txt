@@ -3009,3 +3009,26 @@ Querría mandarlo a correr ya, pero con Fede saturamos la pc de Oporto. Ahora qu
 puedo mandar más datos.
 
 Intentemos la semana que viene concentrarnos más en el laburo.
+
+------------------------------------------------------------------------------------------------
+
+14/01/2023
+
+Hoy vine a la facultad, los datos siguen simulándose en la pc de Oporto, así que por ahora voy
+a dejar que eso siga su curso. Por otro lado, voy a mirar el tema de los ajustes de las curvas
+que me dijo Pablo, vamos a ver si puedo corregirlo para hacer ajustes usando una función con
+que tenga epsilon elevado a la r.
+
+Hice una priemra versión de esto, pero el ajuste da terrible. Necesito todavía lograr agregar
+un término constante que permite que las curvas arranquen de donde arranca la curva en el 
+gráfico. Se me ocurrió armar un método iterativo que permita que la ecuación se ajuste varias
+veces y vaya ajustando la ordenada al origen cada vez un poco mejor. ¿Pero pensándolo mejor, no
+es más fácil correr la curva al (0,0), ajustarla y luego volver eso a su lugar?
+Al final más fácil fue simplemente usar scipy para ajustar la curva. Lo que obtengo es que
+los valores de r obtenidos difieren bastante, siendo el primero 2,27, el segundo 2,84
+y el tercero 4,39. Los errores son tales que estos tres valores no se solapan. Me parece
+que este tema no da para más investigación,s ería un buen punto para frenar y dedicarme
+a otra cosa. Respecto de lo que Pablo me dijo que haga, me faltan algunas simulaciones
+para ver el comportamiento del sistema en función de otros parámetros. Eso lo veré ya mañana.
+Hecho eso, debería preparar una presentación sobre lo que estuve haciendo, así le muestro
+a Pablo en qué estoy y a dónde debería ir con el trabajo.

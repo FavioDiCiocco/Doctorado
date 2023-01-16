@@ -8,6 +8,7 @@ Created on Mon Dec 19 10:04:40 2022
 
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.optimize import curve_fit
 import math
 import time
 import funciones as func
@@ -177,31 +178,37 @@ Datos_Alfa_6[25] = 1.4
 
 #------------------------------------------------------------------------------------------------------------
 
+# Defino la función con la que voy a hacer el ajuste
+
+def Kappa(X,r,C,D):
+    return C*X**r+D
+
 # Teniendo los datos, ahora relizo el ajuste para obtener el exponente asociado al alfa
 # Supongo que kappa sigue la siguiente relación: K = \frac{epsilon}{alpha^r}+C
 
 Resultados = dict()
 
 for indice,Datos in enumerate([Datos_Alfa_2,Datos_Alfa_4,Datos_Alfa_6]):
-
-    Y = np.reshape(Datos, (Epsilon.shape[0],1)) # Lo transformo en un vector columna
     
-    X = np.ones((Y.shape[0],2)) # Armo la matriz X
-    X[:,1] = Epsilon
+    alfa = (indice+1)*2 # Defino alfa en base al indice
     
     # Calculo los parámetros
     
-    Resultados[(indice+1)*2] = np.matmul(np.linalg.inv(np.matmul(np.transpose(X),X)),np.matmul(np.transpose(X),Y))
+    parametros_optimos,parametros_covarianza = curve_fit(Kappa,Epsilon/alfa,Datos)
     
     # Calculo el error
     
-    err = math.sqrt(np.matmul(np.transpose(Y-np.matmul(X,Resultados[(indice+1)*2])),Y-np.matmul(X,Resultados[(indice+1)*2]))/Y.shape[0])
+    error_r = math.sqrt(parametros_covarianza[0,0])
+    error_C = math.sqrt(parametros_covarianza[1,1])
+    error_D = math.sqrt(parametros_covarianza[2,2])
     
-    # Calculo el valor de r
+    print(r"El valor de r asociado al alfa={} es: {} $\pm$ {}".format(alfa, parametros_optimos[0],error_r))
+    # print(r"El valor de C asociado al alfa={} es: {} $\pm$ {}".format(alfa, parametros_optimos[1],error_C))
+    # print(r"El valor de D asociado al alfa={} es: {} $\pm$ {}".format(alfa, parametros_optimos[2],error_D))
     
-    r = -math.log(Resultados[(indice+1)*2][1])/math.log((indice+1)*2)
+    # Guardo los valores en mi diccionario
     
-    print(r"El valor de r asociado al alfa={} es: {} $\pm$ {}".format((indice+1)*2, r, err))
+    Resultados[alfa] = parametros_optimos
  
 
 #------------------------------------------------------------------------------------------------------------
@@ -212,12 +219,14 @@ plt.rcParams.update({'font.size': 32})
 plt.figure("Curva_transicion",figsize=(20,15))
 colores = ["b","g","r"]
 for indice,Y in enumerate([Datos_Alfa_2,Datos_Alfa_4,Datos_Alfa_6]):
-    plt.plot(Epsilon,Y,color = colores[indice], marker = "*", linestyle = "None" , markersize = 8)
     
-    X = np.ones((Y.shape[0],2)) # Armo la matriz X
-    X[:,1] = Epsilon
+    alfa = (indice+1)*2 # Defino alfa en base al indice
+        
+    plt.plot(Epsilon,Y,color = colores[indice], marker = "*", linestyle = "None" , markersize = 12)
     
-    plt.plot(Epsilon, np.matmul(X,Resultados[(indice+1)*2]), label = r"$\alpha =$ {}".format((indice+1)*2),color = colores[indice], linewidth=4)
+    Y_calculado = Kappa(Epsilon/alfa,Resultados[alfa][0],Resultados[alfa][1],Resultados[alfa][2])
+    plt.plot(Epsilon, Y_calculado, label = r"$\alpha =$ {}".format(alfa),color = colores[indice], linewidth=4)
+    
 plt.xlabel(r"$\epsilon$")
 plt.ylabel(r"$\kappa$")
 plt.legend()
