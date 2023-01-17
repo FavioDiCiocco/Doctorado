@@ -171,3 +171,7 @@ en el que conviniera colocar a esta constante.
  Lo siguiente fue trabajar con dos tópicos, dejando fijo el valor de alfa y Kappa. Para
 esta fase los parámetros a variar fueron Epsilon y Cosdelta. Los datos los guardé en la
 carpeta 2D.
+ Voy a cambiarle el nombre a la carpeta 2D a 2D_Epsilon. La idea es que aparte de variar
+Cosdelta en función de Epsilon, mi idea es también variar Cosdelta en función de Kappa.
+Es decir, de esta única fase voy a armar dos fases, quizás más en el futuro, para ver
+cómo varía el estado final del sistema en función de distintos pares de parámetros.

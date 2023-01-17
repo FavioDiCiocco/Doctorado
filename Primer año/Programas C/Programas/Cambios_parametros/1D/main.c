@@ -135,10 +135,10 @@ int main(int argc, char *argv[]){
 	
 	
 	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
-	// char s_matriz_adyacencia[355];
-	// sprintf(s_matriz_adyacencia,"MARE/Random_Regulars/Random-regular_N=%d_ID=%d.file"
-		// ,ps_datos->i_N,(int) i_iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
-	// FILE *pa_matriz_adyacencia=fopen(s_matriz_adyacencia,"r");
+	char s_matriz_adyacencia[355];
+	sprintf(s_matriz_adyacencia,"MARE/Random_Regulars/Random-regular_N=%d_ID=%d.file"
+		,ps_datos->i_N,(int) i_iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
+	FILE *pa_matriz_adyacencia=fopen(s_matriz_adyacencia,"r");
 	
 	// Puntero a la función que define mi ecuación diferencial
 	// double (*pf_Din_Sat)(ps_Red var, ps_Param par) = &Din_saturacion;
@@ -150,10 +150,10 @@ int main(int argc, char *argv[]){
 	
 	GenerarOpi(ps_red); // Esto me inicializa mi matriz de opiniones 
 	GenerarAng(ps_red, ps_datos); // Esto me inicializa mi matriz de superposición, definiendo el solapamiento entre tópicos.
-	GenerarAdy_Conectada(ps_red, ps_datos); // Esto me produce una matriz de adyacencia completamente conectada
+	// GenerarAdy_Conectada(ps_red, ps_datos); // Esto me produce una matriz de adyacencia completamente conectada
 	
-	// Lectura_Adyacencia(ps_red->pi_Adyacencia, pa_matriz_adyacencia); // Leo el archivo de la red estática y lo traslado a la matriz de adyacencia
-	// fclose(pa_matriz_adyacencia); // Aprovecho y cierro el puntero al archivo de la matriz de adyacencia
+	Lectura_Adyacencia(ps_red->pi_Adyacencia, pa_matriz_adyacencia); // Leo el archivo de la red estática y lo traslado a la matriz de adyacencia
+	fclose(pa_matriz_adyacencia); // Aprovecho y cierro el puntero al archivo de la matriz de adyacencia
 	
 	
 	//################################################################################################################################
@@ -267,7 +267,7 @@ int main(int argc, char *argv[]){
 	// Finalmente imprimo el tiempo que tarde en ejecutar todo el programa
 	time(&tt_fin);
 	f_tardanza = tt_fin-tt_prin;
-	sleep(1);
+	// sleep(1);
 	printf("Tarde %.1f segundos \n",f_tardanza);
 	
 	return 0;

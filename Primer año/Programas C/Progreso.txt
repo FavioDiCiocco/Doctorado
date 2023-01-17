@@ -2979,6 +2979,7 @@ Ahí mandé a corregir eso en Oporto, eso no debería tardar tanto.
 Los siguiente que debería hacer entonces es armar tablas de valores que voy a usar para graficar las curvas
 que delimiten la región de transición. Así tengo las curvas de Kappa en función de Epsilon y alfa.
 
+
 ------------------------------------------------------------------------------------------------
 
 13/01/2023
@@ -3032,3 +3033,49 @@ a otra cosa. Respecto de lo que Pablo me dijo que haga, me faltan algunas simula
 para ver el comportamiento del sistema en función de otros parámetros. Eso lo veré ya mañana.
 Hecho eso, debería preparar una presentación sobre lo que estuve haciendo, así le muestro
 a Pablo en qué estoy y a dónde debería ir con el trabajo.
+
+------------------------------------------------------------------------------------------------
+
+15/01/2023
+
+Al final el plan de expandir la región de simulado para el caso unidimensional no fue necesario,
+terminé ajustando los datos usando scipy curve fit, las curvas se ajustaron re bien, los valores
+de r dieron todos distintos.
+
+Lo otro que debería mandar a correr es lo que me dijo Pablo de ver cómo se comporta el sistema
+si varío los otros parámetros. Primero le mandaré un mensaje a Fede para ver si él quiere mandar
+algo más a correr. Me dijo Fede que use Oporto tranca.
+
+Todavía hay una última cosa corriendo del caso 1D. No puedo mandar a correr el caso 2D hasta que
+se termine esa simulación. Si lo hiciera, modificaría el archivo .e y armaría bardo. Lo que creo
+que es mejor es que suba los archivos de src que voy a necesitar para empezar a correr el sistema
+con los otros parámetros.
+
+Bueno, acabo de ver por qué las simulaciones de Oporto estaban tardando tanto. No me di cuenta
+y mandé a correr los programas con redes completamente conectadas. Interesantemente, eso hizo
+que el código tarde diez veces más. Razonable, las redes pasan de tener agentes de grado 4 (estoy
+usando redes Random Regulars), a redes con agentes de grado 1000. Eso es 225 veces más de cuentas
+para cada agente. Interesante por otro lado, eso sólo aumenta el código a tardar 10 veces más, no
+225 veces. Así que mandar a correr el código para el caso 2D va a tener que espera. Lo bueno es
+que esto debería tardar un día como mucho, considerando que va 10 veces más rápido.
+
+Voy a subir el código de Cambios_parametros 2D a Oporto y actualizar las carpetas, para tener
+diferenciado el caso de Cosdelta en función de Epsilon y el caso en función de Kappa.
+
+Usé Geogebra para comparar qué es lo que pasa con el modelo para distintos valores de Kappa,
+pude ver que si muevo Kappa entre [0,1;2] voy a observar que el sistema pasa de tender a 0
+hasta tender al valor Kappa. Lo que ocurre es que Kappa va levantando la curva y haciendo
+que pase de cortar sólo abajo a cortar en tres puntos y finalmente corta sólo arriba.
+
+Subí el código para que el programa de la etapa Cambios_parametros para que corra la fase 2D
+en el caso en que varío cos(delta) en función de Kappa. Ya definí la región de variación,
+armé la carpeta dentro de Programas Python y también la carpeta para guardar los gráficos.
+Ahora sólo queda esperar que termine de simular los datos para el caso 1D. Cuando eso termine,
+puedo mandar a hacer las simulaciones del caso 2D mientras por otro lado mando a hacer el gráfico
+para el caso de 1D con Alfa=2. Así que cuando se termine la simulación de los datos 1D, simplemente
+mando el Metainstanciación de nuevo y de ahí arranco con los datos de 2D.
+
+Ahí anoté unas ideas de qué hacer con la presentación. También revisé la ecuación dinámica para
+estudiar el comportamiento del sistema en el caso de dos tópicos. Haciendo las aproximaciones
+de siempre simplemente se ve que aparece un nuevo término (1+cosdelta) afectando a lo que 
+ya se veía antes.
