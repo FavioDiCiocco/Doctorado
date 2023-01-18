@@ -3013,7 +3013,7 @@ Intentemos la semana que viene concentrarnos más en el laburo.
 
 ------------------------------------------------------------------------------------------------
 
-14/01/2023
+16/01/2023
 
 Hoy vine a la facultad, los datos siguen simulándose en la pc de Oporto, así que por ahora voy
 a dejar que eso siga su curso. Por otro lado, voy a mirar el tema de los ajustes de las curvas
@@ -3036,7 +3036,7 @@ a Pablo en qué estoy y a dónde debería ir con el trabajo.
 
 ------------------------------------------------------------------------------------------------
 
-15/01/2023
+17/01/2023
 
 Al final el plan de expandir la región de simulado para el caso unidimensional no fue necesario,
 terminé ajustando los datos usando scipy curve fit, las curvas se ajustaron re bien, los valores
@@ -3079,3 +3079,16 @@ Ahí anoté unas ideas de qué hacer con la presentación. También revisé la e
 estudiar el comportamiento del sistema en el caso de dos tópicos. Haciendo las aproximaciones
 de siempre simplemente se ve que aparece un nuevo término (1+cosdelta) afectando a lo que 
 ya se veía antes.
+
+------------------------------------------------------------------------------------------------
+
+18/01/2023
+
+En la mañanamandé a correr los datos del caso 2D a Oporto, armé el gráfico del caso 1D con alfa=2
+y después me puse a trabajar en el powerpoint para resumir lo que tengo hecho hasta ahora. Sólo
+Dios sabe qué haré en las próximas dos semanas cuando tenga eso terminado. Hice las primeras tres
+diapositivas.
+
+A la tarde me dediqué a continuar pasando las ecuaciones importantes de la materia de Mininni al
+cuadernos de la práctica+final. Espero que hacer esto valga la pena, como para dejar resumido
+qué ecuaciones corresponden a cuál tema.
