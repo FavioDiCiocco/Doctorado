@@ -3092,3 +3092,14 @@ diapositivas.
 A la tarde me dediqué a continuar pasando las ecuaciones importantes de la materia de Mininni al
 cuadernos de la práctica+final. Espero que hacer esto valga la pena, como para dejar resumido
 qué ecuaciones corresponden a cuál tema.
+
+------------------------------------------------------------------------------------------------
+
+19/01/2023
+
+Igual que ayer, en la mañana estuve avanzando con la presentación. Agregué la parte donde analizo
+la función logística contra la lineal al ir variando los parámetros. También mandé a hacer
+los gráficos de promedio de interes para el caso 1D con Alfa=2 y para el caso 2D_Kappa.
+
+En la tarde seguí laburando en lo de Mininni. A este ritmo terminaré esto para fin de febrero.
+Espero que haya un avance con esto.
