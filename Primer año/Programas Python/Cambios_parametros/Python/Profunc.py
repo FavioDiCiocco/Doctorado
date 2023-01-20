@@ -102,14 +102,14 @@ Datos_Alfa_2[14] = 1.75
 Datos_Alfa_2[15] = 2
 Datos_Alfa_2[16] = 2.1
 Datos_Alfa_2[17] = 2.2
-Datos_Alfa_2[18] = 2.6
-Datos_Alfa_2[19] = 2.8
-Datos_Alfa_2[20] = 3
-Datos_Alfa_2[21] = 3.2
-Datos_Alfa_2[22] = 3.4
-Datos_Alfa_2[23] = 3.6
+Datos_Alfa_2[18] = 2.4
+Datos_Alfa_2[19] = 2.6
+Datos_Alfa_2[20] = 2.8
+Datos_Alfa_2[21] = 3
+Datos_Alfa_2[22] = 3.2
+Datos_Alfa_2[23] = 3.5
 Datos_Alfa_2[24] = 3.8
-Datos_Alfa_2[25] = 4
+Datos_Alfa_2[25] = 4.2
 
 #------------------------------------------------------------------------------------------------------------
 

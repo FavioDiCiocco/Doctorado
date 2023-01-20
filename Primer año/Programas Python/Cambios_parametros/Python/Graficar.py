@@ -22,7 +22,7 @@ T=1 # Defino el número de tópicos
 Etapa = Path("Cambios_parametros") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["2D"]
+Carpetas = ["Alfa=4"]
 
 for carp in Carpetas:
     
@@ -69,12 +69,12 @@ for carp in Carpetas:
     
     # Por un lado necesito los nombres que pasaré a los títulos de los archivos
     
-    nombre_parametro_1 = "cosdelta"
+    nombre_parametro_1 = "kappa"
     nombre_parametro_2 = "epsilon"
     
     # Lo otro que necesito es el nombre que pasaré a los ejes de los gráficos de las funciones
     
-    titulo_parametro_1 = "cos(\delta)"
+    titulo_parametro_1 = "\kappa"
     titulo_parametro_2 = "\epsilon"
     
     #----------------------------------------------------------------------------------------------

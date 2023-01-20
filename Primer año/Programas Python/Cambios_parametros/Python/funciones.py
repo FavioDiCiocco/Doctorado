@@ -212,8 +212,8 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2,nombre_parametro_1="parametro1",nombr
     # simplemente elegir tres valores de cada array, el primero, el del medio y el último.
     
     Ns = np.unique(DF["n"])
-    Array_parametro_1 = np.unique(DF["parametro_1"])[::math.floor((len(np.unique(DF["parametro_1"]))-1)/2)]
-    Array_parametro_2 = np.unique(DF["parametro_2"])[::math.floor((len(np.unique(DF["parametro_2"]))-1)/2)]
+    Array_parametro_1 = np.unique(DF["parametro_1"])[[0,math.floor(len(np.unique(DF["parametro_1"]))/2),len(np.unique(DF["parametro_1"]))-1]]
+    Array_parametro_2 = np.unique(DF["parametro_2"])[[0,math.floor(len(np.unique(DF["parametro_2"]))/2),len(np.unique(DF["parametro_2"]))-1]]
     
     Tupla_total = [(n,parametro_1,parametro_2) for n in Ns
                    for parametro_1 in Array_parametro_1

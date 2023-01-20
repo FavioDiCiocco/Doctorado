@@ -3103,3 +3103,24 @@ los gráficos de promedio de interes para el caso 1D con Alfa=2 y para el caso 2
 
 En la tarde seguí laburando en lo de Mininni. A este ritmo terminaré esto para fin de febrero.
 Espero que haya un avance con esto.
+
+------------------------------------------------------------------------------------------------
+
+20/01/2023
+
+Hoy fui a laburar a la facultad. Estuve todo el día en el trabajo del powerpoint. Ya casi termino,
+tengo que agregar los gráficos del caso 2D, alguna nota al respecto y listo con eso.
+Me distraje un poco en el laburo porque regué las plantas de Sofi y al parecer le puse mucha agua
+a una de las macetas. Eso hizo que estuviera constantemente chorreando agua, un bardo para limpiarlo.
+También estuve re olvidadizo y terminé entrando y saliendo cada cinco minutos de la oficina.
+
+Al armar la presentación estuve un rato corrigiendo algunos gráficos, y dándole unos últimos retoques
+que hicieron que tardara más de lo planeado en algunas cosas. Una paja, pero siempre es así.
+Cuestión, el lunes agrego el tema de los gráficos del caso 2D, reviso que no haya grandes saltos en
+lo planteado, reviso si la otra presentación sirve, y estaría. La gran pregunta es: ¿Y después qué?
+
+Con Pablo hablamos de querer incorporar un campo externo al modelo. No sé exactamente qué está pensando
+Pablo, y no sé cómo sería eso en esta situación. Ahora mismo no sé a dónde correr, y me jodería mucho
+pasarme estas dos semanas en duda. Tengo que hacer algo. No me puedo comunicar con pablo, así que
+habrá que decidir por mi cuenta qué hacer. Una cosa es segura difícilmente lo que yo decida sea lo que
+Pablo quiera, así que haga lo que haga, tengo que pensarlo y justificarlo bien.
