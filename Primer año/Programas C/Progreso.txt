@@ -3124,3 +3124,34 @@ Pablo, y no sé cómo sería eso en esta situación. Ahora mismo no sé a dónde
 pasarme estas dos semanas en duda. Tengo que hacer algo. No me puedo comunicar con pablo, así que
 habrá que decidir por mi cuenta qué hacer. Una cosa es segura difícilmente lo que yo decida sea lo que
 Pablo quiera, así que haga lo que haga, tengo que pensarlo y justificarlo bien.
+
+------------------------------------------------------------------------------------------------
+
+22/01/2023
+
+Hoy terminé de armar la presentación en casa. No lo veo perfecto, pero no se me ocurre qué otra cosa 
+agregar. Ahora que tengo la presentación hecha, puedo ponerme a avanzar el trabajo. Acordate que la
+idea es llegar a la TREFEMAC con algo presentado. Por lo que vi, hasta el 17/03 se aceptan inscripciones
+y presentación de resúmenes.
+
+Ahora bien, ¿qué es lo que me queda hacer? Vuelvo al problema de antes. El objetivo es armar un modelo que
+pueda recibir un campo externo y logre en base a eso modificar las opiniones de los agentes.
+Por otro lado también hablamos de agregar el término de saturación, pero ese no parece resultar tan
+importante por ahora, es algo para sumar a la dinámica y guiar todos los estados finales del sistema a
+cero.
+El problema de agregar un campo externo es que no tengo ninguna idea de cómo va a ser ese campo, entonces
+ni siquiera sé por donde arrancar para armar el código. Por otro lado, el sistema de dos tópicos ya lo 
+exploré en función de los parámetros Kappa y Epsilon. Observé que el sistema tiene un comportamiento
+no lineal respecto de la región de convergencia al máximo de interés en función de estos parámetros.
+Dicho eso, no se me ocurre que haya mucho más por revisar de eso.
+Revisado el espacio de parámetros, no se me ocurre que haya mucho más por hacer. En la tesis el trabajo
+giraba en torno a revisar el espacio de parámetros. Lo mismo hacía Baumann. Y luego de revisar el espacio
+de parámetros, se ponía a comparar con datos. Lo hizo en el estudio del modelo de un tópico así como en
+el modelo de múltiples tópicos.
+Mi problema es que yo no tengo datos, tengo este modelo para hacer simulaciones. Honestamente creo que
+desviar mi atención a otro tema en este momento sería un problema porque si queremos tener algo para
+presentar en la TREFEMAC, necesito concentrarme en esto y no en modelos de supernodos o cosas como
+olas de interés.
+
+Estoy viendo papers, voy a hacer lo que me dijo Walter e intentar ponerme a leer papers por dos o tres
+días, a ver si encuentro algo útil.
