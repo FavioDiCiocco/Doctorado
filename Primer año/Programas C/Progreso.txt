@@ -3155,3 +3155,33 @@ olas de interés.
 
 Estoy viendo papers, voy a hacer lo que me dijo Walter e intentar ponerme a leer papers por dos o tres
 días, a ver si encuentro algo útil.
+
+------------------------------------------------------------------------------------------------
+
+23/01/2023
+
+En la mañana hice una reunión con Lupi por el tema del laburo, para contarle en dónde estoy y cómo
+sigue esto. La reunión fue bastante productiva, Lupi tiene unas buenas ideas de qué hacer y me
+propuso otras formas de analizar lo que tengo o de plantearlo de otras formas. Entre lo que me
+dijo para hacer, hay unas ideas que me parecen valen bastante la pena.
+
+.) Armar un gráfico del valor del punto fijo de la función en función de los parámetros. Ver
+cómo a medida que varía ciertos parámetros cambia el punto fijo del sistema. La idea sería ver
+la transiciión transcrítica que tiene el sistema en función de los parámetros.
+.) Otra idea sería variar los gráficos usando otras condiciones iniciales. Sería interesante
+ver eso y si eso me corre las regiones de transición.
+.) Podría probar reajustar la curva del Kappa en función de epsilon utilizando funciones exponenciales
+en vez de funciones polinómicas. Tiene sentido si querés despejar Kappa en función de epsilon para los
+puntos fijos.
+
+También anotamos ideas de posibles trabajos, como el del modelo con intereses "positivos" o "negativos"
+respecto a algún tópico. La idea es que el interés en los tópicos puede surgir no sólo porque me
+guste el tema, sino que también puede ser porque me indignen o molesten, entonces querría discutirlos o
+atacarlos.
+Y me dijo de una biblioteca de Python que se usa para armar páginas Web llamada Shiny. La idea es como
+que interactúa con código Java, o algo así.
+
+Ya hice una modificación al código para intentar ajustar los datos de la curva de transición de Kappa
+en función de epsilon usando una función exponencial. La cosa da bastante mejor. Quizás podría dar 
+algo que se solape si tomara algunos datos más para el ajuste, si pudiera determinar mejor esa
+transición. No hay que olvidar que está medida a ojo.

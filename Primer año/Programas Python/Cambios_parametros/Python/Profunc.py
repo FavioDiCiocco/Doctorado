@@ -178,11 +178,6 @@ Datos_Alfa_6[25] = 1.4
 
 #------------------------------------------------------------------------------------------------------------
 
-# Defino la función con la que voy a hacer el ajuste
-
-def Kappa(X,r,C,D):
-    return C*X**r+D
-
 # Teniendo los datos, ahora relizo el ajuste para obtener el exponente asociado al alfa
 # Supongo que kappa sigue la siguiente relación: K = \frac{epsilon}{alpha^r}+C
 
@@ -192,17 +187,20 @@ for indice,Datos in enumerate([Datos_Alfa_2,Datos_Alfa_4,Datos_Alfa_6]):
     
     alfa = (indice+1)*2 # Defino alfa en base al indice
     
+    # Defino la función con la que voy a hacer el ajuste
+
+    def Kappa(X,C):
+        return C*(1+math.e**(-alfa*C+X))
+    
     # Calculo los parámetros
     
-    parametros_optimos,parametros_covarianza = curve_fit(Kappa,Epsilon/alfa,Datos)
+    parametros_optimos,parametros_covarianza = curve_fit(Kappa,Epsilon,Datos)
     
     # Calculo el error
     
-    error_r = math.sqrt(parametros_covarianza[0,0])
-    error_C = math.sqrt(parametros_covarianza[1,1])
-    error_D = math.sqrt(parametros_covarianza[2,2])
+    error_C = math.sqrt(parametros_covarianza[0,0])
     
-    print(r"El valor de r asociado al alfa={} es: {} $\pm$ {}".format(alfa, parametros_optimos[0],error_r))
+    print(r"El valor de C asociado al alfa={} es: {} $\pm$ {}".format(alfa, parametros_optimos[0],error_C))
     # print(r"El valor de C asociado al alfa={} es: {} $\pm$ {}".format(alfa, parametros_optimos[1],error_C))
     # print(r"El valor de D asociado al alfa={} es: {} $\pm$ {}".format(alfa, parametros_optimos[2],error_D))
     
@@ -224,7 +222,12 @@ for indice,Y in enumerate([Datos_Alfa_2,Datos_Alfa_4,Datos_Alfa_6]):
         
     plt.plot(Epsilon,Y,color = colores[indice], marker = "*", linestyle = "None" , markersize = 12)
     
-    Y_calculado = Kappa(Epsilon/alfa,Resultados[alfa][0],Resultados[alfa][1],Resultados[alfa][2])
+    # Defino la función con la que voy a hacer el ajuste
+
+    def Kappa(X,C):
+        return C*(1+math.e**(-alfa*C+X))
+    
+    Y_calculado = Kappa(Epsilon,Resultados[alfa][0])
     plt.plot(Epsilon, Y_calculado, label = r"$\alpha =$ {}".format(alfa),color = colores[indice], linewidth=4)
     
 plt.xlabel(r"$\epsilon$")
@@ -232,6 +235,7 @@ plt.ylabel(r"$\kappa$")
 plt.legend()
 plt.grid(alpha = 0.5)
 plt.show()
+
 
 
 
