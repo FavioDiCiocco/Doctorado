@@ -3127,7 +3127,7 @@ Pablo quiera, así que haga lo que haga, tengo que pensarlo y justificarlo bien.
 
 ------------------------------------------------------------------------------------------------
 
-22/01/2023
+23/01/2023
 
 Hoy terminé de armar la presentación en casa. No lo veo perfecto, pero no se me ocurre qué otra cosa 
 agregar. Ahora que tengo la presentación hecha, puedo ponerme a avanzar el trabajo. Acordate que la
@@ -3158,7 +3158,7 @@ días, a ver si encuentro algo útil.
 
 ------------------------------------------------------------------------------------------------
 
-23/01/2023
+24/01/2023
 
 En la mañana hice una reunión con Lupi por el tema del laburo, para contarle en dónde estoy y cómo
 sigue esto. La reunión fue bastante productiva, Lupi tiene unas buenas ideas de qué hacer y me
@@ -3167,7 +3167,7 @@ dijo para hacer, hay unas ideas que me parecen valen bastante la pena.
 
 .) Armar un gráfico del valor del punto fijo de la función en función de los parámetros. Ver
 cómo a medida que varía ciertos parámetros cambia el punto fijo del sistema. La idea sería ver
-la transiciión transcrítica que tiene el sistema en función de los parámetros.
+la transición transcrítica que tiene el sistema en función de los parámetros.
 .) Otra idea sería variar los gráficos usando otras condiciones iniciales. Sería interesante
 ver eso y si eso me corre las regiones de transición.
 .) Podría probar reajustar la curva del Kappa en función de epsilon utilizando funciones exponenciales
@@ -3185,3 +3185,44 @@ Ya hice una modificación al código para intentar ajustar los datos de la curva
 en función de epsilon usando una función exponencial. La cosa da bastante mejor. Quizás podría dar 
 algo que se solape si tomara algunos datos más para el ajuste, si pudiera determinar mejor esa
 transición. No hay que olvidar que está medida a ojo.
+
+------------------------------------------------------------------------------------------------
+
+25/01/2023
+
+Hoy estuve trabajando en casa y me dediqué todo el día a avanzar en la preparación del final con
+Mininni. Estos días vengo sintiendo un fuerte cansancio físico, me pregunto de dónde viene. Creo
+estar durmiendo bien.
+
+------------------------------------------------------------------------------------------------
+
+26/01/2023
+
+Hoy sigo trabajando desde casa, me pondré con cosas del trabajo de tesis. A la tarde tengo que ir
+a hacerme un estudio, así que hoy me toca trabajar medio dia nomás.
+
+Ahora que lo vuelvo a mirar, creo que lo de reajustar las curvas de Kappa con exponenciales en
+función de Epsilon creo que no da tan bien. Me parece que da bastante mal si considero que el
+valor ajustado es el valor de opinión promedio al cuál tiende el sistema en esa región.
+
+Estuve pensando lo de graficar el punto fijo del sistema en función de los parámetros, cosa de
+observar claramente cuándo se produce la transición transcrítica. La idea es tomar el valor promedio
+de los intereses finales de todos los agentes. Esto es asumiendo que todos los agentes convergen
+al mismo punto fijo en cada simulación. Luego, lo que haré es ir ubicando es valor promedio de
+la simulación en cada punto (parametro_1, parametro_2). Lo interesante es que tengo que
+ver cómo graficar más de un valor en cada punto. 
+ También estaría bueno hacer un chequeo rápido y ver que las opiniones van más o menos a los
+mismos lugares. Aunque eso también lo tenía visto con los histogramas ahora que lo recuerdo.
+ Entonces el plan es:
+.) Armar una nueva etapa que sea Condiciones_iniciales_variables
+.) Modificar el código para esta nueva etapa, agregando una variable que modifique la región de
+valores iniciales de los intereses. Creo que con armar una región pequeña y variarla a lo largo de
+toda la región del [0,Kappa] alcanza, creo que no es necesario aparte de esto tomar regiones de tamaños
+variables.
+.) También tengo que correctamente considerar si mis simulaciones van a variar de a 2 parámetros o de
+a más. No sé si podría poner todas las simulaciones en una misma fase o no.
+.) Modificar las funciones graficadoras de Python, entendiendo que ahora no voy a tener dos parámetros
+nomás para graficar. Aunque como voy a graficar en 3D, creo que voy a tener quer armar funciones nuevas
+directamente.
+
+Tengo trabajo para hacer, y esto me parece re interesante. Mañana le seguimos dando.
