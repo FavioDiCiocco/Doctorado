@@ -3226,3 +3226,44 @@ nomás para graficar. Aunque como voy a graficar en 3D, creo que voy a tener que
 directamente.
 
 Tengo trabajo para hacer, y esto me parece re interesante. Mañana le seguimos dando.
+
+------------------------------------------------------------------------------------------------
+
+27/01/2023
+
+Voy a arrancar armando la nueva etapa. Para eso necesito ponerle un nombre que se entienda. Podría
+llamarlo simplemente Cond_in. También podría llamarl CIV. Mi problema con eso es que eventualmente 
+lo voy a olvidar. CI_variables creo que sería mejor. Vamos con eso.
+
+Empecemos armando las carpetas y cambiando documentación. Guardé los archivos de Cambios_parametros 2D.
+Modifiqué el main para que acepte input para los tres parámetros, aparte de la iteración de la simulación.
+Entonces en una misma carpeta voy a tener los datos habiendo variado Cosdelta, Kappa y Epsilon. Mi duda
+ahora es si debería unicamente guardar los valores finales de interés o si necesito los valores de testigos.
+Considero que los testigos no los necesito, porque al final sólo me interesan los estados finales, no cómo
+se llegan a esos estados. Si mi duda es si todos los agentes convergen al mismo valor de interés, puedo
+usar los datos finales de interés para ver dónde quedan ubicados los datos de interés en el espacio de
+tópicos. También podría mirar las desviaciones estándar. O armar histogramas. Cuestión que creo que
+para esto puedo deshacerme de los datos de Testigos. Lo cual es bueno para reducir tiempos de simulación
+y espacio ocupado. Me encargué de comentar todo lo relacionado con los testigos.
+ Estoy usando el i_iteracion para ir moviendo la región en la cual distribuyo inicialmente las opiniones.
+Lo que hago es tomar el resto de i_iteracion/10 y usar eso para separar la región [0,1] en 10 pedazos
+de 0,1. Al mismo tiempo, el i_iteracion define la red de Random Regulars que uso para la matriz de
+adyacencia. Entonces, la idea es que tomo 11 redes random regulars distintas y las voy ciclando entre
+mis 10 regiones. De esta forma, si realizo unas 110 iteraciones de mi sistema, consigo que cada región
+inicial del espacio de interés sea aplicada sobre cada una de las 11 redes Random regular.
+ Para que las condiciones iniciales se distribuyeran correctamente en una región que va desde 0
+hasta Kappa, tuve que modificar la función que asigna los intereses iniciales de forma de que reciba
+un int que sea un derivado de i_iteracion y que reciba el valor de kappa
+
+Ahí mandé a correr esto en casa, tardó 19 segundos. Y un poco menos también. Revisé las condiciones iniciales
+y están bien resueltas, lo mismo hice con los intereses finales y el sistema converge correctamente por lo
+que se ve. Así que puedo ya mandar esto a correr en Oporto. Si es que nadie lo está usando.
+Estuve mirando mis archivos de simulaciones realizadas en Cambios_parametros. El Kappa lo voy a variar entre
+[0,5;2], Epsilon entre [1,5;3,5] y Cosdelta obviamente entre [0;1]. En total usaré 110 iteraciones, o el número
+más cercano que pueda conseguir. La idea es la siguiente, recorrer 16 valores de Kappa, 21 de Epsilon, 11 de 
+Cosdelta y 6 iteraciones por cada hilo. Haciendo cuentas, esto va a tomar básicamente 9 días. Así que lo mando
+ahora y hasta el 06/02 no voy a tener noticias de esto. Para entonces tengo que tener preparado el código cosa
+de levantar los datos y armar lo gráficos de una. Trabajaré en el código de Python para eso.
+
+Ya mandé a correr los datos. Lo único que me olvidé es de corregir los archivos de salida en los cuales anoto
+lo que voy printeando que me sirve para saber si hubo algún error o en qué parte van las simulaciones.

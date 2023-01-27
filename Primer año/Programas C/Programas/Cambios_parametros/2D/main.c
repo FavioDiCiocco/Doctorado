@@ -34,7 +34,7 @@ int main(int argc, char *argv[]){
 	// Defino los parámetros de mi modelo. Esto va desde número de agentes hasta el paso temporal de integración.
 	// Primero defino los parámetros que requieren un input.
 	ps_datos->i_N = strtol(argv[1],NULL,10); // Cantidad de agentes en el modelo
-	ps_datos->d_epsilon = strtof(argv[2],NULL); // Este es el umbral que determina si el interés del vecino puede generarme más interés.
+	ps_datos->d_kappa = strtof(argv[2],NULL); // Esta amplitud regula la relación entre el término lineal y el término logístico
 	ps_datos->d_Cosangulo = strtof(argv[3],NULL); // Este es el coseno de Delta que define la relación entre tópicos.
 	int i_iteracion = strtol(argv[4],NULL,10); // Número de instancia de la simulación.
 	
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]){
 	ps_datos->i_T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
 	ps_datos->i_Iteraciones_extras = 40; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	ps_datos->i_pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
-	ps_datos->d_kappa = 1; // Esta amplitud regula la relación entre el término lineal y el término logístico
+	ps_datos->d_epsilon = 2.5; // Este es el umbral que determina si el interés del vecino puede generarme más interés.
 	ps_datos->d_alfa = 4; // Ex-Controversialidad de los tópicos
 	ps_datos->d_dt = 0.01; // Paso temporal de iteración del sistema
 	ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
@@ -117,14 +117,14 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_Opiniones[355];
-	sprintf(s_Opiniones,"../Programas Python/Cambios_parametros/2D/Opiniones_N=%d_Cosd=%.1f_epsilon=%.2f_Iter=%d.file"
-		,ps_datos->i_N,ps_datos->d_Cosangulo,ps_datos->d_epsilon,i_iteracion);
+	sprintf(s_Opiniones,"../Programas Python/Cambios_parametros/2D_Kappa/Opiniones_N=%d_Cosd=%.2f_kappa=%.2f_Iter=%d.file"
+		,ps_datos->i_N,ps_datos->d_Cosangulo,ps_datos->d_kappa,i_iteracion);
 	FILE *pa_Opiniones=fopen(s_Opiniones,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_Testigos[355];
-	sprintf(s_Testigos,"../Programas Python/Cambios_parametros/2D/Testigos_N=%d_Cosd=%.1f_epsilon=%.2f_Iter=%d.file"
-		,ps_datos->i_N,ps_datos->d_Cosangulo,ps_datos->d_epsilon,i_iteracion);
+	sprintf(s_Testigos,"../Programas Python/Cambios_parametros/2D_Kappa/Testigos_N=%d_Cosd=%.2f_kappa=%.2f_Iter=%d.file"
+		,ps_datos->i_N,ps_datos->d_Cosangulo,ps_datos->d_kappa,i_iteracion);
 	FILE *pa_Testigos=fopen(s_Testigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
