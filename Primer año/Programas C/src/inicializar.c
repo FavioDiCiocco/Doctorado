@@ -16,7 +16,7 @@ int GenerarOpi(ps_Red ps_variable, int i_region, double d_kappa){
 	i_C = (int) ps_variable->pd_Opiniones[1];
 	
 	// Inicializo la "matriz" de opiniones de mis agentes.
-	for(register int i_i=0;i_i<i_F*i_C;i_i++) ps_variable->pd_Opiniones[i_i+2] = (Random()+i_region)*0.1*d_kappa;
+	for(register int i_i=0;i_i<i_F*i_C;i_i++) ps_variable->pd_Opiniones[i_i+2] = (Random()+i_region)*0.25*d_kappa;
 	return 0;
 }
 

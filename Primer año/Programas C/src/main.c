@@ -137,7 +137,7 @@ int main(int argc, char *argv[]){
 	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
 	char s_matriz_adyacencia[355];
 	sprintf(s_matriz_adyacencia,"MARE/Random_Regulars/Random-regular_N=%d_ID=%d.file"
-		,ps_datos->i_N,(int) i_iteracion%11); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
+		,ps_datos->i_N,(int) i_iteracion%5); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
 	FILE *pa_matriz_adyacencia=fopen(s_matriz_adyacencia,"r");
 	
 	// Puntero a la función que define mi ecuación diferencial
@@ -148,7 +148,7 @@ int main(int argc, char *argv[]){
 	
 	// Genero los datos de las matrices de mi sistema
 	
-	GenerarOpi(ps_red, (int) i_iteracion%10, ps_datos->d_kappa); // Esto me inicializa mi matriz de opiniones 
+	GenerarOpi(ps_red, (int) i_iteracion%4, ps_datos->d_kappa); // Esto me inicializa mi matriz de opiniones 
 	GenerarAng(ps_red, ps_datos); // Esto me inicializa mi matriz de superposición, definiendo el solapamiento entre tópicos.
 	// GenerarAdy_Conectada(ps_red, ps_datos); // Esto me produce una matriz de adyacencia completamente conectada
 	

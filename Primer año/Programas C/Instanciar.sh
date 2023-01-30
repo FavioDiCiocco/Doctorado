@@ -14,23 +14,26 @@ echo "El ID del script es $$"
 # Voy a Hardcodear algunos Arrays
 
 Arr_Agentes=(1000)
-# Arr_Lambdas=(0.001 0.002 0.003 0.004 0.005 0.006 0.007 0.01 0.015 0.02 0.025 0.03 0.04 0.05 0.06 0.07 0.1 0.15 0.2 0.25 0.3 0.4 0.5 0.6 0.7 1)
-Arr_Epsilons=(0.5 0.75 1 1.25 1.5 1.75 2)
 Arr_Cosenos=(0 0.2 0.4 0.6 0.8 1)
+Arr_Kappas=(0.5 0.7 0.9 1.1 1.3 1.5)
+Arr_Epsilons=(1.5 1.9 2.3 2.7 3.1 3.5)
 
 
 if [ -z $decision ]
 then
 	for N in ${Arr_Agentes[@]}
 	do
-		for iteracion in {0..5}
+		for iteracion in {15..19}
 		do
-			for Epsilon in ${Arr_Epsilons[@]}
+			for Coseno in ${Arr_Cosenos[@]}
 			do
-				for Coseno in ${Arr_Cosenos[@]}
+				for Kappa in ${Arr_Kappas[@]}
 				do
-					echo Epsilon = $Epsilon, Coseno = $Coseno
-					./$1.e $N $Epsilon $Coseno $iteracion
+					for Epsilon in ${Arr_Epsilons[@]}
+					do
+						echo Coseno = $Coseno, Kappa = $Kappa, Epsilon = $Epsilon 
+						./$1.e $N $Coseno $Kappa $Epsilon $iteracion
+					done
 				done
 			done
 			echo Complete $iteracion simulaciones totales

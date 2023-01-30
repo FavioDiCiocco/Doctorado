@@ -199,6 +199,7 @@ def MaxProm_vs_olvido(DF,path,carpeta,T=2):
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close("Promedios")
 
+#-----------------------------------------------------------------------------------------------
 
 # Esta función me construye el gráfico de opinión en función del tiempo
 # para cada tópico para los agentes testigos.
@@ -698,3 +699,66 @@ def Graf_sat_vs_tiempo(DF,path,carpeta,T=2):
                 plt.savefig(direccion_guardado ,bbox_inches = "tight")
                 plt.close("Saturacion")
 
+#--------------------------------------------------------------------------------
+
+# Esta función me construye el gráfico de Saturación en función del tiempo
+# para cada tópico para los agentes testigos.
+
+def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2):
+    
+    Ns = np.unique(DF["n"])
+    Array_parametro_1 = np.unique(DF["parametro_1"])
+    Array_parametro_2 = np.unique(DF["parametro_2"])
+    
+    Tupla_total = [(n,parametro_1,parametro_2) for n in Ns
+                   for parametro_1 in Array_parametro_1
+                   for parametro_2 in Array_parametro_2]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    for AGENTES,PARAMETRO_1,PARAMETRO_2 in Tupla_total:
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                    (DF["n"]==AGENTES) & 
+                                    (DF["parametro_1"]==PARAMETRO_1) & 
+                                    (DF["parametro_2"]==PARAMETRO_2), "nombre"])
+
+        #-----------------------------------------------------------------------------------------
+        
+        X_i = np.ones(archivos.shape[0]) * PARAMETRO_1
+        Y_i = np.zeros(archivos.shape[0])
+        
+        for indice_archivo,nombre in enumerate(archivos):
+            
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
+            # Matriz de Adyacencia
+            # Semilla
+            
+            Datos = ldata(path / nombre)
+            
+            Y_i[indice_archivo] = np.mean(np.array(Datos[5][:-1],dtype="float")) # Tomo los intereses finales y les tomo un promedio
+            
+            #----------------------------------------------------------------------------------------------------------------------------------
+            
+            # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
+            repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+            direccion_guardado = Path("../../../Imagenes/{}/OpivsT_N={:.0f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,nombre_parametro_1,PARAMETRO_1,nombre_parametro_2,PARAMETRO_2,repeticion))
+            
+            if repeticion in [0,1]:
+            
+                plt.rcParams.update({'font.size': 32})
+                plt.figure("Topico",figsize=(20,15))
+                X = np.arange(Testigos.shape[0])*0.01
+                for sujeto in range(int(Testigos.shape[1]/T)):
+                    for topico in range(T):
+                        plt.plot(X,Testigos[:,sujeto*T+topico], linewidth = 6)
+                plt.xlabel("Tiempo")
+                plt.ylabel("Tópico")
+                plt.grid(alpha = 0.5)
+                plt.savefig(direccion_guardado ,bbox_inches = "tight")
+                plt.close("Topico")

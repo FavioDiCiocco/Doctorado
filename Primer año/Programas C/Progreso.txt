@@ -3267,3 +3267,47 @@ de levantar los datos y armar lo gráficos de una. Trabajaré en el código de P
 
 Ya mandé a correr los datos. Lo único que me olvidé es de corregir los archivos de salida en los cuales anoto
 lo que voy printeando que me sirve para saber si hubo algún error o en qué parte van las simulaciones.
+
+------------------------------------------------------------------------------------------------
+
+30/01/2023
+
+En la pc voy a mandar a correr unos datos de CI_variables, cosa de tener algo con lo que laburar y poder
+armar el código de Python. Debería más o menos recorrer la misma región que en la pc de Oporto. Es decir,
+Cosdelta [0;1], Kappa [0,5;1,5] y Epsilon [1,5;3,5]. Es una región un poco más chica, pero me sirve. Además
+hago un avance con pasos de 0,2 en Cosdelta y Kappa y de 0,4 en Epsilon. Eso sería 6 (Cosdelta) * 6 (Kappa)
+* 6 (Epsilon). Suponiendo que en promedio cada simulación tarda 25 segundos, y armaré además 20 iteraciones
+separando la región en 4 pedazos. En total eso tomará en un solo hilo 30 horas. Así que lo mandé a correr
+en la pc en 4 simulaciones distintas. Ahora me quedan esperar 7 horas, hasta las 17/18 aprox. para que
+esté terminado.
+
+Una vez que eso esté, me tengo que poner a armar un código de Python para levantar los datos y armar
+los gráficos. Estaría bueno ver cómo armar gráficos 3D donde para combinaciones de dos parámetros se
+grafique el promedio final de interés de cada simulación, y se coloque un punto por cada simulación
+con esos valores de parámetros.
+
+Dicho eso, lo siguiente que puedo hacer ahora es intentar tomar mis datos del sistema en la etapa
+Cambios_variables y usar eso para armar gráficos de interés final del sistema en función de los parámetros
+para ver si con eso puedo observar la transición del sistema de un tipo de soluciones a otro.
+
+En la pc tengo datos de la fase 2D_Epsilon con Epsilon entre [0,5;2]. La idea sería armar un único gráfico
+que para distintos valores de coseno me grafique el promedio del interés final del sistema y me coloque un
+punto por cada simulación. Lo que debería ver es que los puntos sigan una trayectoria cercana a los puntos
+fijos asociados.
+ Una segunda idea sería comparar los valores iniciales del sistema con el punto fijo alcanzado. Eso lo veré
+después.
+
+Armar el archivo de Python me está tomando más de lo que esperaba. Esta idea de no querer concatenar muchos
+for me está resultando más complicada de lo que pensaba. Pero volviendo al tema, acaba de ocurrírseme algo.
+Yo había visto que podía armar arrays y definir los dtype de forma tal que les ponía nombres, y después
+usar esos nombres para sortear o explorar el array. Eso me podría servir entonces para mi idea. Podría usar
+una variable que tome la Tupla_total, aproveche que el parametro_1 tiene un indice asociado por el enumerate
+y uso eso para ir definiendo qué graficar. O ahora que lo pienso mejor, puedo armar un array con los datos a
+graficar que tenga la cantidad de mis Parametro_1.
+
+Mañana me vuelvo a meter con el tema de esta función. Ahora mismo estoy quemado y no me sale la idea.
+Arranco desde cero, lo paso al cuaderno y de ahí empiezo a armar mi idea. Quizás eso me sirva. Porque estuve
+mucho tiempo bloqueado en cómo armar la función.
+
+El código en la pc se resolvió en cuatro horas en vez de siete. Y no parece tener ningún error, a pesar de que
+algunas de las simulaciones tiraron error al final.
