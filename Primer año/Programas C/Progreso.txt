@@ -3311,3 +3311,17 @@ mucho tiempo bloqueado en cómo armar la función.
 
 El código en la pc se resolvió en cuatro horas en vez de siete. Y no parece tener ningún error, a pesar de que
 algunas de las simulaciones tiraron error al final.
+
+------------------------------------------------------------------------------------------------
+
+31/01/2023
+
+En la mañana estuve anotando ecuaciones para el final de Mininni. Ya estoy por la mitad de la materia,
+llegué a Turbulencia. Algo me dice que voy a arrancar este final en Marzo y recién en Abril estará.
+
+Volvamos al tema de la tesis. Creo que tengo una buena idea de cómo hacer esto, voy a usar el enumerate
+para determinar el parámetro 1 que estoy recorriendo y así fijar los colores. Por otro lado, fijo un máximo
+de cantidad de parámetros_1 que graficar, 5 o 6. Armo una lista de colores y así determino los colores. 
+Entonces varío parametro_2 y voy graficando los puntos para cada parametro_2, uno a la vez y listo.
+Lo único que sí, esto me complica mucho la posibilidad de armar una leyenda para marcar que valor de
+parametro_1 representa cada color. Pero eso es un detalle, se puede solucionar después.
