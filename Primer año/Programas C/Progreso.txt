@@ -3325,3 +3325,39 @@ de cantidad de parámetros_1 que graficar, 5 o 6. Armo una lista de colores y as
 Entonces varío parametro_2 y voy graficando los puntos para cada parametro_2, uno a la vez y listo.
 Lo único que sí, esto me complica mucho la posibilidad de armar una leyenda para marcar que valor de
 parametro_1 representa cada color. Pero eso es un detalle, se puede solucionar después.
+
+------------------------------------------------------------------------------------------------
+
+01/02/2023
+
+Estuve todo el día trabajando en la función que grafica el interés final promedio de los agentes en función
+Logré graficar los puntos asociados a un mismo valor de parámetro 1. Espero que no ocurra que el array generado
+sea demasiado grande. Igual no creo, considerando que cada simulación es un punto y que tengo aproximadamente
+100 simulaciones, asignadas a como mucho 30 valores distintos. Es decir que como mucho el vector tiene 
+3000 elementos, no se va a hacer muy grande.
+ Al hacer lo anterior, lograr que las curvas tengan el color, la forma y la etiqueta deseada fue bastante
+directo. También agregué una parte de código que le mete un poco de ruido a los valores en x cosa de que
+los puntos no se acumulen en un único valor, pero no hizo que el gráfico se vea mejor, así que lo saqué.
+ También implementé el uso de cycler, que es una herramienta que te permite fácilmente definir cuáles
+son los colores y las formas de los datos que uno gráfica, es muy copado. Y bastante fácil de implementar.
+
+Siento que quizás tardé más de lo que debería con esto, pero no fue tan malo. Lo que sigue es a partir de
+este código, armar un nuevo código que haga lo mismo pero para un gráfico 3D. Para eso necesito primero ver
+un poco cómo es graficar en 3D y después tengo que ver de levantar correctamente los datos. Pero ya teniendo
+esta función, armar una nueva función va a ser mucho más sencillo. Considerando que mañana estoy en casa,
+voy a intentar laburar en esto y ya el viernes seguir con lo de Mininni. Por otra parte, cuando empiece
+a ir a la facultad, voy a tener que volver a armar datos para poder probar la función antes de mandarla a
+Oporto.
+
+################################################
+Para resumir el trabajo de los próximos días: 
+.) De las ideas que charlamos con Lupi, intenté hacer los ajustes de la función por
+una exponencial, no resultó muy bien que digamos, así que eso fuera. 
+.) Después armé una función que grafique el interés final promedio del sistema, suponiendo que eso es el 
+punto fijo al cual el sistema tiende. Eso lo grafico en función de uno de los parámetros barridos y con varias
+curvas según el otro parámetro. Esta función la voy a aplicar para los datos de Cambios_parametros en la fase
+de 2D_Kappa y 2D_Epsilon.
+.) Me falta estudiar el caso de cómo varía el punto fijo al cuál tiende el sistema en función de las condiciones
+iniciales. Para eso son los datos de CI_variables. Esos datos barren en tres parámetros, por lo que la idea es que
+dos de esos sean los ejes X e Y, y el tercer parámetro define varias curvas en ese espacio. Aunque para eso yo
+arrancaría con una curva y después vamos sumando. Graficar en 3D no es tan sencillo.

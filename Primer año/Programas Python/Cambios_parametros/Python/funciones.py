@@ -13,6 +13,7 @@ import numpy as np
 import time
 import math
 from pathlib import Path
+from cycler import cycler
 
 ##################################################################################
 ##################################################################################
@@ -704,20 +705,44 @@ def Graf_sat_vs_tiempo(DF,path,carpeta,T=2):
 # Esta función me construye el gráfico de Saturación en función del tiempo
 # para cada tópico para los agentes testigos.
 
-def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2):
+def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,nombre_parametro_2="parametro2",titulo_parametro_1="parametro 1" ,titulo_parametro_2="parametro 2"):
     
-    Ns = np.unique(DF["n"])
-    Array_parametro_1 = np.unique(DF["parametro_1"])
+    # Armo mi generador de números aleatorios
+    rng = np.random.default_rng(seed = 50)
+    
+    AGENTES = int(np.unique(DF["n"]))
+    
+    # Defino los valores de Parametro_1 que planeo graficar
+    Valores_importantes = [0,math.floor(len(np.unique(DF["parametro_1"]))/3),
+                           math.floor(2*len(np.unique(DF["parametro_1"]))/3),
+                           len(np.unique(DF["parametro_1"]))-1]
+    
+    Array_parametro_1 = np.unique(DF["parametro_1"])[Valores_importantes]
     Array_parametro_2 = np.unique(DF["parametro_2"])
     
-    Tupla_total = [(n,parametro_1,parametro_2) for n in Ns
-                   for parametro_1 in Array_parametro_1
-                   for parametro_2 in Array_parametro_2]
+    Tupla_total = [(parametro_1,numero_2,parametro_2) for parametro_1 in Array_parametro_1
+                   for numero_2,parametro_2 in enumerate(Array_parametro_2)]
     
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Opiniones"
     
-    for AGENTES,PARAMETRO_1,PARAMETRO_2 in Tupla_total:
+    # Armo arrays vacío para los valores de X e Y
+    X = np.array([])
+    Y = np.array([])
+    
+    # Armo la lista de colores y propiedades para graficar mis datos
+    default_cycler = (cycler(color=["r","g","b","m","k"])*cycler(linewidth = [0])*cycler(marker = "o")*cycler(markersize = [12]))
+    
+    # Abro el gráfico y fijo algunos parámetros
+    plt.rcParams.update({'font.size': 32})
+    plt.rc("axes",prop_cycle = default_cycler)
+    plt.figure("Puntofijo",figsize=(20,15))
+    plt.xlabel(r"${}$".format(titulo_parametro_2))
+    plt.ylabel("Interés final promedio")
+    plt.grid(alpha = 0.5)
+    
+    
+    for PARAMETRO_1,Numero_2,PARAMETRO_2 in Tupla_total:
         
         # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
         archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
@@ -727,7 +752,8 @@ def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2):
 
         #-----------------------------------------------------------------------------------------
         
-        X_i = np.ones(archivos.shape[0]) * PARAMETRO_1
+        # Armo unos arrays provisorios para acumular los datos de todas las simulaciones asociadas a un valor del parametro 2
+        X_i = np.ones(archivos.shape[0]) * PARAMETRO_2
         Y_i = np.zeros(archivos.shape[0])
         
         for indice_archivo,nombre in enumerate(archivos):
@@ -744,21 +770,21 @@ def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2):
             Y_i[indice_archivo] = np.mean(np.array(Datos[5][:-1],dtype="float")) # Tomo los intereses finales y les tomo un promedio
             
             #----------------------------------------------------------------------------------------------------------------------------------
-            
-            # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
-            repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-            direccion_guardado = Path("../../../Imagenes/{}/OpivsT_N={:.0f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,nombre_parametro_1,PARAMETRO_1,nombre_parametro_2,PARAMETRO_2,repeticion))
-            
-            if repeticion in [0,1]:
-            
-                plt.rcParams.update({'font.size': 32})
-                plt.figure("Topico",figsize=(20,15))
-                X = np.arange(Testigos.shape[0])*0.01
-                for sujeto in range(int(Testigos.shape[1]/T)):
-                    for topico in range(T):
-                        plt.plot(X,Testigos[:,sujeto*T+topico], linewidth = 6)
-                plt.xlabel("Tiempo")
-                plt.ylabel("Tópico")
-                plt.grid(alpha = 0.5)
-                plt.savefig(direccion_guardado ,bbox_inches = "tight")
-                plt.close("Topico")
+        
+        # Agrego los datos calculados a los vectores que voy a usar para graficar
+        
+        X = np.concatenate((X,X_i),axis=None)
+        Y = np.concatenate((Y,Y_i),axis=None)
+        
+        # Armo un if que me grafique si recorrí todos los valores en el array de Parametro 2
+        if Numero_2 == Array_parametro_2.shape[0]-1:
+#            X = X + rng.normal(scale = 0.2, size = X.shape)
+            plt.plot(X,Y, label = r"${} = {}$".format(titulo_parametro_1,PARAMETRO_1))
+            X = np.array([])
+            Y = np.array([])
+    
+    
+    direccion_guardado = Path("../../../Imagenes/{}/Puntofijovs{}_N={:.0f}.png".format(carpeta,nombre_parametro_2,AGENTES))
+    plt.legend()
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close("Puntofijo")
