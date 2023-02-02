@@ -3361,3 +3361,27 @@ de 2D_Kappa y 2D_Epsilon.
 iniciales. Para eso son los datos de CI_variables. Esos datos barren en tres parámetros, por lo que la idea es que
 dos de esos sean los ejes X e Y, y el tercer parámetro define varias curvas en ese espacio. Aunque para eso yo
 arrancaría con una curva y después vamos sumando. Graficar en 3D no es tan sencillo.
+
+------------------------------------------------------------------------------------------------
+
+02/02/2023
+
+Hoy costó levantarse. En la mañana revisé la pc de Oporto, las simulaciones están cerca de terminar. Hay algunas
+que están en la última iteración y recorriendo el cosdelta 0,5, es decir que les queda menos de la mitad de esa
+iteración. Mañana deberían estar terminados la mayoría de los hilos, por no decir todos. Lo último que voy a hacer
+hoy es mandar los códigos de Python para correrlos mañana en Oporto. Me refiero al código que grafica el interés
+promedio final en función de algún parámetro.
+
+Lo que voy a hacer ahora es arrancar con la parte del graficado en 3D. Para eso necesito armar las carpetas de
+la etapa de CI_variable. Voy a ver que las documentaciones estén bien.
+
+Actualicé todas las documentaciones pertinentes. Ahora me queda ponerme con la función que grafica en 3D.
+Empecemos buscando cómo se grafica en 3D, así sé qué info necesito construir.
+
+Lo primero que se me ocurre es que puedo utilizar mi función de Punto_Fijo_vs_parametro para armar gráficos
+de punto fijo en 2D, uno para Kappa y otro para Epsilon. Para eso tengo que pasarle a la función un pandas
+que tenga fijado el "tercer parámetro". Lo interesante es que podría fijar el tercero o el segundo y antes
+de pasar el parámetro, renombrar el pandas. Probemos eso, creo que sería muy copado eso y me daría mucha facilidad.
+Digo, no tengo que reescribir tres o cuatro veces todo el código, solo fijar un valor y después renombrar
+una columna. Armar un dataframe nuevo con eso y pasar eso a la función.
+Resolveré esto la semana que viene. Ahora me cambio, iré para casa y después a visitar al Tio.

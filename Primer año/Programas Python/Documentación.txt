@@ -175,3 +175,16 @@ carpeta 2D.
 Cosdelta en función de Epsilon, mi idea es también variar Cosdelta en función de Kappa.
 Es decir, de esta única fase voy a armar dos fases, quizás más en el futuro, para ver
 cómo varía el estado final del sistema en función de distintos pares de parámetros.
+
+CI_variables:
+-------------
+El objetivo de esta etapa es estudiar la convergencia del sistema a los puntos fijos 
+en función de la condición inicial de distribución de interés. Básicamente lo que hice
+fue separar la región [0;Kappa] en distintos pedazos y repartí los intereses en esos pedazos
+en cada simulación. Lo esperable es que según la región a la cuál envío los intereses
+el sistema tenderá al punto fijo más bajo o al más alto. Los datos que guardo son los
+de los intereses finales. Es decir, los archivos de Opiniones, lo de Testigos no me
+parece que sea importante guardarlos. 
+ Las simulaciones recorren tres parámetros, el Cosdelta, el Kappa y el Epsilon. La idea
+es armar gráficos en 3D del punto de covergencia en función de los parámetros. Alfa sigue
+valiendo 4.
