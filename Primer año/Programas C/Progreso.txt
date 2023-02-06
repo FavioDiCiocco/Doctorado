@@ -3385,3 +3385,29 @@ de pasar el parámetro, renombrar el pandas. Probemos eso, creo que sería muy c
 Digo, no tengo que reescribir tres o cuatro veces todo el código, solo fijar un valor y después renombrar
 una columna. Armar un dataframe nuevo con eso y pasar eso a la función.
 Resolveré esto la semana que viene. Ahora me cambio, iré para casa y después a visitar al Tio.
+
+------------------------------------------------------------------------------------------------
+
+03/02/2023
+
+Hoy estuve la mayor parte del día trabajando en lo de Mininni. La semana que viene es la Netsci-X.
+El lunes voy a intentar tener hecho lo de la transición del sistema, quizás charlar algo con Pablo
+y después vemos si en el resto de la semana puedo resolver algo de lo de Mininni. Dos días
+completos más y ya tengo revisado todo.
+
+------------------------------------------------------------------------------------------------
+
+06/02/2023
+
+Estoy en la mañana en la facultad. Después tengo que ir a una reunión para que me expliquen vien lo que
+tengo que hacer en la Netsci-x. Por ahora lo principal es empezar con el estudio de las regiones
+de transición.
+
+La reunión para coordinar lo último de la Netsci-x se comió todo el día, así que no logré hacer nada.
+Lo que sí es que mandé a armar datos de CI_variables en la pc de la facultad, así que ya tengo eso para
+ir haciendo pruebas. Por otro lado, también armé los gráficos de punto fijo en función de los parámetros
+Epsilon y Kappa. Los gráficos se ven bastante bien y están muy copados. Lo único que diría que le falla
+es que hay ciertas partes donde el gráfico hace saltos muy grandes y falta hacer una revisión más fina
+de eso. Me parece que estaría bueno charlarlo con Pablo cosa de ver si vale la pena preparar esos datos.
+También creo que podría intentar agrandar un poco los marcadores para que se vea mejor la cosa.
+Lo que queda de esta semana es Netsci-X entonces.

@@ -18,13 +18,15 @@ from pathlib import Path
 
 t0 = time.time()
 
-T=1 # Defino el número de tópicos
+T=2 # Defino el número de tópicos
 Etapa = Path("Cambios_parametros") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["2D_Epsilon"]
+Carpetas = ["2D_Epsilon","2D_Kappa"]
+Nombre2 = ["epsilon","kappa"]
+Titulo2 = ["\epsilon","\kappa"]
 
-for carp in Carpetas:
+for carp,nombre_parametro_2,titulo_parametro_2 in zip(Carpetas,Nombre2,Titulo2):
     
     # Transformo estas cosas en paths. Espero que acostumbrarme a esto valga la pena
     Direccion = Path("../{}".format(carp))
@@ -70,12 +72,12 @@ for carp in Carpetas:
     # Por un lado necesito los nombres que pasaré a los títulos de los archivos
     
     nombre_parametro_1 = "cos(delta)"
-    nombre_parametro_2 = "epsilon"
+    # nombre_parametro_2 = "epsilon"
     
     # Lo otro que necesito es el nombre que pasaré a los ejes de los gráficos de las funciones
     
     titulo_parametro_1 = "cos(\delta)"
-    titulo_parametro_2 = "\epsilon"
+    # titulo_parametro_2 = "\epsilon"
     
     #----------------------------------------------------------------------------------------------
     

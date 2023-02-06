@@ -18,7 +18,7 @@ from pathlib import Path
 
 t0 = time.time()
 
-T=1 # Defino el número de tópicos
+T=2 # Defino el número de tópicos
 Etapa = Path("CI_variables") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.

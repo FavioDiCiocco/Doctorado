@@ -708,7 +708,7 @@ def Graf_sat_vs_tiempo(DF,path,carpeta,T=2):
 def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,nombre_parametro_2="parametro2",titulo_parametro_1="parametro 1" ,titulo_parametro_2="parametro 2"):
     
     # Armo mi generador de números aleatorios
-    rng = np.random.default_rng(seed = 50)
+    # rng = np.random.default_rng(seed = 50)
     
     AGENTES = int(np.unique(DF["n"]))
     
@@ -731,7 +731,7 @@ def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,nombre_parametro_2="paramet
     Y = np.array([])
     
     # Armo la lista de colores y propiedades para graficar mis datos
-    default_cycler = (cycler(color=["r","g","b","m","k"])*cycler(linewidth = [0])*cycler(marker = "o")*cycler(markersize = [12]))
+    default_cycler = (cycler(color=["r","g","b","c"])*cycler(marker = "o")*cycler(markersize = [12]))
     
     # Abro el gráfico y fijo algunos parámetros
     plt.rcParams.update({'font.size': 32})
@@ -779,7 +779,7 @@ def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,nombre_parametro_2="paramet
         # Armo un if que me grafique si recorrí todos los valores en el array de Parametro 2
         if Numero_2 == Array_parametro_2.shape[0]-1:
 #            X = X + rng.normal(scale = 0.2, size = X.shape)
-            plt.plot(X,Y, label = r"${} = {}$".format(titulo_parametro_1,PARAMETRO_1))
+            plt.scatter(X,Y, label = r"${} = {}$".format(titulo_parametro_1,PARAMETRO_1))
             X = np.array([])
             Y = np.array([])
     
