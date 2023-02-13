@@ -3399,7 +3399,7 @@ completos más y ya tengo revisado todo.
 
 06/02/2023
 
-Estoy en la mañana en la facultad. Después tengo que ir a una reunión para que me expliquen vien lo que
+Estoy en la mañana en la facultad. Después tengo que ir a una reunión para que me expliquen bien lo que
 tengo que hacer en la Netsci-x. Por ahora lo principal es empezar con el estudio de las regiones
 de transición.
 
@@ -3411,3 +3411,29 @@ es que hay ciertas partes donde el gráfico hace saltos muy grandes y falta hace
 de eso. Me parece que estaría bueno charlarlo con Pablo cosa de ver si vale la pena preparar esos datos.
 También creo que podría intentar agrandar un poco los marcadores para que se vea mejor la cosa.
 Lo que queda de esta semana es Netsci-X entonces.
+
+------------------------------------------------------------------------------------------------
+
+13/02/2023
+
+Lo primero que hice fue mandar a rehacer los gráficos de punto fijo vs parámetro de los datos
+de Cambios_parametro, agrandando el tamaño del marcador.
+Lo siguiente es lograr armar gráficos similares pero con los datos de CI_variables. Para eso voy a tener que
+hacer lo que anoté antes, de tomar el panda que tiene 3 parámetros, reconvertirlo en un dataframe con 2
+fijando uno y pasar eso para construir el gráfico. Ahora no me acuerdo por qué, pero habíamos charlado con
+Pablo sobre que quizás sea mejor no seguir trabajando con dos tópicos por ahora. Así que lo mejor sería
+tomar los datos de CI_variables y fijar Cosdelta a 0, eso hace que los dos tópicos sean como haber hecho
+dos simulaciones de un tópico en una sola.
+
+Lo que había hecho antes para cambiar el tamaño de los puntos en realidad no funcionaba, así que ahora lo
+estoy corrigiendo y mandé a correr el código para armar el gráfico 2D para los sistemas de 2 tópicos
+pero fijando cosdelta a 0. Cuando estén los gráficos hechos los analizaré. También tengo que actualizar
+la documentación en Imaǵenes sobre la carpeta de CI_variables. Y lo siguiente es preparar los gráficos
+en 3D. Arranquemos con eso.
+
+Logré mandar a hacer unos gráficos en 3D. No son lo mejor, pero tampoco son tan terribles. Después se
+puede mejorar si quiero hacer algo mejor a partir de eso. Aunque es cierto que no se logra entender del
+todo la figura graficada. Se me ocurre que sería mejor si pudiera armar superficies con los datos, el
+problema de eso es que no hay ningún sentido o forma de armar las superficies. Sólo se me ocurre que
+podría si graficara en una superficie los datos asociados a cada iteración, pero entonces perdería mi
+estadística. O tendría cien superficies graficadas. No suena como la mejor idea.

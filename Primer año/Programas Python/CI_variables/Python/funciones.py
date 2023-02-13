@@ -703,7 +703,7 @@ def Graf_sat_vs_tiempo(DF,path,carpeta,T=2):
 #--------------------------------------------------------------------------------
 
 # Esta función me construye el gráfico de punto fijo en función del parámetro 2.
-# Para eso toma los valores dinterés final de cada simulación y los promedia, obteniendo
+# Para eso toma los valores de interés final de cada simulación y los promedia, obteniendo
 # un punto que indica el punto fijo al cuál tiende el sistema.
 
 def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,nombre_parametro_2="parametro2",titulo_parametro_1="parametro 1" ,titulo_parametro_2="parametro 2"):
@@ -732,7 +732,7 @@ def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,nombre_parametro_2="paramet
     Y = np.array([])
     
     # Armo la lista de colores y propiedades para graficar mis datos
-    default_cycler = (cycler(color=["r","g","b","m","k"])*cycler(linewidth = [0])*cycler(marker = "o")*cycler(markersize = [12]))
+    default_cycler = (cycler(color=["r","g","b","c"])*cycler(marker = "o"))
     
     # Abro el gráfico y fijo algunos parámetros
     plt.rcParams.update({'font.size': 32})
@@ -780,7 +780,7 @@ def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,nombre_parametro_2="paramet
         # Armo un if que me grafique si recorrí todos los valores en el array de Parametro 2
         if Numero_2 == Array_parametro_2.shape[0]-1:
 #            X = X + rng.normal(scale = 0.2, size = X.shape)
-            plt.plot(X,Y, label = r"${} = {}$".format(titulo_parametro_1,PARAMETRO_1))
+            plt.scatter(X,Y, label = r"${} = {}$".format(titulo_parametro_1,PARAMETRO_1), s = 200)
             X = np.array([])
             Y = np.array([])
     
@@ -789,7 +789,113 @@ def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,nombre_parametro_2="paramet
     plt.legend()
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close("Puntofijo")
+   
     
+#--------------------------------------------------------------------------------
+
+# Esta función me construye el gráfico de punto fijo en un plot 3D
+# Para eso toma los valores de interés final de cada simulación y los promedia, obteniendo
+# un punto que indica el punto fijo al cuál tiende el sistema.
+
+
+def Graf_Punto_fijo_3D(DF,path,carpeta,T=2,
+                       titulo_parametro_1="parametro 1",
+                       titulo_parametro_2="parametro 2",
+                       titulo_parametro_3="parametro_3"):
+    
+    AGENTES = int(np.unique(DF["n"]))
+    
+    # Defino los valores de Parametro_1 que planeo graficar
+    Valores_importantes = [0,math.floor(len(np.unique(DF["parametro_1"]))/3),
+                            math.floor(2*len(np.unique(DF["parametro_1"]))/3),
+                            len(np.unique(DF["parametro_1"]))-1]
+    
+    Array_parametro_1 = np.unique(DF["parametro_1"])[Valores_importantes]
+    Array_parametro_2 = np.unique(DF["parametro_2"])
+    Array_parametro_3 = np.unique(DF["parametro_3"])
+    
+    Tupla_total = [(parametro_1,numero_2,parametro_2,numero_3,parametro_3) for parametro_1 in Array_parametro_1
+                   for numero_2,parametro_2 in enumerate(Array_parametro_2)
+                   for numero_3,parametro_3 in enumerate(Array_parametro_3)]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Armo arrays vacío para los valores de X, Y y Z
+    X = np.array([])
+    Y = np.array([])
+    Z = np.array([])
+    
+    # Armo la lista de colores y propiedades para graficar mis datos
+    default_cycler = (cycler(color=["r","g","b","c"])*cycler(marker = "o"))
+    
+    # Abro el gráfico y fijo algunos parámetros
+    plt.rcParams.update({'font.size': 32})
+    plt.rc("axes",prop_cycle = default_cycler)
+    fig = plt.figure("Puntofijo",figsize=(60,45))
+    ax = fig.add_subplot(projection = "3d")
+    ax.set_xlabel(r"${}$".format(titulo_parametro_2),labelpad = 30)
+    ax.set_ylabel(r"${}$".format(titulo_parametro_3),labelpad = 30)
+    ax.set_zlabel("Interés final promedio", labelpad = 30)
+    # ax.grid(alpha = 0.5)
+    
+    
+    for PARAMETRO_1,Numero_2,PARAMETRO_2,Numero_3,PARAMETRO_3 in Tupla_total:
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                    (DF["n"]==AGENTES) & 
+                                    (DF["parametro_1"]==PARAMETRO_1) & 
+                                    (DF["parametro_2"]==PARAMETRO_2) &
+                                    (DF["parametro_3"]==PARAMETRO_3), "nombre"])
+
+        #-----------------------------------------------------------------------------------------
+        
+        # Armo unos arrays provisorios para acumular los datos de todas las simulaciones asociadas a un valor del parametro 2
+        X_i = np.ones(archivos.shape[0]) * PARAMETRO_2
+        Y_i = np.ones(archivos.shape[0]) * PARAMETRO_3
+        Z_i = np.zeros(archivos.shape[0])
+        
+        for indice_archivo,nombre in enumerate(archivos):
+            
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
+            # Matriz de Adyacencia
+            # Semilla
+            
+            Datos = ldata(path / nombre)
+            
+            Z_i[indice_archivo] = np.mean(np.array(Datos[5][:-1],dtype="float")) # Tomo los intereses finales y les tomo un promedio
+            
+            #----------------------------------------------------------------------------------------------------------------------------------
+        
+        # Agrego los datos calculados a los vectores que voy a usar para graficar
+        
+        X = np.concatenate((X,X_i),axis=None)
+        Y = np.concatenate((Y,Y_i),axis=None)
+        Z = np.concatenate((Z,Z_i),axis=None)
+        
+        # Armo un if que me grafique si recorrí todos los valores en el array de Parametro 2 y 3
+        if Numero_2 == Array_parametro_2.shape[0]-1 and Numero_3 == Array_parametro_3.shape[0]-1:
+#            X = X + rng.normal(scale = 0.2, size = X.shape)
+            ax.scatter(X,Y,Z,label = r"${} = {}$".format(titulo_parametro_1,PARAMETRO_1), s = 400)
+            X = np.array([])
+            Y = np.array([])
+            Z = np.array([])
+    
+    
+    plt.legend()
+    ax.view_init(0,0,0)
+    direccion_guardado = Path("../../../Imagenes/{}/Puntofijo3D_frente_N={:.0f}.png".format(carpeta,AGENTES))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    ax.view_init(0,90,0)
+    direccion_guardado = Path("../../../Imagenes/{}/Puntofijo3D_perfil_N={:.0f}.png".format(carpeta,AGENTES))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close("Puntofijo")
+
+
 """
 #--------------------------------------------------------------------------------
 

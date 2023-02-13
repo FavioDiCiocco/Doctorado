@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
 """
 Created on Wed Nov 16 14:21:12 2022
 
@@ -77,7 +78,40 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    func.Graf_Punto_fijo_vs_parametro(Df_archivos, Direccion, Etapa/carpeta,T, nombre_parametro_2, titulo_parametro_1, titulo_parametro_2)
+    # Fijo el parámetro de Cosdelta y barro en función de epsilon
+    Df_Cosdelta_fijo = (Df_archivos.query('parametro_1 == 0')
+                        .rename(columns={"parametro_1":"cosdelta",
+                                          "parametro_2":"parametro_1",
+                                          "parametro_3":"parametro_2"})
+                        .copy()
+                    )
     
+    func.Graf_Punto_fijo_vs_parametro(Df_Cosdelta_fijo, Direccion,
+                                      Etapa/carpeta,T, nombre_parametro_3,
+                                      titulo_parametro_2, titulo_parametro_3)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    # Ahora fijo el parámetro de Cosdelta y barro en función de Kappa
+    
+    # Fijo el parámetro de Cosdelta y barro en función de epsilon
+    Df_Cosdelta_fijo = (Df_archivos.query('parametro_1 == 0')
+                        .rename(columns={"parametro_1":"cosdelta",
+                                          "parametro_3":"parametro_1"})
+                        .copy()
+                    )
+    
+    func.Graf_Punto_fijo_vs_parametro(Df_Cosdelta_fijo, Direccion,
+                                      Etapa/carpeta,T, nombre_parametro_2,
+                                      titulo_parametro_3, titulo_parametro_2)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    # Armo el gráfico 3D de los puntos fijos de interés en función de los parámetros Kappa y Epsilon
+    
+    func.Graf_Punto_fijo_3D(Df_archivos, Direccion, Etapa/carpeta,T,
+                            titulo_parametro_1, titulo_parametro_2, titulo_parametro_3)
+
+
 
 func.Tiempo(t0)
