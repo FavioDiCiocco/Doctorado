@@ -101,3 +101,12 @@ de parámetros.
  Tengo tres carpetas con distintos valores de alfa, eso es lo que observé para
 el sistema con un único tópico. Luego armé una cuarta carpeta llamada 2D, la cual
 uso para guardar los gráficos del sistema aplicado a un espacio de 2 tópicos.
+
+.) CI_variables:
+----------------
+El plan es poder observar más claramente la transición del sistema de un único punto
+fijo a varios. Para eso lo que hago es barrer en tres parámetros, el cosdelta,
+kappa y epsilon. La intención original es armar gráficos 3D del punto fijo del sistema
+en función de Kappa y Epsilon, graficando distintas capas según cosdelta.
+ Logré armar los gráficos 3D, pero no parecen ser lo más útil. Hay que revisar el
+cómo armar eso.

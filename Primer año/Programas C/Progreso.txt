@@ -3437,3 +3437,40 @@ todo la figura graficada. Se me ocurre que sería mejor si pudiera armar superfi
 problema de eso es que no hay ningún sentido o forma de armar las superficies. Sólo se me ocurre que
 podría si graficara en una superficie los datos asociados a cada iteración, pero entonces perdería mi
 estadística. O tendría cien superficies graficadas. No suena como la mejor idea.
+
+Ya tengo hecho todo lo que dije que iba a hacer. Mañana me pondré a organizar la info que tengo y veré
+después de charlar con Pablo al respecto. En cuanto tenga algunos gráficos copados veo de pasárselos a
+Lupi también.
+
+------------------------------------------------------------------------------------------------
+
+14/02/2023
+
+Ya descargué los gráficos hechos a partir de los datos de CI_variable. Los gráficos en 3D no están tan
+mal, pero tampoco parecen sumar tanto. Lo que se me ocurre es sumar un gráfico 3D visto a 45º, aparte
+de los que ya se ven de perfil. También podría armar unos gráficos 2D extra para distintos valores de
+cosdelta, cosa de ver cómo la curva se va corriendo según este valor. Hagamos esas modificaciones al
+código. 
+ Modifiqué el código y lo mandé a laburar de nuevo, así ya tengo todos los gráficos asociados. En lo
+que eso se resuelve, voy a ver de tener todo en orden en las documentaciones y de preparar los gráficos
+para charlar con Pablo.
+
+¿Qué es lo que planeo mostrarle a Pablo? Admito que esperaba que se viera más el cómo se produce el 
+cambio de un único punto fijo a varios, sin embargo parece que la coexistencia de dos puntos fijos se
+sostiene incluso para valores bajos de kappa. Aún así no me parece que los gráficos no tengan qué
+mostrar. Creo que los que van en función de Kappa son buenos para mostrar el comportamiento lineal
+del sistema con esa variable, cosa que se sabía pero está bueno tener algo para verlo tan claro.
+Por otro lado, los gráficos en función de epsilon creo que son los que mejor muestran una transición
+de fase del sistema que podría llegar a necesitar un análisis más en detalle de cierta región para
+ver mejor las curvas. Esos gráficos están copados y definitivamente dan para mostrar lo que está
+pasando.
+
+Ahora, si ya tengo esos gráficos, ¿qué sigue? Lo que habíamos charlado con Lupi pasaba por estudiar
+el cambio de la transcrítica. Lo último que charlamos con Pablo es pensar cómo confinar el interés
+al espacio [0,1], porque estamos más cerca de esta idea que es introducir el campo, y necesitamos
+que el interés se mantenga en esa región. Así que por ahora diría que el término de saturación
+queda archivado. Pablo había propuesto una idea para hacer esto metiendo una x que divida en
+la ecuación dinámica. ¿Eso es la solución? No me lo parece, queda pensar a ver si podemos ver
+esto desde otra perspectiva. Recién hablé con Pablo, así que el siguiente paso es armar una
+presentación con todo lo que tengo hasta ahora para ya tener una charla clara de dónde estamos
+y a dónde vamos. Hoy me voy temprano así cambio los libros.

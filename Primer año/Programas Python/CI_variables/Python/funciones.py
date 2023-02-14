@@ -706,12 +706,15 @@ def Graf_sat_vs_tiempo(DF,path,carpeta,T=2):
 # Para eso toma los valores de interés final de cada simulación y los promedia, obteniendo
 # un punto que indica el punto fijo al cuál tiende el sistema.
 
-def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,nombre_parametro_2="parametro2",titulo_parametro_1="parametro 1" ,titulo_parametro_2="parametro 2"):
-    
+def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,
+                                 nombre_parametro_2="parametro2",titulo_parametro_1="parametro 1",
+                                 titulo_parametro_2="parametro 2"):
+   
     # Armo mi generador de números aleatorios
 #    rng = np.random.default_rng(seed = 50)
     
     AGENTES = int(np.unique(DF["n"]))
+    COSDELTA = float(np.unique(DF["cosdelta"]))
     
     # Defino los valores de Parametro_1 que planeo graficar
     Valores_importantes = [0,math.floor(len(np.unique(DF["parametro_1"]))/3),
@@ -785,7 +788,7 @@ def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,nombre_parametro_2="paramet
             Y = np.array([])
     
     
-    direccion_guardado = Path("../../../Imagenes/{}/Puntofijovs{}_N={:.0f}.png".format(carpeta,nombre_parametro_2,AGENTES))
+    direccion_guardado = Path("../../../Imagenes/{}/Puntofijovs{}_N={:.0f}_Cdelta={:.1f}.png".format(carpeta,nombre_parametro_2,AGENTES,COSDELTA))
     plt.legend()
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close("Puntofijo")
@@ -887,11 +890,13 @@ def Graf_Punto_fijo_3D(DF,path,carpeta,T=2,
     
     
     plt.legend()
+    direccion_guardado = Path("../../../Imagenes/{}/Puntofijo3D_angulo.png".format(carpeta))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
     ax.view_init(0,0,0)
-    direccion_guardado = Path("../../../Imagenes/{}/Puntofijo3D_frente_N={:.0f}.png".format(carpeta,AGENTES))
+    direccion_guardado = Path("../../../Imagenes/{}/Puntofijo3D_frente.png".format(carpeta))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     ax.view_init(0,90,0)
-    direccion_guardado = Path("../../../Imagenes/{}/Puntofijo3D_perfil_N={:.0f}.png".format(carpeta,AGENTES))
+    direccion_guardado = Path("../../../Imagenes/{}/Puntofijo3D_perfil.png".format(carpeta))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close("Puntofijo")
 
