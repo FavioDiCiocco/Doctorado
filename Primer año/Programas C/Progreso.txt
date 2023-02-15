@@ -3474,3 +3474,51 @@ la ecuación dinámica. ¿Eso es la solución? No me lo parece, queda pensar a v
 esto desde otra perspectiva. Recién hablé con Pablo, así que el siguiente paso es armar una
 presentación con todo lo que tengo hasta ahora para ya tener una charla clara de dónde estamos
 y a dónde vamos. Hoy me voy temprano así cambio los libros.
+
+------------------------------------------------------------------------------------------------
+
+15/02/2023
+
+En la mañana me puse a resolver algunas cosas. Boletas y el tema del informe anual. Hablando con
+Mariano al parecer este año zafo de hacer el informe, pero debería tener resuelto esta semana el
+tema del consejero de estudios de ser posible. Así que ya le mandé un mensaje a Marcos para
+resolver eso. Es bastante fácil de resolver, después de todo, es completar un archivo y conseguir
+la firma digital de Marcos.
+
+Después estuve revisando los gráficos que armé ayer con los datos de CI_variables. Los gráficos en
+función de Kappa muestran claramente el comportamiento lineal del punto fijo con esta variable. En
+cambio, los gráficos en función de Epsilon muestran una transición abrupta y la coexistencia de
+dos puntos fijos estables en ciertas regiones.
+
+Luego revisé la cuenta del Kappa en función de Epsilon que quise ajustar en un momento, me da que
+estoy interpretando mal el tema del ajuste y debería revisar eso, pero me parece que no vale la
+pena ahora dedicarle mucho tiempo a eso.
+
+Por último agregué algunos de los últimos gráficos al Powerpoint. Si bien dentro de todo ya está
+armado eso, voy a ver si puedo aumentar el tamaño de la letra en esos gráficos, quiero que se puedan
+leer un poco mejor.
+
+Hablé con Lupi y le mostré los gráficos, me tiró unas ideas interesantes.
+.) Por un lado, la parte de ajustar las curvas de Kappa en función de Epsilon suenan raras, así que
+podríamos intentar tomar la función que despejé de Kappa en función de Epsilon, derivarla respecto
+de x y ver cuándo se anula la derivada. Con eso debería poder encontrar un kappa mínimo y un
+máximo. Quisimos ver la ecuación pero parece tener algún problema de signos, eso está anotado en
+el cuaderno. Pero la idea es que eso me permite encontrar para cada epsilon la franja de Kappas
+en los cuales existen tres puntos fijos para el sistema original. Lupi decía algo de graficar
+los kappas en función de Epsilon marcando alguna franja. No me quedó del todo claro la idea,
+después pensala más en detalle.
+.) Otra idea interesante es el hecho de que sé que existe el punto fijo inestable y podría graficarlo
+sobre mis curvas de punto fijo vs Epsilon, por ejemplo. Para eso necesitaría algún programa que
+obtenga las soluciones a partir de la ecuación, debe existir alguna biblioteca que toma una
+función y encuentrar sus raíces o algo así. Eso estaría interesante para ver que el punto fijo
+inestable se encuentra donde esperamos.
+.) Podría pensar en mejorar los gráficos de punto fijo vs parámetro armando un sólo punto que tenga
+un tamaño que depende de la cantidad de puntos que caen en ese lugar, eso ayudaría a que se entienda
+cuál es la cantidad de simulaciones que van a un punto fijo o al otro. Es especialmente importante
+en la región en la cual conviven dos puntos fijos.
+.) Esto no es algo para hacer, pero sí me dijo que mandar el gráfico en 3D primero no es lo mejor porque
+confunde y tiene razón, es mucho de una y uno no está seguro de cómo interpretar lo que está viendo.
+
+Dicho esto, mañana me pondré con las cosas de Mininni y terminar lo que queda hacer para el viaje. Así
+que esto lo vamos a volver a charlar con Pablo a la vuelta. También tengo que hacer lo que charlé con
+Marcos, así tengo eso enviado antes de irme.
