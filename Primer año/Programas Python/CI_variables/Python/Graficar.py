@@ -94,6 +94,11 @@ for carp in Carpetas:
                                           Etapa/carpeta,T, nombre_parametro_3,
                                           titulo_parametro_2, titulo_parametro_3)
         
+        
+        func.Mapa_Colores_Varianza_opiniones(Df_Cosdelta_fijo, Direccion,
+                                             Etapa/carpeta,
+                                             titulo_parametro_2, titulo_parametro_3)
+        
         #----------------------------------------------------------------------------------------------
         
         # Ahora fijo el parámetro de Cosdelta y barro en función de Kappa
@@ -108,6 +113,7 @@ for carp in Carpetas:
         func.Graf_Punto_fijo_vs_parametro(Df_Cosdelta_fijo, Direccion,
                                           Etapa/carpeta,T, nombre_parametro_2,
                                           titulo_parametro_3, titulo_parametro_2)
+        
         
         #----------------------------------------------------------------------------------------------
     

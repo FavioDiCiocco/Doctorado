@@ -281,14 +281,15 @@ def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,titulo_parametro_1="parametr
     
     # Defino los arrays de parámetros diferentes
     
-    arrayN = np.unique(DF["n"])
+    AGENTES = int(np.unique(DF["n"]))
+    COSDELTA = float(np.unique(DF["cosdelta"]))
+    
     Array_parametro_1 = np.unique(DF["parametro_1"])
-    Array_parametro_2 = np.unique(DF["paramtero_2"])
+    Array_parametro_2 = np.unique(DF["parametro_2"])
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
     
-    Tupla_total = [(n,i,parametro_1,j,parametro_2) for n in arrayN
-                   for i,parametro_1 in enumerate(Array_parametro_1)
+    Tupla_total = [(i,parametro_1,j,parametro_2) for i,parametro_1 in enumerate(Array_parametro_1)
                    for j,parametro_2 in enumerate(Array_parametro_2)]
     
     #--------------------------------------------------------------------------------
@@ -301,7 +302,7 @@ def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,titulo_parametro_1="parametr
     #--------------------------------------------------------------------------------
     
     # Itero en los valores de mis parámetros alfa y umbral.
-    for AGENTES,fila,PARAMETRO_1,columna,PARAMETRO_2 in Tupla_total:
+    for fila,PARAMETRO_1,columna,PARAMETRO_2 in Tupla_total:
         
         # Me defino el array en el cual acumulo los datos de las opiniones finales de todas mis simulaciones
         Opifinales = np.array([])
@@ -337,7 +338,7 @@ def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,titulo_parametro_1="parametr
     #--------------------------------------------------------------------------------
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/Varianza Opiniones EP.png".format(carpeta))
+    direccion_guardado = Path("../../../Imagenes/{}/Varianza Opiniones_Cosdelta={:.1f}.png".format(carpeta,COSDELTA))
     
     plt.rcParams.update({'font.size': 24})
     plt.figure("Varianza Opiniones",figsize=(20,15))

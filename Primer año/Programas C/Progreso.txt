@@ -3510,7 +3510,7 @@ después pensala más en detalle.
 .) Otra idea interesante es el hecho de que sé que existe el punto fijo inestable y podría graficarlo
 sobre mis curvas de punto fijo vs Epsilon, por ejemplo. Para eso necesitaría algún programa que
 obtenga las soluciones a partir de la ecuación, debe existir alguna biblioteca que toma una
-función y encuentrar sus raíces o algo así. Eso estaría interesante para ver que el punto fijo
+función y encuentra sus raíces o algo así. Eso estaría interesante para ver que el punto fijo
 inestable se encuentra donde esperamos.
 .) Podría pensar en mejorar los gráficos de punto fijo vs parámetro armando un sólo punto que tenga
 un tamaño que depende de la cantidad de puntos que caen en ese lugar, eso ayudaría a que se entienda
@@ -3522,3 +3522,51 @@ confunde y tiene razón, es mucho de una y uno no está seguro de cómo interpre
 Dicho esto, mañana me pondré con las cosas de Mininni y terminar lo que queda hacer para el viaje. Así
 que esto lo vamos a volver a charlar con Pablo a la vuelta. También tengo que hacer lo que charlé con
 Marcos, así tengo eso enviado antes de irme.
+
+------------------------------------------------------------------------------------------------
+
+16/02/2023
+
+Hoy preparé la carta de propuesta de consejero y se la mandé a Mariano. Después de eso desconecté
+la pc en lo de mi vieja, preparé todo para la vuelta de las vacaciones y me puse a trabajar en 
+la materia de Mininni. (Más vale que me ponga con eso así lo termino antes de fin de año).
+
+------------------------------------------------------------------------------------------------
+
+23/02/2023
+
+Volvimos de las vacaciones, ahora hay que empezar a poner todo en orden. Rápido, porque ya pronto
+llega la TREFEMAC. Lo primero que debería hacer es hablar con Lupi sobre juntarnos el lunes, que
+es lo que Pablo me dijo. Después tendría que revisar que la presentación sobre el trabajo hecho
+esté bien o si falta agregarle algún detalle. También debería revisar las materias que se van
+a dictar y ver si en alguna me puedo meter o si mejor espero para el siguiente cuatri. Al respecto
+debería entonces consultar con Mariano si debería hacer algún trámite por los puntos de materias.
+
+Miré las materias que se van a dictar este cuatri, ninguna me parece que valga la pena. Preguntaré
+qué opinan de Dinámica No Lineal. O si tienen la lista de las materias optativas interesantes que
+se iban a dictar este cuatri.
+
+Hablando con Seba y Lucio, me recomendaron que intente armar gráficos de varianza en el plano de 
+Epsilon y Kappa. De esa manera podría identificar mejor los valores de Kappa en función de Epsilon.
+También me dijeron de intentar comparar los puntos fijos a los que tiende el sistema con los puntos
+fijos que se obtienen de la ecuación definiendo los parámetros Kappa y Epsilon (para eso necesitaría
+alguna librería que encuentre soluciones de ecuaciones. La otra es calcular el Kappa en función del
+punto fijo alcanzado).
+ Esto último suena bien, pero me parece que no va a mi objetivo de estudiar mejor el sistema, creo
+que va a resultar ser un esfuerzo con pocos frutos.
+
+Revisé la charla y le agregué unas diapositivas que me parecen son una buena transición y una buena
+explicación de por qué hice lo último de estados iniciales variables. Así que con eso estoy listo
+para charlar mañana con Pablo y Lupi. Iremos viendo a partir de ahí qué hacemos.
+
+Lo siguiente es hacer lo que me dijeron Seba y Lucio. Veamos lo de armar gráficos de varianza.
+Mandé a hacer los gráficos de Varianza en Oporto. No creo que estén terminados hoy.
+Por lo que vi en los gráficos que hice con los datos de la pc de la facultad, pareciera que
+hay una curva que se está armando en el espacio de parámetro, confío en que eso indica
+una región de transición interesante. Veré si mañana puedo agregar eso a la presentación.
+
+Sobre el tema de las materias, Lupi pasó una que le parecía interesante, podría ver de hacerla.
+En especial porque los otros compañeros de Labo estaban pensando en hacerla.
+
+Mañana entonces reviso ese gráfico y me pongo con lo de Mininni, a la tarde charlo con Pablo y Lupi.
+Posiblemente me quede hasta tarde por el partido.
