@@ -9,14 +9,16 @@
 
 
 // Esta función me genera los vectores opinión iniciales del sistema. Esto es una matriz de tamaño N*T
-int GenerarOpi(ps_Red ps_variable, int i_region, double d_kappa){
+int GenerarOpi(ps_Red ps_variable){
 	// Obtengo las dimensiones de la "matriz" de opiniones de mis agentes.
 	int i_F,i_C;
 	i_F = (int) ps_variable->pd_Opiniones[0];
 	i_C = (int) ps_variable->pd_Opiniones[1];
+	// double d_varianza;
+	// d_varianza = sqrt(2.5);
 	
 	// Inicializo la "matriz" de opiniones de mis agentes.
-	for(register int i_i=0;i_i<i_F*i_C;i_i++) ps_variable->pd_Opiniones[i_i+2] = (Random()+i_region)*0.25*d_kappa;
+	for(register int i_i=0;i_i<i_F*i_C;i_i++) ps_variable->pd_Opiniones[i_i+2] = Random()*1; // Gaussiana(0,d_varianza);
 	return 0;
 }
 

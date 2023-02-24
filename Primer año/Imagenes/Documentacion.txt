@@ -110,3 +110,4 @@ kappa y epsilon. La intención original es armar gráficos 3D del punto fijo del
 en función de Kappa y Epsilon, graficando distintas capas según cosdelta.
  Logré armar los gráficos 3D, pero no parecen ser lo más útil. Hay que revisar el
 cómo armar eso.
+ También me armé gráficos de mapa de Varianza en el espacio de parámetros.

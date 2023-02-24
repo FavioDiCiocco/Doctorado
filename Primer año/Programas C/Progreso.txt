@@ -3570,3 +3570,57 @@ En especial porque los otros compañeros de Labo estaban pensando en hacerla.
 
 Mañana entonces reviso ese gráfico y me pongo con lo de Mininni, a la tarde charlo con Pablo y Lupi.
 Posiblemente me quede hasta tarde por el partido.
+------------------------------------------------------------------------------------------------
+
+24/02/2023
+
+En la mañana me fui a hacer estudios de Laboratorio y pagué algunas cosas. Llegué al mediodía.
+Ahora me pongo a analizar y ver de sumar el gráfico de Varianza que mandé a armar ayer.
+
+Estos gráficos son muy copados porque muestran claramente la región en la cual existe más de
+un punto fijo. Lo interesante es que esto no se podría ver si no hiciera un barrido en diferentes
+condiciones iniciales, observándose un panorama bastante más uniforme. Con esto creo que tenemos
+bien armado el panorama de en qué regiones tenemos la coexistencia de dos puntos fijos. Además
+se muestra que acceder a estos puntos fijos no es un tema únicamente de los parámetros, depende
+de las condiciones iniciales también, que creo no consideramos mucho en un principio.
+
+Queda entonces intentar plantear mejor la idea de cómo lograr que el interés se mantenga restringido
+a la región del [0;1].
+
+Hicimos una reunión con Pablo y Lupi y charlamos el modelo bastante a fondo. Tengo cosas para hacer
+para el lunes. El final de Mininni puede esperar por ahora. Supongo que hasta después de la TREFEMAC
+será. Quizás.
+ Por un lado Pablo propuso utilizar la función nueva, la que tiene el x en el numerador y en el 
+denominador, pero eso queda como idea bien para el futuro. En el momento inmediato vamos a hacer otras
+cosas.
+ 1) Estaría bueno tener gráficos de Kappa en función de Epsilon para un Alfa fijo y Kappa en función
+de Alfa para un Epsilon fijo. Estos gráficos son para el sistema de un tópico y con interés inicial
+distribuido uniformemente en la región [0;Kappa]. Eso último es algo que considero yo, habría que
+darle una revisión antes de mandarlo.
+ 2) Pablo quería tener una primer muestra rápida de si el valor medio de los intereses iniciales es
+lo que determina que el sistema entero converja a un punto fijo o a otro. Para eso quería tomar
+el caso de la simulación con Kappa=2, Epsilon=4 y Alfa=4 y ver si distribuyendo la opinión entre
+[0;1,5] y [0,5;2] hacía que el sistema vaya a un punto fijo o al otro. Eso me parece bastante
+accesible y sencillo. Aunque creo que implica un gráfico especial, eso va a ser molesto.
+ 3) Por otro lado estaría bueno intentar hallar las soluciones de los Kmáx y los Kmín tales
+que el sistema tiene tres puntos fijos. Eso me permitiría graficar esas curvas en los gráficos
+del punto 1 para diferenciar esas regiones y saber cuando el sistema bifurca pasando de una
+solución a tres. Igual eso me lleva un poco a repensar los gráficos que tengo que hacer en
+el punto 1.
+ 4) Pablo decía también de analizar cómo cambia la convergencia del sistema, es decir a qué
+puntos fijos converge en función de Alfa. La idea suena bien, pero creo que fue confuso en qué
+estaba buscando. Eso es un poco lo que está en el primer punto. La idea de ir variando el Alfa
+es para ver cómo cambia la convergencia considerando que el alfa me mueve el punto fijo del
+centro, ¿pero entonces cómo sé cuándo pasé de estar en un punto fijo a tres? Porque creo que
+ese es un punto clave de lo que quiere ver. Creo que esto no es algo particular para ver, sino
+que se puede extraer del punto 1. Lo que no estoy seguro es que en el punto 1 logremos ver lo
+que Pablo quiere ver. De arranque no me resulta tan evidente que se pueda resolver la parte
+analítica para hallar esas soluciones que charlamos con Lupi la otra vez. Pero habrá que intentarlo.
+
+El lunes entonces tenemos que arrancar con la parte burocrática de esto. Guardar la fase de 
+CI_variables y arrancar la nueva fase. Podría llamarla Bifurcacion_logistica. Veamos si lo hago
+ahora. Y después el finde veré si puedo volver a pensar esto como para dejar más en claro que hacer
+el lunes.
+
+Lo bueno es que creo que no necesito armar un código nuevo para esto, total el Cambio_parametros 1D
+tiene el código ya armado que necesito.

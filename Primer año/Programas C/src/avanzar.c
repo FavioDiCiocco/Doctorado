@@ -50,7 +50,7 @@ double Dinamica_sumatoria(ps_Red ps_variable, ps_Param ps_parametro){
 double Dinamica_interes(ps_Red ps_variable, ps_Param ps_parametro){
 	// Defino las variables locales de mi función.
 	double d_resultado; // d_resultado es lo que voy a returnear.
-	double d_sumatoria=0; // d_sumatoria es el total de la sumatoria del segundo término de la ecuación diferencial.
+	double d_sumatoria = 0; // d_sumatoria es el total de la sumatoria del segundo término de la ecuación diferencial.
 	int i_grado = 0;  // i_grado es el grado del agente 1
 	
 	
