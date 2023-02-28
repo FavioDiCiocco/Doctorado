@@ -22,11 +22,11 @@ T=2 # Defino el número de tópicos
 Etapa = Path("Cambios_parametros") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["2D_Epsilon","2D_Kappa"]
-Nombre2 = ["epsilon","kappa"]
-Titulo2 = ["\epsilon","\kappa"]
+Carpetas = ["Alfa=4"]
+# Nombre2 = ["epsilon","kappa"]
+# Titulo2 = ["\epsilon","\kappa"]
 
-for carp,nombre_parametro_2,titulo_parametro_2 in zip(Carpetas,Nombre2,Titulo2):
+for carp in Carpetas:
     
     # Transformo estas cosas en paths. Espero que acostumbrarme a esto valga la pena
     Direccion = Path("../{}".format(carp))
@@ -71,31 +71,41 @@ for carp,nombre_parametro_2,titulo_parametro_2 in zip(Carpetas,Nombre2,Titulo2):
     
     # Por un lado necesito los nombres que pasaré a los títulos de los archivos
     
-    nombre_parametro_1 = "cos(delta)"
-    # nombre_parametro_2 = "epsilon"
+    nombre_parametro_1 = "kappa"
+    nombre_parametro_2 = "epsilon"
     
     # Lo otro que necesito es el nombre que pasaré a los ejes de los gráficos de las funciones
     
-    titulo_parametro_1 = "cos(\delta)"
-    # titulo_parametro_2 = "\epsilon"
+    titulo_parametro_1 = "\kappa"
+    titulo_parametro_2 = "\epsilon"
     
     #----------------------------------------------------------------------------------------------
     
     # Grafico el promedio en función de la amplitud y el epsilon, armando mi mapa de colores.
     
-#    func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta, titulo_parametro_1, titulo_parametro_2)
+    func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta,
+                                          titulo_parametro_1, titulo_parametro_2)
 
     #----------------------------------------------------------------------------------------------
     
     # Para tener una mejor idea de lo que estoy viendo, voy a hacer los gráficos de Opi_vs_tiempo
     
-#    func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta,T, nombre_parametro_1, nombre_parametro_2)
+    # func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta,T,
+    #                         nombre_parametro_1, nombre_parametro_2)
     
     #----------------------------------------------------------------------------------------------
     
     # Para tener una mejor idea de lo que estoy viendo, voy a hacer los gráficos de Opi_vs_tiempo
     
-    func.Graf_Punto_fijo_vs_parametro(Df_archivos, Direccion, Etapa/carpeta,T, nombre_parametro_2, titulo_parametro_1, titulo_parametro_2)
+    # func.Graf_Punto_fijo_vs_parametro(Df_archivos, Direccion, Etapa/carpeta,T,
+    #                                   nombre_parametro_2, titulo_parametro_1, titulo_parametro_2)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    # Me armo un gráfico de Varianza en el espacio de parámetros
+    
+    func.Mapa_Colores_Varianza_opiniones(Df_archivos, Direccion, Etapa/carpeta,
+                                         titulo_parametro_1, titulo_parametro_2)
     
 
 func.Tiempo(t0)

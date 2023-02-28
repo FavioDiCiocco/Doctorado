@@ -274,7 +274,8 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2,nombre_parametro_1="parametro1",nombr
 # Esta función es la que arma los gráficos de los mapas de colores en el espacio de
 # parámetros de alfa y umbral usando la varianza de las opiniones como métrica.
 
-def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,titulo_parametro_1="parametro 1" ,titulo_parametro_2="parametro 2"):
+def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,
+                                    titulo_parametro_1="parametro 1" ,titulo_parametro_2="parametro 2"):
     
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Opiniones"

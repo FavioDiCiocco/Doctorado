@@ -3570,6 +3570,7 @@ En especial porque los otros compañeros de Labo estaban pensando en hacerla.
 
 Mañana entonces reviso ese gráfico y me pongo con lo de Mininni, a la tarde charlo con Pablo y Lupi.
 Posiblemente me quede hasta tarde por el partido.
+
 ------------------------------------------------------------------------------------------------
 
 24/02/2023
@@ -3624,3 +3625,72 @@ el lunes.
 
 Lo bueno es que creo que no necesito armar un código nuevo para esto, total el Cambio_parametros 1D
 tiene el código ya armado que necesito.
+
+------------------------------------------------------------------------------------------------
+
+27/02/2023
+
+Antes de arrancar a trabajar, hoy me asignaron un cargo de Ayudante de primera interino para la
+materia de F1A. Esa materia la está dando Pablo, es los martes y viernes de 11 a 14 si no me
+equivoco la cursada. Después tengo que ver de actualziar el SIGEVA y ya que estoy el LinkedIn.
+HACER ESTO ES EL MIÉRCOLES.
+
+Sobre lo que hablamos con Pablo, arrancaría armando un gráfico de varianza y promedio de opiniones
+para Kappa y Epsilon con Alfa fijo y otro para Kappa y Alfa con Epsilon fijo. Ahora, ese primer
+gráfico ya lo tengo hecho. Es el gráfico que está en Cambios_variables Alfa=4. Incluso puedo tomar
+esos datos y simplemente medirles la varianza, así que ahí tengo la mitad del laburo hecho.
+ Para la otra mitad queda claro entonces que tengo que distribuir las opiniones entre [0;1].
+Eso para ser consistente con lo observado en el gráfico anterior. Creo que lo ideal sería
+colocar epsilon en 1,5 y mover Alfa entre [0,5;3]. Así tengo el mismo rango que en el gráfico
+de Kappa y Epsilon. Entonces eso son 26 valores para el Kappa, 26 para el Alfa y ponele 30 simulaciones.
+Eso no va a tardar más de medio día. Y no defino mejor la hora porque no sé cuánto tarda una
+simulación de eso, pero ahora reviso. Lo interesante es que para Kappa=1, Alfa=3 debería
+observar que el sistema tiende a 0,5. Momento, pero entonces nunca cruzo a la región de
+valores en la cual el sistema tiende al punto fijo máximo. En ese caso la cagué. No me preocupo
+mucho de que Alfa sea mayor a 4 porque como varía Kappa, eso puede solucionar un poco. Pero
+pensándolo mejor, esa no es una buena región. Y además creo que va a ser mejor variar el
+alfa de a 0,2 y cubrir una región más grande.
+ Hagamos esto, mejor tomo Epsilon=2 y varío Alfa entre 2 y 6. Eso son 21 valores para el Alfa
+y me lleva a la región en la que Alfa es más que el doble de Epsilon, asegurándome que ahora sí
+el sistema va a converger al punto fijo máximo. Voy a mandar a correr esto después de comer.
+
+Ahí corregí el código de la varianza, ahora lo mando a correr en Oporto y de ahí pongo a hacer
+los datos de Kappa en función de Epsilon. Para eso tengo que definir una nueva etapa y una
+fase para eso. Subo entonces los archivos de src, hago las correcciones a Instanciar.sh
+y lo mando a correr. Después subo el graficar y funciones.py y hago los gráficos de 
+Cambios_variables/Alfa=4.
+
+Me retuvo un rato, pero ahí mandé a correr todo. Lo siguiente ahora es ponerme a hacer la parte
+analítica, ver cuándo tengo un Kmax y un Kmin tal que el sistema me genera tres soluciones.
+Eso lo voy a tener escrito tanto en función de Epsilon como Alfa, y podré poner esas curvas
+en los gráficos de Kappa_Epsilon y los de Kappa_Alfa
+
+------------------------------------------------------------------------------------------------
+
+28/02/2023
+
+Para finalizar Febrero, hoy hubo una loca en el tren a la mañana. Lo primero que voy a hacer
+hoy es armar los gráficos con los datos que mandé a hacer en Oporto. Para eso tengo que
+copiar la carpeta de Python que tengo en Cambios_variables, ahí está el Graficar que arma
+el gráfico promedio y el de Varianza. También tengo que armar la carpeta correspondiente
+en Imágenes.
+
+Hecho eso, continuo con mi análisis de la derivada de la función de Kappa. Terminado eso,
+armaré unos gráficos y veré de mostrárselo a Pablo.
+ Mi análisis dió resultados bastante interesantes. Siguiendo la idea que había propuesto Lupi,
+pude encontrar una condición importante: El sistema sólo puede tener múltiples puntos fijos
+si Epsilon es mayor a 2. Dicho esto, encontré una expresión que vincula epsilon, alfa y los
+puntos fijos, de forma que para todo epsilon mayor a 2 puedo encontrar dos puntos fijos.
+Estos dos puntos fijos, xmin y xmax (definidos así porque uno es mayor al otro), determinan
+los valores de kappa_max y kappa_min respectivamente. Estos valores se pueden calcular utilizando
+la ecuación de Kappa derivada a partir de utilizar la aproximación de campo medio. De paso,
+Pablo me dice que vea otras formas de aplicar campo medio a ver si puedo ver otros resultados,
+en parte porque no le convence del todo esta aproximación.
+ Por tanto ahora lo primero que tengo que hacer es encontrar una librería que encuentre las
+soluciones dada una ecuación. Hecho eso, podré empezar a ver cómo graficar planos en un
+gráfico 3D, y a partir de ahí tendré que ver cómo armo los datos.
+
+Intenté ver cómo funciona el solveset, leí la documentación y cosas, pero el resultado no
+parece para nada el esperado. No logro que me devuelva los números que son el resultado,
+sino que me da un conjunto en el cuál las soluciones se encuentran, pero no me dice las
+soluciones. Tendré que ver un poco más al respecto sobre cómo hallar las soluciones.

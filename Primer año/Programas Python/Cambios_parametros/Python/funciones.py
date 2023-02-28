@@ -274,21 +274,22 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2,nombre_parametro_1="parametro1",nombr
 # Esta función es la que arma los gráficos de los mapas de colores en el espacio de
 # parámetros de alfa y umbral usando la varianza de las opiniones como métrica.
 
-def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,titulo_parametro_1="parametro 1" ,titulo_parametro_2="parametro 2"):
+def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,
+                                    titulo_parametro_1="parametro 1" ,titulo_parametro_2="parametro 2"):
     
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Opiniones"
     
     # Defino los arrays de parámetros diferentes
     
-    arrayN = np.unique(DF["n"])
+    AGENTES = int(np.unique(DF["n"]))
+    
     Array_parametro_1 = np.unique(DF["parametro_1"])
-    Array_parametro_2 = np.unique(DF["paramtero_2"])
+    Array_parametro_2 = np.unique(DF["parametro_2"])
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
     
-    Tupla_total = [(n,i,parametro_1,j,parametro_2) for n in arrayN
-                   for i,parametro_1 in enumerate(Array_parametro_1)
+    Tupla_total = [(i,parametro_1,j,parametro_2) for i,parametro_1 in enumerate(Array_parametro_1)
                    for j,parametro_2 in enumerate(Array_parametro_2)]
     
     #--------------------------------------------------------------------------------
@@ -301,7 +302,7 @@ def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,titulo_parametro_1="parametr
     #--------------------------------------------------------------------------------
     
     # Itero en los valores de mis parámetros alfa y umbral.
-    for AGENTES,fila,PARAMETRO_1,columna,PARAMETRO_2 in Tupla_total:
+    for fila,PARAMETRO_1,columna,PARAMETRO_2 in Tupla_total:
         
         # Me defino el array en el cual acumulo los datos de las opiniones finales de todas mis simulaciones
         Opifinales = np.array([])
