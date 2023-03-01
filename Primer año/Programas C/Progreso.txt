@@ -3694,3 +3694,38 @@ Intenté ver cómo funciona el solveset, leí la documentación y cosas, pero el
 parece para nada el esperado. No logro que me devuelva los números que son el resultado,
 sino que me da un conjunto en el cuál las soluciones se encuentran, pero no me dice las
 soluciones. Tendré que ver un poco más al respecto sobre cómo hallar las soluciones.
+
+------------------------------------------------------------------------------------------------
+
+01/03/2023
+
+Esta mañana vengo intentado resolver asuntos en general, actualizar el SIGEVA, declarar el
+cargo, actualizar LinkedIn. En SIGEVA subí mi nuevo cargo y las participaciones en congresos.
+Me queda ahora subir la tesis, pero esperaré al mensaje de Silvina para ver qué hacer con eso.
+Me faltaba el Cuil de Seba para diferenciarlo de los otros dos Seba Pintos. Y necesitaba el
+URL para cargar en la página.
+
+Me queda actualizar el LinkedIn. Hice dos cambios, debería sentarme el finde a terminar de corregir
+esto con los documentos adecuados, eso creo que va a hacer este proceso más rápido.
+
+Ahora a la tarde me voy a poner a intentar resolver ecuaciones de nuevo.
+Scipy tiene una función que encuentra soluciones facilísimo y super rápido,
+no hay problema ahí. Estoy teniendo dos problemas. El primero es que me encuentra
+una sola solución, el segundo que fácilmente el programa choca con el problema
+de querer evaluar el ln. ¿Y si miro la función con la exponencial?
+Usar la exponencial resultó una buena idea, el sistema converge mucho mejor, no tiene problemas
+de que evalue cosas erróneas en el logaritmo y demás. El problema pasa a ser que necesito
+encontrar dos soluciones y el fsolve me devuelve una nomás. Así que voy a tener que 
+lograr darle condiciçon inicial al sistema para que en todos los casos alcance las
+soluciones correctas. Eso implica también que cuando epsilon vale 2, el sistema sólo
+tenga una solución. Se me ocurre buscar el mínimo de la derivada de Kappa, y en el
+valor de x asociado a ese mínimo, moverme uno para atrás y uno para adelante como
+condiciones iniciales. (x_min-1,x_min+1) serían mis dos condiciones iniciales.
+Eso debería servir para hallar en todo caso mis dos soluciones. Podría comprobar
+que en la región en la cual quiera investigar realmente no haya problemas. Digo, no
+necesito que esto funque para TODO alfa y epsilon. Cuestión, haré eso y para el caso
+en que tengo una sola solución, me aseguro que las dos soluciones halladas no sean 
+la misma con el np.isclose y listo. Me gusta esa idea. Mañana resuelvo eso y después
+empiezo a ver cómo armar los planos que voy a graficar.
+
+
