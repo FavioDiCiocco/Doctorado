@@ -188,3 +188,13 @@ parece que sea importante guardarlos.
  Las simulaciones recorren tres parámetros, el Cosdelta, el Kappa y el Epsilon. La idea
 es armar gráficos en 3D del punto de covergencia en función de los parámetros. Alfa sigue
 valiendo 4.
+
+Bifurcacion_logistica:
+---------------------
+En esta etapa estudio la transición del sistema de la región en la cual tiene tres puntos
+fijos a la región en la cuál tiene uno solo. Lo primero que hago para esto es estudiar
+analíticamente la ecuación dinámica y de ahí obtuve relaciones que cumplen el Kappa,
+Alfa y Epsilon. Usando esas relaciones y la librería scipy para hallar soluciones numéricas
+a las ecuaciones es que armé un gráfico 3D que me delimite la región en la cual el sistema
+tiene tres puntos fijos. Esta fase del trabajo no requirió simulaciones, ya que sale de
+resultados analíticos.

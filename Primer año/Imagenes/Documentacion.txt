@@ -111,3 +111,10 @@ en función de Kappa y Epsilon, graficando distintas capas según cosdelta.
  Logré armar los gráficos 3D, pero no parecen ser lo más útil. Hay que revisar el
 cómo armar eso.
  También me armé gráficos de mapa de Varianza en el espacio de parámetros.
+
+.) Bifurcacion_logistica:
+-------------------------
+La idea es estudiar la región en la cual el sistema tiene tres puntos fijos. Para eso
+es que por un lado revisé analíticamente la ecuación dinámica del modelo. De ahí
+armé un gráfico 3D que me marca la región en la cuál el sistema tiene tres puntos
+fijos.

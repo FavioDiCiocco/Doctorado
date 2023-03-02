@@ -7,11 +7,13 @@ Created on Mon Dec 19 10:04:40 2022
 """
 
 import matplotlib.pyplot as plt
+from matplotlib import cm
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.optimize import fsolve
 import math
 import time
+from pathlib import Path
 import funciones as func
 
 # Importo todas las librerías que voy a usar en el programa. Estas son las que
@@ -73,13 +75,12 @@ Categorias = np.array(Datos[2][:-1],dtype = "int")
 ####################################################################################################
 ####################################################################################################
 
-# Hago pruebas para hallar soluciones a funciones
+# Voy a armar el gráfico en 3D de la región en la cual el sistema tiene tres
+# puntos fijos. Voy a barrer en Epsilon y Alfa y obtener los Kappa asociados.
 
-alfas = np.arange(1,10) * 0.5
-epsilon = 3.5
-resultados = np.array([True]*alfas.shape[0])
-raices_min = np.zeros(alfas.shape[0])
-raices_max = np.zeros(alfas.shape[0])
+#------------------------------------------------------------------------------
+
+# Defino las funciones que uso para calcular los puntos críticos y los Kappa
 
 def Derivada_kappa(x,alfa,epsilon):
     return np.exp(alfa*x-epsilon)+1-alfa*x
@@ -87,20 +88,82 @@ def Derivada_kappa(x,alfa,epsilon):
 def Kappa(x,alfa,epsilon):
     return x*( 1 + np.exp(-alfa*x +epsilon) )
 
-for indice,alfa in enumerate(alfas):
-    
-    x_min = epsilon/alfa
+#------------------------------------------------------------------------------
 
-    roots_min = fsolve(Derivada_kappa,x_min-3,args=(alfa,epsilon))
-    roots_max = fsolve(Derivada_kappa,x_min+3,args=(alfa,epsilon))
-    
-    resultados[indice] = np.isclose(roots_min,roots_max)
-    raices_min[indice] = roots_min
-    raices_max[indice] = roots_max
+# Preparo mis variables para graficar
 
-# print("El kappa_max es: ",Kappa(roots_min[0],alfa,epsilon))
-# print("El kappa_min es: ",Kappa(roots_max[0],alfa,epsilon))
+Epsilons = np.linspace(2,5,50)
+Alfas = np.linspace(0.5,5,50)
+XX,YY = np.meshgrid(Epsilons,Alfas)
 
-print(resultados)
+# Armos las dos matrices que formarán las superficies de Kappa que voy a graficar.
+
+Kappas_min = np.zeros(XX.shape)
+Kappas_max = np.zeros(XX.shape)
+
+# Calculo los Kappa y armo las matrices
+
+for fila,alfa in enumerate(Alfas):
+    for columna,epsilon in enumerate(Epsilons):
+        
+        # Calculo dónde se encuentra el mínimo de mi función Derivada_Kappa
+        x_min = epsilon/alfa
+        
+        # Calculo los puntos críticos donde voy a encontrar los Kappa máximos y mínimos
+        raiz_min = fsolve(Derivada_kappa,x_min-3,args=(alfa,epsilon))
+        raiz_max = fsolve(Derivada_kappa,x_min+3,args=(alfa,epsilon))
+        
+        # Asigno los valores de los Kappa a mis matrices
+        Kappas_min[fila,columna] = Kappa(raiz_max, alfa, epsilon)
+        Kappas_max[fila,columna] = Kappa(raiz_min, alfa, epsilon) 
+        
+#------------------------------------------------------------------------------
+
+# Ya tengo mis tres matrices, ahora puedo armar el gráfico de mis superficies.
+
+# Hago unos primeros ajustes generales al gráfico
+
+plt.rcParams.update({'font.size': 32})
+fig = plt.figure("Region_triple_puntofijo",figsize=(40,40))
+ax = fig.add_subplot(projection = "3d")
+ax.set_xlabel(r"$\epsilon$",labelpad = 30)
+ax.set_ylabel(r"$\alpha$",labelpad = 30)
+ax.set_zlabel(r"$\kappa$", labelpad = 50)
+
+surf1 = ax.plot_surface(XX,YY,Kappas_min, cmap=cm.coolwarm,
+                        linewidth=0, antialiased=False)
+
+surf2 = ax.plot_surface(XX,YY,Kappas_max, cmap=cm.coolwarm,
+                        linewidth=0, antialiased=False)
+
+
+direccion_guardado = Path("../../../Imagenes/Bifurcacion_logistica/Region_triple_puntofijo_BASE.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+
+ax.view_init(0,0,0)
+direccion_guardado = Path("../../../Imagenes/Bifurcacion_logistica/Region_triple_puntofijo_FRENTE.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+
+ax.view_init(0,-90,0)
+direccion_guardado = Path("../../../Imagenes/Bifurcacion_logistica/Region_triple_puntofijo_LATERAL.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+
+ax.view_init(90,0,0)
+direccion_guardado = Path("../../../Imagenes/Bifurcacion_logistica/Region_triple_puntofijo_TECHO.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+
+ax.view_init(-90,0,0)
+direccion_guardado = Path("../../../Imagenes/Bifurcacion_logistica/Region_triple_puntofijo_PISO.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+
+
+
+plt.close("Region_triple_puntofijo")
+
+
+
+
+
+
 
 func.Tiempo(t0)

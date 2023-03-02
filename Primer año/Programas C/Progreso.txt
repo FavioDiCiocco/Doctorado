@@ -3728,4 +3728,25 @@ en que tengo una sola solución, me aseguro que las dos soluciones halladas no s
 la misma con el np.isclose y listo. Me gusta esa idea. Mañana resuelvo eso y después
 empiezo a ver cómo armar los planos que voy a graficar.
 
+------------------------------------------------------------------------------------------------
 
+02/03/2023
+
+Hoy llegué y me puse a revisar lo que tenía hecho. Estuve un ratito para interpretar correctamente
+a cuál función tenía que derivar y qué tenía que pedirle a la derivada. Cuestión que para la función
+que uso para calcular los puntos críticos de la derivada de Kappa encontré que el mínimo se halla
+en Epsilon/Alfa. Observando cómo varía esa función con Epsilon y Alfa, noté que para la región que
+voy a estar mirando, las raíces se alejan del mínimo por 3 o 4. Así que simplemente en el fsolve pongo
+como condición inicial al x_min-3 para encontrar el punto crítico mínimo y x_min+3 para hallar el
+máximo. Ahora que tengo esto, tengo que ver cómo armar el gráfico 3D y de ahí ponerme a armar
+mis matrices que voy a usar para graficarlo.
+
+Armé el gráfico 3D del espacio de parámetros. Se observa lo que esperabamos, para Epsilon=2 las dos
+superficies se conectan, mientras que para valores más grandes se separan, y a medida que alfa
+se hace más chico también. A este gráfico lo observé desde varios lados para intentar interpretarlo
+mejor.
+
+Lo siguiente que debería hacer es colocar estas curvas en los gráficos de Kappa versus Epsilon de
+CI_variables. Eso lo puedo hacer fácilmente, total las curvas las armo, no necesito simulación.
+
+Antes de irme aproveché para actualizar las documentaciones.
