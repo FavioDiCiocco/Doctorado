@@ -3084,7 +3084,7 @@ ya se veía antes.
 
 18/01/2023
 
-En la mañanamandé a correr los datos del caso 2D a Oporto, armé el gráfico del caso 1D con alfa=2
+En la mañana mandé a correr los datos del caso 2D a Oporto, armé el gráfico del caso 1D con alfa=2
 y después me puse a trabajar en el powerpoint para resumir lo que tengo hecho hasta ahora. Sólo
 Dios sabe qué haré en las próximas dos semanas cuando tenga eso terminado. Hice las primeras tres
 diapositivas.
@@ -3330,7 +3330,7 @@ parametro_1 representa cada color. Pero eso es un detalle, se puede solucionar d
 
 01/02/2023
 
-Estuve todo el día trabajando en la función que grafica el interés final promedio de los agentes en función
+Estuve todo el día trabajando en la función que grafica el interés final promedio de los agentes en función ...
 Logré graficar los puntos asociados a un mismo valor de parámetro 1. Espero que no ocurra que el array generado
 sea demasiado grande. Igual no creo, considerando que cada simulación es un punto y que tengo aproximadamente
 100 simulaciones, asignadas a como mucho 30 valores distintos. Es decir que como mucho el vector tiene 
@@ -3750,3 +3750,82 @@ Lo siguiente que debería hacer es colocar estas curvas en los gráficos de Kapp
 CI_variables. Eso lo puedo hacer fácilmente, total las curvas las armo, no necesito simulación.
 
 Antes de irme aproveché para actualizar las documentaciones.
+
+------------------------------------------------------------------------------------------------
+
+03/03/2023
+
+Hoy llegué tarde a la facultad. Estoy con la garganta medio áspera y bastantes mocos. Me quedé
+durmiendo un poquito más porque anoche dormí re mal y estoy medio resfriado. Confío estar mejor
+para mañana. Ahora que llegué me voy a poner a hacer lo que me propuso Lupi ayer. Para eso
+tengo que agarrar el archivo de funciones.py en CI_variables y en Cambios_parametros y agregar
+la curva de Kappa en función de los parámetros.
+
+Ya coloqué las curvas sobre el gráfico en CI_variables, ahora debería pasarlo a Cambios_parametros.
+Y también, siguiendo el consejo de Lupi, debería ver de graficar el punto medio de los tres puntos
+fijos. Eso lo puedo hacer simplemente resolviendo la ecuación dinámica, hallando los tres puntos fijos
+y graficando el del medio. Están implementadas las curvas para el caso de Cambios_parametros.
+Mandé a correr esto en la pc de Oporto, así que después tomo los gráficos para ver que tal.
+
+Hablando con Lupi, estábamos diciendo de agregar en los gráficos el tercer punto fijo, el que
+corresponde al punto fijo inestable. El tema es que los gráficos que armé hoy no son de x,
+son de Kappa. Entonces no puedo simplemente graficarlo ahí. Este punto era algo que se
+graficaría en los gráficos de puntos fijo promedio en función de algún parámetro, lo que
+tenía hecho para CI_variables. Supongo que podría armar esas curvas, pero no sé si valgan
+tanto la pena. Tendría que plantear la ecuación dinámica y hallar los x que solucionan eso.
+Podría fácilmente tomar un promedio de las opiniones finales y usar eso como la condición
+inicial del fsolve. Supongo que es una opción, pero no me parece en este momento tan urgente.
+El lunes le muestro a Pablo lo que tengo hecho y de ahí definimos qué surge entonces.
+
+------------------------------------------------------------------------------------------------
+
+06/03/2023
+
+Cuando llegué hablé con Pablo sobre que tengo armados los gráficos en 3D de la región en la cuál
+el sistema bifurca y tiene tres puntos fijos. Por un lado debería descargar los gráficos armados
+al respecto, así tengo todo junto para mostrárselo de una.
+
+Por otro lado, charlamos sobre posibles proyectos para el futuro de la tesis. Entre ellos está
+el proyecto que me decía de trabajar con Lucio. Ese es un proyecto que toma el trabajo que
+hizo Sebas sobre un modelo de Graneviter de competencia de dos especies por un recurso.
+Después pedirle a Seba el trabajo para hojearlo un poco.
+
+También me dijo de que estaría bueno plantear el estudio hecho en base al juego de Republia. 
+Debería formalizar eso, plantear algo serio que se pueda hacer con eso y una vez que tenga
+un borrador lo presento a Pablo y quizás a los demás. De ahi vamos viendo cómo armar un
+experimento serio. Estaría bueno revisar entonces los pdf que tengo a ver si explican algo
+sobre cómo crear alguna página online en la que la gente pueda interactuar y de ahí
+guardar la info que envían y poder usar esos datos. O también los datos de Diplomacy que
+me contaba Sebas.
+
+Como última cosa de horizonte de trabajo, Pablo me mandó un paper para leer, así que lo
+tengo que agregar a la lista de cosas para leer.
+
+Esta mañana la voy a usar en particular para hacer burocracia y anotarme cosas. Igual creo
+que de lo que tengo que anotar me queda sólo hacer notas en la nueva agenda. Podría ir
+armando notas en el cuaderno, plantear lo que me dijo Lupi del tercer punto fijo y después
+empezar a formalizar las otras ideas. O leer papers, esa también va.
+
+Planteemos la idea de graficar el punto fijo inestable. Ese punto fijo podría obtenerlo de
+hallar las soluciones de la ecuación dinámica principal. Para un dado conjunto de parámetros,
+encuentro las soluciones de mi ecuación dinámica con fsolve. Ahora, ¿cómo identifico que
+encontré la solución inestable? La mejor idea que se me ocurre es hallar las tres soluciones
+posibles, ordenarlas y luego tomar la del medio como la solución inestable. El tema ahí es
+que necesito asegurarme que estoy viendo tres soluciones distintas y no tres soluciones
+que son una única solución. Revisemos los gráficos que tengo en CI_variables al respecto
+y de ahí empecemos a ver cómo armar los gráficos. ¿No puedo poner esta curva en los
+gráficos de la etapa de Cambios_parámetros? Sí, total que el sistema tenga tres soluciones
+va más allá del gráfico. Arranquemos con esto.
+
+LLevo toda la tarde en esto. Bueno, pasaron cosas. Cuestión que el programa que armé parece
+servir, pero en los datos que puse tira un error. Al parecer, estando muy cerca del punto
+fijo máximo ocurrió que el fsolve no convirgió lo suficientemente a la solución. Esto es
+un problema porque el código interpretó como que la solución hallada es distinta a otra
+solución que ya tenía de antes. Eso es un problema que necesito corregir. Se me ocurre
+que puedo intentar barrerlo bajo la alfombra si simplemente hago que en cuanto encuentre
+tres soluciones el sistema corte el while, pero no sé si sea lo mejor. Aunque por otro
+lado, no se me ocurre cómo identificar correctamente que son la misma solución sin 
+exponerme a un segundo error, que es que quizás hay dos soluciones muy pegadas.
+
+Pero en definitiva, las primeras dos soluciones que se me ocurren son aumentar la
+tolerancia del np.isclose o que el while corte cuando indice llega a 2.

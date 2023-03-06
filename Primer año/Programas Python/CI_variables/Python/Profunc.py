@@ -9,6 +9,7 @@ Created on Mon Dec 19 10:04:40 2022
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
+from scipy.optimize import fsolve
 import math
 import time
 import funciones as func
@@ -66,7 +67,7 @@ while len(Registrados) != N :
 
 Datos = func.ldata("../categorizacion_prueba.file")
 Categorias = np.array(Datos[2][:-1],dtype = "int")
-"""
+
 
 ####################################################################################################
 ####################################################################################################
@@ -235,6 +236,47 @@ plt.ylabel(r"$\kappa$")
 plt.legend()
 plt.grid(alpha = 0.5)
 plt.show()
+
+"""
+
+####################################################################################################
+####################################################################################################
+####################################################################################################
+
+# Primero defino la ecuación dinámica que voy a usar para hallar los puntos fijos del sistema.
+
+def Ecuacion_dinamica(x,K,A,Cdelta,Eps):
+    return -x+K*(1/(1+np.exp(-A*(1+Cdelta)*x+Eps)))
+
+# Quiero que si hay un punto fijo inestable, me devuelva eso. Si no lo hay, que me devuelva
+# un 0. Los tres puntos fijos están distribuidos entre 0 y Kappa.
+
+x0 = 0
+K = 2 
+A = 4
+Cdelta = 0
+Eps = 3
+
+raices = np.zeros(3)
+indice = 0
+
+# La primer raíz que encuentre es definitivamente la más chica
+raices[0] = fsolve(Ecuacion_dinamica,x0,args=(K,A,Cdelta,Eps))
+
+while x0 < K:
+    
+    x0 += 0.1
+    
+    resultado = fsolve(Ecuacion_dinamica,x0,args=(K,A,Cdelta,Eps))[0]
+    
+    if not (np.isclose(raices[indice],resultado)):
+        
+        indice += 1
+        raices[indice] = resultado
+    
+print(raices)
+    
+    
 
 
 

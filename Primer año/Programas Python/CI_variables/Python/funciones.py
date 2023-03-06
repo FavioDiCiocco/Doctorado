@@ -12,6 +12,7 @@ from matplotlib.pyplot import cm
 import numpy as np
 import time
 import math
+from scipy.optimize import fsolve
 from pathlib import Path
 from cycler import cycler
 
@@ -109,6 +110,26 @@ color=cm.rainbow(np.linspace(0,1,Divisiones))
 # 1.25º y 3.75º tienen el segundo color. Y así. Por tanto yo tengo que hallar una fórmula que para
 # cada ángulo le asigne el casillero que le corresponde en el vector de color. Luego, cuando grafique
 # el punto, para el color le agrego un input que sea: c = color[n]
+
+#---------------------------------------------------------------------------------------------------------
+
+##################################################################################
+##################################################################################
+
+# FUNCIONES ANALÍTICAS
+
+##################################################################################
+##################################################################################
+
+#--------------------------------------------------------------------------------
+
+# Defino las funciones que uso para calcular los puntos críticos y los Kappa
+
+def Derivada_kappa(x,alfa,epsilon):
+    return np.exp(alfa*x-epsilon)+1-alfa*x
+
+def Kappa(x,alfa,epsilon):
+    return x*( 1 + np.exp(-alfa*x +epsilon) )
 
 #---------------------------------------------------------------------------------------------------------
 
@@ -275,7 +296,8 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2,nombre_parametro_1="parametro1",nombr
 # parámetros de alfa y umbral usando la varianza de las opiniones como métrica.
 
 def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,
-                                    titulo_parametro_1="parametro 1" ,titulo_parametro_2="parametro 2"):
+                                    titulo_parametro_1="parametro 1" ,titulo_parametro_2="parametro 2",
+                                    Condicion_curvas_kappa=False):
     
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Opiniones"
@@ -351,6 +373,38 @@ def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,
     plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "plasma")
     plt.colorbar()
     plt.title("Varianza de opiniones en Espacio de Parametros")
+    
+    # Hago el plotteo de las curvas de Kapppa
+    
+    if Condicion_curvas_kappa:
+        
+        Epsilons = np.linspace(2,max(Array_parametro_2),50)
+        Alfa = 4
+        Kappa_min = np.zeros(Epsilons.shape[0])
+        Kappa_max = np.zeros(Epsilons.shape[0])
+        
+        for indice,epsilon in enumerate(Epsilons):
+            
+            # Calculo dónde se encuentra el mínimo de mi función Derivada_Kappa
+            x_min = epsilon/Alfa
+            
+            # Calculo los puntos críticos donde voy a encontrar los Kappa máximos y mínimos
+            raiz_min = fsolve(Derivada_kappa,x_min-3,args=(Alfa*(1+COSDELTA),epsilon))
+            raiz_max = fsolve(Derivada_kappa,x_min+3,args=(Alfa*(1+COSDELTA),epsilon))
+            
+            # Asigno los valores de los Kappa a mis matrices
+            Kappa_min[indice] = Kappa(raiz_max, Alfa*(1+COSDELTA), epsilon)
+            Kappa_max[indice] = Kappa(raiz_min, Alfa*(1+COSDELTA), epsilon)
+            
+        # Ahora que tengo las curvas, las grafico
+        
+        plt.plot(Epsilons,Kappa_min,"--g",linewidth=8)
+        plt.plot(Epsilons[Kappa_max < max(Array_parametro_1)],
+                 Kappa_max[Kappa_max < max(Array_parametro_1)],
+                 "--r",linewidth=8)
+    
+    # Guardo la figura y la cierro
+    
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close("Varianza Opiniones")
 
@@ -901,6 +955,7 @@ def Graf_Punto_fijo_3D(DF,path,carpeta,T=2,
     direccion_guardado = Path("../../../Imagenes/{}/Puntofijo3D_perfil.png".format(carpeta))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close("Puntofijo")
+
 
 
 """

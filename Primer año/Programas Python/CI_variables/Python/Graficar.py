@@ -89,18 +89,20 @@ for carp in Carpetas:
                                               "parametro_3":"parametro_2"})
                             .copy()
                         )
-        
+        """
         func.Graf_Punto_fijo_vs_parametro(Df_Cosdelta_fijo, Direccion,
                                           Etapa/carpeta,T, nombre_parametro_3,
                                           titulo_parametro_2, titulo_parametro_3)
+        """
         
         
         func.Mapa_Colores_Varianza_opiniones(Df_Cosdelta_fijo, Direccion,
                                              Etapa/carpeta,
-                                             titulo_parametro_2, titulo_parametro_3)
+                                             titulo_parametro_2, titulo_parametro_3,
+                                             True)
         
         #----------------------------------------------------------------------------------------------
-        
+        """
         # Ahora fijo el parámetro de Cosdelta y barro en función de Kappa
         
         # Fijo el parámetro de Cosdelta y barro en función de epsilon
@@ -121,7 +123,7 @@ for carp in Carpetas:
     
     func.Graf_Punto_fijo_3D(Df_archivos, Direccion, Etapa/carpeta,T,
                             titulo_parametro_1, titulo_parametro_2, titulo_parametro_3)
-
+    """
 
 
 func.Tiempo(t0)

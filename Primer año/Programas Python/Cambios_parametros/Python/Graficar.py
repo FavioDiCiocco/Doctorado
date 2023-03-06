@@ -42,8 +42,8 @@ for carp in Carpetas:
     
     #-------------------------------------------------------------------------------------------------------
     
-    # Es importante partir del hecho de que mis archivos llevan por nombre: "Opiniones_N=$_Cosd=$_epsilon=$_Iter=$.file"
-    # También tengo otros archivos llamados "Testigos_N=$_Cosd=$_epsilon=$_Iter=$.file" y
+    # Es importante partir del hecho de que mis archivos llevan por nombre: "Opiniones_N=$_Kappa=$_epsilon=$_Iter=$.file"
+    # También tengo otros archivos llamados "Testigos_N=$_Kappa=$_epsilon=$_Iter=$.file" y
 
     # Voy a trabajar mi lista de archivos usando pandas, creo que va a ser mucho más claro lo que
     # está pasando y además va a ser más orgánico.
@@ -84,7 +84,8 @@ for carp in Carpetas:
     # Grafico el promedio en función de la amplitud y el epsilon, armando mi mapa de colores.
     
     func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-                                          titulo_parametro_1, titulo_parametro_2)
+                                          titulo_parametro_1, titulo_parametro_2,
+                                          True)
 
     #----------------------------------------------------------------------------------------------
     
@@ -105,7 +106,8 @@ for carp in Carpetas:
     # Me armo un gráfico de Varianza en el espacio de parámetros
     
     func.Mapa_Colores_Varianza_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-                                         titulo_parametro_1, titulo_parametro_2)
+                                         titulo_parametro_1, titulo_parametro_2,
+                                         True)
     
 
 func.Tiempo(t0)
