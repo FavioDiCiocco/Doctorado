@@ -252,27 +252,26 @@ def Ecuacion_dinamica(x,K,A,Cdelta,Eps):
 # un 0. Los tres puntos fijos están distribuidos entre 0 y Kappa.
 
 x0 = 0
-K = 2 
+K = 1
 A = 4
 Cdelta = 0
-Eps = 3
+Eps = 2
 
 raices = np.zeros(3)
 indice = 0
 
-# La primer raíz que encuentre es definitivamente la más chica
-raices[0] = fsolve(Ecuacion_dinamica,x0,args=(K,A,Cdelta,Eps))
-
 while x0 < K:
-    
-    x0 += 0.1
     
     resultado = fsolve(Ecuacion_dinamica,x0,args=(K,A,Cdelta,Eps))[0]
     
-    if not (np.isclose(raices[indice],resultado)):
+    Condicion_raiz = np.isclose(Ecuacion_dinamica(resultado,K,A,Cdelta,Eps),0,atol=1e-06)
+    
+    if not(np.isclose(raices,np.ones(3)*resultado).any()) and Condicion_raiz:
         
-        indice += 1
         raices[indice] = resultado
+        indice += 1
+    
+    x0 += 0.1
     
 print(raices)
     

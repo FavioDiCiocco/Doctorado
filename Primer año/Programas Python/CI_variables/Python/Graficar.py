@@ -89,13 +89,14 @@ for carp in Carpetas:
                                               "parametro_3":"parametro_2"})
                             .copy()
                         )
-        """
+        
         func.Graf_Punto_fijo_vs_parametro(Df_Cosdelta_fijo, Direccion,
                                           Etapa/carpeta,T, nombre_parametro_3,
-                                          titulo_parametro_2, titulo_parametro_3)
+                                          titulo_parametro_2, titulo_parametro_3,
+                                          Condicion_punto_inestable_Kappa_Epsilon=True)
+        
+        
         """
-        
-        
         func.Mapa_Colores_Varianza_opiniones(Df_Cosdelta_fijo, Direccion,
                                              Etapa/carpeta,
                                              titulo_parametro_2, titulo_parametro_3,
@@ -114,11 +115,12 @@ for carp in Carpetas:
         
         func.Graf_Punto_fijo_vs_parametro(Df_Cosdelta_fijo, Direccion,
                                           Etapa/carpeta,T, nombre_parametro_2,
-                                          titulo_parametro_3, titulo_parametro_2)
-        
+                                          titulo_parametro_3, titulo_parametro_2,
+                                          Condicion_punto_inestable_Epsilon_Kappa=True)
         
         #----------------------------------------------------------------------------------------------
-    
+        
+    """
     # Armo el gráfico 3D de los puntos fijos de interés en función de los parámetros Kappa y Epsilon
     
     func.Graf_Punto_fijo_3D(Df_archivos, Direccion, Etapa/carpeta,T,

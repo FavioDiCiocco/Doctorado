@@ -3829,3 +3829,16 @@ exponerme a un segundo error, que es que quizás hay dos soluciones muy pegadas.
 
 Pero en definitiva, las primeras dos soluciones que se me ocurren son aumentar la
 tolerancia del np.isclose o que el while corte cuando indice llega a 2.
+
+------------------------------------------------------------------------------------------------
+
+07/03/2023
+
+Hoy es un día que espero termine pronto. Vamos a ver de continuar lo de ayer. Espero que
+todo vaya mejor a partir de ahora.
+
+Al final estuve todo el día en esto y lo que logré no parece funcionar mucho mejor. Más tarde
+o mañana veré si vale la pena intentar arreglarlo. Yo diría que no, podemos simplemente dejarlo
+ahí y listo, sin dramas. Aunque mirándolo mejor, no parece estar tan errado el gráfico.
+
+Vamos para casa.

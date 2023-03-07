@@ -131,6 +131,9 @@ def Derivada_kappa(x,alfa,epsilon):
 def Kappa(x,alfa,epsilon):
     return x*( 1 + np.exp(-alfa*x +epsilon) )
 
+def Ecuacion_dinamica(x,K,A,Cdelta,Eps):
+    return -x+K*(1/(1+np.exp(-A*(1+Cdelta)*x+Eps)))
+
 #---------------------------------------------------------------------------------------------------------
 
 ##################################################################################
@@ -764,7 +767,9 @@ def Graf_sat_vs_tiempo(DF,path,carpeta,T=2):
 
 def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,
                                  nombre_parametro_2="parametro2",titulo_parametro_1="parametro 1",
-                                 titulo_parametro_2="parametro 2"):
+                                 titulo_parametro_2="parametro 2", 
+                                 Condicion_punto_inestable_Kappa_Epsilon = False,
+                                 Condicion_punto_inestable_Epsilon_Kappa = False):
    
     # Armo mi generador de números aleatorios
 #    rng = np.random.default_rng(seed = 50)
@@ -791,7 +796,7 @@ def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,
     Y = np.array([])
     
     # Armo la lista de colores y propiedades para graficar mis datos
-    default_cycler = (cycler(color=["r","g","b","c"])*cycler(marker = "o"))
+    default_cycler = (cycler(color=["r","g","b","c"]))
     
     # Abro el gráfico y fijo algunos parámetros
     plt.rcParams.update({'font.size': 32})
@@ -836,13 +841,71 @@ def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,
         X = np.concatenate((X,X_i),axis=None)
         Y = np.concatenate((Y,Y_i),axis=None)
         
+        
         # Armo un if que me grafique si recorrí todos los valores en el array de Parametro 2
         if Numero_2 == Array_parametro_2.shape[0]-1:
 #            X = X + rng.normal(scale = 0.2, size = X.shape)
             plt.scatter(X,Y, label = r"${} = {}$".format(titulo_parametro_1,PARAMETRO_1), s = 200)
+            
+            # Reseteo mis vectores
             X = np.array([])
             Y = np.array([])
     
+    #---------------------------------------------------------------------------------------------------------------------------------------
+    
+    # Armo la parte de los puntos inestables
+    
+    if Condicion_punto_inestable_Kappa_Epsilon:
+        
+        # Armo los arrays para plotear los puntos inestables
+        X_inestable = np.zeros(Array_parametro_2.shape[0])
+        Y_inestable = np.zeros(Array_parametro_2.shape[0])
+        
+        for PARAMETRO_1,Numero_2,PARAMETRO_2 in Tupla_total:
+            
+            # Calculo el valor del punto fijo inestable
+            X_inestable[Numero_2] = PARAMETRO_2
+            
+            raices = Raices_Ecuacion_Dinamica(PARAMETRO_1, 4, COSDELTA, PARAMETRO_2)
+            if(raices != 0).all():
+                Y_inestable[Numero_2] = raices[1]
+            else:
+                Y_inestable[Numero_2] = 0
+                
+            
+            if Numero_2 == Array_parametro_2.shape[0]-1:
+                
+                plt.plot(X_inestable[Y_inestable != 0],Y_inestable[Y_inestable != 0],"--",linewidth = 6)
+                X_inestable = np.zeros(Array_parametro_2.shape[0])
+                Y_inestable = np.zeros(Array_parametro_2.shape[0])
+    
+    #----------------------------------------------------------------------------------------------------------------------------------
+    
+    if Condicion_punto_inestable_Epsilon_Kappa:
+        
+        # Armo los arrays para plotear los puntos inestables
+        X_inestable = np.zeros(Array_parametro_2.shape[0])
+        Y_inestable = np.zeros(Array_parametro_2.shape[0])
+        
+        for PARAMETRO_1,Numero_2,PARAMETRO_2 in Tupla_total:
+            
+            # Calculo el valor del punto fijo inestable
+            X_inestable[Numero_2] = PARAMETRO_2
+            
+            raices = Raices_Ecuacion_Dinamica(PARAMETRO_2, 4, COSDELTA, PARAMETRO_1)
+            if(raices != 0).all():
+                Y_inestable[Numero_2] = raices[1]
+            else:
+                Y_inestable[Numero_2] = 0
+                
+            
+            if Numero_2 == Array_parametro_2.shape[0]-1:
+                
+                plt.plot(X_inestable[Y_inestable != 0],Y_inestable[Y_inestable != 0],"--",linewidth = 6)
+                X_inestable = np.zeros(Array_parametro_2.shape[0])
+                Y_inestable = np.zeros(Array_parametro_2.shape[0])
+    
+    #----------------------------------------------------------------------------------------------------------------------------------
     
     direccion_guardado = Path("../../../Imagenes/{}/Puntofijovs{}_N={:.0f}_Cdelta={:.1f}.png".format(carpeta,nombre_parametro_2,AGENTES,COSDELTA))
     plt.legend()
@@ -956,6 +1019,37 @@ def Graf_Punto_fijo_3D(DF,path,carpeta,T=2,
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close("Puntofijo")
 
+#-------------------------------------------------------------------------------------------
+
+# Esto me halla las soluciones de la ecuación dinámica y me devuelve un array con
+# esas soluciones. Si tengo tres soluciones, me devuelve las tres en orden.
+# Si tengo una sola, me devuelve un array de tres elementos, pero con dos ceros,
+# si todo funciona bien.
+
+def Raices_Ecuacion_Dinamica(Kappa,Alfa,Cdelta,Epsilon):
+    
+    x0 = 0 # Condición incial que uso para hallar las soluciones
+
+    raices = np.zeros(3) # Array en el que guardo las raíces.
+    indice = 0 # Es la posición del vector en la cuál guardo la raíz encontrada
+
+    while x0 < Kappa:
+        
+        # Calculo un valor que anula mi ecuación dinámica
+        resultado = fsolve(Ecuacion_dinamica,x0,args=(Kappa,Alfa,Cdelta,Epsilon))[0]
+        
+        # Reviso si el valor hallado es una raíz o un resultado de que el solver se haya estancado
+        Condicion_raiz = np.isclose(Ecuacion_dinamica(resultado,Kappa,Alfa,Cdelta,Epsilon),0,atol=1e-06)
+        
+        if not(np.isclose(raices,np.ones(3)*resultado).any()) and Condicion_raiz:
+            
+            # Fijo mi nueva raíz en el vector de raices
+            raices[indice] = resultado
+            indice += 1
+        
+        x0 += 0.1
+        
+    return raices
 
 
 """
