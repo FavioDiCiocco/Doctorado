@@ -198,3 +198,6 @@ Alfa y Epsilon. Usando esas relaciones y la librería scipy para hallar solucion
 a las ecuaciones es que armé un gráfico 3D que me delimite la región en la cual el sistema
 tiene tres puntos fijos. Esta fase del trabajo no requirió simulaciones, ya que sale de
 resultados analíticos.
+ A este gráfico 3D después le hice cortes según alfa para observar un poco mejor la forma
+de las superficies 3D. Es decir, gráficos de Kappa en función de Epsilon para diferentes
+Alfas.

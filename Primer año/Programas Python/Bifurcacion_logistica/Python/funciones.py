@@ -901,8 +901,8 @@ def Graf_Punto_fijo_3D(DF,path,carpeta,T=2,
     direccion_guardado = Path("../../../Imagenes/{}/Puntofijo3D_perfil.png".format(carpeta))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close("Puntofijo")
-
-
+    
+    
 
 
 """

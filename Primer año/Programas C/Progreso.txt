@@ -3842,3 +3842,39 @@ o mañana veré si vale la pena intentar arreglarlo. Yo diría que no, podemos s
 ahí y listo, sin dramas. Aunque mirándolo mejor, no parece estar tan errado el gráfico.
 
 Vamos para casa.
+
+------------------------------------------------------------------------------------------------
+
+08/03/2023
+
+Hoy a la tarde vamos a jugar a la pelota con Lucio y Lupi. Llegué y me reuní con Pablo para
+mostrarle lo que hice del análisis de la bifurcación logística. Me dijo de hacer unos
+gráficos que sean cortes de la superficie 3D, cosa de que sea más sencillo de interpretar lo
+que estamos viendo. Se me ocurre que podría hacer cortes según Alfa, eso sería re fácil
+y rápido.
+
+Por otro lado, revisando los gráficos que hice del punto fijo inestable, no parecen estar mal,
+aunque admito que se ve un poco raro. Hay una curva en particular que se ve rara. Igual también
+hay que considerar que las curvas graficadas tienen dos o tres puntos, no mucho más. Quizás se
+verían mejor con más puntos, por eso me parece que vale la pena pasarlo a Oporto.
+
+Entonces hoy tengo tres trabajos principales:
+
+1) Armar los gráficos que son cortes de las superficies 3D, cortes en Alfa.
+2) Pasar el código que grafica los puntos fijos inestables a Oporto y armar esos gráficos
+con más puntos intermedios.
+3) Agregar el paper nuevo de Baumann a la lista de leer.
+
+Voy a ir de atrás para adelante con esto. Cuando termine estas cosas me pondré a leer los
+dos papers que Pablo me pasó. Y si me acuerdo, le diré a Seba que me pase algo de su laburo
+para ir echándole un vistazo.
+
+Ya subí los papers a la lista de leer. También mandé a correr el código en Oporto para graficar
+el punto fijo inestable. Así que ahora debería armar los cortes de la superficie. 
+Tengo armado un primer boceto del código, aunque está mezclando los valores de X. Tengo que corregir
+eso. Ahí armé correctamente los cortes como me pidió Pablo.
+
+Ahora me voy a poner a anotar en la agenda lo que hice ayer y hoy y después me pongo a leer los
+papers que Pablo me pasó. Antes de olvidarme, Pablo me dijo que el gráfico que armé así no
+está bueno, que intente armar algo que se entienda mejor. Para eso hizo un boceto rápido
+de la idea de cómo hacer eso en el cuaderno que tengo.

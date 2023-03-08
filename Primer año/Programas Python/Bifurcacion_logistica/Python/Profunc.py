@@ -14,6 +14,7 @@ from scipy.optimize import fsolve
 import math
 import time
 from pathlib import Path
+from cycler import cycler
 import funciones as func
 
 # Importo todas las librerías que voy a usar en el programa. Estas son las que
@@ -89,7 +90,7 @@ def Kappa(x,alfa,epsilon):
     return x*( 1 + np.exp(-alfa*x +epsilon) )
 
 #------------------------------------------------------------------------------
-
+"""
 # Preparo mis variables para graficar
 
 Epsilons = np.linspace(2,5,50)
@@ -117,7 +118,7 @@ for fila,alfa in enumerate(Alfas):
         Kappas_min[fila,columna] = Kappa(raiz_max, alfa, epsilon)
         Kappas_max[fila,columna] = Kappa(raiz_min, alfa, epsilon) 
         
-#------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------
 
 # Ya tengo mis tres matrices, ahora puedo armar el gráfico de mis superficies.
 
@@ -160,10 +161,66 @@ plt.savefig(direccion_guardado ,bbox_inches = "tight")
 
 plt.close("Region_triple_puntofijo")
 
+"""
+#------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------
+
+# Armo una función que grafica Kappa en función de Epsilon y me arma curvas para
+# distintos alfas.
+
+# Armo mis variables a graficar
+
+Epsilons = np.linspace(2,5,50)
+Alfas = np.linspace(0.5,5,4)
+
+# Abro el gráfico y defino los nombres de los ejes
+plt.rcParams.update({'font.size': 24})
+plt.figure("Cortes_3D",figsize=(20,15))
+plt.xlabel(r"$\epsilon$")
+plt.ylabel(r"$\kappa$")
+
+#-------------------------------------------------------------------------------
+
+# Barro en Alfas, que serán la cantidad de gráficos que arme
+
+for Alfa in Alfas:
+    
+    # Armo mi array donde pondré los valores de Kappa, tanto los máx como los mín
+    Kappas = np.zeros(Epsilons.shape[0]*2)
+    
+    for indice,epsilon in enumerate(Epsilons):
+        
+        # Calculo dónde se encuentra el mínimo de mi función Derivada_Kappa
+        x_min = epsilon/Alfa
+        
+        # Calculo los puntos críticos donde voy a encontrar los Kappa máximos y mínimos
+        raiz_min= fsolve(Derivada_kappa,x_min-3,args=(Alfa,epsilon))[0]
+        raiz_max = fsolve(Derivada_kappa,x_min+3,args=(Alfa,epsilon))[0]
+        
+        # Asigno los valores de los Kappa a mis matrices
+        Kappas[indice*2] = Kappa(raiz_max, Alfa, epsilon)
+        Kappas[indice*2+1] = Kappa(raiz_min, Alfa, epsilon)
+        
+    # Ahora que tengo la curva hecha, la grafico y guardo el gráfico
+    
+    X = np.concatenate((Epsilons,Epsilons), axis=None)
+    Y = np.concatenate((Kappas[0::2],Kappas[1::2]),axis=None)
+    
+    plt.plot(X,Y,"o",label=r"$\alpha$ = {}".format(Alfa), markersize = 10)
 
 
+# Preparo los detalles finales del gráfico
+
+plt.grid(alpha = 0.5)
+plt.legend(ncols = 2)
+direccion_guardado = Path("../../../Imagenes/Bifurcacion_logistica/Cortes en Alfa.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close("Cortes_3D")
+    
 
 
+#------------------------------------------------------------------------------------------------
 
 
 func.Tiempo(t0)
