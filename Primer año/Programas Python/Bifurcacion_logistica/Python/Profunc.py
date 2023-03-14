@@ -90,7 +90,9 @@ def Kappa(x,alfa,epsilon):
     return x*( 1 + np.exp(-alfa*x +epsilon) )
 
 #------------------------------------------------------------------------------
-"""
+
+
+
 # Preparo mis variables para graficar
 
 Epsilons = np.linspace(2,5,50)
@@ -138,8 +140,12 @@ surf2 = ax.plot_surface(XX,YY,Kappas_max, cmap=cm.coolwarm,
                         linewidth=0, antialiased=False)
 
 
+
+
 direccion_guardado = Path("../../../Imagenes/Bifurcacion_logistica/Region_triple_puntofijo_BASE.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
+
+"""
 
 ax.view_init(0,0,0)
 direccion_guardado = Path("../../../Imagenes/Bifurcacion_logistica/Region_triple_puntofijo_FRENTE.png")

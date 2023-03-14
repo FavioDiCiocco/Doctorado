@@ -3892,3 +3892,63 @@ Leer ese paper, que al final no era tan largo, me llevó la tarde. Pero al final
 un breve resumen a la página de resúmenes. Mañana pensaré un primer resumen sobre mi trabajo para
 presentar a TREFEMAC, haré los gráficos que me pidió Pablo y si tengo tiempo, me pongo con
 el segundo paper. Lejos está el final de Mininni.
+
+------------------------------------------------------------------------------------------------
+
+10/03/2023
+
+Estuve queriendo leer el paper de Baumann sobre el trade-off entre engagement y diversidad,
+pero no pude pasar de las primeras 4 páginas. Voy a hacerle caso a Seba y la próxima me
+lo imprimo, quizás lo lea en el tren o algo así.
+
+Veamos si puedo resolver lo último que charlamos con Pablo, lo de hacer los gráficos de corte
+que me pidió del gráfico 3D. Me pareció una buena idea el poner una superficie que marque dónde
+se hacen los cortes. No parece ser algo tan simple de hacer esto. Estaba pensando en usar la
+función de 3D que rellena por debajo de curvas. La idea me gusta, pero tengo que verlo más en
+detalle para entender cómo funciona. También debería revisar el que dice sobre dibujar objetos
+planos en 3D. Quizás eso me resuelva el problema.
+
+------------------------------------------------------------------------------------------------
+
+13/03/2023
+
+En la mañana quise llevar la bicicleta al bicicletero, pero cuando me dijo que vaya estaba cerrado.
+Veré si uno de estos días que llueve me quedo en casa y le llevo entonces la bici. Por otro lado
+logré pedir un turno de electrocardiograma y eso es para el 5 de Abril. Básicamente, de acá
+a tres semanas. Y por último fui a buscar los resultados de Laboratorio que me había hecho
+antes. Comí en casa y cuando me quise dar cuenta ya era la una. Llegué a la facultad para
+la tarde.
+
+Después me puse a revisar y organizar que tenía una buena cantidad de mails. También revisé el
+tema del slack y de las clases de Física. Hablé por Slack para resolver el tema de la planilla
+de la distribución de clases.
+
+Ya la semana que viene arrancan las clases, así que es importante organizar el trabajo de esta
+semana considerando que por un lado voy a estar dando clases en F1A y por el otro voy a estar
+cursando la materia esta de Fundamentos de Ciencias Sociales para carreras de Exactas.
+
+A partir de esta semana tengo que dedicar algo de tiempo a:
+1) Resolver guías de F1
+2) Continuar con el final de Mininni
+3) Mandar mail por el tema de la tesis publicada en biblioteca digital
+4) Leer las cosas de la materia de Fundamentos de Sociología ...
+5) Terminar de leer el paper de Baumann
+6) Armar resumen para TREFEMAC
+
+Ya me imprimí el paper nuevo de Baumann. Después empiezo a leerlo en otros momentos.
+
+------------------------------------------------------------------------------------------------
+
+14/03/2023
+
+Quise mandar el mail por el tema de la tesis, pero no puedo compilar la tesis. Espero tenerla
+en casa para poder enviarla. Y es un poco complejo revisar cómo enviar la tesis, eso va
+a ser una mañana en sí mismo.
+
+Arranquemos con el resumen del poster. Arme el resumen y se lo pasé a Pablo. Me parece que
+está bastante bien en cómo está armado, pero definitivamente es una primera versión,
+después la haré una revisión y veré de pulirlo para la entrega. Pero eso será otro día.
+
+Leí la introducción del libro que decían para arrancar en la materia de fundamentos de Ciencias
+Sociales..., me pareció un poco largo, creo que odio a los sociólogos. Pero también aproveché
+y me anoté las ideas que me parecieron importantes.
