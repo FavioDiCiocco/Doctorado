@@ -3968,9 +3968,3 @@ Logré armar el gráfico como dijo Pablo, aunque la resolución no parece la mej
 una forma de que esto quede mejor es con subplots. Armar un subplot de 3 filas y 2 columnas, en
 la primer columna tengo el gráfico que ocupa las tres filas, en la segunda columna tengo tres
 gráficos, uno de cada corte.
-
-Después revisé los ejercicios de la guía 0 y 1 de Física 1A, me hice unas notas en un cuaderno
-de los ejercicios que me parecieron necesitaban tener preparada la resolución y listo.
-
-Por otra parte me armé una nueva carpeta, Segundo Año, ya la próxima semana, más o menos,
-arranco a laburar en esa carpeta, indicando el inicio del segundo año de Doctorado.

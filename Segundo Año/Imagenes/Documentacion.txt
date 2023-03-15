@@ -1,0 +1,9 @@
+Cada una de las carpetas contiene imágenes armadas en las distintas
+fases del trabajo de la tesis.
+
+.) Bifurcacion_logistica:
+-------------------------
+La idea es estudiar la región en la cual el sistema tiene tres puntos fijos. Para eso
+es que por un lado revisé analíticamente la ecuación dinámica del modelo. De ahí
+armé un gráfico 3D que me marca la región en la cuál el sistema tiene tres puntos
+fijos.

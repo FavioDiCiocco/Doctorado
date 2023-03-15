@@ -1,0 +1,26 @@
+Cada una de las carpetas contiene archivos de C que usé para correr el
+modelo en alguna fase del trabajo. Acá voy a ir anotando qué es lo que
+se suponía que hiciera el código en esa fase.
+
+.) CI_variables:
+----------------
+
+El objetivo de esta etapa es estudiar cómo cambia el punto fijo al cual tiende el sistema para
+una dada configuración de parámetros en función de las condiciones iniciales de la red. Para
+eso lo que hago es modificar los valores iniciales del sistema de forma tal que se distribuyan
+a lo largo de la región [0;Kappa]. De estas simulaciones sólamente me guardo datos de los
+intereses finales del sistema, es decir que sólo me guardo los archivos de Opiniones. Los de
+Testigos no me resultan necesarios porque no planeo estudiar el comportamiento del sistema
+durante su evolución. Con los intereses finales de todos los agentes de una simulación hago
+un promedio y considero ese valor promedio como el punto fijo al cuál tiende el sistema. Esto
+lo hago bajo la suposición de que todos los agentes en todos los tópicos tienden al mismo
+valor de interés. Esos valores de "puntos fijos" los voy a usar para armar gráficos 3D que me
+permitan observar las curvas de transición del sistema de un único punto fijo a tres puntos
+fijos, una transcrítica en resumen. Ese es el plan por lo menos.
+ De la misma forma, si tengo dudas de si los agentes realmente todos convergen al mismo punto fijo,
+podría simplemente armar gráficos de intereses en el espacio de fases. Mi idea es que deberían
+caer todos los puntos en lugares suficientemente cercanos.
+ Para los datos de esto cambié los nombres de los archivos, ahora llevan el nombre de tres parámetros
+en el barrido: Cosdelta, Kappa y Epsilon. La idea es que justamente quiero barrer todo junto
+en una sola tirada de datos. El Cosdelta varía entre [0;1], el Kappa entre [0,5;2] y el Epsilon
+entre [1,5;3,5]. El alfa sigue siendo 4.
