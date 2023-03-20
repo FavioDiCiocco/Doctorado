@@ -3974,3 +3974,57 @@ de los ejercicios que me parecieron necesitaban tener preparada la resolución y
 
 Por otra parte me armé una nueva carpeta, Segundo Año, ya la próxima semana, más o menos,
 arranco a laburar en esa carpeta, indicando el inicio del segundo año de Doctorado.
+
+------------------------------------------------------------------------------------------------
+
+16/03/2023
+
+Viendo las cosas que me anoté para hacer, creo que lo más razonable es arrancar con lo último
+que habíamos charlado con Pablo, sobre pensar en qué región de parámetros nos vamos a mover
+con el modelo y qué significa eso. Después, una vez organizadas esas ideas, podría intentar
+resolver lo de mandar el mail con mi tesis. Después de eso lo que quede de hoy y mañana lo
+dedicaré a continuar con el final de Mininni y por último, cuando me canse de eso, seguiré
+con el paper de Baumann que imprimí.
+
+Pasé una parte de la mañana configurando mi cuenta de Slack, armando la autenticación en
+dos pasos y cosas. Tomó un ratito, pero me parece que es importante, así el slack me manda
+notificaciones de las charlas al celular.
+
+En la tarde estuve intentando ordenar mis ideas sobre el tema de la tesis e intenté
+revisar lo de hacer campo medio de otra forma. Lo que leí y escribí no me convenció, no
+supe implementarlo bien. Debería repensar eso. Mañana a la mañana yo diría de arrancar
+con la burocracia infinita, luego mando el mail sobre lo de la tesis y después me pongo
+con lo de Mininni. Al final se pospuso la primer clase de Fundamentos de la Sociología.
+
+------------------------------------------------------------------------------------------------
+
+17/03/2023
+
+Vino Pablo y charlamos sobre qué hacer con el modelo. Me dijo que intente determinar en el espacio
+de parámetros cuáles son los puntos fijos estables a los que tiende el sistema, cuál es la dinámica
+en esa región, cuánto tiempo tarda en converger. Esas cosas. Es importante entonces pensar qué
+datos guardar para poder observar estas cosas. Después charlar con Pablo si tengo algo
+que estuve viendo, como para cerrar ideas.
+
+Ahora haré la burocracia infinita y ya el lunes me pondré con esto que me dijo Pablo. Hoy haré
+lo de Mininni. Avancé con lo de Mininni, pero no lo pude terminar. Me tomó más de lo que esperaba.
+
+------------------------------------------------------------------------------------------------
+
+20/03/2023
+
+En la mañana estuve revisando todo el tema de enviar la tesis a la biblioteca de la
+facultad para que ya me figure en la biblioteca digital, y de ahí poder vincularla al
+SIGEVA. Me anoté qué es lo que tengo que hacer exactamente para mandar la tesis, sólo tengo
+que revisar en casa si tengo el archivo del Formulario de Autorización.
+
+Ahora voy a arrancar con lo último que hablé con Pablo. Por un lado Pablo me dijo que revise
+a qué valor tiende el sistema en el espacio de parámetros. Pero eso no me parece un
+gráfico nuevo, creo que eso lo tengo hecho en el promedio de Opiniones. Aunque me parece
+que no puedo hacer ese gráfico en los datos de CI_variables, porque entonces como el
+sistema tiende a valores variados, los promedios no serían el valor promedio de varias
+simulaciones. Creo que debería armar nuevos datos para esto.
+ Para estudiar el tiempo de convergencia no es tan complicado, eso lo mido con las Variaciones
+promedio. Mido cuántos datos de Variación tengo y eso me da una pauta del tiempo de simulación.
+ ¿Quiero ver la dinámica de algún conjunto de agentes? Puedo guardarme los datos, pero no
+creo que sean muy esclarecedores. 
