@@ -4028,3 +4028,53 @@ simulaciones. Creo que debería armar nuevos datos para esto.
 promedio. Mido cuántos datos de Variación tengo y eso me da una pauta del tiempo de simulación.
  ¿Quiero ver la dinámica de algún conjunto de agentes? Puedo guardarme los datos, pero no
 creo que sean muy esclarecedores. 
+
+------------------------------------------------------------------------------------------------
+
+21/03/2023
+
+A la mañana fui a la primer clase de Piegaia sobre estadística. Hablamos un poco de lo que
+son ejemplos de estadística aplicada a problemas reales, vimos lo que es el error estadístico,
+una forma común de considerar el error de una variable y alguna cosa más. Me fui temprano, después
+debería ver si puedo charlar con Constanza sobre lo que vieron el primer día o con alguno de los
+pibes en las oficinas acá al lado.
+
+Después fui a F1, nos presentamos, desayuné, hice cosas de la materia de Mininni y en los últimos
+veinte minutos contesté dudas de les estudiantes sobre el ejercicio resuelto en clase.
+
+Lo siguiente que hice es ir a comer, me compré un sanguche de milanesa afuera y volví a comer
+en la oficina.
+
+Luego de hacer la burocracia infinita, ahora sí queda preguntarse, ¿Armo nuevos datos?
+Si quiero ver el tiempo que mis datos tardan en converger, puedo simplemente mirar la cantidad
+de datos de Variación, o la cantidad de datos de los testigos. Aunque me parece que no
+es correcto usar los datos de CI_variables porque como las simulaciones tienen condiciones
+iniciales distintas, estas condiciones iniciales determinarán en parte el tiempo que el sistema
+tarde para converger. Necesito nuevos datos en ese aspecto.
+
+Si quiero mirar el punto al cual tiende el sistema, eso es mirar el promedio de opiniones.
+De nuevo, usar los datos de CI_variables no es algo razonable, porque esos datos tienen
+en la zona de bifurcación simulaciones que convergen al punto fijo máximo y al mínimo.
+El promedio va a ser un punto que no es representativo del valor al cual converge el
+sistema.
+ Se me ocurre que podría armar un gráfico de promedio de opiniones, distribuyendo las
+opiniones entre [0,Kappa], y luego considerando dónde se encuentra el punto inestable,
+podría armar una curva que separe el dónde el sistema pasa a tender del punto fijo
+mínimo al máximo. Esto funcionaría considerando que el valor medio de interés del
+sistema fijaría el punto fijo al cual tienden todos los agentes. La dificultad con
+esto es correctamente calcular el punto fijo inestable.
+
+Si quiero ver la dinámica del sistema, guardar datos testigo parece la respuesta obvia.
+¿Pero cuántos? ¿Lo hago con todas las simulaciones o algunas? Ponele que por cada simulación
+guardo la evolución de 10 testigos. ¿Mi plan es graficar 10 curvas y ver cómo se comportan?
+Lo que hacía antes era graficar para la primera o segunda simulación, no me parece que
+valga la pena hacer esto. Creo que vale más la pena guardar 50 o 100 agentes de las primeras
+simulaciones y no guardar testigos del resto. E incluso estaba pensando que de existir estados
+metaestables, podría observar algo mirando las derivadas del interés de mis agentes en
+función del tiempo. Un estado metaestable estaría caracterizado por una región en la cual
+la derivada se hace cercana a cero. Podría charlar esta idea con Pablo.
+Me parece una buena idea charlar esto con Pablo mañana y ya mandar a armar nuevos datos.
+
+Mañana de paso me conecto un rato a la llamada en Zoom que me pasó Nahuel y también veo
+de resolver lo de la tesis enviada a la biblioteca digital. También tengo que terminar
+de pulir el resumen para TREFEMAC.
