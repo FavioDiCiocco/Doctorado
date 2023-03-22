@@ -4,7 +4,7 @@
 #define Inicializar_H
 #include <math.h>
 
-int GenerarOpi(ps_Red ps_variable);
+int GenerarOpi(ps_Red ps_variable, double d_kappa);
 int GenerarAng(ps_Red ps_variable, ps_Param ps_parametro);
 int Lectura_Adyacencia(int *pi_vector, FILE *pa_archivo);
 // int Actividad(double* pd_vec, double d_epsilon, double d_potencia);

@@ -34,20 +34,20 @@ int main(int argc, char *argv[]){
 	// Defino los parámetros de mi modelo. Esto va desde número de agentes hasta el paso temporal de integración.
 	// Primero defino los parámetros que requieren un input.
 	ps_datos->i_N = strtol(argv[1],NULL,10); // Cantidad de agentes en el modelo
-	ps_datos->d_alfa = strtof(argv[2],NULL); // Controversialidad de los tópicos
-	ps_datos->d_epsilon = strtof(argv[3],NULL); // Este es el umbral que determina si el interés del vecino puede generarme más interés.
-	ps_datos->d_kappa = strtof(argv[4],NULL); // Esta amplitud regula la relación entre el término lineal y el término logístico
-	int i_iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
+	ps_datos->d_kappa = strtof(argv[2],NULL); // Esta amplitud regula la relación entre el término lineal y el término logístico
+	ps_datos->d_alfa = strtof(argv[3],NULL); // Controversialidad de los tópicos
+	int i_iteracion = strtol(argv[4],NULL,10); // Número de instancia de la simulación.
 	
 	// Los siguientes son los parámetros que están dados en los structs
 	ps_datos->i_T = 1;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
 	ps_datos->i_Iteraciones_extras = 40; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	ps_datos->i_pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
 	ps_datos->d_Cosangulo = 0; // Este es el coseno de Delta que define la relación entre tópicos.
+	ps_datos->d_epsilon = 4; // Este es el umbral que determina si el interés del vecino puede generarme más interés.
 	ps_datos->d_dt = 0.01; // Paso temporal de iteración del sistema
 	ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	ps_datos->d_CritCorte = pow(10,-4); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
-	ps_datos->i_testigos = fmin(ps_datos->i_N,6); // Esta es la cantidad de agentes de cada distancia que voy registrar
+	ps_datos->i_testigos = fmin(ps_datos->i_N,50); // Esta es la cantidad de agentes de cada distancia que voy registrar
 	
 	// Términos asociados a la saturación
 	// ps_datos->d_lambda = 0.005; // Este parámetro mide la memoria de los agentes respecto de sus intereses previos. Mientras más grande, menos memoria.
@@ -117,15 +117,15 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_Opiniones[355];
-	sprintf(s_Opiniones,"../Programas Python/Cambios_parametros/Alfa=%d/Opiniones_N=%d_kappa=%.2f_epsilon=%.2f_Iter=%d.file"
-		,(int) ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_epsilon,i_iteracion);
+	sprintf(s_Opiniones,"../Programas Python/Exploracion_Logistica/Opiniones_N=%d_kappa=%.2f_alfa=%.2f_Iter=%d.file"
+		,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_alfa,i_iteracion);
 	FILE *pa_Opiniones=fopen(s_Opiniones,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
-	// char s_Testigos[355];
-	// sprintf(s_Testigos,"../Programas Python/Cambios_parametros/Alfa=%d/Testigos_N=%d_kappa=%.2f_epsilon=%.2f_Iter=%d.file"
-		// ,(int) ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_epsilon,i_iteracion);
-	// FILE *pa_Testigos=fopen(s_Testigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
+	char s_Testigos[355];
+	sprintf(s_Testigos,"../Programas Python/Exploracion_Logistica/Testigos_N=%d_kappa=%.2f_alfa=%.2f_Iter=%d.file"
+		,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_alfa,i_iteracion);
+	FILE *pa_Testigos=fopen(s_Testigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	// char s_archivo3[355];
