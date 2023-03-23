@@ -7,14 +7,11 @@ Created on Mon Dec 19 10:04:40 2022
 """
 
 import matplotlib.pyplot as plt
-from matplotlib import cm
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.optimize import fsolve
 import math
 import time
-from pathlib import Path
-from cycler import cycler
 import funciones as func
 
 # Importo todas las librerías que voy a usar en el programa. Estas son las que
@@ -70,162 +67,217 @@ while len(Registrados) != N :
 
 Datos = func.ldata("../categorizacion_prueba.file")
 Categorias = np.array(Datos[2][:-1],dtype = "int")
-"""
+
 
 ####################################################################################################
 ####################################################################################################
 ####################################################################################################
 
-# Voy a armar el gráfico en 3D de la región en la cual el sistema tiene tres
-# puntos fijos. Voy a barrer en Epsilon y Alfa y obtener los Kappa asociados.
+# Acá voy a hacer lo de analizar las curvas de Kappa en función de epsilon y alfa. Para eso primero
+# tengo que a mano identificar la curva de la transición.
 
-#------------------------------------------------------------------------------
+Epsilon = np.arange(0.5,3.1,0.1) # Estos son los valores de Epsilon graficados
 
-# Defino las funciones que uso para calcular los puntos críticos y los Kappa
+#------------------------------------------------------------------------------------------------------------
 
-def Derivada_kappa(x,alfa,epsilon):
-    return np.exp(alfa*x-epsilon)+1-alfa*x
+# Defino a ojo los valores de Kappa asociados y los voy anotando uno a uno
 
-def Kappa(x,alfa,epsilon):
-    return x*( 1 + np.exp(-alfa*x +epsilon) )
+# Alfa = 2
 
-#------------------------------------------------------------------------------
-"""
+Datos_Alfa_2 = np.zeros(Epsilon.shape)
+Datos_Alfa_2[0] = 0.6
+Datos_Alfa_2[1] = 0.7
+Datos_Alfa_2[2] = 0.7
+Datos_Alfa_2[3] = 0.8
+Datos_Alfa_2[4] = 0.8
+Datos_Alfa_2[5] = 0.9
+Datos_Alfa_2[6] = 1
+Datos_Alfa_2[7] = 1.1
+Datos_Alfa_2[8] = 1.1
+Datos_Alfa_2[9] = 1.2
+Datos_Alfa_2[10] = 1.3
+Datos_Alfa_2[11] = 1.4
+Datos_Alfa_2[12] = 1.5
+Datos_Alfa_2[13] = 1.6
+Datos_Alfa_2[14] = 1.75
+Datos_Alfa_2[15] = 2
+Datos_Alfa_2[16] = 2.1
+Datos_Alfa_2[17] = 2.2
+Datos_Alfa_2[18] = 2.4
+Datos_Alfa_2[19] = 2.6
+Datos_Alfa_2[20] = 2.8
+Datos_Alfa_2[21] = 3
+Datos_Alfa_2[22] = 3.2
+Datos_Alfa_2[23] = 3.5
+Datos_Alfa_2[24] = 3.8
+Datos_Alfa_2[25] = 4.2
 
-# Preparo mis variables para graficar
+#------------------------------------------------------------------------------------------------------------
 
-Epsilons = np.linspace(2,5,50)
-Alfas = np.linspace(0.5,5,50)
-XX,YY = np.meshgrid(Epsilons,Alfas)
+# Alfa = 4
 
-# Armos las dos matrices que formarán las superficies de Kappa que voy a graficar.
+Datos_Alfa_4 = np.zeros(Epsilon.shape)
+Datos_Alfa_4[0] = 0.5
+Datos_Alfa_4[1] = 0.5
+Datos_Alfa_4[2] = 0.6
+Datos_Alfa_4[3] = 0.6
+Datos_Alfa_4[4] = 0.6
+Datos_Alfa_4[5] = 0.6
+Datos_Alfa_4[6] = 0.6
+Datos_Alfa_4[7] = 0.6
+Datos_Alfa_4[8] = 0.7
+Datos_Alfa_4[9] = 0.7
+Datos_Alfa_4[10] = 0.8
+Datos_Alfa_4[11] = 0.8
+Datos_Alfa_4[12] = 0.9
+Datos_Alfa_4[13] = 0.9
+Datos_Alfa_4[14] = 1
+Datos_Alfa_4[15] = 1
+Datos_Alfa_4[16] = 1
+Datos_Alfa_4[17] = 1.1
+Datos_Alfa_4[18] = 1.2
+Datos_Alfa_4[19] = 1.3
+Datos_Alfa_4[20] = 1.4
+Datos_Alfa_4[21] = 1.5
+Datos_Alfa_4[22] = 1.6
+Datos_Alfa_4[23] = 1.7
+Datos_Alfa_4[24] = 1.8
+Datos_Alfa_4[25] = 2.1
 
-Kappas_min = np.zeros(XX.shape)
-Kappas_max = np.zeros(XX.shape)
 
-# Calculo los Kappa y armo las matrices
+#------------------------------------------------------------------------------------------------------------
 
-for fila,alfa in enumerate(Alfas):
-    for columna,epsilon in enumerate(Epsilons):
-        
-        # Calculo dónde se encuentra el mínimo de mi función Derivada_Kappa
-        x_min = epsilon/alfa
-        
-        # Calculo los puntos críticos donde voy a encontrar los Kappa máximos y mínimos
-        raiz_min = fsolve(Derivada_kappa,x_min-3,args=(alfa,epsilon))
-        raiz_max = fsolve(Derivada_kappa,x_min+3,args=(alfa,epsilon))
-        
-        # Asigno los valores de los Kappa a mis matrices
-        Kappas_min[fila,columna] = Kappa(raiz_max, alfa, epsilon)
-        Kappas_max[fila,columna] = Kappa(raiz_min, alfa, epsilon) 
-        
-#------------------------------------------------------------------------------------------
+# Alfa = 6
 
-# Ya tengo mis tres matrices, ahora puedo armar el gráfico de mis superficies.
+Datos_Alfa_6 = np.zeros(Epsilon.shape)
+Datos_Alfa_6[0] = 0.5
+Datos_Alfa_6[1] = 0.5
+Datos_Alfa_6[2] = 0.5
+Datos_Alfa_6[3] = 0.5
+Datos_Alfa_6[4] = 0.5
+Datos_Alfa_6[5] = 0.5
+Datos_Alfa_6[6] = 0.5
+Datos_Alfa_6[7] = 0.5
+Datos_Alfa_6[8] = 0.5
+Datos_Alfa_6[9] = 0.5
+Datos_Alfa_6[10] = 0.5
+Datos_Alfa_6[11] = 0.5
+Datos_Alfa_6[12] = 0.6
+Datos_Alfa_6[13] = 0.6
+Datos_Alfa_6[14] = 0.6
+Datos_Alfa_6[15] = 0.6
+Datos_Alfa_6[16] = 0.7
+Datos_Alfa_6[17] = 0.7
+Datos_Alfa_6[18] = 0.8
+Datos_Alfa_6[19] = 0.8
+Datos_Alfa_6[20] = 0.9
+Datos_Alfa_6[21] = 1
+Datos_Alfa_6[22] = 1
+Datos_Alfa_6[23] = 1.1
+Datos_Alfa_6[24] = 1.2
+Datos_Alfa_6[25] = 1.4
 
-# Hago unos primeros ajustes generales al gráfico
+#------------------------------------------------------------------------------------------------------------
+
+# Teniendo los datos, ahora relizo el ajuste para obtener el exponente asociado al alfa
+# Supongo que kappa sigue la siguiente relación: K = \frac{epsilon}{alpha^r}+C
+
+Resultados = dict()
+
+for indice,Datos in enumerate([Datos_Alfa_2,Datos_Alfa_4,Datos_Alfa_6]):
+    
+    alfa = (indice+1)*2 # Defino alfa en base al indice
+    
+    # Defino la función con la que voy a hacer el ajuste
+
+    def Kappa(X,C):
+        return C*(1+math.e**(-alfa*C+X))
+    
+    # Calculo los parámetros
+    
+    parametros_optimos,parametros_covarianza = curve_fit(Kappa,Epsilon,Datos)
+    
+    # Calculo el error
+    
+    error_C = math.sqrt(parametros_covarianza[0,0])
+    
+    print(r"El valor de C asociado al alfa={} es: {} $\pm$ {}".format(alfa, parametros_optimos[0],error_C))
+    # print(r"El valor de C asociado al alfa={} es: {} $\pm$ {}".format(alfa, parametros_optimos[1],error_C))
+    # print(r"El valor de D asociado al alfa={} es: {} $\pm$ {}".format(alfa, parametros_optimos[2],error_D))
+    
+    # Guardo los valores en mi diccionario
+    
+    Resultados[alfa] = parametros_optimos
+ 
+
+#------------------------------------------------------------------------------------------------------------
+    
+# Ploteo las curvas reales contra las curvas ajustadas
 
 plt.rcParams.update({'font.size': 32})
-fig = plt.figure("Region_triple_puntofijo",figsize=(40,40))
-ax = fig.add_subplot(projection = "3d")
-ax.set_xlabel(r"$\epsilon$",labelpad = 30)
-ax.set_ylabel(r"$\alpha$",labelpad = 30)
-ax.set_zlabel(r"$\kappa$", labelpad = 50)
+plt.figure("Curva_transicion",figsize=(20,15))
+colores = ["b","g","r"]
+for indice,Y in enumerate([Datos_Alfa_2,Datos_Alfa_4,Datos_Alfa_6]):
+    
+    alfa = (indice+1)*2 # Defino alfa en base al indice
+        
+    plt.plot(Epsilon,Y,color = colores[indice], marker = "*", linestyle = "None" , markersize = 12)
+    
+    # Defino la función con la que voy a hacer el ajuste
 
-
-# Grafico las dos superficies que encierran la región de tres puntos fijos
-
-surf1 = ax.plot_surface(XX,YY,Kappas_min, cmap=cm.coolwarm,
-                        linewidth=0, antialiased=False)
-
-surf2 = ax.plot_surface(XX,YY,Kappas_max, cmap=cm.coolwarm,
-                        linewidth=0, antialiased=False)
-
-
-direccion_guardado = Path("../../../Imagenes/Bifurcacion_logistica/Region_triple_puntofijo_BASE.png")
-plt.savefig(direccion_guardado ,bbox_inches = "tight")
-
-
-ax.view_init(0,0,0)
-direccion_guardado = Path("../../../Imagenes/Bifurcacion_logistica/Region_triple_puntofijo_FRENTE.png")
-plt.savefig(direccion_guardado ,bbox_inches = "tight")
-
-ax.view_init(0,-90,0)
-direccion_guardado = Path("../../../Imagenes/Bifurcacion_logistica/Region_triple_puntofijo_LATERAL.png")
-plt.savefig(direccion_guardado ,bbox_inches = "tight")
-
-ax.view_init(90,0,0)
-direccion_guardado = Path("../../../Imagenes/Bifurcacion_logistica/Region_triple_puntofijo_TECHO.png")
-plt.savefig(direccion_guardado ,bbox_inches = "tight")
-
-ax.view_init(-90,0,0)
-direccion_guardado = Path("../../../Imagenes/Bifurcacion_logistica/Region_triple_puntofijo_PISO.png")
-plt.savefig(direccion_guardado ,bbox_inches = "tight")
-
-
-
-plt.close("Region_triple_puntofijo")
+    def Kappa(X,C):
+        return C*(1+math.e**(-alfa*C+X))
+    
+    Y_calculado = Kappa(Epsilon,Resultados[alfa][0])
+    plt.plot(Epsilon, Y_calculado, label = r"$\alpha =$ {}".format(alfa),color = colores[indice], linewidth=4)
+    
+plt.xlabel(r"$\epsilon$")
+plt.ylabel(r"$\kappa$")
+plt.legend()
+plt.grid(alpha = 0.5)
+plt.show()
 
 """
-#------------------------------------------------------------------------------------------------
-#------------------------------------------------------------------------------------------------
-#------------------------------------------------------------------------------------------------
 
-# Armo una función que grafica Kappa en función de Epsilon y me arma curvas para
-# distintos alfas.
+####################################################################################################
+####################################################################################################
+####################################################################################################
 
-# Armo mis variables a graficar
+# Primero defino la ecuación dinámica que voy a usar para hallar los puntos fijos del sistema.
 
-Epsilons = np.array([3,4,5])
-Alfas = np.linspace(5,8,100)
+def Ecuacion_dinamica(x,K,A,Cdelta,Eps):
+    return -x+K*(1/(1+np.exp(-A*(1+Cdelta)*x+Eps)))
 
-#-------------------------------------------------------------------------------
+# Quiero que si hay un punto fijo inestable, me devuelva eso. Si no lo hay, que me devuelva
+# un 0. Los tres puntos fijos están distribuidos entre 0 y Kappa.
 
-# Barro en Alfas, que serán la cantidad de gráficos que arme
+x0 = 0
+K = 1
+A = 4
+Cdelta = 0
+Eps = 2
 
-for epsilon in Epsilons:
+raices = np.zeros(3)
+indice = 0
+
+while x0 < K:
     
-    # Abro el gráfico y defino los nombres de los ejes
-    plt.rcParams.update({'font.size': 24})
-    plt.figure("Cortes_3D",figsize=(20,15))
-    plt.xlabel(r"$\alpha$")
-    plt.ylabel(r"$\kappa$")
+    resultado = fsolve(Ecuacion_dinamica,x0,args=(K,A,Cdelta,Eps))[0]
     
-    # Armo mi array donde pondré los valores de Kappa, tanto los máx como los mín
-    Kappas_min = np.zeros(Alfas.shape[0])
-    Kappas_max = np.zeros(Alfas.shape[0])
+    Condicion_raiz = np.isclose(Ecuacion_dinamica(resultado,K,A,Cdelta,Eps),0,atol=1e-06)
     
-    for indice,Alfa in enumerate(Alfas):
+    if not(np.isclose(raices,np.ones(3)*resultado).any()) and Condicion_raiz:
         
-        # Calculo dónde se encuentra el mínimo de mi función Derivada_Kappa
-        x_min = epsilon/Alfa
-        
-        # Calculo los puntos críticos donde voy a encontrar los Kappa máximos y mínimos
-        raiz_min= fsolve(Derivada_kappa,x_min-3,args=(Alfa,epsilon))[0]
-        raiz_max = fsolve(Derivada_kappa,x_min+3,args=(Alfa,epsilon))[0]
-        
-        # Asigno los valores de los Kappa a mis matrices
-        Kappas_min[indice] = Kappa(raiz_max, Alfa, epsilon)
-        Kappas_max[indice] = Kappa(raiz_min, Alfa, epsilon)
-        
-    # Ahora que tengo la curva hecha, la grafico y guardo el gráfico
+        raices[indice] = resultado
+        indice += 1
     
+    x0 += 0.1
     
-    plt.plot(Alfas,Kappas_min,"--g",label=r"$\epsilon$ = {}".format(epsilon), linewidth = 8)
-    plt.plot(Alfas,Kappas_max,"--g", linewidth = 8)
-
-
-    # Preparo los detalles finales del gráfico
+print(raices)
     
-    plt.grid(alpha = 0.5)
-    plt.legend()
-    direccion_guardado = Path("../../../Imagenes/Exploracion_Logistica/Cortes en Epsilon={}.png".format(epsilon))
-    plt.savefig(direccion_guardado ,bbox_inches = "tight")
-    plt.close("Cortes_3D")
     
 
 
-#------------------------------------------------------------------------------------------------
 
 
 

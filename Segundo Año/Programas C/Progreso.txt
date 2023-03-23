@@ -45,3 +45,38 @@ Dicho eso, encontré el paper este que había pasado antes Sebas, voy a leerlo a
 qué hacen ya que trabajan con el modelo de Baumann y ver si hay algo interesante
 que sacar de ahí. Ya leí las primeras dos secciones, debería después continuar con
 la sección 3 de resultados.
+
+------------------------------------------------------------------------------------------
+
+23/03/2023
+
+Revisé pero no encuentro en casa el Formulario de Autorización. Igual dice que las firmas
+tienen que ser manuscritas, así que después veré de imprimirlo el lunes, se lo llevo a Pablo
+y de ahí a la Biblioteca Central. También envío mi Tesis por mail el lunes y listo.
+
+Entonces debería ponerme con lo que son los datos que armé ayer. Ahora que lo pienso, estaría
+bueno tener algunos datos armados para hacer pruebas con las funciones. Hagamos eso, recorramos
+una región similar y usemos eso para armar unos datos en la pc.
+
+Me estoy dando cuenta de que nunca hice ningún if para que el programa arme testigos sólo
+si el número de iteración es 1 o 2. Hagamos estas dos cosas.
+
+Agregué al main los if que me escriben el archivo de Testigos sólo para las primeras dos simulaciones.
+Hecho eso, armé algunos datos en la pc de casa y rearmé los datos en la pc de Oporto. Los tuve
+que rearmar porque me di cuenta que había escrito archivos de Testigos para todas las simulaciones.
+También armé una carpeta de datos para contener los archivos. Para lograr deshacerme de los
+archivos que no me interesaban tuve que usar una función llamada remove, borra un archivo
+según el path que recibe.
+
+Lo siguiente que tengo que hacer es modificar las funciones de gráfico y armarme los siguientes gráficos:
+.) Mapa de colores de Opiniones (Fácil, ese lo tengo ya hecho)
+.) Mapa de tiempo de Convergencia (Creo que puedo tomar el de Varianza y modificarlo un poco)
+.) Interés en función del tiempo, pero tengo que hacer eso con las líneas grises y finas.
+Tengo que modificar la función existente y armar una nueva para eso.
+.) Después puedo ver de armar una función que grafique la derivada del interés en función del tiempo.
+
+En los gráficos de mapas de colores tengo además que agregar las curvas de Kappa Máximo y Kappa Mínimo
+
+Ahí le hice la modificación al Mapa de Colores. Veamos que todo funca bien, el lunes seguiremos con
+esto. El tema del alfa me produjo errores de nuevo. Voy a ver si lo puedo solucionar de alguna otra
+manera. Solucionado

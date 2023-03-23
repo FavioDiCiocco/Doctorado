@@ -117,13 +117,13 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_Opiniones[355];
-	sprintf(s_Opiniones,"../Programas Python/Exploracion_Logistica/Opiniones_N=%d_kappa=%.2f_alfa=%.2f_Iter=%d.file"
+	sprintf(s_Opiniones,"../Programas Python/Exploracion_Logistica/Datos/Opiniones_N=%d_kappa=%.2f_alfa=%.2f_Iter=%d.file"
 		,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_alfa,i_iteracion);
 	FILE *pa_Opiniones=fopen(s_Opiniones,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_Testigos[355];
-	sprintf(s_Testigos,"../Programas Python/Exploracion_Logistica/Testigos_N=%d_kappa=%.2f_alfa=%.2f_Iter=%d.file"
+	sprintf(s_Testigos,"../Programas Python/Exploracion_Logistica/Datos/Testigos_N=%d_kappa=%.2f_alfa=%.2f_Iter=%d.file"
 		,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_alfa,i_iteracion);
 	FILE *pa_Testigos=fopen(s_Testigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
@@ -164,15 +164,17 @@ int main(int argc, char *argv[]){
 	fprintf(pa_Opiniones,"Opiniones Iniciales\n");
 	Escribir_d(ps_red->pd_Opiniones,pa_Opiniones);
 	
-	fprintf(pa_Testigos,"Opiniones Testigos\n");
+	if(i_iteracion < 2) fprintf(pa_Testigos,"Opiniones Testigos\n");
 	
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
 		// RK4(ps_red->pd_Sat, pf_Din_Sat, ps_red, ps_datos); // Itero la saturación
 		RK4(ps_red->pd_Opiniones, pf_Dinamica_Interaccion, ps_red, ps_datos); // Itero los intereses
 		// Me guardo los valores de opinión de mis agentes testigo y sus valores de saturación
-		for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]);
-		fprintf(pa_Testigos,"\n");
+		if(i_iteracion < 2){
+			for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]);
+			fprintf(pa_Testigos,"\n");
+		}
 		// for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo3,"%lf\t",ps_red->pd_Sat[i_j*ps_datos->i_T+i_k+2]);
 		// fprintf(pa_archivo3,"\n");
 		// Registro el estado actual en el array de OpinionesPrevias.
@@ -203,8 +205,10 @@ int main(int argc, char *argv[]){
 			ps_red->d_Variacion_promedio = Norma_d(ps_red->pd_Diferencia)/ps_datos->d_NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
 			// Escritura
 			fprintf(pa_Opiniones, "%lf\t",ps_red->d_Variacion_promedio); // Guardo el valor de variación promedio
-			for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de opinión de mis agentes testigo
-			fprintf(pa_Testigos,"\n");
+			if(i_iteracion < 2){
+				for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de opinión de mis agentes testigo
+				fprintf(pa_Testigos,"\n");
+			}
 			// for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo3,"%lf\t",ps_red->pd_Sat[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de Saturación de los agentes testigo
 			// fprintf(pa_archivo3,"\n");
 			// Actualización de índices
@@ -224,8 +228,10 @@ int main(int argc, char *argv[]){
 			ps_red->d_Variacion_promedio = Norma_d(ps_red->pd_Diferencia)/ps_datos->d_NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
 			// Escritura
 			fprintf(pa_Opiniones, "%lf\t",ps_red->d_Variacion_promedio); // Guardo el valor de variación promedio 
-			for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de opinión de mis agentes testigo
-			fprintf(pa_Testigos,"\n");
+			if(i_iteracion < 2){
+				for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de opinión de mis agentes testigo
+				fprintf(pa_Testigos,"\n");
+			}
 			// for(register int i_j=0; i_j<i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_archivo3,"%lf\t",ps_red->pd_Sat[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de Saturación de los agentes testigo
 			// fprintf(pa_archivo3,"\n");
 			// Actualización de índices
@@ -251,6 +257,7 @@ int main(int argc, char *argv[]){
 	fprintf(pa_Opiniones,"Semilla\n");
 	fprintf(pa_Opiniones,"%ld\n",semilla);
 	
+	
 	// Libero los espacios dedicados a mis vectores y cierro mis archivos
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++) free(ap_OpinionesPrevias[i_i]);
 	free(ps_red->pd_Angulos);
@@ -263,6 +270,9 @@ int main(int argc, char *argv[]){
 	fclose(pa_Opiniones);
 	fclose(pa_Testigos);
 	// fclose(pa_archivo3);
+	
+	// Borro el archivo de Testigos que no necesito
+	if(i_iteracion >= 2) remove(s_Testigos); // Esta función recibe el path al archivo de Testigos
 	
 	// Finalmente imprimo el tiempo que tarde en ejecutar todo el programa
 	time(&tt_fin);
