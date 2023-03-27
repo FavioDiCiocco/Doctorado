@@ -7,3 +7,13 @@ La idea es estudiar la región en la cual el sistema tiene tres puntos fijos. Pa
 es que por un lado revisé analíticamente la ecuación dinámica del modelo. De ahí
 armé un gráfico 3D que me marca la región en la cuál el sistema tiene tres puntos
 fijos.
+
+
+.) Exploracion_Logistica:
+-------------------------
+Revisaré el espacio de parámetros Kappa-Alfa, fijando Epsilon=4. La idea es ver
+cómo varía en ese espacio el valor medio al cual tiende el sistema, el tiempo
+de convergencia, la dinámica de convergencia y quizás la existencia de estados
+metaestables. Para eso estoy armando gráficos de Promedios de Opiniones, Tiempo
+de Convergencia e interés en función del tiempo. Los gráficos de interés consideran
+unos 100 agentes de mis simulaciones de 1000 agentes.

@@ -80,3 +80,46 @@ En los gráficos de mapas de colores tengo además que agregar las curvas de Kap
 Ahí le hice la modificación al Mapa de Colores. Veamos que todo funca bien, el lunes seguiremos con
 esto. El tema del alfa me produjo errores de nuevo. Voy a ver si lo puedo solucionar de alguna otra
 manera. Solucionado
+
+------------------------------------------------------------------------------------------
+
+24/03/2023
+
+Hoy llegué y me puse a resolver algunas cosas extra. Volví a conectar el Slack a mi celular.
+Después mandé el mail a la biblioteca central con mi tesis. Aunque al parecer hubo problemas
+con el envío a la dirección tesis_lic@df.uba.ar por el tamaño del archivo. Mandé dos veces
+el mail, esperaré a ver si me responden algo y de ahí veré qué hago. Tengo el formulario
+de autorización firmado por mi, después se lo daré a Pablo para que lo firme. Quizás tenga
+que imprimir otro después.
+
+Voy a necesitar unos datos para hacer unas pruebas, así que ahí mandé a correr el Instanciar
+en la pc de la facultad. Lo siguiente es ponerme con el mapa de tiempo de convergencia.
+
+Visto el mapa de tiempo de convergencia, la verdad no se ve mucho. La línea de Kappa_min
+parece tener dificultades en la convergencia en comparación al resto. ¿Por qué el comportamiento
+no es simétrico en ambas regiones de transición? Quizás los gráficos de Testigos me den una
+respuesta al respecto.
+
+Mirando el gráfico de interés en función del tiempo logré observar que para el caso de alfa
+alto y Kappa bajo, el sistema efectivamente tiene un estado metaestable, se observa
+claro como el agua. Quizás esté interesante revisar esa región. Ahora mismo tengo las
+funciones que arman los tres gráficos que me resultaban interesantes hacer. Ahora debería
+pasar el código a Oporto y ver los gráficos que me genera.
+
+Me respondieron de biblioteca digital, parece que les llegó la tesis perfecto. Si me responden
+que sólo falta el Formulario, le pido a Pablo que me lo firme y de ahí completo lo que falta.
+
+Antes de ponerme a ver si están los gráficos de Exploracion_Logistica, lo primero que voy a hacer
+es intentar armar la función que grafica la derivada del interés. Y después podría ponerme
+con la parte de la burocracia infinita.
+
+Los gráficos de Derivadas no son realmente informativos, al final podría prescindir de eso.
+Revisando los gráficos que hice con los datos de Oporto, pareciera que la curva de Kappa_min
+es la que tiene una región de un mayor tiempo de convergencia al punto final. Viendo los gráficos
+de Interes en función del tiempo, no logré encontrar un gráfico en el cual las opiniones de los
+agentes se mantenga constante por un tiempo prolongado antes de decaer. Aunque si hay varios
+gráficos en los cuales las opiniones primero caen y luego suben o al revés, variando muy lentamente
+antes de llegar a un resultado final.
+
+Para revisar esto mejor es que mandé a hacer gráficos para un grupo específico de Kappas pero para
+todos los Alfas. Eso quizás me muestre las curvas en las cuales los agentes tardan en converger.

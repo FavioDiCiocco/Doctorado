@@ -10,3 +10,11 @@ resultados analíticos.
  A este gráfico 3D después le hice cortes según alfa para observar un poco mejor la forma
 de las superficies 3D. Es decir, gráficos de Kappa en función de Epsilon para diferentes
 Alfas.
+
+
+Exploracion_Logistica:
+----------------------
+Armo archivos de Opiniones y unos pocos archivos de Testigos. Estos archivos de Testigos
+guardan datos de 100 agentes con el objetivo de armar gráficos de Interes vs Tiempo
+con las líneas grises finitas. El plan es a partir de estos datos armar gráficos de 
+Promedio de Opiniones, Tiempo de convergencia e interés vs Tiempo.

@@ -66,64 +66,24 @@ for carp in Carpetas:
     titulo_parametro_2 = r"\alpha"
     
     #----------------------------------------------------------------------------------------------
-    
+    """
     func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta,
                                          titulo_parametro_1, titulo_parametro_2, True)
 
     #----------------------------------------------------------------------------------------------
     
-#    func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta,T, nombre_parametro_1, nombre_parametro_2)
+    func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
+                                         titulo_parametro_1, titulo_parametro_2, True)
     
     #----------------------------------------------------------------------------------------------
+    
+    func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta, T,
+                            nombre_parametro_1, nombre_parametro_2)
     """
-    Cosdeltas = [0,0.2,0.4,0.6,0.8,1]
+    #----------------------------------------------------------------------------------------------
     
-    for CDELTA in Cosdeltas:
-        
-        # Fijo el parámetro de Cosdelta y barro en función de epsilon
-        Df_Cosdelta_fijo = (Df_archivos.query('parametro_1 == @CDELTA')
-                            .rename(columns={"parametro_1":"cosdelta",
-                                              "parametro_2":"parametro_1",
-                                              "parametro_3":"parametro_2"})
-                            .copy()
-                        )
-        
-        func.Graf_Punto_fijo_vs_parametro(Df_Cosdelta_fijo, Direccion,
-                                          Etapa/carpeta,T, nombre_parametro_3,
-                                          titulo_parametro_2, titulo_parametro_3,
-                                          Condicion_punto_inestable_Kappa_Epsilon=True)
-        
-        
-        
-        func.Mapa_Colores_Varianza_opiniones(Df_Cosdelta_fijo, Direccion,
-                                             Etapa/carpeta,
-                                             titulo_parametro_2, titulo_parametro_3,
-                                             True)
-        
-        #----------------------------------------------------------------------------------------------
-        
-        # Ahora fijo el parámetro de Cosdelta y barro en función de Kappa
-        
-        # Fijo el parámetro de Cosdelta y barro en función de epsilon
-        Df_Cosdelta_fijo = (Df_archivos.query('parametro_1 == @CDELTA')
-                            .rename(columns={"parametro_1":"cosdelta",
-                                              "parametro_3":"parametro_1"})
-                            .copy()
-                        )
-        
-        func.Graf_Punto_fijo_vs_parametro(Df_Cosdelta_fijo, Direccion,
-                                          Etapa/carpeta,T, nombre_parametro_2,
-                                          titulo_parametro_3, titulo_parametro_2,
-                                          Condicion_punto_inestable_Epsilon_Kappa=True)
-        
-        #----------------------------------------------------------------------------------------------
-        
-    
-    # Armo el gráfico 3D de los puntos fijos de interés en función de los parámetros Kappa y Epsilon
-    
-    func.Graf_Punto_fijo_3D(Df_archivos, Direccion, Etapa/carpeta,T,
-                            titulo_parametro_1, titulo_parametro_2, titulo_parametro_3)
-    """
+    func.Graf_Derivada_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta, T,
+                            nombre_parametro_1, nombre_parametro_2)
 
 
 func.Tiempo(t0)
