@@ -83,7 +83,7 @@ manera. Solucionado
 
 ------------------------------------------------------------------------------------------
 
-24/03/2023
+27/03/2023
 
 Hoy llegué y me puse a resolver algunas cosas extra. Volví a conectar el Slack a mi celular.
 Después mandé el mail a la biblioteca central con mi tesis. Aunque al parecer hubo problemas
@@ -123,3 +123,67 @@ antes de llegar a un resultado final.
 
 Para revisar esto mejor es que mandé a hacer gráficos para un grupo específico de Kappas pero para
 todos los Alfas. Eso quizás me muestre las curvas en las cuales los agentes tardan en converger.
+
+------------------------------------------------------------------------------------------
+
+28/03/2023
+
+Hoy a la mañana fui a cursar la materia de Piegaia, después di clases en la materia de F1 y llevé
+el formulario de Autorización a la biblioteca del pabellón 2. Estuve revisando lo que hice ayer,
+estoy dudando de si no debería hacer un barrido más fino de los datos.
+
+Entre organizar el partido y cosas, se me está yendo toda la tarde. Mañana entonces tendría que
+rever el resumen de TREFEMAC así como ver qué más puedo hacer con el modelo. Creo que compensa
+hacer un barrido más fino. La duda es cómo hacerlo correctamente sin hacer cuentas innecesarias.
+Es decir, sin volver a calcular cosas que ya calculé antes.
+
+Y por otro lado, se me ocurre que estaría bueno ver de modificar la función que grafica el interés
+vs tiempo de forma que haga los gráficos para la región de Kappas en los cuales hay puntos con
+alto tiempo de convergencia.
+
+También haré mañana la burocracia infinita.
+
+------------------------------------------------------------------------------------------
+
+29/03/2023
+
+Estoy viendo para mandar a correr nuevos datos que complementen los que ya tengo. Para eso
+necesito primero barrer completamente el alfa entre 5 y 8 de a 0,1. Eso significa que para
+los Kappas existentes tengo que armar datos nuevos. Por otro lado, como mi paso anterior
+fue 0,3 también en Kappa, querría armar los datos para los Kappa menores a 1,8 sin repetir
+los datos ya armados. En ese caso, se me ocurre armar simulaciones diferentes moviéndome
+de a 0,3 pero arrancando desplazado, cosa de tomar todos los valroes intermedios. Yo diría
+de arrancar primero con los Kappas faltantes y después completamos a los Kappas existentes.
+Primero mandé a correr datos para Kappa={1.1,1.4,1.7,2} con alfa entre 5 y 8 de a 0,1.
+
+Cuando eso termine, hago lo mismo pero arranco con Kappa = 0.9 así corto en 1.8.
+Ya hice la burocracia infinita y mandé la corrida usando el Kappa inicial de 0.9. Hecho
+esto, lo siguiente sería poner Kappa en 1 y completar los alfas que le faltan a esos Kappas.
+Lo que estoy pensando es qué pasará con los Kappas por encima de 2, los que no tienen
+un barrido tan fino en alfa. El uso del Dataframe creo que permitirá que esa región quede
+en blanco ya que el array ZZ estará compuesto de ceros que se sobreescriben en base
+a los datos obtenidos de los archivos. Igual estoy viendo que el programa no está planeado
+para considerar que no haya archivos que levantar. Le va a intentar tomar un log a 0 o a
+la nada misma, el programa no va a saber qué hacer. Podría asegurarme de graficar los
+datos con Kappa por debajo de 2, eso es una opción. Creo que en principio es lo más razonable,
+para no estar corriendo un barrido fino innecesario en esa región. 
+ El mesh se ajusta a un barrido diferenciado en un eje, pero no a dos barridos diferenciados
+en dos ejes. No, creo que en ese caso tendría que hacer los ploteos por separado. Pero hecho
+de esa manera, quizás debería asegurarme que los límites de lo plotteado sea tal que los
+colores no se mezclen. Plottear regiones con diferentes granularidades no es tan sencillo
+como uno quiere imaginar.
+
+Luego de varias simulaciones, logré armar un barrido más fino de la región de Kappa=[1,2]
+y Alfa=[5,8]. Aunque para mantener esto correcto, tuve que retocar las funciones de
+graficación de forma que sólo consideren el Kappa (Parámetro 1) en los casos en que vale
+menos que 2. Porque creo que graficar casos de diferentes granularidades no es algo
+tan simple. Hecho esto, mandé a armar los gráficos, quiero ver si se observa mejor una
+región de convergencia. Para esto estaré armando muchos gráficos, espero que no sea
+una locura revisarlos. Podría ponerme pronto a armar un barrido fino para el resto de la
+región de estudio.
+
+Por otro lado leí el paper que había pasado Sebas en el cual hacían un estudio sobre modelos
+de opinión, especialmente sobre un modelo basado en el de Baumman pero con algunas modificaciones.
+Hay una idea interesante que sacar sobre un tipo de gráfico que se puede armar para diferenciar
+los estados de polarización. Para el resto del análisis de esto, está lo que subí al drive
+en Bibliografías.
