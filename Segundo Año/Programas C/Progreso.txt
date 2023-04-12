@@ -216,3 +216,102 @@ de estas cosas porque sino no voy a llegar jamás. Y otras trabajarlas acá.
 También, tengo que pagar la cuota anual de la AFA y revisar el tema de las afiliaciones.
 Marcos dijo que iban de cierta forma, pero no están para nada anotadas de esa forma.
 También tengo que incluir a Pablo y Sebas a la afiliación.
+
+------------------------------------------------------------------------------------------
+
+03/04/2023
+
+El lunes fui después del mediodía a la facultad. A la mañana estuve en casa haciendo ejercicios
+de F1 para ir teniendo las guías hechas. Después del mediodía fui a la facultad, me imprimí las
+guías y estuve mandando varios mensajes organizando cosas de varios grupos. Un bardo, pero
+fue necesario.
+
+------------------------------------------------------------------------------------------
+
+04/04/2023
+
+Cursé y di clases. Y después hice algunos ejercicios más de F1. Los martes y viernes van
+a ser bastante escuetos. Vamos a aprovechar el finde largo para ponerme al día con las guías.
+
+------------------------------------------------------------------------------------------
+
+05/04/2023
+
+En la mañana corregí el tema de las afiliaciones del trabajo enviado a la TREFEMAC y completé
+el formulario del pedido de ayuda económica. Después pagué la cuota anual de la AFA, y
+aproveché para pagarle a mamá y a Azu. Hecho eso estuve revisando algunas cosas y organizando
+varios pequeños detalles. A la tarde tengo turno.
+
+------------------------------------------------------------------------------------------
+
+10/04/2023
+
+Estuve haciendo ejercicios de F1 en la mañana y de MEFE en la tarde. Hoy fue un día de ejercicios
+nomás. También movimos el escritorio grande de la oficina.
+
+------------------------------------------------------------------------------------------
+
+11/04/2023
+
+Cursé MEFE y hablé con el JTP. Me dijo que la idea es que a partir de ahora primero tengamos
+la práctica y después la teórica. Me dijo que la materia de MEFE no tiene final, me conviene
+más cursar la práctica y las teóricas las miro online más tarde. Eso supongo será lo que haré
+los martes y viernes después de cursar. Lo que sí, tengo que hablar porque me quise inscribir
+como doctorando a la materia y no pude, así que estoy cursando sin estar inscripto.
+
+Después fui a dar clases. Esta vez estuve mucho mejor preparado para las consultas. Una chica
+consultó sobre que tiene ciertas dificultades para resolver los ejercicios. Intenté darle
+consejo, pero me da un poco la sensación de que quizás deje la materia. Después intentar darle
+una mano.
+
+A la tarde resolví un ejercicio más de F1.
+
+------------------------------------------------------------------------------------------
+
+12/04/2023
+
+A la mañana llevé la bici a la bicicletería. No vinieron estudiantes a las clases de consulta
+de contraturno. Revisé un poco lo que tengo hecho y completé el archivo de Progreso.
+
+Ahí estuve leyendo y repasando los últimos gráficos que había armado. Lo último que hice
+fue armar gráficos de Interés en función del tiempo, Opiniones promedio y Promedio de
+tiempo de convergencia. Podría aprovechar y también armar gráficos de la varianza de los
+tiempos de convergencia.
+
+Por otro lado, mirando los gráficos de Promedio de opiniones y de Promedio de tiempos de
+Convergencia, se nota que la franja de transición entre que el sistema converge al punto
+fijo mínimo y que converge al punto fijo máximo está corrida respecto de la línea de Kappa
+mínimo que está graficada. Creo que estaría bueno agregar la línea de Kappa máximo y ver
+si realmente la franja de transición está en el medio de ambas curvas. Lo que sí es que
+parece seguir una forma similar. Al parecer nunca retiré la línea del Kappa Máximo del
+gráfico. Si no se grafica es porque no entra en la región graficada. Creo que si bien 
+va a ser mucha simulación medio al pedo, vale la pena agregar los datos necesarios para
+agregar la región de Kappas que falta. Kappa se mueve de [1,4] y Alfa de [5,8]. Originalmente
+ambos tenían un paso de 0,3. Luego, para Kappa entre [1,2] hice un barrido más fino en
+ambos parámetros, barriendo de a 0,1. Si no me equivoco, no habría problema en que Kappa
+tenga pasos diferentes, pero sólo si corrijo para que todo tenga un barrido igual en Alfa.
+
+Así que debería mandar a correr datos para rellenar los datos de forma que Alfa recorra
+el [5,8] de a 0,1. Ya mandé a correr los datos arrancando con Alfa=5,1. Después tengo
+que mandarlo con Alfa=5,2 y listo. En 21 minutos debería terminar de correr.
+
+Debería primero que nada pensar en qué voy a poner en el poster. Para eso arranquemos del
+poster que usé para la TREFEMAC pasada y del resumen, eso me va a dar una idea de qué quiero
+mostrar y cómo.
+
+Ya mandé la otra parte de los datos. Mañana puedo mandar a correr el programa de Python y
+revisar los gráficos hechos.
+
+Estoy queriendo armar el poster. Para arrancar, el texto del resumen no entra bien en el
+lugar que tenía antes, el resumen actual es muy grande. Podría ir probando entonces de
+ponerlo y después lo ajusto.
+
+Cosas que poner en el poster:
+------------------------------
+.) Ecuación dinámica, describiendo los términos de la ecuación. Al ser en 1D, no necesito
+hablar de tópicos no ortogonales. Quizás podría mencionar que todas las interacciones
+entre agentes refuerzan las opiniones.
+.) Función logística. Tengo que mostrar qué es y que forma tiene y cómo varía esa forma
+con los parámetros.
+
+Mañana sigo anotando esto.

@@ -240,6 +240,7 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2,
     
     Ns = np.unique(DF["n"])
     
+    """
     # Defino los valores de Parametro_1 que planeo graficar
     Valores_importantes_1 = [0,math.floor(len(np.unique(DF["parametro_1"]))/4),
                             math.floor(3*len(np.unique(DF["parametro_1"]))/4),
@@ -255,6 +256,11 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2,
     # Armo los arrays de mis parámetros y después armo la Tupla_Total
     Array_parametro_1 = np.unique(DF["parametro_1"])[Valores_importantes_1]
     Array_parametro_2 = np.unique(DF["parametro_2"])[Valores_importantes_2]
+    """
+    
+    # Armo los arrays de mis parámetros y después armo la Tupla_Total
+    Array_parametro_1 = np.unique(DF["parametro_1"])[np.unique(DF["parametro_1"]) <= 2]
+    Array_parametro_2 = np.unique(DF["parametro_2"])
     
     Tupla_total = [(n,parametro_1,parametro_2) for n in Ns
                    for parametro_1 in Array_parametro_1
@@ -636,7 +642,7 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta,
     # Defino los arrays de parámetros diferentes
     
     Ns = np.unique(DF["n"])
-    Array_parametro_1 = np.unique(DF["parametro_1"])
+    Array_parametro_1 = np.unique(DF["parametro_1"])[np.unique(DF["parametro_1"]) <= 2]
     Array_parametro_2 = np.unique(DF["parametro_2"])
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
@@ -1116,7 +1122,7 @@ def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
     # Defino los arrays de parámetros diferentes
     AGENTES = int(np.unique(DF["n"]))
     
-    Array_parametro_1 = np.unique(DF["parametro_1"])
+    Array_parametro_1 = np.unique(DF["parametro_1"])[np.unique(DF["parametro_1"]) <= 2]
     Array_parametro_2 = np.unique(DF["parametro_2"])
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
