@@ -315,3 +315,107 @@ entre agentes refuerzan las opiniones.
 con los parámetros.
 
 Mañana sigo anotando esto.
+
+------------------------------------------------------------------------------------------
+
+13/04/2023
+
+En la mañana estuve leyendo la bibliografía de la materia de Sociología. Esto me tomó
+todo el tiempo hasta ir a cursar. De ahí me volví temprano sin pasar por la práctica
+porque esperaba ir a buscar mi bici, que no estaba lista.
+
+------------------------------------------------------------------------------------------
+
+14/04/2023
+
+Fui a MEFE, di clases, intenté buscar un reemplazo y cosas.
+
+------------------------------------------------------------------------------------------
+
+17/04/2023
+
+Estuve coordinando cosas para buscar un reemplazante, Mauro y un conocido de Constanza
+me dijeron que podrían si no consigo a nadie más. Debería charlar con Nahuel y Julian sobre
+si es necesario que estén presentes el día del parcial
+
+------------------------------------------------------------------------------------------
+
+18/04/2023
+
+Cursé las primeras dos horas en MEFE, fui a dar la clase de rozamiento en F1, preparé los
+papeles para hacer el pedido de licencia con goce de sueldo y hablé con Nahuel por Slack.
+
+
+------------------------------------------------------------------------------------------
+
+19/04/2023
+
+Estoy pensando la charla para dar mañana a la mañana. La idea es contar mi línea de trabajo.
+Debería contar que trabajo un modelo de dinámica de opiniones, actualmente transformado en
+un modelo de dinámica de interés respecto tópicos de debate. Arrancaría mostrando las
+ecuaciones dinámicas, que son el centro de mi trabajo. Mostraría el caso de muchos tópicos,
+diría que es a lo que queremos llegar y hablaría de la idea de tópicos no ortogonales.
+Luego presentaría el modelo unidimensional y diría que ahí es dónde estamos parados ahora.
+Lo siguiente sería unos gráficos del interés en función del tiempo para mostrar el
+comportamiento del sistema. Después unos gráficos de mapas de colores mostrando algunos
+análisis hechos con el objetivo de explicar que mi interés es estudiar el proceso para
+comprender el sistema. Entendiendo como funciona, el plan es pasarlo a un modelo multidimensional
+y luego comparar el modelo con datos para ver si se observa lo simulado.
+ También me parece interesante mostrar las herramientas que uso (C, Python, Bash, Github)
+y un poco de mi proceso de trabajo. (Armo código en C, simulo en los clusters, grafico,
+descargo las imágenes y luego analizo los resultados).
+
+Después modificar las líneas grises para que sean un poco más grandes, así se ven un poco mejor
+esos gráficos.
+
+------------------------------------------------------------------------------------------
+
+20/04/2023
+
+En la mañana terminé la presentación. Espero que quede bien. Después vamos a la reunión de
+Sophy, más tarde resuelvo el tema del reemplazo. Y después iré a cursar, quizás lea un poco
+de la bibliografía de la materia de Sociología.
+
+------------------------------------------------------------------------------------------
+
+21/04/2023
+
+Cursé, di clases, me comí una hamburguesa completa y mandé la documentación para el pedido
+de licencia con goce de haberes. También hice la burocracia infinita. Por último voy a anotar
+algunas cosas de la materia de MEFE y terminar por hoy.
+
+------------------------------------------------------------------------------------------
+
+24/04/2023
+
+Estuve en la mañana haciendo ejercicios de F1 y a la tarde ejercicios de MEFE. Eso fue todo
+mi día. 
+
+------------------------------------------------------------------------------------------
+
+25/04/2023
+
+Cursé y di clases. Hablando con Constanza, me recordó que hay un TP computacional para hacer
+para MEFE. Al parecer corrieron la fecha de entrega para el martes que viene.
+
+Considerando que la semana que viene tengo parcial de MEFE, voy a empezar a hacer ejercicios en
+casa en el horario de conectarme con los pibes al Discord. Así voy a llegar un poco mejor
+a las materias. Haré tanto cosas de F1 como de MEFE.
+
+Hablando con Pablo estamos en la idea de empezar a avanzar a la implementación de un campo
+externo. Para esto tengo que explorar por en lado el uso de la función que propuso Pablo
+para que el interés se mantenga entre [0,1] y por otro lado tengo que pensar distintas formas
+de introducir el campo externo a la función. Pablo me habló de pensar formas de que un agente
+gane interés y después lo pierda en un tópico.
+
+Voy a traer de hace unos días que había copiado sobre cosas que poner en el poster.
+Cosas que poner en el poster:
+------------------------------
+.) Ecuación dinámica, describiendo los términos de la ecuación. Al ser en 1D, no necesito
+hablar de tópicos no ortogonales. Quizás podría mencionar que todas las interacciones
+entre agentes refuerzan las opiniones.
+.) Función logística. Tengo que mostrar qué es y que forma tiene y cómo varía esa forma
+con los parámetros.
+
+Mañana tengo que ir a la consulta de contra turno, pero eso es aparte. 
+Me voy a imprimir las guías de F1 y de MEFE.
