@@ -419,3 +419,79 @@ con los parámetros.
 
 Mañana tengo que ir a la consulta de contra turno, pero eso es aparte. 
 Me voy a imprimir las guías de F1 y de MEFE.
+
+------------------------------------------------------------------------------------------
+
+26/04/2023
+
+Vamos a anotar entonces las cosas que creo necesarias para el poster. Anotar la ecuación
+dinámica claramente va, es el corazón del modelo. Y por tanto describir los términos de
+la ecuación 1D es igual de importante. También mencionar que debido a que los intereses
+son todos positivos entonces el interés sólamente puede contagiarse.
+ ¿Debería hablar de la función logística? Me suena como el paso razonable considerando
+que esto está en el segundo término y no parece obvio el por qué.
+ Después tengo que mostrar algunos resultados del modelo. Es decir, que el sistema
+admite estados en los cuales todos los agentes alcanzan el máximo interés o decaen
+al cero de interés. Mostrar que existen simulaciones de transición sin caracterizar la
+región de transición me parece una pésima idea.
+ Viendo lo que el modelo permite hacer, podemos hablar de la exploración del espacio de
+parámetros. Podría hacer gráficos para mostrar cómo cambia el gráfico de promedio
+de intereses para la combinación de parámetros Kappa-Alfa, Kappa-Epsilon y Alfa-Epsilon.
+Eso estaría bueno para mostrar que en el caso Alfa-Epsilon el sistema produce una recta
+que diferencia la región que converge al punto de máximo interés versus la región que
+converge al mínimo interés.
+ 
+ Estoy mirando el gráfico de interés promedio que armé en la carpeta de Exploración_Logística.
+Tengo mis dudas respecto al hecho de que la transición de un punto fijo mínimo al punto fijo
+máximo no está sobre la curva de Kappa_mínimo sino un poquito por arriba, pero con una forma
+similar. Se me ocurre que si en vez de distribuir las opiniones iniciales entre [0,Kappa], las
+distribuyo en intervalos con el valor máximo cada vez más chico, la curva esa debería subir
+para acercarse y finalmente superponerse con la curva del kappa máximo. Me parece que eso
+es algo interesante para observar. Comparé la simulación con los gráficos de Geogebra, lo que
+veo es que finjando alfa y epsilon, a medida que Kappa aumenta, el punto fijo del medio va
+bajando. Pero no sólo eso, sino que al aumentar Kappa el valor medio del interés inicial también
+aumenta, ya que el interés inicial en promedio vale Kappa/2. Luego, razonablemente al aumentar
+Kappa resulta que para algún valor Kappa/2 es mayor al punto fijo del medio, y por tanto el
+sistema empieza a converger al punto fijo máximo.
+
+############################################################################################
+ Me parece que sería interesante ver cómo la curva de transición de convergencia del punto 
+de mínimo interés al de máximo interés varía al cambiar el espacio de interés inicial. Serían
+una serie de gráficos interesantes. Y además, podría armar un gráfico de diferencia de punto de
+convergencia entre el punto de convergencia de una fila y la fila siguiente. Eso ilustraría la
+curva en la que se da el salto. Luego podría superponer los gráficos y eso debería iluminar la
+zona entre las curvas de Kappa máximo y mínimo. Me gusta esta idea.
+############################################################################################
+
+Volviendo al poster, me parece que por una cuestión de seguir un hilo conductor, es más razonable
+que al empezar a contar cosas sobre la ecuación dinámica, hable de ciertos resultados, como el
+hecho de cuáles son los puntos fijos que el sistema alcanza o que se necesita un mínimo valor
+de Epsilon para que el sistema tenga tres puntos fijos. Creo que eso se puede mostrar, no con
+un gráfico de Geogebra, sino con un gráfico de Python que tenga marcado con puntos grandes
+los puntos fijos y luego tenga escrito en el eje X cosas como: "Punto fijo estable mínimo"
+o algo más corto. Yo haría toda una sección del poster que sea el ANÁLISIS DINÁMICO.
+En esta región definitivamente se puede agregar el gráfico 3D de la región de tres puntos fijos
+con los gráficos de corte.
+
+Habiendo planteado que el sistema tiene una región en la cual tiene más de un punto fijo,
+me parece razonable mostrar el gráfico de la varianza en el espacio de parámetros. Para eso
+usaría el gráfico que ya tengo con cos(delta) = 0, así no tengo que rehacer esos datos.
+Me parece que es más interesante el gráfico en el caso de Kappa en función de Epsilon, porque
+así se ve que esa región tiene una parte que se cierra. Si hago el Kappa-Alfa lo que
+tengo es una parte en el medio coloreada que como gráfico me parece poco interesante.
+Después, para agrandar la región marcada lo que puedo hacer es restringir la zona graficada,
+eso lo puedo hacer fácil y va a quedar mejor, así no es un gráfico con tanta zona azul que
+no dice mucho.
+
+Habiendo visto la región en la cuál el sistema tiene tres puntos fijos, lo siguiente es mostrar
+el gráfico de promedios. Acá si resulta una buena idea armar gráficos de promedios de cada
+parámetro en función del resto. Hablamos de cómo podemos observar que el parámetro alfa y el
+parámetro Epsilon da lo mismo variarlos y que estudiamos el comportamiento de Kappa con
+Alfa y con Epsilon. Eso serían tres gráficos, donde mostraríamos que la transición entre
+una región y la otra se da dentro de la región de tres puntos fijos.
+
+Si me queda lugar, creo que podría intentar incorporar los gráficos de interés final promedio
+en función de Kappa o Epsilon. Creo que esos aportan, pero tendría que armarlos considerando
+puntos con un tamaño proporcional a la cantidad de simulaciones que caen en cada lugar.
+Igual esto creo que da para charlarlo con Pablo, si tengo que hacer todo lo que puse y encima
+armar el poster, no creo que llegue con todo.
