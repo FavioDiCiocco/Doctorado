@@ -448,7 +448,7 @@ similar. Se me ocurre que si en vez de distribuir las opiniones iniciales entre 
 distribuyo en intervalos con el valor máximo cada vez más chico, la curva esa debería subir
 para acercarse y finalmente superponerse con la curva del kappa máximo. Me parece que eso
 es algo interesante para observar. Comparé la simulación con los gráficos de Geogebra, lo que
-veo es que finjando alfa y epsilon, a medida que Kappa aumenta, el punto fijo del medio va
+veo es que fijando alfa y epsilon, a medida que Kappa aumenta, el punto fijo del medio va
 bajando. Pero no sólo eso, sino que al aumentar Kappa el valor medio del interés inicial también
 aumenta, ya que el interés inicial en promedio vale Kappa/2. Luego, razonablemente al aumentar
 Kappa resulta que para algún valor Kappa/2 es mayor al punto fijo del medio, y por tanto el
@@ -495,3 +495,36 @@ en función de Kappa o Epsilon. Creo que esos aportan, pero tendría que armarlo
 puntos con un tamaño proporcional a la cantidad de simulaciones que caen en cada lugar.
 Igual esto creo que da para charlarlo con Pablo, si tengo que hacer todo lo que puse y encima
 armar el poster, no creo que llegue con todo.
+
+------------------------------------------------------------------------------------------
+
+27/04/2023
+
+Aún si hoy no empiezo a armar el poster, es importante que hoy defina los datos que voy a
+necesitar y los mande a correr, así ya eso lo tengo para la semana que viene.
+
+Estoy medio armando una primera idea del poster. Mejor hacer eso mañana. Ahora voy a mandar
+a correr los datos que necesito y ya me pongo a hacer ejercicios de F1. Y que la materia
+de Sociología se resuelva sola.
+
+Yo quiero armar gráficos de promedio de Kappa-Epsilon y Kappa-Alfa. Para eso necesito variar
+los tres parámetros, Kappa, Epsilon y Alfa. ¿Dónde los varío y cómo los varío? ¿Y en qué
+carpeta los guardo? ¿Y cómo inicializo las condiciones?
+
+Se me ocurre inicializar usando que las opiniones vayan entre [0,Kappa], es para ser consecuente
+con los otros gráficos. Epsilon va entre [1.5,3]. Kappa va entre [1,3] y Alfa entre [1,3].
+Suponiendo que cada simulación tarda seis segundos, con un barrido más o menos fino de
+0.1 tengo 16 valores para Epsilon, 21 para Kappa y 21 para Alfa. Luego armando 40 o
+60 simulaciones para cada configuración eso implica un total de 2.540.160 segundos.
+Que dividido en 20 hilos me da 127008 segundos. En total eso son 35 horas. Si lo mando hoy,
+lo tengo para el finde. Perfecto.
+ Pero pará, no necesito Kappa tan grande, Kappa debería ir entre [1,2], y lo mismo Alfa.
+Con lo visto, no me compensa gráficos tan grandes, mejor revisar esas regiones un poco más
+en detalle. Si en vez de un paso de 0.1 tengo uno de 0.05 pero con la región reducida eso me
+da 68 horas. Eso es menos de tres días. Tengo que estar seguro de lo que mando a correr, pero si
+lo hago hoy o mañana, ya el martes lo tengo hecho. Voy a armar las carpetas, preparar el código
+y asegurarme que sólo tengo que apretar unos botones cuando hable con Pablo.
+
+Ya tengo hecho todo, creo que tengo que mandarlo y listo. Si puedo, discuto un poco con Pablo
+la idea, sino lo mando en casa y listo. En el peor caso, lo charlo mañana un momento con Pablo.
+
