@@ -528,3 +528,33 @@ y asegurarme que sólo tengo que apretar unos botones cuando hable con Pablo.
 Ya tengo hecho todo, creo que tengo que mandarlo y listo. Si puedo, discuto un poco con Pablo
 la idea, sino lo mando en casa y listo. En el peor caso, lo charlo mañana un momento con Pablo.
 
+------------------------------------------------------------------------------------------
+
+28/04/2023
+
+Fui a cursar y di clases. Después de eso me puse a revisar el programa que subí a Oporto y a
+revisar el armado de datos. Pero me mandé una cagada, porque al principio el programa se mandó
+a correr y estaba mal el path de los archivos, así que tiraba error y no corría. Corregí ese
+error, pero me olvidé de frenar los programas. Eso llevó a que tengo los 20 hilos en uso. Eso
+estaría dando errores, si no fuera porque volví a compilar el archivo Opiniones.e. Gracias
+a eso, ahora los archivos están correctamente corriendo y armando los datos que corresponden.
+Por un momento pensé que iba a tener que esperar al martes de la semana que viene para recién
+ahí mandar a correr todo. Lo que sí voy a tener que hacer, pero no va a ser tanto problema, 
+es mandar a correr todo desde el principio pero tengo que ajustar Instanciar para que sólo
+rearme los archivos de los primeros Kappa. Por lo que veo, ya los datos de Kappa=1.05 los
+está armando. Por si estoy viendo algo mal, después rearmo los datos de Kappa = {1,1.05,1.1}.
+Bueno, menos mal, esto hubiera sido un problema a considerar sino.
+
+------------------------------------------------------------------------------------------
+
+02/05/2023
+
+A la mañana no cursé, sólo hice ejercicios de MEFE y después me fui a dar clases. Le debo a
+uno de los chicos la resolución del ejercicio 6 de la guía de SNI.
+ Por otro lado, yo pensé que la simulación iba a estar terminada para ayer, y sin embargo está
+todavía corriendo. Parece que completó una simulación y media en este tiempo, estamos cerca de
+completar la segunda. Con algo de suerte ya mañana lo mando a correr lo que falta y después
+armo los gráficos. Tengo que tener el código para armar los gráficos listo. Igual no creo que
+sea difícil, tuve en la sección de Cambio_parámetros 2D que armar gráficos con archivos que tenían
+tres parámetros, así que es cosa de tomar eso y reajustar las funciones.
+ Sigamos preparando el poster, anotando cosas y ya mañana nos ponemos seriamente con eso.
