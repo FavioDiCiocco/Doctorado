@@ -256,17 +256,11 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2,
     # Armo los arrays de mis parámetros y después armo la Tupla_Total
     Array_parametro_1 = np.unique(DF["parametro_1"])[Valores_importantes_1]
     Array_parametro_2 = np.unique(DF["parametro_2"])[Valores_importantes_2]
-    
-    #-----------------------------------------------------------------------------
-    
-    Array_parametro_1 = np.unique(DF["parametro_1"])[np.unique(DF["parametro_1"]) <= 2]
-    Array_parametro_2 = np.unique(DF["parametro_2"])
     """
     
     # Armo los arrays de mis parámetros y después armo la Tupla_Total
-    
-    Array_parametro_1 = np.array([1,1.1,1.3,1.5])
-    Array_parametro_2 = np.array([6,6.1,7.3])
+    Array_parametro_1 = np.unique(DF["parametro_1"])[np.unique(DF["parametro_1"]) <= 2]
+    Array_parametro_2 = np.unique(DF["parametro_2"])
     
     Tupla_total = [(n,parametro_1,parametro_2) for n in Ns
                    for parametro_1 in Array_parametro_1
@@ -314,7 +308,7 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2,
                 for topico in range(T):
                     plt.plot(X,Testigos[:,sujeto*T+topico], color = "gray" ,linewidth = 1, alpha = 0.5)
             plt.xlabel("Tiempo")
-            plt.ylabel(r"$x^i$")
+            plt.ylabel("Tópico")
             plt.grid(alpha = 0.5)
             plt.savefig(direccion_guardado ,bbox_inches = "tight")
             plt.close("Topico")
@@ -715,7 +709,7 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta,
     
     plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "cividis")
     plt.colorbar()
-    plt.title(r"Promedio de opiniones finales con $\epsilon$ = 4")
+    plt.title("Promedio de opiniones en Espacio de Parametros")
     
     # Hago el plotteo de las curvas de Kapppa
     

@@ -66,7 +66,7 @@ for carp in Carpetas:
     titulo_parametro_2 = r"\alpha"
     
     #----------------------------------------------------------------------------------------------
-    
+    """
     func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta,
                                          titulo_parametro_1, titulo_parametro_2, True)
 
@@ -79,11 +79,11 @@ for carp in Carpetas:
     
     func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta, T,
                             nombre_parametro_1, nombre_parametro_2)
-    
+    """
     #----------------------------------------------------------------------------------------------
     
-    # func.Graf_Derivada_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta, T,
-    #                         nombre_parametro_1, nombre_parametro_2)
+    func.Graf_Derivada_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta, T,
+                            nombre_parametro_1, nombre_parametro_2)
 
 
 func.Tiempo(t0)

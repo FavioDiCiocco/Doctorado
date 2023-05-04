@@ -558,3 +558,27 @@ armo los gráficos. Tengo que tener el código para armar los gráficos listo. I
 sea difícil, tuve en la sección de Cambio_parámetros 2D que armar gráficos con archivos que tenían
 tres parámetros, así que es cosa de tomar eso y reajustar las funciones.
  Sigamos preparando el poster, anotando cosas y ya mañana nos ponemos seriamente con eso.
+ 
+------------------------------------------------------------------------------------------
+
+03/05/2023
+
+Charlé con Pablo sobre ideas para el poster, ideas para el trabajo a futuro y después me puse
+a armar gráficos para el poster. A la tarde di clases de consultas.
+
+------------------------------------------------------------------------------------------
+
+04/05/2023
+
+A la mañana armé el croquis del canasto metálico para la bici, tuvimos una reunión de grupo
+donde Franco Eskinazi nos dió una charla sobre un paper de identificación de ideología de 
+usuarios y de ideología latente.
+ Después trabajé en el poster, fui a la charla sobre el conocimiento científico estudiando el
+caso de la convención de armas químicas y después seguí con el poster. Al parecer hubo unas
+simulaciones raras en el cluster, no entiendo por qué. Así que lo mandé de nuevo, y si no
+se arregla, mañana tendré que ver mejor qué pasa con eso.
+
+Viendo el poster, en la parte de análisis dinámico ordené todo sacando lo de que el interés
+tiene que ser positivo y que los agentes tienen que reforzar su interés al interactuar.
+Me parece que de todo lo que hay para mostrar, eso es lo menos importante y se puede describir
+o ver de los gráficos.
