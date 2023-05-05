@@ -582,3 +582,47 @@ Viendo el poster, en la parte de análisis dinámico ordené todo sacando lo de 
 tiene que ser positivo y que los agentes tienen que reforzar su interés al interactuar.
 Me parece que de todo lo que hay para mostrar, eso es lo menos importante y se puede describir
 o ver de los gráficos.
+
+------------------------------------------------------------------------------------------
+
+05/05/2023
+
+En la mañana resolví el ejercicio que me había preguntado uno de los estudiantes. Después
+fui a dar clases. No fui al parcial de MEFE.
+
+Después mirando con Seba descubrimos que al final sí estaba comiéndome todo el espacio de
+Oporto. Tengo que ser más consciente con eso. Por ahora mandé a hacerse unos gráficos
+y cuando venga Pablo decidiré los gráficos que faltan agregar. Mientras lo que haré es
+armar unos datos que sirvan para armar los gráficos que necesito. Podría armar tres
+carpetas, una con alfa fijo, otra con Kappa fijo y otra con epsilon fijo. Esto va a
+tardar mucho menos que lo anterior en correr.
+K = [1,2], Alfa=[1,2], Epsilon=[1.5,3]. Variando los tres de a 0.05. Haré 30 simulaciones.
+Sabiendo que cada una tardaba unos 10 segundos, supongamos 15 para el peor caso.
+Las 30 simulaciones las distribuiré entre seis hilos.
+Epsilon fijo = 3: 21*21*31*15 (9 horas y media)
+Kappa fijo = 1.5: 21*31*31*15 (14 horas)
+Alfa fijo = 1.5: 21*31*31*15 (14 horas)
+
+Listo, puedo mandar esto y mañana a la madrugada está terminado. Cierto que no puedo simplemente
+mandarlo, los .e se van a pisar y eso va a ser un bardo. Podría simplemente mandarlo de a
+1 a la vez. Hagamos eso. Usemos 20 hilos y hagamos 40 simulaciones
+
+Ahora a las 16 mandé a armar los datos de Epsilon fijo. Eso va a tardar unas 3 horas.
+Quizás la mitad considerando que yo calculé que cada simulación tarde 15 segundos y en
+realidad es más bien 8.
+
+Bueno, la idea está más o menos clara, puedo hacer esto en el finde. El plan es:
+x) Modificar los gráficos de Opinión en función del tiempo para que se vean mejor
+desde la distancia. Quizás agregarles los parámetros asociados en el título del plot.
+Eso lo voy a lograr corriendo el Graficar de la carpeta de Exploración Logística en Oporto.
+x) Ubicar estos gráficos en el espacio de parámetros graficado a la derecha. O quizás sea
+mejor tenerlos ubicados en el gráfico 3D, quizás con unas cruces para que se vean.
+x) En la región abajo a la izquierda agregar un gráfico de Promedio de Opiniones. Ese
+gráfico lo voy a conseguir mandando a correr el Graficar de la carpeta de Cambios_Parametros
+que tengo en Oporto.
+x) Junto con esos gráficos poner gráficos de interés final en función de Kappa.
+x) Pasar el último párrafo a Conclusiones. Y hacer que la intros se vea más linda.
+x) No es necesario hacer los datos de Alfa_fijo o Kappa_fijo. Necesito sólo los de Epsilon fijo,
+A cambio tengo que agregar Kappa entre [0.5,1], y repetir la simulación para Epsilon=1.5.
+Podría hacer eso más corto si fijo Alfa ahora que lo pienso, total no necesito todos los alfas.
+Bien, la idea cierra.
