@@ -20,10 +20,10 @@ from pathlib import Path
 t0 = time.time()
 
 T=1 # Defino el número de tópicos
-Etapa = Path("Exploracion_Logistica") # Defino el nombre de la etapa del trabajo en la que estoy
+Etapa = Path("Complemento_Poster") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Datos"]
+Carpetas = ["alfa_fijo"]
 
 for carp in Carpetas:
     
@@ -41,49 +41,41 @@ for carp in Carpetas:
     
     #-------------------------------------------------------------------------------------------------------
     
-    # Es importante partir del hecho de que mis archivos llevan por nombre: "Opiniones_N=$_kappa=$_alfa=$_Iter=$.file"
-    # También tengo otros archivos llamados "Testigos_N=$_kappa=$_alfa=$_Iter=$.file" y
+    # Es importante partir del hecho de que mis archivos llevan por nombre: "Opiniones_N=$_kappa=$_alfa=$_epsilon=$_Iter=$.file"
+    # También tengo otros archivos llamados "Testigos_N=$_kappa=$_alfa=$_epsilon=$_Iter=$.file" y
     
     Df_archivos = pd.DataFrame({"nombre": Archivos_Datos})
     
     # Hecho mi dataframe, voy a armar columnas con los parámetros que varían en los nombres de mis archivos
     Df_archivos["tipo"] = Df_archivos["nombre"].apply(lambda x: x.split("_")[0])
     Df_archivos["n"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[1].split("=")[1]))
-    Df_archivos["parametro_1"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
-    Df_archivos["parametro_2"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
-    Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1].strip(".file")))
+    Df_archivos["parametro_2"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
+    Df_archivos["parametro_1"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1]))
+    Df_archivos["alfa"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
+    Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[5].split("=")[1].strip(".file")))
     
     #----------------------------------------------------------------------------------------------
 
     # Por un lado necesito los nombres que pasaré a los títulos de los archivos
     
-    nombre_parametro_1 = "kappa"
-    nombre_parametro_2 = "alfa"
+    nombre_parametro_1 = "epsilon"
+    nombre_parametro_2 = "kappa"
     
     # Lo otro que necesito es el nombre que pasaré a los ejes de los gráficos de las funciones
     
-    titulo_parametro_1 = r"\kappa"
-    titulo_parametro_2 = r"\alpha"
-    
-    #----------------------------------------------------------------------------------------------
-    """
-    func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-                                         titulo_parametro_1, titulo_parametro_2, True)
-
-    #----------------------------------------------------------------------------------------------
-    
-    func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
-                                         titulo_parametro_1, titulo_parametro_2, True)
+    titulo_parametro_1 = r"\epsilon"
+    titulo_parametro_2 = r"\kappa"
     
     #----------------------------------------------------------------------------------------------
     
     func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta, T,
                             nombre_parametro_1, nombre_parametro_2)
-    """
+    
     #----------------------------------------------------------------------------------------------
     
-    func.Graf_Derivada_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta, T,
-                            nombre_parametro_1, nombre_parametro_2)
+    func.Graf_Punto_fijo_vs_parametro(Df_archivos, Direccion, Etapa/carpeta, T,
+                                      nombre_parametro_2, titulo_parametro_2,
+                                      titulo_parametro_1)
 
 
 func.Tiempo(t0)

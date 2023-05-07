@@ -256,10 +256,14 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2,
     # Armo los arrays de mis parámetros y después armo la Tupla_Total
     Array_parametro_1 = np.unique(DF["parametro_1"])[Valores_importantes_1]
     Array_parametro_2 = np.unique(DF["parametro_2"])[Valores_importantes_2]
+    
+    #-----------------------------------------------------------------------------
+    
     """
     
     # Armo los arrays de mis parámetros y después armo la Tupla_Total
-    Array_parametro_1 = np.unique(DF["parametro_1"])[np.unique(DF["parametro_1"]) <= 2]
+    
+    Array_parametro_1 = np.unique(DF["parametro_1"])
     Array_parametro_2 = np.unique(DF["parametro_2"])
     
     Tupla_total = [(n,parametro_1,parametro_2) for n in Ns
@@ -297,7 +301,8 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2,
             
             # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
             repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-            direccion_guardado = Path("../../../Imagenes/{}/OpivsT_N={:.0f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,nombre_parametro_1,PARAMETRO_1,nombre_parametro_2,PARAMETRO_2,repeticion))
+            direccion_guardado = Path("../../../Imagenes/{}/OpivsT_N={:.0f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,
+                                      nombre_parametro_2,PARAMETRO_2,nombre_parametro_1,PARAMETRO_1,repeticion))
             
             # Armo mi gráfico, lo guardo y lo cierro
             
@@ -306,10 +311,12 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2,
             X = np.arange(Testigos.shape[0])*0.01
             for sujeto in range(int(Testigos.shape[1]/T)):
                 for topico in range(T):
-                    plt.plot(X,Testigos[:,sujeto*T+topico], color = "gray" ,linewidth = 1, alpha = 0.5)
+                    plt.plot(X,Testigos[:,sujeto*T+topico], color = "tab:purple" ,linewidth = 3, alpha = 0.7)
             plt.xlabel("Tiempo")
-            plt.ylabel("Tópico")
-            plt.grid(alpha = 0.5)
+            plt.ylabel(r"$x^i$")
+            plt.grid(alpha = 0.7)
+            plt.title(r"Evolución temporal con ${}$ = {}, $\alpha$ = 4 ,${}$ = {}".format(nombre_parametro_2,PARAMETRO_2,
+                      nombre_parametro_1,PARAMETRO_1))
             plt.savefig(direccion_guardado ,bbox_inches = "tight")
             plt.close("Topico")
 
@@ -642,7 +649,7 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta,
     # Defino los arrays de parámetros diferentes
     
     Ns = np.unique(DF["n"])
-    Array_parametro_1 = np.unique(DF["parametro_1"])[np.unique(DF["parametro_1"]) <= 2]
+    Array_parametro_1 = np.unique(DF["parametro_1"])
     Array_parametro_2 = np.unique(DF["parametro_2"])
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
@@ -709,7 +716,7 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta,
     
     plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "cividis")
     plt.colorbar()
-    plt.title("Promedio de opiniones en Espacio de Parametros")
+    plt.title(r"Promedio de opiniones finales con $\epsilon$ = 4")
     
     # Hago el plotteo de las curvas de Kapppa
     
@@ -821,23 +828,16 @@ def Graf_sat_vs_tiempo(DF,path,carpeta,T=2):
 # un punto que indica el punto fijo al cuál tiende el sistema.
 
 def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,
-                                 nombre_parametro_2="parametro2",titulo_parametro_1="parametro 1",
-                                 titulo_parametro_2="parametro 2", 
+                                 nombre_parametro_2="parametro2",titulo_parametro_2="parametro 2",
+                                 titulo_parametro_1="parametro 1", 
                                  Condicion_punto_inestable_Kappa_Epsilon = False,
                                  Condicion_punto_inestable_Epsilon_Kappa = False):
-   
-    # Armo mi generador de números aleatorios
-#    rng = np.random.default_rng(seed = 50)
     
     AGENTES = int(np.unique(DF["n"]))
-    COSDELTA = float(np.unique(DF["cosdelta"]))
     
     # Defino los valores de Parametro_1 que planeo graficar
-    Valores_importantes = [0,math.floor(len(np.unique(DF["parametro_1"]))/3),
-                           math.floor(2*len(np.unique(DF["parametro_1"]))/3),
-                           len(np.unique(DF["parametro_1"]))-1]
     
-    Array_parametro_1 = np.unique(DF["parametro_1"])[Valores_importantes]
+    Array_parametro_1 = np.unique(DF["parametro_1"])
     Array_parametro_2 = np.unique(DF["parametro_2"])
     
     Tupla_total = [(parametro_1,numero_2,parametro_2) for parametro_1 in Array_parametro_1
@@ -851,14 +851,14 @@ def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,
     Y = np.array([])
     
     # Armo la lista de colores y propiedades para graficar mis datos
-    default_cycler = (cycler(color=["r","g","b","c"]))
+    default_cycler = (cycler(color=["r","g"]))
     
     # Abro el gráfico y fijo algunos parámetros
     plt.rcParams.update({'font.size': 32})
     plt.rc("axes",prop_cycle = default_cycler)
     plt.figure("Puntofijo",figsize=(20,15))
     plt.xlabel(r"${}$".format(titulo_parametro_2))
-    plt.ylabel("Interés final promedio")
+    plt.ylabel(r"$\langle x \rangle _f$")
     plt.grid(alpha = 0.5)
     
     
@@ -921,7 +921,7 @@ def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,
             # Calculo el valor del punto fijo inestable
             X_inestable[Numero_2] = PARAMETRO_2
             
-            raices = Raices_Ecuacion_Dinamica(PARAMETRO_1, 4, COSDELTA, PARAMETRO_2)
+            raices = Raices_Ecuacion_Dinamica(PARAMETRO_1, 4, 0, PARAMETRO_2)
             if(raices != 0).all():
                 Y_inestable[Numero_2] = raices[1]
             else:
@@ -947,7 +947,7 @@ def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,
             # Calculo el valor del punto fijo inestable
             X_inestable[Numero_2] = PARAMETRO_2
             
-            raices = Raices_Ecuacion_Dinamica(PARAMETRO_2, 4, COSDELTA, PARAMETRO_1)
+            raices = Raices_Ecuacion_Dinamica(PARAMETRO_2, 4, 0, PARAMETRO_1)
             if(raices != 0).all():
                 Y_inestable[Numero_2] = raices[1]
             else:
@@ -962,7 +962,7 @@ def Graf_Punto_fijo_vs_parametro(DF,path,carpeta,T=2,
     
     #----------------------------------------------------------------------------------------------------------------------------------
     
-    direccion_guardado = Path("../../../Imagenes/{}/Puntofijovs{}_N={:.0f}_Cdelta={:.1f}.png".format(carpeta,nombre_parametro_2,AGENTES,COSDELTA))
+    direccion_guardado = Path("../../../Imagenes/{}/Puntofijovs{}_N={:.0f}.png".format(carpeta,nombre_parametro_2,AGENTES))
     plt.legend()
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close("Puntofijo")

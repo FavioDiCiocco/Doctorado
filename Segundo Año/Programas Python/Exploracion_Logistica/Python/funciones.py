@@ -312,7 +312,7 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2,
             X = np.arange(Testigos.shape[0])*0.01
             for sujeto in range(int(Testigos.shape[1]/T)):
                 for topico in range(T):
-                    plt.plot(X,Testigos[:,sujeto*T+topico], color = "gray" ,linewidth = 1, alpha = 0.5)
+                    plt.plot(X,Testigos[:,sujeto*T+topico], color = "tab:brown" ,linewidth = 2, alpha = 0.3)
             plt.xlabel("Tiempo")
             plt.ylabel(r"$x^i$")
             plt.grid(alpha = 0.5)

@@ -626,3 +626,30 @@ x) No es necesario hacer los datos de Alfa_fijo o Kappa_fijo. Necesito sólo los
 A cambio tengo que agregar Kappa entre [0.5,1], y repetir la simulación para Epsilon=1.5.
 Podría hacer eso más corto si fijo Alfa ahora que lo pienso, total no necesito todos los alfas.
 Bien, la idea cierra.
+
+
+------------------------------------------------------------------------------------------
+
+07/05/2023
+
+Al final había hablado con Pablo el 05/05 y definimos que los únicos datos que necesitaba son
+los de alfa_fijo. Lo que hice fue armar datos variando Kappa entre [0.5,2] con un paso de 0.01.
+Estos datos tenían Alfa = 3 y Epsilon tomó sólo dos valores, 1.5 y 3. Esos datos los armé junto
+con datos de Testigos. Voy a usar estos datos para armar gráficos de Interés final en función de
+Kappa.
+
+Antes que nada, ahora voy a mandar a armar el gráfico de Promedio de Opiniones que necesito. No creo
+que tarde mucho, pero por si acaso. Ahí mandé a prepararse el gráfico de Promedios. Lo que queda
+es armar los gráficos de Evolución temporal y los de Interés final en función de Kappa.
+
+Ahí cargué el archivo de Python y mandé a armar el gráfico de interés final. Estoy pensando en
+que quizás no pueda correctamente llenar el espacio de abajo a la izquierda del poster.
+
+Bueno, lo que me queda hacer entonces es descargar los gráficos de Promedio, los de Opinión
+vs Tiempo y el de Opinión final vs Kappa, agregar los detalles en el gráfico de Varianzas
+(Quizás explicarlo un poco mejor), quizás pueda usar el espacio extra para agregar la expresión de
+campo medio y retocar los títulos de las secciones y las conclusiones. Suena a algo que puedo hacer
+en la mañana tranca.
+
+Para que sea más fácil de encontrar mañana, fijate los gráficos de evolución temporal en
+Complemento_Poster con Kappa = 1.5.
