@@ -653,3 +653,20 @@ en la mañana tranca.
 
 Para que sea más fácil de encontrar mañana, fijate los gráficos de evolución temporal en
 Complemento_Poster con Kappa = 1.5.
+
+------------------------------------------------------------------------------------------
+
+08/05/2023
+
+Ya descargué los gráficos y organicé el poster. El poster quedó bastante bien, agregué
+los gráficos de Promedio de interés, el de interés final en función de Kappa y los de interés
+en función del tiempo. Voy a corregir unos títulos, unos colores, agregar unos detalles 
+a los gráficos en el google y listo, poster terminado. Mientras se grafican las cosas faltantes
+en Oporto, iré agregando música a la playlist de TREFEMAC 2023.
+
+Me confundí el Parámetro 1 y el 2 al graficar los OpivsTiempo, así que lo tengo que hacer de nuevo
+eso. Ahora mismo se está armando el gráfico de Varianzas primero. Después correré los de OpivsTiempo.
+Por último el de Promedios.
+
+Al final terminé el poster sin hacer los gráficos esos, no iba a llegar. Las conclusiones quedaron
+un poco flojas, pero cosas que pasan.
