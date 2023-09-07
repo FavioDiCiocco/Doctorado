@@ -688,6 +688,8 @@ para hacer el cambio de plan.
 Ya me acordé, el lunes me volví temprano para cambiar los libros y comprar el canasto. No pude
 cambiar los libros, pero conseguí mi canasto.
 
+------------------------------------------------------------------------------------------
+
 02/06/2023
 
 Los días que pasaron del 19 a hoy los estuve anotando en el cuaderno. El 22 y 23 estuve
@@ -802,3 +804,35 @@ mi código de la tesis y a partir de ahí ver de hacer unas simulaciones para mo
 aplicación del modelo al caso multidimensional. Tengo que ver de revisar el código
 que cargué al Github y ver de actualizarlo con el nuevo formato más legible del código actual.
 Esto va a ser un poco un bardo, pero quizás logre tener algo armado para el miércoles.
+
+------------------------------------------------------------------------------------------
+
+07/09/2023
+
+Acabo de tener una revelación horrorosa. Descubrí que llevo bastante más laburo del que
+recordaba sin registrar en la documentación. Todas las documentaciones están desactualizadas.
+
+.) La documentación en la carpeta Programas C/Programas está desactualizada.
+.) La documentación en la carpeta Programas Python está desactualizada.
+.) La documentación en la carpeta de Imágenes está desactualizada. Encima el cruce de carpetas
+de cosas que hice en el primer año con las del segundo año me está confundiendo.
+
+La semana que viene voy a ver si puedo ponerme a organizar esto. Primero tendría que agarrar
+la documentación en Imagenes y separar lo que es del año pasado con lo que es de este año.
+Y marcar la transición supongo. Luego podría ir leyendo el archivo de Progreso para ir viendo
+cómo avanzaron los programas. Con eso tendré una buena idea de qué hice en cada carpeta. Tengo
+que aceptar de que posiblemente la carpeta de Programas no estará correctamente actualizada. Pero
+asumo que lo que hice en las distintas etapas razonablemente es muy similar y por eso nunca terminé
+de cambiar los archivos del src.
+
+Ahora lo que voy a hacer es separar el archivo actual y lo pondré en una carpeta llamada Exploración
+Logística. Por lo que estoy viendo de mis notas, eso es lo último que hice. Queda entonces descubrir
+qué son las carpetas de imágenes que sobran en mis archivos, pero creo que podré tener más respuestas
+cuando mire lo que tengo en la facultad. Vale aclarar, no vas a encontrar nada en el archivo de Progreso,
+recién lo repasé, no anoté nada importante. Putos microcambios. El tema de esto es que realmente no
+pudieron haber muchos cambios. De haberlos, el Git debería haber notado la diferencia en los códigos.
+Qué raro. Va a ser un tema deshacer la trama de archivos superpuestos y mezclados.
+
+La nueva etapa se va a llamar Homofilia Estática, ya que vamos a tratar de implementar homofilia en redes
+estáticas. Después tengo que armar redes de Erdos-Renyi para mis simulaciones, así lo que hago matchea
+mejor con lo que hizo esta gente. Aprenderme sus nombres estaría bueno.

@@ -34,21 +34,23 @@ int main(int argc, char *argv[]){
 	// Defino los parámetros de mi modelo. Esto va desde número de agentes hasta el paso temporal de integración.
 	// Primero defino los parámetros que requieren un input.
 	ps_datos->i_N = strtol(argv[1],NULL,10); // Cantidad de agentes en el modelo
-	ps_datos->d_beta = strtof(argv[2],NULL); // Esta es la potencia que determina el grado de homofilia.
-	ps_datos->d_Cosangulo = strtof(argv[3],NULL); // Este es el coseno de Delta que define la relación entre tópicos.
+	ps_datos->d_kappa = strtof(argv[2],NULL); // Esta amplitud regula la relación entre el término lineal y el término logístico
+	ps_datos->d_alfa = strtof(argv[3],NULL); // Controversialidad de los tópicos
 	int i_iteracion = strtol(argv[4],NULL,10); // Número de instancia de la simulación.
 	
 	// Los siguientes son los parámetros que están dados en los structs
-	ps_datos->i_T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
+	ps_datos->i_T = 1;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
 	ps_datos->i_Iteraciones_extras = 40; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	ps_datos->i_pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
+	ps_datos->d_Cosangulo = 0; // Este es el coseno de Delta que define la relación entre tópicos.
+	ps_datos->d_epsilon = 4; // Este es el umbral que determina si el interés del vecino puede generarme más interés.
 	ps_datos->d_dt = 0.01; // Paso temporal de iteración del sistema
-	ps_datos->d_alfa = 1; // Controversialidad de los tópicos
-	ps_datos->d_kappa = 10; // Esta amplitud regula la relación entre el término lineal y el término logístico
-	ps_datos->d_delta = 0.001; // Es un término que se suma en la homofilia y ayuda a que los pesos no diverjan.
 	ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	ps_datos->d_CritCorte = pow(10,-4); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
 	ps_datos->i_testigos = fmin(ps_datos->i_N,50); // Esta es la cantidad de agentes de cada distancia que voy registrar
+	
+	// Términos asociados a la saturación
+	// ps_datos->d_lambda = 0.005; // Este parámetro mide la memoria de los agentes respecto de sus intereses previos. Mientras más grande, menos memoria.
 		
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
@@ -75,6 +77,7 @@ int main(int argc, char *argv[]){
 	
 	// También hay un vector para guardar la diferencia entre el paso previo y el actual, un vector con los valores de saturación,
 	ps_red->pd_Diferencia = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Vector que guarda la diferencia entre dos pasos del sistema
+	// ps_red->pd_Sat = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Lista de valores de la variable auxiliar de saturación.
 	
 	
 	// Inicializo mis cuatro "matrices".
@@ -98,6 +101,10 @@ int main(int argc, char *argv[]){
 	ps_red->pd_Diferencia[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
 	ps_red->pd_Diferencia[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
 	
+	// // Matriz de valores de la variable de saturación. Es de tamaño N*T
+	// for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_Sat[i_i] = 0; // Inicializo la matriz
+	// ps_red->pd_Sat[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
+	// ps_red->pd_Sat[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
 	
 	//################################################################################################################################
 	
@@ -110,24 +117,32 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_Opiniones[355];
-	sprintf(s_Opiniones,"../Programas Python/Homofilia_estatica/Datos/Opiniones_N=%d_beta=%.2f_cosd=%.2f_Iter=%d.file"
-		,ps_datos->i_N,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
+	sprintf(s_Opiniones,"../Programas Python/Exploracion_Logistica/Datos/Opiniones_N=%d_kappa=%.2f_alfa=%.2f_Iter=%d.file"
+		,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_alfa,i_iteracion);
 	FILE *pa_Opiniones=fopen(s_Opiniones,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_Testigos[355];
-	sprintf(s_Testigos,"../Programas Python/Homofilia_estatica/Datos/Testigos_N=%d_beta=%.2f_cosd=%.2f_Iter=%d.file"
-		,ps_datos->i_N,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
+	sprintf(s_Testigos,"../Programas Python/Exploracion_Logistica/Datos/Testigos_N=%d_kappa=%.2f_alfa=%.2f_Iter=%d.file"
+		,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_alfa,i_iteracion);
 	FILE *pa_Testigos=fopen(s_Testigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
+	
+	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
+	// char s_archivo3[355];
+	// sprintf(s_archivo3,"../Programas Python/Saturacion_1D/Sat_lenta/Saturacion_alfa=%.1f_N=%d_umbral=%.1f_Iter=%d.file"
+		// ,ps_datos->d_alfa,ps_datos->i_N,ps_datos->d_chi,i_iteracion);
+	// FILE *pa_archivo3=fopen(s_archivo3,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
+	
 	
 	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
 	char s_matriz_adyacencia[355];
-	sprintf(s_matriz_adyacencia,"MARE/Erdos-Renyi/Erdos_Renyu_N=%d_ID=%d.file"
+	sprintf(s_matriz_adyacencia,"MARE/Random_Regulars/Random-regular_N=%d_ID=%d.file"
 		,ps_datos->i_N,(int) i_iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
 	FILE *pa_matriz_adyacencia=fopen(s_matriz_adyacencia,"r");
 	
 	// Puntero a la función que define mi ecuación diferencial
-	double (*pf_Dinamica_Interaccion)(ps_Red ps_variables, ps_Param ps_parametros) = &Dinamica_opiniones;
+	// double (*pf_Din_Sat)(ps_Red var, ps_Param par) = &Din_saturacion;
+	double (*pf_Dinamica_Interaccion)(ps_Red ps_variables, ps_Param ps_parametros) = &Dinamica_interes;
 	
 	//################################################################################################################################
 	

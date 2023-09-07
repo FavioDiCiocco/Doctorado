@@ -24,8 +24,6 @@ double Dinamica_sumatoria(ps_Red ps_variable, ps_Param ps_parametro){
 	// Defino las variables locales de mi función
 	double d_opiniones_superpuestas = 0; // Es el producto de la matriz de superposición de tópicos con el vector opinión de un agente.
 	double d_resultado; // Es el valor que returnea la función
-	double d_exponente; // Exponente de la función exponencial
-	double d_denominador; // Denominador de la función logística
 	
 	// Obtengo el tamaño de columnas de mis dos matrices
 	int i_Co,i_Cs;
@@ -35,31 +33,28 @@ double Dinamica_sumatoria(ps_Red ps_variable, ps_Param ps_parametro){
 	// Calculo el producto de la matriz con el vector.
 	for(register int i_p=0; i_p<i_Cs; i_p++) d_opiniones_superpuestas += ps_variable->pd_Angulos[ps_variable->i_topico*i_Cs+i_p+2]*ps_variable->pd_Opiniones[ps_variable->i_agente2*i_Co+i_p+2];
 	
-	// Calculo el exponente de la exponencial
-	d_exponente = ps_parametro->d_alfa*d_opiniones_superpuestas - ps_parametro->d_epsilon;
-	
-	// Calculo el denominador de la logística
-	d_denominador = 1+exp(-d_exponente);
-	
 	// Ahora que tengo todo, calculo el resultado y returneo
-	d_resultado = 1/d_denominador;
+	d_resultado = tanh(d_opiniones_superpuestas);
 	return d_resultado; // La función devuelve el número que buscás, no te lo asigna en una variable.
 }
 
 // Esta es la segunda parte de la ecuación dinámica, con esto puedo realizar una iteración del sistema.
-double Dinamica_interes(ps_Red ps_variable, ps_Param ps_parametro){
+double Dinamica_opiniones(ps_Red ps_variable, ps_Param ps_parametro){
 	// Defino las variables locales de mi función.
 	double d_resultado; // d_resultado es lo que voy a returnear.
 	double d_sumatoria = 0; // d_sumatoria es el total de la sumatoria del segundo término de la ecuación diferencial.
-	int i_grado = 0;  // i_grado es el grado del agente 1
+	double d_numerador; // d_denominador es el numerador de los pesos por homofilia.
+	double d_denominador; // d_denominador es el denominador de la normalización de los pesos por homofilia.
 	
+	d_denominador = Normalizacion_homofilia(ps_variable, ps_parametro);
 	
 	// Calculo la sumatoria de la ecuación diferencial. Para esto es que existe la función Din1.
 	// Aprovecho este for y también calculo el grado del agente
 	// La sumatoria es sobre todos los agentes conectados en la red de adyacencia
 	for(ps_variable->i_agente2=0; ps_variable->i_agente2<ps_parametro->i_N; ps_variable->i_agente2++){
 		if(ps_variable->pi_Adyacencia[ps_variable->i_agente*ps_variable->pi_Adyacencia[1]+ps_variable->i_agente2+2] == 1){
-			i_grado += 1; // Sumo un uno por cada agente con el cual el agente 1 está conectado
+			
+			d_numerador = 
 			d_sumatoria += Dinamica_sumatoria(ps_variable,ps_parametro); // Sumo los valores de las funciones logísticas
 		}
 	}
@@ -72,6 +67,85 @@ double Dinamica_interes(ps_Red ps_variable, ps_Param ps_parametro){
 	return d_resultado;
 }
 
+
+// Esta función calcula el denominador que normaliza los pesos en la ecuación dinámica.
+// Estos pesos son los que determinan el valor que el agente i le da a la opinión del agente j según la homofilia.
+double Normalizacion_homofilia(ps_Red ps_variable, ps_Param ps_parametro){
+	// Defino las variables locales de mi función.
+	double d_sumatoria = 0; // d_sumatoria es lo que iré sumando de los términos del denominador y después returneo
+	double d_norma = 0; // d_norma es la distancia en el espacio de opiniones entre el agente i y el agente j
+	
+	int i_Fo,i_Co,i_Ca;
+	i_Fo = (int) ps_variable->pd_Opiniones[0]; // Número de filas en la matriz de opiniones
+	i_Co = (int) ps_variable->pd_Opiniones[1]; // Número de columnas en la matriz de opiniones
+	i_Ca = (int) ps_variable->pi_Adyacencia[1]; // Número de columnas en la matriz de adyacencia
+	
+	
+	// Armo un puntero a un vector en el cuál pondre la diferencia entre las opiniones del
+	// agente i y el agente j.
+	double *pd_Vector_Diferencia;
+	pd_Vector_Diferencia = (double*) malloc((2+i_Co)*sizeof(double));
+	*pd_Vector_Diferencia = 1;
+	*(pd_Vector_Diferencia+1) = i_Co;
+	
+	// Hago la resta entre la opinión de mi agente i y el resto de los agentes
+	
+	for(register int i_agentej; i_agentej<i_Fo; i_agentej++){
+		if(ps_variable->pi_Adyacencia[ps_variable->i_agente*i_Ca+i_agentej+2] == 1){
+			// Armo el vector que apunta del agente i al agente j en el espacio de opiniones
+			for(register int i_topic=0; i_topic<i_Co; i_j++){
+				*(pd_Vector_Diferencia+i_j+2) = ps_variable->pd_Opiniones[ps_variable->i_agente*i_Co+i_topic+2]-ps_variable->pd_Opiniones[i_agentej*i_Co+i_topic+2];
+			}
+			// Calculo la norma de este vector
+			d_norma = Norma_d(pd_Vector_Diferencia);
+			
+			// Agrego el término del agente j a la sumatoria del denominador
+			d_sumatoria += pow(d_norma+ps_parametro->d_delta,-ps_parametro->d_beta);
+		}
+	}
+	
+	return d_sumatoria;
+}
+
+
+// Esta función calcula el numerador de los pesos en la ecuación dinámica.
+// Estos pesos son los que determinan el valor que el agente i le da a la opinión del agente j según la homofilia.
+double Normalizacion_homofilia(ps_Red ps_variable, ps_Param ps_parametro){
+	// Defino las variables locales de mi función.
+	double d_sumatoria = 0; // d_sumatoria es lo que iré sumando de los términos del denominador y después returneo
+	double d_norma = 0; // d_norma es la distancia en el espacio de opiniones entre el agente i y el agente j
+	
+	int i_Fo,i_Co,i_Ca;
+	i_Fo = (int) ps_variable->pd_Opiniones[0]; // Número de filas en la matriz de opiniones
+	i_Co = (int) ps_variable->pd_Opiniones[1]; // Número de columnas en la matriz de opiniones
+	i_Ca = (int) ps_variable->pi_Adyacencia[1]; // Número de columnas en la matriz de adyacencia
+	
+	
+	// Armo un puntero a un vector en el cuál pondre la diferencia entre las opiniones del
+	// agente i y el agente j.
+	double *pd_Vector_Diferencia;
+	pd_Vector_Diferencia = (double*) malloc((2+i_Co)*sizeof(double));
+	*pd_Vector_Diferencia = 1;
+	*(pd_Vector_Diferencia+1) = i_Co;
+	
+	// Hago la resta entre la opinión de mi agente i y el resto de los agentes
+	
+	for(register int i_agentej; i_agentej<i_Fo; i_agentej++){
+		if(ps_variable->pi_Adyacencia[ps_variable->i_agente*i_Ca+i_agentej+2] == 1){
+			// Armo el vector que apunta del agente i al agente j en el espacio de opiniones
+			for(register int i_topic=0; i_topic<i_Co; i_j++){
+				*(pd_Vector_Diferencia+i_j+2) = ps_variable->pd_Opiniones[ps_variable->i_agente*i_Co+i_topic+2]-ps_variable->pd_Opiniones[i_agentej*i_Co+i_topic+2];
+			}
+			// Calculo la norma de este vector
+			d_norma = Norma_d(pd_Vector_Diferencia);
+			
+			// Agrego el término del agente j a la sumatoria del denominador
+			d_sumatoria += pow(d_norma+ps_parametro->d_delta,-ps_parametro->d_beta);
+		}
+	}
+	
+	return d_sumatoria;
+}
 
 // double Dinamica_saturacion(ps_Red ps_variable, ps_Param ps_parametro){
 	// // Defino las variables locales de mi función
