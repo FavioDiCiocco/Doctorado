@@ -836,3 +836,37 @@ Qué raro. Va a ser un tema deshacer la trama de archivos superpuestos y mezclad
 La nueva etapa se va a llamar Homofilia Estática, ya que vamos a tratar de implementar homofilia en redes
 estáticas. Después tengo que armar redes de Erdos-Renyi para mis simulaciones, así lo que hago matchea
 mejor con lo que hizo esta gente. Aprenderme sus nombres estaría bueno.
+
+------------------------------------------------------------------------------------------
+
+12/09/2023
+
+No tengas miedo. El 08/09 fue viernes, diste clases, revisaste alguna cosa y te fuiste.
+El 11/09 fue lunes y te dedicaste a la entrega del TP de la guía 1. Hoy a la mañana
+estuve preparando la clase de F2. Queda entonces hacer un poco de lo del código y mañana
+a la mañana, antes de las 11:30, voy a releer el paper de la gente esta de España.
+
+Miré más documentación de más carpetas. Está todo mal. La semana que viene arranco a organizar
+esto. Lunes y miércoles a la mañana le damos a esto de lleno. Lo importante es que ya tengo
+un código que creo que funcionaría. Mañana veré de mandar a correr el armado de las redes
+y ya después me pongo a leer el paper.
+
+------------------------------------------------------------------------------------------
+
+13/09/2023
+
+A la mañana leí el paper de la gente de España para prepararme para la reunión. Tomé algunas
+notas y me marqué unas ideas. Igual la charla fue más que anda dada entre Pablo y los muchachos.
+Quedamos en que voy a arrancar con las simulaciones y dentro de dos semanas nos juntamos.
+Lo que charlamos es más o menos lo que veníamos charlando de hacer en conjunto, el plan
+sería extender el modelo, revisar cuál es el comportamiento en el espacio de Beta-Cos(delta),
+ver si podemos proponer el delta como algo variable y que depende de las opiniones de los
+agentes.
+
+Yo ahora voy a ir a cursar. Mañana mi plan es hacer bastantes cosas de F2 y ya el viernes
+después de F2 podría ponerme a hacer cosas de la tesis. La semana que viene lunes y miércoles
+a la mañana me pongo a organizar cosas, fuerte. Martes, jueves y viernes me pongo con el
+armado del modelo y cosas. Quizás este finde también haga un poco. Por lo menos revisar
+el VPN para ver que todo funca y después mandar a correr aunque sea una prueba con N=1000.
+Revisar los grados medios de esas redes. También podría el finde ponerme a organizar las
+documentaciones, aunque creo que en la facultad tengo más info para revisar eso.
