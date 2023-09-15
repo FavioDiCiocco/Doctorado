@@ -870,3 +870,30 @@ armado del modelo y cosas. Quizás este finde también haga un poco. Por lo meno
 el VPN para ver que todo funca y después mandar a correr aunque sea una prueba con N=1000.
 Revisar los grados medios de esas redes. También podría el finde ponerme a organizar las
 documentaciones, aunque creo que en la facultad tengo más info para revisar eso.
+
+------------------------------------------------------------------------------------------
+
+15/09/2023
+
+En la mañana estuve preparando el código de Homofilia Estática. Después fui a responder consultas en F2.
+Un alumno me consultó por un ejercicio de dos cuerdas unidas, revisar de hacerlo para
+la clase que viene. O consultarlo con Gabriel o alguien. Zoe dijo que lo tenía hecho.
+
+Después de eso comi, fui al CASI, intenté integrarme a un grupo pero no funcionó. La próxima
+será. Mandé a correr el código con 10000 agentes, por lo que ví tarda 20 minutos resolver
+una simulación, así que hay que planear bien esto. Espero poder hacer funcionar todo en casa
+durante el finde. Ahora voy a subir todo a Github, ya el finde lo que tengo que hacer es:
+
+.) Borrar el código viejo en src, o por lo menos mandarlo a una nueva carpeta para después
+mirarlo e intentar descubrir lo que estuve haciendo.
+.) Armar redes de 10000 agentes y grado medio 8 en Oporto.
+.) Corregir la distribución de los datos iniciales, porque se están haciendo sólo en valores positivos
+y debería ser uniforme entre [-kappa, kappa]. Considerar si hay algo que pueda hacer para más o menos
+definir la región si Kappa es chico, pero creo que no es tanto problema eso.
+.) Preparar las carpetas para recibir los datos nuevos.
+.) Cambiar los Instanciar y Metainstanciación.
+.) Mandar a correr las simulaciones. La idea sería barrer Beta [0.5, 1.5] y CosDelta [0,1]. Aunque estaría
+bueno revisar cómo lograr armar las simulaciones que les dan a ellos. Supongo que podría armar
+esas tres simulaciones aparte.
+.) Revisar las funciones de Python para ver que los códigos que levantan y arman los gráficos funcan
+todo bien.

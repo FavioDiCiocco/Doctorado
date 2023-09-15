@@ -73,7 +73,7 @@ double Dinamica_opiniones(ps_Red ps_variable, ps_Param ps_parametro){
 double Normalizacion_homofilia(ps_Red ps_variable, ps_Param ps_parametro){
 	// Defino las variables locales de mi función.
 	double d_sumatoria = 0; // d_sumatoria es lo que iré sumando de los términos del denominador y después returneo
-	double d_norma = 0; // d_norma es la distancia en el espacio de opiniones entre el agente i y el agente j
+	double d_distancia = 0; // d_distancia es la distancia en el espacio de opiniones entre el agente i y el agente j
 	
 	int i_Fo,i_Co,i_Ca;
 	i_Fo = (int) ps_variable->pd_Opiniones[0]; // Número de filas en la matriz de opiniones
@@ -90,19 +90,21 @@ double Normalizacion_homofilia(ps_Red ps_variable, ps_Param ps_parametro){
 	
 	// Hago la resta entre la opinión de mi agente i y el resto de los agentes
 	
-	for(register int i_agentej; i_agentej<i_Fo; i_agentej++){
+	for(register int i_agentej = 0; i_agentej<i_Fo; i_agentej++){
 		if(ps_variable->pi_Adyacencia[ps_variable->i_agente*i_Ca+i_agentej+2] == 1){
 			// Armo el vector que apunta del agente i al agente j en el espacio de opiniones
-			for(register int i_topic=0; i_topic<i_Co; i_j++){
-				*(pd_Vector_Diferencia+i_j+2) = ps_variable->pd_Opiniones[ps_variable->i_agente*i_Co+i_topic+2]-ps_variable->pd_Opiniones[i_agentej*i_Co+i_topic+2];
+			for(register int i_topic=0; i_topic<i_Co; i_topic++){
+				*(pd_Vector_Diferencia+i_topic+2) = ps_variable->pd_Opiniones[ps_variable->i_agente*i_Co+i_topic+2]-ps_variable->pd_Opiniones[i_agentej*i_Co+i_topic+2];
 			}
-			// Calculo la norma de este vector
-			d_norma = Norma_d(pd_Vector_Diferencia);
+			// Calculo la distancia entre las opiniones de los agentes
+			d_distancia = sqrt(pow(*(pd_Vector_Diferencia+2),2)+pow(*(pd_Vector_Diferencia+1+2),2)+2*(*(pd_Vector_Diferencia+2))*(*(pd_Vector_Diferencia+1+2))*ps_parametro->d_Cosangulo);
 			
 			// Agrego el término del agente j a la sumatoria del denominador
-			d_sumatoria += pow(d_norma+ps_parametro->d_delta,-ps_parametro->d_beta);
+			d_sumatoria += pow(d_distancia+ps_parametro->d_delta,-ps_parametro->d_beta);
 		}
 	}
+	
+	free(pd_Vector_Diferencia);
 	
 	return d_sumatoria;
 }
@@ -113,12 +115,10 @@ double Normalizacion_homofilia(ps_Red ps_variable, ps_Param ps_parametro){
 double Numerador_homofilia(ps_Red ps_variable, ps_Param ps_parametro){
 	// Defino las variables locales de mi función.
 	double d_resultado = 0; // d_resultado es lo que returneo
-	double d_norma = 0; // d_norma es la distancia en el espacio de opiniones entre el agente i y el agente j
+	double d_distancia = 0; // d_distancia es la distancia en el espacio de opiniones entre el agente i y el agente j
 	
-	int i_Fo,i_Co,i_Ca;
-	i_Fo = (int) ps_variable->pd_Opiniones[0]; // Número de filas en la matriz de opiniones
+	int i_Co;
 	i_Co = (int) ps_variable->pd_Opiniones[1]; // Número de columnas en la matriz de opiniones
-	i_Ca = (int) ps_variable->pi_Adyacencia[1]; // Número de columnas en la matriz de adyacencia
 	
 	
 	// Armo un puntero a un vector en el cuál pondre la diferencia entre las opiniones del
@@ -129,14 +129,16 @@ double Numerador_homofilia(ps_Red ps_variable, ps_Param ps_parametro){
 	*(pd_Vector_Diferencia+1) = i_Co;
 	
 	// Armo el vector que apunta del agente i al agente 2 en el espacio de opiniones
-	for(register int i_topic=0; i_topic<i_Co; i_j++){
-		*(pd_Vector_Diferencia+i_j+2) = ps_variable->pd_Opiniones[ps_variable->i_agente*i_Co+i_topic+2]-ps_variable->pd_Opiniones[ps_variable->i_agente2*i_Co+i_topic+2];
+	for(register int i_topic=0; i_topic<i_Co; i_topic++){
+		*(pd_Vector_Diferencia+i_topic+2) = ps_variable->pd_Opiniones[ps_variable->i_agente*i_Co+i_topic+2]-ps_variable->pd_Opiniones[ps_variable->i_agente2*i_Co+i_topic+2];
 	}
-	// Calculo la norma de este vector
-	d_norma = Norma_d(pd_Vector_Diferencia);
+	// Calculo la distancia entre las opiniones de los agentes
+	d_distancia = sqrt(pow(*(pd_Vector_Diferencia+2),2)+pow(*(pd_Vector_Diferencia+1+2),2)+2*(*(pd_Vector_Diferencia+2))*(*(pd_Vector_Diferencia+1+2))*ps_parametro->d_Cosangulo);
 	
 	// Agrego el término del agente j a la sumatoria del denominador
-	d_resultado += pow(d_norma+ps_parametro->d_delta,-ps_parametro->d_beta);
+	d_resultado += pow(d_distancia+ps_parametro->d_delta,-ps_parametro->d_beta);
+	
+	free(pd_Vector_Diferencia);
 	
 	return d_resultado;
 }

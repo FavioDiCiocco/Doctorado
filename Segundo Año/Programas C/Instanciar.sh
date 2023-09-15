@@ -13,23 +13,23 @@ echo "El ID del script es $$"
 
 # Voy a Hardcodear algunos Arrays
 
-Arr_Agentes=(1000)
-Arr_Alfas=(5 5.5 6 6.5 7 7.5 8)
-Arr_Kappas=(1 1.5 2 2.5 3 3.5 4)
+Arr_Agentes=(10000)
+Arr_Beta=(0.5 1 1.5)
+Arr_CosD=(0 0.5 1)
 
 
 if [ -z $decision ]
 then
 	for N in ${Arr_Agentes[@]}
 	do
-		for iteracion in {0..20}
+		for iteracion in {0..1}
 		do
-			for Kappa in ${Arr_Kappas[@]}
+			for Beta in ${Arr_Beta[@]}
 			do
-				for Alfa in ${Arr_Alfas[@]}
+				for CosD in ${Arr_CosD[@]}
 				do
-					echo Kappa = $Kappa, Alfa = $Alfa
-					./$1.e $N $Kappa $Alfa $iteracion
+					echo Beta = $Beta, CosD = $CosD
+					./$1.e $N $Beta $CosD $iteracion
 				done
 			done
 			echo Complete $iteracion simulaciones totales

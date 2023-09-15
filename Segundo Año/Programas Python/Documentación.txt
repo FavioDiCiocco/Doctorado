@@ -18,3 +18,17 @@ Armo archivos de Opiniones y unos pocos archivos de Testigos. Estos archivos de 
 guardan datos de 100 agentes con el objetivo de armar gráficos de Interes vs Tiempo
 con las líneas grises finitas. El plan es a partir de estos datos armar gráficos de 
 Promedio de Opiniones, Tiempo de convergencia e interés vs Tiempo.
+
+
+Homofilia Estática:
+-------------------
+Este es el código que armé para estudiar el modelo que obtuvimos de la gente de España.
+La idea del modelo es trabajar sobre redes estáticas pero asignar un peso a la interacción
+de los agentes de forma tal que los agentes le den más importancia a quienes piensan como
+ellos. La función del segundo término es de nuevo la tanh. Estos pesos tienen
+la propiedad de que no son simétricos, por lo que el wij no es necesariamente igual al
+wji, y además los wij sumados en j dan 1.
+ Lo primero que estoy haciendo es generar datos de Opiniones y testigos, el clásico. Uso
+redes de ER con grado medio 8 para 10000 agentes. Los archivos de Testigos sólo los armo
+para las primeras dos iteraciones. Yo diría de realizar 50 iteraciones para empezar, cosa
+de armar las simulaciones rápido.
