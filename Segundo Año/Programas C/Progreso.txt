@@ -897,3 +897,20 @@ bueno revisar cómo lograr armar las simulaciones que les dan a ellos. Supongo q
 esas tres simulaciones aparte.
 .) Revisar las funciones de Python para ver que los códigos que levantan y arman los gráficos funcan
 todo bien.
+
+------------------------------------------------------------------------------------------
+
+17/09/2023
+
+Es domingo, son las siete de la tarde. Mandé a correr el código. Hasta donde sé, funca bien. Lo probé
+en la pc de la facultad y funcionó sin problemas. Ojalá funque bien. Aproximadamente va a tardar
+40 horas. Estoy usando los 20 hilos de Oporto, estoy corriendo el programa de forma de armar simplemente
+20 simulaciones. Mis simulaciones no tienen guardados datos de testigos más allá de las primeras dos
+o tres simulaciones, me sigue pareciendo una buena idea. Si bien son 40 horas, asumí que va a terminar
+el martes a las 19. Puedo ver de intentar mandarlo a correr de nuevo el martes a la tarde cosa de
+armar otras 20 simulaciones, total hasta el jueves tengo tiempo de armar las funciones de Python.
+
+Es importante que pruebe las funciones de Python que grafican, ver que hacen lo que quiero. Eso lo
+puedo probar el jueves en la facultad.
+
+Importante recordar, la función de crear redes armar redes de Erdos-Renyi con grado medio 10.
