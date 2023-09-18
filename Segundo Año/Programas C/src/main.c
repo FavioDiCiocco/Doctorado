@@ -55,7 +55,7 @@ int main(int argc, char *argv[]){
 	
 	// Voy a armar mi array de punteros, el cual voy a usar para guardar los datos de pasos previos del sistema
 	double* ap_OpinionesPrevias[ps_datos->i_pasosprevios];
-	
+		
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
 		ap_OpinionesPrevias[i_i] = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Malloqueo los punteros de mis pasos previos
 		// Defino su número de filas y columnas como N*T
@@ -215,6 +215,8 @@ int main(int argc, char *argv[]){
 		// Por tanto lo vuelvo a hacer trabajar hasta que se vuelva a cumplir la condición de corte.
 		// Si logra evolucionar la cantidad arbitraria de veces sin problemas, termino la evolución.
 	}
+	
+	
 	
 	//################################################################################################################################
 	

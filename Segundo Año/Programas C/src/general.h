@@ -23,6 +23,7 @@ typedef struct Red{
 
 typedef s_Red *ps_Red;
 
+
 // El struct de Parametros tiene todos los datos sobre los parámetros del modelo, valga la redundancia
 typedef struct Parametros{
 	double d_NormDif; // Este es el factor de normalización de la Variación Promedio.

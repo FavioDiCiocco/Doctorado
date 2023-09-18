@@ -52,7 +52,7 @@ int Visualizar_d(double *pd_vector){
 	
 	// Printeo mi vector
 	for(register int i_i=0; i_i<i_F; i_i++){
-		for(register int i_j=0; i_j<i_C; i_j++) printf("%lf\t",*(pd_vector+i_i*i_C+i_j+2));
+		for(register int i_j=0; i_j<i_C; i_j++) printf("%lf\t",*(pd_vector+i_i*i_C+i_j+2)); //pd_Vector[i_i*i_C+i_j+2]
 		printf("\n");
 	}
 	printf("\n");
