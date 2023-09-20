@@ -913,4 +913,24 @@ armar otras 20 simulaciones, total hasta el jueves tengo tiempo de armar las fun
 Es importante que pruebe las funciones de Python que grafican, ver que hacen lo que quiero. Eso lo
 puedo probar el jueves en la facultad.
 
-Importante recordar, la función de crear redes armar redes de Erdos-Renyi con grado medio 10.
+Importante recordar, la función de crear redes arma redes de Erdos-Renyi con grado medio 10.
+
+------------------------------------------------------------------------------------------
+
+20/09/2023
+
+El lunes 18 y el martes 19 no avancé con el código, estuve dando clases de C, cursé Caos,
+Fractales y Solitones, di clases en F2 y después tuve que buscar unos papeles. Días complicados.
+
+Vamos a ver si puedo encontrar el motivo de por qué el código funca mal en Oporto. O si puedo hallar
+una solución al tema de armar datos.
+
+Por lo que veo, el problema no parece ser que el programa no corre. El problema es que los valores
+están continuamente oscilando y mi programa no corta. ¿Y si lo hago cortar en un tiempo dado?
+Eso podría ser una solución mañana. También estoy viendo que mi cálculo de distancias es una
+cosa rara muy mal definida. Voy a usar la definición que hace Baumann del cálculo del producto
+escalar de dos vectores, aprovechando la matriz de superposición.
+
+Parece que el error estaba efectivamente en el hecho de que se calculaba mal la distancia entre
+agentes. Mañana tengo que armar ese producto de forma que sea adaptable al cambio del número de
+tópicos. Y recalcular el tiempo que tarda en armarse los datos.
