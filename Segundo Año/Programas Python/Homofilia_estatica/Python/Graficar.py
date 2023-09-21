@@ -20,10 +20,10 @@ from pathlib import Path
 t0 = time.time()
 
 T=1 # Defino el número de tópicos
-Etapa = Path("Exploracion_Logistica") # Defino el nombre de la etapa del trabajo en la que estoy
+Etapa = Path("Homofilia_estatica") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Datos"]
+Carpetas = ["1D"]
 
 for carp in Carpetas:
     
@@ -41,8 +41,9 @@ for carp in Carpetas:
     
     #-------------------------------------------------------------------------------------------------------
     
-    # Es importante partir del hecho de que mis archivos llevan por nombre: "Opiniones_N=$_kappa=$_alfa=$_Iter=$.file"
-    # También tengo otros archivos llamados "Testigos_N=$_kappa=$_alfa=$_Iter=$.file" y
+    # Es importante partir del hecho de que mis archivos llevan por nombre:
+    # "Opiniones_N=$_kappa=$_beta=$_Iter=$.file" y "Testigos_N=$_kappa=$_beta=$_Iter=$.file"
+    # En la carpeta 1D
     
     Df_archivos = pd.DataFrame({"nombre": Archivos_Datos})
     
@@ -58,22 +59,22 @@ for carp in Carpetas:
     # Por un lado necesito los nombres que pasaré a los títulos de los archivos
     
     nombre_parametro_1 = "kappa"
-    nombre_parametro_2 = "alfa"
+    nombre_parametro_2 = "beta"
     
     # Lo otro que necesito es el nombre que pasaré a los ejes de los gráficos de las funciones
     
     titulo_parametro_1 = r"\kappa"
-    titulo_parametro_2 = r"\alpha"
+    titulo_parametro_2 = r"\beta"
     
     #----------------------------------------------------------------------------------------------
     
-    func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-                                         titulo_parametro_1, titulo_parametro_2, True)
+#    func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta,
+#                                         titulo_parametro_1, titulo_parametro_2, True)
 
     #----------------------------------------------------------------------------------------------
     
-    func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
-                                         titulo_parametro_1, titulo_parametro_2, True)
+#    func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
+#                                         titulo_parametro_1, titulo_parametro_2, True)
     
     #----------------------------------------------------------------------------------------------
     

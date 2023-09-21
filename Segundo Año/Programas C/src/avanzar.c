@@ -31,7 +31,9 @@ double Dinamica_sumatoria(ps_Red ps_variable, ps_Param ps_parametro){
 	i_Cs = (int) ps_variable->pd_Angulos[1]; // Número de columnas en la matriz de superposición
 	
 	// Calculo el producto de la matriz con el vector.
-	for(register int i_p=0; i_p<i_Cs; i_p++) d_opiniones_superpuestas += ps_variable->pd_Angulos[ps_variable->i_topico*i_Cs+i_p+2]*ps_variable->pd_Opiniones[ps_variable->i_agente2*i_Co+i_p+2];
+	for(register int i_p=0; i_p<i_Cs; i_p++){
+		d_opiniones_superpuestas += ps_variable->pd_Angulos[ps_variable->i_topico*i_Cs+i_p+2]*ps_variable->pd_Opiniones[ps_variable->i_agente2*i_Co+i_p+2];
+	}
 	
 	// Ahora que tengo todo, calculo el resultado y returneo
 	d_resultado = tanh(d_opiniones_superpuestas);
@@ -73,7 +75,6 @@ double Dinamica_opiniones(ps_Red ps_variable, ps_Param ps_parametro){
 double Normalizacion_homofilia(ps_Red ps_variable, ps_Param ps_parametro){
 	// Defino las variables locales de mi función.
 	double d_sumatoria = 0; // d_sumatoria es lo que iré sumando de los términos del denominador y después returneo
-	// double d_norma_cuadrada = 0; // d_norma_cuadrada es la norma cuadrada del vector Diferencia
 	double d_distancia = 0; // d_distancia es la distancia en el espacio de opiniones entre el agente i y el agente j
 	
 	int i_Fo,i_Co,i_Ca;
@@ -97,13 +98,7 @@ double Normalizacion_homofilia(ps_Red ps_variable, ps_Param ps_parametro){
 			for(register int i_topic=0; i_topic<i_Co; i_topic++){
 				*(pd_Vector_Diferencia+i_topic+2) = ps_variable->pd_Opiniones[ps_variable->i_agente*i_Co+i_topic+2]-ps_variable->pd_Opiniones[i_agentej*i_Co+i_topic+2];
 			}
-			// Calculo la distancia entre las opiniones de los agentes
-			for(register int i_topic=0; i_topic<i_Co; i_topic++) {
-				d_norma_cuadrada += *(pd_Vector_Diferencia+i_topic+2) * (*(pd_Vector_Diferencia+i_topic+2));	
-			}
-			
-			// d_distancia = sqrt(pow(*(pd_Vector_Diferencia+2),2)+pow(*(pd_Vector_Diferencia+1+2),2)+2*(*(pd_Vector_Diferencia+2))*(*(pd_Vector_Diferencia+1+2))*ps_parametro->d_Cosangulo);
-			d_distancia = Norma_d(pd_Vector_Diferencia);
+			d_distancia = Norma_No_Ortogonal_d(pd_Vector_Diferencia, ps_variable->pd_Angulos);
 			
 			// Agrego el término del agente j a la sumatoria del denominador
 			d_sumatoria += pow(d_distancia+ps_parametro->d_delta,-ps_parametro->d_beta);
@@ -126,7 +121,6 @@ double Numerador_homofilia(ps_Red ps_variable, ps_Param ps_parametro){
 	int i_Co;
 	i_Co = (int) ps_variable->pd_Opiniones[1]; // Número de columnas en la matriz de opiniones
 	
-	
 	// Armo un puntero a un vector en el cuál pondre la diferencia entre las opiniones del
 	// agente i y el agente j.
 	double *pd_Vector_Diferencia;
@@ -139,8 +133,7 @@ double Numerador_homofilia(ps_Red ps_variable, ps_Param ps_parametro){
 		*(pd_Vector_Diferencia+i_topic+2) = ps_variable->pd_Opiniones[ps_variable->i_agente*i_Co+i_topic+2]-ps_variable->pd_Opiniones[ps_variable->i_agente2*i_Co+i_topic+2];
 	}
 	// Calculo la distancia entre las opiniones de los agentes
-	// d_distancia = sqrt(pow(*(pd_Vector_Diferencia+2),2)+pow(*(pd_Vector_Diferencia+1+2),2)+2*(*(pd_Vector_Diferencia+2))*(*(pd_Vector_Diferencia+1+2))*ps_parametro->d_Cosangulo);
-	d_distancia = Norma_d(pd_Vector_Diferencia);
+	d_distancia = Norma_No_Ortogonal_d(pd_Vector_Diferencia, ps_variable->pd_Angulos);
 	
 	// Agrego el término del agente j a la sumatoria del denominador
 	d_resultado += pow(d_distancia+ps_parametro->d_delta,-ps_parametro->d_beta);

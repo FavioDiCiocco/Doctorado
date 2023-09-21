@@ -52,6 +52,7 @@ typedef s_Param *ps_Param;
 double Random();
 double Gaussiana(float f_mu, float f_sigma);
 double Norma_d(double *pd_x);
+double Norma_No_Ortogonal_d(double *pd_Vector, double *pd_Superposicion);
 double RK4(double *pd_sistema, double (*pf_funcion)(ps_Red ps_variable, ps_Param ps_parametro) ,ps_Red ps_variable, ps_Param ps_parametro);
 double Max(double d_a, double d_b);
 double Min(double d_a, double d_b);

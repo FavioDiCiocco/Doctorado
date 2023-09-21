@@ -34,6 +34,9 @@ htop
 PARA REVISAR EL ESPACIO OCUPADO POR LOS ARCHIVOS EN LA CARPETA ACTUAL:
 du -sh
 
+PARA REVISAR EL ESPACIO LIBRE EN EL DISCO:
+df -h (Hay que mirar /dev/sda que tiene un espacio total de 3,6T a utilizar por mi)
+
 PARA MANDAR A CORRER UN PROGRAMA EN EL BACKGROUND:
 nohup COMANDO &
 

@@ -934,3 +934,54 @@ escalar de dos vectores, aprovechando la matriz de superposición.
 Parece que el error estaba efectivamente en el hecho de que se calculaba mal la distancia entre
 agentes. Mañana tengo que armar ese producto de forma que sea adaptable al cambio del número de
 tópicos. Y recalcular el tiempo que tarda en armarse los datos.
+
+------------------------------------------------------------------------------------------
+
+21/09/2023
+
+Siguiendo con la idea que me tiró Sofi, voy a mandar a correr datos en la pc de Oporto cosa de ver
+primero que mi código replique lo que ven la gente de España en los tres casos que marcaron en su
+paper. Voy a construir 40 simulaciones en los puntos con (Kappa=0.5,Beta=1), (Kappa=10,Beta=0.1) 
+y (Kappa=10,Beta=1.5). También voy a separar el código en dos carpetas, una para datos 1D y otra 
+para datos 2D. La idea es que el código 1D directamente toma la norma entre vectores como si fueran
+vectores ortogonales. Eso no es un problema porque en 1D no hay un espacio multidimensional que pueda
+ser no ortogonal. Mientras esto corre, yo me encargaré de ir armando una función que calcule la norma
+no ortogonal. Con esa función implementada, creo que no voy a necesitar separar en casos 1D y 2D.
+Aunque tener carpetas separadas será útil para diferenciar los datos.
+
+Por otro lado, debería borrar los datos viejos de Oporto para poder armar nuevos datos. Ver cuánto
+van a pesar, eso es importante.
+
+Luego de hacer eso, armaré la función que calcula la norma para vectores de dimensión N en un espacio
+no ortogonal. Esa función necesita que le pase la matriz de superposición.
+
+Ya borré los archivos en Cambios_parametros y en CI_variables. Dios quiera que no vuelva a necesitar
+esos datos en el futuro. Rearmé las carpetas, cosa de poder usar eso para construir la Documentación
+en el futuro.
+
+Armé la función que calcula la norma de un vector en un espacio no ortogonal. La probé y funciona bien.
+Ahora queda ver si con esto el sistema correctamente converge a donde tiene que ir. Lo bueno
+es que esta implementación del código es robusto ante un caso de dimensión N, por lo que no tengo
+que separar si el código trabaja un caso unidimensional o bidimensional o incluso si quisiera de más
+dimensiones.
+
+Mandé a armar una simulación de 10000 agentes que finalice si realiza 20000 pasos temporales o más.
+La idea es ver si el código corre, si finaliza o si sigue dándole eternamente. El código 1D tarda
+unos 30 minutos aprox. El 2D debería tardar 40 minutos como máximo, no crece tanto el orden de cuentas,
+se duplica con suerte.
+
+Estoy viendo de subir el archivo que grafica opiniones vs tiempo a Oporto. Estoy notando que ese archivo
+está hardcodeado porque proviene del código de Complemento_Poster, así que voy a tener que deshardcodearlo.
+
+Creo que resolví eso bien. Confío en que la forma robusta del código con el Pandas va a resolver
+correctamente el conflicto cuando intente graficar Betas y Kappas que no están asociados.
+Quiero decir, por como está hecho el código, va a querer graficar los datos de Beta=1.5 y Kappa=0.5,
+pero no simulé eso. Igual, el intento de graficar eso surge sólo si hay archivos en la lista, porque
+eso depende de un for que recorre una lista. Si la lista es vacía, no hace nada.
+
+Subí la carpeta con el nuevo src a Oporto y el viejo código lo dejé en HE_v0. Mañana lo pensaré con
+un poco más de calma y veré de borrar esa carpeta. O la puedo dejar ahí hasta el próximo miércoles.
+Eso suena mejor. También subí el código de Python, ya si todo está bien, puedo armar los gráficos
+de Opinión en función del tiempo. Qué buen código que armé, me quiero mucho.
+
+Ya armé los gráficos del caso unidimensional, se ve tal cual ve la gente de España. Éxito.

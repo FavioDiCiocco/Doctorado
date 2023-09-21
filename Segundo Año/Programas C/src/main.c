@@ -39,7 +39,7 @@ int main(int argc, char *argv[]){
 	int i_iteracion = strtol(argv[4],NULL,10); // Número de instancia de la simulación.
 	
 	// Los siguientes son los parámetros que están dados en los structs
-	ps_datos->i_T = 1;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
+	ps_datos->i_T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
 	ps_datos->i_Iteraciones_extras = 40; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	ps_datos->i_pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
 	ps_datos->d_dt = 0.01; // Paso temporal de iteración del sistema
@@ -52,6 +52,8 @@ int main(int argc, char *argv[]){
 		
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
+	int i_pasos_simulados = 0; // Esta variable me sirve para cortar si simulo demasiado tiempo.
+	int i_pasos_maximos = 20000; // Esta es la cantidad de pasos máximos a simular
 	
 	// Voy a armar mi array de punteros, el cual voy a usar para guardar los datos de pasos previos del sistema
 	double* ap_OpinionesPrevias[ps_datos->i_pasosprevios];
@@ -107,20 +109,20 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_Opiniones[355];
-	sprintf(s_Opiniones,"../Programas Python/Homofilia_estatica/Datos/Opiniones_N=%d_beta=%.2f_cosd=%.2f_Iter=%d.file"
-		,ps_datos->i_N,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
+	sprintf(s_Opiniones,"../Programas Python/Homofilia_estatica/%dD/Opiniones_N=%d_beta=%.2f_cosd=%.2f_Iter=%d.file"
+		,ps_datos->i_T,ps_datos->i_N,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
 	FILE *pa_Opiniones=fopen(s_Opiniones,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_Testigos[355];
-	sprintf(s_Testigos,"../Programas Python/Homofilia_estatica/Datos/Testigos_N=%d_beta=%.2f_cosd=%.2f_Iter=%d.file"
-		,ps_datos->i_N,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
+	sprintf(s_Testigos,"../Programas Python/Homofilia_estatica/%dD/Testigos_N=%d_beta=%.2f_cosd=%.2f_Iter=%d.file"
+		,ps_datos->i_T,ps_datos->i_N,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
 	FILE *pa_Testigos=fopen(s_Testigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
 	char s_matriz_adyacencia[355];
 	sprintf(s_matriz_adyacencia,"MARE/Erdos-Renyi/ErdosRenyi_N=%d_ID=%d.file"
-		,ps_datos->i_N,(int) i_iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
+		,ps_datos->i_N,(int) i_iteracion%30); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
 	FILE *pa_matriz_adyacencia=fopen(s_matriz_adyacencia,"r");
 	
 	// Puntero a la función que define mi ecuación diferencial
@@ -136,6 +138,7 @@ int main(int argc, char *argv[]){
 	Lectura_Adyacencia(ps_red->pi_Adyacencia, pa_matriz_adyacencia); // Leo el archivo de la red estática y lo traslado a la matriz de adyacencia
 	fclose(pa_matriz_adyacencia); // Aprovecho y cierro el puntero al archivo de la matriz de adyacencia
 	
+	printf("Armé las matrices y las inicialicé\n");
 	
 	//################################################################################################################################
 
@@ -146,6 +149,8 @@ int main(int argc, char *argv[]){
 	Escribir_d(ps_red->pd_Opiniones,pa_Opiniones);
 	
 	if(i_iteracion < 2) fprintf(pa_Testigos,"Opiniones Testigos\n");
+	
+	printf("Guardé las condiciones iniciales \n");
 	
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
@@ -159,6 +164,8 @@ int main(int argc, char *argv[]){
 		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) *(ap_OpinionesPrevias[i_i]+i_j+2) = ps_red->pd_Opiniones[i_j+2];
 	}
 	
+	printf("Termalicé el sistema \n");
+	
 	//################################################################################################################################
 	
 	// Realizo la simulación del modelo hasta que este alcance un estado estable
@@ -168,9 +175,11 @@ int main(int argc, char *argv[]){
 	
 	int i_IndiceOpiPasado = 0; 
 	
-	while(i_contador < ps_datos->i_Iteraciones_extras){
+	while(i_contador < ps_datos->i_Iteraciones_extras && i_pasos_simulados < i_pasos_maximos){
 		
 		i_contador = 0; // Inicializo el contador
+		
+		printf("Estoy simulando por encima del criterio de corte \n");
 		
 		// Evoluciono el sistema hasta que se cumpla el criterio de corte
 		do{
@@ -188,12 +197,15 @@ int main(int argc, char *argv[]){
 			}
 			// Actualización de índices
 			i_IndiceOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
+			i_pasos_simulados++; // Avanzo el contador de la cantidad de pasos simulados
 		}
-		while( ps_red->d_Variacion_promedio > ps_datos->d_CritCorte);
+		while( ps_red->d_Variacion_promedio > ps_datos->d_CritCorte && i_pasos_simulados < i_pasos_maximos);
 		
 		// Ahora evoluciono el sistema una cantidad i_Itextra de veces. Le pongo como condición que si el sistema deja de cumplir la condición de corte, deje de evolucionar
 		
-		while(i_contador < ps_datos->i_Iteraciones_extras && ps_red->d_Variacion_promedio <= ps_datos->d_CritCorte ){
+		printf("Estoy simulando por debajo del criterio de corte \n");
+		
+		while(i_contador < ps_datos->i_Iteraciones_extras && ps_red->d_Variacion_promedio <= ps_datos->d_CritCorte && i_pasos_simulados < i_pasos_maximos){
 			// Evolución
 			RK4(ps_red->pd_Opiniones, pf_Dinamica_Interaccion, ps_red, ps_datos); // Itero los intereses
 			// Cálculos derivados
@@ -206,9 +218,11 @@ int main(int argc, char *argv[]){
 				for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de opinión de mis agentes testigo
 				fprintf(pa_Testigos,"\n");
 			}
+			
 			// Actualización de índices
 			i_IndiceOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
-			i_contador +=1; // Avanzo el contador para que el sistema haga una cantidad $i_Itextra de iteraciones extras
+			i_contador++; // Avanzo el contador para que el sistema haga una cantidad $i_Itextra de iteraciones extras
+			i_pasos_simulados++; // Avanzo el contador de la cantidad de pasos simulados
 		}
 		
 		// Si el sistema evolucionó menos veces que la cantidad arbitraria, es porque rompió la condiciones de corte.
@@ -216,7 +230,7 @@ int main(int argc, char *argv[]){
 		// Si logra evolucionar la cantidad arbitraria de veces sin problemas, termino la evolución.
 	}
 	
-	
+	printf("Terminé de simular, guardo todo \n");
 	
 	//################################################################################################################################
 	
@@ -231,6 +245,7 @@ int main(int argc, char *argv[]){
 	fprintf(pa_Opiniones,"Semilla\n");
 	fprintf(pa_Opiniones,"%ld\n",semilla);
 	
+	printf("Ya guardé todo \n");
 	
 	// Libero los espacios dedicados a mis vectores y cierro mis archivos
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++) free(ap_OpinionesPrevias[i_i]);

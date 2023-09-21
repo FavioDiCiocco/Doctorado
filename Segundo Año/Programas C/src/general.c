@@ -40,6 +40,43 @@ double Norma_d(double *pd_x){
 	return d_norm;
 }
 
+// Esta función me calcula la norma de un vector
+double Norma_No_Ortogonal_d(double *pd_Vector, double *pd_Superposicion){
+	// Defino mis variables iniciales que son el resultado final, la suma de los cuadrados y el tamao de mi vector
+	double d_norma = 0; // d_norma es la norma cuadrada del vector x
+	double d_sumatoria = 0; // d_sumatoria es lo que iré sumando de los términos del denominador y después returneo
+	
+	int i_Cs,i_Fs; // Estas son el número de filas y de columnas de la matriz de superposición
+	i_Fs = *pd_Superposicion;
+	i_Cs = *(pd_Superposicion+1);
+	
+	// Yo voy a querer hacer el producto escalar en mi espacio no ortogonal. Para eso
+	// uso mi matriz de Superposición, que contiene el ángulo entre todos los ejes
+	// de mi espacio no ortogonal. Tengo que hacer el producto Vector*matriz*Vector.
+	
+	// Defino un puntero que guarde los valores del producto intermedio matriz*Vector.
+	
+	double *pd_Intermedios;
+	pd_Intermedios = (double*) malloc((2+i_Fs)*sizeof(double));
+	*pd_Intermedios = i_Fs;
+	*(pd_Intermedios+1) = 1;
+	for(register int i_i=0; i_i<i_Fs; i_i++) *(pd_Intermedios+i_i+2) = 0; // Inicializo el puntero
+	
+	// Armo el producto de matriz*Vector
+	for(register int i_fila=0; i_fila<i_Fs; i_fila++){
+		d_sumatoria = 0; // La seteo a 0 para volver a iniciar la sumatoria
+		
+		for(register int i_columna=0; i_columna<i_Cs; i_columna++) d_sumatoria += *(pd_Superposicion+i_fila*i_Cs+i_columna+2) * (*(pd_Vector+i_columna+2));
+		*(pd_Intermedios+i_fila+2) = d_sumatoria;
+	}
+	
+	// Armo el producto Vector*Intermedios
+	d_sumatoria = 0;
+	for(register int i_topico=0; i_topico<i_Fs; i_topico++) d_sumatoria += *(pd_Vector+i_topico+2) * (*(pd_Intermedios+i_topico+2));
+	d_norma = sqrt(d_sumatoria);
+	return d_norma;
+}
+
 
 //Funciones de Visualización
 //---------------------------------------------------------------------------------------------------------------------------------------
