@@ -32,3 +32,11 @@ wji, y además los wij sumados en j dan 1.
 redes de ER con grado medio 8 para 10000 agentes. Los archivos de Testigos sólo los armo
 para las primeras dos iteraciones. Yo diría de realizar 50 iteraciones para empezar, cosa
 de armar las simulaciones rápido.
+ Deshice la carpeta de Datos y armé dos nuevas carpetas, 1D y 2D. En un principio tenían un
+código "distinto", cuya única diferencia es que el 1D no hacía un esfuerzo real por calcular
+la distancia entre las opiniones de los agentes, porque como es 1D no hay espacio no ortogonal
+del cuál preocuparse. Actualmente eso está solucionado porque el código hace el producto escalar
+para calcular la distancia usando la matriz de Superposición, por lo que está definido tanto
+para 1D como para cualquier N dimensiones. Lo único extra a considerar es que según el número
+de dimensiones, los datos se guardan en una carpeta distinta. Entonces si quisiera armar datos
+5D, tendría que tener la carpeta 5D construída.
