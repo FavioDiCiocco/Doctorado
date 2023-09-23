@@ -24,3 +24,12 @@ caer todos los puntos en lugares suficientemente cercanos.
 en el barrido: Cosdelta, Kappa y Epsilon. La idea es que justamente quiero barrer todo junto
 en una sola tirada de datos. El Cosdelta varía entre [0;1], el Kappa entre [0,5;2] y el Epsilon
 entre [1,5;3,5]. El alfa sigue siendo 4.
+
+.) Exploración_logística:
+-------------------------
+
+
+.)Homofilia_estatica:
+---------------------
+
+

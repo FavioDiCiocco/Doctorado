@@ -985,3 +985,42 @@ Eso suena mejor. También subí el código de Python, ya si todo está bien, pue
 de Opinión en función del tiempo. Qué buen código que armé, me quiero mucho.
 
 Ya armé los gráficos del caso unidimensional, se ve tal cual ve la gente de España. Éxito.
+
+------------------------------------------------------------------------------------------
+
+22/09/2023
+
+En la mañana mandé a correr una simulación del caso multidimensional. Aproveché para corregir 
+el tema de que inicializar sólo creaba opiniones positivas. Eso estaba mal en el código del
+modelo multidimensional, pero no en el código unidimensional. Por eso se ven bien los datos
+armados. Y corregí el detalle de que no estaba liberando el puntero de Intermedios.
+
+Pasé todos los archivos necesarios para poder correr en Algarve cosas, así que ahora tengo
+40 hilos para hacer funcionar todo. Vamos a ver qué tal. Queremos tener unas simulaciones
+armadas y revisar el comportamiento del sistema. Ponele que cada simulación tarda 20 minutos
+para 1000 agentes en 2D. 
+
+Primero que nada, Pablo me dijo que mande cinco simulaciones para K menor a 1. Hagamos eso
+directamente con el Metainstanciación, usemos 10 hilos para armar 10 simulaciones y fue.
+Esto lo voy a mandar a OPORTO. Lo que mandé es a armar 10 simulaciones para N=1000, 
+Beta[0.5, 1, 1.5], Cdelta = 0 y Kappa = 0.1. Armo unas cosas más, me voy a casa y después
+desde casa mando en Oporto también a correr. Visto que esto corrió en un pedo, puedo mandar
+a correr otras cosas más ya.
+ La segunda tanda de simulaciones, de las "cinco" que me dijo Pablo, tienen Kappa = 3 y
+Cdelta = [0, 0.25, 0.5, 0.75, 1].
+
+Tengo que cambiar los nombres de los archivos, porque los estoy guardando con Beta y Delta,
+pero si también barro en Kappa, entonces esto va a estar mal siempre, se van a ir reescribiendo
+los datos.
+
+Mientras mandaré a correr datos en ALGARVE. Voy a fijar Kappa a 3, barrer beta entre 0 y 2
+y Cos(delta) entre 0 y 1. Si Beta va de a 0.2, entonces son 11 valores, mientras que si
+Cos(delta) va de a 0,2 son 6 valores. A 10 minutos cada simulación, eso son 660 minutos
+una tanda de esto. Eso multiplicado por 10 simulaciones me da 6600 minutos, o lo que es
+lo mismo, 110 horas. Esas 110 horas repartidas en 15 hilos son 7.3333 horas. Hagamos 30
+simulaciones y me da 22 horas. Todo bien.
+ Repito para que quede claro, en ALGARVE están los datos con los que voy a armar el diagrama
+de fases. En OPORTO están los datos para hacer una exploración rápida.
+
+Finalmente, mandé a correr datos en Oporto y Algarve. Me faltan en Oporto la tanda de simulaciones
+con K mayor a 1.
