@@ -1024,3 +1024,37 @@ de fases. En OPORTO están los datos para hacer una exploración rápida.
 
 Finalmente, mandé a correr datos en Oporto y Algarve. Me faltan en Oporto la tanda de simulaciones
 con K mayor a 1.
+
+------------------------------------------------------------------------------------------
+
+23/09/2023
+
+Hoy en la tarde revisé los datos. Por un lado, se terminaron las simulaciones de K chico en
+Oporto, así que mandé a armar las simulaciones en K grande. Esas deberían estar terminadas
+para mañana. Con eso voy a poder armar unos gráficos de opiniones en el espacio de fases.
+Ahí voy a ver rápidamente el comportamiento del sistema en esas regiones.
+
+Por otro lado, en Algarve se terminaron las simulaciones para armar el espacio de fases barriendo
+Beta [0,2] de a 0.2 y Cosdelta [0,1] de a 0.2. Como terminaron todas las simulaciones,
+aproveché para mandar a correr una nueva tanda de simulaciones que completen los valores
+de Cosdelta intermedioes en la región [0,1] que no se completaron antes. Eso tardó un día.
+Se me ocurre mandar a correr datos para completar los otros datos que faltaron del Beta entre
+0 y 2, pero ya veré mañana para eso.
+
+------------------------------------------------------------------------------------------
+
+24/09/2023
+
+Los datos que mandé se terminaron, tanto los de Algarve como los de Oporto.
+En Algarve quiero mandar a correr datos, pero también quiero ver si lo que ya tengo
+produjo resultados. Voy a hacer una carpeta de copia, "2D_copia", en la que tenga los
+datos que armé hasta ahora. Mientras el programa se pone a armar datos y los guarda
+en la carpeta de 2D, yo trabajaré con lo que está en 2D_copia. En Oporto en cambio
+creo que no tengo que simular nada más, así que queda revisar los datos. Con los
+datos de Oporto me voy a poner a armar gráficos. Con los de Algarve armaré los mapas
+de colores del espacio de fases.
+
+Ahí miré mi código de Python, no es robusto ante la existencia de varios N que graficar.
+Siempre lo armé pensando en un sólo valor de N. Tengo que considerar cómo implementar la
+posibilidad de que mi conjunto de datos tenga varios N y grafique según el N. Eso queda
+como tarea para después.
