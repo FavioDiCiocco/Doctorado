@@ -325,35 +325,36 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2,
 
 def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,
                                     titulo_parametro_1="parametro 1" ,titulo_parametro_2="parametro 2",
+                                    nombre_parametro_3="parametro 3", titulo_parametro_3="titulo 3",
                                     Condicion_curvas_kappa=False):
     
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Opiniones"
     
-    # Defino los arrays de parámetros diferentes
-    
+  # Defino la cantidad de agentes de la red
     AGENTES = int(np.unique(DF["n"]))
-    COSDELTA = float(np.unique(DF["cosdelta"]))
     
-    Array_parametro_1 = np.unique(DF["parametro_1"])
+    # Defino los arrays de parámetros diferentes    
+    PARAMETRO_1 = int(np.unique(DF["parametro_1"]))
     Array_parametro_2 = np.unique(DF["parametro_2"])
+    Array_parametro_3 = np.unique(DF["parametro_3"])
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
     
-    Tupla_total = [(i,parametro_1,j,parametro_2) for i,parametro_1 in enumerate(Array_parametro_1)
-                   for j,parametro_2 in enumerate(Array_parametro_2)]
+    Tupla_total = [(i,parametro_2,j,parametro_3) for i,parametro_2 in enumerate(Array_parametro_2)
+                   for j,parametro_3 in enumerate(Array_parametro_3)]
     
     #--------------------------------------------------------------------------------
     
     # Construyo las grillas que voy a necesitar para el pcolormesh.
     
-    XX,YY = np.meshgrid(Array_parametro_2,np.flip(Array_parametro_1))
+    XX,YY = np.meshgrid(Array_parametro_3,np.flip(Array_parametro_2))
     ZZ = np.zeros(XX.shape)
     
     #--------------------------------------------------------------------------------
     
     # Itero en los valores de mis parámetros alfa y umbral.
-    for fila,PARAMETRO_1,columna,PARAMETRO_2 in Tupla_total:
+    for fila,PARAMETRO_2,columna,PARAMETRO_3 in Tupla_total:
         
         # Me defino el array en el cual acumulo los datos de las opiniones finales de todas mis simulaciones
         Opifinales = np.array([])
@@ -362,7 +363,8 @@ def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,
         archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                     (DF["n"]==AGENTES) & 
                                     (DF["parametro_1"]==PARAMETRO_1) & 
-                                    (DF["parametro_2"]==PARAMETRO_2), "nombre"])        
+                                    (DF["parametro_2"]==PARAMETRO_2) &
+                                    (DF["parametro_3"]==PARAMETRO_3), "nombre"])        
 
         #------------------------------------------------------------------------------------------
         
@@ -372,7 +374,6 @@ def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,
             # Opinión Inicial del sistema
             # Variación Promedio
             # Opinión Final
-            # Matriz de Adyacencia
             # Semilla
             
             # Levanto los datos del archivo
@@ -384,12 +385,12 @@ def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,
         #------------------------------------------------------------------------------------------
         # Con las opiniones finales de todas las simulaciones lo que hago es calcular la varianza
         # de la distribución de opiniones.
-        ZZ[Array_parametro_1.shape[0]-1-fila,columna] = np.var(Opifinales)
+        ZZ[Array_parametro_2.shape[0]-1-fila,columna] = np.var(Opifinales)
         
     #--------------------------------------------------------------------------------
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/Varianza Opiniones_Cosdelta={:.1f}.png".format(carpeta,COSDELTA))
+    direccion_guardado = Path("../../../Imagenes/{}/Varianza Opiniones_{}={}.png".format(carpeta,titulo_parametro_3,PARAMETRO_1))
     
     plt.rcParams.update({'font.size': 24})
     plt.figure("Varianza Opiniones",figsize=(20,15))
@@ -402,6 +403,7 @@ def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,
     plt.colorbar()
     plt.title("Varianza de opiniones en Espacio de Parametros")
     
+    """
     # Hago el plotteo de las curvas de Kapppa
     
     if Condicion_curvas_kappa:
@@ -430,6 +432,7 @@ def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,
         plt.plot(Epsilons[Kappa_max < max(Array_parametro_1)],
                  Kappa_max[Kappa_max < max(Array_parametro_1)],
                  "--r",linewidth=8)
+    """
     
     # Guardo la figura y la cierro
     
@@ -442,32 +445,35 @@ def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,
 # Esta función es la que arma los gráficos de los mapas de colores en el espacio de
 # parámetros de alfa y umbral usando la entropía como métrica.
 
-def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,titulo_parametro_1="parametro 1",titulo_parametro_2="parametro 2"):
+def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,
+                                    titulo_parametro_1="parametro 1",titulo_parametro_2="parametro 2",
+                                    titulo_parametro_3="titulo 3",nombre_parametro_3="parametro 3"):
     
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Opiniones"
     
-    # Defino los arrays de parámetros diferentes
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF["n"]))
     
-    Ns = np.unique(DF["n"])
-    Array_parametro_1 = np.unique(DF["parametro_1"])
-    Array_parametro_2 = np.unique(DF["paramtero_2"])
+    # Defino los arrays de parámetros diferentes    
+    PARAMETRO_1 = int(np.unique(DF["parametro_1"]))
+    Array_parametro_2 = np.unique(DF["parametro_2"])
+    Array_parametro_3 = np.unique(DF["parametro_3"])
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
     
-    Tupla_total = [(n,i,parametro_1,j,parametro_2) for n in Ns
-                   for i,parametro_1 in enumerate(Array_parametro_1)
-                   for j,parametro_2 in enumerate(Array_parametro_2)]
+    Tupla_total = [(i,parametro_2,j,parametro_3) for i,parametro_2 in enumerate(Array_parametro_2)
+                   for j,parametro_3 in enumerate(Array_parametro_3)]
     
     #--------------------------------------------------------------------------------
     
     # Construyo las grillas que voy a necesitar para el pcolormesh.
     
-    XX,YY = np.meshgrid(Array_parametro_2,np.flip(Array_parametro_1))
+    XX,YY = np.meshgrid(Array_parametro_3,np.flip(Array_parametro_2))
     ZZ = np.zeros(XX.shape)
     
     #--------------------------------------------------------------------------------
-    for AGENTES,fila,PARAMETRO_1,columna,PARAMETRO_2 in Tupla_total:
+    for fila,PARAMETRO_2,columna,PARAMETRO_3 in Tupla_total:
         
         # Me defino el array en el cual acumulo los datos de las opiniones finales de todas
         # mis simulaciones
@@ -477,7 +483,8 @@ def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,titulo_parametro_1="parametr
         archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                     (DF["n"]==AGENTES) & 
                                     (DF["parametro_1"]==PARAMETRO_1) & 
-                                    (DF["parametro_2"]==PARAMETRO_2), "nombre"])        
+                                    (DF["parametro_2"]==PARAMETRO_2) &
+                                    (DF["parametro_3"]==PARAMETRO_3), "nombre"])        
 
         #------------------------------------------------------------------------------------------
         
@@ -487,7 +494,6 @@ def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,titulo_parametro_1="parametr
             # Opinión Inicial del sistema
             # Variación Promedio
             # Opinión Final
-            # Matriz de Adyacencia
             # Semilla
             
             # Levanto los datos del archivo
@@ -502,12 +508,12 @@ def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,titulo_parametro_1="parametr
         # finales de los agentes están dispersas en dos puntos grandes, o no. Además, esto sería
         # sensible a cómo es esa distribución.
         
-        ZZ[Array_parametro_1.shape[0]-1-fila,columna] = Entropia(Opifinales)
+        ZZ[Array_parametro_2.shape[0]-1-fila,columna] = Entropia(Opifinales)
     
     #--------------------------------------------------------------------------------
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/Entropia Opiniones EP.png".format(carpeta))
+    direccion_guardado = Path("../../../Imagenes/{}/Entropia Opiniones EP_{}={}.png".format(carpeta,titulo_parametro_3,PARAMETRO_1))
     
     plt.rcParams.update({'font.size': 24})
     plt.figure("Entropia Opiniones",figsize=(20,15))
@@ -638,32 +644,34 @@ def Grafico_histograma(DF,path,carpeta,nombre_parametro_1="parametro_1",titulo_p
 
 def Mapa_Colores_Promedio_opiniones(DF,path,carpeta,
                                     titulo_parametro_1="parametro 1" ,titulo_parametro_2="parametro 2",
+                                    titulo_parametro_3="titulo 3",nombre_parametro_3="parametro 3",
                                     Condicion_curvas_kappa=False):
     
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Opiniones"
     
-    # Defino los arrays de parámetros diferentes
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF["n"]))
     
-    Ns = np.unique(DF["n"])
-    Array_parametro_1 = np.unique(DF["parametro_1"])[np.unique(DF["parametro_1"]) <= 2]
+    # Defino los arrays de parámetros diferentes    
+    PARAMETRO_1 = int(np.unique(DF["parametro_1"]))
     Array_parametro_2 = np.unique(DF["parametro_2"])
+    Array_parametro_3 = np.unique(DF["parametro_3"])
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
     
-    Tupla_total = [(n,i,parametro_1,j,parametro_2) for n in Ns
-                   for i,parametro_1 in enumerate(Array_parametro_1)
-                   for j,parametro_2 in enumerate(Array_parametro_2)]
+    Tupla_total = [(j,parametro_2,k,parametro_3) for j,parametro_2 in enumerate(Array_parametro_2)
+                   for k,parametro_3 in enumerate(Array_parametro_3)]
     
     #--------------------------------------------------------------------------------
     
     # Construyo las grillas que voy a necesitar para el pcolormesh.
     
-    XX,YY = np.meshgrid(Array_parametro_2,np.flip(Array_parametro_1))
+    XX,YY = np.meshgrid(Array_parametro_3,np.flip(Array_parametro_2))
     ZZ = np.zeros(XX.shape)
     
     #--------------------------------------------------------------------------------
-    for AGENTES,fila,PARAMETRO_1,columna,PARAMETRO_2 in Tupla_total:
+    for fila,PARAMETRO_2,columna,PARAMETRO_3 in Tupla_total:
         
         # Me defino el array en el cual acumulo los datos de las opiniones finales de todas
         # mis simulaciones
@@ -673,7 +681,8 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta,
         archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                     (DF["n"]==AGENTES) & 
                                     (DF["parametro_1"]==PARAMETRO_1) & 
-                                    (DF["parametro_2"]==PARAMETRO_2), "nombre"])        
+                                    (DF["parametro_2"]==PARAMETRO_2) &
+                                    (DF["parametro_3"]==PARAMETRO_3), "nombre"])        
 
         #------------------------------------------------------------------------------------------
         
@@ -683,7 +692,6 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta,
             # Opinión Inicial del sistema
             # Variación Promedio
             # Opinión Final
-            # Matriz de Adyacencia
             # Semilla
             
             # Levanto los datos del archivo
@@ -697,12 +705,12 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta,
         # las opiniones. No hago distinción de tópicos porque considero que los agentes tenderán
         # a los mismos valores en todos sus tópicos.
         
-        ZZ[Array_parametro_1.shape[0]-1-fila,columna] = np.mean(Opifinales)
+        ZZ[Array_parametro_2.shape[0]-1-fila,columna] = np.mean(Opifinales)
     
     #--------------------------------------------------------------------------------
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/Promedio Opiniones EP.png".format(carpeta))
+    direccion_guardado = Path("../../../Imagenes/{}/Promedio Opiniones EP_{}={}.png".format(carpeta,nombre_parametro_3,PARAMETRO_1))
     
     plt.rcParams.update({'font.size': 24})
     plt.figure("Promedio Opiniones",figsize=(20,15))
@@ -713,10 +721,10 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta,
     
     plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "cividis")
     plt.colorbar()
-    plt.title(r"Promedio de opiniones finales con $\epsilon$ = 4")
+    plt.title(r"Promedio de opiniones finales {}={}".format(titulo_parametro_3,PARAMETRO_1))
     
     # Hago el plotteo de las curvas de Kapppa
-    
+    """
     if Condicion_curvas_kappa:
         
         Alfas = np.linspace(Array_parametro_2[0],Array_parametro_2[-1],50)
@@ -743,7 +751,7 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta,
         plt.plot(Alfas[Kappa_max < max(Array_parametro_1)],
                  Kappa_max[Kappa_max < max(Array_parametro_1)],
                  "--r",linewidth=8)
-    
+    """
     # Guardo la figura y la cierro
     
     plt.savefig(direccion_guardado , bbox_inches = "tight")
@@ -1118,6 +1126,7 @@ def Raices_Ecuacion_Dinamica(Kappa,Alfa,Cdelta,Epsilon):
 
 def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
                                     titulo_parametro_1="parametro 1" ,titulo_parametro_2="parametro 2",
+                                    nombre_parametro_3="parametro_3",
                                     Condicion_curvas_kappa=False):
     
     # Defino el tipo de archivo del cuál tomaré los datos
@@ -1126,31 +1135,38 @@ def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
     # Defino los arrays de parámetros diferentes
     AGENTES = int(np.unique(DF["n"]))
     
-    Array_parametro_1 = np.unique(DF["parametro_1"])[np.unique(DF["parametro_1"]) <= 2]
+    # El parámetro 1 es el Kappa, el cuál en principio no planeo variar.
+    
+    PARAMETRO_1 = int(np.unique(DF["parametro_1"]))
     Array_parametro_2 = np.unique(DF["parametro_2"])
+    Array_parametro_3 = np.unique(DF["parametro_3"])
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
     
-    Tupla_total = [(i,parametro_1,j,parametro_2) for i,parametro_1 in enumerate(Array_parametro_1)
-                   for j,parametro_2 in enumerate(Array_parametro_2)]
+    Tupla_total = [(j,parametro_2,k,parametro_3) for j,parametro_2 in enumerate(Array_parametro_2)
+                   for k,parametro_3 in enumerate(Array_parametro_3)]
     
     #--------------------------------------------------------------------------------
     
     # Construyo las grillas que voy a necesitar para el pcolormesh.
     
-    XX,YY = np.meshgrid(Array_parametro_2,np.flip(Array_parametro_1))
+    XX,YY = np.meshgrid(Array_parametro_3,np.flip(Array_parametro_2))
     ZZ = np.zeros(XX.shape)
     
     #--------------------------------------------------------------------------------
     
-    # Itero en los valores de mis parámetros alfa y umbral.
-    for fila,PARAMETRO_1,columna,PARAMETRO_2 in Tupla_total:
+    # Itero en los valores de mis parámetros Kappa, Beta y Cdelta.
+    # Estoy muy fuertemente asumiendo que Parametro1 no varía. 
+    # Tengo que revisar cómo es eso. Quizás desligar el for del Parámetro 1
+    
+    for fila,PARAMETRO_2,columna,PARAMETRO_3 in Tupla_total:
         
         # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
         archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                     (DF["n"]==AGENTES) & 
                                     (DF["parametro_1"]==PARAMETRO_1) & 
-                                    (DF["parametro_2"]==PARAMETRO_2), "nombre"])        
+                                    (DF["parametro_2"]==PARAMETRO_2) &
+                                    (DF["parametro_3"]==PARAMETRO_3), "nombre"])        
         
         # Me defino el array en el cual acumulo los datos de las opiniones finales de todas mis simulaciones
         Tiempos = np.zeros(len(archivos))
@@ -1163,7 +1179,6 @@ def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
             # Opinión Inicial del sistema
             # Variación Promedio
             # Opinión Final
-            # Matriz de Adyacencia
             # Semilla
             
             # Levanto los datos del archivo
@@ -1173,14 +1188,13 @@ def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
             Tiempos[indice] = len(Datos[3])
         
         #------------------------------------------------------------------------------------------
-        # Con las opiniones finales de todas las simulaciones lo que hago es calcular la varianza
-        # de la distribución de opiniones.
-        ZZ[Array_parametro_1.shape[0]-1-fila,columna] = np.log(np.mean(Tiempos))
+        # Con los tiempos de las simulaciones calculo el promedio de los tiempos de convergencia
+        ZZ[Array_parametro_2.shape[0]-1-fila,columna] = np.log(np.mean(Tiempos))
         
     #--------------------------------------------------------------------------------
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/Tiempo_Convergencia.png".format(carpeta))
+    direccion_guardado = Path("../../../Imagenes/{}/Tiempo_Convergencia_{}={}.png".format(carpeta,nombre_parametro_3,PARAMETRO_1))
     
     plt.rcParams.update({'font.size': 24})
     plt.figure("Tiempo_Convergencia",figsize=(20,15))
@@ -1193,6 +1207,7 @@ def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
     plt.colorbar()
     plt.title("Tiempo de Convergencia en Espacio de Parametros")
     
+    """
     # Hago el plotteo de las curvas de Kapppa
     
     if Condicion_curvas_kappa:
@@ -1221,7 +1236,7 @@ def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
         plt.plot(Alfas[Kappa_max < max(Array_parametro_1)],
                  Kappa_max[Kappa_max < max(Array_parametro_1)],
                  "--r",linewidth=8)
-    
+    """
     # Guardo la figura y la cierro
     
     plt.savefig(direccion_guardado , bbox_inches = "tight")
@@ -1311,6 +1326,88 @@ def Graf_Derivada_vs_tiempo(DF,path,carpeta,T=2,
             plt.savefig(direccion_guardado ,bbox_inches = "tight")
             plt.close("Topico")
 
+
+#-----------------------------------------------------------------------------------------------
+
+# Esta función me construye el gráfico trayectorias en el espacio de fases
+
+def Graf_trayectorias_opiniones(DF,path,carpeta,
+                       nombre_parametro_1="parametro1",nombre_parametro_2="parametro2", nombre_parametro_3="parametro3"):
+    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
+    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
+    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
+    
+    # Como graficar en todas las combinaciones de parámetros implica muchos gráficos, voy a 
+    # simplemente elegir tres valores de cada array, el primero, el del medio y el último.
+    
+    Ns = np.unique(DF["n"])
+    
+    # Armo los arrays de mis parámetros y después armo la Tupla_Total
+    
+    Array_parametro_1 = np.unique(DF["parametro_1"])
+    Array_parametro_2 = np.unique(DF["parametro_2"])
+    Array_parametro_3 = np.unique(DF["parametro_3"])
+
+    
+    Tupla_total = [(n,parametro_1,parametro_2,parametro_3) for n in Ns
+                   for parametro_1 in Array_parametro_1
+                   for parametro_2 in Array_parametro_2
+                   for parametro_3 in Array_parametro_3]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Testigos"
+    
+    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
+    # Gráfico de Opi vs T y en tres no se vería mejor.
+    T=2
+    
+    for AGENTES,PARAMETRO_1,PARAMETRO_2,PARAMETRO_3 in Tupla_total:
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                    (DF["n"]==AGENTES) & 
+                                    (DF["parametro_1"]==PARAMETRO_1) & 
+                                    (DF["parametro_2"]==PARAMETRO_2) &
+                                    (DF["parametro_3"]==PARAMETRO_3), "nombre"])
+
+        #-----------------------------------------------------------------------------------------
+        
+        for nombre in archivos:
+            
+            # De los archivos de Testigos levanto las opiniones de todos los agentes a lo largo de todo el proceso.
+            # Estos archivos tienen las opiniones de dos agentes.
+            
+            Datos = ldata(path / nombre)
+            
+            Testigos = np.zeros((len(Datos)-2,len(Datos[1])-1)) # Inicializo mi array donde pondré las opiniones de los testigos.
+            
+            for i,fila in enumerate(Datos[1:-1:]):
+                Testigos[i] = fila[:-1]
+            
+            # De esta manera tengo mi array que me guarda los datos de los agentes a lo largo de la evolución del sistema.
+            
+            #----------------------------------------------------------------------------------------------------------------------------------
+            
+            # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
+            repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+            direccion_guardado = Path("../../../Imagenes/{}/Trayectorias_opiniones_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,nombre_parametro_1,PARAMETRO_1,
+                                                                                                                                   nombre_parametro_2,PARAMETRO_2,nombre_parametro_3,PARAMETRO_3,repeticion))
+            
+            # Armo mi gráfico, lo guardo y lo cierro
+            
+            plt.rcParams.update({'font.size': 32})
+            plt.figure("Trayectorias",figsize=(20,15))
+            # X = np.arange(Testigos.shape[0])*0.01
+            for sujeto in range(int(Testigos.shape[1]/T)):
+                plt.plot(Testigos[:,sujeto*T],Testigos[:,sujeto*T+1], color = "tab:gray" ,linewidth = 2, alpha = 0.5)
+            plt.xlabel(r"$x_i^1$")
+            plt.ylabel(r"$x_i^2$")
+            # plt.grid(alpha = 0.5)
+            plt.savefig(direccion_guardado ,bbox_inches = "tight")
+            plt.close("Trayectorias")
+
+        
+#-----------------------------------------------------------------------------------------------
 
 
 """

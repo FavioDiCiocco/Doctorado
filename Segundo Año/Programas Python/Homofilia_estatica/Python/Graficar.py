@@ -19,11 +19,11 @@ from pathlib import Path
 
 t0 = time.time()
 
-T=1 # Defino el número de tópicos
+T=2 # Defino el número de tópicos
 Etapa = Path("Homofilia_estatica") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["1D"]
+Carpetas = ["2D"]
 
 for carp in Carpetas:
     
@@ -45,6 +45,9 @@ for carp in Carpetas:
     # "Opiniones_N=$_kappa=$_beta=$_Iter=$.file" y "Testigos_N=$_kappa=$_beta=$_Iter=$.file"
     # En la carpeta 1D
     
+    # En cambio, en la carpeta 2D llevan por nombre:
+    # "Opiniones_N=$_kappa=$_beta=$_cosd=$_Iter=$.file" y "Testigos_N=$_kappa=$_beta=$_cosd=$_Iter=$.file"
+    
     Df_archivos = pd.DataFrame({"nombre": Archivos_Datos})
     
     # Hecho mi dataframe, voy a armar columnas con los parámetros que varían en los nombres de mis archivos
@@ -52,7 +55,8 @@ for carp in Carpetas:
     Df_archivos["n"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[1].split("=")[1]))
     Df_archivos["parametro_1"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
     Df_archivos["parametro_2"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
-    Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1].strip(".file")))
+    Df_archivos["parametro_3"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1]))
+    Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[5].split("=")[1].strip(".file")))
     
     #----------------------------------------------------------------------------------------------
 
@@ -60,31 +64,37 @@ for carp in Carpetas:
     
     nombre_parametro_1 = "kappa"
     nombre_parametro_2 = "beta"
+    nombre_parametro_3 = "cosd"
+    
     
     # Lo otro que necesito es el nombre que pasaré a los ejes de los gráficos de las funciones
     
     titulo_parametro_1 = r"\kappa"
     titulo_parametro_2 = r"\beta"
+    titulo_parametro_3 = r"cos(\delta)"
     
     #----------------------------------------------------------------------------------------------
     
-#    func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-#                                         titulo_parametro_1, titulo_parametro_2, True)
+    func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta,
+                                         titulo_parametro_2, titulo_parametro_3,
+                                         titulo_parametro_1,nombre_parametro_1)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    func.Mapa_Colores_Entropia_opiniones(Df_archivos, Direccion, Etapa/carpeta,
+                                         titulo_parametro_2, titulo_parametro_3,
+                                         titulo_parametro_1,nombre_parametro_1)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
+                                         titulo_parametro_2, titulo_parametro_3,
+                                         nombre_parametro_1)
 
     #----------------------------------------------------------------------------------------------
     
-#    func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
-#                                         titulo_parametro_1, titulo_parametro_2, True)
-    
-    #----------------------------------------------------------------------------------------------
-    
-    func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta, T,
-                            nombre_parametro_1, nombre_parametro_2)
-    
-    #----------------------------------------------------------------------------------------------
-    
-    # func.Graf_Derivada_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta, T,
-    #                         nombre_parametro_1, nombre_parametro_2)
+    func.Graf_trayectorias_opiniones(Df_archivos, Direccion, Etapa/carpeta,
+                                     nombre_parametro_1, nombre_parametro_2, nombre_parametro_3)
 
 
 func.Tiempo(t0)
