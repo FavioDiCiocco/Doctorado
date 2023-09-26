@@ -53,55 +53,53 @@ for carp in Carpetas:
     # Hecho mi dataframe, voy a armar columnas con los parámetros que varían en los nombres de mis archivos
     Df_archivos["tipo"] = Df_archivos["nombre"].apply(lambda x: x.split("_")[0])
     Df_archivos["n"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[1].split("=")[1]))
-    Df_archivos["parametro_1"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
-    Df_archivos["parametro_2"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
-    Df_archivos["parametro_3"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1]))
+    Df_archivos["Kappas"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
+    Df_archivos["parametro_y"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
+    Df_archivos["parametro_x"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1]))
     Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[5].split("=")[1].strip(".file")))
     
     #----------------------------------------------------------------------------------------------
 
     # Por un lado necesito los nombres que pasaré a los títulos de los archivos
+    # ID es por el nombre del parámetro.
+    # Todo parámetro que no grafique es un parámetro extra
     
-    nombre_parametro_1 = "kappa"
-    nombre_parametro_2 = "beta"
-    nombre_parametro_3 = "cosd"
+    ID_param_extra_1 = "kappa"
+    ID_param_y = "beta"
+    ID_param_x = "cosd"
     
     
     # Lo otro que necesito es el nombre que pasaré a los ejes de los gráficos de las funciones
+    # SIM significa símbolo, porque esto lo uso para escribir el símbolo de ese parámetro
+    # Todo parámetro que no grafique es un parámetro extra
     
-    titulo_parametro_1 = r"\kappa"
-    titulo_parametro_2 = r"\beta"
-<<<<<<< Updated upstream
-    titulo_parametro_3 = r"cos(\delta)"
-=======
-    titulo_parametro_2 = r"cos(\delta)"
->>>>>>> Stashed changes
+    SIM_param_extra_1 = r"\kappa"
+    SIM_param_y = r"\beta"
+    SIM_param_x = r"cos(\delta)"
     
     #----------------------------------------------------------------------------------------------
     
     func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-                                         titulo_parametro_2, titulo_parametro_3,
-                                         titulo_parametro_1,nombre_parametro_1)
+                                         SIM_param_x, SIM_param_y,
+                                         SIM_param_extra_1,ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
-<<<<<<< Updated upstream
+
     func.Mapa_Colores_Entropia_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-                                         titulo_parametro_2, titulo_parametro_3,
-                                         titulo_parametro_1,nombre_parametro_1)
+                                         SIM_param_x, SIM_param_y,
+                                         SIM_param_extra_1,ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
     func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
-                                         titulo_parametro_2, titulo_parametro_3,
-                                         nombre_parametro_1)
+                                         SIM_param_x, SIM_param_y,
+                                         ID_param_extra_1)
 
     #----------------------------------------------------------------------------------------------
     
-=======
->>>>>>> Stashed changes
     func.Graf_trayectorias_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-                                     nombre_parametro_1, nombre_parametro_2, nombre_parametro_3)
+                                     ID_param_x, ID_param_y, ID_param_extra_1)
 
 
 func.Tiempo(t0)

@@ -1082,3 +1082,19 @@ Oporto y Algarve.
 Después de comer mando a hacer los gráficos en el espacio de fases de los datos de Algarve. Tengo
 que rearmar los códigos de funciones y de Graficar para que tomen tres parámetros del nombre de
 los archivos.
+
+------------------------------------------------------------------------------------------
+
+26/09/2023
+
+Hoy a la mañana me desperté y recordé el espíritu del código original que tomaba los dos parámetros
+que iba a graficar y de ahí corría todo asegurándose que en el eje X esté lo que tenga que estar, en
+el eje Y lo mismo. Yo ayer en la noche, flasheando que tenía que extender la función a tres variables
+corregí eso posiblemente cagando el código. Ahora lo que voy a hacer es mandar a correr esto para
+armar los gráficos en el espacio de fase que tengo que armar, y mientras eso corre, voy a mirar desde
+Github cómo estaba el código antes, dejarlo como estaba y corregir en graficar cuál es el parámetro
+1 y cuál el 2, para que el código que inteligentemente armé hace unos meses siga funcionando lo más
+bien.
+
+Voy a rearmar mi código, con algo más razonable, que es llamar parámetro x al que grafico en el eje x
+y parámetro y al que va en el eje y. El resto de los parámetros les pondré el nombre que les corresponde.
