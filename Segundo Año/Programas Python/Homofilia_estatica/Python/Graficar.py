@@ -79,22 +79,22 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta,
+    func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta, T,
                                          SIM_param_x, SIM_param_y,
-                                         SIM_param_extra_1,ID_param_extra_1)
+                                         ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
 
-    func.Mapa_Colores_Entropia_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-                                         SIM_param_x, SIM_param_y,
-                                         SIM_param_extra_1,ID_param_extra_1)
+    # func.Mapa_Colores_Entropia_opiniones(Df_archivos, Direccion, Etapa/carpeta,
+    #                                      SIM_param_x, SIM_param_y,
+    #                                      SIM_param_extra_1,ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
-    func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
-                                         SIM_param_x, SIM_param_y,
-                                         ID_param_extra_1)
+    # func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
+    #                                      SIM_param_x, SIM_param_y,
+    #                                      ID_param_extra_1)
 
     #----------------------------------------------------------------------------------------------
     

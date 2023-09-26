@@ -447,7 +447,7 @@ def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,
 
 def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,
                                     SIM_param_x,SIM_param_y,
-                                    SIM_param_extra_1,ID_param_extra_1):
+                                    ID_param_extra_1):
     
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Opiniones"
@@ -513,7 +513,7 @@ def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,
     #--------------------------------------------------------------------------------
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/Entropia Opiniones EP_{}={}.png".format(carpeta,SIM_param_extra_1,KAPPAS))
+    direccion_guardado = Path("../../../Imagenes/{}/Entropia Opiniones EP_{}={}.png".format(carpeta,ID_param_extra_1,KAPPAS))
     
     plt.rcParams.update({'font.size': 24})
     plt.figure("Entropia Opiniones",figsize=(20,15))
@@ -642,7 +642,7 @@ def Grafico_histograma(DF,path,carpeta,nombre_parametro_1="parametro_1",titulo_p
 # Esta función es la que arma los gráficos de los mapas de colores en el espacio de
 # parámetros de alfa y umbral usando el valor medio de la opinión.
 
-def Mapa_Colores_Promedio_opiniones(DF,path,carpeta,
+def Mapa_Colores_Promedio_opiniones(DF,path,carpeta,T,
                                     SIM_param_x,SIM_param_y,
                                     SIM_param_extra_1,ID_param_extra_1,
                                     Condicion_curvas_kappa=False):
@@ -671,57 +671,67 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta,
     ZZ = np.zeros(XX.shape)
     
     #--------------------------------------------------------------------------------
-    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
+    
+    # Separo la construcción del ZZ para poder meterla en un for de los tópicos
+    
+    for topico in range(T):
         
-        # Me defino el array en el cual acumulo los datos de las opiniones finales de todas
-        # mis simulaciones
-        Opifinales = np.array([])
-        
-        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
-        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
-                                    (DF["n"]==AGENTES) & 
-                                    (DF["Kappas"]==KAPPAS) & 
-                                    (DF["parametro_x"]==PARAM_X) &
-                                    (DF["parametro_y"]==PARAM_Y), "nombre"])      
-
-        #------------------------------------------------------------------------------------------
-        
-        for nombre in archivos:
+        #--------------------------------------------------------------------------------
+        for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
             
-            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-            # Opinión Inicial del sistema
-            # Variación Promedio
-            # Opinión Final
-            # Semilla
+            # Me defino el array en el cual acumulo los datos de las opiniones finales de todas
+            # mis simulaciones
+            Opifinales = np.array([])
             
-            # Levanto los datos del archivo
-            Datos = ldata(path / nombre)
+            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                        (DF["n"]==AGENTES) & 
+                                        (DF["Kappas"]==KAPPAS) & 
+                                        (DF["parametro_x"]==PARAM_X) &
+                                        (DF["parametro_y"]==PARAM_Y), "nombre"])      
+    
+            #------------------------------------------------------------------------------------------
             
-            # Leo los datos de las Opiniones Finales
-            Opifinales = np.concatenate((Opifinales, np.array(Datos[5][:-1:], dtype="float")), axis = None)
+            for nombre in archivos:
+                
+                # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+                # Opinión Inicial del sistema
+                # Variación Promedio
+                # Opinión Final
+                # Semilla
+                
+                # Levanto los datos del archivo
+                Datos = ldata(path / nombre)
+                
+                # Leo los datos de las Opiniones Finales
+                Opifinales = np.concatenate((Opifinales, np.array(Datos[5][:-1:], dtype="float")), axis = None)
+            
+            #------------------------------------------------------------------------------------------
+            # Con las opiniones finales de todas las simulaciones lo que hago es calcular el promedio de
+            # las opiniones. No hago distinción de tópicos porque considero que los agentes tenderán
+            # a los mismos valores en todos sus tópicos.
+            
+            ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.abs(np.mean(Opifinales[topico::2]))
         
-        #------------------------------------------------------------------------------------------
-        # Con las opiniones finales de todas las simulaciones lo que hago es calcular el promedio de
-        # las opiniones. No hago distinción de tópicos porque considero que los agentes tenderán
-        # a los mismos valores en todos sus tópicos.
+        #--------------------------------------------------------------------------------
         
-        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Opifinales)
-    
-    #--------------------------------------------------------------------------------
-    
-    # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/Promedio Opiniones EP_{}={}.png".format(carpeta,ID_param_extra_1,KAPPAS))
-    
-    plt.rcParams.update({'font.size': 24})
-    plt.figure("Promedio Opiniones",figsize=(20,15))
-    plt.xlabel(r"${}$".format(SIM_param_x))
-    plt.ylabel(r"${}$".format(SIM_param_y))
-    
-    # Hago el ploteo del mapa de colores con el colormesh
-    
-    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "cividis")
-    plt.colorbar()
-    plt.title(r"Promedio de opiniones finales ${}$={}".format(SIM_param_extra_1,KAPPAS))
+        # Una vez que tengo el ZZ completo, armo mi mapa de colores
+        direccion_guardado = Path("../../../Imagenes/{}/Promedio Opiniones Topico {}.png".format(carpeta,topico))
+        
+        plt.rcParams.update({'font.size': 24})
+        plt.figure("Promedio Opiniones",figsize=(20,15))
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        
+        # Hago el ploteo del mapa de colores con el colormesh
+        
+        plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "cividis")
+        plt.colorbar()
+        plt.title(r"Promedio de opiniones Topico {}".format(topico))
+        
+        # Guardo la figura y la cierro
+        plt.savefig(direccion_guardado , bbox_inches = "tight")
+        plt.close("Promedio Opiniones")
     
     # Hago el plotteo de las curvas de Kapppa
     """
@@ -752,10 +762,6 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta,
                  Kappa_max[Kappa_max < max(Array_parametro_1)],
                  "--r",linewidth=8)
     """
-    # Guardo la figura y la cierro
-    
-    plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close("Promedio Opiniones")
     
     
 #--------------------------------------------------------------------------------
@@ -1391,7 +1397,7 @@ def Graf_trayectorias_opiniones(DF,path,carpeta,
             # X = np.arange(Testigos.shape[0])*0.01
             for sujeto in range(int(Testigos.shape[1]/T)):
                 plt.plot(Testigos[:,sujeto*T],Testigos[:,sujeto*T+1], color = "tab:gray" ,linewidth = 3, alpha = 0.3)
-            plt.scatter(Testigos[-1,0::2],Testigos[-1,1::2], s=12,label="Opinión Final")
+            plt.scatter(Testigos[-1,0::2],Testigos[-1,1::2], s=30,label="Opinión Final")
             plt.xlabel(r"$x_i^1$")
             plt.ylabel(r"$x_i^2$")
             # plt.grid(alpha = 0.5)
