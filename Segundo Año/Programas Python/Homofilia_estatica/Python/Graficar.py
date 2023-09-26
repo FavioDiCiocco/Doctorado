@@ -71,7 +71,11 @@ for carp in Carpetas:
     
     titulo_parametro_1 = r"\kappa"
     titulo_parametro_2 = r"\beta"
+<<<<<<< Updated upstream
     titulo_parametro_3 = r"cos(\delta)"
+=======
+    titulo_parametro_2 = r"cos(\delta)"
+>>>>>>> Stashed changes
     
     #----------------------------------------------------------------------------------------------
     
@@ -81,6 +85,7 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
+<<<<<<< Updated upstream
     func.Mapa_Colores_Entropia_opiniones(Df_archivos, Direccion, Etapa/carpeta,
                                          titulo_parametro_2, titulo_parametro_3,
                                          titulo_parametro_1,nombre_parametro_1)
@@ -93,6 +98,8 @@ for carp in Carpetas:
 
     #----------------------------------------------------------------------------------------------
     
+=======
+>>>>>>> Stashed changes
     func.Graf_trayectorias_opiniones(Df_archivos, Direccion, Etapa/carpeta,
                                      nombre_parametro_1, nombre_parametro_2, nombre_parametro_3)
 

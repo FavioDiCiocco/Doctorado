@@ -34,7 +34,11 @@ int main(int argc, char *argv[]){
 	// Defino los parámetros de mi modelo. Esto va desde número de agentes hasta el paso temporal de integración.
 	// Primero defino los parámetros que requieren un input.
 	ps_datos->i_N = strtol(argv[1],NULL,10); // Cantidad de agentes en el modelo
+<<<<<<< Updated upstream
 	ps_datos->d_kappa = strtof(argv[2],NULL); // Esta amplitud regula la relación entre el término lineal y el término con tanh
+=======
+	ps_datos->d_kappa = strtof(argv[2],NULL); // Esta amplitud regula la relación entre el término lineal y el término logístico
+>>>>>>> Stashed changes
 	ps_datos->d_beta = strtof(argv[3],NULL); // Esta es la potencia que determina el grado de homofilia.
 	ps_datos->d_Cosangulo = strtof(argv[4],NULL); // Este es el coseno de Delta que define la relación entre tópicos.
 	int i_iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
@@ -109,13 +113,21 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_Opiniones[355];
+<<<<<<< Updated upstream
 	sprintf(s_Opiniones,"../Programas Python/Homofilia_estatica/%dD/Opiniones_N=%d_kappa=%.2f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+=======
+	sprintf(s_Opiniones,"../Programas Python/Homofilia_estatica/%dD/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+>>>>>>> Stashed changes
 		,ps_datos->i_T,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
 	FILE *pa_Opiniones=fopen(s_Opiniones,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_Testigos[355];
+<<<<<<< Updated upstream
 	sprintf(s_Testigos,"../Programas Python/Homofilia_estatica/%dD/Testigos_N=%d_kappa=%.2f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+=======
+	sprintf(s_Testigos,"../Programas Python/Homofilia_estatica/%dD/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+>>>>>>> Stashed changes
 		,ps_datos->i_T,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
 	FILE *pa_Testigos=fopen(s_Testigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	

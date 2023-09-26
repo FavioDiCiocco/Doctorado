@@ -1058,3 +1058,27 @@ Ahí miré mi código de Python, no es robusto ante la existencia de varios N qu
 Siempre lo armé pensando en un sólo valor de N. Tengo que considerar cómo implementar la
 posibilidad de que mi conjunto de datos tenga varios N y grafique según el N. Eso queda
 como tarea para después.
+
+------------------------------------------------------------------------------------------
+
+25/09/2023
+
+Lo primero que voy a hacer en la mañana es armar un archivo que haga los gráficos de 
+trayectorias de opiniones en el espacio de fases. Cuando lo pase a Oporto y Algarve no me
+tengo que olvidar que los archivos de ahí tienen tres parámetros en el nombre. Es decir que
+tengo que rearmar la formulación de lo los archivos. Voy a revisar después si los archivos
+1D también tienen tres parámetros, creo que no.
+
+Tengo que corregir además el main que tengo en la pc de la facultad, que es distinto al main
+que armé en las pcs del cluster. En las pcs del cluster cambié la forma en que el código se
+dirige a la carpeta adecuada y los nombres de mis archivos. Ese cambio surgió en cuanto agregué
+la forma correcta de calcular distancias no ortogonales. Creo que tengo que tener en cuenta
+en el futuro de rearmar datos 1D que los nombres de archivos viejos son distintos a los nombres
+de archivos nuevos.
+
+Armé un archivo nuevo para probar que se grafique todo bien. Si se grafica bien, lo mando a
+Oporto y Algarve.
+
+Después de comer mando a hacer los gráficos en el espacio de fases de los datos de Algarve. Tengo
+que rearmar los códigos de funciones y de Graficar para que tomen tres parámetros del nombre de
+los archivos.
