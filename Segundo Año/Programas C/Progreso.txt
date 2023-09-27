@@ -1098,3 +1098,43 @@ bien.
 
 Voy a rearmar mi código, con algo más razonable, que es llamar parámetro x al que grafico en el eje x
 y parámetro y al que va en el eje y. El resto de los parámetros les pondré el nombre que les corresponde.
+
+------------------------------------------------------------------------------------------
+
+27/09/2023
+
+Armé mis funciones para graficar el mapa de colores de Promedio de Opiniones
+y Varianza de Opiniones. Las hice rápido las funciones, así que tienen un
+vector de más, podría resolver lo mismo gastando menos espacio de memoria.
+Básicamente, puedo deshacerme del Opifinales. Eso queda para el futuro.
+
+Notas de la charla con Hugo, David, Mario y Jesús:
+--------------------------------------------------
+
+El tema de la distancia no es menor.
+
+Propusieron tres formas de entender el tema de los pesos.
+
+.) La primera es considerar que calculo la distancia como una norma en el espacio.
+Esa distancia puede ser considerando el espacio ortogonal o el no ortogonal.
+
+.) La segunda es considerar que se calculan pesos distintos por cada tópico.
+Esos pesos se calcularán viendo las distancias entre las opiniones en cada tópico
+por separado. Entonces el peso en el tópico 1 se calcula con las distancias
+en el tópico 1.
+
+La idea sería armar histogramas de agentes en el espacio de tópicos. Para armar
+los histogramas me recomendaron que guarde mejor los datos, intentando obtener el
+histograma directamente de la simulación. Eso va a ayudar a que los archivos no pesen
+cerca de 200 megas cada uno, haciendo imposible el guardar datos.
+
+El plan sería que yo arme simulaciones diferenciando si uso un tipo de distancias
+o el otro.
+
+----------------------------------------------------------------
+
+Voy a ver de resolver para mañana el hacer la burocracia infinita y quizás el viernes
+arrancar a reorganizar la documentación. Y la semana que viene resuelvo lo de los gráficos
+de histogramas que me dijeron e implemento el tema de las distancias. Tengo que tener
+cuidado con lo que es el armado de las carpetas y diferenciar correctamente las
+etapas del trabajo.

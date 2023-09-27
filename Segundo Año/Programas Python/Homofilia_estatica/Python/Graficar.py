@@ -85,6 +85,12 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
+    func.Mapa_Colores_Varianza_opiniones(Df_archivos, Direccion, Etapa/carpeta, T,
+                                         SIM_param_x, SIM_param_y,
+                                         ID_param_extra_1)
+    
+    #----------------------------------------------------------------------------------------------
+    
 
     # func.Mapa_Colores_Entropia_opiniones(Df_archivos, Direccion, Etapa/carpeta,
     #                                      SIM_param_x, SIM_param_y,

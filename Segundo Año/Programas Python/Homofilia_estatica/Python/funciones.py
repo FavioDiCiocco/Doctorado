@@ -323,9 +323,9 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2,
 # Esta función es la que arma los gráficos de los mapas de colores en el espacio de
 # parámetros de alfa y umbral usando la varianza de las opiniones como métrica.
 
-def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,
+def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,T,
                                     SIM_param_x,SIM_param_y,
-                                    ID_param_extra_1,SIM_param_extra_1,
+                                    SIM_param_extra_1,ID_param_extra_1,
                                     Condicion_curvas_kappa=False):
     
     # Defino el tipo de archivo del cuál tomaré los datos
@@ -353,55 +353,68 @@ def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,
     
     #--------------------------------------------------------------------------------
     
-    # Itero en los valores de mis parámetros alfa y umbral.
-    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
-        
-        # Me defino el array en el cual acumulo los datos de las opiniones finales de todas mis simulaciones
-        Opifinales = np.array([])
-        
-        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
-        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
-                                    (DF["n"]==AGENTES) & 
-                                    (DF["Kappas"]==KAPPAS) & 
-                                    (DF["parametro_x"]==PARAM_X) &
-                                    (DF["parametro_y"]==PARAM_Y), "nombre"])        
-
-        #------------------------------------------------------------------------------------------
-        
-        for nombre in archivos:
+    for topico in range(T):
+    
+        # Itero en los valores de mis parámetros alfa y umbral.
+        for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
             
-            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-            # Opinión Inicial del sistema
-            # Variación Promedio
-            # Opinión Final
-            # Semilla
+            # Me defino el array en el cual acumulo los datos de las opiniones finales de todas mis simulaciones
+            Opifinales = np.array([])
             
-            # Levanto los datos del archivo
-            Datos = ldata(path / nombre)
+            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                        (DF["n"]==AGENTES) & 
+                                        (DF["Kappas"]==KAPPAS) & 
+                                        (DF["parametro_x"]==PARAM_X) &
+                                        (DF["parametro_y"]==PARAM_Y), "nombre"])        
+    
+            #------------------------------------------------------------------------------------------
             
-            # Leo los datos de las Opiniones Finales
-            Opifinales = np.concatenate((Opifinales, np.array(Datos[5][:-1:], dtype="float")), axis = None)
+            for nombre in archivos:
+                
+                # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+                # Opinión Inicial del sistema
+                # Variación Promedio
+                # Opinión Final
+                # Semilla
+                
+                # Levanto los datos del archivo
+                Datos = ldata(path / nombre)
+                
+                # Leo los datos de las Opiniones Finales
+                Opifinales = np.concatenate((Opifinales, np.array(Datos[5][:-1:], dtype="float")), axis = None)
+            
+            #------------------------------------------------------------------------------------------
+            # Voy a calcular la varianza de las opiniones de cada simulación y luego promediar
+            # esos valores a lo largo de todos los ensambles.
+            
+            Varianzas = np.zeros(archivos.shape[0])
+            
+            for simulacion in range(archivos.shape[0]):
+                Varianzas[simulacion] = np.var(Opifinales[AGENTES*T*simulacion+topico:AGENTES*T*(simulacion+1)+topico:2])
+            
+            ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Varianzas)
+            
+        #--------------------------------------------------------------------------------
         
-        #------------------------------------------------------------------------------------------
-        # Con las opiniones finales de todas las simulaciones lo que hago es calcular la varianza
-        # de la distribución de opiniones.
-        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.var(Opifinales)
+        # Una vez que tengo el ZZ completo, armo mi mapa de colores
+        direccion_guardado = Path("../../../Imagenes/{}/Varianza Opiniones Topico {}.png".format(carpeta,topico))
         
-    #--------------------------------------------------------------------------------
+        plt.rcParams.update({'font.size': 24})
+        plt.figure("Varianza Opiniones",figsize=(20,15))
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        
+        # Hago el ploteo del mapa de colores con el colormesh
+        
+        plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "plasma")
+        plt.colorbar()
+        plt.title("Varianza de opiniones en Espacio de Parametros")
     
-    # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/Varianza Opiniones_{}={}.png".format(carpeta,SIM_param_extra_1,KAPPAS))
+        # Guardo la figura y la cierro
     
-    plt.rcParams.update({'font.size': 24})
-    plt.figure("Varianza Opiniones",figsize=(20,15))
-    plt.xlabel(r"${}$".format(SIM_param_x))
-    plt.ylabel(r"${}$".format(SIM_param_y))
-    
-    # Hago el ploteo del mapa de colores con el colormesh
-    
-    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "plasma")
-    plt.colorbar()
-    plt.title("Varianza de opiniones en Espacio de Parametros")
+        plt.savefig(direccion_guardado , bbox_inches = "tight")
+        plt.close("Varianza Opiniones")
     
     """
     # Hago el plotteo de las curvas de Kapppa
@@ -433,11 +446,6 @@ def Mapa_Colores_Varianza_opiniones(DF,path,carpeta,
                  Kappa_max[Kappa_max < max(Array_parametro_1)],
                  "--r",linewidth=8)
     """
-    
-    # Guardo la figura y la cierro
-    
-    plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close("Varianza Opiniones")
 
 
 #-----------------------------------------------------------------------------------------------
@@ -707,11 +715,16 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta,T,
                 Opifinales = np.concatenate((Opifinales, np.array(Datos[5][:-1:], dtype="float")), axis = None)
             
             #------------------------------------------------------------------------------------------
-            # Con las opiniones finales de todas las simulaciones lo que hago es calcular el promedio de
-            # las opiniones. No hago distinción de tópicos porque considero que los agentes tenderán
-            # a los mismos valores en todos sus tópicos.
+            # Voy a primero tomar el promedio de opiniones de una simulación, luego a eso tomarle
+            # el valor absoluto y por último promediarlo
             
-            ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.abs(np.mean(Opifinales[topico::2]))
+            # Armo un array donde me guardo el promedio de cada una de mis simulaciones
+            Promedios = np.zeros(archivos.shape[0])
+            
+            for simulacion in range(archivos.shape[0]):
+                Promedios[simulacion] = np.mean(Opifinales[AGENTES*T*simulacion+topico:AGENTES*T*(simulacion+1)+topico:2])
+            
+            ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(np.abs(Promedios))
         
         #--------------------------------------------------------------------------------
         
@@ -762,9 +775,12 @@ def Mapa_Colores_Promedio_opiniones(DF,path,carpeta,T,
                  Kappa_max[Kappa_max < max(Array_parametro_1)],
                  "--r",linewidth=8)
     """
-    
+
     
 #--------------------------------------------------------------------------------
+
+    
+    
 
 # Esta función me construye el gráfico de Saturación en función del tiempo
 # para cada tópico para los agentes testigos.
