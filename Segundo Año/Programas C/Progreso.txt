@@ -1037,7 +1037,7 @@ Ahí voy a ver rápidamente el comportamiento del sistema en esas regiones.
 Por otro lado, en Algarve se terminaron las simulaciones para armar el espacio de fases barriendo
 Beta [0,2] de a 0.2 y Cosdelta [0,1] de a 0.2. Como terminaron todas las simulaciones,
 aproveché para mandar a correr una nueva tanda de simulaciones que completen los valores
-de Cosdelta intermedioes en la región [0,1] que no se completaron antes. Eso tardó un día.
+de Cosdelta intermedios en la región [0,1] que no se completaron antes. Eso tardó un día.
 Se me ocurre mandar a correr datos para completar los otros datos que faltaron del Beta entre
 0 y 2, pero ya veré mañana para eso.
 
@@ -1138,3 +1138,22 @@ arrancar a reorganizar la documentación. Y la semana que viene resuelvo lo de l
 de histogramas que me dijeron e implemento el tema de las distancias. Tengo que tener
 cuidado con lo que es el armado de las carpetas y diferenciar correctamente las
 etapas del trabajo.
+
+------------------------------------------------------------------------------------------
+
+28/09/2023
+
+En la mañana llevé a ver el tema de las gomas del auto, llegué tarde a la facultad y
+después me puse a ver lo de inscribirme en la escuela de Brasil. También vi que salió
+la prueba de oposición para el cargo de laboratorio superior. Honestamente, ni idea 
+de qué presentar, así que me voy a mantener afuera de eso.
+
+Después en la tarde finalmente me puse con los temas de F2, siendo que primero repasé
+contenidos de fórmula de D'Alambert y después empecé con los ejercicios.
+
+------------------------------------------------------------------------------------------
+
+29/09/2023
+
+En la mañana seguí con ejercicios de F2. Después fuimos a responder consultas y a la tarde
+me puse a completar mis notas y la burocracia infinita.
