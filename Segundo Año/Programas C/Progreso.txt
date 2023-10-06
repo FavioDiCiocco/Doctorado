@@ -1157,3 +1157,46 @@ contenidos de fórmula de D'Alambert y después empecé con los ejercicios.
 
 En la mañana seguí con ejercicios de F2. Después fuimos a responder consultas y a la tarde
 me puse a completar mis notas y la burocracia infinita.
+
+------------------------------------------------------------------------------------------
+
+02/10/2023
+
+Hoy a la mañana mandé a correr los datos para complementar el barrido que hice antes. No
+implementé todavía la función que arma los histogramas en los datos que salen de C. Tengo
+bastantes cosas por hacer y no es algo tan importante todavía. Total, todos los archivos que
+tengo, que son 45 simulaciones en el espacio que quiero barrer, me ocupan 13G. Mi plan es
+tener 5 veces eso, así que sólo me va a ocupar 65 G. Menos en realidad considerando que los
+Testigos están contabilizados en esos 13, pero no voy a generar más.
+
+Entonces, tengo que barrer, modificando para que el Metainstanciación arranque desde la iteración
+46 y de ahí corra hasta 200. Y que además el Beta ahora corra en todos los valores desde
+0 hasta 2 de a 0.1, no de a 0.2. Bueno, antes de sumar hasta 200 simulaciones, voy a sumar
+hasta 105. Es decir, 60 iteraciones más. Quizás estoy haciendo mal el cálculo, pero como
+las simulaciones pueden tardar cualquier cosa entre 60 segundos y 1120, no sé cuánto considerar
+en promedio para hacer las simulaciones. Lo que hice fue considerar un promedio de 400 segundos.
+En ese contexto, me da que sumar esas 60 iteraciones implica 4 días de laburo. Arranco con eso,
+después quizás sumo más.
+
+Ya lo mandé a correr. Espero que salga todo bien. Ahora me voy a poner a revisar lo de la clase
+de F2. Así ya mañana llego preparado. Después el resto de la semana será Sistemas Complejos y
+laburo de tesis.
+
+------------------------------------------------------------------------------------------
+
+06/10/2023
+
+Efectivamente la semana fue lo que anoté. El martes y miércoles me dediqué a cosas de Sistemas
+Complejos. El jueves preparé cosas en distintos grupos y preparé la clase de F2. El viernes
+a la mañana di clases y después me puse con el tema del doctorado.
+
+Me armé una función que arma los histogramas 2D. Tengo que ponerla a prueba. Para eso voy a armar
+unos datos en la pc de la facultad, y luego sobre eso lo mando a correr. Si los gráficos salen bien,
+ya puedo mandar eso a Algarve y armar todos mis nuevos gráficos.
+
+Ahora que tengo esto podría ponerme a preparar el código para el caso de distancias distintas que
+me pidieron o podría ponerme a actualizar la documentación. Me tienta más lo segundo.
+
+Se armaron los datos, pero no tengo más tiempo. Probaré la función en casa. Después en la semana
+seguiré con la actualización de la documentación. Actualicé la de los programas en C. Ya es algo.
+Yo continuaría con la Documentación de las imágenes.

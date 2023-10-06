@@ -28,8 +28,38 @@ entre [1,5;3,5]. El alfa sigue siendo 4.
 .) Exploración_logística:
 -------------------------
 
+Hice un barrido en Kappa y Alfa para estudiar el comportamiento del sistema. El barrido está
+hecho para Kappa entre [1,3] (creo) y Alfa entre [5,8]. El sistema tenía N=1000, 1 tópico y
+epsilon=3 (creo). La idea era ver cómo el sistema se comportaba en el espacio de fases, sabiendo
+que estaba barriendo en la región de transición. Creo que tengo un barrido más fino para valores
+de K menores a 2. Por lo que vi hay algunos gráficos de opinión versus tiempo y uno de Promedio
+de Opiniones en el espacio de fases.
+ Esto es lo que puedo recordar de lo que tengo anotado y de lo que tengo en la carpeta
+de Programas. Lo que tengo en Oporto es un código distinto al que tengo en la pc, que parece
+estar dispuesto para recibir tres variables como input, mientras que el de la pc sólo recibe 2.
+Además, sospecho que ese código se usó también para la etapa de Complemento_Poster, la cuál fue
+una etapa breve que no tenía un fin de una investigación o un concepto nuevo, sino que simplemente
+era para separar las cosas que necesitaba particularmente hacer para mi poster.
+ Reemplacé lo que había en la pc de la facultad con lo que había en Oporto.
+
 
 .)Homofilia_estatica:
 ---------------------
 
-
+Pablo se conoció con una gente de España y descubrió que estaban trabajando en un modelo de
+Baumann unidimensional en el cuál integraban la homofilia entre agentes como un peso en los
+enlaces. Eso les permitía observar estados ideológicos, estados de consenso y de radicalización.
+Lo que nosotros estamos haciendo entonces es tomar este modelo con estos pesos y simular para
+el caso 1D cosa de ver que nos de lo mismo que a ellos y después hicimos simulaciones 2D que
+es lo que ellos no tenían.
+ Este modelo tiene 1000 agentes, toma alfa=1, agrega el parámetro beta para graduar la homofilia
+y barre en Kappa y Cos(delta).
+ Para el caso 1D armé una carpeta, 1D, en la que guardo los datos del modelo. Lo que hice fue
+simular unos puntos particulares para ver que observo al igual que en el paper que nos pasaron
+que el sistema converge a estados de polarización, radicalización y consenso neutro.
+ Para el caso 2D tuve que implementar una nueva función que calcule las distancias de los vectores
+en el espacio no ortogonal. Eso era necesario para poder calcular los pesos homofílicos entre agentes.
+Actualmente tengo una sola forma de calcular esa distancia, pero hablando con la gente de España en
+realidad me propusieron otras ideas de qué hacer, así que voy a tener que considerar cómo agregar
+esas modificaciones y guardar esos datos en carpetas nuevas. Creo que lo mejor va a ser separar
+en distintas etapas. (Sujeto a Revisión)

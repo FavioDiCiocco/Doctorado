@@ -557,7 +557,8 @@ def Entropia(Array):
 # Esta función es la que arma los gráficos de los mapas de colores en el espacio de
 # parámetros de alfa y umbral usando la entropía como métrica.
 
-def Grafico_histograma(DF,path,carpeta,nombre_parametro_1="parametro_1",titulo_parametro_2="parametro_2"):
+def Grafico_histograma(DF,path,carpeta,
+                       nombre_parametro_1="parametro_1",titulo_parametro_2="parametro_2"):
     
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Opiniones"
@@ -605,7 +606,6 @@ def Grafico_histograma(DF,path,carpeta,nombre_parametro_1="parametro_1",titulo_p
             # Opinión Inicial del sistema
             # Variación Promedio
             # Opinión Final
-            # Matriz de Adyacencia
             # Semilla
             
             # Levanto los datos del archivo
@@ -1419,6 +1419,84 @@ def Graf_trayectorias_opiniones(DF,path,carpeta,
             # plt.grid(alpha = 0.5)
             plt.savefig(direccion_guardado ,bbox_inches = "tight")
             plt.close("Trayectorias")
+
+
+#-----------------------------------------------------------------------------------------------
+
+# Esta función es la que arma los gráficos de los histogramas de opiniones
+# finales en el espacio de tópicos
+
+def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
+                       ID_param_x,ID_param_y,
+                       ID_param_extra_1):
+    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
+    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
+    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
+
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF["n"]))
+    
+    # Defino los arrays de parámetros diferentes
+    KAPPAS = int(np.unique(DF["Kappas"]))
+    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_y = np.unique(DF["parametro_y"])
+    
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(param_x,param_y) for param_x in Arr_param_x
+                   for param_y in Arr_param_y]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Testigos"
+    
+    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
+    # Gráfico de Opi vs T y en tres no se vería mejor.
+    T=2
+    
+    
+    for PARAM_X,PARAM_Y in Tupla_total:
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                    (DF["n"]==AGENTES) & 
+                                    (DF["Kappas"]==KAPPAS) & 
+                                    (DF["parametro_x"]==PARAM_X) &
+                                    (DF["parametro_y"]==PARAM_Y), "nombre"])
+        #-----------------------------------------------------------------------------------------
+        
+        for nombre in archivos:
+            
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
+            # Semilla
+            
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
+            
+            # Leo los datos de las Opiniones Finales
+            Opifinales = np.array(Datos[5][:-1:], dtype="float")
+            
+            # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+            
+            #----------------------------------------------------------------------------------------------------------------------------------
+            
+            # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
+            repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+            direccion_guardado = Path("../../../Imagenes/{}/Histograma_opiniones_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
+                                                                                                                                             ID_param_y,PARAM_Y,ID_param_extra_1,KAPPAS,repeticion))
+            
+            # Armo mi gráfico, lo guardo y lo cierro
+            
+            plt.rcParams.update({'font.size': 32})
+            _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins, cmap=cmap)
+            plt.xlabel(r"$x_i^1$")
+            plt.ylabel(r"$x_i^2$")
+            plt.title('Histograma 2D, {}={:.2f}_{}={:.2f}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y))
+            plt.colorbar(im, label='Frecuencias')
+            plt.savefig(direccion_guardado ,bbox_inches = "tight")
+            plt.close()
 
 
 """
