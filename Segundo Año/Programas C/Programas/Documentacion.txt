@@ -63,3 +63,20 @@ Actualmente tengo una sola forma de calcular esa distancia, pero hablando con la
 realidad me propusieron otras ideas de qué hacer, así que voy a tener que considerar cómo agregar
 esas modificaciones y guardar esos datos en carpetas nuevas. Creo que lo mejor va a ser separar
 en distintas etapas. (Sujeto a Revisión)
+
+.)Tangente_diferenciada:
+---------------------
+
+Al calcular el efecto de las opiniones de los vecinos, en esta etapa voy a considerar sólo la opinión
+del vecino en el tópico considerado. Por tanto, voy a descartar el valor de Cos(delta) en la tanh.
+Pensé que iba a ser poner una matriz de superposición que sea la identidad, pero me doy cuenta que no
+es tan simple, porque si hago eso, me jodo el cálculo de los pesos w_ij. Creo que tengo que actuar
+directamente sobre la función dinámica.
+
+.)Distancias_independientes:
+---------------------
+
+La otra métrica que propusieron es modificar los pesos de forma tal que al calcularlos, considere las
+distancias de los agentes en el tópico en cuestión. En este caso, no hay problema al definir el módulo
+del vector porque es simplemente el módulo entre dos números escalares, no importa para nada el
+tema del espacio no ortogonal.

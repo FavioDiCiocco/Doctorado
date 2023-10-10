@@ -14,8 +14,8 @@ echo "El ID del script es $$"
 # Voy a Hardcodear algunos Arrays
 
 Arr_Agentes=(1000)
-Arr_Beta=(0.5 1 1.5)
-Arr_CosD=(0 0.5 1)
+Arr_Beta=(0.5)
+Arr_CosD=(0)
 Arr_Kappas=(3)
 
 

@@ -109,13 +109,13 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_Opiniones[355];
-	sprintf(s_Opiniones,"../Programas Python/Homofilia_estatica/%dD/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+	sprintf(s_Opiniones,"../Programas Python/Tangente_diferenciada/%dD/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
 		,ps_datos->i_T,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
 	FILE *pa_Opiniones=fopen(s_Opiniones,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_Testigos[355];
-	sprintf(s_Testigos,"../Programas Python/Homofilia_estatica/%dD/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+	sprintf(s_Testigos,"../Programas Python/Tangente_diferenciada/%dD/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
 		,ps_datos->i_T,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
 	FILE *pa_Testigos=fopen(s_Testigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	

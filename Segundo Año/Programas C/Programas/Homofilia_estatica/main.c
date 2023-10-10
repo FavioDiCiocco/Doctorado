@@ -34,9 +34,10 @@ int main(int argc, char *argv[]){
 	// Defino los parámetros de mi modelo. Esto va desde número de agentes hasta el paso temporal de integración.
 	// Primero defino los parámetros que requieren un input.
 	ps_datos->i_N = strtol(argv[1],NULL,10); // Cantidad de agentes en el modelo
-	ps_datos->d_beta = strtof(argv[2],NULL); // Esta es la potencia que determina el grado de homofilia.
-	ps_datos->d_Cosangulo = strtof(argv[3],NULL); // Este es el coseno de Delta que define la relación entre tópicos.
-	int i_iteracion = strtol(argv[4],NULL,10); // Número de instancia de la simulación.
+	ps_datos->d_kappa = strtof(argv[2],NULL); // Esta amplitud regula la relación entre el término lineal y el término con tanh
+	ps_datos->d_beta = strtof(argv[3],NULL); // Esta es la potencia que determina el grado de homofilia.
+	ps_datos->d_Cosangulo = strtof(argv[4],NULL); // Este es el coseno de Delta que define la relación entre tópicos.
+	int i_iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
 	
 	// Los siguientes son los parámetros que están dados en los structs
 	ps_datos->i_T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
@@ -44,7 +45,6 @@ int main(int argc, char *argv[]){
 	ps_datos->i_pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
 	ps_datos->d_dt = 0.01; // Paso temporal de iteración del sistema
 	ps_datos->d_alfa = 1; // Controversialidad de los tópicos
-	ps_datos->d_kappa = 10; // Esta amplitud regula la relación entre el término lineal y el término logístico
 	ps_datos->d_delta = 0.002*ps_datos->d_kappa; // Es un término que se suma en la homofilia y ayuda a que los pesos no diverjan.
 	ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	ps_datos->d_CritCorte = pow(10,-4); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
@@ -109,20 +109,20 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_Opiniones[355];
-	sprintf(s_Opiniones,"../Programas Python/Homofilia_estatica/%dD/Opiniones_N=%d_beta=%.2f_cosd=%.2f_Iter=%d.file"
-		,ps_datos->i_T,ps_datos->i_N,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
+	sprintf(s_Opiniones,"../Programas Python/Homofilia_estatica/%dD/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+		,ps_datos->i_T,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
 	FILE *pa_Opiniones=fopen(s_Opiniones,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_Testigos[355];
-	sprintf(s_Testigos,"../Programas Python/Homofilia_estatica/%dD/Testigos_N=%d_beta=%.2f_cosd=%.2f_Iter=%d.file"
-		,ps_datos->i_T,ps_datos->i_N,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
+	sprintf(s_Testigos,"../Programas Python/Homofilia_estatica/%dD/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+		,ps_datos->i_T,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
 	FILE *pa_Testigos=fopen(s_Testigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
 	char s_matriz_adyacencia[355];
 	sprintf(s_matriz_adyacencia,"MARE/Erdos-Renyi/ErdosRenyi_N=%d_ID=%d.file"
-		,ps_datos->i_N,(int) i_iteracion%30); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
+		,ps_datos->i_N,(int) i_iteracion%100); // El número es la cantidad de redes creadas. Eso lo tengo que revisar si cambio el código
 	FILE *pa_matriz_adyacencia=fopen(s_matriz_adyacencia,"r");
 	
 	// Puntero a la función que define mi ecuación diferencial
@@ -138,7 +138,6 @@ int main(int argc, char *argv[]){
 	Lectura_Adyacencia(ps_red->pi_Adyacencia, pa_matriz_adyacencia); // Leo el archivo de la red estática y lo traslado a la matriz de adyacencia
 	fclose(pa_matriz_adyacencia); // Aprovecho y cierro el puntero al archivo de la matriz de adyacencia
 	
-	// printf("Armé las matrices y las inicialicé\n");
 	
 	//################################################################################################################################
 
@@ -149,8 +148,6 @@ int main(int argc, char *argv[]){
 	Escribir_d(ps_red->pd_Opiniones,pa_Opiniones);
 	
 	if(i_iteracion < 2) fprintf(pa_Testigos,"Opiniones Testigos\n");
-	
-	// printf("Guardé las condiciones iniciales \n");
 	
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
@@ -164,8 +161,6 @@ int main(int argc, char *argv[]){
 		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) *(ap_OpinionesPrevias[i_i]+i_j+2) = ps_red->pd_Opiniones[i_j+2];
 	}
 	
-	// printf("Termalicé el sistema \n");
-	
 	//################################################################################################################################
 	
 	// Realizo la simulación del modelo hasta que este alcance un estado estable
@@ -178,8 +173,6 @@ int main(int argc, char *argv[]){
 	while(i_contador < ps_datos->i_Iteraciones_extras && i_pasos_simulados < i_pasos_maximos){
 		
 		i_contador = 0; // Inicializo el contador
-		
-		// printf("Estoy simulando por encima del criterio de corte \n");
 		
 		// Evoluciono el sistema hasta que se cumpla el criterio de corte
 		do{
@@ -202,8 +195,6 @@ int main(int argc, char *argv[]){
 		while( ps_red->d_Variacion_promedio > ps_datos->d_CritCorte && i_pasos_simulados < i_pasos_maximos);
 		
 		// Ahora evoluciono el sistema una cantidad i_Itextra de veces. Le pongo como condición que si el sistema deja de cumplir la condición de corte, deje de evolucionar
-		
-		// printf("Estoy simulando por debajo del criterio de corte \n");
 		
 		while(i_contador < ps_datos->i_Iteraciones_extras && ps_red->d_Variacion_promedio <= ps_datos->d_CritCorte && i_pasos_simulados < i_pasos_maximos){
 			// Evolución
@@ -230,7 +221,7 @@ int main(int argc, char *argv[]){
 		// Si logra evolucionar la cantidad arbitraria de veces sin problemas, termino la evolución.
 	}
 	
-	// printf("Terminé de simular, guardo todo \n");
+	
 	
 	//################################################################################################################################
 	
@@ -245,7 +236,6 @@ int main(int argc, char *argv[]){
 	fprintf(pa_Opiniones,"Semilla\n");
 	fprintf(pa_Opiniones,"%ld\n",semilla);
 	
-	// printf("Ya guardé todo \n");
 	
 	// Libero los espacios dedicados a mis vectores y cierro mis archivos
 	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++) free(ap_OpinionesPrevias[i_i]);

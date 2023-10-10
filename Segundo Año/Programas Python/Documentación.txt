@@ -40,3 +40,8 @@ para calcular la distancia usando la matriz de Superposición, por lo que está 
 para 1D como para cualquier N dimensiones. Lo único extra a considerar es que según el número
 de dimensiones, los datos se guardan en una carpeta distinta. Entonces si quisiera armar datos
 5D, tendría que tener la carpeta 5D construída.
+
+Tangente Diferenciada:
+----------------------
+
+

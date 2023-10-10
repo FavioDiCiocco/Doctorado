@@ -1200,3 +1200,34 @@ me pidieron o podría ponerme a actualizar la documentación. Me tienta más lo 
 Se armaron los datos, pero no tengo más tiempo. Probaré la función en casa. Después en la semana
 seguiré con la actualización de la documentación. Actualicé la de los programas en C. Ya es algo.
 Yo continuaría con la Documentación de las imágenes.
+
+------------------------------------------------------------------------------------------
+
+10/10/2023
+
+El 9 estuve todo el día con el tp de Sistemas Complejos. Al final no resolví el último punto,
+pero logré hacer la mayor parte. Walter me pasó su TP para tener una idea, pero veré qué
+tal puedo resolverlo por mi cuenta.
+
+Volviendo al trabajo de hoy, lo primero importante es mandar a hacer algunas simulaciones
+en las que veo tres o cuatro puntos relevantes como para hacerme una idea del comportamiento
+del sistema en esas regiones. Lo siguiente es reacomodar los gráficos de Histogramas obtenidos
+cosa de que coincidan con lo visto en las trayectorias de opiniones.
+
+Podría hacer simulaciones para Beta= 0.1, 1, 1.5 y eso combinarlo con Cos(delta)= 0, 0.5, 1.
+Ahora, el tema es que tengo que armar métricas distintas. Podría armar dos métricas de
+acá a mañana. En principio se me ocurre que podría con dos. La primera sería sacando el
+cos(delta) de la tanh, y que sólo exista en los pesos w_ij. La segunda sería que la
+distancia entre las opiniones sea con independencia total en las opiniones, generando
+pesos diferenciados según el tópico.
+
+Es importante entonces diferenciar esto en tres etapas, más que nada para no confundir
+los datos. Y bueno, también para no confundir los códigos. Así que guardo el código
+que tengo actualmente y me armo dos nuevas carpetas con códigos. Mañana o 
+pasado me pondré con la documentación.
+
+Acabo de notar que el laburo que hice el finde no lo comitee. Por tanto, el laburo que estoy
+haciendo ahora va a entrar en conflicto con eso. Lo que me importa preservar de ese finde es
+más que nada lo que hice en el archivo de funciones. Podría simplemente ignorar en este commit
+el "laburo" que hice en el archivo y después committear lo de hoy. Creo que suena como un plan.
+En ese caso mejor ir yendo así ya voy resolviendo esa diferencia.
