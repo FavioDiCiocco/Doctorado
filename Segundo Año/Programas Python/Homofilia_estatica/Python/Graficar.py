@@ -79,15 +79,15 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta, T,
-                                         SIM_param_x, SIM_param_y,
-                                         ID_param_extra_1)
+#    func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta, T,
+#                                         SIM_param_x, SIM_param_y,
+#                                         ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
-    func.Mapa_Colores_Varianza_opiniones(Df_archivos, Direccion, Etapa/carpeta, T,
-                                         SIM_param_x, SIM_param_y,
-                                         ID_param_extra_1)
+#    func.Mapa_Colores_Varianza_opiniones(Df_archivos, Direccion, Etapa/carpeta, T,
+#                                         SIM_param_x, SIM_param_y,
+#                                         ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
@@ -104,8 +104,8 @@ for carp in Carpetas:
 
     #----------------------------------------------------------------------------------------------
     
-    func.Graf_trayectorias_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-                                     ID_param_x, ID_param_y, ID_param_extra_1)
+#    func.Graf_trayectorias_opiniones(Df_archivos, Direccion, Etapa/carpeta,
+#                                     ID_param_x, ID_param_y, ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     

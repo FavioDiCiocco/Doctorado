@@ -1447,7 +1447,7 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                    for param_y in Arr_param_y]
     
     # Defino el tipo de archivo del cuál tomaré los datos
-    TIPO = "Testigos"
+    TIPO = "Opiniones"
     
     # Sólo tiene sentido graficar en dos dimensiones, en una es el 
     # Gráfico de Opi vs T y en tres no se vería mejor.
@@ -1490,7 +1490,10 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
             # Armo mi gráfico, lo guardo y lo cierro
             
             plt.rcParams.update({'font.size': 32})
-            _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins, cmap=cmap)
+            plt.figure(figsize=(20,15))
+            _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
+                                     range=[[-KAPPAS,KAPPAS],[-KAPPAS,KAPPAS]],density=True,
+                                     cmap=cmap)
             plt.xlabel(r"$x_i^1$")
             plt.ylabel(r"$x_i^2$")
             plt.title('Histograma 2D, {}={:.2f}_{}={:.2f}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y))
