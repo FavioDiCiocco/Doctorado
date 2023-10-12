@@ -1231,3 +1231,41 @@ haciendo ahora va a entrar en conflicto con eso. Lo que me importa preservar de 
 más que nada lo que hice en el archivo de funciones. Podría simplemente ignorar en este commit
 el "laburo" que hice en el archivo y después committear lo de hoy. Creo que suena como un plan.
 En ese caso mejor ir yendo así ya voy resolviendo esa diferencia.
+
+------------------------------------------------------------------------------------------
+
+11/10/2023
+
+Evité el conflicto de los merges. O la mayor parte por lo menos. Ahora tengo que ponerme
+a hacer dos cosas. La primera es mandar a correr datos con la métrica que no tiene el cos(delta)
+en la tanh. La segunda es rearmar los gráficos de histogramas para que me coincidan con los de
+trayectorias.
+
+Ya hice lo primero. Ahí mandé a hacer los histogramas. Si esto está bien, entonces lo que me queda
+es ponerme a armar una presentación.
+
+Notas de la charla:
+-------------------
+
+.) Revisar medidas de Kurtosis o cosas para ver si las distribuciones se asemejan a uno,
+dos o cuatro picos. También podría estar bueno ver la covarianza como medida para
+diferenciar los picos. El coeficiente de correlación es otra cosa que se puede utilizar.
+
+.) Ver si para betas apenas por encima de 1, se requiere cosdelta más grande para romper la
+polarización. Repasar este concepto.
+
+.) Buscar la cruz que se forma para betas menores a 1 y cosenos delta bajos.
+
+.) Estaría bueno hacer un análisis similar al que hacen ellos para redes con beta=0. En ese caso
+surgen estados polarizados si modifican las condiciones iniciales y la red. Lo interesante es
+ver que para redes de ER con grado medio bajo se forman estados polarizados cuando no
+debería pasar. Entonces podríamos hacer algo similar con el estudio con el parámetro
+superposición de tópicos.
+
+.) Armar un barrido fino del espacio Beta-Delta guardando los histogramas. Aunque ese barrido que me
+está pidiendo es algo que ya tengo.
+
+.) Revisar cómo da lo de la entropía para distinguir los estados.
+
+.) Y también considerar qué está pasando con las simulaciones que saturan. ¿Esas están bien, o deberían seguir
+oscilando?

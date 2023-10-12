@@ -1484,22 +1484,23 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
             
             # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
             repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-            direccion_guardado = Path("../../../Imagenes/{}/Histograma_opiniones_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
-                                                                                                                                             ID_param_y,PARAM_Y,ID_param_extra_1,KAPPAS,repeticion))
-            
-            # Armo mi gráfico, lo guardo y lo cierro
-            
-            plt.rcParams.update({'font.size': 32})
-            plt.figure(figsize=(20,15))
-            _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
-                                     range=[[-KAPPAS,KAPPAS],[-KAPPAS,KAPPAS]],density=True,
-                                     cmap=cmap)
-            plt.xlabel(r"$x_i^1$")
-            plt.ylabel(r"$x_i^2$")
-            plt.title('Histograma 2D, {}={:.2f}_{}={:.2f}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y))
-            plt.colorbar(im, label='Frecuencias')
-            plt.savefig(direccion_guardado ,bbox_inches = "tight")
-            plt.close()
+            if repeticion < 2 :
+                direccion_guardado = Path("../../../Imagenes/{}/Histograma_opiniones_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
+                                                                                                                                                 ID_param_y,PARAM_Y,ID_param_extra_1,KAPPAS,repeticion))
+                
+                # Armo mi gráfico, lo guardo y lo cierro
+                
+                plt.rcParams.update({'font.size': 32})
+                plt.figure(figsize=(20,15))
+                _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
+                                         range=[[-KAPPAS,KAPPAS],[-KAPPAS,KAPPAS]],density=True,
+                                         cmap=cmap)
+                plt.xlabel(r"$x_i^1$")
+                plt.ylabel(r"$x_i^2$")
+                plt.title('Histograma 2D, {}={:.2f}_{}={:.2f}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y))
+                plt.colorbar(im, label='Frecuencias')
+                plt.savefig(direccion_guardado ,bbox_inches = "tight")
+                plt.close()
 
 
 """

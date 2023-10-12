@@ -104,8 +104,8 @@ for carp in Carpetas:
 
     #----------------------------------------------------------------------------------------------
     
-#    func.Graf_trayectorias_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-#                                     ID_param_x, ID_param_y, ID_param_extra_1)
+    func.Graf_trayectorias_opiniones(Df_archivos, Direccion, Etapa/carpeta,
+                                     ID_param_x, ID_param_y, ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
