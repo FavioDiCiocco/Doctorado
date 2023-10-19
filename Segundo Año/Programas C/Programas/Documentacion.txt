@@ -53,7 +53,7 @@ Lo que nosotros estamos haciendo entonces es tomar este modelo con estos pesos y
 el caso 1D cosa de ver que nos de lo mismo que a ellos y después hicimos simulaciones 2D que
 es lo que ellos no tenían.
  Este modelo tiene 1000 agentes, toma alfa=1, agrega el parámetro beta para graduar la homofilia
-y barre en Kappa y Cos(delta).
+y barre en Beta y Cos(delta).
  Para el caso 1D armé una carpeta, 1D, en la que guardo los datos del modelo. Lo que hice fue
 simular unos puntos particulares para ver que observo al igual que en el paper que nos pasaron
 que el sistema converge a estados de polarización, radicalización y consenso neutro.
@@ -72,6 +72,9 @@ del vecino en el tópico considerado. Por tanto, voy a descartar el valor de Cos
 Pensé que iba a ser poner una matriz de superposición que sea la identidad, pero me doy cuenta que no
 es tan simple, porque si hago eso, me jodo el cálculo de los pesos w_ij. Creo que tengo que actuar
 directamente sobre la función dinámica.
+ Este modelo lo apliqué a redes con 1000 agentes. En principio hice simplemente unas simulaciones
+rápidas en Oporto, me encargué de armar datos para Beta = 0.1, 1 y 1.5, combinado con Cos(delta) = 0,
+0.5 y 1. El kappa es 3, como siempre creo.
 
 .)Distancias_independientes:
 ---------------------

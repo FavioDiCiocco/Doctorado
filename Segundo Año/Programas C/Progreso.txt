@@ -1269,3 +1269,29 @@ está pidiendo es algo que ya tengo.
 
 .) Y también considerar qué está pasando con las simulaciones que saturan. ¿Esas están bien, o deberían seguir
 oscilando?
+
+------------------------------------------------------------------------------------------
+
+19/10/2023
+
+Superada la reunión del 11/10, el jueves 12 no trabajé mucho en esto, estuve con cosas
+de F2 o de Sistemas Complejos. Honestamente no recuerdo qué pasó ese jueves. Di consultas
+y hablé con Guille y Gabriel sobre el problema 1 del parcial.
+
+De viernes a lunes no laburé en esto, cosas del parcial y de Sistemas Complejos. Además fue
+finde largo todo eso. El martes tomamos el parcial de F2 y después a la tarde cargué los
+archivos de PDF a la carpeta de Parciales. El miércoles estuve laburando lo que pude
+en Sistemas Complejos.
+
+Hoy a la mañana resolví el tema de cargar mi CBU a AFIP para el reintegro del IVA. Después
+organicé partidas y me puse por último a revisar Documentación.
+
+Armé la documentación sobre las carpetas de imágenes. Me queda actualizar la documentación en
+la carpeta de Python. Estuve pensando en mandar a correr simulaciones. Podría por un lado
+aprovechar y aumentar las simulaciones de Homofilia_estática en Algarve cosa de tener
+200 simulaciones. Y mientras tanto, armar otras 200 simulaciones en Oporto del modelo de
+Tangente_diferenciada. La paja de eso es que voy a tener que recordar dónde están los
+datos de qué, pero supongo que no es tanto bardo por ahora. En el peor de los casos,
+podría pasar los datos de una pc a la otra y listo. Yo creo que es posible eso y que
+vale la pena. Hagamos esto de las dos simulaciones. Es más, armemos una prueba y veamos
+si puedo copiar datos de una pc a otra. Parece que Algarve no está encendida.

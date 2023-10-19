@@ -17,3 +17,48 @@ de convergencia, la dinámica de convergencia y quizás la existencia de estados
 metaestables. Para eso estoy armando gráficos de Promedios de Opiniones, Tiempo
 de Convergencia e interés en función del tiempo. Los gráficos de interés consideran
 unos 100 agentes de mis simulaciones de 1000 agentes.
+ Mirando los gráficos en Oporto, no parece que tenga mucho hecho, aunque los datos
+parecen ser más exhaustivos. Las simulaciones en este caso son con el modelo que tiene
+una función logística como activación y si no veo mal, varío Kappa y Alfa, dejando
+Epsilon fijo. La idea creo era ver la región que dependía de Alfa y Kappa.
+
+.) Complemento Poster:
+----------------------
+Acá lo que hice fue tomar el modelo de Exploración_Logística, es decir el modelo
+con la función logística como función de activación y con parámetros Kappa (influencia
+de vecinos), Alfa (controversialidad del tópico) y Epsilon (umbral de interés).
+ En Oporto supuestamente hice carpetas de simulaciones con Kappa fijo, Alfa fijo
+y Epsilon fijo. Sin embargo creo que más cerca de la fecha resultó que tenía algunos
+datos y tuve que resolver con lo que tenía. Además las simulaciones que armé fueron cosas
+más específicas según las necesidades del poster.
+ Al final del día hice unos gráficos para ejemplificar la aparición de uno o tres puntos
+fijos, la región de parámetros en la cual existen los tres puntos fijos y gráficos de
+opinión versus tiempo, y finalmente ese gráfico que marcar el salto en el comportamiento del
+sistema cuando el valor de epsilon crece, algo que marca un comportamiento de histéresis.
+
+.) Homofilia_estática:
+----------------------
+Acá estamos usando el modelo que tiene una tanh como función de activación y unos pesos
+en las interacciones calculados según la homofilia entre agentes. Tengo gráficos para
+el modelo en 1D y en 2D. O al menos juraría que armé de esos, pero en la facultad sólo
+tengo 1D.
+ Para 1D me armé gráficos de OpivsT, Opinión Promedio y Varianza de tiempo en el espacio
+de parámetros. Eso lo hice para algunos valores particulares de Kappa y Beta, cosa de ver
+que obtengo los mismos resultados que en el paper que nos pasó la gente de España.
+ Para 2D armé gráficos de Trayectoria de Opiniones, Histogramas y Promedio de Opiniones.
+Los histogramas son histogramas 2D en el espacio de opiniones. Estamos viendo que seguramente
+necesite plantear alguna otra forma de revisar mejor los histogramas. Estos gráficos están
+armados sobre un barrido en el espacio Beta [0,2] y Cos(delta) [0,1], con 1000 agentes,
+redes de ER con grado medio 8 y Kappa = 3. En principio tengo 100 simulaciones por ensamble,
+pero planeo llevar eso a 200 para tener un poco más de estadística. Los datos con el barrido
+fino están en algarve, en Oporto hago simulaciones de regiones particulares.
+
+
+.) Tangente_diferenciada:
+-------------------------
+Tomo el modelo de Homofilia_estática, uso la misma forma de calcular los pesos pero remuevo la
+superposición de opiniones en el argumento de la tanh. Es decir, la tanh sólo considera la opinión
+del vecino en el tópico en discusión, mientras que el peso hacia esa opinión considera la opinión
+del vecino en todos los tópicos, mediada por la superposición de tópicos cos(delta) correspondiente.
+ Actualmente tengo unas pocas simulaciones de esto en Oporto. Después haré un barrido fino similar
+al que hice con la etapa de Homofilia_estática.
