@@ -1295,3 +1295,29 @@ datos de qué, pero supongo que no es tanto bardo por ahora. En el peor de los c
 podría pasar los datos de una pc a la otra y listo. Yo creo que es posible eso y que
 vale la pena. Hagamos esto de las dos simulaciones. Es más, armemos una prueba y veamos
 si puedo copiar datos de una pc a otra. Parece que Algarve no está encendida.
+
+------------------------------------------------------------------------------------------
+
+24/10/2023
+
+El viernes 20 arranqué a leer el paper, tuve clases de F2 y después vino el DF Abierto.
+El sábado y domingo 21 y 22 seguí laburando, tanto en el TP de CFS como en el paper
+para la reunión de grupo.
+El lunes 23 en la mañana terminé de leer el paper y a la tarde fui a cursar CFS. Corrieron
+la fecha de entrega del TP al miércoles 25.
+
+Hoy a la mañana terminé la presentación para la reunión de grupo. Ya la cargué al Drive
+que pasó Ale. Fui a responder consultas de F2. Tengo que ponerme al día con las guías.
+
+Di la charla de grupo. Salió bastante bien, me la elogiaron bastante. Me alegra.
+Se resolvió correctamente esto.
+
+Ahora voy a mandar a correr datos en Oporto y Coimbra. En Oporto voy a mandar a correr
+los datos de Tangente_Diferenciada que barran en el espacio Beta=[0,2] de a 0.1 y 
+Cos(delta)=[0,1] de a 0.1. Serán 200 simulaciones por punto del espacio de parámetros.
+Corro esto en Oporto porque tengo todo básicamente armado para eso. Después copiaré
+los archivos para mandar a correr eso en Coimbra.
+
+Al final no mandé a correr cosas en Coimbra. Me tomó un montón de tiempo simplemente descargar
+los datos. Voy a ver de borrar las cosas innecesarias como los archivos de datos. Esos
+no los necesito porque los tengo en Oporto.
