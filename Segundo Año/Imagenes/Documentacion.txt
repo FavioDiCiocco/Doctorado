@@ -52,6 +52,9 @@ armados sobre un barrido en el espacio Beta [0,2] y Cos(delta) [0,1], con 1000 a
 redes de ER con grado medio 8 y Kappa = 3. En principio tengo 100 simulaciones por ensamble,
 pero planeo llevar eso a 200 para tener un poco más de estadística. Los datos con el barrido
 fino están en algarve, en Oporto hago simulaciones de regiones particulares.
+ En Histogramas_2D me guardé los gráficos de los histogramas que hice para cada simulación
+dado mi barrido fino. El tema de guardarlo en una carpeta aparte es que son miles de gráficos.
+Imposible de analizar.
 
 
 .) Tangente_diferenciada:

@@ -1321,3 +1321,41 @@ los archivos para mandar a correr eso en Coimbra.
 Al final no mandé a correr cosas en Coimbra. Me tomó un montón de tiempo simplemente descargar
 los datos. Voy a ver de borrar las cosas innecesarias como los archivos de datos. Esos
 no los necesito porque los tengo en Oporto.
+
+------------------------------------------------------------------------------------------
+
+31/10/2023
+
+El miércoles 25 terminé el TP 3 de CFS. Desde entonces hasta hoy básicamente estuve laburando
+en cosas de F2. Ahora voy a ver de mandar a reproducirse los gráficos de histogramas 2D
+a ver si encuentro los gráficos de cruz que hablamos la otra vez. Voy a ver si puedo más o
+menos mandar a correr datos en Oporto.
+
+Mandé a continuar las simulaciones del caso de tangente diferenciada. Revisando los archivos de 
+salida, me parece que razonablemente todos los hilos habían completado 4 simulaciones de las
+11. Ahora queda que oporto siga laburando.
+
+------------------------------------------------------------------------------------------
+
+03/11/2023
+
+El 01 y 02 de Noviembre estuve corrigiendo parciales y me mudé de vuelta a San Fernando.
+Hoy arranqué mirando los archivos de los histogramas. Son muchos gráficos, pero más o menos
+va yendo la cosa. Encontré dos gráficos interesantes. Uno con la cruz que dijeron que tenía
+que aparecer, otra con tres puntas.
+
+Estos gráficos aparecen para valores de Beta cercanos a 1 y con cos(delta) = 0.
+La primer cruz la vi en Beta = 0.8, Cos(delta) = 0 y sim=58. Hay varias cruces más en
+Beta =0.9. Quizás un barrido más fino cerca de 1 genera otras cruces.
+
+Lo que debería hacer ahora es tomar los datos que tengo en la pc, armar una función que 
+calcule la traza de la matriz de covarianza y comparar eso con algunos gráficos cuya forma
+conozco.
+
+Estoy recordando que por ahora mis funciones son vulnerables a que si tuviera varios N o varios
+Kappa, entonces eventualmente lo voy a tener que corregir eso.
+
+Estoy mirando las covarianzas. No puedo diferenciar correctamente un estado de cuatro puntas de uno
+de dos puntas. Ahí le mandé unos mensajes a pablo con lo que fue una primer observación de esto.
+Se me ocurre que vale la pena armar un mapa de colores utilizando la traza de la matriz de Covarianza
+y ver qué se observa. Qué detecta la matriz de Covarianza y qué no.
