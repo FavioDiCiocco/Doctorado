@@ -1359,3 +1359,13 @@ Estoy mirando las covarianzas. No puedo diferenciar correctamente un estado de c
 de dos puntas. Ahí le mandé unos mensajes a pablo con lo que fue una primer observación de esto.
 Se me ocurre que vale la pena armar un mapa de colores utilizando la traza de la matriz de Covarianza
 y ver qué se observa. Qué detecta la matriz de Covarianza y qué no.
+
+------------------------------------------------------------------------------------------
+
+06/11/2023
+
+Hoy estuve con bastantes cosas así que avancé poco con el tema del doctorado, pero mandé a armar
+un mapa de colores para el espacio de parámetros usando la traza de la covarianza como métrica para
+diferenciar estados. Faltaría sumarle algo más.
+
+Ahora voy a ir a cursar CFS.

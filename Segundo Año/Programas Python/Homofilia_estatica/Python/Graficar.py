@@ -114,7 +114,7 @@ for carp in Carpetas:
 
     # #----------------------------------------------------------------------------------------------
     
-    Covarianzas = func.Calculo_Covarianza(Df_archivos, Direccion,
-                            ID_param_x, ID_param_y)
+    func.Mapa_Colores_Traza_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
+                            SIM_param_x, SIM_param_y, ID_param_extra_1)
 
 func.Tiempo(t0)
