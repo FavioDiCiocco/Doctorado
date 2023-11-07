@@ -1580,7 +1580,7 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
             
         #------------------------------------------------------------------------------------------
         # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
-        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.log(np.mean(Covarianzas))
+        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Covarianzas)
             
     #--------------------------------------------------------------------------------
     
