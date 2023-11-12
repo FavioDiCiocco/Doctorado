@@ -109,12 +109,17 @@ for carp in Carpetas:
     
     # #----------------------------------------------------------------------------------------------
     
-    # func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
-    #                                  ID_param_x, ID_param_y, ID_param_extra_1)
+    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
+                                      ID_param_x, ID_param_y, ID_param_extra_1)
 
-    # #----------------------------------------------------------------------------------------------
+#     #----------------------------------------------------------------------------------------------
+#    
+#    func.Mapa_Colores_Traza_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
+#                            SIM_param_x, SIM_param_y, ID_param_extra_1)
     
-    func.Mapa_Colores_Traza_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
-                            SIM_param_x, SIM_param_y, ID_param_extra_1)
+    #----------------------------------------------------------------------------------------------
+    
+    Covarianzas = func.Calculo_Covarianza(Df_archivos, Direccion)
+    
 
 func.Tiempo(t0)

@@ -1369,3 +1369,38 @@ un mapa de colores para el espacio de parámetros usando la traza de la covarian
 diferenciar estados. Faltaría sumarle algo más.
 
 Ahora voy a ir a cursar CFS.
+
+------------------------------------------------------------------------------------------
+
+08/11/2023
+
+Una buena idea sería modificar el K=10 para poder observar mejor las cruces que me mencionan.
+En esa región la tanh se puede aproximar más por uno. También podría ser posible que en una
+de esas la cruz nunca se forme. Quizás se forma una nube.
+
+Enfocarme en las simulaciones más en la región entre 0.5 y 1.5, el resto se resuelve con menos
+estadística porque no es tan importante. Eso va a ayudar a hacer más rápido las simulaciones.
+
+Revisar el tiempo que duran los estados metaestables. Me propusieron que debería mirar el cómo
+evoluciona la polarización de los estados en función del tiempo. Debería usar una métrica para definir
+si está o no polarizado, luego de eso ver la fracción de polarización en función del tiempo y con eso
+determinar un tiempo de corte razonable.
+
+Ellos proponen dos medidas para definir la diferencia entre estados polarizados y no polarizados.
+La primer medida es una distancia de las distribuciones al centro para definir si el estado es
+polarizado o no, y luego el uso de la covarianza para diferenciar los tipos de polarización.
+Se podría considerar una entropía de Leibler creo, o información mutua. Esto me parece 
+que en principio es mucho, vamos a arrancar con la covarianza.
+
+Una tercera propuesta es usar la Kurtosis para diferenciar qué tan bimodal es una distribución.
+Hugo propone que no es necesario encontrar una respuesta a eso, pero la curtosis podría darnos una
+medida de eso.
+
+Pablo dijo que hay un test para determinar si una distribución es unimodal o bimodal.
+
+Dijo Hugo que lo primordial es revisar el espacio de parámetros y definir la fracción de estados
+polarizados.
+
+##########################################
+Lo primero y lo último son lo más urgente.
+##########################################
