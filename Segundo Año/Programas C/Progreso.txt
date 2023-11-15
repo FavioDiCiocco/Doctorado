@@ -1404,3 +1404,45 @@ polarizados.
 ##########################################
 Lo primero y lo último son lo más urgente.
 ##########################################
+
+
+------------------------------------------------------------------------------------------
+
+15/11/2023
+
+Voy a armar una etapa nueva para probar las métricas que nos propusieron la otra vez.
+Específicamente la métrica de distancia de las opiniones al centro y la de la covarianza.
+Esta etapa razonablemente será Prueba_metricas. La idea es armar un código de Python que genere
+datos sintéticos. Estos datos sintéticos voy a usarlos como forma de medir que tan bien las
+métricas diferencian estos estados.
+
+¿Qué estados necesito generar?
+-------------------------------
+
+1) Consenso neutral: Todos al centro. (Una configuración posible)
+
+2) Polarización en un extremo: Todos a una esquina. (Cuatro configuraciones posibles)
+3) Polarización a un extremo con anchura: Que haya una distribución desde el centro hasta ese
+extremo. Podría además hacer que esa distribución sea homogénea, bimodal, más grande en un 
+extremo o en el otro. (Cuatro por cuatro configuraciones posibles)
+
+4) Polarización a dos extremos: Todos a dos esquinas. (Seis configuraciones posibles)
+5) Polarización a dos extremos con anchura: Al igual que en el anterior, anchura entre los extremos.
+Me parece que justamente, si tengo dos extremos, los agentes se ubican en las rectas que unen esos extremos,
+no en rectas en otras direcciones. Si armo todas las combinaciones posibles, esto va a cubrir los casos en
+que las opiniones se distribuyan de forma horizontal o vertical. (Seis por cuatro configuraciones posibles)
+
+6) Polarización a tres extremos: Todos a tres esquinas. (Cuatro configuraciones posibles)
+7) Polarización a tres extremos con anchura: Al igual que en el anterior, anchura entre los extremos.
+Acá no me parece tan obvio entender cómo va la anchura, pero diría que entre las tres puntas se puede
+dar, es decir que repartiría agentes de forma que haya anchura formada por "dentro" de las tres esquinas
+y por los "bordes". (Cuatro por cuatro por dos configuraciones posibles) No creo que use todas las configuraciones
+posibles en este caso.
+
+8) Polarización a cuatro extremos: Todos a cuatro esquinas (Una configuración posible)
+9) Polarización a cuatro extremos con anchura: En este caso me parece que sólo conviene considerar la
+anchura por "dentro". (Uno por cuatro configuraciones posibles).
+
+
+
+
