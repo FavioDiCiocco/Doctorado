@@ -1443,6 +1443,26 @@ posibles en este caso.
 9) Polarización a cuatro extremos con anchura: En este caso me parece que sólo conviene considerar la
 anchura por "dentro". (Uno por cuatro configuraciones posibles).
 
+Antes de hacer esto, me junté con Pablo y charlamos de cuál es el plan de cosas a hacer. Para eso me
+parece clave entonces primero probar lo que charlábamos de ver si cambiando el dt puedo trabajar el sistema
+con un dt=0.1. Eso haría que todo vaya 10 veces más rápido. O más incluso. Probemos entonces con
+hacer unas simulaciones de prueba y enviarlas a Homofilia_estatica. Usaré simulaciones con K=10.
+Esas no se van a mezclar con las que ya tengo. Voy a mandar una simulación con dt=0.01 y otra con dt=0.1.
+Ambas con el mismo número random, 1511. Probaré esto para algún valor lejos de la interfaz,
+con beta=2 por ejemplo, y otro sobre la interfaz, con beta=1. Si todo va bien, genial. Ir bien sería
+que me dan los mismos valores de opiniones finales para ambos casos. Esto va a tomar un rato en correr
+igual, mientras esto se resuelve, pasaré a otra cosa. TENGO QUE DOCUMENTAR LAS NUEVAS ETAPAS.
+Para diferenciar las simulaciones, la de dt=0.01 tiene número de iteración 10. La de dt=0.1
+tiene número de iteración 100.
 
+El sistema tarda claramente menos, casi 10 veces menos. Pero no parece llegar a los mismos estados.
+Parece que los saltos bruscos lo pueden hacer llevar a estados distintos, eso lo veo en que las opiniones
+finales de bastantes agentes no coinciden en signo. Voy a armar los histogramas y ver qué observo.
 
+Comparando los histogramas, los estados finales son prácticamente iguales. Puedo hacer las cuentas con
+el dt=0.1 sin miedo. Ale y Ale están usando Oporto y Coimbra. No tengo mucho lugar para laburar eso.
+Mañana, o quizás cuando llegue a casa, mandaré a correr nuevos datos.
+
+Hoy antes de irme voy a ver de mandar a correr los datos para barrer la región con kappa y
+cos(delta). Eso voy a mandarlo a correr en Coimbra, supongo.
 

@@ -22,14 +22,21 @@
 // Más algunos otros parámetros relevantes.
 double Dinamica_sumatoria(ps_Red ps_variable, ps_Param ps_parametro){
 	// Defino las variables locales de mi función
+	double d_opiniones_superpuestas = 0; // Es el producto de la matriz de superposición de tópicos con el vector opinión de un agente.
 	double d_resultado; // Es el valor que returnea la función
 	
 	// Obtengo el tamaño de columnas de mis dos matrices
-	int i_Co;
+	int i_Co,i_Cs;
 	i_Co = (int) ps_variable->pd_Opiniones[1]; // Número de columnas en la matriz de opiniones
-		
+	i_Cs = (int) ps_variable->pd_Angulos[1]; // Número de columnas en la matriz de superposición
+	
+	// Calculo el producto de la matriz con el vector.
+	for(register int i_p=0; i_p<i_Cs; i_p++){
+		d_opiniones_superpuestas += ps_variable->pd_Angulos[ps_variable->i_topico*i_Cs+i_p+2]*ps_variable->pd_Opiniones[ps_variable->i_agente2*i_Co+i_p+2];
+	}
+	
 	// Ahora que tengo todo, calculo el resultado y returneo
-	d_resultado = tanh(ps_variable->pd_Opiniones[ps_variable->i_agente2*i_Co+ps_variable->i_topico+2]);
+	d_resultado = tanh(d_opiniones_superpuestas);
 	return d_resultado; // La función devuelve el número que buscás, no te lo asigna en una variable.
 }
 
@@ -40,12 +47,6 @@ double Dinamica_opiniones(ps_Red ps_variable, ps_Param ps_parametro){
 	double d_sumatoria = 0; // d_sumatoria es el total de la sumatoria del segundo término de la ecuación diferencial.
 	double d_numerador; // d_denominador es el numerador de los pesos por homofilia.
 	double d_denominador; // d_denominador es el denominador de la normalización de los pesos por homofilia.
-	
-	//######################################################################
-	// Voy a remover el cos(delta) de la tangente hiperbolica. Pero al mismo tiempo quiero que 
-	// el cálculo de la distancia en los pesos siga realizándose correctamente. Por tanto no voy a
-	// deshacer la matriz de superposición, sino que voy a quitar el for en la función de Dinámica_sumatoria
-	//######################################################################
 	
 	d_denominador = Normalizacion_homofilia(ps_variable, ps_parametro);
 	
