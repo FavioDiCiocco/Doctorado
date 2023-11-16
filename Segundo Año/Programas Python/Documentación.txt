@@ -40,8 +40,41 @@ para calcular la distancia usando la matriz de Superposición, por lo que está 
 para 1D como para cualquier N dimensiones. Lo único extra a considerar es que según el número
 de dimensiones, los datos se guardan en una carpeta distinta. Entonces si quisiera armar datos
 5D, tendría que tener la carpeta 5D construída.
+ Para esto terminé usando un K=3, barriendo beta [0,2] de a 0.1 y barriendo cos(delta) [0,1]
+de a 0.1 también. Usé N=1000 al final, las primeras pruebas fueron con N=10000 pero para hacer
+cuentas rápido y llegar con las presentaciones usé N=1000.
 
 Tangente Diferenciada:
 ----------------------
+Acá lo que estoy haciendo es correr un modelo idéntico al de arriba pero que quita el
+término de cos(delta) de adentro de la tangente hiperbólica. Esto me deja la correlación
+entre tópicos presente únicamente en los pesos de la red. La idea es observar si ese factor
+adentro de la tangente hiperbólica simplemente es como un refuerzo sobre el factor de los
+pesos. Como que ambos cumplen el mismo propósito y que si sacando uno puedo observar los mismos
+resultados para valores de pesos más altos, o algo así. Para esto lo que hice es un barrido en
+un espacio similar al caso 2D de la red anterior. Usé básicamente el mismo código que en el
+caso anterior, con las mismas redes y con 1000 agentes. El caso anterior también lo hice con 1000
+agentes al final. Los datos de esto están en Oporto.
 
+Prueba Métrica:
+----------------
+Esta es una carpeta para trabajar más desde Python, no tiene un correspondiente en C. La idea
+es construir sintéticamente distribuciones de datos similares a las que planeo medir. Con
+eso el plan es ponerme a probar las métricas que charlamos con Pablo y con Hugo, la de la
+distancia promedio de los puntos al centro del espacio de tópicos, la traza de la matriz
+de Covarianza, las medidas de covarianza mutua (los elementos fuera de la diagonal) y
+el determinante de la matriz de covarianza. El objetivo es ver cuántos estados puedo diferenciar
+con esas métricas.
+ Lo primero es usar el archivo de Generacion_datos.py para construir los datos sintéticos. Esos
+archivos con datos con formas similares a los que tengo de otros 
 
+Medidas Polarización:
+---------------------
+Acá lo que voy a hacer son barridos más serios y usar las medidas de polarización que mencioné antes
+para diferenciar los estados polarizados de los que no y los distintos tipos de polarización.
+ Lo primero que voy a hacer es un barrido con cos(delta)= 0 en el espacio Beta-Kappa.
+Voy a barrer Beta en [0,2] de a 0.1 y Kappa en [0,10] de a 0.5. Aunque en la región [0,1] voy
+a barrer Kappa de a 0.2. Para este conjunto de parámetros además voy a tomar 40 simulaciones
+cosa de tener una idea más o menos del comportamiento. Algo importante es que a partir de este
+punto estoy usando dt=0.1 en vez de 0.01. Eso fue una propuesta de Hugo y ayuda a reducir los tiempos
+de simulación. No fue tanto como hubiera deseado, pero fue bastante.

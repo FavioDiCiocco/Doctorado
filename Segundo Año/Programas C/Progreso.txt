@@ -1466,3 +1466,41 @@ Mañana, o quizás cuando llegue a casa, mandaré a correr nuevos datos.
 Hoy antes de irme voy a ver de mandar a correr los datos para barrer la región con kappa y
 cos(delta). Eso voy a mandarlo a correr en Coimbra, supongo.
 
+------------------------------------------------------------------------------------------
+
+16/11/2023
+
+Hoy todo lo que estaba corriendo Ale Mildiner en Oporto se fue. No hay nada corriendo ahí. Es
+mi oportunidad de ocupar todos los hilos. Voy a mandar a hacer un barrido de datos en el espacio
+de Beta_Kappa con un dt de 0.1. Creo que es oportuno cambiar la etapa. Esta será Medidas_polarizacion.
+Tendrá dos carpetas, una para ver la región de Beta_Kappa con cos(delta)=0, y otra para ver la región
+una vez que tengo Kappa en 10.
+
+Lo importante por lo que voy a separar esto de la carpeta de Homofilia_estatica es que en esa
+yo estaba trabajando con dt=0.01, como hace Baumann. Sin embargo, hablando con Hugo y David
+nos dijeron que podemos usar dt=0.1. Yo probé dos puntos para ver cómo da el sistema, y es muy
+similar lo que da en ambos casos.
+ Necesito barrer Beta entre 0 y 2, hagámoslo de a 0.1. Por otro lado tengo que barrer Kappa entre
+0 y 20. Hagámoslo de a 0.5, aunque veamos si puedo hacer el [0,1] de a 0.2.
+ Por lo que vi ayer, esto haría que las simulaciones que tardaban 200 segundos tarden 7, y la
+de 520 segundos tardó 250. Entonces supongo que puedo más o menos promediar 100 segundos por simu-
+lación. No necesito mucha estadística, con 40 iteraciones me sobra.
+ Así que tengo 21*48*40*100 = 4032000 segundos = 1120 horas. Esto dividido en 10 hilos serían 112 horas,
+o lo que es lo mismo, 4 días y medio. Estaría más o menos para las elecciones. Intentemos que esto
+se termine antes. Aprovecho para reducir la cantidad de pasos máximos del sistema, porque al cambiar
+el dt, cambio el tiempo máximo al cual el sistema llegaría. Ahora llega 10 veces más lejos. Puedo
+entonces reducir a la mitad la cantidad de pasos máximos, creo que no estaría mal.
+
+Ahí mandé las simulaciones. Me apropié de Oporto. Espero que sean sólo dos días como mucho.
+No parece que vaya a ser sólo eso nomás. Ojalá el sistema converja rápido.
+
+Mientras eso corre hay dos cosas que tengo que hacer. La primera es armar datos sintéticos y poner
+a prueba las métricas que charlamos con Pablo. La segunda es documentar las etapas que estoy
+armando.
+
+Luego está la tercera, que es intentar armar algo para medir la fracción de polarización de
+estados. Para eso voy a necesitar mandar a correr datos en Coimbra.
+
+Aproveché y armé una carpeta que sea de Medidas_polarizacion en mi carpeta, le puse los archivos
+de Python de Prueba_metrica y después subí eso a Oporto.
+

@@ -16,7 +16,7 @@ int main(int argc, char *argv[]){
 	// Empecemos con la base. Defino variables de tiempo para medir cuanto tardo y cosas básicas
 	time_t tt_prin,tt_fin,semilla;
 	time(&tt_prin);
-	semilla = 1511; //time(NULL);
+	semilla = time(NULL);
 	srand(semilla); // Voy a definir la semilla a partir de time(NULL);
 	float f_tardanza; // Este es el float que le paso al printf para saber cuanto tardé
 	
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]){
 	ps_datos->i_T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
 	ps_datos->i_Iteraciones_extras = 40; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	ps_datos->i_pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
-	ps_datos->d_dt = 0.01; // Paso temporal de iteración del sistema
+	ps_datos->d_dt = 0.1; // Paso temporal de iteración del sistema
 	ps_datos->d_alfa = 1; // Controversialidad de los tópicos
 	ps_datos->d_delta = 0.002*ps_datos->d_kappa; // Es un término que se suma en la homofilia y ayuda a que los pesos no diverjan.
 	ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
@@ -53,7 +53,7 @@ int main(int argc, char *argv[]){
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
 	int i_pasos_simulados = 0; // Esta variable me sirve para cortar si simulo demasiado tiempo.
-	int i_pasos_maximos = 20000; // Esta es la cantidad de pasos máximos a simular
+	int i_pasos_maximos = 10000; // Esta es la cantidad de pasos máximos a simular
 	
 	// Voy a armar mi array de punteros, el cual voy a usar para guardar los datos de pasos previos del sistema
 	double* ap_OpinionesPrevias[ps_datos->i_pasosprevios];
@@ -109,13 +109,13 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_Opiniones[355];
-	sprintf(s_Opiniones,"../Programas Python/Homofilia_estatica/%dD/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+	sprintf(s_Opiniones,"../Programas Python/Medidas_polarizacion/%dD/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
 		,ps_datos->i_T,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
 	FILE *pa_Opiniones=fopen(s_Opiniones,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_Testigos[355];
-	sprintf(s_Testigos,"../Programas Python/Homofilia_estatica/%dD/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+	sprintf(s_Testigos,"../Programas Python/Medidas_polarizacion/%dD/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
 		,ps_datos->i_T,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
 	FILE *pa_Testigos=fopen(s_Testigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
