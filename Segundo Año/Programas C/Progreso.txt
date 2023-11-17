@@ -1504,3 +1504,13 @@ estados. Para eso voy a necesitar mandar a correr datos en Coimbra.
 Aproveché y armé una carpeta que sea de Medidas_polarizacion en mi carpeta, le puse los archivos
 de Python de Prueba_metrica y después subí eso a Oporto.
 
+------------------------------------------------------------------------------------------
+
+17/11/2023
+
+A la mañana fui a dar clases de F2. La clase fue bastante larga, los chicos están viendo
+temas de interferómetros. Tengo que ponerme a tiro con eso.
+
+Después me puse a armar configuraciones sintéticas de datos. No estaría resultando tan
+fácil como esperaba. Voy a reducir el laburo y ver de armar las cosas que espero.
+
