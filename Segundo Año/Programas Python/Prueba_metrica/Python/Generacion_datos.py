@@ -51,11 +51,12 @@ def Guardar_archivo(array, filename):
         array_str = '\t'.join(map(str, array))
         file.write(array_str)
     
-    print(f"The text and array have been saved to {filename}")
+#    print(f"The text and array have been saved to {filename}")
 
 
 ##################################################################################
 ##################################################################################
+t0 = time.time()
     
 rng = np.random.default_rng()
 
@@ -69,6 +70,8 @@ rng = np.random.default_rng()
 media = 0
 desv = 0.05
 N = 1000
+
+ruido = rng.normal(0,0.01,N)
 
 X = rng.normal(media,desv,N)
 Y = rng.normal(media,desv,N)
@@ -86,6 +89,7 @@ Guardar_archivo(Opiniones,filename)
 
 desv = 0.05
 N = 1000
+ruido = rng.normal(0,0.01,N)
 
 Medias = np.array([-5,5])
 
@@ -93,7 +97,7 @@ for indice1,mediax in enumerate(Medias):
     for indice2,mediay in enumerate(Medias):
 
         X = rng.normal(mediax,desv,N)
-        Y = rng.normal(mediay,desv,N)
+        Y = (X+ruido)*np.sign(mediay)
         
         Opiniones = np.zeros(2*N)
         Opiniones[0::2] = X
@@ -120,9 +124,12 @@ Medias = np.array([-5,5])
 
 for indice1,kx in enumerate(Medias):
     for indice2,ky in enumerate(Medias):
-
-        X = rng.random(N)*kx
-        Y = rng.random(N)*ky
+        
+        distr = rng.random(N)
+        ruido = rng.normal(0,0.01,N)
+        
+        X = distr*kx
+        Y = (distr+ruido)*ky
         
         Opiniones = np.zeros(2*N)
         Opiniones[0::2] = X
@@ -143,6 +150,8 @@ desv = 0.5
 for indice1,direcx in enumerate(extremos):
     for indice2,direcy in enumerate(extremos):
 
+        ruido = rng.normal(0,0.01,N)
+        
         X1 = rng.normal(1.5,desv,int(N/2))
         X2 = rng.normal(K-1.5,desv,int(N/2))
         
@@ -150,15 +159,8 @@ for indice1,direcx in enumerate(extremos):
         X[X < 0] = np.zeros(X[X < 0].shape[0])
         X[X > K] = np.ones(X[X > K].shape[0])*K
         
-        Y1 = rng.normal(1.5,desv,int(N/2))
-        Y2 = rng.normal(K-1.5,desv,int(N/2))
-        
-        Y = np.concatenate((Y1,Y2))
-        Y[Y < 0] = np.zeros(Y[Y < 0].shape[0])
-        Y[Y > K] = np.ones(Y[Y > K].shape[0])*K
-        
         X = X*direcx
-        Y = Y*direcy
+        Y = (X+ruido)*direcy
         
         Opiniones = np.zeros(2*N)
         Opiniones[0::2] = X
@@ -173,27 +175,23 @@ for indice1,direcx in enumerate(extremos):
 
 extremos = np.array([-1,1])
 K = 5
-desv = 0.25
+desv = 0.5
 
 for indice1,direcx in enumerate(extremos):
     for indice2,direcy in enumerate(extremos):
 
-        X1 = rng.random(int(N/2))
-        X2 = rng.normal(K-1.5,desv,int(N/2))
+        ruido = rng.normal(0,0.01,N)
         
-        X = np.concatenate((X1,X2))
+#        X1 = rng.random(int(N/4))
+        X = rng.normal(K-1.5,desv,N)
+        
+#        X = np.concatenate((X1,X2))
         X[X < 0] = np.zeros(X[X < 0].shape[0])
         X[X > K] = np.ones(X[X > K].shape[0])*K
         
-        Y1 = rng.random(int(N/2))
-        Y2 = rng.normal(K-1.5,desv,int(N/2))
-        
-        Y = np.concatenate((Y1,Y2))
-        Y[Y < 0] = np.zeros(Y[Y < 0].shape[0])
-        Y[Y > K] = np.ones(Y[Y > K].shape[0])*K
         
         X = X*direcx
-        Y = Y*direcy
+        Y = (X+ruido)*direcy
         
         Opiniones = np.zeros(2*N)
         Opiniones[0::2] = X
@@ -208,27 +206,22 @@ for indice1,direcx in enumerate(extremos):
 
 extremos = np.array([-1,1])
 K = 5
-desv = 0.25
+desv = 0.5
 
 for indice1,direcx in enumerate(extremos):
     for indice2,direcy in enumerate(extremos):
-
-        X1 = rng.random(int(N/2))
-        X2 = rng.normal(1.5,desv,int(N/2))
         
-        X = np.concatenate((X1,X2))
+        ruido = rng.normal(0,0.01,N)
+
+#        X1 = rng.random(int(N/2))
+        X = rng.normal(1.5,desv,N)
+        
+#        X = np.concatenate((X1,X2))
         X[X < 0] = np.zeros(X[X < 0].shape[0])
         X[X > K] = np.ones(X[X > K].shape[0])*K
         
-        Y1 = rng.random(int(N/2))
-        Y2 = rng.normal(1.5,desv,int(N/2))
-        
-        Y = np.concatenate((Y1,Y2))
-        Y[Y < 0] = np.zeros(Y[Y < 0].shape[0])
-        Y[Y > K] = np.ones(Y[Y > K].shape[0])*K
-        
         X = X*direcx
-        Y = Y*direcy
+        Y = (X+ruido)*direcy
         
         Opiniones = np.zeros(2*N)
         Opiniones[0::2] = X
@@ -251,35 +244,165 @@ extremos_tupla = np.array([(x,y) for x in extremos for y in extremos])
 
 indice = -1
 
-for extremo1 in extremos_tupla:
-    for extremo2 in extremos_tupla:
-        if np.array([x != y for x,y in zip(extremo1,extremo2)]).any():
-    
-            X1 = rng.normal(K,desv,int(N/2))
-            X2 = rng.normal(K,desv,int(N/2))
+for i,extremo1 in enumerate(extremos_tupla):
+    for extremo2 in extremos_tupla[i+1::]:
+#        if np.array([x != y for x,y in zip(extremo1,extremo2)]).any():
             
-            X1 = X1*extremo1[0]
-            X2 = X2*extremo2[0]
-            
-            X = np.concatenate((X1,X2))
-            
-            Y1 = rng.normal(K,desv,int(N/2))
-            Y2 = rng.normal(K,desv,int(N/2))
-            
-            Y1 = Y1*extremo1[1]
-            Y2 = Y2*extremo2[1]
-            
-            Y = np.concatenate((Y1,Y2))
-            
-            Opiniones = np.zeros(2*N)
-            Opiniones[0::2] = X
-            Opiniones[1::2] = Y
-            
-            indice = indice + 1
-            
-            filename = "../Datos/Opiniones_N=1000_kappa=6_beta=1.5_cosd=0.00_Iter={}.file".format(indice)
-            
-            Guardar_archivo(Opiniones,filename)
+        ruido = rng.normal(0,0.01,N)
+
+        X1 = rng.normal(K,desv,int(N/2))
+        X2 = rng.normal(K,desv,int(N/2))
+        
+        X = np.concatenate((X1*extremo1[0],X2*extremo2[0]))
+        Y = np.concatenate((X1*extremo1[1],X2*extremo2[1]))+ruido
+        
+        Opiniones = np.zeros(2*N)
+        Opiniones[0::2] = X
+        Opiniones[1::2] = Y
+        
+        indice = indice + 1
+        
+        filename = "../Datos/Opiniones_N=1000_kappa=6_beta=1.1_cosd=0.00_Iter={}.file".format(indice)
+        
+        Guardar_archivo(Opiniones,filename)
             
             
 
+##################################################################################
+# Armo los gráficos de polarización a dos de los extremos con anchura.
+# Para hacer anchura en el caso de dos extremos necesito separar mis seis
+# casos en tres grupos, los verticales, los horizontales y los diagonales.
+        
+# Arranco con el armado de datos para el caso homogéneo
+        
+K = 5
+N = 1000
+
+# Horizontales
+indice = 0
+for extremo in np.array([-1,1]):
+
+    X = (rng.random(N)-0.5)*K*2
+    Y = rng.normal(K,0.05,N)*extremo
+    
+    Opiniones = np.zeros(2*N)
+    Opiniones[0::2] = X
+    Opiniones[1::2] = Y
+    
+    filename = "../Datos/Opiniones_N=1000_kappa=6_beta=1.1_cosd=0.00_Iter={}.file".format(indice+6)
+
+    Guardar_archivo(Opiniones,filename)
+    
+    indice = indice + 1
+    
+# Verticales
+indice = 0
+for extremo in np.array([-1,1]):
+
+    X = rng.normal(K,0.05,N)*extremo
+    Y = (rng.random(N)-0.5)*K*2
+    
+    Opiniones = np.zeros(2*N)
+    Opiniones[0::2] = X
+    Opiniones[1::2] = Y
+    
+    filename = "../Datos/Opiniones_N=1000_kappa=6_beta=1.1_cosd=0.00_Iter={}.file".format(indice+8)
+
+    Guardar_archivo(Opiniones,filename)
+    
+    indice = indice + 1
+    
+# Diagonales
+indice = 0
+for extremo in np.array([-1,1]):
+
+    ruido = rng.normal(0,0.01,N)
+    
+    X = (rng.random(N)-0.5)*K*2
+    Y = X*extremo + ruido
+    
+    Opiniones = np.zeros(2*N)
+    Opiniones[0::2] = X
+    Opiniones[1::2] = Y
+    
+    filename = "../Datos/Opiniones_N=1000_kappa=6_beta=1.1_cosd=0.00_Iter={}.file".format(indice+10)
+
+    Guardar_archivo(Opiniones,filename)
+    
+    indice = indice + 1
+    
+
+
+##################################################################################
+# Armo los gráficos de polarización a tres de los extremos
+    
+
+extremos = np.array([-1,1])
+desv = 0.05
+K = 5
+N = 1000
+
+extremos_tupla = np.array([(x,y) for x in extremos for y in extremos])
+
+indice = -1
+
+for i in range(4):
+    X_i = rng.normal(K,desv,N)
+    X = np.zeros(N)
+    ruido = rng.normal(0,0.01,N)
+    
+    extremos_graficar = np.delete(np.arange(4),i)
+    for j,extremo in enumerate(extremos_tupla[extremos_graficar]):
+        X[int((N/3)*j):int((N/3)*(j+1))] = X_i[int((N/3)*j):int((N/3)*(j+1))]*extremo[0]
+        Y[int((N/3)*j):int((N/3)*(j+1))] = X_i[int((N/3)*j):int((N/3)*(j+1))]*extremo[1]
+    
+    Y = Y + ruido
+    
+    Opiniones = np.zeros(2*N)
+    Opiniones[0::2] = X
+    Opiniones[1::2] = Y
+    
+    indice = indice + 1
+    
+    filename = "../Datos/Opiniones_N=1000_kappa=6_beta=1.5_cosd=0.00_Iter={}.file".format(indice)
+    
+    Guardar_archivo(Opiniones,filename)
+    
+    
+##################################################################################
+# Armo los gráficos de polarización a cuatro de los extremos
+    
+
+extremos = np.array([-1,1])
+desv = 0.05
+K = 5
+N = 1000
+
+extremos_tupla = np.array([(x,y) for x in extremos for y in extremos])
+
+indice = -1
+
+X_i = rng.normal(K,desv,N)
+X = np.zeros(N)
+ruido = rng.normal(0,0.01,N)
+
+for j,extremo in enumerate(extremos_tupla):
+    X[int((N/4)*j):int((N/4)*(j+1))] = X_i[int((N/4)*j):int((N/4)*(j+1))]*extremo[0]
+    Y[int((N/4)*j):int((N/4)*(j+1))] = X_i[int((N/4)*j):int((N/4)*(j+1))]*extremo[1]
+    
+Y = Y + ruido
+
+Opiniones = np.zeros(2*N)
+Opiniones[0::2] = X
+Opiniones[1::2] = Y
+
+indice = indice + 1
+
+filename = "../Datos/Opiniones_N=1000_kappa=6_beta=2_cosd=0.00_Iter={}.file".format(indice)
+
+Guardar_archivo(Opiniones,filename)
+
+
+
+
+Tiempo(t0)

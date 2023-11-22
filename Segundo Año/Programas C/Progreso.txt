@@ -1514,3 +1514,36 @@ temas de interferómetros. Tengo que ponerme a tiro con eso.
 Después me puse a armar configuraciones sintéticas de datos. No estaría resultando tan
 fácil como esperaba. Voy a reducir el laburo y ver de armar las cosas que espero.
 
+------------------------------------------------------------------------------------------
+
+18/11/2023
+
+Tengo que mandar a correr los datos del barrido de Beta-cos(delta), con K = 10. Tomo un
+Beta [0.5,1], cos(delta) [0,1]. Eso significa que puedo variar Beta de a 0.1 y cos(delta)
+también. Así que si quiero 60 simulaciones, cosa de tener un poco de estadística, voy a tener
+que hacer 6*11*60 = 3960 simulaciones. Sabiendo que de 2016 simulaciones por hilo, en 
+54 horas se realizaron 1008, la pregunta es: ¿Cuánto va a tardar en simularse esto?
+
+Ya con 10 hilos tengo 396 simulaciones por hilo. 396 es como 0.4 de 1008. Entonces debería
+aproximadamente resolverse en 21 horas. Menos de un día.
+Ya mandé a correr todo. A las 19 del sábado. Tardé, pero además fue un tema configurar porque
+Coimbra no tenía instalado.
+
+Hecho esto, laburemos en lo que tenía de armar datos sintéticos, porque lo que construí no
+está del todo bien. Después voy a ver de hacer lo de revisar la fracción de estados polarizados
+que charlamos con Pablo.
+
+Continué con el trabajo del armado de datos sintéticos. Corregí las formas raras que tenían algunos
+datos y haciendo unas pruebas más logré armar datos que cumplan los primeros cuatro puntos.
+Me di cuenta que podía armar las distribuciones que son más grandes en un extremo usando simplemente
+una normal, sin necesidad de mezclarla con una distribución homogénea.
+
+------------------------------------------------------------------------------------------
+
+20/11/2023
+
+Vamos a ver si puedo ahora a la noche completar el código del armado de los datos sintéticos.
+La cosa está difícil para mañana. La cosa está difícil para el fin de año. La cosa está difícil.
+Creo que The Dear Hunter va a estar acá para acompañarme. Espero que todo salga bien.
+
+Resolví el caso para algunos extremos. Me iré a dormir y descansaré.

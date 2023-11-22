@@ -119,7 +119,15 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    # Covarianzas = func.Calculo_Covarianza(Df_archivos, Direccion)
+    Covarianzas = func.Calculo_Traza_Covarianza(Df_archivos, Direccion)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    Antidiagonales = func.Calculo_Antidiagonales_Covarianza(Df_archivos, Direccion)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    Determinantes = func.Calculo_Determinantes_Covarianza(Df_archivos, Direccion)
     
 
 func.Tiempo(t0)
