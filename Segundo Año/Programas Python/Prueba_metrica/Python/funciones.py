@@ -1519,7 +1519,8 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
     AGENTES = int(np.unique(DF["n"]))
     
     # Defino los arrays de parámetros diferentes
-    KAPPAS = int(np.unique(DF["Kappas"]))
+#    KAPPAS = int(np.unique(DF["Kappas"]))
+    COSD = int(np.unique(DF["cosdelta"]))
     Arr_param_x = np.unique(DF["parametro_x"])
     Arr_param_y = np.unique(DF["parametro_y"])
     
@@ -1549,7 +1550,7 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
         # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
         archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                     (DF["n"]==AGENTES) & 
-                                    (DF["Kappas"]==KAPPAS) & 
+                                    (DF["cosdelta"]==COSD) & 
                                     (DF["parametro_x"]==PARAM_X) &
                                     (DF["parametro_y"]==PARAM_Y), "nombre"])
         #-----------------------------------------------------------------------------------------
@@ -1576,7 +1577,7 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
             # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
             
             M_cov = np.cov(Opifinales)
-            Covarianzas[indice] = np.trace(M_cov)
+            Covarianzas[indice] = np.trace(M_cov)/(2*PARAM_X*PARAM_X)
             
         #------------------------------------------------------------------------------------------
         # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
@@ -1585,7 +1586,7 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
     #--------------------------------------------------------------------------------
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/Traza_Covarianza_{}={}.png".format(carpeta,ID_param_extra_1,KAPPAS))
+    direccion_guardado = Path("../../../Imagenes/{}/Traza_Covarianza_{}={}.png".format(carpeta,ID_param_extra_1,COSD))
     
     plt.rcParams.update({'font.size': 24})
     plt.figure("Traza_Covarianza",figsize=(20,15))
@@ -1596,12 +1597,218 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
     
     plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "plasma")
     plt.colorbar()
-    plt.title("Tiempo de Convergencia en Espacio de Parametros")
+    plt.title("Traza Matriz Covarianza en Espacio de Parametros")
     
     # Guardo la figura y la cierro
     
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close("Traza_Covarianza")
+    
+
+#-----------------------------------------------------------------------------------------------
+
+# Esta función calcula la traza de la matriz de Covarianza de las distribuciones
+# de opiniones respecto a los T tópicos
+
+def Mapa_Colores_Antidiagonales_Covarianza(DF,path,carpeta,
+                       SIM_param_x,SIM_param_y,
+                       ID_param_extra_1):
+    
+    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
+    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
+    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
+
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF["n"]))
+    
+    # Defino los arrays de parámetros diferentes
+#    KAPPAS = int(np.unique(DF["Kappas"]))
+    COSD = int(np.unique(DF["cosdelta"]))
+    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_y = np.unique(DF["parametro_y"])
+    
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
+                   for j,param_y in enumerate(Arr_param_y)]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
+    # Gráfico de Opi vs T y en tres no se vería mejor.
+    T=2
+    
+    #--------------------------------------------------------------------------------
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    ZZ = np.zeros(XX.shape)
+    
+    #--------------------------------------------------------------------------------
+    
+    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                    (DF["n"]==AGENTES) & 
+                                    (DF["cosdelta"]==COSD) & 
+                                    (DF["parametro_x"]==PARAM_X) &
+                                    (DF["parametro_y"]==PARAM_Y), "nombre"])
+        #-----------------------------------------------------------------------------------------
+        
+        Antidiagonales = np.zeros(archivos.shape[0])
+        
+        for indice,nombre in enumerate(archivos):
+            
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
+            # Semilla
+            
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
+            
+            # Leo los datos de las Opiniones Finales
+            Opifinales = np.zeros((T,AGENTES))
+            
+            for topico in range(T):
+                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
+            
+            # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+            
+            M_cov = np.cov(Opifinales)
+            Antidiagonales[indice] = (M_cov[0,1]+M_cov[1,0])/2
+            
+        #------------------------------------------------------------------------------------------
+        # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
+        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Antidiagonales)
+            
+    #--------------------------------------------------------------------------------
+    
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores
+    direccion_guardado = Path("../../../Imagenes/{}/Antidiagonales_Covarianza_{}={}.png".format(carpeta,ID_param_extra_1,COSD))
+    
+    plt.rcParams.update({'font.size': 24})
+    plt.figure("Antidiagonales_Covarianza",figsize=(20,15))
+    plt.xlabel(r"${}$".format(SIM_param_x))
+    plt.ylabel(r"${}$".format(SIM_param_y))
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    
+    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "plasma")
+    plt.colorbar()
+    plt.title("Antidiagonales Matriz Coviaranza en Espacio de Parametros")
+    
+    # Guardo la figura y la cierro
+    
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("Antidiagonales_Covarianza")
+    
+
+#-----------------------------------------------------------------------------------------------
+
+# Esta función calcula la traza de la matriz de Covarianza de las distribuciones
+# de opiniones respecto a los T tópicos
+
+def Mapa_Colores_Determinante_Covarianza(DF,path,carpeta,
+                       SIM_param_x,SIM_param_y,
+                       ID_param_extra_1):
+    
+    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
+    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
+    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
+
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF["n"]))
+    
+    # Defino los arrays de parámetros diferentes
+#    KAPPAS = int(np.unique(DF["Kappas"]))
+    COSD = int(np.unique(DF["cosdelta"]))
+    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_y = np.unique(DF["parametro_y"])
+    
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
+                   for j,param_y in enumerate(Arr_param_y)]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
+    # Gráfico de Opi vs T y en tres no se vería mejor.
+    T=2
+    
+    #--------------------------------------------------------------------------------
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    ZZ = np.zeros(XX.shape)
+    
+    #--------------------------------------------------------------------------------
+    
+    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                    (DF["n"]==AGENTES) & 
+                                    (DF["cosdelta"]==COSD) & 
+                                    (DF["parametro_x"]==PARAM_X) &
+                                    (DF["parametro_y"]==PARAM_Y), "nombre"])
+        #-----------------------------------------------------------------------------------------
+        
+        Determinantes = np.zeros(archivos.shape[0])
+        
+        for indice,nombre in enumerate(archivos):
+            
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
+            # Semilla
+            
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
+            
+            # Leo los datos de las Opiniones Finales
+            Opifinales = np.zeros((T,AGENTES))
+            
+            for topico in range(T):
+                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
+            
+            # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+            
+            M_cov = np.cov(Opifinales)
+            Determinantes[indice] = np.linalg.det(M_cov)
+            
+        #------------------------------------------------------------------------------------------
+        # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
+        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Determinantes)
+            
+    #--------------------------------------------------------------------------------
+    
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores
+    direccion_guardado = Path("../../../Imagenes/{}/Determinantes_Covarianza_{}={}.png".format(carpeta,ID_param_extra_1,COSD))
+    
+    plt.rcParams.update({'font.size': 24})
+    plt.figure("Determinantes_Covarianza",figsize=(20,15))
+    plt.xlabel(r"${}$".format(SIM_param_x))
+    plt.ylabel(r"${}$".format(SIM_param_y))
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    
+    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "plasma")
+    plt.colorbar()
+    plt.title("Determinatnes Matriz Covarianza en Espacio de Parametros")
+    
+    # Guardo la figura y la cierro
+    
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("Determinantes_Covarianza")
 
 
 #-----------------------------------------------------------------------------------------------
@@ -1665,16 +1872,16 @@ def Calculo_Traza_Covarianza(DF,path):
                 Opifinales = np.zeros((T,AGENTES))
         
                 for topico in range(T):
-                    Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
+                    Opifinales[topico,:] = np.array(Datos[5][topico::T], dtype="float")
         
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
         
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
         
                 M_cov = np.cov(Opifinales)
-                covarianzas[repeticion] = np.trace(M_cov)
+                covarianzas[repeticion] = np.trace(M_cov)/(2*(KAPPAS-1)*(KAPPAS-1))
         
-            if PARAM_X not in Salida.keys():
+            if PARAM_X not in Salida[KAPPAS].keys():
                 Salida[KAPPAS][PARAM_X] = dict()
             Salida[KAPPAS][PARAM_X][PARAM_Y] = covarianzas
     
@@ -1741,7 +1948,7 @@ def Calculo_Antidiagonales_Covarianza(DF,path):
                 Opifinales = np.zeros((T,AGENTES))
         
                 for topico in range(T):
-                    Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
+                    Opifinales[topico,:] = np.array(Datos[5][topico::T], dtype="float")
         
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
         
@@ -1750,7 +1957,7 @@ def Calculo_Antidiagonales_Covarianza(DF,path):
                 M_cov = np.cov(Opifinales)
                 antidiagonales[repeticion] = (M_cov[0,1]+M_cov[1,0])/2
         
-            if PARAM_X not in Salida.keys():
+            if PARAM_X not in Salida[KAPPAS].keys():
                 Salida[KAPPAS][PARAM_X] = dict()
             Salida[KAPPAS][PARAM_X][PARAM_Y] = antidiagonales
     
@@ -1818,7 +2025,7 @@ def Calculo_Determinante_Covarianza(DF,path):
                 Opifinales = np.zeros((T,AGENTES))
         
                 for topico in range(T):
-                    Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
+                    Opifinales[topico,:] = np.array(Datos[5][topico::T], dtype="float")
         
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
         
@@ -1827,7 +2034,7 @@ def Calculo_Determinante_Covarianza(DF,path):
                 M_cov = np.cov(Opifinales)
                 determinantes[repeticion] = np.linalg.det(M_cov)
         
-            if PARAM_X not in Salida.keys():
+            if PARAM_X not in Salida[KAPPAS].keys():
                 Salida[KAPPAS][PARAM_X] = dict()
             Salida[KAPPAS][PARAM_X][PARAM_Y] = determinantes
     

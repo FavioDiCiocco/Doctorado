@@ -71,7 +71,7 @@ media = 0
 desv = 0.05
 N = 1000
 
-ruido = rng.normal(0,0.01,N)
+ruido = rng.normal(0,0.1,N)
 
 X = rng.normal(media,desv,N)
 Y = rng.normal(media,desv,N)
@@ -89,7 +89,7 @@ Guardar_archivo(Opiniones,filename)
 
 desv = 0.05
 N = 1000
-ruido = rng.normal(0,0.01,N)
+ruido = rng.normal(0,0.1,N)
 
 Medias = np.array([-5,5])
 
@@ -126,7 +126,7 @@ for indice1,kx in enumerate(Medias):
     for indice2,ky in enumerate(Medias):
         
         distr = rng.random(N)
-        ruido = rng.normal(0,0.01,N)
+        ruido = rng.normal(0,0.1,N)
         
         X = distr*kx
         Y = (distr+ruido)*ky
@@ -150,7 +150,7 @@ desv = 0.5
 for indice1,direcx in enumerate(extremos):
     for indice2,direcy in enumerate(extremos):
 
-        ruido = rng.normal(0,0.01,N)
+        ruido = rng.normal(0,0.1,N)
         
         X1 = rng.normal(1.5,desv,int(N/2))
         X2 = rng.normal(K-1.5,desv,int(N/2))
@@ -180,7 +180,7 @@ desv = 0.5
 for indice1,direcx in enumerate(extremos):
     for indice2,direcy in enumerate(extremos):
 
-        ruido = rng.normal(0,0.01,N)
+        ruido = rng.normal(0,0.1,N)
         
 #        X1 = rng.random(int(N/4))
         X = rng.normal(K-1.5,desv,N)
@@ -211,7 +211,7 @@ desv = 0.5
 for indice1,direcx in enumerate(extremos):
     for indice2,direcy in enumerate(extremos):
         
-        ruido = rng.normal(0,0.01,N)
+        ruido = rng.normal(0,0.1,N)
 
 #        X1 = rng.random(int(N/2))
         X = rng.normal(1.5,desv,N)
@@ -248,7 +248,7 @@ for i,extremo1 in enumerate(extremos_tupla):
     for extremo2 in extremos_tupla[i+1::]:
 #        if np.array([x != y for x,y in zip(extremo1,extremo2)]).any():
             
-        ruido = rng.normal(0,0.01,N)
+        ruido = rng.normal(0,0.1,N)
 
         X1 = rng.normal(K,desv,int(N/2))
         X2 = rng.normal(K,desv,int(N/2))
@@ -316,7 +316,7 @@ for extremo in np.array([-1,1]):
 indice = 0
 for extremo in np.array([-1,1]):
 
-    ruido = rng.normal(0,0.01,N)
+    ruido = rng.normal(0,0.1,N)
     
     X = (rng.random(N)-0.5)*K*2
     Y = X*extremo + ruido
@@ -349,7 +349,7 @@ indice = -1
 for i in range(4):
     X_i = rng.normal(K,desv,N)
     X = np.zeros(N)
-    ruido = rng.normal(0,0.01,N)
+    ruido = rng.normal(0,0.1,N)
     
     extremos_graficar = np.delete(np.arange(4),i)
     for j,extremo in enumerate(extremos_tupla[extremos_graficar]):
@@ -384,7 +384,7 @@ indice = -1
 
 X_i = rng.normal(K,desv,N)
 X = np.zeros(N)
-ruido = rng.normal(0,0.01,N)
+ruido = rng.normal(0,0.1,N)
 
 for j,extremo in enumerate(extremos_tupla):
     X[int((N/4)*j):int((N/4)*(j+1))] = X_i[int((N/4)*j):int((N/4)*(j+1))]*extremo[0]

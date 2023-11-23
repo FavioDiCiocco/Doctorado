@@ -1547,3 +1547,20 @@ La cosa está difícil para mañana. La cosa está difícil para el fin de año.
 Creo que The Dear Hunter va a estar acá para acompañarme. Espero que todo salga bien.
 
 Resolví el caso para algunos extremos. Me iré a dormir y descansaré.
+
+------------------------------------------------------------------------------------------
+
+22/11/2023
+
+Normalizar métricas es muy importante. Te re confiaste Favio.
+
+Estaría bueno revisar la distribución de los valores de las antidiagonales en la 
+región para entender qué estoy viendo.
+
+Proponen armar un espacio de fase que grafique las frecuencias de aparición de cada
+configuración de opiniones.
+
+Ver de armar una función con la que yo esté de acuerdo que diferencie los estados polarizados.
+Eso es importante para identificar los estados y de ahí armar el gráfico de frecuencia de
+aparición de configuraciones.
+
