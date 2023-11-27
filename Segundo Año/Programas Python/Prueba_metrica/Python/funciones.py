@@ -1571,13 +1571,14 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
             # Leo los datos de las Opiniones Finales
             Opifinales = np.zeros((T,AGENTES))
             
+            # Normalizo mis datos usando el valor de Kappa
             for topico in range(T):
-                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
+                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")/PARAM_X
             
             # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
             
             M_cov = np.cov(Opifinales)
-            Covarianzas[indice] = np.trace(M_cov)/(2*PARAM_X*PARAM_X)
+            Covarianzas[indice] = np.trace(M_cov)
             
         #------------------------------------------------------------------------------------------
         # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
@@ -1674,8 +1675,9 @@ def Mapa_Colores_Antidiagonales_Covarianza(DF,path,carpeta,
             # Leo los datos de las Opiniones Finales
             Opifinales = np.zeros((T,AGENTES))
             
+            # Normalizo mis datos usando el valor de Kappa
             for topico in range(T):
-                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
+                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")/PARAM_X
             
             # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
             
@@ -1777,8 +1779,9 @@ def Mapa_Colores_Determinante_Covarianza(DF,path,carpeta,
             # Leo los datos de las Opiniones Finales
             Opifinales = np.zeros((T,AGENTES))
             
+            # Normalizo mis datos usando el valor de Kappa
             for topico in range(T):
-                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
+                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")/PARAM_X
             
             # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
             

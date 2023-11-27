@@ -1564,3 +1564,31 @@ Ver de armar una función con la que yo esté de acuerdo que diferencie los esta
 Eso es importante para identificar los estados y de ahí armar el gráfico de frecuencia de
 aparición de configuraciones.
 
+------------------------------------------------------------------------------------------
+
+26/11/2023
+
+Estuve charlando con Pablo sobre qué hacer del trabajo. Pablo me decía de avanzar en lo que me dijo
+Hugo, me parece un buen plan. Queda también revisar el tema de los tiempos de simulación y ver lo de
+normalizar las distribuciones, cosa de que las métricas me queden normalizadas.
+
+Creo que voy a arrancar con esto último, así tengo medidas normalizadas y la vida es un poco mejor.
+¿Para que esté normalizado, necesito que las opiniones vayan entre -1 y 1 o entre 0 y 1?
+Lo que necesito básicamente es un intervalo de tamaño 2 centrado en el 0, es decir que vaya de -1
+a 1. Para eso puedo simplemente normalizar mis datos dividiéndolos por el valor de Kappa.
+Eso es un tema a considerar dependiendo de si Kappa es un parámetro que está variando o no.
+
+Lo que podría hacer es que los valores que coloco al final de mis simulaciones venga ya normalizado.
+Después si quisiera "desnormalizarlo", lo vuelvo a multiplicar por K. Bueno, eso quedará para la
+próxima vez que mande a hacer datos. Ahora queda resolver normalización. Hagamos eso desde
+Python.
+
+Estoy notando que quizás me confundo al usar los archivos de Pruebas_metricas y Medidas_polarizacion.
+Estuve pasando los archivos de Pruebas_metricas que usé para graficar los mapas de colores como si fueran
+los de Medidas_polarizacion. No es tan grave, pero claramente confunde las cosas. Así que tengo que ser
+más cuidadoso. Creo que puedo simplemente copiar las funciones de Pruebas_metricas a Medidas_polarizacion
+y después seguir desde ahí.
+
+Cuando venga a la noche lo mando a correr, tengo que mandarlo a Oporto así como está, revisando que las
+carpetas sean las correctas. Después para mandarlo a Coimbra voy a tener que cambiar cuál es el parámetro
+x y cuál es el extra, pero además cambiar en funciones el cómo se normalizan los arrays de Opiniones.
