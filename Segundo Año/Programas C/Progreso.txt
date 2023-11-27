@@ -1592,3 +1592,37 @@ y después seguir desde ahí.
 Cuando venga a la noche lo mando a correr, tengo que mandarlo a Oporto así como está, revisando que las
 carpetas sean las correctas. Después para mandarlo a Coimbra voy a tener que cambiar cuál es el parámetro
 x y cuál es el extra, pero además cambiar en funciones el cómo se normalizan los arrays de Opiniones.
+
+------------------------------------------------------------------------------------------
+
+27/11/2023
+
+Hoy mandé a correr en Oporto y Coimbra el armado de los mapas de Colores de Traza, Antidiagonales y
+Determinantes de la matriz de Covarianza. Hecho eso, lo siguientes creo que es ya trabajar en lo que
+dijo Hugo, armar un programa que reconozca claramente estados distintos de polarización y cosas.
+Se me ocurre que para hacer eso, es mejor terminar el armado de mis datos sintéticos, así con eso
+tengo algo sobre lo qué probar ese programa. Creo que lo mejor va a ser eso. De paso, debería también
+actualizar las documentaciones de Programas Python, Programas C, Imagenes y la burocracia infinita
+de mi cuaderno negro. Pero todo eso es bastante, lo hago hoy eso? Creo que es una buena idea hacerlo
+hoy así mañana me mando con esto de una, el miércoles lo mismo y ya podría ir hablando de juntarme con
+Hugo el jueves o viernes.
+
+Logré correctamente armar los mapas de colores normalizando las tres métricas. Lo observado es similar a lo
+anterior, aunque se puede ver que el determinante ahora da bastante bien para detectar las
+mismas regiones que detecta la traza, a diferencia de antes que sólo se veía marcado en una región
+del final. Qué cagada no haber hecho esto antes.
+ Queda señalar que me quedaron tres detalles sin revisar. La traza está normalizada a dos, eso es porque
+está sumando los elementos de la diagonal, tengo que dividir por la cantidad de tópicos. Segundo, está
+escrito determinatnes en el gráfico de determinantes. Tercero, no les puse colores diferenciados a los
+gráficos. Ahí les puse colores diferenciados.
+ Me acabo de dar cuenta que en los gráficos de Antidiagonales, dice Coviaranza. Me cago en mi.
+ 
+Hablando con Pablo entonces tengo 4 claros objetivos a resolver.
+1) Estudiar cómo varía la fracción de agentes polarizados, cosa de determinar cuánto tiene que ser
+el tiempo de simulación que requiero.
+2) Armar los estados sintéticos para probar las métricas de polarización de la traza y las antidiagonales.
+3) Probar qué resultados da el separar el espacio 2D en una grilla y medir polarización en esa región.
+4) Armar los mapas de colores con las frecuencias de estados finales. Pablo propne que además revise los
+estados finales producidos cosa de tener una buena idea de qué clase de estados finales puedo tener realmente.
+
+5) NO OLVIDAR, TENGO QUE DOCUMENTAR COSAS.

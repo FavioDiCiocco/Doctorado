@@ -1519,8 +1519,8 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
     AGENTES = int(np.unique(DF["n"]))
     
     # Defino los arrays de parámetros diferentes
-#    KAPPAS = int(np.unique(DF["Kappas"]))
-    COSD = int(np.unique(DF["cosdelta"]))
+    KAPPAS = int(np.unique(DF["Kappas"]))
+    # COSD = int(np.unique(DF["cosdelta"]))
     Arr_param_x = np.unique(DF["parametro_x"])
     Arr_param_y = np.unique(DF["parametro_y"])
     
@@ -1550,7 +1550,7 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
         # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
         archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                     (DF["n"]==AGENTES) & 
-                                    (DF["cosdelta"]==COSD) & 
+                                    (DF["kappas"]==KAPPAS) & 
                                     (DF["parametro_x"]==PARAM_X) &
                                     (DF["parametro_y"]==PARAM_Y), "nombre"])
         #-----------------------------------------------------------------------------------------
@@ -1573,12 +1573,12 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
             
             # Normalizo mis datos usando el valor de Kappa
             for topico in range(T):
-                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")/PARAM_X
+                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")/KAPPAS
             
             # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
             
             M_cov = np.cov(Opifinales)
-            Covarianzas[indice] = np.trace(M_cov)
+            Covarianzas[indice] = np.trace(M_cov)/T
             
         #------------------------------------------------------------------------------------------
         # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
@@ -1587,7 +1587,7 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
     #--------------------------------------------------------------------------------
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/Traza_Covarianza_{}={}.png".format(carpeta,ID_param_extra_1,COSD))
+    direccion_guardado = Path("../../../Imagenes/{}/Traza_Covarianza_{}={}.png".format(carpeta,ID_param_extra_1,KAPPAS))
     
     plt.rcParams.update({'font.size': 24})
     plt.figure("Traza_Covarianza",figsize=(20,15))
@@ -1623,8 +1623,8 @@ def Mapa_Colores_Antidiagonales_Covarianza(DF,path,carpeta,
     AGENTES = int(np.unique(DF["n"]))
     
     # Defino los arrays de parámetros diferentes
-#    KAPPAS = int(np.unique(DF["Kappas"]))
-    COSD = int(np.unique(DF["cosdelta"]))
+    KAPPAS = int(np.unique(DF["Kappas"]))
+    # COSD = int(np.unique(DF["cosdelta"]))
     Arr_param_x = np.unique(DF["parametro_x"])
     Arr_param_y = np.unique(DF["parametro_y"])
     
@@ -1654,7 +1654,7 @@ def Mapa_Colores_Antidiagonales_Covarianza(DF,path,carpeta,
         # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
         archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                     (DF["n"]==AGENTES) & 
-                                    (DF["cosdelta"]==COSD) & 
+                                    (DF["kappas"]==KAPPAS) & 
                                     (DF["parametro_x"]==PARAM_X) &
                                     (DF["parametro_y"]==PARAM_Y), "nombre"])
         #-----------------------------------------------------------------------------------------
@@ -1677,7 +1677,7 @@ def Mapa_Colores_Antidiagonales_Covarianza(DF,path,carpeta,
             
             # Normalizo mis datos usando el valor de Kappa
             for topico in range(T):
-                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")/PARAM_X
+                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")/KAPPAS
             
             # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
             
@@ -1691,7 +1691,7 @@ def Mapa_Colores_Antidiagonales_Covarianza(DF,path,carpeta,
     #--------------------------------------------------------------------------------
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/Antidiagonales_Covarianza_{}={}.png".format(carpeta,ID_param_extra_1,COSD))
+    direccion_guardado = Path("../../../Imagenes/{}/Antidiagonales_Covarianza_{}={}.png".format(carpeta,ID_param_extra_1,KAPPAS))
     
     plt.rcParams.update({'font.size': 24})
     plt.figure("Antidiagonales_Covarianza",figsize=(20,15))
@@ -1727,8 +1727,8 @@ def Mapa_Colores_Determinante_Covarianza(DF,path,carpeta,
     AGENTES = int(np.unique(DF["n"]))
     
     # Defino los arrays de parámetros diferentes
-#    KAPPAS = int(np.unique(DF["Kappas"]))
-    COSD = int(np.unique(DF["cosdelta"]))
+    KAPPAS = int(np.unique(DF["Kappas"]))
+    # COSD = int(np.unique(DF["cosdelta"]))
     Arr_param_x = np.unique(DF["parametro_x"])
     Arr_param_y = np.unique(DF["parametro_y"])
     
@@ -1758,7 +1758,7 @@ def Mapa_Colores_Determinante_Covarianza(DF,path,carpeta,
         # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
         archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                     (DF["n"]==AGENTES) & 
-                                    (DF["cosdelta"]==COSD) & 
+                                    (DF["kappas"]==KAPPAS) & 
                                     (DF["parametro_x"]==PARAM_X) &
                                     (DF["parametro_y"]==PARAM_Y), "nombre"])
         #-----------------------------------------------------------------------------------------
@@ -1781,7 +1781,7 @@ def Mapa_Colores_Determinante_Covarianza(DF,path,carpeta,
             
             # Normalizo mis datos usando el valor de Kappa
             for topico in range(T):
-                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")/PARAM_X
+                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")/KAPPAS
             
             # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
             
@@ -1795,7 +1795,7 @@ def Mapa_Colores_Determinante_Covarianza(DF,path,carpeta,
     #--------------------------------------------------------------------------------
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/Determinantes_Covarianza_{}={}.png".format(carpeta,ID_param_extra_1,COSD))
+    direccion_guardado = Path("../../../Imagenes/{}/Determinantes_Covarianza_{}={}.png".format(carpeta,ID_param_extra_1,KAPPAS))
     
     plt.rcParams.update({'font.size': 24})
     plt.figure("Determinantes_Covarianza",figsize=(20,15))
@@ -1806,7 +1806,7 @@ def Mapa_Colores_Determinante_Covarianza(DF,path,carpeta,
     
     plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "plasma")
     plt.colorbar()
-    plt.title("Determinatnes Matriz Covarianza en Espacio de Parametros")
+    plt.title("Determinantes Matriz Covarianza en Espacio de Parametros")
     
     # Guardo la figura y la cierro
     
