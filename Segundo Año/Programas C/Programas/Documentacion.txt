@@ -62,7 +62,7 @@ en el espacio no ortogonal. Eso era necesario para poder calcular los pesos homo
 Actualmente tengo una sola forma de calcular esa distancia, pero hablando con la gente de España en
 realidad me propusieron otras ideas de qué hacer, así que voy a tener que considerar cómo agregar
 esas modificaciones y guardar esos datos en carpetas nuevas. Creo que lo mejor va a ser separar
-en distintas etapas. (Sujeto a Revisión)
+en distintas etapas.
 
 .)Tangente_diferenciada:
 ---------------------

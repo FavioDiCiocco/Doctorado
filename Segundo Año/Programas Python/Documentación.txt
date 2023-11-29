@@ -66,7 +66,7 @@ de Covarianza, las medidas de covarianza mutua (los elementos fuera de la diagon
 el determinante de la matriz de covarianza. El objetivo es ver cuántos estados puedo diferenciar
 con esas métricas.
  Lo primero es usar el archivo de Generacion_datos.py para construir los datos sintéticos. Esos
-archivos con datos con formas similares a los que tengo de otros 
+archivos son datos con formas similares a los que tengo de otras simulaciones.
 
 Medidas Polarización:
 ---------------------
@@ -78,3 +78,11 @@ a barrer Kappa de a 0.2. Para este conjunto de parámetros además voy a tomar 4
 cosa de tener una idea más o menos del comportamiento. Algo importante es que a partir de este
 punto estoy usando dt=0.1 en vez de 0.01. Eso fue una propuesta de Hugo y ayuda a reducir los tiempos
 de simulación. No fue tanto como hubiera deseado, pero fue bastante.
+
+Prueba Tiempos:
+---------------
+Esta carpeta todavía no la use, la idea es hacer el testeo de cómo varía la fracción de estados
+polarizados en función del tiempo de integración. El plan básico es revisar nuevamente cómo
+hicieron ellos esto. Más que nada para ver cuántas simulaciones necesito. Además, necesito
+una forma clara de diferenciar estados polarizados de los que no. Creo que la traza de la
+covarianza igual demostró ser un buen medidor.
