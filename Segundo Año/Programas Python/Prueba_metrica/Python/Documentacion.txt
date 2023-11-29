@@ -45,3 +45,12 @@ info a las funciones.
 Aparte de los mapas de colores tiene el gráfico de Saturación en función de lambda creo,
 esa es una función para un uso especifico. También agregué el gráfico de
 Puntofijo vs parámetro.
+
+
+Generación Datos.py:
+--------------------
+
+Este archivo lo uso para generar datos sintéticos cuya forma sea similar a distribuciones
+de datos generadas en mis simulaciones. Estos datos sintéticos los voy a usar para poner
+a prueba las distintas métricas de polarización, que son la traza, los términos fuera de la
+diagonal y el determinante de la matriz de covarianza.

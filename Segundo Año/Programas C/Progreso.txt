@@ -1626,3 +1626,48 @@ el tiempo de simulación que requiero.
 estados finales producidos cosa de tener una buena idea de qué clase de estados finales puedo tener realmente.
 
 5) NO OLVIDAR, TENGO QUE DOCUMENTAR COSAS.
+
+------------------------------------------------------------------------------------------
+
+28/11/2023
+
+Hoy hice TODA la burocracia infinita pendiente. Documenté las carpetas y archivos de
+Programas Python, las carpetas de programas en Programas C y las carpetas en Imagenes.
+Con eso ya tengo todo actualizado y registrado. También me puse al día con el cuaderno
+negro de notas.
+
+------------------------------------------------------------------------------------------
+
+29/11/2023
+
+No vine tan temprano como debería, aunque eso sirvió para evitar mojarme por la lluvia.
+Cuestión, hoy debería arrancar con la parte de revisar la fracción de estados polarizados 
+en función del tiempo de simulación.
+
+Ellos trabajan con un Beta = 0.5 y K = 10. Yo podría hacer lo mismo, con Cos(delta) = 0.
+Se me ocurre armar varias simulaciones, barriendo Beta entre 0.5 y 1. De esa manera armaría un
+gráfico similar al gráfico c de la figura 5. El gráfico b y d creo que no sería necesario por
+ahora, no estoy modificando el grado medio de mis redes o el número de agentes. Ese análisis
+más detallado creo que puede quedar para después.
+
+Lo que sí es importante, es que para hacer esto voy a tener que armar un código nuevo en C.
+La idea es tomar la simulación, iterar 1000 veces y ver si el sistema está polarizado. Luego,
+ese sistema polarizado lo itero bastante tiempo más y registro si deja de estar polarizado
+en algún momento.
+
+Separo el cóigo actual y me pongo a corregirlo para que cumpla lo que quiero. Voy a tener que
+armar una función que me calcule la varianza. Mi idea es usar la traza de la matriz de Covarianza
+para identificar sistemas polarizados de no polarizados.
+
+Fui a cursar CFS. Por lo que charlamos, tengo hasta el 10 para enviar el TP5. Así mismo, tengo 
+que rehacer el TP3. Y el 4 seguramente. Carajo. Bueno, confío en que si a partir del miércoles
+6 me pongo a laburar en esto, voy a poder resolver esto para el domingo 10. Acordate que el
+viernes es feriado. Pero el viernes también está la juntada de fin de año. Mierda. Y ese finde
+está la partida de Rolcito. Carajo.
+
+Modifiqué Prosem, hice una pequeña prueba para ver que time tome el tiempo de la consola y que no
+sea que tenga una foto del reloj del momento en el que arrancó a correr el programa.
+
+Quedé a mitad de la modificación del archivo de C. Tengo que colocar un while en la distribución
+de datos iniciales, pero ese while necesita como condición de corte el cálculo de las varianzas
+normalizadas. Voy a dejar eso para mañana.

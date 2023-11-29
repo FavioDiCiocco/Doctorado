@@ -6,6 +6,7 @@
 #include<time.h>
 #include<string.h>
 #include<stdbool.h>
+#include <unistd.h> // Esto lo uso para poner un sleep
 
 int Visualizar_d(double *pd_vector);
 double Norma_No_Ortogonal_d(double *pd_Vector, double *pd_Superposicion);
@@ -15,41 +16,44 @@ double Norma_No_Ortogonal_d(double *pd_Vector, double *pd_Superposicion);
 
 int main(int argc, char *argv[]){
 	// Defino mis variables temporales para medir el tiempo que tarda el programa. También genero una nueva semilla
-	time_t tt_prin,tt_fin;
+	time_t tt_prin,tt_fin,semilla;
 	time(&tt_prin);
-	srand(time(NULL));
+	semilla = time(NULL);
+	srand(semilla);
 	int i_tardanza;
+	
+	
 	
 	//################################################################################################################################
 	
-	double d_resultado = 0;
+	// double d_resultado = 0;
 	
-	// Armo una matriz de superposición
-	double *pd_Superposicion;
-	pd_Superposicion = (double*) malloc((4+2)*sizeof(double));
-	*pd_Superposicion = 2;
-	*(pd_Superposicion+1) = 2;
+	// // Armo una matriz de superposición
+	// double *pd_Superposicion;
+	// pd_Superposicion = (double*) malloc((4+2)*sizeof(double));
+	// *pd_Superposicion = 2;
+	// *(pd_Superposicion+1) = 2;
 	
-	// Mis ejes están a 60 grados, por lo que el cos(delta) = 0.5
-	*(pd_Superposicion+0+2) = 1; // Elementos de la diagonal
-	*(pd_Superposicion+1+2) = 0.5; // Elementos fuera de la diagonal
-	*(pd_Superposicion+2+2) = 0.5; // Elementos fuera de la diagonal
-	*(pd_Superposicion+3+2) = 1; // Elementos de la diagonal
+	// // Mis ejes están a 60 grados, por lo que el cos(delta) = 0.5
+	// *(pd_Superposicion+0+2) = 1; // Elementos de la diagonal
+	// *(pd_Superposicion+1+2) = 0.5; // Elementos fuera de la diagonal
+	// *(pd_Superposicion+2+2) = 0.5; // Elementos fuera de la diagonal
+	// *(pd_Superposicion+3+2) = 1; // Elementos de la diagonal
 	
-	// Me construyo un vector que es la diferencia entre dos vectores
-	double *pd_Vector;
-	pd_Vector = (double*) malloc((2+2)*sizeof(double));
-	*pd_Vector = 1;
-	*(pd_Vector+1) = 2;
+	// // Me construyo un vector que es la diferencia entre dos vectores
+	// double *pd_Vector;
+	// pd_Vector = (double*) malloc((2+2)*sizeof(double));
+	// *pd_Vector = 1;
+	// *(pd_Vector+1) = 2;
 	
-	// Supongo el caso en que el vector diferencia es (1,1)
-	*(pd_Vector+0+2) = 0;
-	*(pd_Vector+1+2) = 1;
+	// // Supongo el caso en que el vector diferencia es (1,1)
+	// *(pd_Vector+0+2) = 0;
+	// *(pd_Vector+1+2) = 1;
 	
-	d_resultado = Norma_No_Ortogonal_d(pd_Vector, pd_Superposicion);
+	// d_resultado = Norma_No_Ortogonal_d(pd_Vector, pd_Superposicion);
 	
-	printf("El resultado final es: \n");
-	printf("%.3f \n", d_resultado);
+	// printf("El resultado final es: \n");
+	// printf("%.3f \n", d_resultado);
 	
 	//################################################################################################################################
 	
@@ -68,6 +72,14 @@ int main(int argc, char *argv[]){
 	
 	//################################################################################################################################
 
+	printf("La semilla inicial es: %d\n",(int) semilla);
+	
+	sleep(5);
+	semilla = time(NULL);
+	
+	printf("La semilla final es: %d\n",(int) semilla);
+	
+	
 	
 	// Ejecuto los comandos finales para medir el tiempo y liberar memoria
 	// free(pd_Superposicion);

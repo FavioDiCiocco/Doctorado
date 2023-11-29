@@ -83,3 +83,14 @@ La otra métrica que propusieron es modificar los pesos de forma tal que al calc
 distancias de los agentes en el tópico en cuestión. En este caso, no hay problema al definir el módulo
 del vector porque es simplemente el módulo entre dos números escalares, no importa para nada el
 tema del espacio no ortogonal.
+
+.)Medidas_polarizacion:
+-----------------------
+
+El código que utilicé acá es muy similar al de Homofilia_estática. Es una evolución del modelo con
+el peso homofílico en los enlaces, redes estáticas, grado medio de las redes igual a 10, tomando
+Beta, Kappa, Cos(delta) y N como input, los datos que genero a la salida son los mismo que siempre,
+con un archivo de Opiniones y otro de Testigos. Creo que al final el de Testigos lo cancelé en
+esta tanda.
+ La diferencia importante es que a partir de acá empecé a usar un dt=0.1, en vez del de 0.01 que estaba
+usando antes.

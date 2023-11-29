@@ -16,6 +16,8 @@ int main(int argc, char *argv[]){
 	// Empecemos con la base. Defino variables de tiempo para medir cuanto tardo y cosas básicas
 	time_t tt_prin,tt_fin,semilla;
 	time(&tt_prin);
+	semilla = time(NULL);
+	srand(semilla); // Voy a definir la semilla a partir de time(NULL);
 	float f_tardanza; // Este es el float que le paso al printf para saber cuanto tardé
 	
 	//#############################################################################################
@@ -39,14 +41,30 @@ int main(int argc, char *argv[]){
 	
 	// Los siguientes son los parámetros que están dados en los structs
 	ps_datos->i_T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
+	ps_datos->i_Iteraciones_extras = 40; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
+	ps_datos->i_pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
 	ps_datos->d_dt = 0.1; // Paso temporal de iteración del sistema
 	ps_datos->d_alfa = 1; // Controversialidad de los tópicos
 	ps_datos->d_delta = 0.002*ps_datos->d_kappa; // Es un término que se suma en la homofilia y ayuda a que los pesos no diverjan.
+	ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
+	ps_datos->d_CritCorte = pow(10,-4); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
 	ps_datos->i_testigos = fmin(ps_datos->i_N,200); // Esta es la cantidad de agentes de cada distancia que voy registrar
 		
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
+	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
 	int i_pasos_simulados = 0; // Esta variable me sirve para cortar si simulo demasiado tiempo.
-	int i_pasos_maximos = 1000000; // Esta es la cantidad de pasos máximos a simular
+	int i_pasos_maximos = 10000; // Esta es la cantidad de pasos máximos a simular
+	
+	// Voy a armar mi array de punteros, el cual voy a usar para guardar los datos de pasos previos del sistema
+	double* ap_OpinionesPrevias[ps_datos->i_pasosprevios];
+		
+	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
+		ap_OpinionesPrevias[i_i] = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Malloqueo los punteros de mis pasos previos
+		// Defino su número de filas y columnas como N*T
+		*ap_OpinionesPrevias[i_i] = ps_datos->i_N;
+		*(ap_OpinionesPrevias[i_i]+1) = ps_datos->i_T;
+		for(register int i_j=0; i_j<ps_datos->i_T*ps_datos->i_N;i_j++) *(ap_OpinionesPrevias[i_i]+i_j+2) = 0; // Inicializo los punteros
+	}
 	
 	//#############################################################################################
 	
@@ -56,6 +74,9 @@ int main(int argc, char *argv[]){
 	ps_red->pi_Adyacencia = (int*) malloc((2+ps_datos->i_N*ps_datos->i_N)*sizeof(int)); // Matriz de adyacencia de la red. Determina quienes están conectados con quienes
 	ps_red->pd_Angulos = (double*) malloc((2+ps_datos->i_T*ps_datos->i_T)*sizeof(double)); // Matriz simétrica de superposición entre tópicos.
 	ps_red->pd_Opiniones = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Lista de vectores de opinión de la red, Tengo T elementos para cada agente.
+	
+	// También hay un vector para guardar la diferencia entre el paso previo y el actual, un vector con los valores de saturación,
+	ps_red->pd_Diferencia = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Vector que guarda la diferencia entre dos pasos del sistema
 	
 	// Inicializo mis cuatro "matrices".
 	// Matriz de Adyacencia. Es de tamaño N*N
@@ -73,6 +94,12 @@ int main(int argc, char *argv[]){
 	ps_red->pd_Opiniones[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
 	ps_red->pd_Opiniones[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
 	
+	// Matriz de diferencia entre los vectores Opi y PreOpi. Es de tamaño N*T
+	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_Diferencia[i_i] = 0; // Inicializo la matriz
+	ps_red->pd_Diferencia[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
+	ps_red->pd_Diferencia[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
+	
+	
 	//################################################################################################################################
 	
 	// Abro los archivos en los que guardo datos y defino mi puntero a función.
@@ -82,9 +109,15 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_Opiniones[355];
-	sprintf(s_Opiniones,"../Programas Python/Prueba_tiempos/Datos/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
-		,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
+	sprintf(s_Opiniones,"../Programas Python/Medidas_polarizacion/%dD/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+		,ps_datos->i_T,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
 	FILE *pa_Opiniones=fopen(s_Opiniones,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
+	
+	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
+	char s_Testigos[355];
+	sprintf(s_Testigos,"../Programas Python/Medidas_polarizacion/%dD/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+		,ps_datos->i_T,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
+	FILE *pa_Testigos=fopen(s_Testigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
 	char s_matriz_adyacencia[355];
@@ -99,23 +132,34 @@ int main(int argc, char *argv[]){
 	
 	// Genero los datos de las matrices de mi sistema
 	
+	GenerarOpi(ps_red, ps_datos->d_kappa); // Esto me inicializa mi matriz de opiniones 
 	GenerarAng(ps_red, ps_datos); // Esto me inicializa mi matriz de superposición, definiendo el solapamiento entre tópicos.
 	
 	Lectura_Adyacencia(ps_red->pi_Adyacencia, pa_matriz_adyacencia); // Leo el archivo de la red estática y lo traslado a la matriz de adyacencia
 	fclose(pa_matriz_adyacencia); // Aprovecho y cierro el puntero al archivo de la matriz de adyacencia
 	
+	
 	//################################################################################################################################
+
+	// Acá voy a hacer las simulaciones de pasos previos del sistema
 	
-	// Defino la semilla para generar mis datos iniciales.
-	semilla = time(NULL);
-	srand(semilla); // Voy a definir la semilla a partir de time(NULL);
+	// Guardo la distribución inicial de las opiniones de mis agentes y preparo para guardar la Varprom.
+	fprintf(pa_Opiniones,"Opiniones Iniciales\n");
+	Escribir_d(ps_red->pd_Opiniones,pa_Opiniones);
 	
-	GenerarOpi(ps_red, ps_datos->d_kappa); // Esto me inicializa mi matriz de opiniones 
+	if(i_iteracion < 2) fprintf(pa_Testigos,"Opiniones Testigos\n");
 	
-	// Hago las primeras 1000 simulaciones. Si el sistema está polarizado al final de esto, continuo con el resto.
-	// Sino, vuelvo a redistribuir las opiniones iniciales
-	
-	for( i_pasos_simulados=0; i_pasos_simulados<1000; i_i++) RK4(ps_red->pd_Opiniones, pf_Dinamica_Interaccion, ps_red, ps_datos); // Itero las opiniones
+	// Hago los primeros pasos del sistema para tener estados previos con los que comparar
+	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
+		RK4(ps_red->pd_Opiniones, pf_Dinamica_Interaccion, ps_red, ps_datos); // Itero los intereses
+		// Me guardo los valores de opinión de mis agentes testigo
+		if(i_iteracion < 2){
+			for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]);
+			fprintf(pa_Testigos,"\n");
+		}
+		// Registro el estado actual en el array de OpinionesPrevias.
+		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) *(ap_OpinionesPrevias[i_i]+i_j+2) = ps_red->pd_Opiniones[i_j+2];
+	}
 	
 	//################################################################################################################################
 	
