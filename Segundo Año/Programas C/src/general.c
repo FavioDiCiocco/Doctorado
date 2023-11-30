@@ -82,6 +82,30 @@ double Norma_No_Ortogonal_d(double *pd_Vector, double *pd_Superposicion){
 }
 
 
+// Función de cálculo de la varianza
+double Varianza(double *pd_vector,double d_denominador){
+	// Defino las variables que voy a necesitar.
+	int i_F,i_C;
+	i_F = *pd_vector; // Filas del vector
+	i_C = *(pd_vector+1); // Columnas del vector
+	
+	double d_norma = 1/d_denominador; // Este es el valor que normaliza mi vector.
+	// Si quiero la varianza sin normalizar, elijo denominador = 1.
+	double d_varianza = 0; // Acá voy guardando el acumulado de la suma de la varianza
+	double d_promedio = 0; // Este es el promedio de los datos normalizados
+
+	// Calculo el promedio
+	for(register int i_i=0; i_i<i_F*i_C; i_i++) d_promedio += *(pd_vector+i_i+2) * d_norma;
+	d_promedio = d_promedio/(i_F*i_C);
+	
+	// Hago el cálculo de la varianza
+	for(register int i_i=0; i_i<i_F*i_C; i_i++) d_varianza += (*(pd_vector+i_i+2) * d_norma-d_promedio) * (*(pd_vector+i_i+2) * d_norma-d_promedio);
+	d_varianza = d_varianza/(i_F*i_C);
+	
+	return d_varianza;
+}
+
+
 //Funciones de Visualización
 //---------------------------------------------------------------------------------------------------------------------------------------
 // Esta función es para observar los vectores double
@@ -199,7 +223,6 @@ double RK4(double *pd_sistema, double (*pf_funcion)(ps_Red ps_variable, ps_Param
 	return 0;
 	
 }
-
 
 
 //--------------------------------------------------------------------------------------------

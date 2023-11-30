@@ -20,7 +20,7 @@ from pathlib import Path
 t0 = time.time()
 
 T=2 # Defino el número de tópicos
-Etapa = Path("Prueba_metrica") # Defino el nombre de la etapa del trabajo en la que estoy
+Etapa = Path("Medidas_polarizacion") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
 Carpetas = ["Datos"]
@@ -53,7 +53,7 @@ for carp in Carpetas:
     # Hecho mi dataframe, voy a armar columnas con los parámetros que varían en los nombres de mis archivos
     Df_archivos["tipo"] = Df_archivos["nombre"].apply(lambda x: x.split("_")[0])
     Df_archivos["n"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[1].split("=")[1]))
-    Df_archivos["Kappas"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
+    Df_archivos["kappas"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
     Df_archivos["parametro_y"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
     Df_archivos["parametro_x"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1]))
     Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[5].split("=")[1].strip(".file")))
@@ -109,35 +109,35 @@ for carp in Carpetas:
     
     # #----------------------------------------------------------------------------------------------
     
-    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
-                                      ID_param_x, ID_param_y, ID_param_extra_1)
+#    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
+#                                      ID_param_x, ID_param_y, ID_param_extra_1)
 
     #----------------------------------------------------------------------------------------------
     
-    # func.Mapa_Colores_Traza_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
-    #                         SIM_param_x, SIM_param_y, ID_param_extra_1)
-    
-    # #----------------------------------------------------------------------------------------------
-    
-    # func.Mapa_Colores_Antidiagonales_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
-    #                         SIM_param_x, SIM_param_y, ID_param_extra_1)
-    
-    # #----------------------------------------------------------------------------------------------
-    
-    # func.Mapa_Colores_Determinantes_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
-    #                         SIM_param_x, SIM_param_y, ID_param_extra_1)
+    func.Mapa_Colores_Traza_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
+                            SIM_param_x, SIM_param_y, ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
-    Covarianzas = func.Calculo_Traza_Covarianza(Df_archivos, Direccion)
+    func.Mapa_Colores_Antidiagonales_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
+                            SIM_param_x, SIM_param_y, ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
-    Antidiagonales = func.Calculo_Antidiagonales_Covarianza(Df_archivos, Direccion)
+    func.Mapa_Colores_Determinantes_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
+                            SIM_param_x, SIM_param_y, ID_param_extra_1)
     
-    #----------------------------------------------------------------------------------------------
-    
-    Determinantes = func.Calculo_Determinante_Covarianza(Df_archivos, Direccion)
+#    #----------------------------------------------------------------------------------------------
+#    
+#    Covarianzas = func.Calculo_Traza_Covarianza(Df_archivos, Direccion)
+#    
+#    #----------------------------------------------------------------------------------------------
+#    
+#    Antidiagonales = func.Calculo_Antidiagonales_Covarianza(Df_archivos, Direccion)
+#    
+#    #----------------------------------------------------------------------------------------------
+#    
+#    Determinantes = func.Calculo_Determinante_Covarianza(Df_archivos, Direccion)
     
 
 func.Tiempo(t0)

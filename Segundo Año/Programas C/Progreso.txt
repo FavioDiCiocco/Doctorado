@@ -1671,3 +1671,53 @@ sea que tenga una foto del reloj del momento en el que arrancó a correr el prog
 Quedé a mitad de la modificación del archivo de C. Tengo que colocar un while en la distribución
 de datos iniciales, pero ese while necesita como condición de corte el cálculo de las varianzas
 normalizadas. Voy a dejar eso para mañana.
+
+------------------------------------------------------------------------------------------
+
+30/11/2023
+
+Hoy llegué a la mañana, me enganché con un problema que no es mío, pero creo que le di salida.
+Cosas que pasan. Me puse con el armado del código para revisar la fracción de estados polarizados
+en función del tiempo de simulación. La idea es tener una buena idea de cuál es el tiempo máximo
+de simulación de mis programas.
+
+En el medio nos reunimos con Pablo, en el cuaderno anoté lo que tengo que hacer. El resumen es que
+tengo que armar varios gráficos que sean similares a los gráficos que hicieron David, Hugo y demás
+en su paper. Tengo que replicar el estudio en el espacio de parámetros, armar el gráfico de
+fracción de polarización en función del tiempo de simulación y el gráfico del mapa de colores de
+la entropía de los estados finales. Y también de la varianza de la entropía.
+
+Tenemos que apurarnos para tener resultados que mostrar. Por otro lado, fui un ratito a la reunión
+sobre el cambio de plan de la carrera y después seguí laburando. Logré armar un código que hace
+las simulaciones y va guardando los datos. Por lo visto, esto va a tardar un rato. Lo que estoy
+pensando es armar 100 simulaciones como hicieron ellos para 10 Betas, entre [0,1]. De ahí veo
+de conseguir un gráfico como el 5 b) para cada Beta y con eso obtengo entonces una versión rápida
+del 5 c). Aunque estoy viendo que eso va a tomar un buen rato de simulación. Si lo mando ahora,
+ni idea de si llega para el miércoles. Veamos de mandarlo en Coimbra, nadie lo está usando.
+
+Si uso 20 hilos, ponele que cada simulación tarde 6 horas. Eso significaría que en un día tengo 
+80 simulaciones. Ok, podría tener los datos hechos para un dado Beta. Arranquemos con eso, después
+vamos viendo cuánto tarda esto para definir si es una gran idea o no.
+
+Mientras esto corre, lo siguiente que tengo que hacer es tomar mis datos para mi sistema con 200 agentes
+y ver si está simulando bien o si tiene algún problema esto.
+
+Justo terminó la simulación con 200 agentes. Esto tardó 55 minutos aprox. Soy un boludo por cerrar
+la ventana, ni me di cuenta que lo había hecho. Cuestión, debería suponer que con cinco veces
+la cantidad de agentes, esto debería tardar más o menos 5 veces más, así que serán entre 5 y
+6 horas. Hice una buena cuenta la verdad. A ojo pareciera estar polarizado, aunque lo gracioso
+es que quedó polarizado en una dirección, el eje y se alineó completamente a un sólo valor. Voy
+a ver de graficarlo y ver qué dió, qué estoy observando y cómo puedo graficarlo. Pero primero voy
+a cargar el código a Coimbra y ver de ya mandarlo a correr.
+
+Ahí mandé a correr simulaciones que construyan estados polarizados para ver cuántas simulaciones
+se mantienen en estos estados metaestables a medida que aumenta el tiempo de simulación. Lo hice
+siguiendo el esquema de la gente de GOTHAM, que construye un estado aleatorio y lo evoluciona
+con 1000 pasos de simulación. Si el estado está polarizado, lo mantiene y lo empieza a evolucionar
+hasta que deje de estar polarizado o hasta que pase la cantidad total de simulaciones.
+
+Me acabo de dar cuenta que tengo un problema, no guardo los datos con los que arranca el estado.
+Es un problema más central considerando que el sistema deja de estar polarizado generalmente en un
+punto intermedio entre dos escrituras de datos. Podría ver de utilizar la cantidad de pasos_simulados
+como una forma de tener una medida clara de cuánto duró el estado polarizado. Creo que eso es
+lo mejor. Mañana veo qué pasó

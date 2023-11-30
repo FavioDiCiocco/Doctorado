@@ -16,6 +16,8 @@ int main(int argc, char *argv[]){
 	// Empecemos con la base. Defino variables de tiempo para medir cuanto tardo y cosas básicas
 	time_t tt_prin,tt_fin,semilla;
 	time(&tt_prin);
+	semilla = time(NULL);
+	srand(semilla); // Voy a definir la semilla a partir de time(NULL);
 	float f_tardanza; // Este es el float que le paso al printf para saber cuanto tardé
 	
 	//#############################################################################################
@@ -47,6 +49,11 @@ int main(int argc, char *argv[]){
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_pasos_simulados = 0; // Esta variable me sirve para cortar si simulo demasiado tiempo.
 	int i_pasos_maximos = 1000000; // Esta es la cantidad de pasos máximos a simular
+	// Estos valores de varianza me sirven para identificar si el sistema está polarizado o no.
+	double d_varianza_1 = 0;
+	double d_varianza_2 = 0;
+	double d_corte_polarizacion = 0.1; // Este es el valor de corte para determinar si el sistema está polarizado o no
+	// Lo definí este valor mirando valores que obtuve para mis simulaciones sintéticas.
 	
 	//#############################################################################################
 	
@@ -56,6 +63,7 @@ int main(int argc, char *argv[]){
 	ps_red->pi_Adyacencia = (int*) malloc((2+ps_datos->i_N*ps_datos->i_N)*sizeof(int)); // Matriz de adyacencia de la red. Determina quienes están conectados con quienes
 	ps_red->pd_Angulos = (double*) malloc((2+ps_datos->i_T*ps_datos->i_T)*sizeof(double)); // Matriz simétrica de superposición entre tópicos.
 	ps_red->pd_Opiniones = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Lista de vectores de opinión de la red, Tengo T elementos para cada agente.
+	ps_red->pd_Ti = (double*) malloc((2+ps_datos->i_N)*sizeof(double)); // Opinión de todos los agentes sobre el tópico i
 	
 	// Inicializo mis cuatro "matrices".
 	// Matriz de Adyacencia. Es de tamaño N*N
@@ -72,6 +80,11 @@ int main(int argc, char *argv[]){
 	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_Opiniones[i_i] = 0; // Inicializo la matriz
 	ps_red->pd_Opiniones[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
 	ps_red->pd_Opiniones[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
+	
+	// Matriz de opinión del tópico i. Es de tamaño N
+	for(register int i_i=0; i_i<ps_datos->i_N+2; i_i++) ps_red->pd_Ti[i_i] = 0; // Inicializo la matriz
+	ps_red->pd_Ti[0] = 1; // Pongo el número de filas en la primer coordenada
+	ps_red->pd_Ti[1] = ps_datos->i_N; // Pongo el número de columnas en la segunda coordenada
 	
 	//################################################################################################################################
 	
@@ -106,75 +119,50 @@ int main(int argc, char *argv[]){
 	
 	//################################################################################################################################
 	
-	// Defino la semilla para generar mis datos iniciales.
-	semilla = time(NULL);
-	srand(semilla); // Voy a definir la semilla a partir de time(NULL);
+	fprintf(pa_Opiniones,"Evolucion Opiniones \n");
+	// printf("Voy a crear los datos\n");
+	do{
+		GenerarOpi(ps_red, ps_datos->d_kappa); // Esto me inicializa mi matriz de opiniones 
+		
+		// Hago las primeras 1000 simulaciones. Si el sistema está polarizado al final de esto, continuo con el resto.
+		// Sino, vuelvo a redistribuir las opiniones iniciales
+		
+		for(i_pasos_simulados=0; i_pasos_simulados<1000; i_pasos_simulados++) RK4(ps_red->pd_Opiniones, pf_Dinamica_Interaccion, ps_red, ps_datos); // Itero las opiniones
+		
+		// Calculo las varianzas
+		for(register int i_j=0; i_j<ps_datos->i_N;i_j++) *(ps_red->pd_Ti+i_j+2) = *(ps_red->pd_Opiniones+i_j*ps_datos->i_T+2);
+		d_varianza_1 = Varianza(ps_red->pd_Ti,ps_datos->d_kappa);
+		for(register int i_j=0; i_j<ps_datos->i_N;i_j++) *(ps_red->pd_Ti+i_j+2) = *(ps_red->pd_Opiniones+i_j*ps_datos->i_T+2+1);
+		d_varianza_2 = Varianza(ps_red->pd_Ti,ps_datos->d_kappa);
+		
+	}
+	while((d_varianza_1+d_varianza_2)/2 < d_corte_polarizacion);
 	
-	GenerarOpi(ps_red, ps_datos->d_kappa); // Esto me inicializa mi matriz de opiniones 
-	
-	// Hago las primeras 1000 simulaciones. Si el sistema está polarizado al final de esto, continuo con el resto.
-	// Sino, vuelvo a redistribuir las opiniones iniciales
-	
-	for( i_pasos_simulados=0; i_pasos_simulados<1000; i_i++) RK4(ps_red->pd_Opiniones, pf_Dinamica_Interaccion, ps_red, ps_datos); // Itero las opiniones
+	// printf("Ya generé un estado polarizado, ahora voy a evolucionar el sistema\n");
 	
 	//################################################################################################################################
 	
-	// Realizo la simulación del modelo hasta que este alcance un estado estable
-	// También preparo para guardar los valores de Varprom en mi archivo
+	// Realizo la simulación del modelo hasta que deje de estar polarizado o hasta un tiempo 100*1000
 	
-	fprintf(pa_Opiniones,"Variación promedio \n");
-	
-	int i_IndiceOpiPasado = 0; 
-	
-	while(i_contador < ps_datos->i_Iteraciones_extras && i_pasos_simulados < i_pasos_maximos){
+	while((d_varianza_1+d_varianza_2)/2 > d_corte_polarizacion && i_pasos_simulados < i_pasos_maximos){		
 		
-		i_contador = 0; // Inicializo el contador
+		RK4(ps_red->pd_Opiniones, pf_Dinamica_Interaccion, ps_red, ps_datos); // Itero las opiniones
 		
-		// Evoluciono el sistema hasta que se cumpla el criterio de corte
-		do{
-			// Evolución
-			RK4(ps_red->pd_Opiniones, pf_Dinamica_Interaccion, ps_red, ps_datos); // Itero los intereses
-			// Cálculos derivados
-			Delta_Vec_d(ps_red->pd_Opiniones,ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios],ps_red->pd_Diferencia); // Veo la diferencia entre $i_pasosprevios pasos anteriores y el actual en las opiniones
-			for(register int i_p=0; i_p<ps_datos->i_N*ps_datos->i_T; i_p++) *(ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios]+i_p+2) = ps_red->pd_Opiniones[i_p+2]; // Me guardo el estado actual en la posición correspondiente de ap_OpinionesPrevias
-			ps_red->d_Variacion_promedio = Norma_d(ps_red->pd_Diferencia)/ps_datos->d_NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
-			// Escritura
-			fprintf(pa_Opiniones, "%lf\t",ps_red->d_Variacion_promedio); // Guardo el valor de variación promedio
-			if(i_iteracion < 2){
-				for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de opinión de mis agentes testigo
-				fprintf(pa_Testigos,"\n");
-			}
-			// Actualización de índices
-			i_IndiceOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
-			i_pasos_simulados++; // Avanzo el contador de la cantidad de pasos simulados
-		}
-		while( ps_red->d_Variacion_promedio > ps_datos->d_CritCorte && i_pasos_simulados < i_pasos_maximos);
+		i_pasos_simulados++; // Avanzo el contador de la cantidad de pasos simulados
 		
-		// Ahora evoluciono el sistema una cantidad i_Itextra de veces. Le pongo como condición que si el sistema deja de cumplir la condición de corte, deje de evolucionar
-		
-		while(i_contador < ps_datos->i_Iteraciones_extras && ps_red->d_Variacion_promedio <= ps_datos->d_CritCorte && i_pasos_simulados < i_pasos_maximos){
-			// Evolución
-			RK4(ps_red->pd_Opiniones, pf_Dinamica_Interaccion, ps_red, ps_datos); // Itero los intereses
-			// Cálculos derivados
-			Delta_Vec_d(ps_red->pd_Opiniones,ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios],ps_red->pd_Diferencia); // Veo la diferencia entre $i_pasosprevios pasos anteriores y el actual en las opiniones
-			for(register int i_p=0; i_p<ps_datos->i_N*ps_datos->i_T; i_p++) *(ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios]+i_p+2) = ps_red->pd_Opiniones[i_p+2]; // Me guardo el estado actual en la posición correspondiente de ap_OpinionesPrevias
-			ps_red->d_Variacion_promedio = Norma_d(ps_red->pd_Diferencia)/ps_datos->d_NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
-			// Escritura
-			fprintf(pa_Opiniones, "%lf\t",ps_red->d_Variacion_promedio); // Guardo el valor de variación promedio 
-			if(i_iteracion < 2){
-				for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de opinión de mis agentes testigo
-				fprintf(pa_Testigos,"\n");
-			}
-			
-			// Actualización de índices
-			i_IndiceOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
-			i_contador++; // Avanzo el contador para que el sistema haga una cantidad $i_Itextra de iteraciones extras
-			i_pasos_simulados++; // Avanzo el contador de la cantidad de pasos simulados
+		if(i_pasos_simulados%1000 == 0){
+			// Calculo las varianzas
+			for(register int i_j=0; i_j<ps_datos->i_N;i_j++) *(ps_red->pd_Ti+i_j+2) = *(ps_red->pd_Opiniones+i_j*ps_datos->i_T+2);
+			d_varianza_1 = Varianza(ps_red->pd_Ti,ps_datos->d_kappa);
+			for(register int i_j=0; i_j<ps_datos->i_N;i_j++) *(ps_red->pd_Ti+i_j+2) = *(ps_red->pd_Opiniones+i_j*ps_datos->i_T+2+1);
+			d_varianza_2 = Varianza(ps_red->pd_Ti,ps_datos->d_kappa);
 		}
 		
-		// Si el sistema evolucionó menos veces que la cantidad arbitraria, es porque rompió la condiciones de corte.
-		// Por tanto lo vuelvo a hacer trabajar hasta que se vuelva a cumplir la condición de corte.
-		// Si logra evolucionar la cantidad arbitraria de veces sin problemas, termino la evolución.
+		if(i_pasos_simulados%10000==0){
+			Escribir_d(ps_red->pd_Opiniones,pa_Opiniones); // Anoto las opiniones luego de 10000 pasos de evolución, que es un tiempo 1000
+			// printf("Guardé datos del sistema\n");
+		}
+		
 	}
 	
 	
@@ -183,34 +171,23 @@ int main(int argc, char *argv[]){
 	
 	// Guardo las últimas cosas, libero las memorias malloqueadas y luego termino
 	
-	// Guardo las opiniones finales, la matriz de adyacencia y la semilla en el primer archivo.
-	fprintf(pa_Opiniones,"\n");
-	fprintf(pa_Opiniones,"Opiniones finales\n");
-	Escribir_d(ps_red->pd_Opiniones,pa_Opiniones);
-	// fprintf(pa_Opiniones,"Matriz de Adyacencia\n"); // Guardo esto para poder comprobar que la red sea conexa.
-	// Escribir_i(ps_red->pi_Adyacencia,pa_Opiniones);
+	// Guardo la semilla en el primer archivo.
 	fprintf(pa_Opiniones,"Semilla\n");
 	fprintf(pa_Opiniones,"%ld\n",semilla);
 	
 	
 	// Libero los espacios dedicados a mis vectores y cierro mis archivos
-	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++) free(ap_OpinionesPrevias[i_i]);
 	free(ps_red->pd_Angulos);
 	free(ps_red->pi_Adyacencia);
 	free(ps_red->pd_Opiniones);
-	free(ps_red->pd_Diferencia);
+	free(ps_red->pd_Ti);
 	free(ps_red);
 	free(ps_datos);
 	fclose(pa_Opiniones);
-	fclose(pa_Testigos);
-	
-	// Borro el archivo de Testigos que no necesito
-	if(i_iteracion >= 2) remove(s_Testigos); // Esta función recibe el path al archivo de Testigos
 	
 	// Finalmente imprimo el tiempo que tarde en ejecutar todo el programa
 	time(&tt_fin);
 	f_tardanza = tt_fin-tt_prin;
-	// sleep(1);
 	printf("Tarde %.1f segundos \n",f_tardanza);
 	
 	return 0;

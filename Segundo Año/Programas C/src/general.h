@@ -13,6 +13,7 @@
 typedef struct Red{
 	double *pd_Diferencia; // Vector que guarda las diferencias entre PreOpi y Opi.
 	double *pd_Opiniones; // Vector de opinión de cada individuo
+	double *pd_Ti; // Vector con las opiniones de todos los agentes en el tópico i
 	double *pd_Angulos; // Matriz de superposición entre tópicos. Tiene tamaño T*T
 	double d_Variacion_promedio; // Esto es la Variación promedio del sistema. Es cuanto cambia en promedio cada opinión
 	int *pi_Adyacencia; // Matriz de adyacencia que define mis conexiones. Tiene tamaño N*N
@@ -57,6 +58,7 @@ double RK4(double *pd_sistema, double (*pf_funcion)(ps_Red ps_variable, ps_Param
 double Max(double d_a, double d_b);
 double Min(double d_a, double d_b);
 double Interpolacion(double d_y1, double d_y2, double d_x1,double d_x);
+double Varianza(double *pd_vector,double d_denominador);
 int Visualizar_d(double *pd_vector);
 int Visualizar_f(float *pf_vector);
 int Visualizar_i(int *pi_vector);
