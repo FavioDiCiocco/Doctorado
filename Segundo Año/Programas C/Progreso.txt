@@ -1721,3 +1721,41 @@ Es un problema más central considerando que el sistema deja de estar polarizado
 punto intermedio entre dos escrituras de datos. Podría ver de utilizar la cantidad de pasos_simulados
 como una forma de tener una medida clara de cuánto duró el estado polarizado. Creo que eso es
 lo mejor. Mañana veo qué pasó
+
+------------------------------------------------------------------------------------------
+
+02/12/2023
+
+Estoy en casa. Revisé lo que mandé a correr en Coimbra, algunas cosas todavía no terminaron. Pareciera
+que las simulaciones más largas llegan a tomar unas 10 horas. Es bastante, pero no es tan terrible.
+Pero no voy a tener tiempo de mandar nuevos datos a correr, así que armaré uno de los gráficos que Pablo
+me pide. Lo charlaré con él para que se entienda el problema.
+
+Tengo que ver cómo resultaron los gráficos, pero me parece muy importante también considerar que puedo
+hacer el guardado de datos mucho mejor y más simple si lo que hago es guardar en mis datos el número de
+pasos simulados, que es un número que ya estoy utilizando en la simulación.
+
+Mientras se terminan las últimas simulaciones, debería ver qué hago con esos datos. Básicamente lo que tengo
+es un archivo que tiene:
+"Evolucion Opiniones"
+n filas de opiniones
+"Semilla"
+Número de semilla
+
+Por tanto, esto tiene n+3 filas de datos. En principio sólo necesito el número n. Aunque estaría bueno ver que
+efectivamente el sistema se mantuvo polarizado a lo largo del tiempo. Se me ocurre que puedo graficar cómo
+evoluciona la traza de la covarianza en el tiempo. También podría mirar el promedio de opiniones. Puedo mirar
+el promedio de opiniones totales de cada tópico. Creo que esas dos infos juntas me van a ayudar a contrastar
+más o menos si el sistema está correctamente polarizado durante el tiempo. No puedo estar mirando n histogramas.
+Puedo ver de hacerlo después el lunes para ver algunos datos eso.
+
+Armemos las funciones que hacen esto, y mandemos a correr un programa que nos de esos gráficos. Eso haré hoy,
+mañana revisaré los datos que tengo para ver qué está ocurriendo. Si tengo tiempo, haré algo que me haga unos
+gráficos de histogramas 2D.
+
+Logré armar dos funciones que todavía no probé. Pero deberían graficarme las curvas de promedios de la opinión
+y de suma de varianzas en función del tiempo. Lo ideal es ver que vayan decayendo con el tiempo, aunque es
+posible que el salto se de un tiempo al siguiente y no pueda observar eso. Veré si mañana armo una función
+que grafique los histogramas. El lunes puedo trabajar en el armado del mapa de colores de la entropía, eso
+va a funcionar. El martes ya armo la presentación que Pablo me dijo. Y vamos charlando el lunes si al
+final me junto con todos o con Hugo nomás.

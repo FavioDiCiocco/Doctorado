@@ -1,3 +1,16 @@
+Archivos:
+---------
+
+.) Crear_redes.py: Esto me construye redes estáticas conexas de un dado grado medio y 
+con N agentes. Me las guarda en la carpeta de MARE. Cada vez que necesito nuevas redes
+o renovar las existentes, uso esto.
+
+.) funciones_generales.py: Acá voy a ir guardando las nuevas funciones que vaya implementando.
+Así a partir de ahora esto tiene todas las funciones, pero el funciones de cada Python de cada
+carpeta tiene sólo las funciones necesarias. Eso va a hacer que recorrer la lista de funciones
+sea mucho más fácil cada vez que quiera buscar funciones.
+
+
 Bifurcacion_logistica:
 ---------------------
 En esta etapa estudio la transición del sistema de la región en la cual tiene tres puntos
