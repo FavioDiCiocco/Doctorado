@@ -53,7 +53,7 @@ int main(int argc, char *argv[]){
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
 	int i_pasos_simulados = 0; // Esta variable me sirve para cortar si simulo demasiado tiempo.
-	int i_pasos_maximos = 10000; // Esta es la cantidad de pasos máximos a simular
+	int i_pasos_maximos = 200000; // Esta es la cantidad de pasos máximos a simular
 	
 	// Voy a armar mi array de punteros, el cual voy a usar para guardar los datos de pasos previos del sistema
 	double* ap_OpinionesPrevias[ps_datos->i_pasosprevios];

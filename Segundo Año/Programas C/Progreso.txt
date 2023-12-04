@@ -1724,6 +1724,15 @@ lo mejor. Mañana veo qué pasó
 
 ------------------------------------------------------------------------------------------
 
+01/12/2023
+
+Hoy quise laburar en el trabajo, pero la verdad me comió todo el parcial. Estuve de 9:30
+a 15:10 en el aula. Después fui a comer y cosas, recién a las 16:30 me puse a laburar,
+y estuve simplemente peleando con el hotmail para descargar todos los archivos. Una
+tortura. Y ahora voy a ir a casa a corregir exámenes. Auxilio
+
+------------------------------------------------------------------------------------------
+
 02/12/2023
 
 Estoy en casa. Revisé lo que mandé a correr en Coimbra, algunas cosas todavía no terminaron. Pareciera
@@ -1759,3 +1768,55 @@ posible que el salto se de un tiempo al siguiente y no pueda observar eso. Veré
 que grafique los histogramas. El lunes puedo trabajar en el armado del mapa de colores de la entropía, eso
 va a funcionar. El martes ya armo la presentación que Pablo me dijo. Y vamos charlando el lunes si al
 final me junto con todos o con Hugo nomás.
+
+------------------------------------------------------------------------------------------
+
+04/12/2023
+
+Revisé lo que hice el sábado. Más allá de algunos detalles de código, todo funca bárbaro.
+Ahora tengo que mandar a armar gráficos con las cosas de Coimbra. Y tengo que armar el gráfico
+de fracción de polarizados en función del tiempo. Si tengo tiempo armo el gráfico de Histogramas.
+Sino, dejo eso para después.
+
+Los histogramas quedarán para después. Ahora me voy a poner con el armado de los gráficos de Entropía
+que me decía Pablo. Necesito para eso trabajar sobre los datos de Medidas_polarizacion. El armado de
+una función que caracterice los estados va a quedar para después. Claramente no puedo tener eso
+para el miércoles, o algo arrancado. Igual, antes de mandar la función de gráficos de entropía a
+la carpeta de Medidas Polarizacion, necesito probar la función en los datos sintéticos.
+
+El gráfico de fracción de estados polarizados en función del beta dió muy bien. Quedan algunos detalles
+para repasar. ¿Por qué siempre uno de los tópicos arranca convergido? ¿La dinámica determina que uno
+de los tópicos converge antes que el otro? ¿Hay algo pasando con los pesos en ese caso?
+ Tengo que repensar si la forma de armar los datos no generó problemas. Quizás estaría bueno armar
+una nueva tanda de datos para la próxima. Es una cuestión de mandarlos a correr nomás. Esto está
+bueno para charlarlo con Hugo y consultar qué tal.
+
+Me junté con Pablo, charlamos sobre el resultado del gráfico de fracción de polarización en función
+del tiempo de simulación. Mirando el gráfico, tengo que decir que las simulaciones que hice en
+los datos de Medidas Polarizacion tanto en Coimbra como en Oporto están mal. Tengo que rehacerlos,
+porque esos gráficos cortan muy pronto. No le dan tiempo a la simulación a salir del estado polarizado
+metaestable y caer a un estado no polarizado. Lo que tengo que hacer es cambiar el número de pasos
+máximos. Ahora lo tengo que pasar a doscientos mil. De esta manera el tiempo de simulación es veinte mil.
+El plan es mandar a correr cosas manteniendo el esquema que tuve antes. El espacio Beta Kappa en Oporto.
+El espacio Beta-Cos(delta) en Coimbra. Le sumo las simulaciones de fracción de polarización en Algarve
+y si me da el tiempo, las simulaciones que caracterizan fracción de estados polarizados que me dijo
+Pablo barriendo el beta. ¿Pero esto no es justamente lo que voy a mandar a Algarve? Mi duda está
+sobre qué hacer con los estados por debajo de Beta = 0.5. Esto creo que da para charlarlo con Hugo.
+Preguntarle a Pablo primero, me parece importante ver que no estoy malentendiendo algo.
+
+De paso, corregir la normalización de la fracción de polarización, me quedó de 0 a 100 en vez de
+0 a 1.
+
+La función para medir la entropía de los gráficos queda para después. Será mañana o pasado. Ya
+corregí el tema de la normalización de la Fraccion de polarización en función del tiempo.
+
+Mandé a correr la tanda de datos en Oporto y en Coimbra. Bien, eso va a tomar una semana aprox.
+Me apropié de esas pcs, veamos qué tal la cosa en Algarve. También me apropié de Algarve. Ahora
+sólo por la joda, tengo ganas de apropiarme de Setubal también. Pero mejor concentrémonos en
+laburar y no en joder.
+
+Cuestión que en Algarve mandé a correr datos para el tema de la Fracción de Polarización. Pero
+los maté en el acto. Me acabo de acordar que el código de Fracción de Polarización necesita una
+revisión antes de mandar a correr. Así que mejor volver a arrancar de cero mañana. O después
+de llegar a casa, ya veré.
+

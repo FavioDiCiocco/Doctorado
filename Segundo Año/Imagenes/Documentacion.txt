@@ -92,3 +92,13 @@ tiene el barrido con K = 10. La carpeta con Datos_Oporto es la que tiene el barr
 Los nombres obviamente hacen referencia a las pcs de la facultad en las que se encuentran los respectivos
 barridos. La carpeta que dice 2D es simplemente la carpeta que uso para descargar los datos de las pcs
 a mi pc en la facultad.
+
+
+.) Prueba_tiempos:
+------------------
+Tengo una sola carpeta, la de datos. La idea acá es estudiar cómo varía la fracción de polarización
+de los estados en función del tiempo. Cosa de comprobar si el tiempo de corte para mis simulaciones
+es el correcto, si estoy cortando prematuramente o muy tarde. Si corto prematuro, entonces estoy
+contabilizando como polarización cosas que no lo son. Si corto muy tarde, estoy perdiendo tiempo
+en simulaciones que ya deberían haber terminado.
+
