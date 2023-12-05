@@ -1820,3 +1820,34 @@ los maté en el acto. Me acabo de acordar que el código de Fracción de Polariz
 revisión antes de mandar a correr. Así que mejor volver a arrancar de cero mañana. O después
 de llegar a casa, ya veré.
 
+------------------------------------------------------------------------------------------
+
+05/12/2023
+
+Al final lo que mandé a correr en Algarve no fue el código de Prueba_tiempos, que hace
+que el programa corra hasta tiempo 100 mil. Mandé a correr lo mismo que en Coimbra y en
+Oporto, el código de Medidas_polarizacion. Ese código debería ser medio una copia del de
+Homofilia_estática, pero hubo una o dos etapas en el medio, consideremos que quizás hubo cambios.
+Dicho eso, ahí tengo tres de las cuatro pc's laburando para mi. Les robé espacio a todos
+los demás.
+
+Tuve que frenar todos los códigos. Iban a tardar una eternidad. Todas las simulaciones corrían
+hasta el final, que son 3 horas. Lo cuál implica que el barrido Kappa-Beta, que por cada
+iteración recorre 924 puntos en el espacio de parámetros. Si cada uno de esos tarda tres
+horas, tengo que esperar 2700 horas para una sola iteración. Nadie tiene tanto tiempo.
+Decidí cambiar el criterio de corte a 10^-3. Espero que eso ayude. Yo sospecho que quizás
+necesite dejar el criterio de corte en 10^-2.
+
+Ok, no entiendo, ¿Está corriendo bien esto? Al aumentar el criterio de Corte debería
+estar terminando rápido, pero no me queda claro que esté haciendo eso. Siento que debería
+volver a revisar cómo construí ese criterio de Corte.
+
+Por desgracia no puedo ponerme con eso ahora, tengo que corregir parciales.
+
+La cosa no está resultando por ningún lado. Mandé a correr en Oporto y en Coimbra
+el modelo creo que con el mismo criterio de corte en ambos. Vamos a ver qué me marcan
+los datos que es el problema de por qué el programa no termina de simular. Además, está
+tardando demasiado. Tenemos que ver cómo reducir el tiempo de simulación. Yo le dije
+a Pablo que no estaba escribiendo en todos los pasos, pero en realidad sí lo estoy
+haciendo. Eso me está consumiendo un montón de tiempo. Y encima esos son archivos
+que después estoy borrando. Eso no puede seguir así.
