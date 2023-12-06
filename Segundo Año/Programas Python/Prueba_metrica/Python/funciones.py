@@ -158,22 +158,6 @@ def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,
 
 #-----------------------------------------------------------------------------------------------
 
-def Entropia(Array):
-    
-    # Primero tengo que binnear mi distribución. Como sé que mi distribución va de 0 a 1,
-    # voy a separar eso en 20 bines. Hist tiene la cantidad de datos que caen en ese bin.
-    Hist,Bines = np.histogram(Array, bins = 20, range = (0,1))
-    
-    # Calculo la proba de que los valores de mi distribución caigan en cada bin
-    Probas = Hist[Hist != 0] / Array.shape[0] # Saco los ceros para no calcularles logs
-    
-    # Calculo la entropía y la returneo
-    return np.matmul(Probas, np.log2(Probas))*(-1)
-
-
-
-#-----------------------------------------------------------------------------------------------
-
 # Esta función es la que arma los gráficos de los histogramas de opiniones
 # finales en el espacio de tópicos
 
@@ -861,20 +845,55 @@ def Calculo_Entropia(DF,path,N):
         
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
                 
-                Distribucion = Clasificacion(Opifinales,N)
+                # Armo mi array de Distribucion, que tiene la proba de que una opinión
+                # pertenezca a una región del espacio de tópicos
+                Probas = Clasificacion(Opifinales,N,T)
                 
-                entropias[repeticion] = np.linalg.det(M_cov)
+                # Con esa distribución puedo directamente calcular la entropía.
+                entropias[repeticion] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
         
             if PARAM_X not in Salida[KAPPAS].keys():
                 Salida[KAPPAS][PARAM_X] = dict()
-            Salida[KAPPAS][PARAM_X][PARAM_Y] = entropias
+            Salida[KAPPAS][PARAM_X][PARAM_Y] = entropias/np.log2(N*N)
     
     return Salida
 
 
 #-----------------------------------------------------------------------------------------------
 
-def Clasificacion(Array,N):
+def Clasificacion(Array,N,T):
+    
+    # Recibo un array de opiniones que van entre [-1,1]. Le sumo 1
+    # para que las opiniones vayan entre [0,2].
+    Array = Array+1
+    
+    # Divido mi espacio de tópicos 2D en cuadrados. Defino el ancho
+    # de esos cuadrados.
+    ancho = 2/N
+    
+    # Armo un array de tuplas que indiquen "fila" y "columna" en la cuál
+    # cae cada opinión.
+    Ubicaciones = np.array([(math.floor(x/ancho),math.floor(y/ancho)) for x,y in zip(Array[0::T],Array[1::T])])
+    
+    # Ahora me armo mi array de distribución, que cuenta cuántas opiniones tengo
+    # por cada cajita.
+    Distribucion = np.zeros((N*N))
+    for opinion in Ubicaciones:
+        # Tomo mínimos para que no intente ir a una cajita no existente. Tendría un problema
+        # si algún agente tiene opinión máxima en algún tópico.
+        fila = min(opinion[1],N-1)
+        columna = min(opinion[0],N-1)
+        Distribucion[fila*N+columna] += 1
+    
+    # Una vez armada mi distribucion, la normalizo.
+    Distribucion = Distribucion/np.sum(Distribucion)
+    
+    # Returneo la distribucion
+    return Distribucion
+
+#-----------------------------------------------------------------------------------------------
+
+def Entropia(Array):
     
     # Primero tengo que binnear mi distribución. Como sé que mi distribución va de 0 a 1,
     # voy a separar eso en 20 bines. Hist tiene la cantidad de datos que caen en ese bin.

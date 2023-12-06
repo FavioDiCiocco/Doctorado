@@ -1851,3 +1851,30 @@ tardando demasiado. Tenemos que ver cómo reducir el tiempo de simulación. Yo l
 a Pablo que no estaba escribiendo en todos los pasos, pero en realidad sí lo estoy
 haciendo. Eso me está consumiendo un montón de tiempo. Y encima esos son archivos
 que después estoy borrando. Eso no puede seguir así.
+
+------------------------------------------------------------------------------------------
+
+06/12/2023
+
+Hoy es la reunión con la gente de Gotham. Primero que nada voy a mostrarles que armé el gráfico
+de fracción de polarizados en función del tiempo.
+
+Después está el tema del tiempo que el programa tarda en realizar las simulaciones. Tengo que
+revisar qué está pasando con las simulaciones. Quiero ver si el cálculo de la variación promedio
+se realiza correctamente. Además, tengo que ver de quitar el armado de los datos testigos
+innecesarios. Para eso debería poner el cerrado del archivo en un if apenas se crea. Lo mismo,
+la escritura debería estar en un if.
+
+Aunque para los archivos que trabajo de Medidas_polarizacion, podría trabajar sin armar testigos
+directamente. Dudoso. Todo esto lo haré el jueves, con tiempo y ganas. Ahora concentérmonos
+en lo que hoy podemos mostrar y charlar. El programa que clasifica con la entropía.
+
+La forma en que ellos hacían para cortar las simulacion previamente es usar el valor medio
+de las opiniones y ver que no fluctuara. David proponía algo de usar promedios para reducir
+fluctuaciones al comparar dos ventanas individuales.
+
+Revisar el calculado de los pesos para ahorrar tiempo. Ver de ahorrar las cuentas repetidas.
+Revisar si es conveniente reemplazar el pow por el exp(log()).
+
+Hicieron unos gráficos interesantes en el archivo de respuestas a referee, revisarlo y ver de
+analizarlo para sacar ideas importantes.

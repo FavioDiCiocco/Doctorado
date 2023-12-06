@@ -8,10 +8,11 @@ Created on Mon Dec 19 10:04:40 2022
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.optimize import curve_fit
-from scipy.optimize import fsolve
+import pandas as pd
+from pathlib import Path
 import math
 import time
+import os
 import funciones as func
 
 # Importo todas las librerías que voy a usar en el programa. Estas son las que
@@ -19,262 +20,147 @@ import funciones as func
 
 t0 = time.time()
 
+#--------------------------------------------------------------------------------
 
-"""
-###################################################################################################
+# Esta es la función que uso por excelencia para levantar datos de archivos. Lo
+# bueno es que lee archivos de forma general, no necesita que sean csv o cosas así
+def ldata(archive):
+        f = open(archive)
+        data = []
+        for line in f:
+            col = line.split("\t")
+            col = [x.strip() for x in col]
+            data.append(col)
+        return data 
 
-# Defino la cantidad de agentes
-N = 1000
+#--------------------------------------------------------------------------------
 
-# Cargo el archivo con la matriz de adyacencia Random Regulars
-
-Datos = func.ldata("../../../Programas C/MARE/Random_Regulars/Random-regular_N=1000_ID=1.file")
-Adyacencia  = np.reshape(np.array([i for i in Datos[0][:-1:]],dtype = "int"),(N,N))
-
-# Armo el grafo a partir de la matriz de Adyacencia
-
-G = nx.from_numpy_matrix(Adyacencia)
-
-# Dada la matriz de adyacencia, ahora hago el catalogar a los agentes según su distancia
-# al primer agente. Uso un diccionario para catalogarlo bien.
-
-distancia = 1 # Esto lo uso para marcar la distancia entre agentes
-Registrados = set([0]) # Estos son los agentes que revisé de la red
-Agentes_catalogados = dict() # Diccionario de agentes según su distancia al primer nodo
-Agentes_catalogados[0] = set([0]) # Fijo al primer agente a distancia cero de sí mismo
-
-
-while len(Registrados) != N :
-    Vecinos = [] # En esta lista anoto todos los agentes visitados
-    Descarte = [] # En esta lista pongo los agentes que voy a descartar de Conjunto_vecinos
-    for agente in Agentes_catalogados[distancia-1]:
-        for vecino in G.neighbors(agente):
-            Vecinos.append(vecino) # Me apendeo los vecinos de "agente"
-    Conjunto_vecinos = set(Vecinos) # Elimino los duplicados
-    for agente in Conjunto_vecinos:
-        if agente in Registrados:
-            Descarte.append(agente) # Anoto los elementos previamente registrados
-        Registrados.add(agente) # Registro todos los agentes visitados
-    for agente in Descarte:
-        Conjunto_vecinos.discard(agente) # Descarto los elementos previamente registrados
-    # Me anoto el conjunto de agentes que se encuentran a distancia "distancia"
-    Agentes_catalogados[distancia] = Conjunto_vecinos
-    distancia +=1 # Paso a mirar a los agentes en la siguiente distancia
-
-####################################################################################################
-
-# Ya estudié la matriz de adyacencia, ahora debería revisar si mi función de catalogación funciona mejor
-
-Datos = func.ldata("../categorizacion_prueba.file")
-Categorias = np.array(Datos[2][:-1],dtype = "int")
-
-
-####################################################################################################
-####################################################################################################
-####################################################################################################
-
-# Acá voy a hacer lo de analizar las curvas de Kappa en función de epsilon y alfa. Para eso primero
-# tengo que a mano identificar la curva de la transición.
-
-Epsilon = np.arange(0.5,3.1,0.1) # Estos son los valores de Epsilon graficados
-
-#------------------------------------------------------------------------------------------------------------
-
-# Defino a ojo los valores de Kappa asociados y los voy anotando uno a uno
-
-# Alfa = 2
-
-Datos_Alfa_2 = np.zeros(Epsilon.shape)
-Datos_Alfa_2[0] = 0.6
-Datos_Alfa_2[1] = 0.7
-Datos_Alfa_2[2] = 0.7
-Datos_Alfa_2[3] = 0.8
-Datos_Alfa_2[4] = 0.8
-Datos_Alfa_2[5] = 0.9
-Datos_Alfa_2[6] = 1
-Datos_Alfa_2[7] = 1.1
-Datos_Alfa_2[8] = 1.1
-Datos_Alfa_2[9] = 1.2
-Datos_Alfa_2[10] = 1.3
-Datos_Alfa_2[11] = 1.4
-Datos_Alfa_2[12] = 1.5
-Datos_Alfa_2[13] = 1.6
-Datos_Alfa_2[14] = 1.75
-Datos_Alfa_2[15] = 2
-Datos_Alfa_2[16] = 2.1
-Datos_Alfa_2[17] = 2.2
-Datos_Alfa_2[18] = 2.4
-Datos_Alfa_2[19] = 2.6
-Datos_Alfa_2[20] = 2.8
-Datos_Alfa_2[21] = 3
-Datos_Alfa_2[22] = 3.2
-Datos_Alfa_2[23] = 3.5
-Datos_Alfa_2[24] = 3.8
-Datos_Alfa_2[25] = 4.2
-
-#------------------------------------------------------------------------------------------------------------
-
-# Alfa = 4
-
-Datos_Alfa_4 = np.zeros(Epsilon.shape)
-Datos_Alfa_4[0] = 0.5
-Datos_Alfa_4[1] = 0.5
-Datos_Alfa_4[2] = 0.6
-Datos_Alfa_4[3] = 0.6
-Datos_Alfa_4[4] = 0.6
-Datos_Alfa_4[5] = 0.6
-Datos_Alfa_4[6] = 0.6
-Datos_Alfa_4[7] = 0.6
-Datos_Alfa_4[8] = 0.7
-Datos_Alfa_4[9] = 0.7
-Datos_Alfa_4[10] = 0.8
-Datos_Alfa_4[11] = 0.8
-Datos_Alfa_4[12] = 0.9
-Datos_Alfa_4[13] = 0.9
-Datos_Alfa_4[14] = 1
-Datos_Alfa_4[15] = 1
-Datos_Alfa_4[16] = 1
-Datos_Alfa_4[17] = 1.1
-Datos_Alfa_4[18] = 1.2
-Datos_Alfa_4[19] = 1.3
-Datos_Alfa_4[20] = 1.4
-Datos_Alfa_4[21] = 1.5
-Datos_Alfa_4[22] = 1.6
-Datos_Alfa_4[23] = 1.7
-Datos_Alfa_4[24] = 1.8
-Datos_Alfa_4[25] = 2.1
-
-
-#------------------------------------------------------------------------------------------------------------
-
-# Alfa = 6
-
-Datos_Alfa_6 = np.zeros(Epsilon.shape)
-Datos_Alfa_6[0] = 0.5
-Datos_Alfa_6[1] = 0.5
-Datos_Alfa_6[2] = 0.5
-Datos_Alfa_6[3] = 0.5
-Datos_Alfa_6[4] = 0.5
-Datos_Alfa_6[5] = 0.5
-Datos_Alfa_6[6] = 0.5
-Datos_Alfa_6[7] = 0.5
-Datos_Alfa_6[8] = 0.5
-Datos_Alfa_6[9] = 0.5
-Datos_Alfa_6[10] = 0.5
-Datos_Alfa_6[11] = 0.5
-Datos_Alfa_6[12] = 0.6
-Datos_Alfa_6[13] = 0.6
-Datos_Alfa_6[14] = 0.6
-Datos_Alfa_6[15] = 0.6
-Datos_Alfa_6[16] = 0.7
-Datos_Alfa_6[17] = 0.7
-Datos_Alfa_6[18] = 0.8
-Datos_Alfa_6[19] = 0.8
-Datos_Alfa_6[20] = 0.9
-Datos_Alfa_6[21] = 1
-Datos_Alfa_6[22] = 1
-Datos_Alfa_6[23] = 1.1
-Datos_Alfa_6[24] = 1.2
-Datos_Alfa_6[25] = 1.4
-
-#------------------------------------------------------------------------------------------------------------
-
-# Teniendo los datos, ahora relizo el ajuste para obtener el exponente asociado al alfa
-# Supongo que kappa sigue la siguiente relación: K = \frac{epsilon}{alpha^r}+C
-
-Resultados = dict()
-
-for indice,Datos in enumerate([Datos_Alfa_2,Datos_Alfa_4,Datos_Alfa_6]):
+def Clasificacion(Array,N,T):
     
-    alfa = (indice+1)*2 # Defino alfa en base al indice
+    # Recibo un array de opiniones que van entre [-1,1]. Le sumo 1
+    # para que las opiniones vayan entre [0,2].
+    Array = Array+1
     
-    # Defino la función con la que voy a hacer el ajuste
+    # Divido mi espacio de tópicos 2D en cuadrados. Defino el ancho
+    # de esos cuadrados.
+    ancho = 2/N
+    
+    # Armo un array de tuplas que indiquen "fila" y "columna" en la cuál
+    # cae cada opinión.
+    Ubicaciones = np.array([(math.floor(x/ancho),math.floor(y/ancho)) for x,y in zip(Array[0::T],Array[1::T])])
+    
+    # Ahora me armo mi array de distribución, que cuenta cuántas opiniones tengo
+    # por cada cajita.
+    Distribucion = np.zeros((N*N))
+    for opinion in Ubicaciones:
+        # Tomo mínimos para que no intente ir a una cajita no existente. Tendría un problema
+        # si algún agente tiene opinión máxima en algún tópico.
+        fila = min(opinion[1],N-1)
+        columna = min(opinion[0],N-1)
+        Distribucion[fila*N+columna] += 1
+    
+    # Una vez armada mi distribucion, la normalizo.
+    Distribucion = Distribucion/np.sum(Distribucion)
+    
+    # Returneo la distribucion
+    return Distribucion
 
-    def Kappa(X,C):
-        return C*(1+math.e**(-alfa*C+X))
+#-----------------------------------------------------------------------------------------------
     
-    # Calculo los parámetros
-    
-    parametros_optimos,parametros_covarianza = curve_fit(Kappa,Epsilon,Datos)
-    
-    # Calculo el error
-    
-    error_C = math.sqrt(parametros_covarianza[0,0])
-    
-    print(r"El valor de C asociado al alfa={} es: {} $\pm$ {}".format(alfa, parametros_optimos[0],error_C))
-    # print(r"El valor de C asociado al alfa={} es: {} $\pm$ {}".format(alfa, parametros_optimos[1],error_C))
-    # print(r"El valor de D asociado al alfa={} es: {} $\pm$ {}".format(alfa, parametros_optimos[2],error_D))
-    
-    # Guardo los valores en mi diccionario
-    
-    Resultados[alfa] = parametros_optimos
- 
+# Transformo estas cosas en paths. Espero que acostumbrarme a esto valga la pena
+Direccion = Path("../{}".format("Datos"))
+carpeta = Path("Datos")
 
-#------------------------------------------------------------------------------------------------------------
-    
-# Ploteo las curvas reales contra las curvas ajustadas
+# Recorro las carpetas con datos
+CarpCheck=[[root,files] for root,dirs,files in os.walk(Direccion)]
 
-plt.rcParams.update({'font.size': 32})
-plt.figure("Curva_transicion",figsize=(20,15))
-colores = ["b","g","r"]
-for indice,Y in enumerate([Datos_Alfa_2,Datos_Alfa_4,Datos_Alfa_6]):
+# Me armo una lista con los nombres de todos los archivos con datos.
+# Coloco al inicio de la lista el path de la carpeta en la que se encuentran los datos
+
+Archivos_Datos = [nombre for nombre in CarpCheck[0][1]]
+
+Df_archivos = pd.DataFrame({"nombre": Archivos_Datos})
     
-    alfa = (indice+1)*2 # Defino alfa en base al indice
+# Hecho mi dataframe, voy a armar columnas con los parámetros que varían en los nombres de mis archivos
+Df_archivos["tipo"] = Df_archivos["nombre"].apply(lambda x: x.split("_")[0])
+Df_archivos["n"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[1].split("=")[1]))
+Df_archivos["Kappas"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
+Df_archivos["parametro_y"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
+Df_archivos["parametro_x"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1]))
+Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[5].split("=")[1].strip(".file")))
+
+
+
+# Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
+# me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
+# me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
+
+# Defino la cantidad de agentes de la red
+AGENTES = int(np.unique(Df_archivos["n"]))
+
+# Defino los arrays de parámetros diferentes
+Arr_KAPPAS = np.unique(Df_archivos["Kappas"])[0:1]
+Arr_param_x = np.unique(Df_archivos["parametro_x"])[0:1]
+Arr_param_y = np.unique(Df_archivos["parametro_y"])[1:2]
+
+
+# Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
+               for j,param_y in enumerate(Arr_param_y)]
+
+# Defino el tipo de archivo del cuál tomaré los datos
+TIPO = "Opiniones"
+
+# Sólo tiene sentido graficar en dos dimensiones, en una es el 
+# Gráfico de Opi vs T y en tres no se vería mejor.
+T=2
+
+path = Direccion
+N = 20
+
+Salida = dict()
+for KAPPAS in Arr_KAPPAS:
+    Salida[KAPPAS] = dict()
+    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
         
-    plt.plot(Epsilon,Y,color = colores[indice], marker = "*", linestyle = "None" , markersize = 12)
-    
-    # Defino la función con la que voy a hacer el ajuste
-
-    def Kappa(X,C):
-        return C*(1+math.e**(-alfa*C+X))
-    
-    Y_calculado = Kappa(Epsilon,Resultados[alfa][0])
-    plt.plot(Epsilon, Y_calculado, label = r"$\alpha =$ {}".format(alfa),color = colores[indice], linewidth=4)
-    
-plt.xlabel(r"$\epsilon$")
-plt.ylabel(r"$\kappa$")
-plt.legend()
-plt.grid(alpha = 0.5)
-plt.show()
-
-
-
-####################################################################################################
-####################################################################################################
-####################################################################################################
-
-# Primero defino la ecuación dinámica que voy a usar para hallar los puntos fijos del sistema.
-
-def Ecuacion_dinamica(x,K,A,Cdelta,Eps):
-    return -x+K*(1/(1+np.exp(-A*(1+Cdelta)*x+Eps)))
-
-# Quiero que si hay un punto fijo inestable, me devuelva eso. Si no lo hay, que me devuelva
-# un 0. Los tres puntos fijos están distribuidos entre 0 y Kappa.
-
-x0 = 0
-K = 1
-A = 4
-Cdelta = 0
-Eps = 2
-
-raices = np.zeros(3)
-indice = 0
-
-while x0 < K:
-    
-    resultado = fsolve(Ecuacion_dinamica,x0,args=(K,A,Cdelta,Eps))[0]
-    
-    Condicion_raiz = np.isclose(Ecuacion_dinamica(resultado,K,A,Cdelta,Eps),0,atol=1e-06)
-    
-    if not(np.isclose(raices,np.ones(3)*resultado).any()) and Condicion_raiz:
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(Df_archivos.loc[(Df_archivos["tipo"]==TIPO) & 
+                                    (Df_archivos["n"]==AGENTES) & 
+                                    (Df_archivos["Kappas"]==KAPPAS) & 
+                                    (Df_archivos["parametro_x"]==PARAM_X) &
+                                    (Df_archivos["parametro_y"]==PARAM_Y), "nombre"])
+        #-----------------------------------------------------------------------------------------
         
-        raices[indice] = resultado
-        indice += 1
+        entropias = np.zeros(archivos.shape[0])
+        
+        for nombre in archivos:
     
-    x0 += 0.1
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
+            # Semilla
     
-print(raices)
-
-"""
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
+    
+            # Leo los datos de las Opiniones Finales
+            Opifinales = np.array(Datos[5], dtype="float")
+            Opifinales = Opifinales / np.max(np.abs(Opifinales))
+    
+            # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+    
+            repeticion = int(Df_archivos.loc[Df_archivos["nombre"]==nombre,"iteracion"])
+            
+            # Armo mi array de Distribucion, que tiene la proba de que una opinión
+            # pertenezca a una región del espacio de tópicos
+            Probas = Clasificacion(Opifinales,N,T)
+            
+            # Con esa distribución puedo directamente calcular la entropía.
+            entropias[repeticion] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
+    
+        if PARAM_X not in Salida[KAPPAS].keys():
+            Salida[KAPPAS][PARAM_X] = dict()
+        Salida[KAPPAS][PARAM_X][PARAM_Y] = entropias/np.log2(N*N)
 
 func.Tiempo(t0)

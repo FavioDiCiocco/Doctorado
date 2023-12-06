@@ -109,8 +109,8 @@ for carp in Carpetas:
     
     # #----------------------------------------------------------------------------------------------
     
-    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
-                                      ID_param_x, ID_param_y, ID_param_extra_1)
+#    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
+#                                      ID_param_x, ID_param_y, ID_param_extra_1)
 
     #----------------------------------------------------------------------------------------------
     
@@ -129,15 +129,19 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    Covarianzas = func.Calculo_Traza_Covarianza(Df_archivos, Direccion)
+#    Covarianzas = func.Calculo_Traza_Covarianza(Df_archivos, Direccion)
+#    
+#    #----------------------------------------------------------------------------------------------
+#    
+#    Antidiagonales = func.Calculo_Antidiagonales_Covarianza(Df_archivos, Direccion)
+#    
+#    #----------------------------------------------------------------------------------------------
+#    
+#    Determinantes = func.Calculo_Determinante_Covarianza(Df_archivos, Direccion)
     
     #----------------------------------------------------------------------------------------------
     
-    Antidiagonales = func.Calculo_Antidiagonales_Covarianza(Df_archivos, Direccion)
-    
-    #----------------------------------------------------------------------------------------------
-    
-    Determinantes = func.Calculo_Determinante_Covarianza(Df_archivos, Direccion)
+    Entropia = func.Calculo_Entropia(Df_archivos, Direccion, 20)
     
 
 func.Tiempo(t0)
