@@ -1878,3 +1878,38 @@ Revisar si es conveniente reemplazar el pow por el exp(log()).
 
 Hicieron unos gráficos interesantes en el archivo de respuestas a referee, revisarlo y ver de
 analizarlo para sacar ideas importantes.
+
+------------------------------------------------------------------------------------------
+
+08/12/2023
+
+Hoy es feriado. Voy a ver de mandar a correr las simulaciones que charlamos con Pablo. Para
+eso lo que tengo que ahcer es guardar la simulación de Prueba_tiempos en Programas, retomar
+la de Medidas_Polarización y quitarle el armado de los archivos de Testigos. Supongo que por
+ahora puedo simplemente comentar eso. O mejor todavía, puedo hacer eso que yo decía de cortar
+el archivo temprano si es que siento que no voy a guardar datos.
+ También debería revisar en el futuro pronto si la normalización de datos está bien hecha.
+
+Todavía no documenté los archivos de Prueba_tiempos. Tengo que hacer eso el lunes.
+
+Ahí revisé mis archivos. No es cierto que pierdo mucho tiempo con la escritura, porque esa
+escritura no se estaba realizando. Hay otra cosa. Tengo que trabajar sobre la dinámica, no
+hay otra solución.
+
+Mi duda entonces es la siguiente. ¿Arranco a codear esto para reducir los tiempos de escritura
+gastados en los pow, hago pruebas sobre el criterio de corte, o tiro todo?
+Yo diría de arrancar con codear el tema del pow. Necesito entonces una matriz de N*N que
+contenga todos los términos que pueda a llegar a necesitar en el numerador de los pesos
+de homofilia. Hugo decía que con esto reduzco a la mitad el tiempo porque sólo puedo resolver
+los cálculos en el numerador. ¿Pero no puedo resolver también los cálculos en el denominador?
+
+Actualmente lo que hago es pararme en un agente i, calculo el denominador una vez al mirar
+su distancia con todos sus vecinos y calcular la inversa elevada a la beta y sumar eso.
+Entonces, sean k los vecinos, estoy haciendo k cuentas. Luego, hago otras k cuentas iguales
+porque calculo el numerador con cada vecino. Pero podría haber reciclado esas cuentas. YA
+LAS HICE EN EL DENOMINADOR. Después, cuando voy al agente j, si el agente j está conectado con
+el i, tanto en su denominador como en el numerador, repito la cuenta. Entonces ahí hice cuatro
+veces una cuenta que debería haberla hecho una vez.
+ Entonces lo que voy a hacer es armar un puntero nuevo que contenga estos números. Entonces
+después no los recalculo, simplemente los reutilizo. Voy a dejar para hacer esto mañana. O
+el domingo.

@@ -143,8 +143,6 @@ double Numerador_homofilia(ps_Red ps_variable, ps_Param ps_parametro){
 	return d_resultado;
 }
 
-
-
 // double Dinamica_saturacion(ps_Red ps_variable, ps_Param ps_parametro){
 	// // Defino las variables locales de mi función
 	// double d_resultado; // d_resultado es lo que voy a returnear.
