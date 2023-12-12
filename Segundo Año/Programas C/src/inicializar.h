@@ -11,6 +11,7 @@ int Lectura_Adyacencia(int *pi_vector, FILE *pa_archivo);
 // int Adyacencia_Actividad(ps_Red ps_red, ps_Param ps_datos);
 // int Conectar_agentes(ps_Red ps_red, ps_Param ps_datos);
 int GenerarAdy_Conectada(ps_Red ps_variable, ps_Param ps_parametro);
+int Generar_Separacion(ps_Red ps_variable, ps_Param ps_parametro);
 
 #endif
 

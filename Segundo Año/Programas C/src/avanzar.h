@@ -6,7 +6,7 @@
 
 double Dinamica_sumatoria(ps_Red ps_variable, ps_Param ps_parametro);
 double Dinamica_opiniones(ps_Red ps_variable, ps_Param ps_parametro);
-double Normalizacion_homofilia(ps_Red ps_variable, ps_Param ps_parametro);
+// double Normalizacion_homofilia(ps_Red ps_variable, ps_Param ps_parametro);
 double Numerador_homofilia(ps_Red ps_variable, ps_Param ps_parametro);
 
 

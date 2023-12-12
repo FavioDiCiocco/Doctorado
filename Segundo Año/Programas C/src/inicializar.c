@@ -6,6 +6,7 @@
 #include<string.h>
 #include "general.h"
 #include "inicializar.h"
+#include "avanzar.h"
 
 
 // Esta función me genera los vectores opinión iniciales del sistema. Esto es una matriz de tamaño N*T
@@ -46,6 +47,25 @@ int GenerarAdy_Conectada(ps_Red ps_variable, ps_Param ps_parametro){
 	// Escribo la matriz de Adyacencia
 	for(register int i_i=1; i_i<i_F; i_i++) for(register int i_j=0; i_j<i_i; i_j++) ps_variable->pi_Adyacencia[i_i*i_C+i_j+2] = 1;  // Esto me pone 1 debajo de la diagonal
 	for(register int i_i=0; i_i<i_F; i_i++) for(register int i_j=i_i+1; i_j<i_C; i_j++) ps_variable->pi_Adyacencia[i_i*i_C+i_j+2] = ps_variable->pi_Adyacencia[i_j*i_C+i_i+2]; // Esta sola línea simetriza la matriz
+	return 0;
+}
+
+// Esta función me arma la matriz de Separación de agentes.
+int Generar_Separacion(ps_Red ps_variable, ps_Param ps_parametro){
+	// Primero tomo las filas y columnas de mi matriz de Separacion
+	int i_F,i_C;
+	i_F = ps_variable->pd_Separacion[0];
+	i_C = ps_variable->pd_Separacion[1];
+	
+	// Esta es una matriz simétrica, construyo la mitad de arriba y después la copio abajo.
+	for(ps_variable->i_agente=0; ps_variable->i_agente<i_F; ps_variable->i_agente++){
+		for(ps_variable->i_agente2=ps_variable->i_agente+1; ps_variable->i_agente2<i_C; ps_variable->i_agente2++){
+			if(ps_variable->pi_Adyacencia[ps_variable->i_agente*ps_variable->pi_Adyacencia[1]+ps_variable->i_agente2+2] == 1)	ps_variable->pd_Separacion[ps_variable->i_agente*i_C+ps_variable->i_agente2+2] = Numerador_homofilia(ps_variable,ps_parametro);
+		}
+	}
+	
+	for(register int i_i=0; i_i<i_F; i_i++) for(register int i_j=i_i+1; i_j<i_C; i_j++) ps_variable->pd_Separacion[i_j*i_C+i_i+2] = ps_variable->pd_Separacion[i_i*i_C+i_j+2]; // Esta sola línea simetriza la matriz
+	
 	return 0;
 }
 

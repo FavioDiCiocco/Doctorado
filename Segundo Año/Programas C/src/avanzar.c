@@ -45,31 +45,35 @@ double Dinamica_opiniones(ps_Red ps_variable, ps_Param ps_parametro){
 	// Defino las variables locales de mi función.
 	double d_resultado; // d_resultado es lo que voy a returnear.
 	double d_sumatoria = 0; // d_sumatoria es el total de la sumatoria del segundo término de la ecuación diferencial.
-	double d_numerador; // d_denominador es el numerador de los pesos por homofilia.
-	double d_denominador; // d_denominador es el denominador de la normalización de los pesos por homofilia.
+	double d_denominador = 0; // d_denominador es el denominador de la normalización de los pesos por homofilia.
 	
-	d_denominador = Normalizacion_homofilia(ps_variable, ps_parametro);
+	// Obtengo los valores de la cantidad de columnas de varias de mis matrices
+	int i_Co,i_Ca,i_Cs;
+	i_Co = (int) ps_variable->pd_Opiniones[1]; // Número de columnas en la matriz de opiniones
+	i_Ca = (int) ps_variable->pi_Adyacencia[1]; // Número de columnas en la matriz de adyacencia
+	i_Cs = (int) ps_variable->pd_Separacion[1]; // Número de columnas en la matriz de separaciones
 	
-	// Calculo la sumatoria de la ecuación diferencial. Para esto es que existe la función Din1.
-	// Aprovecho este for y también calculo el grado del agente
+	// Calculo el denominador de los pesos haciendo la sumatoria de los pesos de la matriz de Separacion.
+	// No considero si el agente1 tiene conexión con el agente2, porque de no tener conexión, la matriz de separación tiene un cero.
+	for(ps_variable->i_agente2=0; ps_variable->i_agente2<ps_parametro->i_N; ps_variable->i_agente2++) d_denominador += ps_variable->pd_Separacion[ps_variable->i_agente*i_Cs+ps_variable->i_agente2+2];
+	
+	// Calculo la sumatoria de la ecuación diferencial
 	// La sumatoria es sobre todos los agentes conectados en la red de adyacencia
 	for(ps_variable->i_agente2=0; ps_variable->i_agente2<ps_parametro->i_N; ps_variable->i_agente2++){
-		if(ps_variable->pi_Adyacencia[ps_variable->i_agente*ps_variable->pi_Adyacencia[1]+ps_variable->i_agente2+2] == 1){
-			
-			d_numerador = Numerador_homofilia(ps_variable,ps_parametro);
-			d_sumatoria += d_numerador * Dinamica_sumatoria(ps_variable,ps_parametro); // Sumo los valores de las funciones logísticas
+		
+		if(ps_variable->pi_Adyacencia[ps_variable->i_agente*i_Ca+ps_variable->i_agente2+2] == 1){
+			d_sumatoria += ps_variable->pd_Separacion[ps_variable->i_agente*i_Cs+ps_variable->i_agente2+2]*Dinamica_sumatoria(ps_variable,ps_parametro); // Sumo los valores de las funciones logísticas
 		}
+		
 	}
 	
-	
-	// Obtengo el tamaño de Columnas de mi matriz de Vectores de opinión y calculo el valor del campo que define mi ecuación diferencial
-	int i_C = (int) ps_variable->pd_Opiniones[1];
-	// d_resultado = -ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2] * ps_var->pd_Sat[ps_var->i_agente*i_C+ps_var->i_topico+2] + d_sumatoria/i_grado; // Término con saturación
-	d_resultado = -ps_variable->pd_Opiniones[ps_variable->i_agente*i_C+ps_variable->i_topico+2] + ps_parametro->d_kappa*(d_sumatoria/d_denominador);
+	d_resultado = -ps_variable->pd_Opiniones[ps_variable->i_agente*i_Co+ps_variable->i_topico+2] + ps_parametro->d_kappa*(d_sumatoria/d_denominador);
 	return d_resultado;
 }
 
 
+// Al implementar la matriz de Separación, esta función perdió utilidad.
+/*
 // Esta función calcula el denominador que normaliza los pesos en la ecuación dinámica.
 // Estos pesos son los que determinan el valor que el agente i le da a la opinión del agente j según la homofilia.
 double Normalizacion_homofilia(ps_Red ps_variable, ps_Param ps_parametro){
@@ -109,7 +113,7 @@ double Normalizacion_homofilia(ps_Red ps_variable, ps_Param ps_parametro){
 	
 	return d_sumatoria;
 }
-
+*/
 
 // Esta función calcula el numerador de los pesos en la ecuación dinámica.
 // Estos pesos son los que determinan el valor que el agente i le da a la opinión del agente j según la homofilia.

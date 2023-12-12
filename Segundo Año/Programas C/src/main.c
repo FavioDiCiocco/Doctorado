@@ -41,31 +41,20 @@ int main(int argc, char *argv[]){
 	
 	// Los siguientes son los parámetros que están dados en los structs
 	ps_datos->i_T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
-	ps_datos->i_Iteraciones_extras = 40; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
-	ps_datos->i_pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
+	ps_datos->i_Iteraciones_extras = 500; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	ps_datos->d_dt = 0.1; // Paso temporal de iteración del sistema
 	ps_datos->d_alfa = 1; // Controversialidad de los tópicos
 	ps_datos->d_delta = 0.002*ps_datos->d_kappa; // Es un término que se suma en la homofilia y ayuda a que los pesos no diverjan.
 	ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
-	ps_datos->d_CritCorte = pow(10,-2); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
+	ps_datos->d_CritCorte = pow(10,-3); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
 	ps_datos->i_testigos = fmin(ps_datos->i_N,200); // Esta es la cantidad de agentes de cada distancia que voy registrar
 		
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
 	int i_pasos_simulados = 0; // Esta variable me sirve para cortar si simulo demasiado tiempo.
 	int i_pasos_maximos = 200000; // Esta es la cantidad de pasos máximos a simular
-	
-	// Voy a armar mi array de punteros, el cual voy a usar para guardar los datos de pasos previos del sistema
-	double* ap_OpinionesPrevias[ps_datos->i_pasosprevios];
+	int i_ancho_ventana = 100; // Este es el ancho temporal que voy a tomar para promediar las opiniones de mis agentes.
 		
-	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
-		ap_OpinionesPrevias[i_i] = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Malloqueo los punteros de mis pasos previos
-		// Defino su número de filas y columnas como N*T
-		*ap_OpinionesPrevias[i_i] = ps_datos->i_N;
-		*(ap_OpinionesPrevias[i_i]+1) = ps_datos->i_T;
-		for(register int i_j=0; i_j<ps_datos->i_T*ps_datos->i_N;i_j++) *(ap_OpinionesPrevias[i_i]+i_j+2) = 0; // Inicializo los punteros
-	}
-	
 	//#############################################################################################
 	
 	// Defino mis matrices y las inicializo
@@ -80,6 +69,9 @@ int main(int argc, char *argv[]){
 	
 	// También hay un vector para la inversa a la beta de la distancia no ortogonal entre agentes
 	ps_red->pd_Separacion = (double*) malloc((2+ps_datos->i_N*ps_datos->i_N)*sizeof(double)); // Matriz de Separacion. Determina las dsitancias entre agentes.
+	
+	// También hay un vector para guardar el promedio temporal de las opiniones de los agentes en todos los tópicos
+	ps_red->pd_Prom_Opi = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N*2)*sizeof(double)); // Vector que guarda la diferencia entre dos pasos del sistema
 	
 	// Inicializo mis cinco "matrices".
 	// Matriz de Adyacencia. Es de tamaño N*N
@@ -107,6 +99,11 @@ int main(int argc, char *argv[]){
 	ps_red->pd_Separacion[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
 	ps_red->pd_Separacion[1] = ps_datos->i_N; // Pongo el número de columnas en la segunda coordenada
 	
+	// Matriz de Promedio de opiniones de cada agente y cada tópico. Es de tamaño 2*(N*T)
+	for(register int i_i=0; i_i<2*ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_Prom_Opi[i_i] = 0; // Inicializo la matriz
+	ps_red->pd_Prom_Opi[0] = 2; // Pongo el número de filas en la primer coordenada
+	ps_red->pd_Prom_Opi[1] = ps_datos->i_N*ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
+	
 	
 	//################################################################################################################################
 	
@@ -117,8 +114,8 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_Opiniones[355];
-	sprintf(s_Opiniones,"../Programas Python/Medidas_polarizacion/%dD/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
-		,ps_datos->i_T,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
+	sprintf(s_Opiniones,"../Programas Python/Medidas_polarizacion/Datos/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+		,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
 	FILE *pa_Opiniones=fopen(s_Opiniones,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// // Este archivo es el que guarda las opiniones de todos los agentes del sistema.
@@ -157,17 +154,25 @@ int main(int argc, char *argv[]){
 	
 	// if(i_iteracion < 2) fprintf(pa_Testigos,"Opiniones Testigos\n");
 	
+	// Sumo el estado inicial de las opiniones de mis agentes en el vector de Prom_Opi. Guardo esto en la primer fila
+	for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Prom_Opi[i_j+2] += ps_red->pd_Opiniones[i_j+2];
+	
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar
-	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++){
+	for(register int i_i=0; i_i<i_ancho_ventana-1; i_i++){
 		RK4(ps_red->pd_Opiniones, pf_Dinamica_Interaccion, ps_red, ps_datos); // Itero los intereses
+		
+		// Voy sumando las opiniones de mis agentes en el vector de Prom_Opi. Guardo esto en la primer fila
+		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Prom_Opi[i_j+2] += ps_red->pd_Opiniones[i_j+2];
+		
 		// Me guardo los valores de opinión de mis agentes testigo
 		// if(i_iteracion < 2){
 			// for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]);
 			// fprintf(pa_Testigos,"\n");
 		// }
-		// Registro el estado actual en el array de OpinionesPrevias.
-		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) *(ap_OpinionesPrevias[i_i]+i_j+2) = ps_red->pd_Opiniones[i_j+2];
 	}
+	
+	// Promedio el valor de Prom_Opi al dividir por el tamaño de la ventana
+	for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Prom_Opi[i_j+2] = ps_red->pd_Prom_Opi[i_j+2]/i_ancho_ventana;
 	
 	//################################################################################################################################
 	
@@ -176,52 +181,73 @@ int main(int argc, char *argv[]){
 	
 	fprintf(pa_Opiniones,"Variación promedio \n");
 	
-	int i_IndiceOpiPasado = 0; 
-	
 	while(i_contador < ps_datos->i_Iteraciones_extras && i_pasos_simulados < i_pasos_maximos){
 		
 		i_contador = 0; // Inicializo el contador
 		
 		// Evoluciono el sistema hasta que se cumpla el criterio de corte
 		do{
+			
 			// Evolución
 			RK4(ps_red->pd_Opiniones, pf_Dinamica_Interaccion, ps_red, ps_datos); // Itero los intereses
+			// Sumo las opiniones en la segunda fila de Prom_Opi
+			for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Prom_Opi[i_j+ps_datos->i_N*ps_datos->i_T+2] += ps_red->pd_Opiniones[i_j+2];
+			
+			// Actualización de índices
+			i_pasos_simulados++; // Avanzo el contador de la cantidad de pasos simulados
+			
 			// Cálculos derivados
-			Delta_Vec_d(ps_red->pd_Opiniones,ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios],ps_red->pd_Diferencia); // Veo la diferencia entre $i_pasosprevios pasos anteriores y el actual en las opiniones
-			for(register int i_p=0; i_p<ps_datos->i_N*ps_datos->i_T; i_p++) *(ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios]+i_p+2) = ps_red->pd_Opiniones[i_p+2]; // Me guardo el estado actual en la posición correspondiente de ap_OpinionesPrevias
-			ps_red->d_Variacion_promedio = Norma_d(ps_red->pd_Diferencia)/ps_datos->d_NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
-			// Escritura
-			fprintf(pa_Opiniones, "%lf\t",ps_red->d_Variacion_promedio); // Guardo el valor de variación promedio
+			if(i_pasos_simulados%100==0){
+				for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Prom_Opi[i_j+ps_datos->i_N*ps_datos->i_T+2] = ps_red->pd_Prom_Opi[i_j+ps_datos->i_N*ps_datos->i_T+2]/i_ancho_ventana;
+				for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Diferencia[i_j+2] = ps_red->pd_Prom_Opi[i_j+ps_datos->i_N*ps_datos->i_T+2] - ps_red->pd_Prom_Opi[i_j+2];
+				ps_red->d_Variacion_promedio = Norma_d(ps_red->pd_Diferencia)/ps_datos->d_NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
+				
+				// Reinicio los promedios
+				for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Prom_Opi[i_j+2] = ps_red->pd_Prom_Opi[i_j+ps_datos->i_N*ps_datos->i_T+2];
+				for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Prom_Opi[i_j+ps_datos->i_N*ps_datos->i_T+2] = 0;
+				
+				// Escritura
+				fprintf(pa_Opiniones, "%lf\t",ps_red->d_Variacion_promedio); // Guardo el valor de variación promedio
+			}
 			// if(i_iteracion < 2){
 				// for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de opinión de mis agentes testigo
 				// fprintf(pa_Testigos,"\n");
 			// }
-			// Actualización de índices
-			i_IndiceOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
-			i_pasos_simulados++; // Avanzo el contador de la cantidad de pasos simulados
 		}
 		while( ps_red->d_Variacion_promedio > ps_datos->d_CritCorte && i_pasos_simulados < i_pasos_maximos);
 		
 		// Ahora evoluciono el sistema una cantidad i_Itextra de veces. Le pongo como condición que si el sistema deja de cumplir la condición de corte, deje de evolucionar
 		
 		while(i_contador < ps_datos->i_Iteraciones_extras && ps_red->d_Variacion_promedio <= ps_datos->d_CritCorte && i_pasos_simulados < i_pasos_maximos){
+			
 			// Evolución
 			RK4(ps_red->pd_Opiniones, pf_Dinamica_Interaccion, ps_red, ps_datos); // Itero los intereses
+			// Sumo las opiniones en la segunda fila de Prom_Opi
+			for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Prom_Opi[i_j+ps_datos->i_N*ps_datos->i_T+2] += ps_red->pd_Opiniones[i_j+2];
+			
+			// Actualización de índices
+			i_contador++; // Avanzo el contador para que el sistema haga una cantidad $i_Itextra de iteraciones extras
+			i_pasos_simulados++; // Avanzo el contador de la cantidad de pasos simulados
+			
 			// Cálculos derivados
-			Delta_Vec_d(ps_red->pd_Opiniones,ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios],ps_red->pd_Diferencia); // Veo la diferencia entre $i_pasosprevios pasos anteriores y el actual en las opiniones
-			for(register int i_p=0; i_p<ps_datos->i_N*ps_datos->i_T; i_p++) *(ap_OpinionesPrevias[i_IndiceOpiPasado%ps_datos->i_pasosprevios]+i_p+2) = ps_red->pd_Opiniones[i_p+2]; // Me guardo el estado actual en la posición correspondiente de ap_OpinionesPrevias
-			ps_red->d_Variacion_promedio = Norma_d(ps_red->pd_Diferencia)/ps_datos->d_NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
-			// Escritura
-			fprintf(pa_Opiniones, "%lf\t",ps_red->d_Variacion_promedio); // Guardo el valor de variación promedio 
+			if(i_pasos_simulados%100==0){
+				for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Prom_Opi[i_j+ps_datos->i_N*ps_datos->i_T+2] = ps_red->pd_Prom_Opi[i_j+ps_datos->i_N*ps_datos->i_T+2]/i_ancho_ventana;
+				for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Diferencia[i_j+2] = ps_red->pd_Prom_Opi[i_j+ps_datos->i_N*ps_datos->i_T+2] - ps_red->pd_Prom_Opi[i_j+2];
+				ps_red->d_Variacion_promedio = Norma_d(ps_red->pd_Diferencia)/ps_datos->d_NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
+				
+				// Reinicio los promedios
+				for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Prom_Opi[i_j+2] = ps_red->pd_Prom_Opi[i_j+ps_datos->i_N*ps_datos->i_T+2];
+				for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Prom_Opi[i_j+ps_datos->i_N*ps_datos->i_T+2] = 0;
+				
+				// Escritura
+				fprintf(pa_Opiniones, "%lf\t",ps_red->d_Variacion_promedio); // Guardo el valor de variación promedio
+			}
+			
+			
 			// if(i_iteracion < 2){
 				// for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]); // Me guardo los valores de opinión de mis agentes testigo
 				// fprintf(pa_Testigos,"\n");
 			// }
-			
-			// Actualización de índices
-			i_IndiceOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
-			i_contador++; // Avanzo el contador para que el sistema haga una cantidad $i_Itextra de iteraciones extras
-			i_pasos_simulados++; // Avanzo el contador de la cantidad de pasos simulados
 		}
 		
 		// Si el sistema evolucionó menos veces que la cantidad arbitraria, es porque rompió la condiciones de corte.
@@ -248,11 +274,11 @@ int main(int argc, char *argv[]){
 	
 	
 	// Libero los espacios dedicados a mis vectores y cierro mis archivos
-	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++) free(ap_OpinionesPrevias[i_i]);
 	free(ps_red->pd_Angulos);
 	free(ps_red->pi_Adyacencia);
 	free(ps_red->pd_Opiniones);
 	free(ps_red->pd_Separacion);
+	free(ps_red->pd_Prom_Opi);
 	free(ps_red->pd_Diferencia);
 	free(ps_red);
 	free(ps_datos);

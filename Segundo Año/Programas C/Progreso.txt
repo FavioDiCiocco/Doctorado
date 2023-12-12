@@ -1913,3 +1913,56 @@ veces una cuenta que debería haberla hecho una vez.
  Entonces lo que voy a hacer es armar un puntero nuevo que contenga estos números. Entonces
 después no los recalculo, simplemente los reutilizo. Voy a dejar para hacer esto mañana. O
 el domingo.
+
+------------------------------------------------------------------------------------------
+
+11/12/2023
+
+Hoy llegué un rato tarde, revisé el recuperatorio del primer parcial de F2, mandé mensajes,
+completé la burocracia infinita. Vamos a intentar ir llenando eso todos los días. Igual no
+le quedan muchos días al cuaderno ese. Fui a dar consultas y después charlé con Sebas sobre
+una idea de analizar la variación promedio de los agentes a través de realizar un test de
+hipótesis de una t de student.
+
+------------------------------------------------------------------------------------------
+
+12/12/2023
+
+Hoy vine y desde temprano estuvimos tomando parcial. Después llegué a último momento a
+la celebración de fin de año del DF. Charlamos, la pasamos lindo, volvimos al laburo.
+
+Durante el parcial estuve anotando las ideas del código, así que veamos de implementar lo
+que charlamos con Pablo así la cosa puede simular en un tiempo razonable.
+ Revisé las corridas de Oporto y Coimbra. Por lo visto, aumentar el Criterio de Corte
+a 10^{-3} llevó a que las simulaciones como mucho tarden cerca de 4700 segundos.
+En cambio con un criterio de corte de 10^{-2} el sistema tardaba más cerca de 4000 segundos.
+Me parece que es una mejora sustancial, ya en 10^{-3} el sistema redujo el tiempo de simulación
+a la mitad, ganancia.
+
+Implementé la función que calcula las separaciones en una matriz aparte y lo hace dentro del
+RK4. 
+
+Implementé la comparación de estados actuales con estados previos promediados a lo largo de una
+ventana temporal.
+
+Esto iba a ser algo fácil y rápido de hacer. Hasta que descubrí que tenía mal el RK4. Estaba
+calculando re mal las pendientes. No sé por qué. Quiero decir, no sé cómo armé tan mal la función
+y desde cuándo es que existe ese error. Habrá que revisar los códigos viejos en ese sentido.
+Ahora voy a hacer dos cosas importantes y ya volverme a casa. La primera es tomar datos que
+mandé a hacer en Oporto y Coimbra, cosa de revisarlos en caso de ser necesario. Honestamente
+no creo que los revise demasiado. Sabes qué, mejor voy a simplemente renombrar las carpetas
+cosa de no perder tiempo en eso. Después subo los archivos del src a Coimbra y Oporto y
+ya ahí mando a hacer las simulaciones. También tengo que mandar a Algarve. Creo que
+los Instanciar de cada cluster ya tiene todo lo necesario para hacer las simulaciones
+correctamente.
+ Las carpetas con esos datos que armé antes son las carpetas 2D. Las nuevas carpetas
+de datos son las carpetas Datos.
+
+Mandé en Oporto a iniciar el barrido Beta_Kappa. 20 simulaciones nomás. Mañana mandaré
+más si esto va bien. Igual este barrido no necesita demasiada estadística.
+
+Ya mandé todos los barridos. El de Coimbra tiene 40 simulaciones, mientras que el de
+Algarve tiene 38. Seba estaba usando un hilo y no quería romper las bolas. Cuestión,
+ahí mandé todo. Dios quiera que funcione para mañana. Mañana hablaremos con Pablo.
+Me estoy yendo a las 20:33 a casa. Mañana a primera hora voy a hacer la burocracia
+infinita.

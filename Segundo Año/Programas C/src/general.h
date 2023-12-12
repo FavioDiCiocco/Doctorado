@@ -13,6 +13,7 @@
 typedef struct Red{
 	double *pd_Diferencia; // Vector que guarda las diferencias entre PreOpi y Opi.
 	double *pd_Opiniones; // Vector de opinión de cada individuo
+	double *pd_Prom_Opi; // Vector de Promedios de Opiniones
 	double *pd_Separacion; // Vector que guarda la inversa de la distancia entre agentes elevada a la -Beta
 	double *pd_Angulos; // Matriz de superposición entre tópicos. Tiene tamaño T*T
 	double d_Variacion_promedio; // Esto es la Variación promedio del sistema. Es cuanto cambia en promedio cada opinión
