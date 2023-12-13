@@ -1966,3 +1966,66 @@ Algarve tiene 38. Seba estaba usando un hilo y no quería romper las bolas. Cues
 ahí mandé todo. Dios quiera que funcione para mañana. Mañana hablaremos con Pablo.
 Me estoy yendo a las 20:33 a casa. Mañana a primera hora voy a hacer la burocracia
 infinita.
+
+------------------------------------------------------------------------------------------
+
+13/12/2023
+
+Llegué a la facultad y me puse a revisar cómo iban las simulaciones. Las de oporto iban mal.
+Aprendí que no puedo mandar corridas con Kappa=0. El delta es proporcional al Kappa, y como
+Kappa es cero todas las opiniones son cero. Entonces el sistema empieza a dar nans al calcular
+las opiniones y cada simulación tarda una eternidad.
+
+Las demás simulaciones están yendo bastante bien. Agarré una simulación en Coimbra y resulta
+que está tardando en promedio 20 minutos por simulación, lo cuál significa que esas simulaciones
+van a tardar día y medio en resolver una iteración total de los parámetros. De la misma forma,
+las iteraciones de Algarve se van a resolver en unos días, aunque a esas simulaciones les voy
+a tener que agregar simulaciones extra para llegar a las 100, como me dice Pablo.
+
+Algo raro que está pasando es que ahora en las simulaciones que llegan hasta el final de tiempo
+tardan 15 mil segundos, en vez de 10 mil. No entiendo, se supone que reduje la cantidad de veces
+que se calculan los pow, ¿Por qué es que ahora el programa tarda más que antes?
+
+Tengo que hacer varias pruebas entonces.
+
+1) Ver que el integrador esté funcionando correctamente. Para eso puedo hacer una simulación
+dada una semilla fija con el RK4 y después con un Euler. Ver que los resultados den similares.
+Para eso puedo usar un sistema más pequeño, cien agentes, ver qué le pasa al sistema en ese
+caso.
+2) Ver si efectivamente el tiempo de simulación aumentó al cambiar la Generación_Separación.
+Para eso voy a agarrar el código que todavía está en Meidas polarización, mandar a correr
+y luego comparar eso con el código con la Separación generada.
+3) Ver si se están calculando correctamente los promedios. Para eso puedo simplemente hacer
+una corrida de 200 paso, guardarme las opiniones en esos 200 paso, calcular promedios y
+ver que la variación promedio de lo mismo.
+
+Bueno, arranquemos por lo primero. Antes de eso, mandé a correr los datos en Oporto de nuevo,
+esta vez arrancando con un Kappa=0.2- Ahora las simulaciones parecen estar tardando 60 segundos
+en principio. Asumo que son las 500 iteraciones que le exigí al sistema. No puede ser que
+500 iteraciones tarden 60 segundos, es un montón. Si fueran 10000 agentes te lo entiendo,
+pero con 1000 es un montón.
+
+Para esto voy a guardar el código en una carpeta aparte, y primero voy a construir una
+función que haga una integración de Euler. Ya construí el Euler, hagamos una prueba rápida
+con un sistema que decae a un consenso neutral.
+
+Hice las corridas del Euler y el RK4 para K = 10, Cos(delta) = 0 y Beta 0 y 0.5. En ambos casos
+observé que ambas simulaciones dan los mismo, así que puedo decir que el integrador de RK4 funciona
+bien. (Estaría bueno graficar estos estados para corroborar que todo realmente da bastante parecido).
+Pero mirando los resultados a ojo parecen estar bastante bien, con las obvias diferencias entendidas
+porque los dos modelos tienen finalmente estabilidades y errores distintos.
+
+Lo siguiente es poner a prueba el cambio de Generación_Separacion. Se supone que al precalcular
+la matriz de Separacion, entonces me ahorro cuentas. Sin embargo, el sistema está tardando 
+mucho más ahora que antes. No entiendo por qué. Veamos si podemos contrastar eso.
+
+Para eso puedo tomar el código de NI_homofilia y el de Medidas Polarización. Igual no necesito
+todo el de Medidas_Polarización, sólo la parte que modifica la ecuación dinámica para que las
+separaciones se calculen en cada ecuación dinámica y no por fuera.
+
+Probé la diferencia entre el código con la Generacion de Separacion adentro y sin este.
+Efectivamente el código sin Separación es más rápido, 2,5 veces más rápido aprox. Así que
+eso está bien. Sigo pensando que el código tarda mucho. Tiene que haber algo en lo que revisar
+para que el código vaya más rápido. Algo está funcionando mal o debería reducirse.
+Mañana llego, hago burocracia y miro eso. (DOCUMENTACION y CUADERNO). Algo se tiene que poder
+resolver.

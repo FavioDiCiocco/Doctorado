@@ -136,37 +136,6 @@ int Visualizar_i(int *pi_vector){
 	return 0;
 }
 
-//------------------------------------------------------------------------------------------------------------------------------------------
-
-// Esta función realiza una integración de Euler sobre mi código
-
-double Euler(double *pd_sistema, double (*pf_funcion)(ps_Red ps_variable, ps_Param ps_parametro), ps_Red ps_variable, ps_Param ps_parametro){
-	
-	// Defino las variables y vectores que voy a necesitar
-	int i_F = (int) *pd_sistema; // Este es el número de filas del vector principal
-	int i_C = (int) *(pd_sistema+1); // Este es el número de columnas del vector principal
-	
-	// Este me guarda las condiciones iniciales del sistema, que las voy a necesitar al calcular cada paso del RK4
-	double *pd_inicial;
-	pd_inicial = (double*) malloc((i_F*i_C+2)*sizeof(double));
-	
-	// Inicializo mi puntero inicial
-	for(register int i_i=0; i_i<i_F*i_C+2; i_i++) *(pd_inicial+i_i) = *(pd_sistema+i_i);
-	
-	// Construyo la matriz de los pesos
-	Generar_Separacion(ps_variable,ps_parametro);
-	
-	// Evoluciono mi sistema
-	for(ps_variable->i_agente=0; ps_variable->i_agente<i_F; ps_variable->i_agente++){
-		for(ps_variable->i_topico=0; ps_variable->i_topico<i_C; ps_variable->i_topico++){
-			*(pd_sistema+ps_variable->i_agente*i_C+ps_variable->i_topico+2) = *(pd_inicial+ps_variable->i_agente*i_C+ps_variable->i_topico+2)+ps_parametro->d_dt*(*pf_funcion)(ps_variable,ps_parametro);
-		}
-	}
-	
-	free(pd_inicial);
-	
-	return 0;
-}
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -209,7 +178,7 @@ double RK4(double *pd_sistema, double (*pf_funcion)(ps_Red ps_variable, ps_Param
 		
 		// Avanzo el sistema para el cálculo de la siguiente pendiente.
 		if(i_j>0)	for(register int i_i=0; i_i<i_F*i_C; i_i++) *(pd_sistema+i_i+2) = *(pd_inicial+i_i+2)+*(ap_pendientes[i_j]+i_i+2)*DT[i_j];
-		// Generar_Separacion(ps_variable,ps_parametro);
+		Generar_Separacion(ps_variable,ps_parametro);
 		
 		// Avanzo en todos los agentes
 		for(ps_variable->i_agente=0; ps_variable->i_agente<i_F; ps_variable->i_agente++){

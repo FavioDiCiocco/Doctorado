@@ -94,3 +94,11 @@ con un archivo de Opiniones y otro de Testigos. Creo que al final el de Testigos
 esta tanda.
  La diferencia importante es que a partir de acá empecé a usar un dt=0.1, en vez del de 0.01 que estaba
 usando antes.
+
+
+.) NI_Homofilia:
+----------------
+
+Esta carpeta es temporal mientras veo qué pasó que el código ahora tarda más que antes. Este código
+tiene las implementaciones que promedian los 100 pasos previos y los 100 actuales y compara eso
+para saber si el sistema sigue evolucionando o si llegó a un estado estable.
