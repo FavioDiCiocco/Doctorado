@@ -41,7 +41,7 @@ int main(int argc, char *argv[]){
 	
 	// Los siguientes son los parámetros que están dados en los structs
 	ps_datos->i_T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
-	ps_datos->d_dt = 0.1; // Paso temporal de iteración del sistema
+	ps_datos->d_dt = 0.00005; // Paso temporal de iteración del sistema
 	ps_datos->d_alfa = 1; // Controversialidad de los tópicos
 	ps_datos->d_delta = 0.002*ps_datos->d_kappa; // Es un término que se suma en la homofilia y ayuda a que los pesos no diverjan.
 		
@@ -88,7 +88,7 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_Opiniones[355];
-	sprintf(s_Opiniones,"../Programas Python/Testeo_implementaciones/Sep_int/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+	sprintf(s_Opiniones,"../Programas Python/Testeo_implementaciones/Euler/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
 		,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
 	FILE *pa_Opiniones=fopen(s_Opiniones,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
@@ -121,15 +121,18 @@ int main(int argc, char *argv[]){
 	Escribir_d(ps_red->pd_Opiniones,pa_Opiniones);
 
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar
-	for(register int i_i=0; i_i< (int) 1000/ps_datos->d_dt; i_i++) RK4(ps_red->pd_Opiniones, pf_Dinamica_Interaccion, ps_red, ps_datos); // Itero los intereses
+	for(register int i_i=0; i_i< (int) 50/ps_datos->d_dt; i_i++) Euler(ps_red->pd_Opiniones, pf_Dinamica_Interaccion, ps_red, ps_datos); // Itero los intereses
 
 	//################################################################################################################################
 	
-	// Guardo las últimas cosas, libero las memorias malloqueadas y luego termino
 	
 	// Guardo las opiniones finales, la matriz de adyacencia y la semilla en el primer archivo.
 	fprintf(pa_Opiniones,"Opiniones finales\n");
 	Escribir_d(ps_red->pd_Opiniones,pa_Opiniones);
+	// fprintf(pa_Opiniones,"Matriz de Separación\n");
+	// Escribir_d(ps_red->pd_Separacion, pa_Opiniones);
+	// fprintf(pa_Opiniones,"Matriz de Adyacencia\n");
+	// Escribir_i(ps_red->pi_Adyacencia, pa_Opiniones);
 	fprintf(pa_Opiniones,"Semilla\n");
 	fprintf(pa_Opiniones,"%ld\n",semilla);
 	

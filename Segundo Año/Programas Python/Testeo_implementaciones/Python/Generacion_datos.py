@@ -67,22 +67,22 @@ rng = np.random.default_rng()
 
 # Armo primero el gráfico del consenso de opiniones.
 
-# media = 0
-# desv = 0.05
-# N = 1000
+media = 0
+desv = 0.05
+N = 1000
 
-# ruido = rng.normal(0,0.1,N)
+ruido = rng.normal(0,0.1,N)
 
-# X = rng.normal(media,desv,N)
-# Y = rng.normal(media,desv,N)
+X = rng.normal(media,desv,N)
+Y = rng.normal(media,desv,N)
 
-# Opiniones = np.zeros(2*N)
-# Opiniones[0::2] = X
-# Opiniones[1::2] = Y
+Opiniones = np.zeros(2*N)
+Opiniones[0::2] = X
+Opiniones[1::2] = Y
 
-# filename = "../Datos/Opiniones_N=1000_kappa=0.2_beta=1_cosd=0.00_Iter=0.file"
+filename = "../Datos/Opiniones_N=1000_kappa=0.2_beta=1_cosd=0.00_Iter=0.file"
 
-# Guardar_archivo(Opiniones,filename)
+Guardar_archivo(Opiniones,filename)
 
 ##################################################################################
 # Armo los gráfico de polarización a uno de los extremos
@@ -91,7 +91,7 @@ desv = 0.05
 N = 1000
 ruido = rng.normal(0,0.1,N)
 
-Medias = np.array([5,-5])
+Medias = np.array([-5,5])
 
 for indice1,mediax in enumerate(Medias):
     for indice2,mediay in enumerate(Medias):
@@ -120,7 +120,7 @@ N = 1000
 
 # Primero hago el caso homogéneo
 
-Medias = np.array([5,-5])
+Medias = np.array([-5,5])
 
 for indice1,kx in enumerate(Medias):
     for indice2,ky in enumerate(Medias):
@@ -143,7 +143,7 @@ for indice1,kx in enumerate(Medias):
 
 # Segundo hago el caso bimodal
 
-extremos = np.array([1,-1])
+extremos = np.array([-1,1])
 K = 5
 desv = 0.5
 
@@ -173,7 +173,7 @@ for indice1,direcx in enumerate(extremos):
 
 # Tercero hago el caso más grande de un extremo
 
-extremos = np.array([1,-1])
+extremos = np.array([-1,1])
 K = 5
 desv = 0.5
 
@@ -204,7 +204,7 @@ for indice1,direcx in enumerate(extremos):
         
 # Cuarto hago el caso más grande del otro extremo
 
-extremos = np.array([1,-1])
+extremos = np.array([-1,1])
 K = 5
 desv = 0.5
 
@@ -235,7 +235,7 @@ for indice1,direcx in enumerate(extremos):
 ##################################################################################
 # Armo los gráficos de polarización a dos de los extremos
 
-extremos = np.array([1,-1])
+extremos = np.array([-1,1])
 desv = 0.05
 K = 5
 N = 1000
@@ -266,7 +266,7 @@ for i,extremo1 in enumerate(extremos_tupla):
         
         Guardar_archivo(Opiniones,filename)
             
-
+            
 
 ##################################################################################
 # Armo los gráficos de polarización a dos de los extremos con anchura.
@@ -280,7 +280,7 @@ N = 1000
 
 # Horizontales
 indice = 0
-for extremo in np.array([1,-1]):
+for extremo in np.array([-1,1]):
 
     X = (rng.random(N)-0.5)*K*2
     Y = rng.normal(K,0.05,N)*extremo
@@ -297,7 +297,7 @@ for extremo in np.array([1,-1]):
     
 # Verticales
 indice = 0
-for extremo in np.array([1,-1]):
+for extremo in np.array([-1,1]):
 
     X = rng.normal(K,0.05,N)*extremo
     Y = (rng.random(N)-0.5)*K*2
@@ -314,7 +314,7 @@ for extremo in np.array([1,-1]):
     
 # Diagonales
 indice = 0
-for extremo in np.array([1,-1]):
+for extremo in np.array([-1,1]):
 
     ruido = rng.normal(0,0.1,N)
     
@@ -337,7 +337,7 @@ for extremo in np.array([1,-1]):
 # Armo los gráficos de polarización a tres de los extremos
     
 
-extremos = np.array([1,-1])
+extremos = np.array([-1,1])
 desv = 0.05
 K = 5
 N = 1000
@@ -368,43 +368,7 @@ for i in range(4):
     
     Guardar_archivo(Opiniones,filename)
     
-
-##################################################################################
-# Armo los gráficos de polarización a tres de los extremos con anchura.
-# Voy a considerar la anchura interna, nada de anchura por el perímetro
-
-extremos = np.array([1,-1])
-desv = 0.05
-K = 5
-N = 1000
-
-extremos_tupla = np.array([(x,y) for x in extremos for y in extremos])
-
-indice = 3
-
-for i in range(4):
-    X_i = rng.random(N)*K
-    X = np.zeros(N)
-    ruido = rng.normal(0,0.1,N)
     
-    extremos_graficar = np.delete(np.arange(4),i)
-    for j,extremo in enumerate(extremos_tupla[extremos_graficar]):
-        X[int((N/3)*j):int((N/3)*(j+1))] = X_i[int((N/3)*j):int((N/3)*(j+1))]*extremo[0]
-        Y[int((N/3)*j):int((N/3)*(j+1))] = X_i[int((N/3)*j):int((N/3)*(j+1))]*extremo[1]
-    
-    Y = Y + ruido
-    
-    Opiniones = np.zeros(2*N)
-    Opiniones[0::2] = X
-    Opiniones[1::2] = Y
-    
-    indice = indice + 1
-    
-    filename = "../Datos/Opiniones_N=1000_kappa=6_beta=1.5_cosd=0.00_Iter={}.file".format(indice)
-    
-    Guardar_archivo(Opiniones,filename)
-
-
 ##################################################################################
 # Armo los gráficos de polarización a cuatro de los extremos
     

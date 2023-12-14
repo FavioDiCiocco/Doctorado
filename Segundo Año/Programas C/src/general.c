@@ -209,7 +209,7 @@ double RK4(double *pd_sistema, double (*pf_funcion)(ps_Red ps_variable, ps_Param
 		
 		// Avanzo el sistema para el cálculo de la siguiente pendiente.
 		if(i_j>0)	for(register int i_i=0; i_i<i_F*i_C; i_i++) *(pd_sistema+i_i+2) = *(pd_inicial+i_i+2)+*(ap_pendientes[i_j]+i_i+2)*DT[i_j];
-		// Generar_Separacion(ps_variable,ps_parametro);
+		Generar_Separacion(ps_variable,ps_parametro);
 		
 		// Avanzo en todos los agentes
 		for(ps_variable->i_agente=0; ps_variable->i_agente<i_F; ps_variable->i_agente++){

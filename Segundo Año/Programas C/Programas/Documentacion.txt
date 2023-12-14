@@ -96,9 +96,23 @@ esta tanda.
 usando antes.
 
 
-.) NI_Homofilia:
+.)NI_Homofilia:
 ----------------
 
 Esta carpeta es temporal mientras veo qué pasó que el código ahora tarda más que antes. Este código
 tiene las implementaciones que promedian los 100 pasos previos y los 100 actuales y compara eso
-para saber si el sistema sigue evolucionando o si llegó a un estado estable.
+para saber si el sistema sigue evolucionando o si llegó a un estado estable. También tiene
+la implementación de Generacion_Separacion. La matriz que contiene las separaciones entre agentes
+y que me sirve para reducir la cantidad de veces que de forma redundante calculo esas separaciones.
+ El motivo de decir que esta carpeta es temporal es porque estoy considerando reemplazar el código
+de Medidas_polarizacion con este código, porque a fin de cuentas no es una etapa nueva en términos
+de una modificación de la ecuación dinámica o un cambio en los datos guardados. Es una actualización
+del código para hacerlo más rápido.
+
+.)Testeo_implementaciones:
+---------------------------
+
+Este código reduce gran parte del código que es innecesaria cosa de permitirme hacer pruebas sencillas
+sobre qué es lo que lo hace correr más rápido o más lento el código. Tiene la ecuación dinámica,
+pero no busca evolucionar el sistema hasta llegar a un estado estable. Simplemente corre una cantidad
+de tiempo fija, una cierta cantidad de simulaciones y listo.

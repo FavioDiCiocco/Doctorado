@@ -2000,7 +2000,7 @@ una corrida de 200 paso, guardarme las opiniones en esos 200 paso, calcular prom
 ver que la variación promedio de lo mismo.
 
 Bueno, arranquemos por lo primero. Antes de eso, mandé a correr los datos en Oporto de nuevo,
-esta vez arrancando con un Kappa=0.2- Ahora las simulaciones parecen estar tardando 60 segundos
+esta vez arrancando con un Kappa=0.2. Ahora las simulaciones parecen estar tardando 60 segundos
 en principio. Asumo que son las 500 iteraciones que le exigí al sistema. No puede ser que
 500 iteraciones tarden 60 segundos, es un montón. Si fueran 10000 agentes te lo entiendo,
 pero con 1000 es un montón.
@@ -2029,3 +2029,35 @@ eso está bien. Sigo pensando que el código tarda mucho. Tiene que haber algo e
 para que el código vaya más rápido. Algo está funcionando mal o debería reducirse.
 Mañana llego, hago burocracia y miro eso. (DOCUMENTACION y CUADERNO). Algo se tiene que poder
 resolver.
+
+------------------------------------------------------------------------------------------
+
+14/12/2023
+
+Hoy también llegué un poco tarde. Hay que empezar a levantarse más temprano y no dar vueltas
+en la cama. Cuestión que llegué, me reporté con Pablo y me puse a completar la burocracia
+infinita y la documentación de los archivos.
+
+Estoy intentando ver qué es lo que hace tardar tanto a mi programa. ¿Será el hecho de tener tantos
+if dentro de los for? En su momento yo puse esos if porque hacer las cuentas era más costoso 
+que revisar un if.
+
+Me escribí una matriz de Separación y una de Adyacencia en un archivo de Opiniones, comparándolas
+se ve que la matriz de Separación tiene ceros excepto donde la matriz de Adyacencia tiene unos.
+Voy a probar cambiando el if en la ecuación dinámica que sólo hace que en vez de realizar una cuenta,
+la arme sólo si los agentes están conectados. Al final, el if ahí ayuda a que la cosa vaya más rápido,
+no más lento.
+
+Probemos si lo que me propuso David de usar el exp y log me resuelven el cálculo y lo hacen más
+rápido. Tardó exactamente lo mismo.
+
+Hice una cuenta rápida, en cada paso temporal, para un sistema con 1000 agentes, dos tópicos y grado
+medio 8, me está dando que estoy realizando unas 10.280.000 operaciones en cada paso de simulación.
+De esas operaciones, 20.000 son operaciones que requieren el cálculo de pows. (Quizás estoy calculando
+mal este número, pero creo que estoy dando un buen orden de magnitud a esa cosa). Fijate que es el
+0.1% de las operaciones las que involucran el cálculo de exponenciales. ¿Realmente eso es lo que me
+está matando tanto?
+ Si no tuviera esas cuentas, el código se reduciría a la mitad de tiempo. Probé setear la matriz de
+Separación con valores random, resulta que en ese caso la simulación en vez de 13 segundos tarda 6.
+Es decir que el tiempo se reduciría a la mitad. Es un montón. ¿No puedo interpolar esto? Tengo que
+considerar hacer un archivo de interpolación.

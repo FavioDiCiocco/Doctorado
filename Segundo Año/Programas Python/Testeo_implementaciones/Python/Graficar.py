@@ -20,10 +20,10 @@ from pathlib import Path
 t0 = time.time()
 
 T=2 # Defino el número de tópicos
-Etapa = Path("Prueba_metrica") # Defino el nombre de la etapa del trabajo en la que estoy
+Etapa = Path("Testeo_implementaciones") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Datos"]
+Carpetas = ["Euler","RK4"]
 
 for carp in Carpetas:
     
@@ -79,69 +79,9 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-#    func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta, T,
-#                                         SIM_param_x, SIM_param_y,
-#                                         ID_param_extra_1)
-    
-    #----------------------------------------------------------------------------------------------
-    
-#    func.Mapa_Colores_Varianza_opiniones(Df_archivos, Direccion, Etapa/carpeta, T,
-#                                         SIM_param_x, SIM_param_y,
-#                                         ID_param_extra_1)
-    
-    #----------------------------------------------------------------------------------------------
-    
-
-    # func.Mapa_Colores_Entropia_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-    #                                      SIM_param_x, SIM_param_y,
-    #                                      SIM_param_extra_1,ID_param_extra_1)
-    
-    #----------------------------------------------------------------------------------------------
-    
-    # func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
-    #                                      SIM_param_x, SIM_param_y,
-    #                                      ID_param_extra_1)
-
-    #----------------------------------------------------------------------------------------------
-    
-    # func.Graf_trayectorias_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-    #                                  ID_param_x, ID_param_y, ID_param_extra_1)
-    
-    #----------------------------------------------------------------------------------------------
-    
     func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
                                       ID_param_x, ID_param_y, ID_param_extra_1)
 
-    #----------------------------------------------------------------------------------------------
-    
-    # func.Mapa_Colores_Traza_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
-    #                         SIM_param_x, SIM_param_y, ID_param_extra_1)
-    
-    # #----------------------------------------------------------------------------------------------
-    
-    # func.Mapa_Colores_Antidiagonales_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
-    #                         SIM_param_x, SIM_param_y, ID_param_extra_1)
-    
-    # #----------------------------------------------------------------------------------------------
-    
-    # func.Mapa_Colores_Determinantes_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
-    #                         SIM_param_x, SIM_param_y, ID_param_extra_1)
-    
-    #----------------------------------------------------------------------------------------------
-    
-#    Covarianzas = func.Calculo_Traza_Covarianza(Df_archivos, Direccion)
-#    
-#    #----------------------------------------------------------------------------------------------
-#    
-#    Antidiagonales = func.Calculo_Antidiagonales_Covarianza(Df_archivos, Direccion)
-#    
-#    #----------------------------------------------------------------------------------------------
-#    
-#    Determinantes = func.Calculo_Determinante_Covarianza(Df_archivos, Direccion)
-    
-    #----------------------------------------------------------------------------------------------
-    
-    # Entropia = func.Calculo_Entropia(Df_archivos, Direccion, 20)
     
 
 func.Tiempo(t0)
