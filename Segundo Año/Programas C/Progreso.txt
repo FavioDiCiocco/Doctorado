@@ -2061,3 +2061,21 @@ está matando tanto?
 Separación con valores random, resulta que en ese caso la simulación en vez de 13 segundos tarda 6.
 Es decir que el tiempo se reduciría a la mitad. Es un montón. ¿No puedo interpolar esto? Tengo que
 considerar hacer un archivo de interpolación.
+
+Arranqué con lo de armar los estados sintéticos. Mañana voy a construir un estado de cuatro puntas
+sintético y listo, paso a hacer lo que Pablo me dijo. Tengo que revisar que las simulaciones se
+terminen en tiempo. Es importante saber si van a terminar o no. Creo que el barrido en Beta-Kappa
+no se va a terminar.
+
+------------------------------------------------------------------------------------------
+
+15/12/2023
+
+Hoy llegué a la mañana, revisé cosas y después me puse a corregir parciales de F2. Se suponía que
+lo termine en la mañana. Son las 17, recién terminé, me quiero comprar un burro y hacerme cagar
+a patadas. Veamos si podemos hacer ahora lo que veníamos charlando con Pablo, un código que
+identifique estados según la entropía, el sigma x y el sigma y de la distribución de agentes.
+Yo diría de hacer algo con los estados sintéticos y después armar algo tipo presentación para 
+mostrarle a Pablo. Hecha la presentación, lo otro se arma en un paso. Estoy considerando
+que el lunes voy a terminar de un golazo todos los otros gráficos que Pablo me dijo.
+Dios me ampare hermano. Arranquemos lavando mis anteojos.

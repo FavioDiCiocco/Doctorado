@@ -79,69 +79,16 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-#    func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta, T,
-#                                         SIM_param_x, SIM_param_y,
-#                                         ID_param_extra_1)
-    
-    #----------------------------------------------------------------------------------------------
-    
-#    func.Mapa_Colores_Varianza_opiniones(Df_archivos, Direccion, Etapa/carpeta, T,
-#                                         SIM_param_x, SIM_param_y,
-#                                         ID_param_extra_1)
-    
-    #----------------------------------------------------------------------------------------------
-    
-
-    # func.Mapa_Colores_Entropia_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-    #                                      SIM_param_x, SIM_param_y,
-    #                                      SIM_param_extra_1,ID_param_extra_1)
-    
-    #----------------------------------------------------------------------------------------------
-    
-    # func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
-    #                                      SIM_param_x, SIM_param_y,
-    #                                      ID_param_extra_1)
-
-    #----------------------------------------------------------------------------------------------
-    
-    # func.Graf_trayectorias_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-    #                                  ID_param_x, ID_param_y, ID_param_extra_1)
-    
-    #----------------------------------------------------------------------------------------------
-    
     func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
                                       ID_param_x, ID_param_y, ID_param_extra_1)
 
     #----------------------------------------------------------------------------------------------
     
-    # func.Mapa_Colores_Traza_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
-    #                         SIM_param_x, SIM_param_y, ID_param_extra_1)
-    
-    # #----------------------------------------------------------------------------------------------
-    
-    # func.Mapa_Colores_Antidiagonales_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
-    #                         SIM_param_x, SIM_param_y, ID_param_extra_1)
-    
-    # #----------------------------------------------------------------------------------------------
-    
-    # func.Mapa_Colores_Determinantes_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
-    #                         SIM_param_x, SIM_param_y, ID_param_extra_1)
+    Entropia = func.Calculo_Entropia(Df_archivos, Direccion, 20)
     
     #----------------------------------------------------------------------------------------------
     
-#    Covarianzas = func.Calculo_Traza_Covarianza(Df_archivos, Direccion)
-#    
-#    #----------------------------------------------------------------------------------------------
-#    
-#    Antidiagonales = func.Calculo_Antidiagonales_Covarianza(Df_archivos, Direccion)
-#    
-#    #----------------------------------------------------------------------------------------------
-#    
-#    Determinantes = func.Calculo_Determinante_Covarianza(Df_archivos, Direccion)
-    
-    #----------------------------------------------------------------------------------------------
-    
-    # Entropia = func.Calculo_Entropia(Df_archivos, Direccion, 20)
+    Sigma_x,Sigma_y = func.Calculo_Varianzas(Df_archivos, Direccion)
     
 
 func.Tiempo(t0)
