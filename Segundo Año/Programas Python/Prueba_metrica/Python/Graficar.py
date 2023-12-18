@@ -79,8 +79,8 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
-                                      ID_param_x, ID_param_y, ID_param_extra_1)
+#    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
+#                                      ID_param_x, ID_param_y, ID_param_extra_1)
 
     #----------------------------------------------------------------------------------------------
     

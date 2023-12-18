@@ -2079,3 +2079,101 @@ Yo diría de hacer algo con los estados sintéticos y después armar algo tipo p
 mostrarle a Pablo. Hecha la presentación, lo otro se arma en un paso. Estoy considerando
 que el lunes voy a terminar de un golazo todos los otros gráficos que Pablo me dijo.
 Dios me ampare hermano. Arranquemos lavando mis anteojos.
+
+Increíblemente, me quedé como hasta las 21:30, pero logré armar una presentación que tenga
+los estados que entiendo que podemos llegar a observar. Además, les puse al lado tablas con
+los valores de la entropía, sigma_x y sigma_y.
+
+------------------------------------------------------------------------------------------
+
+16/12/2023
+
+Ya le pasé a Pablo la presentación para que vea cómo quedó. Ahora este finde tengo que armar
+función que en base a la entropía y los sigmas me clasifique los estados.
+
+Revisando las simulaciones, las que mandé a hacer en Algarve ya terminaron. Las que están en
+Coimbra arrancaron con la segunda tanda. Eso va a estar complejo sobre cómo completarlo,
+no quiero que queden simulaciones truncadas. Pero no sé bien cómo frenarlo. Podría
+ir frenando manualmente los que ya cruzaron el final de una iteración. Eso es una opción.
+
+¿Puedo agregar simulaciones para que el Barrido de Kappa-Beta se termine? Debería poder, el domingo
+veo de hacer eso. La idea sería que corra en Algarve cosas que vayan desde Kappa = 7 en adelante.
+Pongamos de un Kappa a la vez, y de ahí vamos viendo qué pasa. Eso puedo hacerlo ya.
+
+Miento, antes de hacer lo de complementar datos, tengo que terminar lo de Algarve. Mandé a hacer
+esos datos. Bueno, lo mejor que puedo conseguir es tener los datos del barrido Beta-Cosdelta
+y los datos del barrido en Beta. No puedo pedir más.
+
+Veamos cómo usar los datos para identificar estados:
+La entropía mide que tan distribuidos están los datos. Si la entropía es baja, tengo entonces
+los datos concentrados en pocos puntos. Si está distribuida, tengo anchura y la entropía sube.
+Me gustaría decir que el corte es un valor de entropía de 0.25, pero tengo que el caso de 4
+puntas que tiene entropía de 0.258. Así que digamos lo siguiente:
+--------------------------------------
+1) Si la entropía es menor o igual a 0.3, entonces el sistema está focalizado en puntos, no
+tiene anchura.
+---------------------------------------
+Esto no contradice con que hay una de las simulaciones de "anchura" que tiene entropía 0.322,
+porque esa simulación surge de distribuir los puntos a lo largo de una semidiagonal usando una
+normal para armar los puntos.
+
+Si tengo una entropía mayor, entonces tengo anchura. Es importante notar que el caso de consenso
+neutral me está dando una alta entropía, pero eso tiene que ver con que en comparación con los otros
+estados, estoy reduciendo la ventana que miro a la región en la que hay puntos. Si comparara eso
+con la ventana que tengo de las otras simulaciones, que mueven los datos entre -5 y 5, entonces
+vería que los datos están en un sólo punto y la entropía me daría baja. En resumen, voy a tener
+que tener en cuenta eso para el caso de tener bajos Kappas, que creo que no voy a verlo ese caso.
+ Creo que este problema se puede resolver mirando el valor promedio de las opiniones, pero una
+cosa a la vez.
+
+Quedémonos en los casos sin anchura:
+------------------------------------
+Acá tengo cuatro posibilidades. 1 extremo, 2 extremos, 3 extremos y 4 extremos.
+2) Si ambos sigmas son pequeños, entonces tengo 1 extremo. Pequeño significa menor a 0.01.
+Si un sigma es pequeño y el otro no, eso significa que tengo dos extremos polarizados
+en una dirección horizontal o vertical. Eso puede ser línea horizontal arriba o abajo, lo mismo
+que vertical a izquierda o derecha. 
+3) Si Sigma_x < 0.01 y Sigma_y cercano a 1, está polarizado verticalmente. Si es al revés, está polarizado
+horizontalmente.
+
+A partir de acá es más difícil de diferenciar los estados. Los casos de dos extremos con alineación
+ideológica, los de tres extremos y los de 4 son muy similares. Pareciera haber una progresión en la
+entropía, pero resulta claro que hay un overlapping entre valores que no es para nada obvio.
+ Hice los cálculos de a qué valor deberían tender las entropías, pero no me está dando bien,
+los valores calculados dan por debajo de lo observado. Y si miro los cálculos que hace el programa
+sobre los estados, el overlapping es más fuerte y difícil de diferenciar.
+
+Tengo dos opciones acá, considerar que son los mismos estados, por el simple hecho de que no puedo
+diferenciarlos. La segunda es armar un criterio que considero tendrá error, pero que aún así
+puedo considerar ese error simplemente como una zona límite donde los dos casos se juntan.
+ Iré por el segundo criterio.
+
+4) Si ambos sigmas son grandes, digamos que mayores a 0.5, entonces si la entropía va entre [0.1,0.18)
+entonces es polarización de dos extremos con alineación ideológica.
+5) Si la entropía va entre [0.18; 0.22) son tres extremos.
+6) Si la entropía va entre [0.22; 0.3] son cuatro extremos.
+
+Con eso tengo definidos los casos sin anchura. Revisemos los otros casos, los que tienen
+anchura.
+
+Casos con anchura:
+------------------
+Ya para los casos con anchura, no creo que pueda usar la entropía para diferenciar entre cantidades
+de extremos, todos dan cercano a 0.6. No distinguir significa que podría tener un caso de un sólo
+extremo con entropía 0.65 y otro de tres extremos con 0.58. No hay forma de que pueda descubrir
+con esa info cuál es cuál. ¿Puedo usar los sigmas para identificarlos?
+
+En el caso de polarización a un extremo, los sigmas dan chicos. Eso tiene que ver con que en
+ese caso el promedio está en un punto medio donde las distancias a lo mucho son 0.25 al promedio.
+Eso elevado al cuadrado da un número pequeño.
+Conclusión:
+7) Si ambos sigmas son chicos, <0.1, entonces tengo polarización a un extremo.
+8) Si uno de los sigmas es grande, >0.1, entonces tengo polarización a dos extremos,
+horizontal o vertical según cuál sigma es el grande.
+
+Dicho esto, no puedo distinguir polarización con anchura a dos extremos con alineación
+ideológica, polarización a tres extremos o a cuatro. Esos tres casos son indistinguibles
+con esta info. Se me ocurre que podría mirar cómo están distribuidas las opiniones en las
+cajitas y luego con eso definir que tipo de polarización es.
+ Esto último charlémoslo con Pablo el lunes. Ahora me voy a poner a preparar lo otro
+que no voy a terminarlo antes de llegar a este problema.
