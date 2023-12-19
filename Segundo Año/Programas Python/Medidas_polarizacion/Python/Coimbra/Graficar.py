@@ -53,7 +53,7 @@ for carp in Carpetas:
     # Hecho mi dataframe, voy a armar columnas con los parámetros que varían en los nombres de mis archivos
     Df_archivos["tipo"] = Df_archivos["nombre"].apply(lambda x: x.split("_")[0])
     Df_archivos["n"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[1].split("=")[1]))
-    Df_archivos["kappas"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
+    Df_archivos["Extra"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
     Df_archivos["parametro_y"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
     Df_archivos["parametro_x"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1]))
     Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[5].split("=")[1].strip(".file")))
@@ -77,40 +77,19 @@ for carp in Carpetas:
     SIM_param_y = r"\beta"
     SIM_param_x = r"cos(\delta)"
     
-    #----------------------------------------------------------------------------------------------
-    
-#    func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta, T,
-#                                         SIM_param_x, SIM_param_y,
-#                                         ID_param_extra_1)
-    
-    #----------------------------------------------------------------------------------------------
-    
-#    func.Mapa_Colores_Varianza_opiniones(Df_archivos, Direccion, Etapa/carpeta, T,
-#                                         SIM_param_x, SIM_param_y,
-#                                         ID_param_extra_1)
-    
-    #----------------------------------------------------------------------------------------------
-    
-
-    # func.Mapa_Colores_Entropia_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-    #                                      SIM_param_x, SIM_param_y,
-    #                                      SIM_param_extra_1,ID_param_extra_1)
-    
-    #----------------------------------------------------------------------------------------------
-    
-    # func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
-    #                                      SIM_param_x, SIM_param_y,
-    #                                      ID_param_extra_1)
 
     #----------------------------------------------------------------------------------------------
     
-    # func.Graf_trayectorias_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-    #                                  ID_param_x, ID_param_y, ID_param_extra_1)
+
+    func.Mapa_Colores_Entropia_opiniones(Df_archivos, Direccion, Etapa/carpeta,
+                                          SIM_param_x, SIM_param_y,
+                                          ID_param_extra_1)
     
-    # #----------------------------------------------------------------------------------------------
     
-#    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
-#                                      ID_param_x, ID_param_y, ID_param_extra_1)
+    #----------------------------------------------------------------------------------------------
+    
+    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
+                                      ID_param_x, ID_param_y, ID_param_extra_1)
 
     #----------------------------------------------------------------------------------------------
     
@@ -119,25 +98,10 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    func.Mapa_Colores_Antidiagonales_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
-                            SIM_param_x, SIM_param_y, ID_param_extra_1)
+    func.Mapa_Colores_FEF(Df_archivos, Direccion, Etapa/carpeta,
+                          SIM_param_x, SIM_param_y, ID_param_extra_1)
     
-    #----------------------------------------------------------------------------------------------
-    
-    func.Mapa_Colores_Determinantes_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
-                            SIM_param_x, SIM_param_y, ID_param_extra_1)
-    
-#    #----------------------------------------------------------------------------------------------
-#    
-#    Covarianzas = func.Calculo_Traza_Covarianza(Df_archivos, Direccion)
-#    
-#    #----------------------------------------------------------------------------------------------
-#    
-#    Antidiagonales = func.Calculo_Antidiagonales_Covarianza(Df_archivos, Direccion)
-#    
-#    #----------------------------------------------------------------------------------------------
-#    
-#    Determinantes = func.Calculo_Determinante_Covarianza(Df_archivos, Direccion)
+
     
 
 func.Tiempo(t0)

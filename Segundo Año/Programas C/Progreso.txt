@@ -2268,3 +2268,76 @@ de funciones de Python en Medidas_Polarización.
 Como último laburo de hoy, puedo pasar las tres funciones que armé al código de funciones, modificar
 esas funciones y la función de Graficar apropiadamente y después cargar esta función de Graficar en
 las pcs de Coimbra y Algarve. Bah, en Algarve no, en Algarve voy a estar buscando hacer otra cosa.
+
+------------------------------------------------------------------------------------------
+
+19/12/2023
+
+Revisé las tres pcs. El código que mandé a laburar y después corté en Oporto había laburado en
+Kappa=3.5 hasta Beta = 0.8. Los códigos de Coimbra y Algarve están más atrasados de lo que esperaba.
+El de Algarve le falta en varios casos completar dos betas. Es decir, tiene que recorrer los 11 valores
+de un cos(delta) dos veces, eso va a tardar. En Algarve, le falta dos iteraciones aprox. Creo que
+lo más que puedo esperar esto es hasta las 12, 01. Pasado eso, no puedo hacer nada más. Entonces
+lo que tengo que hacer ahora es preparar la presentación y los códigos para que todo funque de una.
+Si las simulaciones están mal, estoy muerto.
+
+¿Qué gráficos necesito y qué voy a hacer?
+1) El gráfico de Beta-Kappa necesito. Acá voy a ver la entropía y varianza de Entropía.
+El gráfico de Beta-Kappa lo haré con un Kappa hasta 3.5, no hasta 20 como quería inicialmente.
+Además, chances hay que en Kappa 3.5 no haya 20 simulaciones para todos los beta. Ojalá
+eso no afecte mucho el gráfico.
+2) El gráfico de Beta-Cos(delta) necesito. También tengo que hacer entropía y varianza de
+Entropía acá. El programa está corriendo todas las iteraciones pares, formando así
+20 simulaciones para cada punto en el espacio de parámetros. Cuando tenga las 20 en todos
+lados, lo corto. Si no llegara a estar terminado hoy, puedo mandar a correr todo lo otro
+aún teniendo un poco menos de simulaciones en la parte de Beta = 1.
+3) El gráfico de la cantidad de estados finales polarizados en función de Beta. Eso
+está en proceso, espero que esté terminado. Sino, tendré que revisar en el código la
+normalización para ver que los porcentajes estén bien calculados. Bueno, más o menos 
+va a estar. Espero.
+4) Podría ver de armar los gráficos de Opiniones vs. T que me decía Pablo. Ya los tengo
+armados de antes. Podría buscarlo de presentaciones viejas. O datos viejos. Los datos
+de Homofilia estática deberían tener eso disponible.
+5) Preguntarle a Pablo si representar las figuras del código que hicieron la gente de GOTHAM
+como me dijo en un momento que hagamos. Pero eso lo puedo preguntar mañana.
+
+Entonces, ¿qué tengo que hacer?
+-------------------------------
+1) Rearmar la función que arma el mapa de colores de Entropía, para que sea general y contemple
+que el parámetro fijo pueda ser Kappa o Cos(delta). También tiene que poder armar un mapa de colores
+de la varianza de la entropía.
+2) Colocar esa función de Entropía en Medidas_Polarización. Cargar eso en el Python dentro de Oporto
+y Coimbra.
+3) Repasar el código de mapas de colores de los distintos gráficos y cargarlo en los Python de Oporto
+y Coimbra.
+4) Revisar la función que arma los gráficos de cantidad de estados polarizados en función del tiempo,
+corregirlo para que sea en función de Beta y mandarlo a Algarve.
+5) Buscar los gráficos de Opiniones vs T que me decía Pablo antes de armar. Igual creo que voy a tener
+que tomar datos directamente de lo que estuve haciendo de Medidas_polarización. Ah no, eso no va a servir
+porque no estoy guardando datos de Testigos, sólo Opiniones. Bueno, queda entonces dos opciones. Una
+es armar datos en Setubal ahora que hagan eso. La otra es usar los datos de Homofilia_estática.
+Veré si puedo mandar a correr cosas en Setubal.
+6) Con todo esto, armar la presentación.
+ En la presentación contar cómo es el cálculo de la entropía.
+ 
+Completé el punto 1. También completé lo de ponerlo en el archivo de funciones de Medidas_Polarización.
+Lo voy a cargar a Oporto y Algarve con el punto 3. Después tengo que cargar estas nuevas funciones
+modificadas en funciones generales.py.
+ Hice las modificaciones necesarias para que se puedan correr los archivos de Python en cuanto estén
+terminadas las simulaciones. Armé dos carpetas dentro de la carpeta de Python de Medidas_Polarizacion.
+Esas carpetas tienen los archivos de Graficar y de funciones de Oporto y Coimbra, respectivamente,
+modificando la forma en que se normalizan las distribuciones de opinión para que siempre se use el 
+valor de Kappa. Aproveché para modificar las funciones de Mapa de Traza de Covarianza y la de
+Histogramas 2D, así armo esos gráficos normalizando correctamente. Dios quiera que todos estos cambios
+estén bien hechos.
+ 
+Cuando mande a hacer los gráficos con los datos de Oporto, tengo que recordar que es necesario
+restringir el Param_x, cosa de tomar el Kappa hasta 3,5.
+
+Revisé el programa que estudia la fracción de estados polarizados en función del tiempo. Para
+esta etapa había trabajado con el criterio de que si la traza de la covarianza normalizada y 
+dividida por 2 me daba menor a 0.1, el sistema no estaba polarizado. Así que lo que voy a tener
+que hacer es tomar la función que grafica Fracción de estados polarizados en función de T y modificarlo
+para que grafique en función de Beta, que es el parámetro Y creo. Y tengo que primero identificar la
+cantidad de estados polarizados que tengo. Después los tengo que normalizar según la cantidad
+de simulaciones que tenga por punto del ensamble.
