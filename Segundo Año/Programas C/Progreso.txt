@@ -2129,11 +2129,11 @@ cosa a la vez.
 Quedémonos en los casos sin anchura:
 ------------------------------------
 Acá tengo cuatro posibilidades. 1 extremo, 2 extremos, 3 extremos y 4 extremos.
-2) Si ambos sigmas son pequeños, entonces tengo 1 extremo. Pequeño significa menor a 0.01.
+2) Si ambos sigmas son pequeños, entonces tengo 1 extremo. Pequeño significa menor a 0.1.
 Si un sigma es pequeño y el otro no, eso significa que tengo dos extremos polarizados
 en una dirección horizontal o vertical. Eso puede ser línea horizontal arriba o abajo, lo mismo
 que vertical a izquierda o derecha. 
-3) Si Sigma_x < 0.01 y Sigma_y cercano a 1, está polarizado verticalmente. Si es al revés, está polarizado
+3) Si Sigma_x < 0.1 y Sigma_y > 0.5, está polarizado verticalmente. Si es al revés, está polarizado
 horizontalmente.
 
 A partir de acá es más difícil de diferenciar los estados. Los casos de dos extremos con alineación
@@ -2177,3 +2177,94 @@ con esta info. Se me ocurre que podría mirar cómo están distribuidas las opin
 cajitas y luego con eso definir que tipo de polarización es.
  Esto último charlémoslo con Pablo el lunes. Ahora me voy a poner a preparar lo otro
 que no voy a terminarlo antes de llegar a este problema.
+
+------------------------------------------------------------------------------------------
+
+18/12/2023
+
+Ni se me ocurrió el detalle de que con la lluvia se desconectaron todas las pc's. Lo que estaba
+corriendo se pausó todo. Volví a mandar los datos de Algarve y los de Coimbra. Como los códigos
+corren a tiempos distintos, revisé cuál de todas las tandas resolvió menos y empecé a correr
+desde ahí. Eso significó que el barrido de Beta-Kappa lo tuve que reiniciar desde Kappa=3.5 .
+El barrido de Beta-Cos(Delta) lo tuve que reiniciar desde Beta=0.9. Ese casi termina la primer
+iteración en todos. Casi.
+ El que es el barrido sólo en Beta no hizo ni una iteración, no había nada que pudiera hacer
+en el general, lo tuve que mandar de nuevo desde el principio.
+
+Ale me pidió alguna de las máquinas para laburar, le dejé Oporto, total esos datos no los voy
+a terminar pronto. Me voy a concentrar en Comibra y Algarve y que Dios se apiade de nosotros.
+Supongo que si tengo suerte, para mañana se termina una iteración entera en todos los hilos de
+lo de Coimbra. Eso me da un barrido de 20 simulaciones en todo el espacio. El hecho de que
+tenga huecos en los número de las iteraciones no debería ser un problema. Tendré 20
+simulaciones por cada punto, algo totalmente
+
+Ya tengo la función que arma un diccionario con los valores de Entropía, Sigma_x y Sigma_y
+para cada simulación. Ese diccionario se lo voy a pasar a otra función que es la que
+se va a encargar de hacer la separación de estados. Mi único tema es que en los datos
+que tengo armados en Coimbra, tengo huecos en los números de iteración. Eso va a ser un
+problema para la forma en que se construyen mis arrays de Entropía y demás. Lo que puedo
+hacer es reemplazar el armado de la repetición por un enumerate en los nombres de archivos.
+Total, no me importa que el orden sea el correcto, sólo que se cuenten todos los tipos de
+simulaciones que observo.
+
+Armé tres funciones. La primera es Diccionarios_metrica, el cuál toma el DataFrame de todos
+los nombres de archivos y de ahí devuelve un diccionario que contiene para cada punto en
+el espacio de parámetros un array con los valores de la entropía, la varianza en x y
+la varianza en y de todas las simulaciones.
+ La segunda función es Identificación_Estados. Esta función recibe el diccionario construido
+previamente y a partir de esto atraviesa una serie de ifs para decidir el estado final de la
+correspondiente simulación. Lo que devuelve esto es un array con números, donde cada número
+corresponde con un tipo de estado final. Estos números representan:
+
+Sin Anchura:
+-----------
+0 : Polarización a un extremo
+1 : Polarización a dos extremos Horizontal
+2 : Polarización a dos extremos Vertical
+3 : Polarización a dos extremos Diagonal
+4 : Polarización a tres extremos
+5 : Polarización a cuatro extremos
+
+Con Anchura:
+-----------
+6 : Polarización a un extremo
+7 : Polarización a dos extremos Horizontal
+8 : Polarización a dos extremos Vertical
+9 : Polarización a dos extremos diagonal, tres extremos y cuatro extremos.
+
+La tercera función es la que arma los mapas de Colores para cada gráfico. Esa función
+utiliza las dos anteriores y con eso arma 10 (por ahora 10) arrays ZZ. Estos 10 arrays
+los utiliza para armar los 10 gráficos. 
+
+Algo que no tiene esta función es que no es suficientemente general. Considera que el parámetro
+de Kappa se va a mantener fijo. Debería cambiar eso, considerando que lo que se va a mantener
+fijo es un parámetro que llamo Extra. Ese parámetro lo fijo yo en Graficar, y el resto del
+código se adapta habiendo fijado los parámetros x e y correspondientes.
+
+También tengo que dejar todo preparado para ya mandar el código a correr en las pcs de los
+clusters. Ese es el otro trabajo que tengo para hacer ahora. Después de eso, me queda
+simplemente armar los gráficos y cosas que charlamos con Pablo. Ahora mismo no me
+acuerdo cuáles son, pero los tengo anotados en el cuaderno en la facultad. Voy a ver
+de hacer todo lo posible mañana cosa de que el miércoles sólo me preparo la presentación
+con los gráficos en mano.
+
+Estuve un rato confundido con la función pensando que estaba identificando mal los estados.
+Resulta que el problema no era eso, sino que cuando el programa toma los nombres de los archivos
+del array "archivos", ese que saca del DataFrame, resulta que eso no está ordenado. No sé dónde
+van a parar los valores de entropía y demás. Podría ordenarlo si identificara los valores de
+repetición como hacía antes, pero eso me va a generar un problema con mis datos de Coimbra
+porque esos tienen un hueco en algunas simulaciones, así que en esta oportunidad no puedo hacer
+eso. Pero puedo en el futuro corregir eso, es un detalle. En vez de usar el enumerate con archivo,
+uso el "repeticion" que obtengo a partir del nombre del archivo.
+
+Puedo dejar lo de armar la función de forma general para otro momento. Más que nada porque no voy a
+tener los datos de Beta-Kappa en tiempo. Así que por ahora puede quedar, y después lo agrego, no es
+tan complejo de hacer. Mejor trabajar con lo que se tiene y listo.
+
+Lo que sí tengo que hacer es corregir la toma de datos con el -1 que pongo al final para evitar ese
+espacio vacío que se me genera. Esa corrección la voy a hacer sobre las funciones agregadas al conjunto
+de funciones de Python en Medidas_Polarización.
+
+Como último laburo de hoy, puedo pasar las tres funciones que armé al código de funciones, modificar
+esas funciones y la función de Graficar apropiadamente y después cargar esta función de Graficar en
+las pcs de Coimbra y Algarve. Bah, en Algarve no, en Algarve voy a estar buscando hacer otra cosa.

@@ -84,11 +84,11 @@ for carp in Carpetas:
 
     #----------------------------------------------------------------------------------------------
     
-    Entropia = func.Calculo_Entropia(Df_archivos, Direccion, 20)
+    Dic_Total = func.Diccionario_metricas(Df_archivos, Direccion, 20)
     
     #----------------------------------------------------------------------------------------------
     
-    Sigma_x,Sigma_y = func.Calculo_Varianzas(Df_archivos, Direccion)
+    Entropias = func.Calculo_Entropia(Df_archivos, Direccion, 20)
     
 
 func.Tiempo(t0)
