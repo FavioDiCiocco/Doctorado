@@ -2341,3 +2341,49 @@ que hacer es tomar la función que grafica Fracción de estados polarizados en f
 para que grafique en función de Beta, que es el parámetro Y creo. Y tengo que primero identificar la
 cantidad de estados polarizados que tengo. Después los tengo que normalizar según la cantidad
 de simulaciones que tenga por punto del ensamble.
+
+------------------------------------------------------------------------------------------
+
+20/12/2023
+
+Hardcodee algunos ifs y cosas para que el programa normalice correctamente las frecuencias de
+gráficos, así como para que ignore los archivos que no están bien terminados con datos.
+Dios quiera que ahora funcione.
+
+Ok, el programa tuvo como problema que no encontró la carpeta de imágenes. Esa es una señal
+de que algo quizo graficar.
+
+Pablo propuso de intentar identificar los estados con un Clasificador. Es una re idea.
+Me dijeron que revise que los gráficos que estoy clasificando sean reales. Algo que es
+obvio de hacer Favio.
+Para el gráfico de Beta-Cos(delta), agregar la región de Beta de [0,0.5]. Básicamente,
+que Beta va de [0,1]. E incluso mirar los Beta por encima de 1.
+
+Tengo varias cosas que anotar sobre cosas hardocodeadas y cosas que mandar a correr para
+que laburen durante las vacaciones. Quizás, sólo quizás, mire algo del trabajo en vacaciones.
+
+De la reunión me llevo que lo que charlamos es lo siguiente:
+1) Hay que ver que los estados que el programa está identificando realmente sean
+lo que dice ser. Tengo que analizar los histogramas y ver que estoy realmente viendo
+esos estados.
+2) Expandir la región de las simulaciones del Beta-cos(delta). En particular lograr que
+esas simulaciones lleguen a cumplir una región de Beta [0,1] e incluso un poco más que
+eso.
+3) Implementar el uso de un Clasificador que identifique los estados. Esta es una idea
+muy copada.
+4) Quizás pasar a coordenadas polares como una forma de lograr diferenciar los estados
+que no estamos pudiendo diferenciar.
+
+Cosas que me quedó sabiendo lo que hice:
+5) Complementar las simulaciones, que quede todo completado para cuando yo vuelva.
+Eso significa barrer entero toda la región del Beta-Kappa, complementar como dije antes
+la región del beta-Cos(delta) y también completar las simulaciones que usé para el
+de fracción de estados polarizados en función de Beta.
+6) Revisar los códigos que hice para que las cosas hardcodeadas que mandé no perduren y
+no sean un problema a futuro. También mandar a funciones generales algunas de las funciones
+que armé.
+
+Ya creo que revisé lo importante de los códigos. Lo que me queda ahora es documentar todo
+y revisar qué es lo que tengo que mandar a correr mañana. Creo que eso lo puedo hacer mañana sin
+problemas. Bah, mañana voy a estar corrigiendo parciales, a quién quiero engañar. Mejor
+me pongo a anotar en el cuaderno lo que charlamos con Pablo.

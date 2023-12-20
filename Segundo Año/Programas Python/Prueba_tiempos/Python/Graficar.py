@@ -48,7 +48,7 @@ for carp in Carpetas:
     # Hecho mi dataframe, voy a armar columnas con los parámetros que varían en los nombres de mis archivos
     Df_archivos["tipo"] = Df_archivos["nombre"].apply(lambda x: x.split("_")[0])
     Df_archivos["n"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[1].split("=")[1]))
-    Df_archivos["Kappas"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
+    Df_archivos["Extra"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
     Df_archivos["parametro_y"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
     Df_archivos["parametro_x"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1]))
     Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[5].split("=")[1].strip(".file")))
@@ -74,14 +74,16 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    func.Promedio_opiniones_vs_T(Df_archivos, Direccion, Etapa/carpeta, T,
-                                        ID_param_x, ID_param_y)
+#    func.Promedio_opiniones_vs_T(Df_archivos, Direccion, Etapa/carpeta, T,
+#                                        ID_param_x, ID_param_y)
+#    
+#    #----------------------------------------------------------------------------------------------
+#    
+#    func.Traza_Covarianza_vs_T(Df_archivos, Direccion, Etapa/carpeta, T,
+#                                        ID_param_x, ID_param_y)
     
     #----------------------------------------------------------------------------------------------
     
-    func.Traza_Covarianza_vs_T(Df_archivos, Direccion, Etapa/carpeta, T,
-                                        ID_param_x, ID_param_y)
-    
-    #----------------------------------------------------------------------------------------------
+    func.Fraccion_polarizados_vs_Y(Df_archivos, Direccion, Etapa/carpeta)
 
 func.Tiempo(t0)

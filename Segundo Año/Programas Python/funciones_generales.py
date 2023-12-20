@@ -457,14 +457,8 @@ def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,
                                     SIM_param_x,SIM_param_y,
                                     ID_param_extra_1):
     
-    # Defino el tipo de archivo del cuál tomaré los datos
-    TIPO = "Opiniones"
-    
-    # Defino la cantidad de agentes de la red
-    AGENTES = int(np.unique(DF["n"]))
-    
     # Defino los arrays de parámetros diferentes    
-    KAPPAS = int(np.unique(DF["Kappas"]))
+    EXTRAS = int(np.unique(DF["Extra"]))
     Arr_param_x = np.unique(DF["parametro_x"])
     Arr_param_y = np.unique(DF["parametro_y"])
     
@@ -478,50 +472,28 @@ def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,
     # Construyo las grillas que voy a necesitar para el pcolormesh.
     
     XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
-    ZZ = np.zeros(XX.shape)
+    ZZ = np.zeros((2,XX.shape[0],XX.shape[1]))
+    
+    #--------------------------------------------------------------------------------
+    
+    # Calculo la entropía de mis distribuciones
+    
+    Entropias = Calculo_Entropia(DF, path, 20)
     
     #--------------------------------------------------------------------------------
     for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
         
-        # Me defino el array en el cual acumulo los datos de las opiniones finales de todas
-        # mis simulaciones
-        Opifinales = np.array([])
-        
-        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
-        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
-                                    (DF["n"]==AGENTES) & 
-                                    (DF["Kappas"]==KAPPAS) & 
-                                    (DF["parametro_x"]==PARAM_X) &
-                                    (DF["parametro_y"]==PARAM_Y), "nombre"])         
-
-        #------------------------------------------------------------------------------------------
-        
-        for nombre in archivos:
-            
-            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-            # Opinión Inicial del sistema
-            # Variación Promedio
-            # Opinión Final
-            # Semilla
-            
-            # Levanto los datos del archivo
-            Datos = ldata(path / nombre)
-            
-            # Leo los datos de las Opiniones Finales
-            Opifinales = np.concatenate((Opifinales, np.array(Datos[5][:-1:], dtype="float")), axis = None)
         
         #------------------------------------------------------------------------------------------
-        # Con las opiniones finales de todas las simulaciones lo que hago es calcular la entropia
-        # de la distribución de las opiniones. Esto es una segunda métrica para ver si las opiniones
-        # finales de los agentes están dispersas en dos puntos grandes, o no. Además, esto sería
-        # sensible a cómo es esa distribución.
+        # Armo mi matriz con los valores de entropía y con los valores de la varianza
         
-        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = Entropia(Opifinales)
+        ZZ[0,(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Entropias[EXTRAS][PARAM_X][PARAM_Y])
+        ZZ[1,(Arr_param_y.shape[0]-1)-fila,columna] = np.var(Entropias[EXTRAS][PARAM_X][PARAM_Y])
     
     #--------------------------------------------------------------------------------
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/Entropia Opiniones EP_{}={}.png".format(carpeta,ID_param_extra_1,KAPPAS))
+    direccion_guardado = Path("../../../Imagenes/{}/Entropia EP_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
     
     plt.rcParams.update({'font.size': 24})
     plt.figure("Entropia Opiniones",figsize=(20,15))
@@ -530,11 +502,27 @@ def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,
     
     # Hago el ploteo del mapa de colores con el colormesh
     
-    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "viridis")
+    plt.pcolormesh(XX,YY,ZZ[0],shading="nearest", cmap = "viridis")
     plt.colorbar()
     plt.title("Entropía de opiniones en Espacio de Parametros")
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close("Entropia Opiniones")
+    
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores
+    direccion_guardado = Path("../../../Imagenes/{}/Varianza Entropia EP_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
+    
+    plt.rcParams.update({'font.size': 24})
+    plt.figure("Varianza Entropia",figsize=(20,15))
+    plt.xlabel(r"${}$".format(SIM_param_x))
+    plt.ylabel(r"${}$".format(SIM_param_y))
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    
+    plt.pcolormesh(XX,YY,ZZ[1],shading="nearest", cmap = "magma")
+    plt.colorbar()
+    plt.title("Varianza de Entropía en Espacio de Parametros")
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("Varianza Entropia")
 
 
 #-----------------------------------------------------------------------------------------------
@@ -1437,7 +1425,7 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
     AGENTES = int(np.unique(DF["n"]))
     
     # Defino los arrays de parámetros diferentes
-    Arr_KAPPAS = np.unique(DF["Kappas"])
+    Arr_EXTRAS = np.unique(DF["Extra"])
     Arr_param_x = np.unique(DF["parametro_x"])
     Arr_param_y = np.unique(DF["parametro_y"])
     
@@ -1453,13 +1441,13 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
     # Gráfico de Opi vs T y en tres no se vería mejor.
     T=2
     
-    for KAPPAS in Arr_KAPPAS:
+    for EXTRAS in Arr_EXTRAS:
         for PARAM_X,PARAM_Y in Tupla_total:
             
             # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
             archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                         (DF["n"]==AGENTES) & 
-                                        (DF["Kappas"]==KAPPAS) & 
+                                        (DF["Extra"]==EXTRAS) & 
                                         (DF["parametro_x"]==PARAM_X) &
                                         (DF["parametro_y"]==PARAM_Y), "nombre"])
             #-----------------------------------------------------------------------------------------
@@ -1476,7 +1464,7 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                 Datos = ldata(path / nombre)
                 
                 # Leo los datos de las Opiniones Finales
-                Opifinales = np.array(Datos[5][::], dtype="float")
+                Opifinales = np.array(Datos[5][:-1:], dtype="float")
                 
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
                 
@@ -1484,23 +1472,23 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                 
                 # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-                # if repeticion < 2 :
-                direccion_guardado = Path("../../../Imagenes/{}/Histograma_opiniones_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
-                                                                                                                                                 ID_param_y,PARAM_Y,ID_param_extra_1,KAPPAS,repeticion))
-                
-                # Armo mi gráfico, lo guardo y lo cierro
-                
-                plt.rcParams.update({'font.size': 32})
-                plt.figure(figsize=(20,15))
-                _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
-                                         range=[[-KAPPAS,KAPPAS],[-KAPPAS,KAPPAS]],density=True,
-                                         cmap=cmap)
-                plt.xlabel(r"$x_i^1$")
-                plt.ylabel(r"$x_i^2$")
-                plt.title('Histograma 2D, {}={:.2f}_{}={:.2f}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y))
-                plt.colorbar(im, label='Frecuencias')
-                plt.savefig(direccion_guardado ,bbox_inches = "tight")
-                plt.close()
+                if repeticion < 3 :
+                    direccion_guardado = Path("../../../Imagenes/{}/Histograma_opiniones_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
+                                                                                                                                                     ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,repeticion))
+                    
+                    # Armo mi gráfico, lo guardo y lo cierro
+                    
+                    plt.rcParams.update({'font.size': 32})
+                    plt.figure(figsize=(20,15))
+                    _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
+                                             range=[[-EXTRAS,EXTRAS],[-EXTRAS,EXTRAS]],density=True,
+                                             cmap=cmap)
+                    plt.xlabel(r"$x_i^1$")
+                    plt.ylabel(r"$x_i^2$")
+                    plt.title('Histograma 2D, {}={:.2f}_{}={:.2f}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y))
+                    plt.colorbar(im, label='Frecuencias')
+                    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+                    plt.close()
 
 #-----------------------------------------------------------------------------------------------
 
@@ -1519,8 +1507,7 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
     AGENTES = int(np.unique(DF["n"]))
     
     # Defino los arrays de parámetros diferentes
-    KAPPAS = int(np.unique(DF["Kappas"]))
-    # COSD = int(np.unique(DF["cosdelta"]))
+    EXTRAS = int(np.unique(DF["Extra"]))
     Arr_param_x = np.unique(DF["parametro_x"])
     Arr_param_y = np.unique(DF["parametro_y"])
     
@@ -1550,7 +1537,7 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
         # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
         archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                     (DF["n"]==AGENTES) & 
-                                    (DF["kappas"]==KAPPAS) & 
+                                    (DF["Extra"]==EXTRAS) & 
                                     (DF["parametro_x"]==PARAM_X) &
                                     (DF["parametro_y"]==PARAM_Y), "nombre"])
         #-----------------------------------------------------------------------------------------
@@ -1573,7 +1560,7 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
             
             # Normalizo mis datos usando el valor de Kappa
             for topico in range(T):
-                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")/KAPPAS
+                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")/EXTRAS
             
             # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
             
@@ -1582,12 +1569,12 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
             
         #------------------------------------------------------------------------------------------
         # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
-        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Covarianzas)
+        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Covarianzas[Covarianzas != 0])
             
     #--------------------------------------------------------------------------------
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/Traza_Covarianza_{}={}.png".format(carpeta,ID_param_extra_1,KAPPAS))
+    direccion_guardado = Path("../../../Imagenes/{}/Traza_Covarianza_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
     
     plt.rcParams.update({'font.size': 24})
     plt.figure("Traza_Covarianza",figsize=(20,15))
@@ -2058,7 +2045,7 @@ def Diccionario_metricas(DF,path,N):
     AGENTES = int(np.unique(DF["n"]))
     
     # Defino los arrays de parámetros diferentes
-    Arr_KAPPAS = np.unique(DF["Kappas"])
+    Arr_EXTRAS = np.unique(DF["Extra"])
     Arr_param_x = np.unique(DF["parametro_x"])
     Arr_param_y = np.unique(DF["parametro_y"])
     
@@ -2074,14 +2061,14 @@ def Diccionario_metricas(DF,path,N):
     # Gráfico de Opi vs T y en tres no se vería mejor.
     T=2
     Salida = dict()
-    for KAPPAS in Arr_KAPPAS:
-        Salida[KAPPAS] = dict()
+    for EXTRAS in Arr_EXTRAS:
+        Salida[EXTRAS] = dict()
         for PARAM_X,PARAM_Y in Tupla_total:
             
             # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
             archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                         (DF["n"]==AGENTES) & 
-                                        (DF["Kappas"]==KAPPAS) & 
+                                        (DF["Extra"]==EXTRAS) & 
                                         (DF["parametro_x"]==PARAM_X) &
                                         (DF["parametro_y"]==PARAM_Y), "nombre"])
             #-----------------------------------------------------------------------------------------
@@ -2101,14 +2088,18 @@ def Diccionario_metricas(DF,path,N):
         
                 # Levanto los datos del archivo
                 Datos = ldata(path / nombre)
-        
+                
                 # Leo los datos de las Opiniones Finales
                 Opifinales = np.zeros((T,AGENTES))
         
                 for topico in range(T):
-                    Opifinales[topico,:] = np.array(Datos[5][topico::T], dtype="float")
-                    Opifinales[topico,:] = Opifinales[topico,:]/ KAPPAS
-        
+                    Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
+                    Opifinales[topico,:] = Opifinales[topico,:]/ EXTRAS
+                
+                # Esta función normaliza las Opiniones Finales usando la 
+                # variable EXTRA, porque asume que EXTRA es el Kappa. De no serlo,
+                # corregir a que EXTRAS sea PARAM_X o algo así
+                
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
         
 #                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
@@ -2119,8 +2110,8 @@ def Diccionario_metricas(DF,path,N):
                 
                 # Tengo que rearmar Opifinales para que sea un sólo vector con todo
                 
-                Opifinales = np.array(Datos[5], dtype="float")
-                Opifinales = Opifinales/KAPPAS
+                Opifinales = np.array(Datos[5][:-1], dtype="float")
+                Opifinales = Opifinales/EXTRAS
                 
                 # Armo mi array de Distribucion, que tiene la proba de que una opinión
                 # pertenezca a una región del espacio de tópicos
@@ -2129,13 +2120,13 @@ def Diccionario_metricas(DF,path,N):
                 # Con esa distribución puedo directamente calcular la entropía.
                 Entropia[indice] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
                 
-            if PARAM_X not in Salida[KAPPAS].keys():
-                Salida[KAPPAS][PARAM_X] = dict()
-            if PARAM_Y not in Salida[KAPPAS][PARAM_X].keys():
-                Salida[KAPPAS][PARAM_X][PARAM_Y] = dict()
-            Salida[KAPPAS][PARAM_X][PARAM_Y]["Entropia"] = Entropia/np.log2(N*N)
-            Salida[KAPPAS][PARAM_X][PARAM_Y]["Sigmax"] = Varianza_X
-            Salida[KAPPAS][PARAM_X][PARAM_Y]["Sigmay"] = Varianza_Y
+            if PARAM_X not in Salida[EXTRAS].keys():
+                Salida[EXTRAS][PARAM_X] = dict()
+            if PARAM_Y not in Salida[EXTRAS][PARAM_X].keys():
+                Salida[EXTRAS][PARAM_X][PARAM_Y] = dict()
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Entropia"] = Entropia/np.log2(N*N)
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"] = Varianza_X
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"] = Varianza_Y
             
     return Salida
 
@@ -2209,13 +2200,9 @@ def Mapas_Colores_FEF(DF,path,carpeta,
     # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
     # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
     # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
-
-    # Defino la cantidad de agentes de la red
-#    AGENTES = int(np.unique(DF["n"]))
     
     # Defino los arrays de parámetros diferentes
-    KAPPAS = int(np.unique(DF["Kappas"]))
-#    COSD = int(np.unique(DF["cosdelta"]))
+    EXTRAS = int(np.unique(DF["Extra"]))
     Arr_param_x = np.unique(DF["parametro_x"])
     Arr_param_y = np.unique(DF["parametro_y"])
     
@@ -2223,14 +2210,7 @@ def Mapas_Colores_FEF(DF,path,carpeta,
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
     Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
                    for j,param_y in enumerate(Arr_param_y)]
-    
-#    # Defino el tipo de archivo del cuál tomaré los datos
-#    TIPO = "Opiniones"
-#    
-#    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
-#    # Gráfico de Opi vs T y en tres no se vería mejor.
-#    T=2
-    
+
     #--------------------------------------------------------------------------------
     
     # Construyo las grillas que voy a necesitar para el pcolormesh.
@@ -2247,19 +2227,19 @@ def Mapas_Colores_FEF(DF,path,carpeta,
     
     for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
                 
-        Frecuencias = Identificacion_Estados(Dic_Total[KAPPAS][PARAM_X][PARAM_Y]["Entropia"],
-                                             Dic_Total[KAPPAS][PARAM_X][PARAM_Y]["Sigmax"],
-                                             Dic_Total[KAPPAS][PARAM_X][PARAM_Y]["Sigmay"])
+        Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
+                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
+                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"])
         
         # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
         for grafico in range(10):
-            ZZ[grafico,(Arr_param_y.shape[0]-1)-fila,columna] = np.count_nonzero(Frecuencias == grafico)
+            ZZ[grafico,(Arr_param_y.shape[0]-1)-fila,columna] = np.count_nonzero(Frecuencias == grafico)/Frecuencias.shape[0]
             
     #--------------------------------------------------------------------------------
     
     for grafico in range(10):
         # Una vez que tengo el ZZ completo, armo mi mapa de colores
-        direccion_guardado = Path("../../../Imagenes/{}/FEF{}_.png".format(carpeta,grafico)) # ,ID_param_extra_1,KAPPAS))
+        direccion_guardado = Path("../../../Imagenes/{}/FEF{}_{}={}.png".format(carpeta,grafico,ID_param_extra_1,EXTRAS))
         
         plt.rcParams.update({'font.size': 24})
         plt.figure("FEF",figsize=(20,15))
@@ -2268,7 +2248,7 @@ def Mapas_Colores_FEF(DF,path,carpeta,
         
         # Hago el ploteo del mapa de colores con el colormesh
         
-        plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "plasma")
+        plt.pcolormesh(XX,YY,ZZ[grafico],shading="nearest", cmap = "plasma")
         plt.colorbar()
         plt.title("Frecuencia del estado {}".format(grafico))
         
@@ -2324,7 +2304,7 @@ def Calculo_Entropia(DF,path,N):
     AGENTES = int(np.unique(DF["n"]))
     
     # Defino los arrays de parámetros diferentes
-    Arr_KAPPAS = np.unique(DF["Kappas"])
+    Arr_EXTRAS = np.unique(DF["Extra"])
     Arr_param_x = np.unique(DF["parametro_x"])
     Arr_param_y = np.unique(DF["parametro_y"])
     
@@ -2342,21 +2322,21 @@ def Calculo_Entropia(DF,path,N):
     
     
     Salida = dict()
-    for KAPPAS in Arr_KAPPAS:
-        Salida[KAPPAS] = dict()
+    for EXTRAS in Arr_EXTRAS:
+        Salida[EXTRAS] = dict()
         for PARAM_X,PARAM_Y in Tupla_total:
             
             # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
             archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                         (DF["n"]==AGENTES) & 
-                                        (DF["Kappas"]==KAPPAS) & 
+                                        (DF["Extra"]==EXTRAS) & 
                                         (DF["parametro_x"]==PARAM_X) &
                                         (DF["parametro_y"]==PARAM_Y), "nombre"])
             #-----------------------------------------------------------------------------------------
             
             entropias = np.zeros(archivos.shape[0])
             
-            for nombre in archivos:
+            for indice,nombre in enumerate(archivos):
         
                 # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
                 # Opinión Inicial del sistema
@@ -2368,22 +2348,26 @@ def Calculo_Entropia(DF,path,N):
                 Datos = ldata(path / nombre)
         
                 # Leo los datos de las Opiniones Finales
-                Opifinales = np.array(Datos[5], dtype="float")
-                Opifinales = Opifinales / np.max(np.abs(Opifinales))
+                Opifinales = np.array(Datos[5][:-1], dtype="float")
+                Opifinales = Opifinales / EXTRAS
+                
+                # La nueva función de Entropía que armé normaliza las Opiniones Finales usando la 
+                # variable EXTRA, porque asume que EXTRA es el Kappa. De no serlo,
+                # corregir a que EXTRAS sea PARAM_X o algo así
         
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
         
-                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+#                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
                 
                 # Armo mi array de Distribucion, que tiene la proba de que una opinión
                 # pertenezca a una región del espacio de tópicos
                 Probas = Clasificacion(Opifinales,N,T)
                 
                 # Con esa distribución puedo directamente calcular la entropía.
-                entropias[repeticion] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
+                entropias[indice] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)+0.00001
         
-            if PARAM_X not in Salida[KAPPAS].keys():
-                Salida[KAPPAS][PARAM_X] = dict()
-            Salida[KAPPAS][PARAM_X][PARAM_Y] = entropias/np.log2(N*N)
+            if PARAM_X not in Salida[EXTRAS].keys():
+                Salida[EXTRAS][PARAM_X] = dict()
+            Salida[EXTRAS][PARAM_X][PARAM_Y] = entropias/np.log2(N*N)
     
     return Salida

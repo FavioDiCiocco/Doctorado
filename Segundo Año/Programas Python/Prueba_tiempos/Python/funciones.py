@@ -79,7 +79,7 @@ def Promedio_opiniones_vs_T(DF,path,carpeta,T,ID_param_x,ID_param_y):
     AGENTES = int(np.unique(DF["n"]))
     
     # Defino los arrays de parámetros diferentes    
-    KAPPAS = int(np.unique(DF["Kappas"]))
+    EXTRAS = int(np.unique(DF["Extra"]))
     Arr_param_x = np.unique(DF["parametro_x"])
     Arr_param_y = np.unique(DF["parametro_y"])
     
@@ -99,7 +99,7 @@ def Promedio_opiniones_vs_T(DF,path,carpeta,T,ID_param_x,ID_param_y):
             # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
             archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                         (DF["n"]==AGENTES) & 
-                                        (DF["Kappas"]==KAPPAS) & 
+                                        (DF["Extra"]==EXTRAS) & 
                                         (DF["parametro_x"]==PARAM_X) &
                                         (DF["parametro_y"]==PARAM_Y), "nombre"])      
     
@@ -125,7 +125,7 @@ def Promedio_opiniones_vs_T(DF,path,carpeta,T,ID_param_x,ID_param_y):
                 # Leo los datos de las Opiniones
                 for fila in range(len(Datos)-3):
                     Opiniones[fila,:] = Datos[fila+1][:-1:]
-                    Opiniones[fila,:] = Opiniones[fila,:]/KAPPAS
+                    Opiniones[fila,:] = Opiniones[fila,:]/EXTRAS
             
                 #------------------------------------------------------------------------------------------
                 
@@ -177,7 +177,7 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
     AGENTES = int(np.unique(DF["n"]))
     
     # Defino los arrays de parámetros diferentes
-    Arr_KAPPAS = np.unique(DF["Kappas"])
+    Arr_EXTRAS = np.unique(DF["Extra"])
     Arr_param_x = np.unique(DF["parametro_x"])
     Arr_param_y = np.unique(DF["parametro_y"])
     
@@ -193,13 +193,13 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
     # Gráfico de Opi vs T y en tres no se vería mejor.
     T=2
     
-    for KAPPAS in Arr_KAPPAS:
+    for EXTRAS in Arr_EXTRAS:
         for PARAM_X,PARAM_Y in Tupla_total:
             
             # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
             archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                         (DF["n"]==AGENTES) & 
-                                        (DF["Kappas"]==KAPPAS) & 
+                                        (DF["Extra"]==EXTRAS) & 
                                         (DF["parametro_x"]==PARAM_X) &
                                         (DF["parametro_y"]==PARAM_Y), "nombre"])
             #-----------------------------------------------------------------------------------------
@@ -216,7 +216,7 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                 Datos = ldata(path / nombre)
                 
                 # Leo los datos de las Opiniones Finales
-                Opifinales = np.array(Datos[5][::], dtype="float")
+                Opifinales = np.array(Datos[5][:-1:], dtype="float")
                 
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
                 
@@ -224,23 +224,23 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                 
                 # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-                # if repeticion < 2 :
-                direccion_guardado = Path("../../../Imagenes/{}/Histograma_opiniones_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
-                                                                                                                                                 ID_param_y,PARAM_Y,ID_param_extra_1,KAPPAS,repeticion))
-                
-                # Armo mi gráfico, lo guardo y lo cierro
-                
-                plt.rcParams.update({'font.size': 32})
-                plt.figure(figsize=(20,15))
-                _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
-                                         range=[[-KAPPAS,KAPPAS],[-KAPPAS,KAPPAS]],density=True,
-                                         cmap=cmap)
-                plt.xlabel(r"$x_i^1$")
-                plt.ylabel(r"$x_i^2$")
-                plt.title('Histograma 2D, {}={:.2f}_{}={:.2f}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y))
-                plt.colorbar(im, label='Frecuencias')
-                plt.savefig(direccion_guardado ,bbox_inches = "tight")
-                plt.close()
+                if repeticion < 3 :
+                    direccion_guardado = Path("../../../Imagenes/{}/Histograma_opiniones_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
+                                                                                                                                                     ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,repeticion))
+                    
+                    # Armo mi gráfico, lo guardo y lo cierro
+                    
+                    plt.rcParams.update({'font.size': 32})
+                    plt.figure(figsize=(20,15))
+                    _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
+                                             range=[[-EXTRAS,EXTRAS],[-EXTRAS,EXTRAS]],density=True,
+                                             cmap=cmap)
+                    plt.xlabel(r"$x_i^1$")
+                    plt.ylabel(r"$x_i^2$")
+                    plt.title('Histograma 2D, {}={:.2f}_{}={:.2f}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y))
+                    plt.colorbar(im, label='Frecuencias')
+                    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+                    plt.close()
 
 #-----------------------------------------------------------------------------------------------
 
@@ -256,7 +256,7 @@ def Traza_Covarianza_vs_T(DF,path,carpeta,T,ID_param_x,ID_param_y):
     AGENTES = int(np.unique(DF["n"]))
     
     # Defino los arrays de parámetros diferentes    
-    KAPPAS = int(np.unique(DF["Kappas"]))
+    EXTRAS = int(np.unique(DF["Extra"]))
     Arr_param_x = np.unique(DF["parametro_x"])
     Arr_param_y = np.unique(DF["parametro_y"])
     
@@ -276,7 +276,7 @@ def Traza_Covarianza_vs_T(DF,path,carpeta,T,ID_param_x,ID_param_y):
             # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
             archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                         (DF["n"]==AGENTES) & 
-                                        (DF["Kappas"]==KAPPAS) & 
+                                        (DF["Extra"]==EXTRAS) & 
                                         (DF["parametro_x"]==PARAM_X) &
                                         (DF["parametro_y"]==PARAM_Y), "nombre"])      
     
@@ -302,7 +302,7 @@ def Traza_Covarianza_vs_T(DF,path,carpeta,T,ID_param_x,ID_param_y):
                 # Leo los datos de las Opiniones
                 for fila in range(len(Datos)-3):
                     Opiniones[fila,:] = Datos[fila+1][:-1:]
-                    Opiniones[fila,:] = Opiniones[fila,:]/KAPPAS
+                    Opiniones[fila,:] = Opiniones[fila,:]/EXTRAS
             
                 #------------------------------------------------------------------------------------------
                 
@@ -352,7 +352,7 @@ def Fraccion_polarizados_vs_T(DF,path,carpeta):
     AGENTES = int(np.unique(DF["n"]))
     
     # Defino los arrays de parámetros diferentes    
-    KAPPAS = int(np.unique(DF["Kappas"]))
+    EXTRAS = int(np.unique(DF["Extra"]))
     Arr_param_x = np.unique(DF["parametro_x"])
     Arr_param_y = np.unique(DF["parametro_y"])
     
@@ -375,7 +375,7 @@ def Fraccion_polarizados_vs_T(DF,path,carpeta):
         # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
         archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                     (DF["n"]==AGENTES) & 
-                                    (DF["Kappas"]==KAPPAS) & 
+                                    (DF["Extra"]==EXTRAS) & 
                                     (DF["parametro_x"]==PARAM_X) &
                                     (DF["parametro_y"]==PARAM_Y), "nombre"])      
         
@@ -415,6 +415,114 @@ def Fraccion_polarizados_vs_T(DF,path,carpeta):
         
     # Guardo la figura y la cierro
     plt.xlabel(r"Tiempo$(10^3)$")
+    plt.ylabel(r"$f_p$")
+    plt.grid()
+    plt.legend()
+    plt.title("Fracción de estados polarizados")
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("FracPol")
+    
+#-----------------------------------------------------------------------------------------------
+
+# Esta función calcula la traza de la matriz de Covarianza de las distribuciones
+# de opiniones respecto a los T tópicos
+
+def Fraccion_polarizados_vs_Y(DF,path,carpeta):
+    
+   # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF["n"]))
+    
+    # Defino los arrays de parámetros diferentes    
+    EXTRAS = int(np.unique(DF["Extra"]))
+    PARAM_X = float(np.unique(DF["parametro_x"]))
+    Arr_param_y = np.unique(DF["parametro_y"])
+    
+    # Defino el número de tópicos
+    T=2
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    
+    Tupla_total = [(j,param_y) for j,param_y in enumerate(Arr_param_y)]
+    
+    # Con los promedios armos el gráfico de opiniones vs T para ambos tópicos
+    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_polarizados.png".format(carpeta))
+    plt.rcParams.update({'font.size': 24})
+    plt.figure("FracPol",figsize=(20,15))
+    
+    # Construyo el array de fracción estados polarizados
+    Fraccion_polarizados = np.zeros(Arr_param_y.shape[0])
+    
+    #--------------------------------------------------------------------------------
+    for i_y,PARAM_Y in Tupla_total:
+        
+        
+        
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                    (DF["n"]==AGENTES) & 
+                                    (DF["Extra"]==EXTRAS) & 
+                                    (DF["parametro_x"]==PARAM_X) &
+                                    (DF["parametro_y"]==PARAM_Y), "nombre"])      
+        
+        
+        Estados_polarizados = np.zeros(len(archivos))
+        
+        #------------------------------------------------------------------------------------------
+        
+        for indice,nombre in enumerate(archivos):
+            
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Evolución de Opiniones
+            # n filas con opiniones del total de agentes
+            # Semilla
+            # Número de la semilla
+            
+            # Es decir, mi archivo tiene n+3 filas
+            
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
+
+            # Esto es un código para evitar archivos que no se terminaron
+            # de simular
+#            if len(Datos)< 7:
+#                simulaciones_salteadas += 1
+#                continue
+            
+            # Leo los datos de las Opiniones Finales
+            Opifinales = np.zeros((T,AGENTES))
+    
+            for topico in range(T):
+                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
+                Opifinales[topico,:] = Opifinales[topico,:]/ EXTRAS
+            
+            # Esta función normaliza las Opiniones Finales usando la 
+            # variable EXTRA, porque asume que EXTRA es el Kappa. De no serlo,
+            # corregir a que EXTRAS sea PARAM_X o algo así
+            
+            # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+    
+#                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+    
+            M_cov = np.cov(Opifinales)
+            
+            # Defino si el estado que observé está polarizado si la suma de sus
+            # varianzas me da mayor a 0.1.
+            if np.trace(M_cov)/2 > 0.1:
+                Estados_polarizados[indice] = 1
+
+            #--------------------------------------------------------------------------------
+        
+        Fraccion_polarizados[i_y] = np.sum(Estados_polarizados)/len(archivos)
+    
+
+    plt.plot(Arr_param_y,Fraccion_polarizados,"--",linewidth=4)
+        
+    # Guardo la figura y la cierro
+    plt.xlabel(r"$\beta$")
     plt.ylabel(r"$f_p$")
     plt.grid()
     plt.legend()
