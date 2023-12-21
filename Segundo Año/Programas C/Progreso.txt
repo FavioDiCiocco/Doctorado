@@ -2341,3 +2341,33 @@ que hacer es tomar la función que grafica Fracción de estados polarizados en f
 para que grafique en función de Beta, que es el parámetro Y creo. Y tengo que primero identificar la
 cantidad de estados polarizados que tengo. Después los tengo que normalizar según la cantidad
 de simulaciones que tenga por punto del ensamble.
+
+------------------------------------------------------------------------------------------
+
+20/12/2023
+
+Tengo que hacer cosas, pero no es claro por donde arrancar. Escribámoslo para intentar ordenar
+ideas. El programa tarda mucho. Es la cruz de mi existencia.
+ Pablo dice de analizar un poco el comportamiento del sistema mirando estados que tardan mucho
+en terminar. Para eso tengo que revisar algunos estados que hayan tardado mucho, usar esa semilla
+y mandarlos a correr. Me gustaría mandarlos a correr en la pc, pero creo que va a ser mejor hacerlo
+en Algarve o Coimbra. Necesito los datos de Testigos para ver que pasa. Igual, más que testigos,
+voy a intentar guardarme todo el sistema. Pero no voy a guardar datos de todos los pasos temporales,
+es un montón. Mejor guardar datos del sistema cada 100 pasos.
+ Lo que puedo hacer es mandar esto a Coimbra y de ahí generar tres o cuatro simulaciones. Después me
+pongo a corregir exámenes. Que Dios se apiade de nosotros.
+
+El código que tengo en src es el que tengo en Testeo_Implementaciones, así que puedo deshacerme de
+ese código. Pasemos a lo siguiente, agarremos uno de los códigos de Medidas_polarizacion, revisemos
+que tenga los testigos y de ahí lo paso a Coimbra. No era el código de Medidas_polarizacion, era
+el de NI_Homofilia el que tengo que usar. Ese tiene los testigos comentados.
+
+Ahí mandé los tres programas. Yo estoy rogando que no haya quilombos. De lo que recuerdo de las
+veces en que me mandé cagadas antes, no va a haber quilombos por haber rearmado el archivo.e
+luego de haber mandado las simulaciones. Al mandar a correr, la terminal se hizo una copia
+del archivo.e y es sobre esa copia que está corriendo el código. No está revisitando el archivo
+original. Con lo cual, lo que se corrió en cada caso con sus respectivas semillas va a resolver
+a su manera. Yo diría de irme ahora a casa, llevarme todo lo importante y ya después me pongo
+a corregir parciales.
+
+
