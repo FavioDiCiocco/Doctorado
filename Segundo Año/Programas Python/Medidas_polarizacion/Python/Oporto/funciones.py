@@ -521,7 +521,7 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
     
     # Defino los arrays de parámetros diferentes
     Arr_EXTRAS = np.unique(DF["Extra"])
-    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_x = np.unique(DF["parametro_x"])[0:10]
     Arr_param_y = np.unique(DF["parametro_y"])
     
     
@@ -557,9 +557,11 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                 
                 # Levanto los datos del archivo
                 Datos = ldata(path / nombre)
+                if len(Datos)< 7:
+                    continue
                 
                 # Leo los datos de las Opiniones Finales
-                Opifinales = np.array(Datos[5][::], dtype="float")
+                Opifinales = np.array(Datos[5][:-1:], dtype="float")
                 
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
                 
@@ -567,23 +569,23 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                 
                 # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-                # if repeticion < 2 :
-                direccion_guardado = Path("../../../Imagenes/{}/Histograma_opiniones_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
-                                                                                                                                                 ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,repeticion))
-                
-                # Armo mi gráfico, lo guardo y lo cierro
-                
-                plt.rcParams.update({'font.size': 32})
-                plt.figure(figsize=(20,15))
-                _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
-                                         range=[[-PARAM_X,PARAM_X],[-PARAM_X,PARAM_X]],density=True,
-                                         cmap=cmap)
-                plt.xlabel(r"$x_i^1$")
-                plt.ylabel(r"$x_i^2$")
-                plt.title('Histograma 2D, {}={:.2f}_{}={:.2f}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y))
-                plt.colorbar(im, label='Frecuencias')
-                plt.savefig(direccion_guardado ,bbox_inches = "tight")
-                plt.close()
+                if repeticion < 10:
+                    direccion_guardado = Path("../../../Imagenes/{}/Histograma_opiniones_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
+                                                                                                                                                     ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,repeticion))
+                    
+                    # Armo mi gráfico, lo guardo y lo cierro
+                    
+                    plt.rcParams.update({'font.size': 32})
+                    plt.figure(figsize=(20,15))
+                    _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
+                                             range=[[-PARAM_X,PARAM_X],[-PARAM_X,PARAM_X]],density=True,
+                                             cmap=cmap)
+                    plt.xlabel(r"$x_i^1$")
+                    plt.ylabel(r"$x_i^2$")
+                    plt.title('Histograma 2D, {}={:.2f}_{}={:.2f}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y))
+                    plt.colorbar(im, label='Frecuencias')
+                    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+                    plt.close()
 
 #-----------------------------------------------------------------------------------------------
 
@@ -603,7 +605,7 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
     
     # Defino los arrays de parámetros diferentes
     EXTRAS = int(np.unique(DF["Extra"]))
-    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_x = np.unique(DF["parametro_x"])[0:10]
     Arr_param_y = np.unique(DF["parametro_y"])
     
     
@@ -649,6 +651,8 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
             
             # Levanto los datos del archivo
             Datos = ldata(path / nombre)
+            if len(Datos)< 7:
+                continue
             
             # Leo los datos de las Opiniones Finales
             Opifinales = np.zeros((T,AGENTES))
@@ -664,7 +668,7 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
             
         #------------------------------------------------------------------------------------------
         # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
-        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Covarianzas)
+        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Covarianzas[Covarianzas != 0])
             
     #--------------------------------------------------------------------------------
     
@@ -750,7 +754,7 @@ def Calculo_Traza_Covarianza(DF,path):
                 Opifinales = np.zeros((T,AGENTES))
         
                 for topico in range(T):
-                    Opifinales[topico,:] = np.array(Datos[5][topico::T], dtype="float")
+                    Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
         
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
         
@@ -781,7 +785,7 @@ def Diccionario_metricas(DF,path,N):
     
     # Defino los arrays de parámetros diferentes
     Arr_EXTRAS = np.unique(DF["Extra"])
-    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_x = np.unique(DF["parametro_x"])[0:10]
     Arr_param_y = np.unique(DF["parametro_y"])
     
     
@@ -823,12 +827,15 @@ def Diccionario_metricas(DF,path,N):
         
                 # Levanto los datos del archivo
                 Datos = ldata(path / nombre)
+                
+                if len(Datos)< 7:
+                    continue
         
                 # Leo los datos de las Opiniones Finales
                 Opifinales = np.zeros((T,AGENTES))
         
                 for topico in range(T):
-                    Opifinales[topico,:] = np.array(Datos[5][topico::T], dtype="float")
+                    Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
                     Opifinales[topico,:] = Opifinales[topico,:]/ PARAM_X
                 
                 # Esta función normaliza las Opiniones Finales usando la 
@@ -845,7 +852,7 @@ def Diccionario_metricas(DF,path,N):
                 
                 # Tengo que rearmar Opifinales para que sea un sólo vector con todo
                 
-                Opifinales = np.array(Datos[5], dtype="float")
+                Opifinales = np.array(Datos[5][:-1], dtype="float")
                 Opifinales = Opifinales/PARAM_X
                 
                 # Armo mi array de Distribucion, que tiene la proba de que una opinión
@@ -859,9 +866,9 @@ def Diccionario_metricas(DF,path,N):
                 Salida[EXTRAS][PARAM_X] = dict()
             if PARAM_Y not in Salida[EXTRAS][PARAM_X].keys():
                 Salida[EXTRAS][PARAM_X][PARAM_Y] = dict()
-            Salida[EXTRAS][PARAM_X][PARAM_Y]["Entropia"] = Entropia/np.log2(N*N)
-            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"] = Varianza_X
-            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"] = Varianza_Y
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Entropia"] = Entropia[Entropia != 0]/np.log2(N*N)
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"] = Varianza_X[Varianza_X != 0]
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"] = Varianza_Y[Varianza_Y != 0]
             
     return Salida
 
@@ -938,7 +945,7 @@ def Mapas_Colores_FEF(DF,path,carpeta,
     
     # Defino los arrays de parámetros diferentes
     EXTRAS = int(np.unique(DF["Extra"]))
-    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_x = np.unique(DF["parametro_x"])[0:10]
     Arr_param_y = np.unique(DF["parametro_y"])
     
     
@@ -968,7 +975,7 @@ def Mapas_Colores_FEF(DF,path,carpeta,
         
         # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
         for grafico in range(10):
-            ZZ[grafico,(Arr_param_y.shape[0]-1)-fila,columna] = np.count_nonzero(Frecuencias == grafico)
+            ZZ[grafico,(Arr_param_y.shape[0]-1)-fila,columna] = np.count_nonzero(Frecuencias == grafico)/Frecuencias.shape[0]
             
     #--------------------------------------------------------------------------------
     
@@ -1071,7 +1078,7 @@ def Calculo_Entropia(DF,path,N):
             
             entropias = np.zeros(archivos.shape[0])
             
-            for nombre in archivos:
+            for indice,nombre in enumerate(archivos):
         
                 # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
                 # Opinión Inicial del sistema
@@ -1081,9 +1088,12 @@ def Calculo_Entropia(DF,path,N):
         
                 # Levanto los datos del archivo
                 Datos = ldata(path / nombre)
+                
+                if len(Datos)< 7:
+                    continue
         
                 # Leo los datos de las Opiniones Finales
-                Opifinales = np.array(Datos[5], dtype="float")
+                Opifinales = np.array(Datos[5][:-1], dtype="float")
                 Opifinales = Opifinales / PARAM_X
                 
                 # La nueva función de Entropía que armé normaliza las Opiniones Finales usando la 
@@ -1092,18 +1102,18 @@ def Calculo_Entropia(DF,path,N):
         
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
         
-                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+#                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
                 
                 # Armo mi array de Distribucion, que tiene la proba de que una opinión
                 # pertenezca a una región del espacio de tópicos
                 Probas = Clasificacion(Opifinales,N,T)
                 
                 # Con esa distribución puedo directamente calcular la entropía.
-                entropias[repeticion] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
+                entropias[indice] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)+0.00001
         
             if PARAM_X not in Salida[EXTRAS].keys():
                 Salida[EXTRAS][PARAM_X] = dict()
-            Salida[EXTRAS][PARAM_X][PARAM_Y] = entropias/np.log2(N*N)
+            Salida[EXTRAS][PARAM_X][PARAM_Y] = entropias[entropias != 0]/np.log2(N*N)
     
     return Salida
 
@@ -1118,7 +1128,7 @@ def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,
     
     # Defino los arrays de parámetros diferentes    
     EXTRAS = int(np.unique(DF["Extra"]))
-    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_x = np.unique(DF["parametro_x"])[0:10]
     Arr_param_y = np.unique(DF["parametro_y"])
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar

@@ -91,7 +91,7 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    func.Mapa_Colores_FEF(Df_archivos, Direccion, Etapa/carpeta,
+    func.Mapas_Colores_FEF(Df_archivos, Direccion, Etapa/carpeta,
                           SIM_param_x, SIM_param_y, ID_param_extra_1)
     
 
