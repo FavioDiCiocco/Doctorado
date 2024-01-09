@@ -123,3 +123,13 @@ ecuación dinámica para cada agente. Comparé los tiempos de simulación, lo qu
 de Sep_int tardaban 30 segundos en completar las 500 simulaciones, mientras que con Sep_ext tardaban
 13 segundos. Claramente una señal de que era una gran idea calcular esas separaciones con la función
 de Generar_Separacion.
+
+Evolución Temporal:
+-------------------
+Como los programas estaban tardando demasiado, decidimos empezar a estudiar el comportamiento de los
+agentes en esas simulaciones para saber qué estaba pasando. Por eso acá guardo los datos de todos
+los testigos de tres simulaciones que sé que tardan el máximo tiempo posible. En Datos están
+guardados los datos de esas tres simulaciones. Aparte tengo la carpeta de MARE_Algarve, que tiene
+las redes de Erdos Renyi usadas en esas simulaciones. Lo siguiente que voy a agregar son dos carpetas
+con simulaciones en 1D. Una con simulaciones hechas con mi código, otra con simulaciones hechas usando
+el código de Hugo.

@@ -68,7 +68,6 @@ for carp in Carpetas:
     ID_param_y = "beta"
     ID_param_x = "cosd"
     
-    
     # Lo otro que necesito es el nombre que pasaré a los ejes de los gráficos de las funciones
     # SIM significa símbolo, porque esto lo uso para escribir el símbolo de ese parámetro
     # Todo parámetro que no grafique es un parámetro extra

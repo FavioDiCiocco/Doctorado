@@ -2416,7 +2416,6 @@ original. Con lo cual, lo que se corrió en cada caso con sus respectivas semill
 a su manera. Yo diría de irme ahora a casa, llevarme todo lo importante y ya después me pongo
 a corregir parciales.
 
-
 ------------------------------------------------------------------------------------------
 
 24/12/2023
@@ -2474,3 +2473,123 @@ cosa de que los datos se generen idénticamente.
 En Coimbra podría mandar las simulaciones con Beta entre [0,0.45].
 
 Ahí mandé a correr las dos cosas. Lo de Coimbra se va a terminar antes, revisar eso el sábado.
+
+
+------------------------------------------------------------------------------------------
+
+08/01/2024
+
+Hoy llegué, revisé lo que mandé a correr y sólo quedó lo de Oporto. Por lo que ví, pareciera que
+van a tardar otros 10 días en terminar eso. Después charlamos un ratito con Pablo y acordamos
+que es una buena idea revisar el código que me pasó Hugo para ver qué puede ser lo que hace
+que mi código ande lento o si el código está funcionando mal.
+
+Lo primero que hice hoy fue completar la burocracia infinita. Hecho eso, descargué el archivo que
+me pasó Hugo y empecé a compararlo con mi código, para ver qué cosas tenía de similar o de
+distinto su código.
+
+Ahí vi el proceso en el cuál crea la matriz de Adyacencia. Es bastante interesante, porque se encarga
+de armar una matriz de vecinos, contrario a una matriz de adyacencia. Hugo lo llamó listas
+de vecinos. Cuestión que A es una matriz que tiene N filas, una por cada agente. Estas filas
+tienen tamaño igual al grado del agente i-ésimo. Luego, en estas filas están los números
+que identifican a los vecinos del agente i-ésimo.
+ Es decir, consideremos el agente 1. Si este agente tiene grado tres, entonces A[1] es un vector
+de tamaño 3. Luego, si el agente 1 estuviera conectado con los agentes 5, 8 y 12, entonces
+A[1] podría ser [8,5,12]. A[1] no está necesariamente ordenado. Al menos no lo parece
+porque los archivos de asociados a las redes complejas guardan los enlaces ordenados según el
+primer agente, pero no según el segundo.
+ En esa misma función que crea a la matriz A, tiene un conjunto de tres fors más abajo que 
+construyen la matriz A_neigh. Dado A_neigh[i][j] = l, lo que me está diciendo eso es lo siguiente.
+Primero considero al agente i-ésimo, el cuál tiene en la matriz A un vector de tamaño k_i.
+Sobre ese agente, el agente j-ésimo es el que se encuentra en la posición j de ese vector.
+Entonces si A_neigh[i][j] = l, eso significa que el agente i ocupa la posición l-ésima en la lista
+de vecinos del agente que es el vecino j-ésimo de i.
+ Puesto en números, supongamos que tengo los agentes 3, 12, 16 y 20 conectados con el agente 200.
+Siguiendo el orden en que se construye la matriz A, si yo mirara A[200] vería [3,12,16,20,...].
+Entonces si yo quiero conocer A_neigh[20][200], este me va a dar 3. En cambio, A_neigh[200][20]
+no sé cuánto da en este ejemplo, porque eso depende de cómo están ordenados los enlaces en el
+conjunto asociado al agente 20 y si además hay agentes del 0 al 19 que estén vinculados al agente
+20.
+
+Consultar con Hugo el tema de las static memories. Hay una nota de que no debería prestarle mucha
+atención, pero vale la pena mandarle un mail para consultar al respecto. Llegué a revisar 
+hasta la función de free all. Mañana continuar a partir de ahí.
+
+------------------------------------------------------------------------------------------
+
+09/01/2024
+
+Estoy teniendo algunas dudas con cómo se calculan distancias en espacios no ortogonales.
+Buscando en internet, encontré respuestas como que no se puede definir un producto escalar
+en espacios no ortogonales, lo cuál me preocupa. Lo que tenemos es la definición de Baumann
+únicamente, a la cuál Baumann tampoco aclara demasiado.
+
+Revisé el código de lo que hizo Hugo, y lo que tengo yo es igual a lo que hacen ellos. No veo
+el error en eso. Tampoco encuentro el error como yo esperaba en el cálculo de los pesos. No
+hay un error en el simetrizado de la matriz, y revisé previamente que los lugares donde 
+la matriz tiene números distintos de cero sea en los mismos lugares donde la matriz de adyacencia
+indica que los agentes están conectados. Así que no logro comprender por qué da mal el cálculo.
+
+Ahora mismo no sé para dónde encarar. Por un lado Pablo me dice de intentar correr mi
+simulación con el programa de Hugo, pero eso no va a ser posible. Su código no contempla
+la posibilidad de que el sistema tenga múltiples tópicos, hay que readaptarlo. La otra es
+que yo haga simulaciones con un sólo tópico, que encuentre algunas con el problema de correr
+durante mucho tiempo y esas después las corra en el código de Hugo, eso creo que podría hacerlo.
+
+Lo otro es empezar a ver de analizar más en detalle el comportamiento de esos agentes particulares
+que oscilan mucho, ver qué puedo obtener de ellos y cómo me daría cuenta de lo que está pasando.
+Para esto yo diría de revisar mi código, ver dónde dejé los gráficos esos y a partir de los gráficos
+ir viendo de ver formas de graficar y observar lo que ocurre. Pablo decía de armar un gráfico
+3D ordenándolos según los que más varían y los que menos varían.
+
+Ahí justo hablé con Lupi por el tema del trabajo que teníamos sobre el modelo de interés.
+Pablo dijo que nos pongamos a trabajar juntos en eso para darle forma y hacer algo
+publicable. Con eso en mente, tendré que ponerme a revisar eso pronto.
+
+Aislé un agente para el caso de Beta=0.9, el agente 79, el cuál tiene opiniones oscilantes.
+Ya que estoy, voy a descargarme las redes estáticas de este caso. Si no me equivoco, son las
+de Algarve. Son las de Algarve, pero me jode que no tengo algo que inequívocamente me asegura
+que las matrices de MARE_Algarve son las que tengo que estar mirando. Una cagada eso. Eso pasa
+por estar mezclando datos de pc's.
+
+Ya que estoy, tengo algo para ver rápido los grados medios, debería revisar que efectivamente
+las redes que uso son del grado medio que yo digo.
+
+Cuestión, para el gráfico con Beta = 0.9 resulta que tengo el agente 79 como un agente cuya
+opinión en el tópico 1 oscila permanentemente en el tiempo. Revisando sus vecinos, resulta que
+el agente 388 oscila con él. Podría mirar los vecinos del 388 para encontrar otros que oscilan
+igual, pero no sé si valga la pena. Lo que tendría que hacer ahora digo yo es mirar la ecuación
+dinámica por un lado y comparar eso con el cálculo de los pesos. Sabiendo la opinión del agente
+79 y la de sus vecinos, podría evolucionar a ese agente sólo y ver si la evolución está bien
+calculada y qué pasa con los pesos. ¿Tiene sentido esto? No, no lo tiene, yo no tengo la
+evolución temporal en cada paso de este agente, tengo la evolución cada 100 pasos. No tengo
+idea de lo que ocurre en el medio. Lo que sí puedo hacer es ir calculando cómo varía la distancia
+entre agentes y cómo va variando el peso entre ambos. Eso me ayudaría a ver si el peso está
+bien calculado y si es el culpable de estas oscilaciones raras.
+
+Por otro lado Pablo me propone que corra mis simulaciones en el código de Hugo y vea si me
+da lo mismo. Para eso podría reducir mi problema a 1 dimensión e intentar ver si me ocurre
+lo mismo en ese caso comparado con lo que ocurre en mi código. Eso significa que tengo
+que barrer algunas simulaciones en la región de beta cercana a 1 hasta encontrar alguna que
+tarde demasiado y a esa ver qué le pasó y si efectivamente está oscilando.
+
+El plan para mañana entonces es empezar mandando a correr eso. Tengo que armar una carpeta
+de datos 1D para guardar y mandar a correr esto en la pc de la facultad o en Algarve, no
+sé cuál conviene. Hoy ya no llego a mandarlo a correr, lo importante es que mañana eso
+esté antes del mediodía. Mientras eso corre, puedo seguir revisando al agente 79 y
+su amigo el 388.
+ En ese caso lo que puedo ver es cómo varía el peso y la distancia entre ambos, se me
+ocurre que estaría bueno graficarlo para ver si realmente cuando la distancia crece
+el peso se achica. Claramente yo espero ver que el peso entre ambos vaya también oscilando,
+porque depende de la distancia entre ambos.
+ Visto eso, podría ponerme a buscar libros o info sobre cómo calcular la distancia en espacios
+no ortogonales. Me está volviendo un poco loco esto, no quiero descubrir que está mal.
+ También debería terminar de leer el código de Hugo, porque si quiero mandarlo a correr,
+necesito comprender cómo hacerlo funcionar con mis cosas. Charlar con Pablo el hecho de que
+el código ese usa otros números random. Claramente debería reemplazar su función de números
+random por mi función de números random.
+
+Ok, ahí tengo 4 cosas claramente definidas para hacer. Además debería dedicarle un rato a
+armar el archivo con papers que venimos hablando con Ale. Tengo mi trabajo marcado para
+mañana. Lo último que queda considerar es si debería mandarle un mail a Hugo para hablarle
+de esto y consultarle por su código.

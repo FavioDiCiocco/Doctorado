@@ -102,3 +102,11 @@ es el correcto, si estoy cortando prematuramente o muy tarde. Si corto prematuro
 contabilizando como polarización cosas que no lo son. Si corto muy tarde, estoy perdiendo tiempo
 en simulaciones que ya deberían haber terminado.
 
+
+.) Evolucion_temporal:
+----------------------
+El que los programas tarden tanto en resolverse es un grave problema, así que decidimos mirar en 
+detalle algunas simulaciones particulares que tardaban mucho para diversos valores de Beta. El resultado
+es que observamos cosas preocupantes como comportamientos oscilatorios de los agentes. Esos
+comportamientos no son para nada razonables y generan que empecemos a dudar de si nuestros códigos
+están bien. Lo primero que armamos son gráficos de opinión en función del tiempo.
