@@ -2415,3 +2415,62 @@ del archivo.e y es sobre esa copia que está corriendo el código. No está revi
 original. Con lo cual, lo que se corrió en cada caso con sus respectivas semillas va a resolver
 a su manera. Yo diría de irme ahora a casa, llevarme todo lo importante y ya después me pongo
 a corregir parciales.
+
+
+------------------------------------------------------------------------------------------
+
+24/12/2023
+
+Con lo que vimos de los gráficos de Trayectorias de Opiniones con Pablo, la verdad que tenemos más
+dudas que respuestas, hay cosas que revisar y después charlar con la gente de España. Después
+cuando vuelva en Enero, veré de encarar el laburo de revisar qué pasó ahí.
+
+Hoy mandé a correr en Coimbra el resto de simulaciones para que estén los datos en el barrido 
+Beta-Kappa con Kappa hasta 20. Mandemos eso derecho, sin dramas. Bah, Pablo había dicho
+de hacer Kappa de 0 hasta 15. Corrijamos eso, después cualquier cosa mando más.
+ También mandé a correr los datos en Coimbra, para resolver la aprte dinal con Beta entre [0.9,1].
+Estos datos se van a terminar de correr rápido, en dos o tres días revisarlos y ver que una vez
+terminados, tengo que mandar a correr datos para Beta entre [0,0.85] para completar la segunda tanda
+de iteraciones. Hecho eso, voy rellenando esta región de datos con más simulaciones.
+
+------------------------------------------------------------------------------------------
+
+27/12/2023
+
+Revisé cómo viene el armado de los datos. Por un lado, los datos de Oporto van tan lento como
+era de esperar. Se hace lo que puede. Por el otro, los datos de Coimbra están casi terminados,
+mañana tengo que mandar a correr los datos para completar la región entre [0.5,0.85]. Hecho eso,
+mandar más simulaciones aumentando la región del beta para que cubra el [0,2].
+ Por último, tengo que mandar a correr simulaciones en Algarve, aunque Ale tiene ocupados varios
+hilos. Sólo tengo la mitad para usar. Así que voy a mandar la mitad que cubran el análisis que queríamos
+hacer sobre estados finales polarizados. Aunque en realidad Pablo quiere que haga gráficos de fracción
+de distribuciones en un dado estado final. Algo importante a recordar: la iteración 84 no completó todo
+su beta. El resto completaron todos la primer iteración de las tres que iba a realizar cada hilo.
+Así que mando la segunda iteración de cada hilo y de ahí veo que sale. Mandé 15 hilos, y por la forma
+del código, eso resulta en que se van a completar hasta la iteración 84. Bien, eso resuelve el problema
+de esa iteración.
+
+------------------------------------------------------------------------------------------
+
+28/12/2023
+
+Efectivamente las simulaciones con Beta entre [0.9,1] terminaron, ahora mando las que faltan para
+completar las iteraciones impares con Beta [0.5,0.85]. En dos o tres días más tengo que volver a mirar
+lo de Algarve.
+
+------------------------------------------------------------------------------------------
+
+31/12/2023
+
+Mandé a correr las 15 iteraciones que faltaban en Algarve.
+
+------------------------------------------------------------------------------------------
+
+02/01/2023
+
+En Algarve podría mandar a correr las simulaciones con Beta entre [1,2], con cos(delta) entre [0,1].
+Para hacer las simulaciones en Algarve lo que voy a hacer es utilizar las mismas redes que en Coimbra,
+cosa de que los datos se generen idénticamente.
+En Coimbra podría mandar las simulaciones con Beta entre [0,0.45].
+
+Ahí mandé a correr las dos cosas. Lo de Coimbra se va a terminar antes, revisar eso el sábado.
