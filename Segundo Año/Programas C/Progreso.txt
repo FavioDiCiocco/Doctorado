@@ -2593,3 +2593,112 @@ Ok, ahí tengo 4 cosas claramente definidas para hacer. Además debería dedicar
 armar el archivo con papers que venimos hablando con Ale. Tengo mi trabajo marcado para
 mañana. Lo último que queda considerar es si debería mandarle un mail a Hugo para hablarle
 de esto y consultarle por su código.
+
+------------------------------------------------------------------------------------------
+
+10/01/2024
+
+Pasé por el barrio chino pensando en comprarme comida para hoy y vi los roll de sushi.
+Son muy caros para lo que son, no me valen la pena. Así que llegué tarde por eso.
+
+Ahora, qué hago primero. Voy a querer mandar a correr el código en mi pc para el caso
+1D. Tengo entonces que revisar el código del main para adaptarlo y ver que el código que
+tengo guardado sea el mismo, cosa de no perder el trabajo en armar el que tengo.
+
+Ya mandé a correr datos en la pc de Algarve. Esto va a tomar un día aprox. Mandé 40 iteraciones,
+con K=10, cos(delta)=0 y Beta barriendo entre 0.1 y 1.5, espero encontrar simulaciones que
+tarden mucho y me den para estudiar el sistema.
+
+Lo siguiente que voy a hacer es lo de graficar el peso y la distancia entre el agente 79 y el 388.
+Para eso voy a levantar los datos del archivo de Testigos y quedarme con las opiniones del agente
+79 y de sus vecinos.
+
+Revisando este gráfico observé lo siguiente. Primero, que la distancia y el peso parecieran estar
+oscilando en simultáneo, de forma tal que cuando la distancia entre estos dos agentes tiene un mínimo,
+el peso tiene un máximo. Lo segundo que vi es que el peso de este agente difícilmente supera el
+0.07 durante la oscilación. Es decir que el efecto de su tirón se reduce al 7% por lo lejos que
+se encuentra del agente principal, lo cuál es totalmente razonable. Entonces si el agente 388 está
+haciendo que el 79 oscile, eso significa que el agente 79 tiene que tener una oscilación de un
+orden de magnitud menor que la del otro.
+ Ahí hice la cuenta, efectivamente el agente 388 oscila entre 9 y -1.5, lo cuál le da una amplitud
+de 10.5. En cambio, el agente 79 oscila entre -7.5 y -9.3, lo cuál le da una oscilación de 1.8.
+Entonces en orden de magnitud son similares. Es decir que esta oscilación tiene sentido con
+lo que propone la ecuación dinámica, porque como el resto de los vecinos están fijos, lo único
+que produciría oscilación para el agente 79 es el vecino 388.
+ Pero ahí hay algo raro, porque 1.87 es el 17% de 10.5, eso son 10 puntos más de oscilación que lo
+MÁXIMO que podría generar. Entonces no se entiende, ¿Por qué el hecho de que el agente 388 se
+encuentre oscilando hace que el 79 también oscile? Digo, si apenas le hace fuerza para moverse al 
+79. Incluso, más confuso es pensar lo siguiente. Al 79 sólo lo mueve el 388, porque el resto está
+fijo. ¿Por qué entonces en el momento de la oscilación en que el 388 se aleja no permanecen alejados?
+Digo, si el 388 es el causante de la oscilación, cuando se aleja su efecto debería ser mínimo y ahí
+los vecinos que están cerca de -10 deberían poder atrapar al agente 79 y cortar su oscilación.
+ Veamos qué pasa con los pesos de los vecinos cercanos y con los vecinos lejanos en función del tiempo,
+y después vamos para casa. Cabe destacar además que la mayoría de los vecinos del agente 79 están en
+-10 de opinión para el tópico 1. El agente 79 tiene siete vecinos, cuatro tienen opinión -10, dos
+tienen opinión 10 y el 388 es el que oscila.
+ Miré esos pesos y calculé la derivada en t = 10,75, que sería el punto 1075. En ese caso, la
+derivada sigue siendo negativa. Entonces no me cierra para nada por qué aún variando el agente
+388, este logra hacer oscilar al agente 79 y por qué este no queda pegado al resto de los agentes.
+
+Por otra parte, mandé a correr el programa específico que Pablo me dijo que corriera para el caso
+unidimensional. Primero, pasó algo inesperado. El programa se resolvió en 40 minutos, pero corrió
+hasta el final. No entiendo, los programas unidimensionales en Algarve están tardando 4 horas y media.
+¿Por qué en la pc de la facultad corre tanto más rápido? Ahora tengo un poco de miedo de que
+esté corriendo mal ahí y que el problema sean las pcs del grupo.
+
+Cuestión que tengo una simulación para Beta=0.9 que oscila hasta tiempo final, y que se resolvió en 40
+minutos por motivos que me superan. Y efectivamente tiene oscilaciones. Podría hacer el mismo
+proceso para buscar algunos vecinos que oscilen. De ahí mirar su distancia y pesos. Si resulta que
+eso tiene sentido, todo bien, el problema no va por el cálculo de esas cosas.
+ Para ver el tema de los tiempos, voy a mandar a correr una sola simulación en la pc de Coimbra,
+y ver si corre igual de rápido. Ahí lo mandé a correr, para ver qué pasa.
+
+Lo otro que puedo hacer es mandar a correr esto usando el programa de Hugo. Si en su programa observo
+lo mismo, entonces las oscilaciones no son artefactos, hay que buscarlas en la ecuación dinámica.
+
+Se me ocurre que mañana puedo tomar estos datos y ponerme a ver en qué momento la derivada pasa a
+ser positiva. Aunque hay que considerar que yo no veo toda la evolución, sino sólamente el
+estado cada 100 pasos temporales.
+
+Por otro lado, efectivamente mandé una sola simulación en Coimbra y resolvió en 40 minutos.
+No entiendo qué está pasando. Corté las simulaciones en Algarve, voy a probar mandar todo
+de nuevo pero con menos hilos mañana.
+
+------------------------------------------------------------------------------------------
+
+11/01/2024
+
+Vamos a anotar algunas ideas. Por un lado, estaría bueno armar como dijo Pablo, una lista
+de cosas que descarto que sean el problema. Después haré un pequeño repaso de qué estuve
+pensando respecto al tema de las distancias y a hacer la simulación con el código de Hugo.
+Igual, creo que conviene empezar mandando a correr el código de Hugo, eso va a ser mejor,
+porque espero que eso tarde en principio 40 minutos. También debería mandar a correr en
+Algarve mis datos para ver qué pasa con el tema de si está tardando mucho el código porque
+se come la RAM.
+
+Mandé en Algarve a correr con un sólo hilo lo mismo exacto que mandé ayer. Siendo que ayer
+no fue un sólo proceso, fueron todos en simultáneo que empezaron a tardar mucho.
+
+Para poder correr el código de Hugo, necesito poder construir un archivo con los datos de
+la red como los que usa Hugo. Armé un código sencillo que toma una red y construye exactamente
+el mismo archivo que utiliza Hugo. Con esto puedo reconstruir todas mis redes y a partir
+de ahí copiar la forma de crear las listas de vecinas que hace Hugo.
+
+Logré mandar a correr el código de Hugo agregándole algunos detalles de mi código. Ahora a ver
+cuánto tarda y qué le da. Aprovecho para crear las carpetas necesarias para ver los gráficos
+y cosas. Armé el gráfico y lo que observé es que también oscila, aunque no parece ser tan
+organizado como el que observo yo. Eso me da una sensación más parecida a lo que yo esperaba
+observar, que los agentes se mantienen variando sus opiniones yendo y viniendo. Lo raro es la
+oscilación que observo yo que parece ser como osciladores de Kuramoto.
+
+Conseguí el resultado del código de Hugo para cuando fui a comer. Después de comer, me dediqué
+a preparar una presentación para mostrarle a Hugo lo que estuve trabajando sobre las oscilaciones
+de opiniones y luego le mandé un mail. Esto me tomó una buena parte de la tarde porque fue un
+buen laburo armar los gráficos.
+
+Enviado el mail, revisé las simulaciones que mandé en Algarve. Resulta que cuando mando un sólo
+hilo, ningún código dura más de 40 minutos. Es una reducción de tiempo importante. Después probé
+mandar 5 hilos. Vamos a ver si con eso sigue tardando poco y después mandaré 10 hilos si todo
+va bien.
+
+A lo último, terminé de anotarme lo que hice en el día.

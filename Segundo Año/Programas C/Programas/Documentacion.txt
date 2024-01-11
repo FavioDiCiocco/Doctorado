@@ -116,3 +116,16 @@ Este código reduce gran parte del código que es innecesaria cosa de permitirme
 sobre qué es lo que lo hace correr más rápido o más lento el código. Tiene la ecuación dinámica,
 pero no busca evolucionar el sistema hasta llegar a un estado estable. Simplemente corre una cantidad
 de tiempo fija, una cierta cantidad de simulaciones y listo.
+
+.)Evolucion_temporal:
+---------------------
+
+Teníamos dudas del comportamiento del sistema en los casos en que la simulación se extendía hasta el
+tiempo máximo, así que decidimos revisar en detalle el comportamiento de los agentes guardando los
+valores de opinión de todos los agentes cada 100 pasos de iteración a lo largo de toda la simulación.
+Usé valores particulares cosa de tener un sistema con beta bajo, uno con beta cercano a 1 y
+otro con beta alto para observar distintas situaciones del modelo. Los casos considerados los tengo
+anotados en el cuaderno, en los que anoté los betas, las iteraciones y las semillas consideradas.
+Las redes que usé para armar estos datos son las redes de Erdos-Renyi que tenía armadas en la pc
+de Algarve. La base de este código surge de NI_homofilia, pero adaptado para guardar los datos
+de los testigos cada 100 pasos de iteración.

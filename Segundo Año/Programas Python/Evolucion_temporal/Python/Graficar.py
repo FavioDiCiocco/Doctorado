@@ -78,7 +78,7 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta,2,
+    func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta,T,
                             ID_param_x, ID_param_y,ID_param_extra_1)
 
     

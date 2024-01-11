@@ -16,7 +16,7 @@ int main(int argc, char *argv[]){
 	// Empecemos con la base. Defino variables de tiempo para medir cuanto tardo y cosas básicas
 	time_t tt_prin,tt_fin,semilla;
 	time(&tt_prin);
-	semilla =  1702971081;// time(NULL);
+	semilla =  ;// time(NULL);
 	srand(semilla); // Voy a definir la semilla a partir de time(NULL);
 	float f_tardanza; // Este es el float que le paso al printf para saber cuanto tardé
 	
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]){
 	int i_iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
 	
 	// Los siguientes son los parámetros que están dados en los structs
-	ps_datos->i_T = 1;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
+	ps_datos->i_T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
 	ps_datos->i_Iteraciones_extras = 500; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	ps_datos->d_dt = 0.1; // Paso temporal de iteración del sistema
 	ps_datos->d_alfa = 1; // Controversialidad de los tópicos
@@ -60,41 +60,47 @@ int main(int argc, char *argv[]){
 	// Defino mis matrices y las inicializo
 	
 	// Matrices de mi sistema. Estas son la de Adyacencia, la de Superposición de Tópicos, la de vectores de opinión de los agentes y la de Separación
-	ps_red->pi_Adyacencia = (int*) calloc(2+ps_datos->i_N*ps_datos->i_N,sizeof(int)); // Matriz de adyacencia de la red. Determina quienes están conectados con quienes
-	ps_red->pd_Angulos = (double*) calloc(2+ps_datos->i_T*ps_datos->i_T,sizeof(double)); // Matriz simétrica de superposición entre tópicos.
-	ps_red->pd_Opiniones = (double*) calloc(2+ps_datos->i_T*ps_datos->i_N,sizeof(double)); // Lista de vectores de opinión de la red, Tengo T elementos para cada agente.
+	ps_red->pi_Adyacencia = (int*) malloc((2+ps_datos->i_N*ps_datos->i_N)*sizeof(int)); // Matriz de adyacencia de la red. Determina quienes están conectados con quienes
+	ps_red->pd_Angulos = (double*) malloc((2+ps_datos->i_T*ps_datos->i_T)*sizeof(double)); // Matriz simétrica de superposición entre tópicos.
+	ps_red->pd_Opiniones = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Lista de vectores de opinión de la red, Tengo T elementos para cada agente.
 	
 	// También hay un vector para guardar la diferencia entre el paso previo y el actual, un vector con los valores de saturación,
-	ps_red->pd_Diferencia = (double*) calloc(2+ps_datos->i_T*ps_datos->i_N,sizeof(double)); // Vector que guarda la diferencia entre dos pasos del sistema
+	ps_red->pd_Diferencia = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N)*sizeof(double)); // Vector que guarda la diferencia entre dos pasos del sistema
 	
 	// También hay un vector para la inversa a la beta de la distancia no ortogonal entre agentes
-	ps_red->pd_Separacion = (double*) calloc(2+ps_datos->i_N*ps_datos->i_N,sizeof(double)); // Matriz de Separacion. Determina las dsitancias entre agentes.
+	ps_red->pd_Separacion = (double*) malloc((2+ps_datos->i_N*ps_datos->i_N)*sizeof(double)); // Matriz de Separacion. Determina las dsitancias entre agentes.
 	
 	// También hay un vector para guardar el promedio temporal de las opiniones de los agentes en todos los tópicos
-	ps_red->pd_Prom_Opi = (double*) calloc(2+ps_datos->i_T*ps_datos->i_N*2,sizeof(double)); // Vector que guarda la diferencia entre dos pasos del sistema
+	ps_red->pd_Prom_Opi = (double*) malloc((2+ps_datos->i_T*ps_datos->i_N*2)*sizeof(double)); // Vector que guarda la diferencia entre dos pasos del sistema
 	
 	// Inicializo mis cinco "matrices".
 	// Matriz de Adyacencia. Es de tamaño N*N
+	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_N+2; i_i++) ps_red->pi_Adyacencia[i_i] = 0; // Inicializo la matriz
 	ps_red->pi_Adyacencia[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
 	ps_red->pi_Adyacencia[1] = ps_datos->i_N; // Pongo el número de columnas en la segunda coordenada
 	
 	// Matriz de Superposición de Tópicos. Es de tamaño T*T
+	for(register int i_i=0; i_i<ps_datos->i_T*ps_datos->i_T+2; i_i++) ps_red->pd_Angulos[i_i] = 0;
 	ps_red->pd_Angulos[0] = ps_datos->i_T; // Pongo el número de filas en la primer coordenada
 	ps_red->pd_Angulos[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
 	
 	// Matriz de vectores de opinión. Es de tamaño N*T
+	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_Opiniones[i_i] = 0; // Inicializo la matriz
 	ps_red->pd_Opiniones[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
 	ps_red->pd_Opiniones[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
 	
 	// Matriz de diferencia entre los vectores Opi y PreOpi. Es de tamaño N*T
+	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_Diferencia[i_i] = 0; // Inicializo la matriz
 	ps_red->pd_Diferencia[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
 	ps_red->pd_Diferencia[1] = ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
 	
 	// Matriz de Separacion. Es de tamaño N*N
+	for(register int i_i=0; i_i<ps_datos->i_N*ps_datos->i_N+2; i_i++) ps_red->pd_Separacion[i_i] = 0; // Inicializo la matriz
 	ps_red->pd_Separacion[0] = ps_datos->i_N; // Pongo el número de filas en la primer coordenada
 	ps_red->pd_Separacion[1] = ps_datos->i_N; // Pongo el número de columnas en la segunda coordenada
 	
 	// Matriz de Promedio de opiniones de cada agente y cada tópico. Es de tamaño 2*(N*T)
+	for(register int i_i=0; i_i<2*ps_datos->i_N*ps_datos->i_T+2; i_i++) ps_red->pd_Prom_Opi[i_i] = 0; // Inicializo la matriz
 	ps_red->pd_Prom_Opi[0] = 2; // Pongo el número de filas en la primer coordenada
 	ps_red->pd_Prom_Opi[1] = ps_datos->i_N*ps_datos->i_T; // Pongo el número de columnas en la segunda coordenada
 	
@@ -108,14 +114,14 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_Opiniones[355];
-	sprintf(s_Opiniones,"../Programas Python/Evolucion_temporal/1D/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+	sprintf(s_Opiniones,"../Programas Python/Evolucion_temporal/Datos/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
 		,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
 	FILE *pa_Opiniones=fopen(s_Opiniones,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char s_Testigos[355];
-	sprintf(s_Testigos,"../Programas Python/Evolucion_temporal/1D/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
-		,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
+	sprintf(s_Testigos,"../Programas Python/Evolucion_temporal/Datos/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+		,ps_datos->i_T,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
 	FILE *pa_Testigos=fopen(s_Testigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
@@ -171,10 +177,9 @@ int main(int argc, char *argv[]){
 	// Realizo la simulación del modelo hasta que este alcance un estado estable
 	// También preparo para guardar los valores de Varprom en mi archivo
 	
+	fprintf(pa_Opiniones,"Variación promedio \n");
 	for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]);
 	fprintf(pa_Testigos,"\n");
-	
-	fprintf(pa_Opiniones,"Variación promedio \n");
 	
 	while(i_contador < ps_datos->i_Iteraciones_extras && i_pasos_simulados < i_pasos_maximos){
 		
@@ -255,8 +260,6 @@ int main(int argc, char *argv[]){
 	fprintf(pa_Opiniones,"\n");
 	fprintf(pa_Opiniones,"Opiniones finales\n");
 	Escribir_d(ps_red->pd_Opiniones,pa_Opiniones);
-	fprintf(pa_Opiniones,"Matriz de Adyacencia\n"); // Guardo esto para poder comprobar que la red sea conexa.
-	Escribir_i(ps_red->pi_Adyacencia,pa_Opiniones);
 	fprintf(pa_Opiniones,"Pasos Simulados\n");
 	fprintf(pa_Opiniones,"%d\n",i_pasos_simulados);
 	fprintf(pa_Opiniones,"Semilla\n");
