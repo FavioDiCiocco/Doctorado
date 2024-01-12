@@ -2701,4 +2701,78 @@ hilo, ningún código dura más de 40 minutos. Es una reducción de tiempo impor
 mandar 5 hilos. Vamos a ver si con eso sigue tardando poco y después mandaré 10 hilos si todo
 va bien.
 
-A lo último, terminé de anotarme lo que hice en el día.
+A lo último, terminé de anotarme lo que hice en el día. Mañana tendré que ponerme a ver
+lo que estaba pensando ayer cuando me volví en bici. Agarrar el sistema a tiempo 10.75 y empezar
+a ver por qué a partir de ahí el agente 79 vuelve a subir. Puedo evolucionar el sistema
+con un Runge-Kutta hecho en Python y de ahí ver qué ocurre. Mi idea es que puedo hacer
+este análisis mirando al agente 79 y considerando al agente 388 que oscila como una condición
+de contorno.
+
+Por otro lado, puedo hacerme la lista de cosas que claramente no son lo que me generan
+esta oscilación después, como para ver qué cosas ya descarté.
+
+------------------------------------------------------------------------------------------
+
+12/01/2024
+
+Tres cosas, por un lado revisé las simulaciones en Algarve y resultó que los programas si
+bien no tardan 4 horas y media, ahora tardaron 50 minutos. Siento como que al ir aumentando
+los hilos, está aumentando el tiempo que el programa tarda. ¿No lo comprendo, por qué
+escala así? No puede ser que le esté comiendo la RAM, los programas en sí no deben ocupar cada
+uno más de 5 MB de ram, sumados los 20 serán 100 Mb. Y las pc's deben tener más de 4Gb de ram,
+es inentendible.
+
+Lo segundo es que Hugo me mandó un mail explicando su perspectiva sobre el tema de las
+oscilaciones y que justamente ellos veían esto. Le parece un poco llamativo el resultado
+con oscilaciones periódicas y me propone hacer una simulación con un dt menor para ver qué
+se observa. Puedo hacer eso sin duda.
+
+Tercero, puedo anotar la lista de cosas que no son lo que generan las oscilaciones y continuar
+de dónde dejé ayer el problema.
+
+Pero antes de eso, debería reunirme con Lupi y hablar del otro trabajo. Hablando con Lupi nos
+pusimos al día de nuevo con esto y charlamos unos puntos que nos parecen importantes para
+arrancar. Una vez que tengamos esos resultados, podemos ir viendo qué más hacer. Tengo anotado
+en el cuaderno lo que tengo que hacer.
+
+Por otro lado, tengo que mandar a correr lo que me dijo Hugo sobre el caso 2D con un dt más chico.
+Ya mandé a correr eso. Así que ahora puedo pasar a otra cosa. Pablo me pidió que arme
+un resumen del estado actual del trabajo.
+
+Antes de arrancar con eso, me quedo pensando en el tema de que las simulaciones en Algarve tardan
+más a medida que le mando más hilos. No entiendo, no debería pasar semejante cosa. Es muy raro.
+Actualmente, las simulaciones que más tardan están tardando 110 minutos aprox. Entonces pasó
+de tardar 50 minutos en el caso de 5 hilos, a tardar 110 minutos en el caso de 10 hilos.
+No comprendo esto, es como si la pc no pudiera trabajar todas las cosas al mismo tiempo.
+¿El problema es mi código? No tiene ningún sentido, hay algo mal acá. No puede ser que el
+programa tarde maś, si es que estoy usando una cantidad de hilos razonable. Además, cada
+proceso se tiene que asginar a un hilo distinto y ser separado de lo otro. Son independientes,
+no puede tardar más porque sería como que está haciéndolos en secuencia, cuando debería poder
+mandar a correr todos juntos.
+
+Hagamos rápido la lista que estaba pensando y de ahí me pongo a hacer el resumen para Pablo.
+Y me hago un café que no me aguanto del sueño.
+
+.) Cálculo de distancia no ortogonal. Eso no afecta porque el Cos(delta) es cero en las simulaciones.
+.) Evolución del Runge Kutta. Eso lo probé unos días antes, daba muy similar a un integrador
+de Euler.
+.) Cálculo de los pesos. Eso se está resolviendo correctamente. La ecuación está planteada
+igual que lo que tienen la gente de España.
+.) El número de dimensiones. Eso tampoco, probamos hacerlo en 1 dimensión y también se ven
+oscilaciones.
+.) Mi código. Eso tampoco puede ser, porque mandé a correr la simulación en el código de
+Hugo y da algo similar.
+
+
+Hablando con Pablo, me propuso que haga dos cosas para revisar el tema del tiempo que va
+creciendo a medida que aumento la cantidad de hilos que utilizo. Lo primero es considerar
+que el proceso de escritura de cada uno de los códigos interfiere con el de otro, entonces
+debería reducir las escrituras de los testigos, a ver si eso reduce los tiempos y si
+además hace que se vuelva independiente de la cantidad de hilos.
+ Lo segundo sería probar esto en varias pc's distintas, como Coimbra, Oporto y Setubal.
+Para mandar esto lo que voy a hacer es tomar la función en la pc de la facultad, sacarle
+la escritura a testigos y de ahí ver qué pasa.
+
+Armé el resumen que Pablo me pidió. Antes de irme, voy a mandar a correr el código del
+sistema en 2D en Coimbra, porque no llegó a terminar en la pc de la facultad. Ahí mandé
+eso a correr, mañana debería estar.
