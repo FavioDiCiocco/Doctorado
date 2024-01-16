@@ -23,7 +23,7 @@ T=2 # Defino el número de tópicos
 Etapa = Path("Evolucion_temporal") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Datos"]
+Carpetas = ["2D_dtchico"]
 
 for carp in Carpetas:
     

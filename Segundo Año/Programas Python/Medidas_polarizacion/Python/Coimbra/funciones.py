@@ -386,7 +386,7 @@ def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
 
         #------------------------------------------------------------------------------------------
         
-        for indice,nombre in enumerate(archivos):
+        for nombre in archivos:
             
             # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
             # Opinión Inicial del sistema
@@ -397,8 +397,10 @@ def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
             # Levanto los datos del archivo
             Datos = ldata(path / nombre)
             
+            repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+            
             # Leo los datos de las Opiniones Finales
-            Tiempos[indice] = len(Datos[3])
+            Tiempos[repeticion] = len(Datos[3])
         
         #------------------------------------------------------------------------------------------
         # Con los tiempos de las simulaciones calculo el promedio de los tiempos de convergencia
@@ -557,8 +559,6 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                 
                 # Levanto los datos del archivo
                 Datos = ldata(path / nombre)
-                if len(Datos)< 7:
-                    continue
                 
                 # Leo los datos de las Opiniones Finales
                 Opifinales = np.array(Datos[5][:-1:], dtype="float")
@@ -569,7 +569,7 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                 
                 # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-                if repeticion < 3 :
+                if repeticion < 5 :
                     direccion_guardado = Path("../../../Imagenes/{}/Histograma_opiniones_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
                                                                                                                                                      ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,repeticion))
                     
@@ -641,7 +641,7 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
         
         Covarianzas = np.zeros(archivos.shape[0])
         
-        for indice,nombre in enumerate(archivos):
+        for nombre in archivos:
             
             # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
             # Opinión Inicial del sistema
@@ -651,8 +651,6 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
             
             # Levanto los datos del archivo
             Datos = ldata(path / nombre)
-            if len(Datos) < 7:
-                continue
             
             # Leo los datos de las Opiniones Finales
             Opifinales = np.zeros((T,AGENTES))
@@ -663,12 +661,14 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
             
             # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
             
+            repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+            
             M_cov = np.cov(Opifinales)
-            Covarianzas[indice] = np.trace(M_cov)/T
+            Covarianzas[repeticion] = np.trace(M_cov)/T
             
         #------------------------------------------------------------------------------------------
         # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
-        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Covarianzas[Covarianzas != 0])
+        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Covarianzas)
             
     #--------------------------------------------------------------------------------
     
@@ -816,7 +816,7 @@ def Diccionario_metricas(DF,path,N):
             Varianza_Y = np.zeros(archivos.shape[0])
             Entropia = np.zeros(archivos.shape[0])
             
-            for indice,nombre in enumerate(archivos):
+            for nombre in archivos:
                 
         
                 # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
@@ -827,8 +827,6 @@ def Diccionario_metricas(DF,path,N):
         
                 # Levanto los datos del archivo
                 Datos = ldata(path / nombre)
-                if len(Datos)< 7:
-                    continue
                 
                 # Leo los datos de las Opiniones Finales
                 Opifinales = np.zeros((T,AGENTES))
@@ -843,11 +841,11 @@ def Diccionario_metricas(DF,path,N):
                 
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
         
-#                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
         
                 M_cov = np.cov(Opifinales)
-                Varianza_X[indice] = M_cov[0,0]
-                Varianza_Y[indice] = M_cov[1,1]
+                Varianza_X[repeticion] = M_cov[0,0]
+                Varianza_Y[repeticion] = M_cov[1,1]
                 
                 # Tengo que rearmar Opifinales para que sea un sólo vector con todo
                 
@@ -859,15 +857,15 @@ def Diccionario_metricas(DF,path,N):
                 Probas = Clasificacion(Opifinales,N,T)
                 
                 # Con esa distribución puedo directamente calcular la entropía.
-                Entropia[indice] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
+                Entropia[repeticion] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
                 
             if PARAM_X not in Salida[EXTRAS].keys():
                 Salida[EXTRAS][PARAM_X] = dict()
             if PARAM_Y not in Salida[EXTRAS][PARAM_X].keys():
                 Salida[EXTRAS][PARAM_X][PARAM_Y] = dict()
-            Salida[EXTRAS][PARAM_X][PARAM_Y]["Entropia"] = Entropia[Entropia != 0]/np.log2(N*N)
-            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"] = Varianza_X[Varianza_X != 0]
-            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"] = Varianza_Y[Varianza_Y != 0]
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Entropia"] = Entropia/np.log2(N*N)
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"] = Varianza_X
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"] = Varianza_Y
             
     return Salida
 
@@ -974,10 +972,7 @@ def Mapas_Colores_FEF(DF,path,carpeta,
         
         # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
         for grafico in range(10):
-            if Frecuencias.shape[0] != 0 :
-                ZZ[grafico,(Arr_param_y.shape[0]-1)-fila,columna] = np.count_nonzero(Frecuencias == grafico)/Frecuencias.shape[0]
-            else:
-                ZZ[grafico,(Arr_param_y.shape[0]-1)-fila,columna] = 0.0001
+            ZZ[grafico,(Arr_param_y.shape[0]-1)-fila,columna] = np.count_nonzero(Frecuencias == grafico)/Frecuencias.shape[0]
             
     #--------------------------------------------------------------------------------
     
@@ -1080,7 +1075,7 @@ def Calculo_Entropia(DF,path,N):
             
             entropias = np.zeros(archivos.shape[0])
             
-            for indice,nombre in enumerate(archivos):
+            for nombre in archivos:
         
                 # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
                 # Opinión Inicial del sistema
@@ -1090,8 +1085,6 @@ def Calculo_Entropia(DF,path,N):
         
                 # Levanto los datos del archivo
                 Datos = ldata(path / nombre)
-                if len(Datos)< 7:
-                    continue
         
                 # Leo los datos de las Opiniones Finales
                 Opifinales = np.array(Datos[5][:-1], dtype="float")
@@ -1103,18 +1096,18 @@ def Calculo_Entropia(DF,path,N):
         
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
         
-#                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
                 
                 # Armo mi array de Distribucion, que tiene la proba de que una opinión
                 # pertenezca a una región del espacio de tópicos
                 Probas = Clasificacion(Opifinales,N,T)
                 
                 # Con esa distribución puedo directamente calcular la entropía.
-                entropias[indice] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)+0.00001
+                entropias[repeticion] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
         
             if PARAM_X not in Salida[EXTRAS].keys():
                 Salida[EXTRAS][PARAM_X] = dict()
-            Salida[EXTRAS][PARAM_X][PARAM_Y] = entropias[entropias != 0]/np.log2(N*N)
+            Salida[EXTRAS][PARAM_X][PARAM_Y] = entropias/np.log2(N*N)
     
     return Salida
 
@@ -1152,7 +1145,6 @@ def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,
     
     #--------------------------------------------------------------------------------
     for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
-        
         
         #------------------------------------------------------------------------------------------
         # Armo mi matriz con los valores de entropía y con los valores de la varianza

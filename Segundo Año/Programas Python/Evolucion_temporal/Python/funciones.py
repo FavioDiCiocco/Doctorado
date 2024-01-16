@@ -190,17 +190,17 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T,
                                               ID_param_x,PARAM_X,ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,topico,repeticion))
                     plt.rcParams.update({'font.size': 32})
                     plt.figure("Topico",figsize=(20,15))
-                    X = np.arange(Testigos.shape[0])*0.01
+                    X = np.arange(Testigos.shape[0])*0.001
                     # sujeto = 79
-                    # for sujeto in [79,5,112,122,374,388,633,968]:
+#                    for sujeto in [79,5,112,122,374,388,633,968]:
                     for sujeto in range(500):
-                        Handles[sujeto], = plt.plot(X,Testigos[:,sujeto*T+topico],color = "tab:brown", linewidth = 4, alpha = 0.5)
+                        Handles[sujeto], = plt.plot(X[10000:12000],Testigos[:,sujeto*T+topico][10000:12000],color = "tab:brown", linewidth = 3, alpha = 0.5)
                     # plt.axvline(10.75, color = "tab:red" ,linestyle = "--", linewidth = 3)
                     plt.xlabel(r"Tiempo$(10^3)$")
                     plt.ylabel(r"$x^i$")
                     plt.title("Evolución temporal Tópico {}".format(topico))
                     plt.grid(alpha = 0.5)
-                    # plt.legend()
+#                    plt.legend(handles = [Handles[79],Handles[388]], labels = ["agente 79", "agente 388"], loc = "upper left")
                     plt.savefig(direccion_guardado ,bbox_inches = "tight")
                     plt.close("Topico")
 

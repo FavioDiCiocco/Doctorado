@@ -47,9 +47,9 @@ Vecinos = [nodo for nodo in G[79]]
 # gradomedio /= N
 
 # print("El grado medio de la red es: ", gradomedio)
-
-###################################################################################################
 """
+###################################################################################################
+
 # Dada una red, me armo un archivo como los que tiene Hugo de enlaces del sistema.
 
 filename = "ER1000k=8.file"
@@ -64,7 +64,7 @@ with open(filename, "w") as file:
 """
 # Acá voy a mirar el tema del peso y la distancia entre los agentes 79 y 388
 
-Datos = func.ldata("../Datos/Testigos_N=1000_kappa=10.0_beta=0.90_cosd=0.00_Iter=51.file")
+Datos = func.ldata("../2D_dtchico/Testigos_N=1000_kappa=10.0_beta=0.90_cosd=0.00_Iter=51.file")
 Testigos = np.zeros((len(Datos)-2,len(Datos[1])-1)) # Inicializo mi array donde pondré las opiniones de los testigos.
 for i,fila in enumerate(Datos[1:-1:]):
     Testigos[i] = fila[:-1]
@@ -94,14 +94,14 @@ for nt in range(Testigos.shape[0]):
 # Distancia = Distancia / np.max(Distancia)
 
 ###################################################################################################
-"""
+
 # Armo el gráfico con la distancia y el peso
 
-direccion_guardado = Path("../../../Imagenes/Evolucion_temporal/Datos/Peso (79 388) vs T.png")
+direccion_guardado = Path("../../../Imagenes/Evolucion_temporal/2D_dtchico/Peso (79 388) vs T.png")
 
 plt.rcParams.update({'font.size': 32})
 plt.figure("PesoDist",figsize=(20,15))
-X = np.arange(Testigos.shape[0])*0.01
+X = np.arange(Testigos.shape[0])*0.001
 plt.plot(X,Peso, color = "tab:blue", label = "Peso" ,linewidth = 6)
 # plt.plot(X,Distancia, color = "tab:green", label = "Distancia" ,linewidth = 6)
 # plt.axvline(10.25, color = "tab:red" ,linestyle = "--", linewidth = 3)
@@ -113,7 +113,7 @@ plt.close("PesoDist")
 
 
 ###################################################################################################
-"""
+
 Vecinos_cercanos = [112,374,633,968]
 Pesos_cercanos = np.zeros((Testigos.shape[0],len(Vecinos_cercanos)))
 
@@ -140,15 +140,15 @@ for nt in range(Testigos.shape[0]):
         numerador = pow(np.linalg.norm(diferencia)+0.002*10,-0.9)
         Pesos_lejanos[nt,i] = numerador/denominador
 
-direccion_guardado = Path("../../../Imagenes/Evolucion_temporal/Datos/Pesos opuestos vs T.png")
+direccion_guardado = Path("../../../Imagenes/Evolucion_temporal/2D_dtchico/Pesos opuestos vs T.png")
 
 plt.rcParams.update({'font.size': 32})
 plt.figure("Pesos_opuestos",figsize=(20,15))
-X = np.arange(Testigos.shape[0])*0.01
-plt.plot(X[1000:1200],np.sum(Pesos_cercanos,axis=1)[1000:1200], color = "tab:blue", label = "Agentes Cercanos" ,linewidth = 6)
-plt.plot(X[1000:1200],np.sum(Pesos_lejanos,axis=1)[1000:1200], color = "tab:green", label = "Agentes Lejanos" ,linewidth = 6)
+X = np.arange(Testigos.shape[0])*0.001
+plt.plot(X,np.sum(Pesos_cercanos,axis=1), color = "tab:blue", label = "Agentes Cercanos" ,linewidth = 3)
+plt.plot(X,np.sum(Pesos_lejanos,axis=1), color = "tab:green", label = "Agentes Lejanos" ,linewidth = 3)
 # plt.plot(X,Distancia, color = "tab:green", label = "Distancia" ,linewidth = 6)
-plt.axvline(10.75, color = "tab:red" ,linestyle = "--", linewidth = 3)
+#plt.axvline(10.75, color = "tab:red" ,linestyle = "--", linewidth = 3)
 plt.xlabel(r"Tiempo$(10^3)$")
 plt.grid(alpha = 0.8)
 plt.legend()

@@ -2776,3 +2776,83 @@ la escritura a testigos y de ahí ver qué pasa.
 Armé el resumen que Pablo me pidió. Antes de irme, voy a mandar a correr el código del
 sistema en 2D en Coimbra, porque no llegó a terminar en la pc de la facultad. Ahí mandé
 eso a correr, mañana debería estar.
+
+------------------------------------------------------------------------------------------
+
+14/01/2024
+
+Modifiqué el archivo de evolución temporal para que no haga escritura, que sea de 1D
+y que el dt sea 0,1. Luego, mandé esa carpeta a Algarve, Coimbra y Setubal. Mandé
+a correr 5 hilos en cada pc.
+
+Para mandar a correr las cosas en Setubal necesito descargar los archivos de Programas C
+de alguna de las carpetas. Mientras eso se descarga hubiera estado bueno descargar el archivo
+del dt_chico y revisar lo que da, pero no me animo a tener dos terminales de Windows abiertas.
+
+------------------------------------------------------------------------------------------
+
+15/01/2024
+
+Estoy trabajando desde casa hoy, y estoy un poco perdido. Primero, descargué el archivo
+de 2D_dtchico e hice el gráfico de Opiniónvstiempo. Lo que pude ver es que ese comportamiento
+regular que tenía en el gráfico con dt=0.1 desapareció, ahora el sistema tiene oscilaciones
+mucho más caóticas. Por lo que tal cuál propuso Hugo, parece que lo que estaba viendo era
+un artefacto de la simulación, no era un resultado real.
+
+No tengo los gráficos de Distancia y tiempo, aunque esos los puedo hacer, sólo necesito
+descargarme las matrices de Algarve. Me descargué la matriz que necesitaba y ahí armé los
+gráficos de Pesos en función del tiempo.
+
+Tengo un poco de nervios porque no sé si necesito algo más para charlar con Hugo, pero al
+mismo tiempo tampoco tengo mucho más para consultarle. Me parece importante aclarar los
+tantos al respecto de las oscilaciones, llevarle tranquilidad a Pablo y cerrar este tema
+así nos ponemos con cosas nuevas. Puedo aprovechar a consultar con Hugo el tema
+de las memorias estáticas. Y no olvidarme de charlar el tema de que si es posible, estaría
+bueno pasar la reunión del miércoles a la semana siguiente.
+
+Reunión con Hugo:
+-----------------
+
+-) Siempre que haya opiniones intermedias tiene que haber variación de opinión.
+-) Una idea sería tomar una configuración que oscila y ver si numéricamente podemos
+encontrar el ciclo.
+-) Ellos hicieron un análisis con diferenciales para probar lo inestable del sistema
+y como un agente fuera de la posición de equilibrio se perturba fácilmente.
+
+De la reunión con Hugo recordé que parte de lo que me estaba contando estaba en el paper.
+Fingí demencia, pero me parece que está bueno revisar eso en la semana, como para tenerlo
+más interiorizado. Me parece igual que con esto podemos cerrar el capítulo sobre el tema
+de las oscilaciones de las trayectorias de opiniones y ya dedicarnos a mirar resultados.
+Y también, discutir qué carajos voy a hacer con el hecho de que no tengo resueltas todas
+las simulaciones que quiero en Oporto. Creo que si reduzco la cantidad de Hilos, la cosa
+va a ser mejor, debería probar eso.
+
+Hablando de los hilos, más temprano mandé a correr 10 hilos a las pc's de Coimbra y Algarve,
+así como también cargué archivos en Setubal. Dicho esto, ¿qué voy a hacer hoy?
+
+Mi plan es primero, asegurarme que puedo correr cosas en Setubal, lo cuál de seguro implica tener
+que instalar python y cosas.
+ Segundo, seguir con el tema de los hilos, quiero tener una buena idea de cuánto tardan los
+programas así me hago un plan de cuánto puedo reducir usando menos hilos. De paso, mis
+simulaciones de pruebas estas están usando sistemas unidimensionales. Quizás me conviene usar
+sistemas de dos dimensiones, como para no llevarme sorpresas.
+ Tercero, tengo que preparar los archivos de graficación, cosa de que ya mañana me conecto
+y mando a hacer los gráficos que había charlado con Pablo que son importantes. Una vez
+que tenga los gráficos, ahí veremos cuál es el próximo paso.
+ Cuarto, podría implementar algunos de los códigos de Hugo para que todo corra más rápido.
+Podría hacer eso mientras los programas ya están corriendo.
+
+Mandé a correr en Coimbra y Algarve sistemas con dos tópicos y lo hice en 5 hilos. Me sigue
+preocupando que los procesos tarden más cada vez que mando más hilos. Esto me confunde y me jode,
+porque siento que si reduzco los hilos entonces no estoy ganando tiempo. Para aclarar, arranqué
+con lo segundo. Ahora paso a lo primero. Estoy descargando los archivos del environment de
+Oporto y voy a mandar eso a Setubal. Mandé archivos a Setubal, pero no pude hacerlo funcionar.
+Después charlarlo con Seba o alguien que tenga más autoridad en Setubal.
+
+Los gráficos que quiero construir son los de Entropía, y los de frecuencia de estados en el
+espacio de parámetros. Me estoy dando cuenta que las funciones no están corregidas como
+yo creí que estaban. Esto me preocupa, voy a corregirlas ahora.
+
+Modifiqué las funciones de graficación, debería enviarlas a las pc's para ver si
+funcan, aunque ya hoy no voy a poder porque van a cortar la luz mañana y Pablo apagó
+las pc's. Ya mañana hago eso.
