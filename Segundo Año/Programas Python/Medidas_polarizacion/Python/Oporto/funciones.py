@@ -521,7 +521,7 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
     
     # Defino los arrays de parámetros diferentes
     Arr_EXTRAS = np.unique(DF["Extra"])
-    Arr_param_x = np.unique(DF["parametro_x"])[0:10]
+    Arr_param_x = np.unique(DF["parametro_x"])[0:22]
     Arr_param_y = np.unique(DF["parametro_y"])
     
     
@@ -603,7 +603,7 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
     
     # Defino los arrays de parámetros diferentes
     EXTRAS = int(np.unique(DF["Extra"]))
-    Arr_param_x = np.unique(DF["parametro_x"])[0:10]
+    Arr_param_x = np.unique(DF["parametro_x"])[0:22]
     Arr_param_y = np.unique(DF["parametro_y"])
     
     
@@ -1119,7 +1119,7 @@ def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,
     
     # Defino los arrays de parámetros diferentes    
     EXTRAS = int(np.unique(DF["Extra"]))
-    Arr_param_x = np.unique(DF["parametro_x"])[0:10]
+    Arr_param_x = np.unique(DF["parametro_x"])[0:22]
     Arr_param_y = np.unique(DF["parametro_y"])
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar

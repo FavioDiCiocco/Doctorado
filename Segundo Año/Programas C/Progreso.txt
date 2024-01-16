@@ -2856,3 +2856,46 @@ yo creí que estaban. Esto me preocupa, voy a corregirlas ahora.
 Modifiqué las funciones de graficación, debería enviarlas a las pc's para ver si
 funcan, aunque ya hoy no voy a poder porque van a cortar la luz mañana y Pablo apagó
 las pc's. Ya mañana hago eso.
+
+------------------------------------------------------------------------------------------
+
+16/01/2024
+
+Hoy llegué temprano, me encargué de prender las pc's y reafirmé el hecho de que yo no tengo
+acceso al cuarto de las compus. Y por lo visto, no hay planes para darme acceso pronto.
+Luego de encender todas las pc's con la ayuda de Martín me puse a mandar cosas a correr
+en oporto, algarve y coimbra como para ver cuáles son los tiempos de simulación si mando
+a correr 5 hilos simultáneos con sistemas de 2 tópicos.
+
+Luego de eso, repasé algunas funciones y documentación. Ahora debería entrar a las pc's,
+organizar los datos y mandar a armar los gráficos. Por lo menos tenerlos encima y después
+ver qué pasa.
+
+Mandé a armar los gráficos en Oporto. Espero que no tenga problemas. Mandemos mientra los
+gráficos a armar en Coimbra. Aunque para eso creo que los datos de Coimbra necesitan primero
+datos de Algarve. Cargué los datos de Algarve a Coimbra y mandé a hacer los gráficos.
+En Oporto estoy teniendo unos problemas con los conjuntos que no se terminaron de simular.
+Mientras esto se resuelve, puedo revisar el tema de los gráficos de Algarve que Pablo me
+pidió.
+
+Descubrí que en Algarve tengo funciones que grafican la fracción de estados polarizados que no
+tengo en otras etapas. Así que eso lo tuve que descargar aparte. Actualmente lo tengo
+en una carpeta llamada Python, voy a tener que cambiarle el nombre después. La cosa de esto
+es que tengo entonces una carpeta con funciones particulares pero que no corresponde directamente
+a una etapa particular del código. Atento a eso, mañana prestarle atención al tema de
+la documentación.
+
+Por otro lado, logré descargar los gráficos que hice en Oporto y Coimbra, salieron bastante bien.
+Sería genial que esos gráficos cuenten con una mayor estadística de fondo, pero ya iremos viendo
+eso, hay que trabajar en cómo resolver ese asunto. Dicho eso, mañana charlaremos con Pablo al
+respecto. Por otro lado, después debería agregar a la presentación de resumen el resto de laburo
+que queda por hacer. Y debería repasar la parte del paper donde hacen la demostración que 
+con una pequeña perturbación a la opinión de un agente, este sale del equilibrio.
+
+Así que la clave del laburo mañana es:
+1) Completar las funciones que grafican la fracción de estados en función del parámetro Y.
+2) Corregir las documentaciones y ver que esté todo correctamente guardado. En especial
+considerando las carpetas extra que van dando vueltas en las pcs.
+3) Agregar cosas a la presentación de resumen.
+4) Ponerme a trabajar en el tp que tengo que hacer con Lupi. Va a ser un tema cómo organizar
+esas carpetas y volver a tomar ese trabajo desde el principio.

@@ -40,7 +40,7 @@ int main(int argc, char *argv[]){
 	int i_iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
 	
 	// Los siguientes son los parámetros que están dados en los structs
-	ps_datos->i_T = 1;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
+	ps_datos->i_T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
 	ps_datos->i_Iteraciones_extras = 500; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	ps_datos->d_dt = 0.1; // Paso temporal de iteración del sistema
 	ps_datos->d_alfa = 1; // Controversialidad de los tópicos
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
 	ps_datos->d_NormDif = sqrt(ps_datos->i_N*ps_datos->i_T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	ps_datos->d_CritCorte = pow(10,-3); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
 	ps_datos->i_testigos = ps_datos->i_N; // Esta es la cantidad de agentes de cada distancia que voy registrar
-		
+	
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int i_contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
 	int i_pasos_simulados = 0; // Esta variable me sirve para cortar si simulo demasiado tiempo.

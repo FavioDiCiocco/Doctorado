@@ -132,4 +132,5 @@ los testigos de tres simulaciones que sé que tardan el máximo tiempo posible. 
 guardados los datos de esas tres simulaciones. Aparte tengo la carpeta de MARE_Algarve, que tiene
 las redes de Erdos Renyi usadas en esas simulaciones. Lo siguiente que voy a agregar son dos carpetas
 con simulaciones en 1D. Una con simulaciones hechas con mi código, otra con simulaciones hechas usando
-el código de Hugo.
+el código de Hugo. También agregué una carpeta para diferenciar una simulación en 2D con un dt más chico
+de dt=0.01, 2D_dtchico es la carpeta.

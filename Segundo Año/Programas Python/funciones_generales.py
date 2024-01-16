@@ -2336,7 +2336,7 @@ def Calculo_Entropia(DF,path,N):
             
             entropias = np.zeros(archivos.shape[0])
             
-            for indice,nombre in enumerate(archivos):
+            for nombre in archivos:
         
                 # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
                 # Opinión Inicial del sistema
@@ -2357,17 +2357,103 @@ def Calculo_Entropia(DF,path,N):
         
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
         
-#                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+               repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
                 
                 # Armo mi array de Distribucion, que tiene la proba de que una opinión
                 # pertenezca a una región del espacio de tópicos
                 Probas = Clasificacion(Opifinales,N,T)
                 
                 # Con esa distribución puedo directamente calcular la entropía.
-                entropias[indice] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)+0.00001
+                entropias[repeticion] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
         
             if PARAM_X not in Salida[EXTRAS].keys():
                 Salida[EXTRAS][PARAM_X] = dict()
             Salida[EXTRAS][PARAM_X][PARAM_Y] = entropias/np.log2(N*N)
     
     return Salida
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Esta función calcula la traza de la matriz de Covarianza de las distribuciones
+# de opiniones respecto a los T tópicos
+
+def Fraccion_polarizados_vs_T(DF,path,carpeta):
+    
+   # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF["n"]))
+    
+    # Defino los arrays de parámetros diferentes    
+    KAPPAS = int(np.unique(DF["Kappas"]))
+    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_y = np.unique(DF["parametro_y"])
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    
+    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
+                   for j,param_y in enumerate(Arr_param_y)]
+    
+    # Con los promedios armos el gráfico de opiniones vs T para ambos tópicos
+    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_polarizados.png".format(carpeta))
+    plt.rcParams.update({'font.size': 24})
+    plt.figure("FracPol",figsize=(20,15))
+    
+    #--------------------------------------------------------------------------------
+    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
+        
+        
+        
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                    (DF["n"]==AGENTES) & 
+                                    (DF["Kappas"]==KAPPAS) & 
+                                    (DF["parametro_x"]==PARAM_X) &
+                                    (DF["parametro_y"]==PARAM_Y), "nombre"])      
+        
+        
+        Tiempos_polarizados = np.zeros(len(archivos))
+        
+        #------------------------------------------------------------------------------------------
+        
+        for indice,nombre in enumerate(archivos):
+            
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Evolución de Opiniones
+            # n filas con opiniones del total de agentes
+            # Semilla
+            # Número de la semilla
+            
+            # Es decir, mi archivo tiene n+3 filas
+            
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
+            
+            # El tiempo de polarización es n. Si n fuera cero,
+            # fijo a mano el tiempo de polarización a 1
+            Tiempos_polarizados[indice] = max(len(Datos)-3,1)
+
+            #--------------------------------------------------------------------------------
+        
+        # Construyo el array de estados polarizados
+        Fraccion_polarizados = np.zeros(100)
+        for i in range(100):
+            Fraccion_polarizados[i] = np.count_nonzero(Tiempos_polarizados > i)
+        Fraccion_polarizados = Fraccion_polarizados/100
+        # Hago el ploteo de las curvas de opinión en función del tiempo
+        
+        Tiempo = np.arange(Fraccion_polarizados.shape[0])+1
+        plt.plot(Tiempo,Fraccion_polarizados,"--",linewidth=4,label="Beta = {}".format(PARAM_Y))
+        
+    # Guardo la figura y la cierro
+    plt.xlabel(r"Tiempo$(10^3)$")
+    plt.ylabel(r"$f_p$")
+    plt.grid()
+    plt.legend()
+    plt.title("Fracción de estados polarizados")
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("FracPol")
+    
+#-----------------------------------------------------------------------------------------------
