@@ -1,0 +1,35 @@
+Archivos:
+---------
+
+.) Crear_redes.py: Esto me construye redes estáticas conexas de un dado grado medio y 
+con N agentes. Me las guarda en la carpeta de MARE. Cada vez que necesito nuevas redes
+o renovar las existentes, uso esto.
+
+.) funciones_generales.py: Acá voy a ir guardando las nuevas funciones que vaya implementando.
+Así a partir de ahora esto tiene todas las funciones, pero el funciones de cada Python de cada
+carpeta tiene sólo las funciones necesarias. Eso va a hacer que recorrer la lista de funciones
+sea mucho más fácil cada vez que quiera buscar funciones.
+
+
+Bifurcacion_logistica:
+---------------------
+En esta etapa estudio la transición del sistema de la región en la cual tiene tres puntos
+fijos a la región en la cuál tiene uno solo. Lo primero que hago para esto es estudiar
+analíticamente la ecuación dinámica y de ahí obtuve relaciones que cumplen el Kappa,
+Alfa y Epsilon. Usando esas relaciones y la librería scipy para hallar soluciones numéricas
+a las ecuaciones es que armé un gráfico 3D que me delimite la región en la cual el sistema
+tiene tres puntos fijos. Esta fase del trabajo no requirió simulaciones, ya que sale de
+resultados analíticos.
+ A este gráfico 3D después le hice cortes según alfa para observar un poco mejor la forma
+de las superficies 3D. Es decir, gráficos de Kappa en función de Epsilon para diferentes
+Alfas.
+
+
+Exploracion_Logistica:
+----------------------
+Armo archivos de Opiniones y unos pocos archivos de Testigos. Estos archivos de Testigos
+guardan datos de 100 agentes con el objetivo de armar gráficos de Interes vs Tiempo
+con las líneas grises finitas. El plan es a partir de estos datos armar gráficos de 
+Promedio de Opiniones, Tiempo de convergencia e interés vs Tiempo.
+
+

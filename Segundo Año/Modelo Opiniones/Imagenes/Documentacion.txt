@@ -1,0 +1,80 @@
+Cada una de las carpetas contiene imágenes armadas en las distintas
+fases del trabajo de la tesis.
+
+
+.) Homofilia_estática:
+----------------------
+Acá estamos usando el modelo que tiene una tanh como función de activación y unos pesos
+en las interacciones calculados según la homofilia entre agentes. Tengo gráficos para
+el modelo en 1D y en 2D. O al menos juraría que armé de esos, pero en la facultad sólo
+tengo 1D.
+ Para 1D me armé gráficos de OpivsT, Opinión Promedio y Varianza de tiempo en el espacio
+de parámetros. Eso lo hice para algunos valores particulares de Kappa y Beta, cosa de ver
+que obtengo los mismos resultados que en el paper que nos pasó la gente de España.
+ Para 2D armé gráficos de Trayectoria de Opiniones, Histogramas y Promedio de Opiniones.
+Los histogramas son histogramas 2D en el espacio de opiniones. Estamos viendo que seguramente
+necesite plantear alguna otra forma de revisar mejor los histogramas. Estos gráficos están
+armados sobre un barrido en el espacio Beta [0,2] y Cos(delta) [0,1], con 1000 agentes,
+redes de ER con grado medio 8 y Kappa = 3. En principio tengo 100 simulaciones por ensamble,
+pero planeo llevar eso a 200 para tener un poco más de estadística. Los datos con el barrido
+fino están en algarve, en Oporto hago simulaciones de regiones particulares.
+ En Histogramas_2D me guardé los gráficos de los histogramas que hice para cada simulación
+dado mi barrido fino. El tema de guardarlo en una carpeta aparte es que son miles de gráficos.
+Imposible de analizar.
+
+
+.) Tangente_diferenciada:
+-------------------------
+Tomo el modelo de Homofilia_estática, uso la misma forma de calcular los pesos pero remuevo la
+superposición de opiniones en el argumento de la tanh. Es decir, la tanh sólo considera la opinión
+del vecino en el tópico en discusión, mientras que el peso hacia esa opinión considera la opinión
+del vecino en todos los tópicos, mediada por la superposición de tópicos cos(delta) correspondiente.
+ Actualmente tengo unas pocas simulaciones de esto en Oporto. Después haré un barrido fino similar
+al que hice con la etapa de Homofilia_estática.
+
+
+.) Prueba_metrica:
+------------------
+Lo que coloco acá más que nada son gráficos de Histogramas 2D. Estos gráficos únicamente me sirven
+para cerciorarme que los datos construidos tienen la forma que quiero que tengan, pero en realidad
+no es necesario esto. Lo que yo quiero de esta etapa en realidad es analizar los datos que obtuve
+de las métricas consideradas (Traza, Antidiagonales y Determinante de la matriz de Covarianza) aplicados
+a los respectivos datos. Es decir que estos gráficos son más decorativos que nada.
+
+
+.) Medidas_polarizacion:
+------------------------
+Acá aplico las medidas de Polarización que expliqué arriba a dos barridos en el espacio de parámetros
+distintos. Por un lado hice un barrido en el espacio de Beta [0,2] y K [0,20] con Cos(d) = 0.
+La idea es ver si reproducíamos el gráfico que tienen David, Hugo y compañía en su paper, en el cuál
+para K debajo de 1 el sistema cae al consenso neutral, para K mayores y con Beta menor a 1 el sistema
+polariza a 1 esquina y con Beta mayor a 1 polariza a cuatro esquinas. Sobre este barrido apliqué las
+medidas de la Traza de Covarianza, las Antidiagonales y el Determinante. Observé que la traza
+reproduce muy bien el gráfico que ellos presentaron.
+ Aparte, hice un segundo barrido para la región donde el sistema transiciona, en Beta [0,0.5]
+y Cos(d) entre [0,1], con K = 10. Ahí también apliqué las métricas mencionadas.
+ Destaco entonces que tengo dos carpetas de gráficos. Una con datos Datos_Coimbra, esa es la que
+tiene el barrido con K = 10. La carpeta con Datos_Oporto es la que tiene el barrido con Cos(d) fijo.
+Los nombres obviamente hacen referencia a las pcs de la facultad en las que se encuentran los respectivos
+barridos. La carpeta que dice 2D es simplemente la carpeta que uso para descargar los datos de las pcs
+a mi pc en la facultad.
+ A estas dos carpetas le sume una tercera carpeta, Datos_Algarve, que es la que tiene los gráficos de
+fracción de estados polarizados o fracción de estados en función de Beta.
+
+
+.) Prueba_tiempos:
+------------------
+Tengo una sola carpeta, la de datos. La idea acá es estudiar cómo varía la fracción de polarización
+de los estados en función del tiempo. Cosa de comprobar si el tiempo de corte para mis simulaciones
+es el correcto, si estoy cortando prematuramente o muy tarde. Si corto prematuro, entonces estoy
+contabilizando como polarización cosas que no lo son. Si corto muy tarde, estoy perdiendo tiempo
+en simulaciones que ya deberían haber terminado.
+
+
+.) Evolucion_temporal:
+----------------------
+El que los programas tarden tanto en resolverse es un grave problema, así que decidimos mirar en 
+detalle algunas simulaciones particulares que tardaban mucho para diversos valores de Beta. El resultado
+es que observamos cosas preocupantes como comportamientos oscilatorios de los agentes. Esos
+comportamientos no son para nada razonables y generan que empecemos a dudar de si nuestros códigos
+están bien. Lo primero que armamos son gráficos de opinión en función del tiempo.

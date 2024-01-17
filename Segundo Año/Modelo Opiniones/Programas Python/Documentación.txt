@@ -1,0 +1,122 @@
+Archivos:
+---------
+
+.) Crear_redes.py: Esto me construye redes estáticas conexas de un dado grado medio y 
+con N agentes. Me las guarda en la carpeta de MARE. Cada vez que necesito nuevas redes
+o renovar las existentes, uso esto.
+
+.) funciones_generales.py: Acá voy a ir guardando las nuevas funciones que vaya implementando.
+Así a partir de ahora esto tiene todas las funciones, pero el funciones de cada Python de cada
+carpeta tiene sólo las funciones necesarias. Eso va a hacer que recorrer la lista de funciones
+sea mucho más fácil cada vez que quiera buscar funciones.
+
+
+
+Homofilia Estática:
+-------------------
+Este es el código que armé para estudiar el modelo que obtuvimos de la gente de España.
+La idea del modelo es trabajar sobre redes estáticas pero asignar un peso a la interacción
+de los agentes de forma tal que los agentes le den más importancia a quienes piensan como
+ellos. La función del segundo término es de nuevo la tanh. Estos pesos tienen
+la propiedad de que no son simétricos, por lo que el wij no es necesariamente igual al
+wji, y además los wij sumados en j dan 1.
+ Lo primero que estoy haciendo es generar datos de Opiniones y testigos, el clásico. Uso
+redes de ER con grado medio 8 para 10000 agentes. Los archivos de Testigos sólo los armo
+para las primeras dos iteraciones. Yo diría de realizar 50 iteraciones para empezar, cosa
+de armar las simulaciones rápido.
+ Deshice la carpeta de Datos y armé dos nuevas carpetas, 1D y 2D. En un principio tenían un
+código "distinto", cuya única diferencia es que el 1D no hacía un esfuerzo real por calcular
+la distancia entre las opiniones de los agentes, porque como es 1D no hay espacio no ortogonal
+del cuál preocuparse. Actualmente eso está solucionado porque el código hace el producto escalar
+para calcular la distancia usando la matriz de Superposición, por lo que está definido tanto
+para 1D como para cualquier N dimensiones. Lo único extra a considerar es que según el número
+de dimensiones, los datos se guardan en una carpeta distinta. Entonces si quisiera armar datos
+5D, tendría que tener la carpeta 5D construída.
+ Para esto terminé usando un K=3, barriendo beta [0,2] de a 0.1 y barriendo cos(delta) [0,1]
+de a 0.1 también. Usé N=1000 al final, las primeras pruebas fueron con N=10000 pero para hacer
+cuentas rápido y llegar con las presentaciones usé N=1000.
+
+Tangente Diferenciada:
+----------------------
+Acá lo que estoy haciendo es correr un modelo idéntico al de arriba pero que quita el
+término de cos(delta) de adentro de la tangente hiperbólica. Esto me deja la correlación
+entre tópicos presente únicamente en los pesos de la red. La idea es observar si ese factor
+adentro de la tangente hiperbólica simplemente es como un refuerzo sobre el factor de los
+pesos. Como que ambos cumplen el mismo propósito y que si sacando uno puedo observar los mismos
+resultados para valores de pesos más altos, o algo así. Para esto lo que hice es un barrido en
+un espacio similar al caso 2D de la red anterior. Usé básicamente el mismo código que en el
+caso anterior, con las mismas redes y con 1000 agentes. El caso anterior también lo hice con 1000
+agentes al final. Los datos de esto están en Oporto.
+
+Prueba Métrica:
+----------------
+Esta es una carpeta para trabajar más desde Python, no tiene un correspondiente en C. La idea
+es construir sintéticamente distribuciones de datos similares a las que planeo medir. Con
+eso el plan es ponerme a probar las métricas que charlamos con Pablo y con Hugo, la de la
+distancia promedio de los puntos al centro del espacio de tópicos, la traza de la matriz
+de Covarianza, las medidas de covarianza mutua (los elementos fuera de la diagonal) y
+el determinante de la matriz de covarianza. El objetivo es ver cuántos estados puedo diferenciar
+con esas métricas.
+ Lo primero es usar el archivo de Generacion_datos.py para construir los datos sintéticos. Esos
+archivos son datos con formas similares a los que tengo de otras simulaciones.
+
+Medidas Polarización:
+---------------------
+Acá lo que voy a hacer son barridos más serios y usar las medidas de polarización que mencioné antes
+para diferenciar los estados polarizados de los que no y los distintos tipos de polarización.
+ Lo primero que voy a hacer es un barrido con cos(delta)= 0 en el espacio Beta-Kappa.
+Voy a barrer Beta en [0,2] de a 0.1 y Kappa en [0,10] de a 0.5. Aunque en la región [0,1] voy
+a barrer Kappa de a 0.2. Para este conjunto de parámetros además voy a tomar 40 simulaciones
+cosa de tener una idea más o menos del comportamiento. Algo importante es que a partir de este
+punto estoy usando dt=0.1 en vez de 0.01. Eso fue una propuesta de Hugo y ayuda a reducir los tiempos
+de simulación. No fue tanto como hubiera deseado, pero fue bastante.
+
+Prueba Tiempos:
+---------------
+Esta carpeta todavía no la use, la idea es hacer el testeo de cómo varía la fracción de estados
+polarizados en función del tiempo de integración. El plan básico es revisar nuevamente cómo
+hicieron ellos esto. Más que nada para ver cuántas simulaciones necesito. Además, necesito
+una forma clara de diferenciar estados polarizados de los que no. Creo que la traza de la
+covarianza igual demostró ser un buen medidor.
+ Al final ya usé esta carpeta, la idea era armar para cada punto 100 simulaciones. Estas
+simulaciones tenían que arrancar polarizadas y a partir de ahí, evolucionaban hasta dejar
+de estar polarizadas o hasta llegar a un tiempo de 100*10^3. Lo que yo hice fue guardar
+las opiniones del sistema cada 1000 unidades de tiempo, de forma que si el sistema
+duraba hasta el final, entonces tendría 100 puntos temporales para graficar.
+ Si llego a correr esto de nuevo, tomar en cuenta que había cosas malas en este código,
+como que no registraba la cantidad de simulaciones realizadas sino que sólo guardaba estados
+cada cierta cantidad de pasos fijos. Por lo que si el sistema terminaba en un punto intermedio,
+no había forma de saber en cuál punto. Tampoco tenía forma de guardar el primer tiempo,
+así que el código en realidad guardaba unos 99 estados, no 100 en el mejor caso.
+
+Testeo implementaciones:
+------------------------
+Dentro de esta carpeta voy separando en carpetas los archivos según el testeo que estoy haciendo.
+En Euler guardo datos en los que corrí el sistema con un método de integración de Euler, con un
+dt muy chico para que la cosa más o menos funcione. En RK4 realicé la misma cantidad de pasos,
+el mismo sistema, misma condición inicial y cambié el método de integración a un RK4. La idea
+era comprobar que el estado final en Euler era el mismo que el de RK4.
+ En Sep_ext lo que hago es usar un RK4 y calcular la matriz de separación por fuera de la ecuación
+dinámica. Luego en Sep_int deshago la matriz de Separacion y calculo esa separación dentro de la
+ecuación dinámica para cada agente. Comparé los tiempos de simulación, lo que vi es que los estados
+de Sep_int tardaban 30 segundos en completar las 500 simulaciones, mientras que con Sep_ext tardaban
+13 segundos. Claramente una señal de que era una gran idea calcular esas separaciones con la función
+de Generar_Separacion.
+
+Evolución Temporal:
+-------------------
+Como los programas estaban tardando demasiado, decidimos empezar a estudiar el comportamiento de los
+agentes en esas simulaciones para saber qué estaba pasando. Por eso acá guardo los datos de todos
+los testigos de tres simulaciones que sé que tardan el máximo tiempo posible. En Datos están
+guardados los datos de esas tres simulaciones. Aparte tengo la carpeta de MARE_Algarve, que tiene
+las redes de Erdos Renyi usadas en esas simulaciones. Lo siguiente que voy a agregar son dos carpetas
+con simulaciones en 1D. Una con simulaciones hechas con mi código, otra con simulaciones hechas usando
+el código de Hugo. También agregué una carpeta para diferenciar una simulación en 2D con un dt más chico
+de dt=0.01, 2D_dtchico es la carpeta.
+
+Fracción Polarizados:
+---------------------
+Entre las simulaciones que mandé con el código de NI_Homofilia, mandé en Algarve una tanda de simulaciones
+con K=10 y Cos(delta)=0, variando Beta [0.1,1.5]. Para esta tanda, generé 100 simulaciones para cada punto
+de ensamble. El código en esta carpeta se encarga de generar las curvas de fracción de polarización 
+y de fracción de estados en función de Beta.

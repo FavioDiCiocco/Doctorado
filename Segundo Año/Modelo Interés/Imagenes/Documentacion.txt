@@ -1,0 +1,38 @@
+Cada una de las carpetas contiene imágenes armadas en las distintas
+fases del trabajo de la tesis.
+
+.) Bifurcacion_logistica:
+-------------------------
+La idea es estudiar la región en la cual el sistema tiene tres puntos fijos. Para eso
+es que por un lado revisé analíticamente la ecuación dinámica del modelo. De ahí
+armé un gráfico 3D que me marca la región en la cuál el sistema tiene tres puntos
+fijos.
+
+
+.) Exploracion_Logistica:
+-------------------------
+Revisaré el espacio de parámetros Kappa-Alfa, fijando Epsilon=4. La idea es ver
+cómo varía en ese espacio el valor medio al cual tiende el sistema, el tiempo
+de convergencia, la dinámica de convergencia y quizás la existencia de estados
+metaestables. Para eso estoy armando gráficos de Promedios de Opiniones, Tiempo
+de Convergencia e interés en función del tiempo. Los gráficos de interés consideran
+unos 100 agentes de mis simulaciones de 1000 agentes.
+ Mirando los gráficos en Oporto, no parece que tenga mucho hecho, aunque los datos
+parecen ser más exhaustivos. Las simulaciones en este caso son con el modelo que tiene
+una función logística como activación y si no veo mal, varío Kappa y Alfa, dejando
+Epsilon fijo. La idea creo era ver la región que dependía de Alfa y Kappa.
+
+.) Complemento Poster:
+----------------------
+Acá lo que hice fue tomar el modelo de Exploración_Logística, es decir el modelo
+con la función logística como función de activación y con parámetros Kappa (influencia
+de vecinos), Alfa (controversialidad del tópico) y Epsilon (umbral de interés).
+ En Oporto supuestamente hice carpetas de simulaciones con Kappa fijo, Alfa fijo
+y Epsilon fijo. Sin embargo creo que más cerca de la fecha resultó que tenía algunos
+datos y tuve que resolver con lo que tenía. Además las simulaciones que armé fueron cosas
+más específicas según las necesidades del poster.
+ Al final del día hice unos gráficos para ejemplificar la aparición de uno o tres puntos
+fijos, la región de parámetros en la cual existen los tres puntos fijos y gráficos de
+opinión versus tiempo, y finalmente ese gráfico que marcar el salto en el comportamiento del
+sistema cuando el valor de epsilon crece, algo que marca un comportamiento de histéresis.
+

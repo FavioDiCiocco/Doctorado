@@ -1,0 +1,2928 @@
+22/03/2023
+
+Me olvidé de revisar el tema del formulario, mañana en casa lo miro.
+
+Por otro lado hablé con Pablo sobre mi idea de mirar la derivada. Me parece que es un gráfico
+interesante para hacer, pero es cierto que quizás no aporte tanto. Veamos de hacerlo
+después, una vez que tenga hechos los gráficos de interés versus tiempo. Entonces la cosa
+es mandar a hacer una nueva corrida de datos en Oporto. Para esta corrida la idea es guardar
+datos de Opiniones y Testigos. Mi gran duda es cuántos datos de testigos guardar. Igual
+creo que estoy haciendo mucho espamento, debería armar los datos y ya.
+ Lo que siempre hago es guardar datos de 5 o 6 testigos para cada simulación, pero después
+sólo grafico los datos de la primer o segunda simulación. Es decir que guardo datos que
+después no uso, una gran boludez. Me parece más honesto guardar datos de 100 o 200 agentes
+de las primeras simulaciones y para el resto de simulaciones no armar archivos de Testigos.
+Es importante considerar que si guardo 100 agentes en dos simulaciones, eso son 200 agentes
+que guardo de testigos. En comparación, si guardo 6 agentes de todas las simulaciones, en
+el caso de 50 simulaciones para una dada configuración de parámetros, eso significan 300
+agentes. Es decir, en el total estaré ahorrando espacio para el caso en que haga muchas
+simulaciones. Además, la idea de guardar muchos agentes me permite armar los gráficos
+de las líneas grises finitas que dan una idea del comportamiento dinámico del sistema
+total. Me parece que va a ser mejor hacer esto, aunque para arrancar guardaré simplemente
+50 agentes como testigos.
+
+Esta nueva etapa entonces se llamará exploración_Logística, voy a barrer en Kappa y
+Alfa. Epsilon lo fijo a 4, barro Alfa entre [5,8] y mirando los gráficos de Kappa
+en función de Alfa para un Epsilon fijo, puedo ver que si barro Kappa entre [1,4]
+en gran parte de la región barrida el sistema posee tres puntos fijos. Por lo que
+esa región me parece razonable para estudiar. La idea sería que los parámetros
+varíen de a 0,3, cosa de que son 11 puntos por parámetro. Ademaś tengo un sistema
+de un único tópico, por lo que no necesito preocuparme por Cosdelta. Armaré unas
+pocas simulaciones, por lo que esto no debería tardar tanto. Suponiendo que 
+cada simulación tarde aproximadamente 40 segundos y dividiendo el laburo en
+20 hilos, esto no va a tardar más de 3 horas. Es decir que si lo mando en un rato,
+para hoy están los datos. Tengo entonces que modificar los archivos de main de C.
+
+Ahí lo mandé a correr, parece funcionar sin problemas. Diría que para las cuatro
+esto va a estar terminado.
+
+Miré el resumen del poster de TREFEMAC, me parece que está bastante bien, sólo
+me queda preguntarle a Pablo cómo pondría la referencia al paper de Baumann en
+el resumen. Me parece que deberíamos aunque sea mencionar que esto no surgió
+de la nada.
+
+Dicho eso, encontré el paper este que había pasado antes Sebas, voy a leerlo a ver
+qué hacen ya que trabajan con el modelo de Baumann y ver si hay algo interesante
+que sacar de ahí. Ya leí las primeras dos secciones, debería después continuar con
+la sección 3 de resultados.
+
+------------------------------------------------------------------------------------------
+
+23/03/2023
+
+Revisé pero no encuentro en casa el Formulario de Autorización. Igual dice que las firmas
+tienen que ser manuscritas, así que después veré de imprimirlo el lunes, se lo llevo a Pablo
+y de ahí a la Biblioteca Central. También envío mi Tesis por mail el lunes y listo.
+
+Entonces debería ponerme con lo que son los datos que armé ayer. Ahora que lo pienso, estaría
+bueno tener algunos datos armados para hacer pruebas con las funciones. Hagamos eso, recorramos
+una región similar y usemos eso para armar unos datos en la pc.
+
+Me estoy dando cuenta de que nunca hice ningún if para que el programa arme testigos sólo
+si el número de iteración es 1 o 2. Hagamos estas dos cosas.
+
+Agregué al main los if que me escriben el archivo de Testigos sólo para las primeras dos simulaciones.
+Hecho eso, armé algunos datos en la pc de casa y rearmé los datos en la pc de Oporto. Los tuve
+que rearmar porque me di cuenta que había escrito archivos de Testigos para todas las simulaciones.
+También armé una carpeta de datos para contener los archivos. Para lograr deshacerme de los
+archivos que no me interesaban tuve que usar una función llamada remove, borra un archivo
+según el path que recibe.
+
+Lo siguiente que tengo que hacer es modificar las funciones de gráfico y armarme los siguientes gráficos:
+.) Mapa de colores de Opiniones (Fácil, ese lo tengo ya hecho)
+.) Mapa de tiempo de Convergencia (Creo que puedo tomar el de Varianza y modificarlo un poco)
+.) Interés en función del tiempo, pero tengo que hacer eso con las líneas grises y finas.
+Tengo que modificar la función existente y armar una nueva para eso.
+.) Después puedo ver de armar una función que grafique la derivada del interés en función del tiempo.
+
+En los gráficos de mapas de colores tengo además que agregar las curvas de Kappa Máximo y Kappa Mínimo
+
+Ahí le hice la modificación al Mapa de Colores. Veamos que todo funca bien, el lunes seguiremos con
+esto. El tema del alfa me produjo errores de nuevo. Voy a ver si lo puedo solucionar de alguna otra
+manera. Solucionado
+
+------------------------------------------------------------------------------------------
+
+27/03/2023
+
+Hoy llegué y me puse a resolver algunas cosas extra. Volví a conectar el Slack a mi celular.
+Después mandé el mail a la biblioteca central con mi tesis. Aunque al parecer hubo problemas
+con el envío a la dirección tesis_lic@df.uba.ar por el tamaño del archivo. Mandé dos veces
+el mail, esperaré a ver si me responden algo y de ahí veré qué hago. Tengo el formulario
+de autorización firmado por mi, después se lo daré a Pablo para que lo firme. Quizás tenga
+que imprimir otro después.
+
+Voy a necesitar unos datos para hacer unas pruebas, así que ahí mandé a correr el Instanciar
+en la pc de la facultad. Lo siguiente es ponerme con el mapa de tiempo de convergencia.
+
+Visto el mapa de tiempo de convergencia, la verdad no se ve mucho. La línea de Kappa_min
+parece tener dificultades en la convergencia en comparación al resto. ¿Por qué el comportamiento
+no es simétrico en ambas regiones de transición? Quizás los gráficos de Testigos me den una
+respuesta al respecto.
+
+Mirando el gráfico de interés en función del tiempo logré observar que para el caso de alfa
+alto y Kappa bajo, el sistema efectivamente tiene un estado metaestable, se observa
+claro como el agua. Quizás esté interesante revisar esa región. Ahora mismo tengo las
+funciones que arman los tres gráficos que me resultaban interesantes hacer. Ahora debería
+pasar el código a Oporto y ver los gráficos que me genera.
+
+Me respondieron de biblioteca digital, parece que les llegó la tesis perfecto. Si me responden
+que sólo falta el Formulario, le pido a Pablo que me lo firme y de ahí completo lo que falta.
+
+Antes de ponerme a ver si están los gráficos de Exploracion_Logistica, lo primero que voy a hacer
+es intentar armar la función que grafica la derivada del interés. Y después podría ponerme
+con la parte de la burocracia infinita.
+
+Los gráficos de Derivadas no son realmente informativos, al final podría prescindir de eso.
+Revisando los gráficos que hice con los datos de Oporto, pareciera que la curva de Kappa_min
+es la que tiene una región de un mayor tiempo de convergencia al punto final. Viendo los gráficos
+de Interes en función del tiempo, no logré encontrar un gráfico en el cual las opiniones de los
+agentes se mantenga constante por un tiempo prolongado antes de decaer. Aunque si hay varios
+gráficos en los cuales las opiniones primero caen y luego suben o al revés, variando muy lentamente
+antes de llegar a un resultado final.
+
+Para revisar esto mejor es que mandé a hacer gráficos para un grupo específico de Kappas pero para
+todos los Alfas. Eso quizás me muestre las curvas en las cuales los agentes tardan en converger.
+
+------------------------------------------------------------------------------------------
+
+28/03/2023
+
+Hoy a la mañana fui a cursar la materia de Piegaia, después di clases en la materia de F1 y llevé
+el formulario de Autorización a la biblioteca del pabellón 2. Estuve revisando lo que hice ayer,
+estoy dudando de si no debería hacer un barrido más fino de los datos.
+
+Entre organizar el partido y cosas, se me está yendo toda la tarde. Mañana entonces tendría que
+rever el resumen de TREFEMAC así como ver qué más puedo hacer con el modelo. Creo que compensa
+hacer un barrido más fino. La duda es cómo hacerlo correctamente sin hacer cuentas innecesarias.
+Es decir, sin volver a calcular cosas que ya calculé antes.
+
+Y por otro lado, se me ocurre que estaría bueno ver de modificar la función que grafica el interés
+vs tiempo de forma que haga los gráficos para la región de Kappas en los cuales hay puntos con
+alto tiempo de convergencia.
+
+También haré mañana la burocracia infinita.
+
+------------------------------------------------------------------------------------------
+
+29/03/2023
+
+Estoy viendo para mandar a correr nuevos datos que complementen los que ya tengo. Para eso
+necesito primero barrer completamente el alfa entre 5 y 8 de a 0,1. Eso significa que para
+los Kappas existentes tengo que armar datos nuevos. Por otro lado, como mi paso anterior
+fue 0,3 también en Kappa, querría armar los datos para los Kappa menores a 1,8 sin repetir
+los datos ya armados. En ese caso, se me ocurre armar simulaciones diferentes moviéndome
+de a 0,3 pero arrancando desplazado, cosa de tomar todos los valroes intermedios. Yo diría
+de arrancar primero con los Kappas faltantes y después completamos a los Kappas existentes.
+Primero mandé a correr datos para Kappa={1.1,1.4,1.7,2} con alfa entre 5 y 8 de a 0,1.
+
+Cuando eso termine, hago lo mismo pero arranco con Kappa = 0.9 así corto en 1.8.
+Ya hice la burocracia infinita y mandé la corrida usando el Kappa inicial de 0.9. Hecho
+esto, lo siguiente sería poner Kappa en 1 y completar los alfas que le faltan a esos Kappas.
+Lo que estoy pensando es qué pasará con los Kappas por encima de 2, los que no tienen
+un barrido tan fino en alfa. El uso del Dataframe creo que permitirá que esa región quede
+en blanco ya que el array ZZ estará compuesto de ceros que se sobreescriben en base
+a los datos obtenidos de los archivos. Igual estoy viendo que el programa no está planeado
+para considerar que no haya archivos que levantar. Le va a intentar tomar un log a 0 o a
+la nada misma, el programa no va a saber qué hacer. Podría asegurarme de graficar los
+datos con Kappa por debajo de 2, eso es una opción. Creo que en principio es lo más razonable,
+para no estar corriendo un barrido fino innecesario en esa región. 
+ El mesh se ajusta a un barrido diferenciado en un eje, pero no a dos barridos diferenciados
+en dos ejes. No, creo que en ese caso tendría que hacer los ploteos por separado. Pero hecho
+de esa manera, quizás debería asegurarme que los límites de lo plotteado sea tal que los
+colores no se mezclen. Plottear regiones con diferentes granularidades no es tan sencillo
+como uno quiere imaginar.
+
+Luego de varias simulaciones, logré armar un barrido más fino de la región de Kappa=[1,2]
+y Alfa=[5,8]. Aunque para mantener esto correcto, tuve que retocar las funciones de
+graficación de forma que sólo consideren el Kappa (Parámetro 1) en los casos en que vale
+menos que 2. Porque creo que graficar casos de diferentes granularidades no es algo
+tan simple. Hecho esto, mandé a armar los gráficos, quiero ver si se observa mejor una
+región de convergencia. Para esto estaré armando muchos gráficos, espero que no sea
+una locura revisarlos. Podría ponerme pronto a armar un barrido fino para el resto de la
+región de estudio.
+
+Por otro lado leí el paper que había pasado Sebas en el cual hacían un estudio sobre modelos
+de opinión, especialmente sobre un modelo basado en el de Baumman pero con algunas modificaciones.
+Hay una idea interesante que sacar sobre un tipo de gráfico que se puede armar para diferenciar
+los estados de polarización. Para el resto del análisis de esto, está lo que subí al drive
+en Bibliografías.
+
+------------------------------------------------------------------------------------------
+
+30/03/2023
+
+Hoy vine a la facultad en auto. Espero que sea la última vez, es un bardo. Más allá de que
+hoy en particular hubo algún motivo para la congestión, sigue siendo un bardo y muy aburrido.
+Después estuve un buen rato mirando el resumen y viendo cómo contar lo que hicimos de una
+forma un poco más específica.
+
+Ahora a la tarde voy a cursar la materia de Sociología para gente de Exactas.
+
+------------------------------------------------------------------------------------------
+
+31/03/2023
+
+A la mañana cursé la materia de Piegaia, después fui a dar clases y por último me volví a
+la oficina para inscribirme a la TREFEMAC. Hecho esto, creo que el lunes tengo varias
+cosas para hacer de las cursadas. Por un lado, hacer los ejercicios de física, me vengo
+haciendo el vivo, hoy me agarraron con un ejercicio y estuve un rato en duda. Necesito
+contestar más claramente a los estudiantes lo que está pasando, así que tener lo ejercicios
+ya preparados es primordial. Por otro lado, tengo que ponerme a resolver ejercicios de la
+materia de Piegaia, o sino nunca voy a entrar en ritmo. Por último, tengo que leer los 
+textos de la materia de Sociología. Así que tengo que ver de trabajar en casa algunas
+de estas cosas porque sino no voy a llegar jamás. Y otras trabajarlas acá.
+
+También, tengo que pagar la cuota anual de la AFA y revisar el tema de las afiliaciones.
+Marcos dijo que iban de cierta forma, pero no están para nada anotadas de esa forma.
+También tengo que incluir a Pablo y Sebas a la afiliación.
+
+------------------------------------------------------------------------------------------
+
+03/04/2023
+
+El lunes fui después del mediodía a la facultad. A la mañana estuve en casa haciendo ejercicios
+de F1 para ir teniendo las guías hechas. Después del mediodía fui a la facultad, me imprimí las
+guías y estuve mandando varios mensajes organizando cosas de varios grupos. Un bardo, pero
+fue necesario.
+
+------------------------------------------------------------------------------------------
+
+04/04/2023
+
+Cursé y di clases. Y después hice algunos ejercicios más de F1. Los martes y viernes van
+a ser bastante escuetos. Vamos a aprovechar el finde largo para ponerme al día con las guías.
+
+------------------------------------------------------------------------------------------
+
+05/04/2023
+
+En la mañana corregí el tema de las afiliaciones del trabajo enviado a la TREFEMAC y completé
+el formulario del pedido de ayuda económica. Después pagué la cuota anual de la AFA, y
+aproveché para pagarle a mamá y a Azu. Hecho eso estuve revisando algunas cosas y organizando
+varios pequeños detalles. A la tarde tengo turno.
+
+------------------------------------------------------------------------------------------
+
+10/04/2023
+
+Estuve haciendo ejercicios de F1 en la mañana y de MEFE en la tarde. Hoy fue un día de ejercicios
+nomás. También movimos el escritorio grande de la oficina.
+
+------------------------------------------------------------------------------------------
+
+11/04/2023
+
+Cursé MEFE y hablé con el JTP. Me dijo que la idea es que a partir de ahora primero tengamos
+la práctica y después la teórica. Me dijo que la materia de MEFE no tiene final, me conviene
+más cursar la práctica y las teóricas las miro online más tarde. Eso supongo será lo que haré
+los martes y viernes después de cursar. Lo que sí, tengo que hablar porque me quise inscribir
+como doctorando a la materia y no pude, así que estoy cursando sin estar inscripto.
+
+Después fui a dar clases. Esta vez estuve mucho mejor preparado para las consultas. Una chica
+consultó sobre que tiene ciertas dificultades para resolver los ejercicios. Intenté darle
+consejo, pero me da un poco la sensación de que quizás deje la materia. Después intentar darle
+una mano.
+
+A la tarde resolví un ejercicio más de F1.
+
+------------------------------------------------------------------------------------------
+
+12/04/2023
+
+A la mañana llevé la bici a la bicicletería. No vinieron estudiantes a las clases de consulta
+de contraturno. Revisé un poco lo que tengo hecho y completé el archivo de Progreso.
+
+Ahí estuve leyendo y repasando los últimos gráficos que había armado. Lo último que hice
+fue armar gráficos de Interés en función del tiempo, Opiniones promedio y Promedio de
+tiempo de convergencia. Podría aprovechar y también armar gráficos de la varianza de los
+tiempos de convergencia.
+
+Por otro lado, mirando los gráficos de Promedio de opiniones y de Promedio de tiempos de
+Convergencia, se nota que la franja de transición entre que el sistema converge al punto
+fijo mínimo y que converge al punto fijo máximo está corrida respecto de la línea de Kappa
+mínimo que está graficada. Creo que estaría bueno agregar la línea de Kappa máximo y ver
+si realmente la franja de transición está en el medio de ambas curvas. Lo que sí es que
+parece seguir una forma similar. Al parecer nunca retiré la línea del Kappa Máximo del
+gráfico. Si no se grafica es porque no entra en la región graficada. Creo que si bien 
+va a ser mucha simulación medio al pedo, vale la pena agregar los datos necesarios para
+agregar la región de Kappas que falta. Kappa se mueve de [1,4] y Alfa de [5,8]. Originalmente
+ambos tenían un paso de 0,3. Luego, para Kappa entre [1,2] hice un barrido más fino en
+ambos parámetros, barriendo de a 0,1. Si no me equivoco, no habría problema en que Kappa
+tenga pasos diferentes, pero sólo si corrijo para que todo tenga un barrido igual en Alfa.
+
+Así que debería mandar a correr datos para rellenar los datos de forma que Alfa recorra
+el [5,8] de a 0,1. Ya mandé a correr los datos arrancando con Alfa=5,1. Después tengo
+que mandarlo con Alfa=5,2 y listo. En 21 minutos debería terminar de correr.
+
+Debería primero que nada pensar en qué voy a poner en el poster. Para eso arranquemos del
+poster que usé para la TREFEMAC pasada y del resumen, eso me va a dar una idea de qué quiero
+mostrar y cómo.
+
+Ya mandé la otra parte de los datos. Mañana puedo mandar a correr el programa de Python y
+revisar los gráficos hechos.
+
+Estoy queriendo armar el poster. Para arrancar, el texto del resumen no entra bien en el
+lugar que tenía antes, el resumen actual es muy grande. Podría ir probando entonces de
+ponerlo y después lo ajusto.
+
+Cosas que poner en el poster:
+------------------------------
+.) Ecuación dinámica, describiendo los términos de la ecuación. Al ser en 1D, no necesito
+hablar de tópicos no ortogonales. Quizás podría mencionar que todas las interacciones
+entre agentes refuerzan las opiniones.
+.) Función logística. Tengo que mostrar qué es y que forma tiene y cómo varía esa forma
+con los parámetros.
+
+Mañana sigo anotando esto.
+
+------------------------------------------------------------------------------------------
+
+13/04/2023
+
+En la mañana estuve leyendo la bibliografía de la materia de Sociología. Esto me tomó
+todo el tiempo hasta ir a cursar. De ahí me volví temprano sin pasar por la práctica
+porque esperaba ir a buscar mi bici, que no estaba lista.
+
+------------------------------------------------------------------------------------------
+
+14/04/2023
+
+Fui a MEFE, di clases, intenté buscar un reemplazo y cosas.
+
+------------------------------------------------------------------------------------------
+
+17/04/2023
+
+Estuve coordinando cosas para buscar un reemplazante, Mauro y un conocido de Constanza
+me dijeron que podrían si no consigo a nadie más. Debería charlar con Nahuel y Julian sobre
+si es necesario que estén presentes el día del parcial
+
+------------------------------------------------------------------------------------------
+
+18/04/2023
+
+Cursé las primeras dos horas en MEFE, fui a dar la clase de rozamiento en F1, preparé los
+papeles para hacer el pedido de licencia con goce de sueldo y hablé con Nahuel por Slack.
+
+
+------------------------------------------------------------------------------------------
+
+19/04/2023
+
+Estoy pensando la charla para dar mañana a la mañana. La idea es contar mi línea de trabajo.
+Debería contar que trabajo un modelo de dinámica de opiniones, actualmente transformado en
+un modelo de dinámica de interés respecto tópicos de debate. Arrancaría mostrando las
+ecuaciones dinámicas, que son el centro de mi trabajo. Mostraría el caso de muchos tópicos,
+diría que es a lo que queremos llegar y hablaría de la idea de tópicos no ortogonales.
+Luego presentaría el modelo unidimensional y diría que ahí es dónde estamos parados ahora.
+Lo siguiente sería unos gráficos del interés en función del tiempo para mostrar el
+comportamiento del sistema. Después unos gráficos de mapas de colores mostrando algunos
+análisis hechos con el objetivo de explicar que mi interés es estudiar el proceso para
+comprender el sistema. Entendiendo como funciona, el plan es pasarlo a un modelo multidimensional
+y luego comparar el modelo con datos para ver si se observa lo simulado.
+ También me parece interesante mostrar las herramientas que uso (C, Python, Bash, Github)
+y un poco de mi proceso de trabajo. (Armo código en C, simulo en los clusters, grafico,
+descargo las imágenes y luego analizo los resultados).
+
+Después modificar las líneas grises para que sean un poco más grandes, así se ven un poco mejor
+esos gráficos.
+
+------------------------------------------------------------------------------------------
+
+20/04/2023
+
+En la mañana terminé la presentación. Espero que quede bien. Después vamos a la reunión de
+Sophy, más tarde resuelvo el tema del reemplazo. Y después iré a cursar, quizás lea un poco
+de la bibliografía de la materia de Sociología.
+
+------------------------------------------------------------------------------------------
+
+21/04/2023
+
+Cursé, di clases, me comí una hamburguesa completa y mandé la documentación para el pedido
+de licencia con goce de haberes. También hice la burocracia infinita. Por último voy a anotar
+algunas cosas de la materia de MEFE y terminar por hoy.
+
+------------------------------------------------------------------------------------------
+
+24/04/2023
+
+Estuve en la mañana haciendo ejercicios de F1 y a la tarde ejercicios de MEFE. Eso fue todo
+mi día. 
+
+------------------------------------------------------------------------------------------
+
+25/04/2023
+
+Cursé y di clases. Hablando con Constanza, me recordó que hay un TP computacional para hacer
+para MEFE. Al parecer corrieron la fecha de entrega para el martes que viene.
+
+Considerando que la semana que viene tengo parcial de MEFE, voy a empezar a hacer ejercicios en
+casa en el horario de conectarme con los pibes al Discord. Así voy a llegar un poco mejor
+a las materias. Haré tanto cosas de F1 como de MEFE.
+
+Hablando con Pablo estamos en la idea de empezar a avanzar a la implementación de un campo
+externo. Para esto tengo que explorar por en lado el uso de la función que propuso Pablo
+para que el interés se mantenga entre [0,1] y por otro lado tengo que pensar distintas formas
+de introducir el campo externo a la función. Pablo me habló de pensar formas de que un agente
+gane interés y después lo pierda en un tópico.
+
+Voy a traer de hace unos días que había copiado sobre cosas que poner en el poster.
+Cosas que poner en el poster:
+------------------------------
+.) Ecuación dinámica, describiendo los términos de la ecuación. Al ser en 1D, no necesito
+hablar de tópicos no ortogonales. Quizás podría mencionar que todas las interacciones
+entre agentes refuerzan las opiniones.
+.) Función logística. Tengo que mostrar qué es y que forma tiene y cómo varía esa forma
+con los parámetros.
+
+Mañana tengo que ir a la consulta de contra turno, pero eso es aparte. 
+Me voy a imprimir las guías de F1 y de MEFE.
+
+------------------------------------------------------------------------------------------
+
+26/04/2023
+
+Vamos a anotar entonces las cosas que creo necesarias para el poster. Anotar la ecuación
+dinámica claramente va, es el corazón del modelo. Y por tanto describir los términos de
+la ecuación 1D es igual de importante. También mencionar que debido a que los intereses
+son todos positivos entonces el interés sólamente puede contagiarse.
+ ¿Debería hablar de la función logística? Me suena como el paso razonable considerando
+que esto está en el segundo término y no parece obvio el por qué.
+ Después tengo que mostrar algunos resultados del modelo. Es decir, que el sistema
+admite estados en los cuales todos los agentes alcanzan el máximo interés o decaen
+al cero de interés. Mostrar que existen simulaciones de transición sin caracterizar la
+región de transición me parece una pésima idea.
+ Viendo lo que el modelo permite hacer, podemos hablar de la exploración del espacio de
+parámetros. Podría hacer gráficos para mostrar cómo cambia el gráfico de promedio
+de intereses para la combinación de parámetros Kappa-Alfa, Kappa-Epsilon y Alfa-Epsilon.
+Eso estaría bueno para mostrar que en el caso Alfa-Epsilon el sistema produce una recta
+que diferencia la región que converge al punto de máximo interés versus la región que
+converge al mínimo interés.
+ 
+ Estoy mirando el gráfico de interés promedio que armé en la carpeta de Exploración_Logística.
+Tengo mis dudas respecto al hecho de que la transición de un punto fijo mínimo al punto fijo
+máximo no está sobre la curva de Kappa_mínimo sino un poquito por arriba, pero con una forma
+similar. Se me ocurre que si en vez de distribuir las opiniones iniciales entre [0,Kappa], las
+distribuyo en intervalos con el valor máximo cada vez más chico, la curva esa debería subir
+para acercarse y finalmente superponerse con la curva del kappa máximo. Me parece que eso
+es algo interesante para observar. Comparé la simulación con los gráficos de Geogebra, lo que
+veo es que fijando alfa y epsilon, a medida que Kappa aumenta, el punto fijo del medio va
+bajando. Pero no sólo eso, sino que al aumentar Kappa el valor medio del interés inicial también
+aumenta, ya que el interés inicial en promedio vale Kappa/2. Luego, razonablemente al aumentar
+Kappa resulta que para algún valor Kappa/2 es mayor al punto fijo del medio, y por tanto el
+sistema empieza a converger al punto fijo máximo.
+
+############################################################################################
+ Me parece que sería interesante ver cómo la curva de transición de convergencia del punto 
+de mínimo interés al de máximo interés varía al cambiar el espacio de interés inicial. Serían
+una serie de gráficos interesantes. Y además, podría armar un gráfico de diferencia de punto de
+convergencia entre el punto de convergencia de una fila y la fila siguiente. Eso ilustraría la
+curva en la que se da el salto. Luego podría superponer los gráficos y eso debería iluminar la
+zona entre las curvas de Kappa máximo y mínimo. Me gusta esta idea.
+############################################################################################
+
+Volviendo al poster, me parece que por una cuestión de seguir un hilo conductor, es más razonable
+que al empezar a contar cosas sobre la ecuación dinámica, hable de ciertos resultados, como el
+hecho de cuáles son los puntos fijos que el sistema alcanza o que se necesita un mínimo valor
+de Epsilon para que el sistema tenga tres puntos fijos. Creo que eso se puede mostrar, no con
+un gráfico de Geogebra, sino con un gráfico de Python que tenga marcado con puntos grandes
+los puntos fijos y luego tenga escrito en el eje X cosas como: "Punto fijo estable mínimo"
+o algo más corto. Yo haría toda una sección del poster que sea el ANÁLISIS DINÁMICO.
+En esta región definitivamente se puede agregar el gráfico 3D de la región de tres puntos fijos
+con los gráficos de corte.
+
+Habiendo planteado que el sistema tiene una región en la cual tiene más de un punto fijo,
+me parece razonable mostrar el gráfico de la varianza en el espacio de parámetros. Para eso
+usaría el gráfico que ya tengo con cos(delta) = 0, así no tengo que rehacer esos datos.
+Me parece que es más interesante el gráfico en el caso de Kappa en función de Epsilon, porque
+así se ve que esa región tiene una parte que se cierra. Si hago el Kappa-Alfa lo que
+tengo es una parte en el medio coloreada que como gráfico me parece poco interesante.
+Después, para agrandar la región marcada lo que puedo hacer es restringir la zona graficada,
+eso lo puedo hacer fácil y va a quedar mejor, así no es un gráfico con tanta zona azul que
+no dice mucho.
+
+Habiendo visto la región en la cuál el sistema tiene tres puntos fijos, lo siguiente es mostrar
+el gráfico de promedios. Acá si resulta una buena idea armar gráficos de promedios de cada
+parámetro en función del resto. Hablamos de cómo podemos observar que el parámetro alfa y el
+parámetro Epsilon da lo mismo variarlos y que estudiamos el comportamiento de Kappa con
+Alfa y con Epsilon. Eso serían tres gráficos, donde mostraríamos que la transición entre
+una región y la otra se da dentro de la región de tres puntos fijos.
+
+Si me queda lugar, creo que podría intentar incorporar los gráficos de interés final promedio
+en función de Kappa o Epsilon. Creo que esos aportan, pero tendría que armarlos considerando
+puntos con un tamaño proporcional a la cantidad de simulaciones que caen en cada lugar.
+Igual esto creo que da para charlarlo con Pablo, si tengo que hacer todo lo que puse y encima
+armar el poster, no creo que llegue con todo.
+
+------------------------------------------------------------------------------------------
+
+27/04/2023
+
+Aún si hoy no empiezo a armar el poster, es importante que hoy defina los datos que voy a
+necesitar y los mande a correr, así ya eso lo tengo para la semana que viene.
+
+Estoy medio armando una primera idea del poster. Mejor hacer eso mañana. Ahora voy a mandar
+a correr los datos que necesito y ya me pongo a hacer ejercicios de F1. Y que la materia
+de Sociología se resuelva sola.
+
+Yo quiero armar gráficos de promedio de Kappa-Epsilon y Kappa-Alfa. Para eso necesito variar
+los tres parámetros, Kappa, Epsilon y Alfa. ¿Dónde los varío y cómo los varío? ¿Y en qué
+carpeta los guardo? ¿Y cómo inicializo las condiciones?
+
+Se me ocurre inicializar usando que las opiniones vayan entre [0,Kappa], es para ser consecuente
+con los otros gráficos. Epsilon va entre [1.5,3]. Kappa va entre [1,3] y Alfa entre [1,3].
+Suponiendo que cada simulación tarda seis segundos, con un barrido más o menos fino de
+0.1 tengo 16 valores para Epsilon, 21 para Kappa y 21 para Alfa. Luego armando 40 o
+60 simulaciones para cada configuración eso implica un total de 2.540.160 segundos.
+Que dividido en 20 hilos me da 127008 segundos. En total eso son 35 horas. Si lo mando hoy,
+lo tengo para el finde. Perfecto.
+ Pero pará, no necesito Kappa tan grande, Kappa debería ir entre [1,2], y lo mismo Alfa.
+Con lo visto, no me compensa gráficos tan grandes, mejor revisar esas regiones un poco más
+en detalle. Si en vez de un paso de 0.1 tengo uno de 0.05 pero con la región reducida eso me
+da 68 horas. Eso es menos de tres días. Tengo que estar seguro de lo que mando a correr, pero si
+lo hago hoy o mañana, ya el martes lo tengo hecho. Voy a armar las carpetas, preparar el código
+y asegurarme que sólo tengo que apretar unos botones cuando hable con Pablo.
+
+Ya tengo hecho todo, creo que tengo que mandarlo y listo. Si puedo, discuto un poco con Pablo
+la idea, sino lo mando en casa y listo. En el peor caso, lo charlo mañana un momento con Pablo.
+
+------------------------------------------------------------------------------------------
+
+28/04/2023
+
+Fui a cursar y di clases. Después de eso me puse a revisar el programa que subí a Oporto y a
+revisar el armado de datos. Pero me mandé una cagada, porque al principio el programa se mandó
+a correr y estaba mal el path de los archivos, así que tiraba error y no corría. Corregí ese
+error, pero me olvidé de frenar los programas. Eso llevó a que tengo los 20 hilos en uso. Eso
+estaría dando errores, si no fuera porque volví a compilar el archivo Opiniones.e. Gracias
+a eso, ahora los archivos están correctamente corriendo y armando los datos que corresponden.
+Por un momento pensé que iba a tener que esperar al martes de la semana que viene para recién
+ahí mandar a correr todo. Lo que sí voy a tener que hacer, pero no va a ser tanto problema, 
+es mandar a correr todo desde el principio pero tengo que ajustar Instanciar para que sólo
+rearme los archivos de los primeros Kappa. Por lo que veo, ya los datos de Kappa=1.05 los
+está armando. Por si estoy viendo algo mal, después rearmo los datos de Kappa = {1,1.05,1.1}.
+Bueno, menos mal, esto hubiera sido un problema a considerar sino.
+
+------------------------------------------------------------------------------------------
+
+02/05/2023
+
+A la mañana no cursé, sólo hice ejercicios de MEFE y después me fui a dar clases. Le debo a
+uno de los chicos la resolución del ejercicio 6 de la guía de SNI.
+ Por otro lado, yo pensé que la simulación iba a estar terminada para ayer, y sin embargo está
+todavía corriendo. Parece que completó una simulación y media en este tiempo, estamos cerca de
+completar la segunda. Con algo de suerte ya mañana lo mando a correr lo que falta y después
+armo los gráficos. Tengo que tener el código para armar los gráficos listo. Igual no creo que
+sea difícil, tuve en la sección de Cambio_parámetros 2D que armar gráficos con archivos que tenían
+tres parámetros, así que es cosa de tomar eso y reajustar las funciones.
+ Sigamos preparando el poster, anotando cosas y ya mañana nos ponemos seriamente con eso.
+ 
+------------------------------------------------------------------------------------------
+
+03/05/2023
+
+Charlé con Pablo sobre ideas para el poster, ideas para el trabajo a futuro y después me puse
+a armar gráficos para el poster. A la tarde di clases de consultas.
+
+------------------------------------------------------------------------------------------
+
+04/05/2023
+
+A la mañana armé el croquis del canasto metálico para la bici, tuvimos una reunión de grupo
+donde Franco Eskinazi nos dió una charla sobre un paper de identificación de ideología de 
+usuarios y de ideología latente.
+ Después trabajé en el poster, fui a la charla sobre el conocimiento científico estudiando el
+caso de la convención de armas químicas y después seguí con el poster. Al parecer hubo unas
+simulaciones raras en el cluster, no entiendo por qué. Así que lo mandé de nuevo, y si no
+se arregla, mañana tendré que ver mejor qué pasa con eso.
+
+Viendo el poster, en la parte de análisis dinámico ordené todo sacando lo de que el interés
+tiene que ser positivo y que los agentes tienen que reforzar su interés al interactuar.
+Me parece que de todo lo que hay para mostrar, eso es lo menos importante y se puede describir
+o ver de los gráficos.
+
+------------------------------------------------------------------------------------------
+
+05/05/2023
+
+En la mañana resolví el ejercicio que me había preguntado uno de los estudiantes. Después
+fui a dar clases. No fui al parcial de MEFE.
+
+Después mirando con Seba descubrimos que al final sí estaba comiéndome todo el espacio de
+Oporto. Tengo que ser más consciente con eso. Por ahora mandé a hacerse unos gráficos
+y cuando venga Pablo decidiré los gráficos que faltan agregar. Mientras lo que haré es
+armar unos datos que sirvan para armar los gráficos que necesito. Podría armar tres
+carpetas, una con alfa fijo, otra con Kappa fijo y otra con epsilon fijo. Esto va a
+tardar mucho menos que lo anterior en correr.
+K = [1,2], Alfa=[1,2], Epsilon=[1.5,3]. Variando los tres de a 0.05. Haré 30 simulaciones.
+Sabiendo que cada una tardaba unos 10 segundos, supongamos 15 para el peor caso.
+Las 30 simulaciones las distribuiré entre seis hilos.
+Epsilon fijo = 3: 21*21*31*15 (9 horas y media)
+Kappa fijo = 1.5: 21*31*31*15 (14 horas)
+Alfa fijo = 1.5: 21*31*31*15 (14 horas)
+
+Listo, puedo mandar esto y mañana a la madrugada está terminado. Cierto que no puedo simplemente
+mandarlo, los .e se van a pisar y eso va a ser un bardo. Podría simplemente mandarlo de a
+1 a la vez. Hagamos eso. Usemos 20 hilos y hagamos 40 simulaciones
+
+Ahora a las 16 mandé a armar los datos de Epsilon fijo. Eso va a tardar unas 3 horas.
+Quizás la mitad considerando que yo calculé que cada simulación tarde 15 segundos y en
+realidad es más bien 8.
+
+Bueno, la idea está más o menos clara, puedo hacer esto en el finde. El plan es:
+x) Modificar los gráficos de Opinión en función del tiempo para que se vean mejor
+desde la distancia. Quizás agregarles los parámetros asociados en el título del plot.
+Eso lo voy a lograr corriendo el Graficar de la carpeta de Exploración Logística en Oporto.
+x) Ubicar estos gráficos en el espacio de parámetros graficado a la derecha. O quizás sea
+mejor tenerlos ubicados en el gráfico 3D, quizás con unas cruces para que se vean.
+x) En la región abajo a la izquierda agregar un gráfico de Promedio de Opiniones. Ese
+gráfico lo voy a conseguir mandando a correr el Graficar de la carpeta de Cambios_Parametros
+que tengo en Oporto.
+x) Junto con esos gráficos poner gráficos de interés final en función de Kappa.
+x) Pasar el último párrafo a Conclusiones. Y hacer que la intros se vea más linda.
+x) No es necesario hacer los datos de Alfa_fijo o Kappa_fijo. Necesito sólo los de Epsilon fijo,
+A cambio tengo que agregar Kappa entre [0.5,1], y repetir la simulación para Epsilon=1.5.
+Podría hacer eso más corto si fijo Alfa ahora que lo pienso, total no necesito todos los alfas.
+Bien, la idea cierra.
+
+
+------------------------------------------------------------------------------------------
+
+07/05/2023
+
+Al final había hablado con Pablo el 05/05 y definimos que los únicos datos que necesitaba son
+los de alfa_fijo. Lo que hice fue armar datos variando Kappa entre [0.5,2] con un paso de 0.01.
+Estos datos tenían Alfa = 3 y Epsilon tomó sólo dos valores, 1.5 y 3. Esos datos los armé junto
+con datos de Testigos. Voy a usar estos datos para armar gráficos de Interés final en función de
+Kappa.
+
+Antes que nada, ahora voy a mandar a armar el gráfico de Promedio de Opiniones que necesito. No creo
+que tarde mucho, pero por si acaso. Ahí mandé a prepararse el gráfico de Promedios. Lo que queda
+es armar los gráficos de Evolución temporal y los de Interés final en función de Kappa.
+
+Ahí cargué el archivo de Python y mandé a armar el gráfico de interés final. Estoy pensando en
+que quizás no pueda correctamente llenar el espacio de abajo a la izquierda del poster.
+
+Bueno, lo que me queda hacer entonces es descargar los gráficos de Promedio, los de Opinión
+vs Tiempo y el de Opinión final vs Kappa, agregar los detalles en el gráfico de Varianzas
+(Quizás explicarlo un poco mejor), quizás pueda usar el espacio extra para agregar la expresión de
+campo medio y retocar los títulos de las secciones y las conclusiones. Suena a algo que puedo hacer
+en la mañana tranca.
+
+Para que sea más fácil de encontrar mañana, fijate los gráficos de evolución temporal en
+Complemento_Poster con Kappa = 1.5.
+
+------------------------------------------------------------------------------------------
+
+08/05/2023
+
+Ya descargué los gráficos y organicé el poster. El poster quedó bastante bien, agregué
+los gráficos de Promedio de interés, el de interés final en función de Kappa y los de interés
+en función del tiempo. Voy a corregir unos títulos, unos colores, agregar unos detalles 
+a los gráficos en el google y listo, poster terminado. Mientras se grafican las cosas faltantes
+en Oporto, iré agregando música a la playlist de TREFEMAC 2023.
+
+Me confundí el Parámetro 1 y el 2 al graficar los OpivsTiempo, así que lo tengo que hacer de nuevo
+eso. Ahora mismo se está armando el gráfico de Varianzas primero. Después correré los de OpivsTiempo.
+Por último el de Promedios.
+
+Al final terminé el poster sin hacer los gráficos esos, no iba a llegar. Las conclusiones quedaron
+un poco flojas, pero cosas que pasan.
+
+------------------------------------------------------------------------------------------
+
+19/05/2023
+
+Del 09 al 12 del 05 fui a la TREFEMAC. El lunes 13 vine a la facultad y me puse a hacer cosas
+de F1, si no me equivoco. Creo que estuve todo el día haciendo ejercicios. El martes
+fui a cursar y después a dar clase de F1. Nahuel me dió los parciales y me puse a resolver el
+punto 3. El miércoles empecé a corregir parciales. El jueves a la mañana fui a la defensa de
+tesis de Ignacio Sticco. A la tarde seguí corregiendo parciales.
+ Hoy a la mañana fue a hacerme el estudio preocupacional, después di clases de F1 y a la
+tarde fui a la reunión sobre el nuevo plan de la carrera. Por último tomé estas notas. El
+lunes me queda tomar notas en el cuaderno, así como ver de llamar a un cardiólogo y a Personal
+para hacer el cambio de plan.
+
+Ya me acordé, el lunes me volví temprano para cambiar los libros y comprar el canasto. No pude
+cambiar los libros, pero conseguí mi canasto.
+
+------------------------------------------------------------------------------------------
+
+02/06/2023
+
+Los días que pasaron del 19 a hoy los estuve anotando en el cuaderno. El 22 y 23 estuve
+principalmente corrigiendo parciales. El 23 volví tarde a casa, tipo 21:30 salí de
+la facultad. El miércoles 24 laburé desde casa. El 25 y 26 fueron feriados, pero igual
+laburé porque estoy con mucho con las materias de F1 y MEFE.
+
+Esta semana fue bien estándar. Laburé en F1 y MEFE el 29, el 30 cursé y di clases. También
+arranqué con el tema de los papeles para entregar a RR.HH. Es un bardo impresionante eso.
+El jueves a la mañana Seba dió una charla sobre LLM (Chat-GPT, Bard, cosas así). Me parece
+que es una buena señal de que debería empezar a usar estas cosas. 
+
+Hoy fui a la mañana a conseguir el informe del electrocardiograma. Lo que no estoy consiguiendo
+es turno médico para terminar los estudios clínicos de rutina. Lo que sí podría hacer es
+intentar ver lo que me dijeron del UMA, hacer una consulta clínica por Zoom. Quizás
+eso me sirva.
+
+Después di clases de F1. Ahora estoy terminando la Burocracia infinita. Lo que voy a hacer ahora
+es empezar a revisar lo que hice y prepararme una idea de cómo encarar mi laburo a partir
+de la semana que viene. 
+
+Ahí armé una lista con todos los temas que tengo pensado, me parece que es una buena charla para
+tener con Pablo para arrancar y fijar el trabajo. El lunes seguiré con MEFE y veré si puedo enviar
+los papeles importantes para RR.HH. También debería ver de conseguir mi tarjeta de crédito del
+Nación.
+
+------------------------------------------------------------------------------------------
+
+05/06/2023
+
+Estuve todo el día copiando la carpeta de MEFE de las notas que tenía de Constanza. No llegué
+a terminar de copiarlo todo.
+
+------------------------------------------------------------------------------------------
+
+06/06/2023
+
+A la mañana fui a cursar MEFE. Vimos el tema de asignar intervalos de confianza a los parámetros.
+Después fui a dar clases de F1. A la tarde copié un poco más de la carpeta de MEFE y me junté
+con Pablo para charlar sobre el TP. Estamos de acuerdo en que el modelo parece estar bien
+caracterizado. Lo siguiente sería quizás empezar a pensar seriamente en el interés del
+modelo. ¿Qué pregunta quiero responder? ¿Qué cosa espero ver con el modelo?
+ Una idea para trabajar esto es leer unos papers, ver de sacar unas ideas de qué hacen los otros
+trabajos relacionados con sus modelos.
+
+También Pablo me dijo que prepare la idea del Republia.
+
+------------------------------------------------------------------------------------------
+
+07/06/2023
+
+Hoy no estoy tan muerto de sueño como ayer, pero la mañana se me hizo lenta, fue complicado
+salir de casa. Estuve toda la mañana terminando de firmar los papeles para RR.HH. Al final
+los envié. No hice lo del Siradig. Ni idea de cómo completar eso, no pude conseguir clave fiscal
+en la app de MiAfip. No me tomó el DNI.
+
+A la tarde copié cosas de MEFE y me fui a dar consultas. Creo.
+
+------------------------------------------------------------------------------------------
+
+08/06/2023
+
+A la mañana me puse a ver el TP Computacional de MEFE. A la tarde fui al principio de la jura
+de Constanza, Walter, Rodri y Julián. Después di la clase de consultas contra turno más poblada
+de esta cursada. Eran 10 contra mi. Me defendí bastante bien. Después fuimos con Constanza,
+Walter y Rodri a morfar algo.
+
+------------------------------------------------------------------------------------------
+
+09/06/2023
+
+Día clásico. Cursé, después fui a responder consultas. Por último trabajé un poco en el TP
+computacional de MEFE.
+
+------------------------------------------------------------------------------------------
+
+12/06/2023
+
+Hoy estuve trabajando en el TP Computacional 2 de MEFE. Resolví lo necesario para el punto
+2 y un poco del 3. A la tarde me junté con Constanza y resolvimos hasta el 5 más o menos.
+No está para entregar, pero aprendimos bastante del tema.
+
+------------------------------------------------------------------------------------------
+
+13/06/2023
+
+A la mañana cursé MEFE un rato, después fui a F1 porque estuvieron rápido con consultas.
+Después fui a la reunión de los voluntarios para la organización de las olimpíadas
+metropolitanas de Física. Ahora estoy haciendo la burocracia infinita y ya después me
+pongo con el copiar la carpeta de MEFE. Después tengo que estudiar parciales.
+
+------------------------------------------------------------------------------------------
+
+23/06/2023
+
+Pasaron varios días desde la última vez que escribí acá. El 13 fue martes, el miércoles 14,
+jueves 15 y viernes 16 no sé qué hice. Habré estado copiando la carpeta de MEFE y haciendo
+algunos ejercicios de F1. No estuve avanzando en nada en el tema de Tesis. Después 19 y 20
+fueron feriados, aunque yo estudié MEFE. El miércoles arrancó la cosa heavy con semana de la
+física y cosas. Jueves más semana de la física y consultas contra turno. Hoy rendí el parcial
+de MEFE. Más tarde di clases de F1 y después me puse a hacer ejercicios de F1. A lo último
+fui a la reunión de doctorandos.
+
+------------------------------------------------------------------------------------------
+
+06/09/2023
+
+Existe una posibilidad de realizar un trabajo en colaboración con una gente de España que 
+publicó un paper utilizando un modelo similar al de Baumann. Pablo me dijo de ir armando
+una simulación multidimensional de un modelo similar al de ellos. Para eso tengo que tomar
+mi código de la tesis y a partir de ahí ver de hacer unas simulaciones para mostrar la 
+aplicación del modelo al caso multidimensional. Tengo que ver de revisar el código
+que cargué al Github y ver de actualizarlo con el nuevo formato más legible del código actual.
+Esto va a ser un poco un bardo, pero quizás logre tener algo armado para el miércoles.
+
+------------------------------------------------------------------------------------------
+
+07/09/2023
+
+Acabo de tener una revelación horrorosa. Descubrí que llevo bastante más laburo del que
+recordaba sin registrar en la documentación. Todas las documentaciones están desactualizadas.
+
+.) La documentación en la carpeta Programas C/Programas está desactualizada.
+.) La documentación en la carpeta Programas Python está desactualizada.
+.) La documentación en la carpeta de Imágenes está desactualizada. Encima el cruce de carpetas
+de cosas que hice en el primer año con las del segundo año me está confundiendo.
+
+La semana que viene voy a ver si puedo ponerme a organizar esto. Primero tendría que agarrar
+la documentación en Imagenes y separar lo que es del año pasado con lo que es de este año.
+Y marcar la transición supongo. Luego podría ir leyendo el archivo de Progreso para ir viendo
+cómo avanzaron los programas. Con eso tendré una buena idea de qué hice en cada carpeta. Tengo
+que aceptar de que posiblemente la carpeta de Programas no estará correctamente actualizada. Pero
+asumo que lo que hice en las distintas etapas razonablemente es muy similar y por eso nunca terminé
+de cambiar los archivos del src.
+
+Ahora lo que voy a hacer es separar el archivo actual y lo pondré en una carpeta llamada Exploración
+Logística. Por lo que estoy viendo de mis notas, eso es lo último que hice. Queda entonces descubrir
+qué son las carpetas de imágenes que sobran en mis archivos, pero creo que podré tener más respuestas
+cuando mire lo que tengo en la facultad. Vale aclarar, no vas a encontrar nada en el archivo de Progreso,
+recién lo repasé, no anoté nada importante. Putos microcambios. El tema de esto es que realmente no
+pudieron haber muchos cambios. De haberlos, el Git debería haber notado la diferencia en los códigos.
+Qué raro. Va a ser un tema deshacer la trama de archivos superpuestos y mezclados.
+
+La nueva etapa se va a llamar Homofilia Estática, ya que vamos a tratar de implementar homofilia en redes
+estáticas. Después tengo que armar redes de Erdos-Renyi para mis simulaciones, así lo que hago matchea
+mejor con lo que hizo esta gente. Aprenderme sus nombres estaría bueno.
+
+------------------------------------------------------------------------------------------
+
+12/09/2023
+
+No tengas miedo. El 08/09 fue viernes, diste clases, revisaste alguna cosa y te fuiste.
+El 11/09 fue lunes y te dedicaste a la entrega del TP de la guía 1. Hoy a la mañana
+estuve preparando la clase de F2. Queda entonces hacer un poco de lo del código y mañana
+a la mañana, antes de las 11:30, voy a releer el paper de la gente esta de España.
+
+Miré más documentación de más carpetas. Está todo mal. La semana que viene arranco a organizar
+esto. Lunes y miércoles a la mañana le damos a esto de lleno. Lo importante es que ya tengo
+un código que creo que funcionaría. Mañana veré de mandar a correr el armado de las redes
+y ya después me pongo a leer el paper.
+
+------------------------------------------------------------------------------------------
+
+13/09/2023
+
+A la mañana leí el paper de la gente de España para prepararme para la reunión. Tomé algunas
+notas y me marqué unas ideas. Igual la charla fue más que anda dada entre Pablo y los muchachos.
+Quedamos en que voy a arrancar con las simulaciones y dentro de dos semanas nos juntamos.
+Lo que charlamos es más o menos lo que veníamos charlando de hacer en conjunto, el plan
+sería extender el modelo, revisar cuál es el comportamiento en el espacio de Beta-Cos(delta),
+ver si podemos proponer el delta como algo variable y que depende de las opiniones de los
+agentes.
+
+Yo ahora voy a ir a cursar. Mañana mi plan es hacer bastantes cosas de F2 y ya el viernes
+después de F2 podría ponerme a hacer cosas de la tesis. La semana que viene lunes y miércoles
+a la mañana me pongo a organizar cosas, fuerte. Martes, jueves y viernes me pongo con el
+armado del modelo y cosas. Quizás este finde también haga un poco. Por lo menos revisar
+el VPN para ver que todo funca y después mandar a correr aunque sea una prueba con N=1000.
+Revisar los grados medios de esas redes. También podría el finde ponerme a organizar las
+documentaciones, aunque creo que en la facultad tengo más info para revisar eso.
+
+------------------------------------------------------------------------------------------
+
+15/09/2023
+
+En la mañana estuve preparando el código de Homofilia Estática. Después fui a responder consultas en F2.
+Un alumno me consultó por un ejercicio de dos cuerdas unidas, revisar de hacerlo para
+la clase que viene. O consultarlo con Gabriel o alguien. Zoe dijo que lo tenía hecho.
+
+Después de eso comi, fui al CASI, intenté integrarme a un grupo pero no funcionó. La próxima
+será. Mandé a correr el código con 10000 agentes, por lo que ví tarda 20 minutos resolver
+una simulación, así que hay que planear bien esto. Espero poder hacer funcionar todo en casa
+durante el finde. Ahora voy a subir todo a Github, ya el finde lo que tengo que hacer es:
+
+.) Borrar el código viejo en src, o por lo menos mandarlo a una nueva carpeta para después
+mirarlo e intentar descubrir lo que estuve haciendo.
+.) Armar redes de 10000 agentes y grado medio 8 en Oporto.
+.) Corregir la distribución de los datos iniciales, porque se están haciendo sólo en valores positivos
+y debería ser uniforme entre [-kappa, kappa]. Considerar si hay algo que pueda hacer para más o menos
+definir la región si Kappa es chico, pero creo que no es tanto problema eso.
+.) Preparar las carpetas para recibir los datos nuevos.
+.) Cambiar los Instanciar y Metainstanciación.
+.) Mandar a correr las simulaciones. La idea sería barrer Beta [0.5, 1.5] y CosDelta [0,1]. Aunque estaría
+bueno revisar cómo lograr armar las simulaciones que les dan a ellos. Supongo que podría armar
+esas tres simulaciones aparte.
+.) Revisar las funciones de Python para ver que los códigos que levantan y arman los gráficos funcan
+todo bien.
+
+------------------------------------------------------------------------------------------
+
+17/09/2023
+
+Es domingo, son las siete de la tarde. Mandé a correr el código. Hasta donde sé, funca bien. Lo probé
+en la pc de la facultad y funcionó sin problemas. Ojalá funque bien. Aproximadamente va a tardar
+40 horas. Estoy usando los 20 hilos de Oporto, estoy corriendo el programa de forma de armar simplemente
+20 simulaciones. Mis simulaciones no tienen guardados datos de testigos más allá de las primeras dos
+o tres simulaciones, me sigue pareciendo una buena idea. Si bien son 40 horas, asumí que va a terminar
+el martes a las 19. Puedo ver de intentar mandarlo a correr de nuevo el martes a la tarde cosa de
+armar otras 20 simulaciones, total hasta el jueves tengo tiempo de armar las funciones de Python.
+
+Es importante que pruebe las funciones de Python que grafican, ver que hacen lo que quiero. Eso lo
+puedo probar el jueves en la facultad.
+
+Importante recordar, la función de crear redes arma redes de Erdos-Renyi con grado medio 10.
+
+------------------------------------------------------------------------------------------
+
+20/09/2023
+
+El lunes 18 y el martes 19 no avancé con el código, estuve dando clases de C, cursé Caos,
+Fractales y Solitones, di clases en F2 y después tuve que buscar unos papeles. Días complicados.
+
+Vamos a ver si puedo encontrar el motivo de por qué el código funca mal en Oporto. O si puedo hallar
+una solución al tema de armar datos.
+
+Por lo que veo, el problema no parece ser que el programa no corre. El problema es que los valores
+están continuamente oscilando y mi programa no corta. ¿Y si lo hago cortar en un tiempo dado?
+Eso podría ser una solución mañana. También estoy viendo que mi cálculo de distancias es una
+cosa rara muy mal definida. Voy a usar la definición que hace Baumann del cálculo del producto
+escalar de dos vectores, aprovechando la matriz de superposición.
+
+Parece que el error estaba efectivamente en el hecho de que se calculaba mal la distancia entre
+agentes. Mañana tengo que armar ese producto de forma que sea adaptable al cambio del número de
+tópicos. Y recalcular el tiempo que tarda en armarse los datos.
+
+------------------------------------------------------------------------------------------
+
+21/09/2023
+
+Siguiendo con la idea que me tiró Sofi, voy a mandar a correr datos en la pc de Oporto cosa de ver
+primero que mi código replique lo que ven la gente de España en los tres casos que marcaron en su
+paper. Voy a construir 40 simulaciones en los puntos con (Kappa=0.5,Beta=1), (Kappa=10,Beta=0.1) 
+y (Kappa=10,Beta=1.5). También voy a separar el código en dos carpetas, una para datos 1D y otra 
+para datos 2D. La idea es que el código 1D directamente toma la norma entre vectores como si fueran
+vectores ortogonales. Eso no es un problema porque en 1D no hay un espacio multidimensional que pueda
+ser no ortogonal. Mientras esto corre, yo me encargaré de ir armando una función que calcule la norma
+no ortogonal. Con esa función implementada, creo que no voy a necesitar separar en casos 1D y 2D.
+Aunque tener carpetas separadas será útil para diferenciar los datos.
+
+Por otro lado, debería borrar los datos viejos de Oporto para poder armar nuevos datos. Ver cuánto
+van a pesar, eso es importante.
+
+Luego de hacer eso, armaré la función que calcula la norma para vectores de dimensión N en un espacio
+no ortogonal. Esa función necesita que le pase la matriz de superposición.
+
+Ya borré los archivos en Cambios_parametros y en CI_variables. Dios quiera que no vuelva a necesitar
+esos datos en el futuro. Rearmé las carpetas, cosa de poder usar eso para construir la Documentación
+en el futuro.
+
+Armé la función que calcula la norma de un vector en un espacio no ortogonal. La probé y funciona bien.
+Ahora queda ver si con esto el sistema correctamente converge a donde tiene que ir. Lo bueno
+es que esta implementación del código es robusto ante un caso de dimensión N, por lo que no tengo
+que separar si el código trabaja un caso unidimensional o bidimensional o incluso si quisiera de más
+dimensiones.
+
+Mandé a armar una simulación de 10000 agentes que finalice si realiza 20000 pasos temporales o más.
+La idea es ver si el código corre, si finaliza o si sigue dándole eternamente. El código 1D tarda
+unos 30 minutos aprox. El 2D debería tardar 40 minutos como máximo, no crece tanto el orden de cuentas,
+se duplica con suerte.
+
+Estoy viendo de subir el archivo que grafica opiniones vs tiempo a Oporto. Estoy notando que ese archivo
+está hardcodeado porque proviene del código de Complemento_Poster, así que voy a tener que deshardcodearlo.
+
+Creo que resolví eso bien. Confío en que la forma robusta del código con el Pandas va a resolver
+correctamente el conflicto cuando intente graficar Betas y Kappas que no están asociados.
+Quiero decir, por como está hecho el código, va a querer graficar los datos de Beta=1.5 y Kappa=0.5,
+pero no simulé eso. Igual, el intento de graficar eso surge sólo si hay archivos en la lista, porque
+eso depende de un for que recorre una lista. Si la lista es vacía, no hace nada.
+
+Subí la carpeta con el nuevo src a Oporto y el viejo código lo dejé en HE_v0. Mañana lo pensaré con
+un poco más de calma y veré de borrar esa carpeta. O la puedo dejar ahí hasta el próximo miércoles.
+Eso suena mejor. También subí el código de Python, ya si todo está bien, puedo armar los gráficos
+de Opinión en función del tiempo. Qué buen código que armé, me quiero mucho.
+
+Ya armé los gráficos del caso unidimensional, se ve tal cual ve la gente de España. Éxito.
+
+------------------------------------------------------------------------------------------
+
+22/09/2023
+
+En la mañana mandé a correr una simulación del caso multidimensional. Aproveché para corregir 
+el tema de que inicializar sólo creaba opiniones positivas. Eso estaba mal en el código del
+modelo multidimensional, pero no en el código unidimensional. Por eso se ven bien los datos
+armados. Y corregí el detalle de que no estaba liberando el puntero de Intermedios.
+
+Pasé todos los archivos necesarios para poder correr en Algarve cosas, así que ahora tengo
+40 hilos para hacer funcionar todo. Vamos a ver qué tal. Queremos tener unas simulaciones
+armadas y revisar el comportamiento del sistema. Ponele que cada simulación tarda 20 minutos
+para 1000 agentes en 2D. 
+
+Primero que nada, Pablo me dijo que mande cinco simulaciones para K menor a 1. Hagamos eso
+directamente con el Metainstanciación, usemos 10 hilos para armar 10 simulaciones y fue.
+Esto lo voy a mandar a OPORTO. Lo que mandé es a armar 10 simulaciones para N=1000, 
+Beta[0.5, 1, 1.5], Cdelta = 0 y Kappa = 0.1. Armo unas cosas más, me voy a casa y después
+desde casa mando en Oporto también a correr. Visto que esto corrió en un pedo, puedo mandar
+a correr otras cosas más ya.
+ La segunda tanda de simulaciones, de las "cinco" que me dijo Pablo, tienen Kappa = 3 y
+Cdelta = [0, 0.25, 0.5, 0.75, 1].
+
+Tengo que cambiar los nombres de los archivos, porque los estoy guardando con Beta y Delta,
+pero si también barro en Kappa, entonces esto va a estar mal siempre, se van a ir reescribiendo
+los datos.
+
+Mientras mandaré a correr datos en ALGARVE. Voy a fijar Kappa a 3, barrer beta entre 0 y 2
+y Cos(delta) entre 0 y 1. Si Beta va de a 0.2, entonces son 11 valores, mientras que si
+Cos(delta) va de a 0,2 son 6 valores. A 10 minutos cada simulación, eso son 660 minutos
+una tanda de esto. Eso multiplicado por 10 simulaciones me da 6600 minutos, o lo que es
+lo mismo, 110 horas. Esas 110 horas repartidas en 15 hilos son 7.3333 horas. Hagamos 30
+simulaciones y me da 22 horas. Todo bien.
+ Repito para que quede claro, en ALGARVE están los datos con los que voy a armar el diagrama
+de fases. En OPORTO están los datos para hacer una exploración rápida.
+
+Finalmente, mandé a correr datos en Oporto y Algarve. Me faltan en Oporto la tanda de simulaciones
+con K mayor a 1.
+
+------------------------------------------------------------------------------------------
+
+23/09/2023
+
+Hoy en la tarde revisé los datos. Por un lado, se terminaron las simulaciones de K chico en
+Oporto, así que mandé a armar las simulaciones en K grande. Esas deberían estar terminadas
+para mañana. Con eso voy a poder armar unos gráficos de opiniones en el espacio de fases.
+Ahí voy a ver rápidamente el comportamiento del sistema en esas regiones.
+
+Por otro lado, en Algarve se terminaron las simulaciones para armar el espacio de fases barriendo
+Beta [0,2] de a 0.2 y Cosdelta [0,1] de a 0.2. Como terminaron todas las simulaciones,
+aproveché para mandar a correr una nueva tanda de simulaciones que completen los valores
+de Cosdelta intermedios en la región [0,1] que no se completaron antes. Eso tardó un día.
+Se me ocurre mandar a correr datos para completar los otros datos que faltaron del Beta entre
+0 y 2, pero ya veré mañana para eso.
+
+------------------------------------------------------------------------------------------
+
+24/09/2023
+
+Los datos que mandé se terminaron, tanto los de Algarve como los de Oporto.
+En Algarve quiero mandar a correr datos, pero también quiero ver si lo que ya tengo
+produjo resultados. Voy a hacer una carpeta de copia, "2D_copia", en la que tenga los
+datos que armé hasta ahora. Mientras el programa se pone a armar datos y los guarda
+en la carpeta de 2D, yo trabajaré con lo que está en 2D_copia. En Oporto en cambio
+creo que no tengo que simular nada más, así que queda revisar los datos. Con los
+datos de Oporto me voy a poner a armar gráficos. Con los de Algarve armaré los mapas
+de colores del espacio de fases.
+
+Ahí miré mi código de Python, no es robusto ante la existencia de varios N que graficar.
+Siempre lo armé pensando en un sólo valor de N. Tengo que considerar cómo implementar la
+posibilidad de que mi conjunto de datos tenga varios N y grafique según el N. Eso queda
+como tarea para después.
+
+------------------------------------------------------------------------------------------
+
+25/09/2023
+
+Lo primero que voy a hacer en la mañana es armar un archivo que haga los gráficos de 
+trayectorias de opiniones en el espacio de fases. Cuando lo pase a Oporto y Algarve no me
+tengo que olvidar que los archivos de ahí tienen tres parámetros en el nombre. Es decir que
+tengo que rearmar la formulación de lo los archivos. Voy a revisar después si los archivos
+1D también tienen tres parámetros, creo que no.
+
+Tengo que corregir además el main que tengo en la pc de la facultad, que es distinto al main
+que armé en las pcs del cluster. En las pcs del cluster cambié la forma en que el código se
+dirige a la carpeta adecuada y los nombres de mis archivos. Ese cambio surgió en cuanto agregué
+la forma correcta de calcular distancias no ortogonales. Creo que tengo que tener en cuenta
+en el futuro de rearmar datos 1D que los nombres de archivos viejos son distintos a los nombres
+de archivos nuevos.
+
+Armé un archivo nuevo para probar que se grafique todo bien. Si se grafica bien, lo mando a
+Oporto y Algarve.
+
+Después de comer mando a hacer los gráficos en el espacio de fases de los datos de Algarve. Tengo
+que rearmar los códigos de funciones y de Graficar para que tomen tres parámetros del nombre de
+los archivos.
+
+------------------------------------------------------------------------------------------
+
+26/09/2023
+
+Hoy a la mañana me desperté y recordé el espíritu del código original que tomaba los dos parámetros
+que iba a graficar y de ahí corría todo asegurándose que en el eje X esté lo que tenga que estar, en
+el eje Y lo mismo. Yo ayer en la noche, flasheando que tenía que extender la función a tres variables
+corregí eso posiblemente cagando el código. Ahora lo que voy a hacer es mandar a correr esto para
+armar los gráficos en el espacio de fase que tengo que armar, y mientras eso corre, voy a mirar desde
+Github cómo estaba el código antes, dejarlo como estaba y corregir en graficar cuál es el parámetro
+1 y cuál el 2, para que el código que inteligentemente armé hace unos meses siga funcionando lo más
+bien.
+
+Voy a rearmar mi código, con algo más razonable, que es llamar parámetro x al que grafico en el eje x
+y parámetro y al que va en el eje y. El resto de los parámetros les pondré el nombre que les corresponde.
+
+------------------------------------------------------------------------------------------
+
+27/09/2023
+
+Armé mis funciones para graficar el mapa de colores de Promedio de Opiniones
+y Varianza de Opiniones. Las hice rápido las funciones, así que tienen un
+vector de más, podría resolver lo mismo gastando menos espacio de memoria.
+Básicamente, puedo deshacerme del Opifinales. Eso queda para el futuro.
+
+Notas de la charla con Hugo, David, Mario y Jesús:
+--------------------------------------------------
+
+El tema de la distancia no es menor.
+
+Propusieron tres formas de entender el tema de los pesos.
+
+.) La primera es considerar que calculo la distancia como una norma en el espacio.
+Esa distancia puede ser considerando el espacio ortogonal o el no ortogonal.
+
+.) La segunda es considerar que se calculan pesos distintos por cada tópico.
+Esos pesos se calcularán viendo las distancias entre las opiniones en cada tópico
+por separado. Entonces el peso en el tópico 1 se calcula con las distancias
+en el tópico 1.
+
+La idea sería armar histogramas de agentes en el espacio de tópicos. Para armar
+los histogramas me recomendaron que guarde mejor los datos, intentando obtener el
+histograma directamente de la simulación. Eso va a ayudar a que los archivos no pesen
+cerca de 200 megas cada uno, haciendo imposible el guardar datos.
+
+El plan sería que yo arme simulaciones diferenciando si uso un tipo de distancias
+o el otro.
+
+----------------------------------------------------------------
+
+Voy a ver de resolver para mañana el hacer la burocracia infinita y quizás el viernes
+arrancar a reorganizar la documentación. Y la semana que viene resuelvo lo de los gráficos
+de histogramas que me dijeron e implemento el tema de las distancias. Tengo que tener
+cuidado con lo que es el armado de las carpetas y diferenciar correctamente las
+etapas del trabajo.
+
+------------------------------------------------------------------------------------------
+
+28/09/2023
+
+En la mañana llevé a ver el tema de las gomas del auto, llegué tarde a la facultad y
+después me puse a ver lo de inscribirme en la escuela de Brasil. También vi que salió
+la prueba de oposición para el cargo de laboratorio superior. Honestamente, ni idea 
+de qué presentar, así que me voy a mantener afuera de eso.
+
+Después en la tarde finalmente me puse con los temas de F2, siendo que primero repasé
+contenidos de fórmula de D'Alambert y después empecé con los ejercicios.
+
+------------------------------------------------------------------------------------------
+
+29/09/2023
+
+En la mañana seguí con ejercicios de F2. Después fuimos a responder consultas y a la tarde
+me puse a completar mis notas y la burocracia infinita.
+
+------------------------------------------------------------------------------------------
+
+02/10/2023
+
+Hoy a la mañana mandé a correr los datos para complementar el barrido que hice antes. No
+implementé todavía la función que arma los histogramas en los datos que salen de C. Tengo
+bastantes cosas por hacer y no es algo tan importante todavía. Total, todos los archivos que
+tengo, que son 45 simulaciones en el espacio que quiero barrer, me ocupan 13G. Mi plan es
+tener 5 veces eso, así que sólo me va a ocupar 65 G. Menos en realidad considerando que los
+Testigos están contabilizados en esos 13, pero no voy a generar más.
+
+Entonces, tengo que barrer, modificando para que el Metainstanciación arranque desde la iteración
+46 y de ahí corra hasta 200. Y que además el Beta ahora corra en todos los valores desde
+0 hasta 2 de a 0.1, no de a 0.2. Bueno, antes de sumar hasta 200 simulaciones, voy a sumar
+hasta 105. Es decir, 60 iteraciones más. Quizás estoy haciendo mal el cálculo, pero como
+las simulaciones pueden tardar cualquier cosa entre 60 segundos y 1120, no sé cuánto considerar
+en promedio para hacer las simulaciones. Lo que hice fue considerar un promedio de 400 segundos.
+En ese contexto, me da que sumar esas 60 iteraciones implica 4 días de laburo. Arranco con eso,
+después quizás sumo más.
+
+Ya lo mandé a correr. Espero que salga todo bien. Ahora me voy a poner a revisar lo de la clase
+de F2. Así ya mañana llego preparado. Después el resto de la semana será Sistemas Complejos y
+laburo de tesis.
+
+------------------------------------------------------------------------------------------
+
+06/10/2023
+
+Efectivamente la semana fue lo que anoté. El martes y miércoles me dediqué a cosas de Sistemas
+Complejos. El jueves preparé cosas en distintos grupos y preparé la clase de F2. El viernes
+a la mañana di clases y después me puse con el tema del doctorado.
+
+Me armé una función que arma los histogramas 2D. Tengo que ponerla a prueba. Para eso voy a armar
+unos datos en la pc de la facultad, y luego sobre eso lo mando a correr. Si los gráficos salen bien,
+ya puedo mandar eso a Algarve y armar todos mis nuevos gráficos.
+
+Ahora que tengo esto podría ponerme a preparar el código para el caso de distancias distintas que
+me pidieron o podría ponerme a actualizar la documentación. Me tienta más lo segundo.
+
+Se armaron los datos, pero no tengo más tiempo. Probaré la función en casa. Después en la semana
+seguiré con la actualización de la documentación. Actualicé la de los programas en C. Ya es algo.
+Yo continuaría con la Documentación de las imágenes.
+
+------------------------------------------------------------------------------------------
+
+10/10/2023
+
+El 9 estuve todo el día con el tp de Sistemas Complejos. Al final no resolví el último punto,
+pero logré hacer la mayor parte. Walter me pasó su TP para tener una idea, pero veré qué
+tal puedo resolverlo por mi cuenta.
+
+Volviendo al trabajo de hoy, lo primero importante es mandar a hacer algunas simulaciones
+en las que veo tres o cuatro puntos relevantes como para hacerme una idea del comportamiento
+del sistema en esas regiones. Lo siguiente es reacomodar los gráficos de Histogramas obtenidos
+cosa de que coincidan con lo visto en las trayectorias de opiniones.
+
+Podría hacer simulaciones para Beta= 0.1, 1, 1.5 y eso combinarlo con Cos(delta)= 0, 0.5, 1.
+Ahora, el tema es que tengo que armar métricas distintas. Podría armar dos métricas de
+acá a mañana. En principio se me ocurre que podría con dos. La primera sería sacando el
+cos(delta) de la tanh, y que sólo exista en los pesos w_ij. La segunda sería que la
+distancia entre las opiniones sea con independencia total en las opiniones, generando
+pesos diferenciados según el tópico.
+
+Es importante entonces diferenciar esto en tres etapas, más que nada para no confundir
+los datos. Y bueno, también para no confundir los códigos. Así que guardo el código
+que tengo actualmente y me armo dos nuevas carpetas con códigos. Mañana o 
+pasado me pondré con la documentación.
+
+Acabo de notar que el laburo que hice el finde no lo comitee. Por tanto, el laburo que estoy
+haciendo ahora va a entrar en conflicto con eso. Lo que me importa preservar de ese finde es
+más que nada lo que hice en el archivo de funciones. Podría simplemente ignorar en este commit
+el "laburo" que hice en el archivo y después committear lo de hoy. Creo que suena como un plan.
+En ese caso mejor ir yendo así ya voy resolviendo esa diferencia.
+
+------------------------------------------------------------------------------------------
+
+11/10/2023
+
+Evité el conflicto de los merges. O la mayor parte por lo menos. Ahora tengo que ponerme
+a hacer dos cosas. La primera es mandar a correr datos con la métrica que no tiene el cos(delta)
+en la tanh. La segunda es rearmar los gráficos de histogramas para que me coincidan con los de
+trayectorias.
+
+Ya hice lo primero. Ahí mandé a hacer los histogramas. Si esto está bien, entonces lo que me queda
+es ponerme a armar una presentación.
+
+Notas de la charla:
+-------------------
+
+.) Revisar medidas de Kurtosis o cosas para ver si las distribuciones se asemejan a uno,
+dos o cuatro picos. También podría estar bueno ver la covarianza como medida para
+diferenciar los picos. El coeficiente de correlación es otra cosa que se puede utilizar.
+
+.) Ver si para betas apenas por encima de 1, se requiere cosdelta más grande para romper la
+polarización. Repasar este concepto.
+
+.) Buscar la cruz que se forma para betas menores a 1 y cosenos delta bajos.
+
+.) Estaría bueno hacer un análisis similar al que hacen ellos para redes con beta=0. En ese caso
+surgen estados polarizados si modifican las condiciones iniciales y la red. Lo interesante es
+ver que para redes de ER con grado medio bajo se forman estados polarizados cuando no
+debería pasar. Entonces podríamos hacer algo similar con el estudio con el parámetro
+superposición de tópicos.
+
+.) Armar un barrido fino del espacio Beta-Delta guardando los histogramas. Aunque ese barrido que me
+está pidiendo es algo que ya tengo.
+
+.) Revisar cómo da lo de la entropía para distinguir los estados.
+
+.) Y también considerar qué está pasando con las simulaciones que saturan. ¿Esas están bien, o deberían seguir
+oscilando?
+
+------------------------------------------------------------------------------------------
+
+19/10/2023
+
+Superada la reunión del 11/10, el jueves 12 no trabajé mucho en esto, estuve con cosas
+de F2 o de Sistemas Complejos. Honestamente no recuerdo qué pasó ese jueves. Di consultas
+y hablé con Guille y Gabriel sobre el problema 1 del parcial.
+
+De viernes a lunes no laburé en esto, cosas del parcial y de Sistemas Complejos. Además fue
+finde largo todo eso. El martes tomamos el parcial de F2 y después a la tarde cargué los
+archivos de PDF a la carpeta de Parciales. El miércoles estuve laburando lo que pude
+en Sistemas Complejos.
+
+Hoy a la mañana resolví el tema de cargar mi CBU a AFIP para el reintegro del IVA. Después
+organicé partidas y me puse por último a revisar Documentación.
+
+Armé la documentación sobre las carpetas de imágenes. Me queda actualizar la documentación en
+la carpeta de Python. Estuve pensando en mandar a correr simulaciones. Podría por un lado
+aprovechar y aumentar las simulaciones de Homofilia_estática en Algarve cosa de tener
+200 simulaciones. Y mientras tanto, armar otras 200 simulaciones en Oporto del modelo de
+Tangente_diferenciada. La paja de eso es que voy a tener que recordar dónde están los
+datos de qué, pero supongo que no es tanto bardo por ahora. En el peor de los casos,
+podría pasar los datos de una pc a la otra y listo. Yo creo que es posible eso y que
+vale la pena. Hagamos esto de las dos simulaciones. Es más, armemos una prueba y veamos
+si puedo copiar datos de una pc a otra. Parece que Algarve no está encendida.
+
+------------------------------------------------------------------------------------------
+
+24/10/2023
+
+El viernes 20 arranqué a leer el paper, tuve clases de F2 y después vino el DF Abierto.
+El sábado y domingo 21 y 22 seguí laburando, tanto en el TP de CFS como en el paper
+para la reunión de grupo.
+El lunes 23 en la mañana terminé de leer el paper y a la tarde fui a cursar CFS. Corrieron
+la fecha de entrega del TP al miércoles 25.
+
+Hoy a la mañana terminé la presentación para la reunión de grupo. Ya la cargué al Drive
+que pasó Ale. Fui a responder consultas de F2. Tengo que ponerme al día con las guías.
+
+Di la charla de grupo. Salió bastante bien, me la elogiaron bastante. Me alegra.
+Se resolvió correctamente esto.
+
+Ahora voy a mandar a correr datos en Oporto y Coimbra. En Oporto voy a mandar a correr
+los datos de Tangente_Diferenciada que barran en el espacio Beta=[0,2] de a 0.1 y 
+Cos(delta)=[0,1] de a 0.1. Serán 200 simulaciones por punto del espacio de parámetros.
+Corro esto en Oporto porque tengo todo básicamente armado para eso. Después copiaré
+los archivos para mandar a correr eso en Coimbra.
+
+Al final no mandé a correr cosas en Coimbra. Me tomó un montón de tiempo simplemente descargar
+los datos. Voy a ver de borrar las cosas innecesarias como los archivos de datos. Esos
+no los necesito porque los tengo en Oporto.
+
+------------------------------------------------------------------------------------------
+
+31/10/2023
+
+El miércoles 25 terminé el TP 3 de CFS. Desde entonces hasta hoy básicamente estuve laburando
+en cosas de F2. Ahora voy a ver de mandar a reproducirse los gráficos de histogramas 2D
+a ver si encuentro los gráficos de cruz que hablamos la otra vez. Voy a ver si puedo más o
+menos mandar a correr datos en Oporto.
+
+Mandé a continuar las simulaciones del caso de tangente diferenciada. Revisando los archivos de 
+salida, me parece que razonablemente todos los hilos habían completado 4 simulaciones de las
+11. Ahora queda que oporto siga laburando.
+
+------------------------------------------------------------------------------------------
+
+03/11/2023
+
+El 01 y 02 de Noviembre estuve corrigiendo parciales y me mudé de vuelta a San Fernando.
+Hoy arranqué mirando los archivos de los histogramas. Son muchos gráficos, pero más o menos
+va yendo la cosa. Encontré dos gráficos interesantes. Uno con la cruz que dijeron que tenía
+que aparecer, otra con tres puntas.
+
+Estos gráficos aparecen para valores de Beta cercanos a 1 y con cos(delta) = 0.
+La primer cruz la vi en Beta = 0.8, Cos(delta) = 0 y sim=58. Hay varias cruces más en
+Beta =0.9. Quizás un barrido más fino cerca de 1 genera otras cruces.
+
+Lo que debería hacer ahora es tomar los datos que tengo en la pc, armar una función que 
+calcule la traza de la matriz de covarianza y comparar eso con algunos gráficos cuya forma
+conozco.
+
+Estoy recordando que por ahora mis funciones son vulnerables a que si tuviera varios N o varios
+Kappa, entonces eventualmente lo voy a tener que corregir eso.
+
+Estoy mirando las covarianzas. No puedo diferenciar correctamente un estado de cuatro puntas de uno
+de dos puntas. Ahí le mandé unos mensajes a pablo con lo que fue una primer observación de esto.
+Se me ocurre que vale la pena armar un mapa de colores utilizando la traza de la matriz de Covarianza
+y ver qué se observa. Qué detecta la matriz de Covarianza y qué no.
+
+------------------------------------------------------------------------------------------
+
+06/11/2023
+
+Hoy estuve con bastantes cosas así que avancé poco con el tema del doctorado, pero mandé a armar
+un mapa de colores para el espacio de parámetros usando la traza de la covarianza como métrica para
+diferenciar estados. Faltaría sumarle algo más.
+
+Ahora voy a ir a cursar CFS.
+
+------------------------------------------------------------------------------------------
+
+08/11/2023
+
+Una buena idea sería modificar el K=10 para poder observar mejor las cruces que me mencionan.
+En esa región la tanh se puede aproximar más por uno. También podría ser posible que en una
+de esas la cruz nunca se forme. Quizás se forma una nube.
+
+Enfocarme en las simulaciones más en la región entre 0.5 y 1.5, el resto se resuelve con menos
+estadística porque no es tan importante. Eso va a ayudar a hacer más rápido las simulaciones.
+
+Revisar el tiempo que duran los estados metaestables. Me propusieron que debería mirar el cómo
+evoluciona la polarización de los estados en función del tiempo. Debería usar una métrica para definir
+si está o no polarizado, luego de eso ver la fracción de polarización en función del tiempo y con eso
+determinar un tiempo de corte razonable.
+
+Ellos proponen dos medidas para definir la diferencia entre estados polarizados y no polarizados.
+La primer medida es una distancia de las distribuciones al centro para definir si el estado es
+polarizado o no, y luego el uso de la covarianza para diferenciar los tipos de polarización.
+Se podría considerar una entropía de Leibler creo, o información mutua. Esto me parece 
+que en principio es mucho, vamos a arrancar con la covarianza.
+
+Una tercera propuesta es usar la Kurtosis para diferenciar qué tan bimodal es una distribución.
+Hugo propone que no es necesario encontrar una respuesta a eso, pero la curtosis podría darnos una
+medida de eso.
+
+Pablo dijo que hay un test para determinar si una distribución es unimodal o bimodal.
+
+Dijo Hugo que lo primordial es revisar el espacio de parámetros y definir la fracción de estados
+polarizados.
+
+##########################################
+Lo primero y lo último son lo más urgente.
+##########################################
+
+
+------------------------------------------------------------------------------------------
+
+15/11/2023
+
+Voy a armar una etapa nueva para probar las métricas que nos propusieron la otra vez.
+Específicamente la métrica de distancia de las opiniones al centro y la de la covarianza.
+Esta etapa razonablemente será Prueba_metricas. La idea es armar un código de Python que genere
+datos sintéticos. Estos datos sintéticos voy a usarlos como forma de medir que tan bien las
+métricas diferencian estos estados.
+
+¿Qué estados necesito generar?
+-------------------------------
+
+1) Consenso neutral: Todos al centro. (Una configuración posible)
+
+2) Polarización en un extremo: Todos a una esquina. (Cuatro configuraciones posibles)
+3) Polarización a un extremo con anchura: Que haya una distribución desde el centro hasta ese
+extremo. Podría además hacer que esa distribución sea homogénea, bimodal, más grande en un 
+extremo o en el otro. (Cuatro por cuatro configuraciones posibles)
+
+4) Polarización a dos extremos: Todos a dos esquinas. (Seis configuraciones posibles)
+5) Polarización a dos extremos con anchura: Al igual que en el anterior, anchura entre los extremos.
+Me parece que justamente, si tengo dos extremos, los agentes se ubican en las rectas que unen esos extremos,
+no en rectas en otras direcciones. Si armo todas las combinaciones posibles, esto va a cubrir los casos en
+que las opiniones se distribuyan de forma horizontal o vertical. (Seis por cuatro configuraciones posibles)
+
+6) Polarización a tres extremos: Todos a tres esquinas. (Cuatro configuraciones posibles)
+7) Polarización a tres extremos con anchura: Al igual que en el anterior, anchura entre los extremos.
+Acá no me parece tan obvio entender cómo va la anchura, pero diría que entre las tres puntas se puede
+dar, es decir que repartiría agentes de forma que haya anchura formada por "dentro" de las tres esquinas
+y por los "bordes". (Cuatro por cuatro por dos configuraciones posibles) No creo que use todas las configuraciones
+posibles en este caso.
+
+8) Polarización a cuatro extremos: Todos a cuatro esquinas (Una configuración posible)
+9) Polarización a cuatro extremos con anchura: En este caso me parece que sólo conviene considerar la
+anchura por "dentro". (Uno por cuatro configuraciones posibles).
+
+Antes de hacer esto, me junté con Pablo y charlamos de cuál es el plan de cosas a hacer. Para eso me
+parece clave entonces primero probar lo que charlábamos de ver si cambiando el dt puedo trabajar el sistema
+con un dt=0.1. Eso haría que todo vaya 10 veces más rápido. O más incluso. Probemos entonces con
+hacer unas simulaciones de prueba y enviarlas a Homofilia_estatica. Usaré simulaciones con K=10.
+Esas no se van a mezclar con las que ya tengo. Voy a mandar una simulación con dt=0.01 y otra con dt=0.1.
+Ambas con el mismo número random, 1511. Probaré esto para algún valor lejos de la interfaz,
+con beta=2 por ejemplo, y otro sobre la interfaz, con beta=1. Si todo va bien, genial. Ir bien sería
+que me dan los mismos valores de opiniones finales para ambos casos. Esto va a tomar un rato en correr
+igual, mientras esto se resuelve, pasaré a otra cosa. TENGO QUE DOCUMENTAR LAS NUEVAS ETAPAS.
+Para diferenciar las simulaciones, la de dt=0.01 tiene número de iteración 10. La de dt=0.1
+tiene número de iteración 100.
+
+El sistema tarda claramente menos, casi 10 veces menos. Pero no parece llegar a los mismos estados.
+Parece que los saltos bruscos lo pueden hacer llevar a estados distintos, eso lo veo en que las opiniones
+finales de bastantes agentes no coinciden en signo. Voy a armar los histogramas y ver qué observo.
+
+Comparando los histogramas, los estados finales son prácticamente iguales. Puedo hacer las cuentas con
+el dt=0.1 sin miedo. Ale y Ale están usando Oporto y Coimbra. No tengo mucho lugar para laburar eso.
+Mañana, o quizás cuando llegue a casa, mandaré a correr nuevos datos.
+
+Hoy antes de irme voy a ver de mandar a correr los datos para barrer la región con kappa y
+cos(delta). Eso voy a mandarlo a correr en Coimbra, supongo.
+
+------------------------------------------------------------------------------------------
+
+16/11/2023
+
+Hoy todo lo que estaba corriendo Ale Mildiner en Oporto se fue. No hay nada corriendo ahí. Es
+mi oportunidad de ocupar todos los hilos. Voy a mandar a hacer un barrido de datos en el espacio
+de Beta_Kappa con un dt de 0.1. Creo que es oportuno cambiar la etapa. Esta será Medidas_polarizacion.
+Tendrá dos carpetas, una para ver la región de Beta_Kappa con cos(delta)=0, y otra para ver la región
+una vez que tengo Kappa en 10.
+
+Lo importante por lo que voy a separar esto de la carpeta de Homofilia_estatica es que en esa
+yo estaba trabajando con dt=0.01, como hace Baumann. Sin embargo, hablando con Hugo y David
+nos dijeron que podemos usar dt=0.1. Yo probé dos puntos para ver cómo da el sistema, y es muy
+similar lo que da en ambos casos.
+ Necesito barrer Beta entre 0 y 2, hagámoslo de a 0.1. Por otro lado tengo que barrer Kappa entre
+0 y 20. Hagámoslo de a 0.5, aunque veamos si puedo hacer el [0,1] de a 0.2.
+ Por lo que vi ayer, esto haría que las simulaciones que tardaban 200 segundos tarden 7, y la
+de 520 segundos tardó 250. Entonces supongo que puedo más o menos promediar 100 segundos por simu-
+lación. No necesito mucha estadística, con 40 iteraciones me sobra.
+ Así que tengo 21*48*40*100 = 4032000 segundos = 1120 horas. Esto dividido en 10 hilos serían 112 horas,
+o lo que es lo mismo, 4 días y medio. Estaría más o menos para las elecciones. Intentemos que esto
+se termine antes. Aprovecho para reducir la cantidad de pasos máximos del sistema, porque al cambiar
+el dt, cambio el tiempo máximo al cual el sistema llegaría. Ahora llega 10 veces más lejos. Puedo
+entonces reducir a la mitad la cantidad de pasos máximos, creo que no estaría mal.
+
+Ahí mandé las simulaciones. Me apropié de Oporto. Espero que sean sólo dos días como mucho.
+No parece que vaya a ser sólo eso nomás. Ojalá el sistema converja rápido.
+
+Mientras eso corre hay dos cosas que tengo que hacer. La primera es armar datos sintéticos y poner
+a prueba las métricas que charlamos con Pablo. La segunda es documentar las etapas que estoy
+armando.
+
+Luego está la tercera, que es intentar armar algo para medir la fracción de polarización de
+estados. Para eso voy a necesitar mandar a correr datos en Coimbra.
+
+Aproveché y armé una carpeta que sea de Medidas_polarizacion en mi carpeta, le puse los archivos
+de Python de Prueba_metrica y después subí eso a Oporto.
+
+------------------------------------------------------------------------------------------
+
+17/11/2023
+
+A la mañana fui a dar clases de F2. La clase fue bastante larga, los chicos están viendo
+temas de interferómetros. Tengo que ponerme a tiro con eso.
+
+Después me puse a armar configuraciones sintéticas de datos. No estaría resultando tan
+fácil como esperaba. Voy a reducir el laburo y ver de armar las cosas que espero.
+
+------------------------------------------------------------------------------------------
+
+18/11/2023
+
+Tengo que mandar a correr los datos del barrido de Beta-cos(delta), con K = 10. Tomo un
+Beta [0.5,1], cos(delta) [0,1]. Eso significa que puedo variar Beta de a 0.1 y cos(delta)
+también. Así que si quiero 60 simulaciones, cosa de tener un poco de estadística, voy a tener
+que hacer 6*11*60 = 3960 simulaciones. Sabiendo que de 2016 simulaciones por hilo, en 
+54 horas se realizaron 1008, la pregunta es: ¿Cuánto va a tardar en simularse esto?
+
+Ya con 10 hilos tengo 396 simulaciones por hilo. 396 es como 0.4 de 1008. Entonces debería
+aproximadamente resolverse en 21 horas. Menos de un día.
+Ya mandé a correr todo. A las 19 del sábado. Tardé, pero además fue un tema configurar porque
+Coimbra no tenía instalado.
+
+Hecho esto, laburemos en lo que tenía de armar datos sintéticos, porque lo que construí no
+está del todo bien. Después voy a ver de hacer lo de revisar la fracción de estados polarizados
+que charlamos con Pablo.
+
+Continué con el trabajo del armado de datos sintéticos. Corregí las formas raras que tenían algunos
+datos y haciendo unas pruebas más logré armar datos que cumplan los primeros cuatro puntos.
+Me di cuenta que podía armar las distribuciones que son más grandes en un extremo usando simplemente
+una normal, sin necesidad de mezclarla con una distribución homogénea.
+
+------------------------------------------------------------------------------------------
+
+20/11/2023
+
+Vamos a ver si puedo ahora a la noche completar el código del armado de los datos sintéticos.
+La cosa está difícil para mañana. La cosa está difícil para el fin de año. La cosa está difícil.
+Creo que The Dear Hunter va a estar acá para acompañarme. Espero que todo salga bien.
+
+Resolví el caso para algunos extremos. Me iré a dormir y descansaré.
+
+------------------------------------------------------------------------------------------
+
+22/11/2023
+
+Normalizar métricas es muy importante. Te re confiaste Favio.
+
+Estaría bueno revisar la distribución de los valores de las antidiagonales en la 
+región para entender qué estoy viendo.
+
+Proponen armar un espacio de fase que grafique las frecuencias de aparición de cada
+configuración de opiniones.
+
+Ver de armar una función con la que yo esté de acuerdo que diferencie los estados polarizados.
+Eso es importante para identificar los estados y de ahí armar el gráfico de frecuencia de
+aparición de configuraciones.
+
+------------------------------------------------------------------------------------------
+
+26/11/2023
+
+Estuve charlando con Pablo sobre qué hacer del trabajo. Pablo me decía de avanzar en lo que me dijo
+Hugo, me parece un buen plan. Queda también revisar el tema de los tiempos de simulación y ver lo de
+normalizar las distribuciones, cosa de que las métricas me queden normalizadas.
+
+Creo que voy a arrancar con esto último, así tengo medidas normalizadas y la vida es un poco mejor.
+¿Para que esté normalizado, necesito que las opiniones vayan entre -1 y 1 o entre 0 y 1?
+Lo que necesito básicamente es un intervalo de tamaño 2 centrado en el 0, es decir que vaya de -1
+a 1. Para eso puedo simplemente normalizar mis datos dividiéndolos por el valor de Kappa.
+Eso es un tema a considerar dependiendo de si Kappa es un parámetro que está variando o no.
+
+Lo que podría hacer es que los valores que coloco al final de mis simulaciones venga ya normalizado.
+Después si quisiera "desnormalizarlo", lo vuelvo a multiplicar por K. Bueno, eso quedará para la
+próxima vez que mande a hacer datos. Ahora queda resolver normalización. Hagamos eso desde
+Python.
+
+Estoy notando que quizás me confundo al usar los archivos de Pruebas_metricas y Medidas_polarizacion.
+Estuve pasando los archivos de Pruebas_metricas que usé para graficar los mapas de colores como si fueran
+los de Medidas_polarizacion. No es tan grave, pero claramente confunde las cosas. Así que tengo que ser
+más cuidadoso. Creo que puedo simplemente copiar las funciones de Pruebas_metricas a Medidas_polarizacion
+y después seguir desde ahí.
+
+Cuando venga a la noche lo mando a correr, tengo que mandarlo a Oporto así como está, revisando que las
+carpetas sean las correctas. Después para mandarlo a Coimbra voy a tener que cambiar cuál es el parámetro
+x y cuál es el extra, pero además cambiar en funciones el cómo se normalizan los arrays de Opiniones.
+
+------------------------------------------------------------------------------------------
+
+27/11/2023
+
+Hoy mandé a correr en Oporto y Coimbra el armado de los mapas de Colores de Traza, Antidiagonales y
+Determinantes de la matriz de Covarianza. Hecho eso, lo siguientes creo que es ya trabajar en lo que
+dijo Hugo, armar un programa que reconozca claramente estados distintos de polarización y cosas.
+Se me ocurre que para hacer eso, es mejor terminar el armado de mis datos sintéticos, así con eso
+tengo algo sobre lo qué probar ese programa. Creo que lo mejor va a ser eso. De paso, debería también
+actualizar las documentaciones de Programas Python, Programas C, Imagenes y la burocracia infinita
+de mi cuaderno negro. Pero todo eso es bastante, lo hago hoy eso? Creo que es una buena idea hacerlo
+hoy así mañana me mando con esto de una, el miércoles lo mismo y ya podría ir hablando de juntarme con
+Hugo el jueves o viernes.
+
+Logré correctamente armar los mapas de colores normalizando las tres métricas. Lo observado es similar a lo
+anterior, aunque se puede ver que el determinante ahora da bastante bien para detectar las
+mismas regiones que detecta la traza, a diferencia de antes que sólo se veía marcado en una región
+del final. Qué cagada no haber hecho esto antes.
+ Queda señalar que me quedaron tres detalles sin revisar. La traza está normalizada a dos, eso es porque
+está sumando los elementos de la diagonal, tengo que dividir por la cantidad de tópicos. Segundo, está
+escrito determinatnes en el gráfico de determinantes. Tercero, no les puse colores diferenciados a los
+gráficos. Ahí les puse colores diferenciados.
+ Me acabo de dar cuenta que en los gráficos de Antidiagonales, dice Coviaranza. Me cago en mi.
+ 
+Hablando con Pablo entonces tengo 4 claros objetivos a resolver.
+1) Estudiar cómo varía la fracción de agentes polarizados, cosa de determinar cuánto tiene que ser
+el tiempo de simulación que requiero.
+2) Armar los estados sintéticos para probar las métricas de polarización de la traza y las antidiagonales.
+3) Probar qué resultados da el separar el espacio 2D en una grilla y medir polarización en esa región.
+4) Armar los mapas de colores con las frecuencias de estados finales. Pablo propne que además revise los
+estados finales producidos cosa de tener una buena idea de qué clase de estados finales puedo tener realmente.
+
+5) NO OLVIDAR, TENGO QUE DOCUMENTAR COSAS.
+
+------------------------------------------------------------------------------------------
+
+28/11/2023
+
+Hoy hice TODA la burocracia infinita pendiente. Documenté las carpetas y archivos de
+Programas Python, las carpetas de programas en Programas C y las carpetas en Imagenes.
+Con eso ya tengo todo actualizado y registrado. También me puse al día con el cuaderno
+negro de notas.
+
+------------------------------------------------------------------------------------------
+
+29/11/2023
+
+No vine tan temprano como debería, aunque eso sirvió para evitar mojarme por la lluvia.
+Cuestión, hoy debería arrancar con la parte de revisar la fracción de estados polarizados 
+en función del tiempo de simulación.
+
+Ellos trabajan con un Beta = 0.5 y K = 10. Yo podría hacer lo mismo, con Cos(delta) = 0.
+Se me ocurre armar varias simulaciones, barriendo Beta entre 0.5 y 1. De esa manera armaría un
+gráfico similar al gráfico c de la figura 5. El gráfico b y d creo que no sería necesario por
+ahora, no estoy modificando el grado medio de mis redes o el número de agentes. Ese análisis
+más detallado creo que puede quedar para después.
+
+Lo que sí es importante, es que para hacer esto voy a tener que armar un código nuevo en C.
+La idea es tomar la simulación, iterar 1000 veces y ver si el sistema está polarizado. Luego,
+ese sistema polarizado lo itero bastante tiempo más y registro si deja de estar polarizado
+en algún momento.
+
+Separo el cóigo actual y me pongo a corregirlo para que cumpla lo que quiero. Voy a tener que
+armar una función que me calcule la varianza. Mi idea es usar la traza de la matriz de Covarianza
+para identificar sistemas polarizados de no polarizados.
+
+Fui a cursar CFS. Por lo que charlamos, tengo hasta el 10 para enviar el TP5. Así mismo, tengo 
+que rehacer el TP3. Y el 4 seguramente. Carajo. Bueno, confío en que si a partir del miércoles
+6 me pongo a laburar en esto, voy a poder resolver esto para el domingo 10. Acordate que el
+viernes es feriado. Pero el viernes también está la juntada de fin de año. Mierda. Y ese finde
+está la partida de Rolcito. Carajo.
+
+Modifiqué Prosem, hice una pequeña prueba para ver que time tome el tiempo de la consola y que no
+sea que tenga una foto del reloj del momento en el que arrancó a correr el programa.
+
+Quedé a mitad de la modificación del archivo de C. Tengo que colocar un while en la distribución
+de datos iniciales, pero ese while necesita como condición de corte el cálculo de las varianzas
+normalizadas. Voy a dejar eso para mañana.
+
+------------------------------------------------------------------------------------------
+
+30/11/2023
+
+Hoy llegué a la mañana, me enganché con un problema que no es mío, pero creo que le di salida.
+Cosas que pasan. Me puse con el armado del código para revisar la fracción de estados polarizados
+en función del tiempo de simulación. La idea es tener una buena idea de cuál es el tiempo máximo
+de simulación de mis programas.
+
+En el medio nos reunimos con Pablo, en el cuaderno anoté lo que tengo que hacer. El resumen es que
+tengo que armar varios gráficos que sean similares a los gráficos que hicieron David, Hugo y demás
+en su paper. Tengo que replicar el estudio en el espacio de parámetros, armar el gráfico de
+fracción de polarización en función del tiempo de simulación y el gráfico del mapa de colores de
+la entropía de los estados finales. Y también de la varianza de la entropía.
+
+Tenemos que apurarnos para tener resultados que mostrar. Por otro lado, fui un ratito a la reunión
+sobre el cambio de plan de la carrera y después seguí laburando. Logré armar un código que hace
+las simulaciones y va guardando los datos. Por lo visto, esto va a tardar un rato. Lo que estoy
+pensando es armar 100 simulaciones como hicieron ellos para 10 Betas, entre [0,1]. De ahí veo
+de conseguir un gráfico como el 5 b) para cada Beta y con eso obtengo entonces una versión rápida
+del 5 c). Aunque estoy viendo que eso va a tomar un buen rato de simulación. Si lo mando ahora,
+ni idea de si llega para el miércoles. Veamos de mandarlo en Coimbra, nadie lo está usando.
+
+Si uso 20 hilos, ponele que cada simulación tarde 6 horas. Eso significaría que en un día tengo 
+80 simulaciones. Ok, podría tener los datos hechos para un dado Beta. Arranquemos con eso, después
+vamos viendo cuánto tarda esto para definir si es una gran idea o no.
+
+Mientras esto corre, lo siguiente que tengo que hacer es tomar mis datos para mi sistema con 200 agentes
+y ver si está simulando bien o si tiene algún problema esto.
+
+Justo terminó la simulación con 200 agentes. Esto tardó 55 minutos aprox. Soy un boludo por cerrar
+la ventana, ni me di cuenta que lo había hecho. Cuestión, debería suponer que con cinco veces
+la cantidad de agentes, esto debería tardar más o menos 5 veces más, así que serán entre 5 y
+6 horas. Hice una buena cuenta la verdad. A ojo pareciera estar polarizado, aunque lo gracioso
+es que quedó polarizado en una dirección, el eje y se alineó completamente a un sólo valor. Voy
+a ver de graficarlo y ver qué dió, qué estoy observando y cómo puedo graficarlo. Pero primero voy
+a cargar el código a Coimbra y ver de ya mandarlo a correr.
+
+Ahí mandé a correr simulaciones que construyan estados polarizados para ver cuántas simulaciones
+se mantienen en estos estados metaestables a medida que aumenta el tiempo de simulación. Lo hice
+siguiendo el esquema de la gente de GOTHAM, que construye un estado aleatorio y lo evoluciona
+con 1000 pasos de simulación. Si el estado está polarizado, lo mantiene y lo empieza a evolucionar
+hasta que deje de estar polarizado o hasta que pase la cantidad total de simulaciones.
+
+Me acabo de dar cuenta que tengo un problema, no guardo los datos con los que arranca el estado.
+Es un problema más central considerando que el sistema deja de estar polarizado generalmente en un
+punto intermedio entre dos escrituras de datos. Podría ver de utilizar la cantidad de pasos_simulados
+como una forma de tener una medida clara de cuánto duró el estado polarizado. Creo que eso es
+lo mejor. Mañana veo qué pasó
+
+------------------------------------------------------------------------------------------
+
+01/12/2023
+
+Hoy quise laburar en el trabajo, pero la verdad me comió todo el parcial. Estuve de 9:30
+a 15:10 en el aula. Después fui a comer y cosas, recién a las 16:30 me puse a laburar,
+y estuve simplemente peleando con el hotmail para descargar todos los archivos. Una
+tortura. Y ahora voy a ir a casa a corregir exámenes. Auxilio
+
+------------------------------------------------------------------------------------------
+
+02/12/2023
+
+Estoy en casa. Revisé lo que mandé a correr en Coimbra, algunas cosas todavía no terminaron. Pareciera
+que las simulaciones más largas llegan a tomar unas 10 horas. Es bastante, pero no es tan terrible.
+Pero no voy a tener tiempo de mandar nuevos datos a correr, así que armaré uno de los gráficos que Pablo
+me pide. Lo charlaré con él para que se entienda el problema.
+
+Tengo que ver cómo resultaron los gráficos, pero me parece muy importante también considerar que puedo
+hacer el guardado de datos mucho mejor y más simple si lo que hago es guardar en mis datos el número de
+pasos simulados, que es un número que ya estoy utilizando en la simulación.
+
+Mientras se terminan las últimas simulaciones, debería ver qué hago con esos datos. Básicamente lo que tengo
+es un archivo que tiene:
+"Evolucion Opiniones"
+n filas de opiniones
+"Semilla"
+Número de semilla
+
+Por tanto, esto tiene n+3 filas de datos. En principio sólo necesito el número n. Aunque estaría bueno ver que
+efectivamente el sistema se mantuvo polarizado a lo largo del tiempo. Se me ocurre que puedo graficar cómo
+evoluciona la traza de la covarianza en el tiempo. También podría mirar el promedio de opiniones. Puedo mirar
+el promedio de opiniones totales de cada tópico. Creo que esas dos infos juntas me van a ayudar a contrastar
+más o menos si el sistema está correctamente polarizado durante el tiempo. No puedo estar mirando n histogramas.
+Puedo ver de hacerlo después el lunes para ver algunos datos eso.
+
+Armemos las funciones que hacen esto, y mandemos a correr un programa que nos de esos gráficos. Eso haré hoy,
+mañana revisaré los datos que tengo para ver qué está ocurriendo. Si tengo tiempo, haré algo que me haga unos
+gráficos de histogramas 2D.
+
+Logré armar dos funciones que todavía no probé. Pero deberían graficarme las curvas de promedios de la opinión
+y de suma de varianzas en función del tiempo. Lo ideal es ver que vayan decayendo con el tiempo, aunque es
+posible que el salto se de un tiempo al siguiente y no pueda observar eso. Veré si mañana armo una función
+que grafique los histogramas. El lunes puedo trabajar en el armado del mapa de colores de la entropía, eso
+va a funcionar. El martes ya armo la presentación que Pablo me dijo. Y vamos charlando el lunes si al
+final me junto con todos o con Hugo nomás.
+
+------------------------------------------------------------------------------------------
+
+04/12/2023
+
+Revisé lo que hice el sábado. Más allá de algunos detalles de código, todo funca bárbaro.
+Ahora tengo que mandar a armar gráficos con las cosas de Coimbra. Y tengo que armar el gráfico
+de fracción de polarizados en función del tiempo. Si tengo tiempo armo el gráfico de Histogramas.
+Sino, dejo eso para después.
+
+Los histogramas quedarán para después. Ahora me voy a poner con el armado de los gráficos de Entropía
+que me decía Pablo. Necesito para eso trabajar sobre los datos de Medidas_polarizacion. El armado de
+una función que caracterice los estados va a quedar para después. Claramente no puedo tener eso
+para el miércoles, o algo arrancado. Igual, antes de mandar la función de gráficos de entropía a
+la carpeta de Medidas Polarizacion, necesito probar la función en los datos sintéticos.
+
+El gráfico de fracción de estados polarizados en función del beta dió muy bien. Quedan algunos detalles
+para repasar. ¿Por qué siempre uno de los tópicos arranca convergido? ¿La dinámica determina que uno
+de los tópicos converge antes que el otro? ¿Hay algo pasando con los pesos en ese caso?
+ Tengo que repensar si la forma de armar los datos no generó problemas. Quizás estaría bueno armar
+una nueva tanda de datos para la próxima. Es una cuestión de mandarlos a correr nomás. Esto está
+bueno para charlarlo con Hugo y consultar qué tal.
+
+Me junté con Pablo, charlamos sobre el resultado del gráfico de fracción de polarización en función
+del tiempo de simulación. Mirando el gráfico, tengo que decir que las simulaciones que hice en
+los datos de Medidas Polarizacion tanto en Coimbra como en Oporto están mal. Tengo que rehacerlos,
+porque esos gráficos cortan muy pronto. No le dan tiempo a la simulación a salir del estado polarizado
+metaestable y caer a un estado no polarizado. Lo que tengo que hacer es cambiar el número de pasos
+máximos. Ahora lo tengo que pasar a doscientos mil. De esta manera el tiempo de simulación es veinte mil.
+El plan es mandar a correr cosas manteniendo el esquema que tuve antes. El espacio Beta Kappa en Oporto.
+El espacio Beta-Cos(delta) en Coimbra. Le sumo las simulaciones de fracción de polarización en Algarve
+y si me da el tiempo, las simulaciones que caracterizan fracción de estados polarizados que me dijo
+Pablo barriendo el beta. ¿Pero esto no es justamente lo que voy a mandar a Algarve? Mi duda está
+sobre qué hacer con los estados por debajo de Beta = 0.5. Esto creo que da para charlarlo con Hugo.
+Preguntarle a Pablo primero, me parece importante ver que no estoy malentendiendo algo.
+
+De paso, corregir la normalización de la fracción de polarización, me quedó de 0 a 100 en vez de
+0 a 1.
+
+La función para medir la entropía de los gráficos queda para después. Será mañana o pasado. Ya
+corregí el tema de la normalización de la Fraccion de polarización en función del tiempo.
+
+Mandé a correr la tanda de datos en Oporto y en Coimbra. Bien, eso va a tomar una semana aprox.
+Me apropié de esas pcs, veamos qué tal la cosa en Algarve. También me apropié de Algarve. Ahora
+sólo por la joda, tengo ganas de apropiarme de Setubal también. Pero mejor concentrémonos en
+laburar y no en joder.
+
+Cuestión que en Algarve mandé a correr datos para el tema de la Fracción de Polarización. Pero
+los maté en el acto. Me acabo de acordar que el código de Fracción de Polarización necesita una
+revisión antes de mandar a correr. Así que mejor volver a arrancar de cero mañana. O después
+de llegar a casa, ya veré.
+
+------------------------------------------------------------------------------------------
+
+05/12/2023
+
+Al final lo que mandé a correr en Algarve no fue el código de Prueba_tiempos, que hace
+que el programa corra hasta tiempo 100 mil. Mandé a correr lo mismo que en Coimbra y en
+Oporto, el código de Medidas_polarizacion. Ese código debería ser medio una copia del de
+Homofilia_estática, pero hubo una o dos etapas en el medio, consideremos que quizás hubo cambios.
+Dicho eso, ahí tengo tres de las cuatro pc's laburando para mi. Les robé espacio a todos
+los demás.
+
+Tuve que frenar todos los códigos. Iban a tardar una eternidad. Todas las simulaciones corrían
+hasta el final, que son 3 horas. Lo cuál implica que el barrido Kappa-Beta, que por cada
+iteración recorre 924 puntos en el espacio de parámetros. Si cada uno de esos tarda tres
+horas, tengo que esperar 2700 horas para una sola iteración. Nadie tiene tanto tiempo.
+Decidí cambiar el criterio de corte a 10^-3. Espero que eso ayude. Yo sospecho que quizás
+necesite dejar el criterio de corte en 10^-2.
+
+Ok, no entiendo, ¿Está corriendo bien esto? Al aumentar el criterio de Corte debería
+estar terminando rápido, pero no me queda claro que esté haciendo eso. Siento que debería
+volver a revisar cómo construí ese criterio de Corte.
+
+Por desgracia no puedo ponerme con eso ahora, tengo que corregir parciales.
+
+La cosa no está resultando por ningún lado. Mandé a correr en Oporto y en Coimbra
+el modelo creo que con el mismo criterio de corte en ambos. Vamos a ver qué me marcan
+los datos que es el problema de por qué el programa no termina de simular. Además, está
+tardando demasiado. Tenemos que ver cómo reducir el tiempo de simulación. Yo le dije
+a Pablo que no estaba escribiendo en todos los pasos, pero en realidad sí lo estoy
+haciendo. Eso me está consumiendo un montón de tiempo. Y encima esos son archivos
+que después estoy borrando. Eso no puede seguir así.
+
+------------------------------------------------------------------------------------------
+
+06/12/2023
+
+Hoy es la reunión con la gente de Gotham. Primero que nada voy a mostrarles que armé el gráfico
+de fracción de polarizados en función del tiempo.
+
+Después está el tema del tiempo que el programa tarda en realizar las simulaciones. Tengo que
+revisar qué está pasando con las simulaciones. Quiero ver si el cálculo de la variación promedio
+se realiza correctamente. Además, tengo que ver de quitar el armado de los datos testigos
+innecesarios. Para eso debería poner el cerrado del archivo en un if apenas se crea. Lo mismo,
+la escritura debería estar en un if.
+
+Aunque para los archivos que trabajo de Medidas_polarizacion, podría trabajar sin armar testigos
+directamente. Dudoso. Todo esto lo haré el jueves, con tiempo y ganas. Ahora concentérmonos
+en lo que hoy podemos mostrar y charlar. El programa que clasifica con la entropía.
+
+La forma en que ellos hacían para cortar las simulacion previamente es usar el valor medio
+de las opiniones y ver que no fluctuara. David proponía algo de usar promedios para reducir
+fluctuaciones al comparar dos ventanas individuales.
+
+Revisar el calculado de los pesos para ahorrar tiempo. Ver de ahorrar las cuentas repetidas.
+Revisar si es conveniente reemplazar el pow por el exp(log()).
+
+Hicieron unos gráficos interesantes en el archivo de respuestas a referee, revisarlo y ver de
+analizarlo para sacar ideas importantes.
+
+------------------------------------------------------------------------------------------
+
+08/12/2023
+
+Hoy es feriado. Voy a ver de mandar a correr las simulaciones que charlamos con Pablo. Para
+eso lo que tengo que ahcer es guardar la simulación de Prueba_tiempos en Programas, retomar
+la de Medidas_Polarización y quitarle el armado de los archivos de Testigos. Supongo que por
+ahora puedo simplemente comentar eso. O mejor todavía, puedo hacer eso que yo decía de cortar
+el archivo temprano si es que siento que no voy a guardar datos.
+ También debería revisar en el futuro pronto si la normalización de datos está bien hecha.
+
+Todavía no documenté los archivos de Prueba_tiempos. Tengo que hacer eso el lunes.
+
+Ahí revisé mis archivos. No es cierto que pierdo mucho tiempo con la escritura, porque esa
+escritura no se estaba realizando. Hay otra cosa. Tengo que trabajar sobre la dinámica, no
+hay otra solución.
+
+Mi duda entonces es la siguiente. ¿Arranco a codear esto para reducir los tiempos de escritura
+gastados en los pow, hago pruebas sobre el criterio de corte, o tiro todo?
+Yo diría de arrancar con codear el tema del pow. Necesito entonces una matriz de N*N que
+contenga todos los términos que pueda a llegar a necesitar en el numerador de los pesos
+de homofilia. Hugo decía que con esto reduzco a la mitad el tiempo porque sólo puedo resolver
+los cálculos en el numerador. ¿Pero no puedo resolver también los cálculos en el denominador?
+
+Actualmente lo que hago es pararme en un agente i, calculo el denominador una vez al mirar
+su distancia con todos sus vecinos y calcular la inversa elevada a la beta y sumar eso.
+Entonces, sean k los vecinos, estoy haciendo k cuentas. Luego, hago otras k cuentas iguales
+porque calculo el numerador con cada vecino. Pero podría haber reciclado esas cuentas. YA
+LAS HICE EN EL DENOMINADOR. Después, cuando voy al agente j, si el agente j está conectado con
+el i, tanto en su denominador como en el numerador, repito la cuenta. Entonces ahí hice cuatro
+veces una cuenta que debería haberla hecho una vez.
+ Entonces lo que voy a hacer es armar un puntero nuevo que contenga estos números. Entonces
+después no los recalculo, simplemente los reutilizo. Voy a dejar para hacer esto mañana. O
+el domingo.
+
+------------------------------------------------------------------------------------------
+
+11/12/2023
+
+Hoy llegué un rato tarde, revisé el recuperatorio del primer parcial de F2, mandé mensajes,
+completé la burocracia infinita. Vamos a intentar ir llenando eso todos los días. Igual no
+le quedan muchos días al cuaderno ese. Fui a dar consultas y después charlé con Sebas sobre
+una idea de analizar la variación promedio de los agentes a través de realizar un test de
+hipótesis de una t de student.
+
+------------------------------------------------------------------------------------------
+
+12/12/2023
+
+Hoy vine y desde temprano estuvimos tomando parcial. Después llegué a último momento a
+la celebración de fin de año del DF. Charlamos, la pasamos lindo, volvimos al laburo.
+
+Durante el parcial estuve anotando las ideas del código, así que veamos de implementar lo
+que charlamos con Pablo así la cosa puede simular en un tiempo razonable.
+ Revisé las corridas de Oporto y Coimbra. Por lo visto, aumentar el Criterio de Corte
+a 10^{-3} llevó a que las simulaciones como mucho tarden cerca de 4700 segundos.
+En cambio con un criterio de corte de 10^{-2} el sistema tardaba más cerca de 4000 segundos.
+Me parece que es una mejora sustancial, ya en 10^{-3} el sistema redujo el tiempo de simulación
+a la mitad, ganancia.
+
+Implementé la función que calcula las separaciones en una matriz aparte y lo hace dentro del
+RK4. 
+
+Implementé la comparación de estados actuales con estados previos promediados a lo largo de una
+ventana temporal.
+
+Esto iba a ser algo fácil y rápido de hacer. Hasta que descubrí que tenía mal el RK4. Estaba
+calculando re mal las pendientes. No sé por qué. Quiero decir, no sé cómo armé tan mal la función
+y desde cuándo es que existe ese error. Habrá que revisar los códigos viejos en ese sentido.
+Ahora voy a hacer dos cosas importantes y ya volverme a casa. La primera es tomar datos que
+mandé a hacer en Oporto y Coimbra, cosa de revisarlos en caso de ser necesario. Honestamente
+no creo que los revise demasiado. Sabes qué, mejor voy a simplemente renombrar las carpetas
+cosa de no perder tiempo en eso. Después subo los archivos del src a Coimbra y Oporto y
+ya ahí mando a hacer las simulaciones. También tengo que mandar a Algarve. Creo que
+los Instanciar de cada cluster ya tiene todo lo necesario para hacer las simulaciones
+correctamente.
+ Las carpetas con esos datos que armé antes son las carpetas 2D. Las nuevas carpetas
+de datos son las carpetas Datos.
+
+Mandé en Oporto a iniciar el barrido Beta_Kappa. 20 simulaciones nomás. Mañana mandaré
+más si esto va bien. Igual este barrido no necesita demasiada estadística.
+
+Ya mandé todos los barridos. El de Coimbra tiene 40 simulaciones, mientras que el de
+Algarve tiene 38. Seba estaba usando un hilo y no quería romper las bolas. Cuestión,
+ahí mandé todo. Dios quiera que funcione para mañana. Mañana hablaremos con Pablo.
+Me estoy yendo a las 20:33 a casa. Mañana a primera hora voy a hacer la burocracia
+infinita.
+
+------------------------------------------------------------------------------------------
+
+13/12/2023
+
+Llegué a la facultad y me puse a revisar cómo iban las simulaciones. Las de oporto iban mal.
+Aprendí que no puedo mandar corridas con Kappa=0. El delta es proporcional al Kappa, y como
+Kappa es cero todas las opiniones son cero. Entonces el sistema empieza a dar nans al calcular
+las opiniones y cada simulación tarda una eternidad.
+
+Las demás simulaciones están yendo bastante bien. Agarré una simulación en Coimbra y resulta
+que está tardando en promedio 20 minutos por simulación, lo cuál significa que esas simulaciones
+van a tardar día y medio en resolver una iteración total de los parámetros. De la misma forma,
+las iteraciones de Algarve se van a resolver en unos días, aunque a esas simulaciones les voy
+a tener que agregar simulaciones extra para llegar a las 100, como me dice Pablo.
+
+Algo raro que está pasando es que ahora en las simulaciones que llegan hasta el final de tiempo
+tardan 15 mil segundos, en vez de 10 mil. No entiendo, se supone que reduje la cantidad de veces
+que se calculan los pow, ¿Por qué es que ahora el programa tarda más que antes?
+
+Tengo que hacer varias pruebas entonces.
+
+1) Ver que el integrador esté funcionando correctamente. Para eso puedo hacer una simulación
+dada una semilla fija con el RK4 y después con un Euler. Ver que los resultados den similares.
+Para eso puedo usar un sistema más pequeño, cien agentes, ver qué le pasa al sistema en ese
+caso.
+2) Ver si efectivamente el tiempo de simulación aumentó al cambiar la Generación_Separación.
+Para eso voy a agarrar el código que todavía está en Meidas polarización, mandar a correr
+y luego comparar eso con el código con la Separación generada.
+3) Ver si se están calculando correctamente los promedios. Para eso puedo simplemente hacer
+una corrida de 200 paso, guardarme las opiniones en esos 200 paso, calcular promedios y
+ver que la variación promedio de lo mismo.
+
+Bueno, arranquemos por lo primero. Antes de eso, mandé a correr los datos en Oporto de nuevo,
+esta vez arrancando con un Kappa=0.2. Ahora las simulaciones parecen estar tardando 60 segundos
+en principio. Asumo que son las 500 iteraciones que le exigí al sistema. No puede ser que
+500 iteraciones tarden 60 segundos, es un montón. Si fueran 10000 agentes te lo entiendo,
+pero con 1000 es un montón.
+
+Para esto voy a guardar el código en una carpeta aparte, y primero voy a construir una
+función que haga una integración de Euler. Ya construí el Euler, hagamos una prueba rápida
+con un sistema que decae a un consenso neutral.
+
+Hice las corridas del Euler y el RK4 para K = 10, Cos(delta) = 0 y Beta 0 y 0.5. En ambos casos
+observé que ambas simulaciones dan los mismo, así que puedo decir que el integrador de RK4 funciona
+bien. (Estaría bueno graficar estos estados para corroborar que todo realmente da bastante parecido).
+Pero mirando los resultados a ojo parecen estar bastante bien, con las obvias diferencias entendidas
+porque los dos modelos tienen finalmente estabilidades y errores distintos.
+
+Lo siguiente es poner a prueba el cambio de Generación_Separacion. Se supone que al precalcular
+la matriz de Separacion, entonces me ahorro cuentas. Sin embargo, el sistema está tardando 
+mucho más ahora que antes. No entiendo por qué. Veamos si podemos contrastar eso.
+
+Para eso puedo tomar el código de NI_homofilia y el de Medidas Polarización. Igual no necesito
+todo el de Medidas_Polarización, sólo la parte que modifica la ecuación dinámica para que las
+separaciones se calculen en cada ecuación dinámica y no por fuera.
+
+Probé la diferencia entre el código con la Generacion de Separacion adentro y sin este.
+Efectivamente el código sin Separación es más rápido, 2,5 veces más rápido aprox. Así que
+eso está bien. Sigo pensando que el código tarda mucho. Tiene que haber algo en lo que revisar
+para que el código vaya más rápido. Algo está funcionando mal o debería reducirse.
+Mañana llego, hago burocracia y miro eso. (DOCUMENTACION y CUADERNO). Algo se tiene que poder
+resolver.
+
+------------------------------------------------------------------------------------------
+
+14/12/2023
+
+Hoy también llegué un poco tarde. Hay que empezar a levantarse más temprano y no dar vueltas
+en la cama. Cuestión que llegué, me reporté con Pablo y me puse a completar la burocracia
+infinita y la documentación de los archivos.
+
+Estoy intentando ver qué es lo que hace tardar tanto a mi programa. ¿Será el hecho de tener tantos
+if dentro de los for? En su momento yo puse esos if porque hacer las cuentas era más costoso 
+que revisar un if.
+
+Me escribí una matriz de Separación y una de Adyacencia en un archivo de Opiniones, comparándolas
+se ve que la matriz de Separación tiene ceros excepto donde la matriz de Adyacencia tiene unos.
+Voy a probar cambiando el if en la ecuación dinámica que sólo hace que en vez de realizar una cuenta,
+la arme sólo si los agentes están conectados. Al final, el if ahí ayuda a que la cosa vaya más rápido,
+no más lento.
+
+Probemos si lo que me propuso David de usar el exp y log me resuelven el cálculo y lo hacen más
+rápido. Tardó exactamente lo mismo.
+
+Hice una cuenta rápida, en cada paso temporal, para un sistema con 1000 agentes, dos tópicos y grado
+medio 8, me está dando que estoy realizando unas 10.280.000 operaciones en cada paso de simulación.
+De esas operaciones, 20.000 son operaciones que requieren el cálculo de pows. (Quizás estoy calculando
+mal este número, pero creo que estoy dando un buen orden de magnitud a esa cosa). Fijate que es el
+0.1% de las operaciones las que involucran el cálculo de exponenciales. ¿Realmente eso es lo que me
+está matando tanto?
+ Si no tuviera esas cuentas, el código se reduciría a la mitad de tiempo. Probé setear la matriz de
+Separación con valores random, resulta que en ese caso la simulación en vez de 13 segundos tarda 6.
+Es decir que el tiempo se reduciría a la mitad. Es un montón. ¿No puedo interpolar esto? Tengo que
+considerar hacer un archivo de interpolación.
+
+Arranqué con lo de armar los estados sintéticos. Mañana voy a construir un estado de cuatro puntas
+sintético y listo, paso a hacer lo que Pablo me dijo. Tengo que revisar que las simulaciones se
+terminen en tiempo. Es importante saber si van a terminar o no. Creo que el barrido en Beta-Kappa
+no se va a terminar.
+
+------------------------------------------------------------------------------------------
+
+15/12/2023
+
+Hoy llegué a la mañana, revisé cosas y después me puse a corregir parciales de F2. Se suponía que
+lo termine en la mañana. Son las 17, recién terminé, me quiero comprar un burro y hacerme cagar
+a patadas. Veamos si podemos hacer ahora lo que veníamos charlando con Pablo, un código que
+identifique estados según la entropía, el sigma x y el sigma y de la distribución de agentes.
+Yo diría de hacer algo con los estados sintéticos y después armar algo tipo presentación para 
+mostrarle a Pablo. Hecha la presentación, lo otro se arma en un paso. Estoy considerando
+que el lunes voy a terminar de un golazo todos los otros gráficos que Pablo me dijo.
+Dios me ampare hermano. Arranquemos lavando mis anteojos.
+
+Increíblemente, me quedé como hasta las 21:30, pero logré armar una presentación que tenga
+los estados que entiendo que podemos llegar a observar. Además, les puse al lado tablas con
+los valores de la entropía, sigma_x y sigma_y.
+
+------------------------------------------------------------------------------------------
+
+16/12/2023
+
+Ya le pasé a Pablo la presentación para que vea cómo quedó. Ahora este finde tengo que armar
+función que en base a la entropía y los sigmas me clasifique los estados.
+
+Revisando las simulaciones, las que mandé a hacer en Algarve ya terminaron. Las que están en
+Coimbra arrancaron con la segunda tanda. Eso va a estar complejo sobre cómo completarlo,
+no quiero que queden simulaciones truncadas. Pero no sé bien cómo frenarlo. Podría
+ir frenando manualmente los que ya cruzaron el final de una iteración. Eso es una opción.
+
+¿Puedo agregar simulaciones para que el Barrido de Kappa-Beta se termine? Debería poder, el domingo
+veo de hacer eso. La idea sería que corra en Algarve cosas que vayan desde Kappa = 7 en adelante.
+Pongamos de un Kappa a la vez, y de ahí vamos viendo qué pasa. Eso puedo hacerlo ya.
+
+Miento, antes de hacer lo de complementar datos, tengo que terminar lo de Algarve. Mandé a hacer
+esos datos. Bueno, lo mejor que puedo conseguir es tener los datos del barrido Beta-Cosdelta
+y los datos del barrido en Beta. No puedo pedir más.
+
+Veamos cómo usar los datos para identificar estados:
+La entropía mide que tan distribuidos están los datos. Si la entropía es baja, tengo entonces
+los datos concentrados en pocos puntos. Si está distribuida, tengo anchura y la entropía sube.
+Me gustaría decir que el corte es un valor de entropía de 0.25, pero tengo que el caso de 4
+puntas que tiene entropía de 0.258. Así que digamos lo siguiente:
+--------------------------------------
+1) Si la entropía es menor o igual a 0.3, entonces el sistema está focalizado en puntos, no
+tiene anchura.
+---------------------------------------
+Esto no contradice con que hay una de las simulaciones de "anchura" que tiene entropía 0.322,
+porque esa simulación surge de distribuir los puntos a lo largo de una semidiagonal usando una
+normal para armar los puntos.
+
+Si tengo una entropía mayor, entonces tengo anchura. Es importante notar que el caso de consenso
+neutral me está dando una alta entropía, pero eso tiene que ver con que en comparación con los otros
+estados, estoy reduciendo la ventana que miro a la región en la que hay puntos. Si comparara eso
+con la ventana que tengo de las otras simulaciones, que mueven los datos entre -5 y 5, entonces
+vería que los datos están en un sólo punto y la entropía me daría baja. En resumen, voy a tener
+que tener en cuenta eso para el caso de tener bajos Kappas, que creo que no voy a verlo ese caso.
+ Creo que este problema se puede resolver mirando el valor promedio de las opiniones, pero una
+cosa a la vez.
+
+Quedémonos en los casos sin anchura:
+------------------------------------
+Acá tengo cuatro posibilidades. 1 extremo, 2 extremos, 3 extremos y 4 extremos.
+2) Si ambos sigmas son pequeños, entonces tengo 1 extremo. Pequeño significa menor a 0.1.
+Si un sigma es pequeño y el otro no, eso significa que tengo dos extremos polarizados
+en una dirección horizontal o vertical. Eso puede ser línea horizontal arriba o abajo, lo mismo
+que vertical a izquierda o derecha. 
+3) Si Sigma_x < 0.1 y Sigma_y > 0.5, está polarizado verticalmente. Si es al revés, está polarizado
+horizontalmente.
+
+A partir de acá es más difícil de diferenciar los estados. Los casos de dos extremos con alineación
+ideológica, los de tres extremos y los de 4 son muy similares. Pareciera haber una progresión en la
+entropía, pero resulta claro que hay un overlapping entre valores que no es para nada obvio.
+ Hice los cálculos de a qué valor deberían tender las entropías, pero no me está dando bien,
+los valores calculados dan por debajo de lo observado. Y si miro los cálculos que hace el programa
+sobre los estados, el overlapping es más fuerte y difícil de diferenciar.
+
+Tengo dos opciones acá, considerar que son los mismos estados, por el simple hecho de que no puedo
+diferenciarlos. La segunda es armar un criterio que considero tendrá error, pero que aún así
+puedo considerar ese error simplemente como una zona límite donde los dos casos se juntan.
+ Iré por el segundo criterio.
+
+4) Si ambos sigmas son grandes, digamos que mayores a 0.5, entonces si la entropía va entre [0.1,0.18)
+entonces es polarización de dos extremos con alineación ideológica.
+5) Si la entropía va entre [0.18; 0.22) son tres extremos.
+6) Si la entropía va entre [0.22; 0.3] son cuatro extremos.
+
+Con eso tengo definidos los casos sin anchura. Revisemos los otros casos, los que tienen
+anchura.
+
+Casos con anchura:
+------------------
+Ya para los casos con anchura, no creo que pueda usar la entropía para diferenciar entre cantidades
+de extremos, todos dan cercano a 0.6. No distinguir significa que podría tener un caso de un sólo
+extremo con entropía 0.65 y otro de tres extremos con 0.58. No hay forma de que pueda descubrir
+con esa info cuál es cuál. ¿Puedo usar los sigmas para identificarlos?
+
+En el caso de polarización a un extremo, los sigmas dan chicos. Eso tiene que ver con que en
+ese caso el promedio está en un punto medio donde las distancias a lo mucho son 0.25 al promedio.
+Eso elevado al cuadrado da un número pequeño.
+Conclusión:
+7) Si ambos sigmas son chicos, <0.1, entonces tengo polarización a un extremo.
+8) Si uno de los sigmas es grande, >0.1, entonces tengo polarización a dos extremos,
+horizontal o vertical según cuál sigma es el grande.
+
+Dicho esto, no puedo distinguir polarización con anchura a dos extremos con alineación
+ideológica, polarización a tres extremos o a cuatro. Esos tres casos son indistinguibles
+con esta info. Se me ocurre que podría mirar cómo están distribuidas las opiniones en las
+cajitas y luego con eso definir que tipo de polarización es.
+ Esto último charlémoslo con Pablo el lunes. Ahora me voy a poner a preparar lo otro
+que no voy a terminarlo antes de llegar a este problema.
+
+------------------------------------------------------------------------------------------
+
+18/12/2023
+
+Ni se me ocurrió el detalle de que con la lluvia se desconectaron todas las pc's. Lo que estaba
+corriendo se pausó todo. Volví a mandar los datos de Algarve y los de Coimbra. Como los códigos
+corren a tiempos distintos, revisé cuál de todas las tandas resolvió menos y empecé a correr
+desde ahí. Eso significó que el barrido de Beta-Kappa lo tuve que reiniciar desde Kappa=3.5 .
+El barrido de Beta-Cos(Delta) lo tuve que reiniciar desde Beta=0.9. Ese casi termina la primer
+iteración en todos. Casi.
+ El que es el barrido sólo en Beta no hizo ni una iteración, no había nada que pudiera hacer
+en el general, lo tuve que mandar de nuevo desde el principio.
+
+Ale me pidió alguna de las máquinas para laburar, le dejé Oporto, total esos datos no los voy
+a terminar pronto. Me voy a concentrar en Comibra y Algarve y que Dios se apiade de nosotros.
+Supongo que si tengo suerte, para mañana se termina una iteración entera en todos los hilos de
+lo de Coimbra. Eso me da un barrido de 20 simulaciones en todo el espacio. El hecho de que
+tenga huecos en los número de las iteraciones no debería ser un problema. Tendré 20
+simulaciones por cada punto, algo totalmente
+
+Ya tengo la función que arma un diccionario con los valores de Entropía, Sigma_x y Sigma_y
+para cada simulación. Ese diccionario se lo voy a pasar a otra función que es la que
+se va a encargar de hacer la separación de estados. Mi único tema es que en los datos
+que tengo armados en Coimbra, tengo huecos en los números de iteración. Eso va a ser un
+problema para la forma en que se construyen mis arrays de Entropía y demás. Lo que puedo
+hacer es reemplazar el armado de la repetición por un enumerate en los nombres de archivos.
+Total, no me importa que el orden sea el correcto, sólo que se cuenten todos los tipos de
+simulaciones que observo.
+
+Armé tres funciones. La primera es Diccionarios_metrica, el cuál toma el DataFrame de todos
+los nombres de archivos y de ahí devuelve un diccionario que contiene para cada punto en
+el espacio de parámetros un array con los valores de la entropía, la varianza en x y
+la varianza en y de todas las simulaciones.
+ La segunda función es Identificación_Estados. Esta función recibe el diccionario construido
+previamente y a partir de esto atraviesa una serie de ifs para decidir el estado final de la
+correspondiente simulación. Lo que devuelve esto es un array con números, donde cada número
+corresponde con un tipo de estado final. Estos números representan:
+
+Sin Anchura:
+-----------
+0 : Polarización a un extremo
+1 : Polarización a dos extremos Horizontal
+2 : Polarización a dos extremos Vertical
+3 : Polarización a dos extremos Diagonal
+4 : Polarización a tres extremos
+5 : Polarización a cuatro extremos
+
+Con Anchura:
+-----------
+6 : Polarización a un extremo
+7 : Polarización a dos extremos Horizontal
+8 : Polarización a dos extremos Vertical
+9 : Polarización a dos extremos diagonal, tres extremos y cuatro extremos.
+
+La tercera función es la que arma los mapas de Colores para cada gráfico. Esa función
+utiliza las dos anteriores y con eso arma 10 (por ahora 10) arrays ZZ. Estos 10 arrays
+los utiliza para armar los 10 gráficos. 
+
+Algo que no tiene esta función es que no es suficientemente general. Considera que el parámetro
+de Kappa se va a mantener fijo. Debería cambiar eso, considerando que lo que se va a mantener
+fijo es un parámetro que llamo Extra. Ese parámetro lo fijo yo en Graficar, y el resto del
+código se adapta habiendo fijado los parámetros x e y correspondientes.
+
+También tengo que dejar todo preparado para ya mandar el código a correr en las pcs de los
+clusters. Ese es el otro trabajo que tengo para hacer ahora. Después de eso, me queda
+simplemente armar los gráficos y cosas que charlamos con Pablo. Ahora mismo no me
+acuerdo cuáles son, pero los tengo anotados en el cuaderno en la facultad. Voy a ver
+de hacer todo lo posible mañana cosa de que el miércoles sólo me preparo la presentación
+con los gráficos en mano.
+
+Estuve un rato confundido con la función pensando que estaba identificando mal los estados.
+Resulta que el problema no era eso, sino que cuando el programa toma los nombres de los archivos
+del array "archivos", ese que saca del DataFrame, resulta que eso no está ordenado. No sé dónde
+van a parar los valores de entropía y demás. Podría ordenarlo si identificara los valores de
+repetición como hacía antes, pero eso me va a generar un problema con mis datos de Coimbra
+porque esos tienen un hueco en algunas simulaciones, así que en esta oportunidad no puedo hacer
+eso. Pero puedo en el futuro corregir eso, es un detalle. En vez de usar el enumerate con archivo,
+uso el "repeticion" que obtengo a partir del nombre del archivo.
+
+Puedo dejar lo de armar la función de forma general para otro momento. Más que nada porque no voy a
+tener los datos de Beta-Kappa en tiempo. Así que por ahora puede quedar, y después lo agrego, no es
+tan complejo de hacer. Mejor trabajar con lo que se tiene y listo.
+
+Lo que sí tengo que hacer es corregir la toma de datos con el -1 que pongo al final para evitar ese
+espacio vacío que se me genera. Esa corrección la voy a hacer sobre las funciones agregadas al conjunto
+de funciones de Python en Medidas_Polarización.
+
+Como último laburo de hoy, puedo pasar las tres funciones que armé al código de funciones, modificar
+esas funciones y la función de Graficar apropiadamente y después cargar esta función de Graficar en
+las pcs de Coimbra y Algarve. Bah, en Algarve no, en Algarve voy a estar buscando hacer otra cosa.
+
+------------------------------------------------------------------------------------------
+
+19/12/2023
+
+Revisé las tres pcs. El código que mandé a laburar y después corté en Oporto había laburado en
+Kappa=3.5 hasta Beta = 0.8. Los códigos de Coimbra y Algarve están más atrasados de lo que esperaba.
+El de Algarve le falta en varios casos completar dos betas. Es decir, tiene que recorrer los 11 valores
+de un cos(delta) dos veces, eso va a tardar. En Algarve, le falta dos iteraciones aprox. Creo que
+lo más que puedo esperar esto es hasta las 12, 01. Pasado eso, no puedo hacer nada más. Entonces
+lo que tengo que hacer ahora es preparar la presentación y los códigos para que todo funque de una.
+Si las simulaciones están mal, estoy muerto.
+
+¿Qué gráficos necesito y qué voy a hacer?
+1) El gráfico de Beta-Kappa necesito. Acá voy a ver la entropía y varianza de Entropía.
+El gráfico de Beta-Kappa lo haré con un Kappa hasta 3.5, no hasta 20 como quería inicialmente.
+Además, chances hay que en Kappa 3.5 no haya 20 simulaciones para todos los beta. Ojalá
+eso no afecte mucho el gráfico.
+2) El gráfico de Beta-Cos(delta) necesito. También tengo que hacer entropía y varianza de
+Entropía acá. El programa está corriendo todas las iteraciones pares, formando así
+20 simulaciones para cada punto en el espacio de parámetros. Cuando tenga las 20 en todos
+lados, lo corto. Si no llegara a estar terminado hoy, puedo mandar a correr todo lo otro
+aún teniendo un poco menos de simulaciones en la parte de Beta = 1.
+3) El gráfico de la cantidad de estados finales polarizados en función de Beta. Eso
+está en proceso, espero que esté terminado. Sino, tendré que revisar en el código la
+normalización para ver que los porcentajes estén bien calculados. Bueno, más o menos 
+va a estar. Espero.
+4) Podría ver de armar los gráficos de Opiniones vs. T que me decía Pablo. Ya los tengo
+armados de antes. Podría buscarlo de presentaciones viejas. O datos viejos. Los datos
+de Homofilia estática deberían tener eso disponible.
+5) Preguntarle a Pablo si representar las figuras del código que hicieron la gente de GOTHAM
+como me dijo en un momento que hagamos. Pero eso lo puedo preguntar mañana.
+
+Entonces, ¿qué tengo que hacer?
+-------------------------------
+1) Rearmar la función que arma el mapa de colores de Entropía, para que sea general y contemple
+que el parámetro fijo pueda ser Kappa o Cos(delta). También tiene que poder armar un mapa de colores
+de la varianza de la entropía.
+2) Colocar esa función de Entropía en Medidas_Polarización. Cargar eso en el Python dentro de Oporto
+y Coimbra.
+3) Repasar el código de mapas de colores de los distintos gráficos y cargarlo en los Python de Oporto
+y Coimbra.
+4) Revisar la función que arma los gráficos de cantidad de estados polarizados en función del tiempo,
+corregirlo para que sea en función de Beta y mandarlo a Algarve.
+5) Buscar los gráficos de Opiniones vs T que me decía Pablo antes de armar. Igual creo que voy a tener
+que tomar datos directamente de lo que estuve haciendo de Medidas_polarización. Ah no, eso no va a servir
+porque no estoy guardando datos de Testigos, sólo Opiniones. Bueno, queda entonces dos opciones. Una
+es armar datos en Setubal ahora que hagan eso. La otra es usar los datos de Homofilia_estática.
+Veré si puedo mandar a correr cosas en Setubal.
+6) Con todo esto, armar la presentación.
+ En la presentación contar cómo es el cálculo de la entropía.
+ 
+Completé el punto 1. También completé lo de ponerlo en el archivo de funciones de Medidas_Polarización.
+Lo voy a cargar a Oporto y Algarve con el punto 3. Después tengo que cargar estas nuevas funciones
+modificadas en funciones generales.py.
+ Hice las modificaciones necesarias para que se puedan correr los archivos de Python en cuanto estén
+terminadas las simulaciones. Armé dos carpetas dentro de la carpeta de Python de Medidas_Polarizacion.
+Esas carpetas tienen los archivos de Graficar y de funciones de Oporto y Coimbra, respectivamente,
+modificando la forma en que se normalizan las distribuciones de opinión para que siempre se use el 
+valor de Kappa. Aproveché para modificar las funciones de Mapa de Traza de Covarianza y la de
+Histogramas 2D, así armo esos gráficos normalizando correctamente. Dios quiera que todos estos cambios
+estén bien hechos.
+ 
+Cuando mande a hacer los gráficos con los datos de Oporto, tengo que recordar que es necesario
+restringir el Param_x, cosa de tomar el Kappa hasta 3,5.
+
+Revisé el programa que estudia la fracción de estados polarizados en función del tiempo. Para
+esta etapa había trabajado con el criterio de que si la traza de la covarianza normalizada y 
+dividida por 2 me daba menor a 0.1, el sistema no estaba polarizado. Así que lo que voy a tener
+que hacer es tomar la función que grafica Fracción de estados polarizados en función de T y modificarlo
+para que grafique en función de Beta, que es el parámetro Y creo. Y tengo que primero identificar la
+cantidad de estados polarizados que tengo. Después los tengo que normalizar según la cantidad
+de simulaciones que tenga por punto del ensamble.
+
+------------------------------------------------------------------------------------------
+
+20/12/2023
+
+Hardcodee algunos ifs y cosas para que el programa normalice correctamente las frecuencias de
+gráficos, así como para que ignore los archivos que no están bien terminados con datos.
+Dios quiera que ahora funcione.
+
+Ok, el programa tuvo como problema que no encontró la carpeta de imágenes. Esa es una señal
+de que algo quizo graficar.
+
+Pablo propuso de intentar identificar los estados con un Clasificador. Es una re idea.
+Me dijeron que revise que los gráficos que estoy clasificando sean reales. Algo que es
+obvio de hacer Favio.
+Para el gráfico de Beta-Cos(delta), agregar la región de Beta de [0,0.5]. Básicamente,
+que Beta va de [0,1]. E incluso mirar los Beta por encima de 1.
+
+Tengo varias cosas que anotar sobre cosas hardocodeadas y cosas que mandar a correr para
+que laburen durante las vacaciones. Quizás, sólo quizás, mire algo del trabajo en vacaciones.
+
+De la reunión me llevo que lo que charlamos es lo siguiente:
+1) Hay que ver que los estados que el programa está identificando realmente sean
+lo que dice ser. Tengo que analizar los histogramas y ver que estoy realmente viendo
+esos estados.
+2) Expandir la región de las simulaciones del Beta-cos(delta). En particular lograr que
+esas simulaciones lleguen a cumplir una región de Beta [0,1] e incluso un poco más que
+eso.
+3) Implementar el uso de un Clasificador que identifique los estados. Esta es una idea
+muy copada.
+4) Quizás pasar a coordenadas polares como una forma de lograr diferenciar los estados
+que no estamos pudiendo diferenciar.
+
+Cosas que me quedó sabiendo lo que hice:
+5) Complementar las simulaciones, que quede todo completado para cuando yo vuelva.
+Eso significa barrer entero toda la región del Beta-Kappa, complementar como dije antes
+la región del beta-Cos(delta) y también completar las simulaciones que usé para el
+de fracción de estados polarizados en función de Beta.
+6) Revisar los códigos que hice para que las cosas hardcodeadas que mandé no perduren y
+no sean un problema a futuro. También mandar a funciones generales algunas de las funciones
+que armé.
+
+Ya creo que revisé lo importante de los códigos. Lo que me queda ahora es documentar todo
+y revisar qué es lo que tengo que mandar a correr mañana. Creo que eso lo puedo hacer mañana sin
+problemas. Bah, mañana voy a estar corrigiendo parciales, a quién quiero engañar. Mejor
+me pongo a anotar en el cuaderno lo que charlamos con Pablo.
+
+------------------------------------------------------------------------------------------
+
+21/12/2023
+
+Tengo que hacer cosas, pero no es claro por donde arrancar. Escribámoslo para intentar ordenar
+ideas. El programa tarda mucho. Es la cruz de mi existencia.
+ Pablo dice de analizar un poco el comportamiento del sistema mirando estados que tardan mucho
+en terminar. Para eso tengo que revisar algunos estados que hayan tardado mucho, usar esa semilla
+y mandarlos a correr. Me gustaría mandarlos a correr en la pc, pero creo que va a ser mejor hacerlo
+en Algarve o Coimbra. Necesito los datos de Testigos para ver que pasa. Igual, más que testigos,
+voy a intentar guardarme todo el sistema. Pero no voy a guardar datos de todos los pasos temporales,
+es un montón. Mejor guardar datos del sistema cada 100 pasos.
+ Lo que puedo hacer es mandar esto a Coimbra y de ahí generar tres o cuatro simulaciones. Después me
+pongo a corregir exámenes. Que Dios se apiade de nosotros.
+
+El código que tengo en src es el que tengo en Testeo_Implementaciones, así que puedo deshacerme de
+ese código. Pasemos a lo siguiente, agarremos uno de los códigos de Medidas_polarizacion, revisemos
+que tenga los testigos y de ahí lo paso a Coimbra. No era el código de Medidas_polarizacion, era
+el de NI_Homofilia el que tengo que usar. Ese tiene los testigos comentados.
+
+Ahí mandé los tres programas. Yo estoy rogando que no haya quilombos. De lo que recuerdo de las
+veces en que me mandé cagadas antes, no va a haber quilombos por haber rearmado el archivo.e
+luego de haber mandado las simulaciones. Al mandar a correr, la terminal se hizo una copia
+del archivo.e y es sobre esa copia que está corriendo el código. No está revisitando el archivo
+original. Con lo cual, lo que se corrió en cada caso con sus respectivas semillas va a resolver
+a su manera. Yo diría de irme ahora a casa, llevarme todo lo importante y ya después me pongo
+a corregir parciales.
+
+------------------------------------------------------------------------------------------
+
+24/12/2023
+
+Con lo que vimos de los gráficos de Trayectorias de Opiniones con Pablo, la verdad que tenemos más
+dudas que respuestas, hay cosas que revisar y después charlar con la gente de España. Después
+cuando vuelva en Enero, veré de encarar el laburo de revisar qué pasó ahí.
+
+Hoy mandé a correr en Coimbra el resto de simulaciones para que estén los datos en el barrido 
+Beta-Kappa con Kappa hasta 20. Mandemos eso derecho, sin dramas. Bah, Pablo había dicho
+de hacer Kappa de 0 hasta 15. Corrijamos eso, después cualquier cosa mando más.
+ También mandé a correr los datos en Coimbra, para resolver la aprte dinal con Beta entre [0.9,1].
+Estos datos se van a terminar de correr rápido, en dos o tres días revisarlos y ver que una vez
+terminados, tengo que mandar a correr datos para Beta entre [0,0.85] para completar la segunda tanda
+de iteraciones. Hecho eso, voy rellenando esta región de datos con más simulaciones.
+
+------------------------------------------------------------------------------------------
+
+27/12/2023
+
+Revisé cómo viene el armado de los datos. Por un lado, los datos de Oporto van tan lento como
+era de esperar. Se hace lo que puede. Por el otro, los datos de Coimbra están casi terminados,
+mañana tengo que mandar a correr los datos para completar la región entre [0.5,0.85]. Hecho eso,
+mandar más simulaciones aumentando la región del beta para que cubra el [0,2].
+ Por último, tengo que mandar a correr simulaciones en Algarve, aunque Ale tiene ocupados varios
+hilos. Sólo tengo la mitad para usar. Así que voy a mandar la mitad que cubran el análisis que queríamos
+hacer sobre estados finales polarizados. Aunque en realidad Pablo quiere que haga gráficos de fracción
+de distribuciones en un dado estado final. Algo importante a recordar: la iteración 84 no completó todo
+su beta. El resto completaron todos la primer iteración de las tres que iba a realizar cada hilo.
+Así que mando la segunda iteración de cada hilo y de ahí veo que sale. Mandé 15 hilos, y por la forma
+del código, eso resulta en que se van a completar hasta la iteración 84. Bien, eso resuelve el problema
+de esa iteración.
+
+------------------------------------------------------------------------------------------
+
+28/12/2023
+
+Efectivamente las simulaciones con Beta entre [0.9,1] terminaron, ahora mando las que faltan para
+completar las iteraciones impares con Beta [0.5,0.85]. En dos o tres días más tengo que volver a mirar
+lo de Algarve.
+
+------------------------------------------------------------------------------------------
+
+31/12/2023
+
+Mandé a correr las 15 iteraciones que faltaban en Algarve.
+
+------------------------------------------------------------------------------------------
+
+02/01/2023
+
+En Algarve podría mandar a correr las simulaciones con Beta entre [1,2], con cos(delta) entre [0,1].
+Para hacer las simulaciones en Algarve lo que voy a hacer es utilizar las mismas redes que en Coimbra,
+cosa de que los datos se generen idénticamente.
+En Coimbra podría mandar las simulaciones con Beta entre [0,0.45].
+
+Ahí mandé a correr las dos cosas. Lo de Coimbra se va a terminar antes, revisar eso el sábado.
+
+
+------------------------------------------------------------------------------------------
+
+08/01/2024
+
+Hoy llegué, revisé lo que mandé a correr y sólo quedó lo de Oporto. Por lo que ví, pareciera que
+van a tardar otros 10 días en terminar eso. Después charlamos un ratito con Pablo y acordamos
+que es una buena idea revisar el código que me pasó Hugo para ver qué puede ser lo que hace
+que mi código ande lento o si el código está funcionando mal.
+
+Lo primero que hice hoy fue completar la burocracia infinita. Hecho eso, descargué el archivo que
+me pasó Hugo y empecé a compararlo con mi código, para ver qué cosas tenía de similar o de
+distinto su código.
+
+Ahí vi el proceso en el cuál crea la matriz de Adyacencia. Es bastante interesante, porque se encarga
+de armar una matriz de vecinos, contrario a una matriz de adyacencia. Hugo lo llamó listas
+de vecinos. Cuestión que A es una matriz que tiene N filas, una por cada agente. Estas filas
+tienen tamaño igual al grado del agente i-ésimo. Luego, en estas filas están los números
+que identifican a los vecinos del agente i-ésimo.
+ Es decir, consideremos el agente 1. Si este agente tiene grado tres, entonces A[1] es un vector
+de tamaño 3. Luego, si el agente 1 estuviera conectado con los agentes 5, 8 y 12, entonces
+A[1] podría ser [8,5,12]. A[1] no está necesariamente ordenado. Al menos no lo parece
+porque los archivos de asociados a las redes complejas guardan los enlaces ordenados según el
+primer agente, pero no según el segundo.
+ En esa misma función que crea a la matriz A, tiene un conjunto de tres fors más abajo que 
+construyen la matriz A_neigh. Dado A_neigh[i][j] = l, lo que me está diciendo eso es lo siguiente.
+Primero considero al agente i-ésimo, el cuál tiene en la matriz A un vector de tamaño k_i.
+Sobre ese agente, el agente j-ésimo es el que se encuentra en la posición j de ese vector.
+Entonces si A_neigh[i][j] = l, eso significa que el agente i ocupa la posición l-ésima en la lista
+de vecinos del agente que es el vecino j-ésimo de i.
+ Puesto en números, supongamos que tengo los agentes 3, 12, 16 y 20 conectados con el agente 200.
+Siguiendo el orden en que se construye la matriz A, si yo mirara A[200] vería [3,12,16,20,...].
+Entonces si yo quiero conocer A_neigh[20][200], este me va a dar 3. En cambio, A_neigh[200][20]
+no sé cuánto da en este ejemplo, porque eso depende de cómo están ordenados los enlaces en el
+conjunto asociado al agente 20 y si además hay agentes del 0 al 19 que estén vinculados al agente
+20.
+
+Consultar con Hugo el tema de las static memories. Hay una nota de que no debería prestarle mucha
+atención, pero vale la pena mandarle un mail para consultar al respecto. Llegué a revisar 
+hasta la función de free all. Mañana continuar a partir de ahí.
+
+------------------------------------------------------------------------------------------
+
+09/01/2024
+
+Estoy teniendo algunas dudas con cómo se calculan distancias en espacios no ortogonales.
+Buscando en internet, encontré respuestas como que no se puede definir un producto escalar
+en espacios no ortogonales, lo cuál me preocupa. Lo que tenemos es la definición de Baumann
+únicamente, a la cuál Baumann tampoco aclara demasiado.
+
+Revisé el código de lo que hizo Hugo, y lo que tengo yo es igual a lo que hacen ellos. No veo
+el error en eso. Tampoco encuentro el error como yo esperaba en el cálculo de los pesos. No
+hay un error en el simetrizado de la matriz, y revisé previamente que los lugares donde 
+la matriz tiene números distintos de cero sea en los mismos lugares donde la matriz de adyacencia
+indica que los agentes están conectados. Así que no logro comprender por qué da mal el cálculo.
+
+Ahora mismo no sé para dónde encarar. Por un lado Pablo me dice de intentar correr mi
+simulación con el programa de Hugo, pero eso no va a ser posible. Su código no contempla
+la posibilidad de que el sistema tenga múltiples tópicos, hay que readaptarlo. La otra es
+que yo haga simulaciones con un sólo tópico, que encuentre algunas con el problema de correr
+durante mucho tiempo y esas después las corra en el código de Hugo, eso creo que podría hacerlo.
+
+Lo otro es empezar a ver de analizar más en detalle el comportamiento de esos agentes particulares
+que oscilan mucho, ver qué puedo obtener de ellos y cómo me daría cuenta de lo que está pasando.
+Para esto yo diría de revisar mi código, ver dónde dejé los gráficos esos y a partir de los gráficos
+ir viendo de ver formas de graficar y observar lo que ocurre. Pablo decía de armar un gráfico
+3D ordenándolos según los que más varían y los que menos varían.
+
+Ahí justo hablé con Lupi por el tema del trabajo que teníamos sobre el modelo de interés.
+Pablo dijo que nos pongamos a trabajar juntos en eso para darle forma y hacer algo
+publicable. Con eso en mente, tendré que ponerme a revisar eso pronto.
+
+Aislé un agente para el caso de Beta=0.9, el agente 79, el cuál tiene opiniones oscilantes.
+Ya que estoy, voy a descargarme las redes estáticas de este caso. Si no me equivoco, son las
+de Algarve. Son las de Algarve, pero me jode que no tengo algo que inequívocamente me asegura
+que las matrices de MARE_Algarve son las que tengo que estar mirando. Una cagada eso. Eso pasa
+por estar mezclando datos de pc's.
+
+Ya que estoy, tengo algo para ver rápido los grados medios, debería revisar que efectivamente
+las redes que uso son del grado medio que yo digo.
+
+Cuestión, para el gráfico con Beta = 0.9 resulta que tengo el agente 79 como un agente cuya
+opinión en el tópico 1 oscila permanentemente en el tiempo. Revisando sus vecinos, resulta que
+el agente 388 oscila con él. Podría mirar los vecinos del 388 para encontrar otros que oscilan
+igual, pero no sé si valga la pena. Lo que tendría que hacer ahora digo yo es mirar la ecuación
+dinámica por un lado y comparar eso con el cálculo de los pesos. Sabiendo la opinión del agente
+79 y la de sus vecinos, podría evolucionar a ese agente sólo y ver si la evolución está bien
+calculada y qué pasa con los pesos. ¿Tiene sentido esto? No, no lo tiene, yo no tengo la
+evolución temporal en cada paso de este agente, tengo la evolución cada 100 pasos. No tengo
+idea de lo que ocurre en el medio. Lo que sí puedo hacer es ir calculando cómo varía la distancia
+entre agentes y cómo va variando el peso entre ambos. Eso me ayudaría a ver si el peso está
+bien calculado y si es el culpable de estas oscilaciones raras.
+
+Por otro lado Pablo me propone que corra mis simulaciones en el código de Hugo y vea si me
+da lo mismo. Para eso podría reducir mi problema a 1 dimensión e intentar ver si me ocurre
+lo mismo en ese caso comparado con lo que ocurre en mi código. Eso significa que tengo
+que barrer algunas simulaciones en la región de beta cercana a 1 hasta encontrar alguna que
+tarde demasiado y a esa ver qué le pasó y si efectivamente está oscilando.
+
+El plan para mañana entonces es empezar mandando a correr eso. Tengo que armar una carpeta
+de datos 1D para guardar y mandar a correr esto en la pc de la facultad o en Algarve, no
+sé cuál conviene. Hoy ya no llego a mandarlo a correr, lo importante es que mañana eso
+esté antes del mediodía. Mientras eso corre, puedo seguir revisando al agente 79 y
+su amigo el 388.
+ En ese caso lo que puedo ver es cómo varía el peso y la distancia entre ambos, se me
+ocurre que estaría bueno graficarlo para ver si realmente cuando la distancia crece
+el peso se achica. Claramente yo espero ver que el peso entre ambos vaya también oscilando,
+porque depende de la distancia entre ambos.
+ Visto eso, podría ponerme a buscar libros o info sobre cómo calcular la distancia en espacios
+no ortogonales. Me está volviendo un poco loco esto, no quiero descubrir que está mal.
+ También debería terminar de leer el código de Hugo, porque si quiero mandarlo a correr,
+necesito comprender cómo hacerlo funcionar con mis cosas. Charlar con Pablo el hecho de que
+el código ese usa otros números random. Claramente debería reemplazar su función de números
+random por mi función de números random.
+
+Ok, ahí tengo 4 cosas claramente definidas para hacer. Además debería dedicarle un rato a
+armar el archivo con papers que venimos hablando con Ale. Tengo mi trabajo marcado para
+mañana. Lo último que queda considerar es si debería mandarle un mail a Hugo para hablarle
+de esto y consultarle por su código.
+
+------------------------------------------------------------------------------------------
+
+10/01/2024
+
+Pasé por el barrio chino pensando en comprarme comida para hoy y vi los roll de sushi.
+Son muy caros para lo que son, no me valen la pena. Así que llegué tarde por eso.
+
+Ahora, qué hago primero. Voy a querer mandar a correr el código en mi pc para el caso
+1D. Tengo entonces que revisar el código del main para adaptarlo y ver que el código que
+tengo guardado sea el mismo, cosa de no perder el trabajo en armar el que tengo.
+
+Ya mandé a correr datos en la pc de Algarve. Esto va a tomar un día aprox. Mandé 40 iteraciones,
+con K=10, cos(delta)=0 y Beta barriendo entre 0.1 y 1.5, espero encontrar simulaciones que
+tarden mucho y me den para estudiar el sistema.
+
+Lo siguiente que voy a hacer es lo de graficar el peso y la distancia entre el agente 79 y el 388.
+Para eso voy a levantar los datos del archivo de Testigos y quedarme con las opiniones del agente
+79 y de sus vecinos.
+
+Revisando este gráfico observé lo siguiente. Primero, que la distancia y el peso parecieran estar
+oscilando en simultáneo, de forma tal que cuando la distancia entre estos dos agentes tiene un mínimo,
+el peso tiene un máximo. Lo segundo que vi es que el peso de este agente difícilmente supera el
+0.07 durante la oscilación. Es decir que el efecto de su tirón se reduce al 7% por lo lejos que
+se encuentra del agente principal, lo cuál es totalmente razonable. Entonces si el agente 388 está
+haciendo que el 79 oscile, eso significa que el agente 79 tiene que tener una oscilación de un
+orden de magnitud menor que la del otro.
+ Ahí hice la cuenta, efectivamente el agente 388 oscila entre 9 y -1.5, lo cuál le da una amplitud
+de 10.5. En cambio, el agente 79 oscila entre -7.5 y -9.3, lo cuál le da una oscilación de 1.8.
+Entonces en orden de magnitud son similares. Es decir que esta oscilación tiene sentido con
+lo que propone la ecuación dinámica, porque como el resto de los vecinos están fijos, lo único
+que produciría oscilación para el agente 79 es el vecino 388.
+ Pero ahí hay algo raro, porque 1.87 es el 17% de 10.5, eso son 10 puntos más de oscilación que lo
+MÁXIMO que podría generar. Entonces no se entiende, ¿Por qué el hecho de que el agente 388 se
+encuentre oscilando hace que el 79 también oscile? Digo, si apenas le hace fuerza para moverse al 
+79. Incluso, más confuso es pensar lo siguiente. Al 79 sólo lo mueve el 388, porque el resto está
+fijo. ¿Por qué entonces en el momento de la oscilación en que el 388 se aleja no permanecen alejados?
+Digo, si el 388 es el causante de la oscilación, cuando se aleja su efecto debería ser mínimo y ahí
+los vecinos que están cerca de -10 deberían poder atrapar al agente 79 y cortar su oscilación.
+ Veamos qué pasa con los pesos de los vecinos cercanos y con los vecinos lejanos en función del tiempo,
+y después vamos para casa. Cabe destacar además que la mayoría de los vecinos del agente 79 están en
+-10 de opinión para el tópico 1. El agente 79 tiene siete vecinos, cuatro tienen opinión -10, dos
+tienen opinión 10 y el 388 es el que oscila.
+ Miré esos pesos y calculé la derivada en t = 10,75, que sería el punto 1075. En ese caso, la
+derivada sigue siendo negativa. Entonces no me cierra para nada por qué aún variando el agente
+388, este logra hacer oscilar al agente 79 y por qué este no queda pegado al resto de los agentes.
+
+Por otra parte, mandé a correr el programa específico que Pablo me dijo que corriera para el caso
+unidimensional. Primero, pasó algo inesperado. El programa se resolvió en 40 minutos, pero corrió
+hasta el final. No entiendo, los programas unidimensionales en Algarve están tardando 4 horas y media.
+¿Por qué en la pc de la facultad corre tanto más rápido? Ahora tengo un poco de miedo de que
+esté corriendo mal ahí y que el problema sean las pcs del grupo.
+
+Cuestión que tengo una simulación para Beta=0.9 que oscila hasta tiempo final, y que se resolvió en 40
+minutos por motivos que me superan. Y efectivamente tiene oscilaciones. Podría hacer el mismo
+proceso para buscar algunos vecinos que oscilen. De ahí mirar su distancia y pesos. Si resulta que
+eso tiene sentido, todo bien, el problema no va por el cálculo de esas cosas.
+ Para ver el tema de los tiempos, voy a mandar a correr una sola simulación en la pc de Coimbra,
+y ver si corre igual de rápido. Ahí lo mandé a correr, para ver qué pasa.
+
+Lo otro que puedo hacer es mandar a correr esto usando el programa de Hugo. Si en su programa observo
+lo mismo, entonces las oscilaciones no son artefactos, hay que buscarlas en la ecuación dinámica.
+
+Se me ocurre que mañana puedo tomar estos datos y ponerme a ver en qué momento la derivada pasa a
+ser positiva. Aunque hay que considerar que yo no veo toda la evolución, sino sólamente el
+estado cada 100 pasos temporales.
+
+Por otro lado, efectivamente mandé una sola simulación en Coimbra y resolvió en 40 minutos.
+No entiendo qué está pasando. Corté las simulaciones en Algarve, voy a probar mandar todo
+de nuevo pero con menos hilos mañana.
+
+------------------------------------------------------------------------------------------
+
+11/01/2024
+
+Vamos a anotar algunas ideas. Por un lado, estaría bueno armar como dijo Pablo, una lista
+de cosas que descarto que sean el problema. Después haré un pequeño repaso de qué estuve
+pensando respecto al tema de las distancias y a hacer la simulación con el código de Hugo.
+Igual, creo que conviene empezar mandando a correr el código de Hugo, eso va a ser mejor,
+porque espero que eso tarde en principio 40 minutos. También debería mandar a correr en
+Algarve mis datos para ver qué pasa con el tema de si está tardando mucho el código porque
+se come la RAM.
+
+Mandé en Algarve a correr con un sólo hilo lo mismo exacto que mandé ayer. Siendo que ayer
+no fue un sólo proceso, fueron todos en simultáneo que empezaron a tardar mucho.
+
+Para poder correr el código de Hugo, necesito poder construir un archivo con los datos de
+la red como los que usa Hugo. Armé un código sencillo que toma una red y construye exactamente
+el mismo archivo que utiliza Hugo. Con esto puedo reconstruir todas mis redes y a partir
+de ahí copiar la forma de crear las listas de vecinas que hace Hugo.
+
+Logré mandar a correr el código de Hugo agregándole algunos detalles de mi código. Ahora a ver
+cuánto tarda y qué le da. Aprovecho para crear las carpetas necesarias para ver los gráficos
+y cosas. Armé el gráfico y lo que observé es que también oscila, aunque no parece ser tan
+organizado como el que observo yo. Eso me da una sensación más parecida a lo que yo esperaba
+observar, que los agentes se mantienen variando sus opiniones yendo y viniendo. Lo raro es la
+oscilación que observo yo que parece ser como osciladores de Kuramoto.
+
+Conseguí el resultado del código de Hugo para cuando fui a comer. Después de comer, me dediqué
+a preparar una presentación para mostrarle a Hugo lo que estuve trabajando sobre las oscilaciones
+de opiniones y luego le mandé un mail. Esto me tomó una buena parte de la tarde porque fue un
+buen laburo armar los gráficos.
+
+Enviado el mail, revisé las simulaciones que mandé en Algarve. Resulta que cuando mando un sólo
+hilo, ningún código dura más de 40 minutos. Es una reducción de tiempo importante. Después probé
+mandar 5 hilos. Vamos a ver si con eso sigue tardando poco y después mandaré 10 hilos si todo
+va bien.
+
+A lo último, terminé de anotarme lo que hice en el día. Mañana tendré que ponerme a ver
+lo que estaba pensando ayer cuando me volví en bici. Agarrar el sistema a tiempo 10.75 y empezar
+a ver por qué a partir de ahí el agente 79 vuelve a subir. Puedo evolucionar el sistema
+con un Runge-Kutta hecho en Python y de ahí ver qué ocurre. Mi idea es que puedo hacer
+este análisis mirando al agente 79 y considerando al agente 388 que oscila como una condición
+de contorno.
+
+Por otro lado, puedo hacerme la lista de cosas que claramente no son lo que me generan
+esta oscilación después, como para ver qué cosas ya descarté.
+
+------------------------------------------------------------------------------------------
+
+12/01/2024
+
+Tres cosas, por un lado revisé las simulaciones en Algarve y resultó que los programas si
+bien no tardan 4 horas y media, ahora tardaron 50 minutos. Siento como que al ir aumentando
+los hilos, está aumentando el tiempo que el programa tarda. ¿No lo comprendo, por qué
+escala así? No puede ser que le esté comiendo la RAM, los programas en sí no deben ocupar cada
+uno más de 5 MB de ram, sumados los 20 serán 100 Mb. Y las pc's deben tener más de 4Gb de ram,
+es inentendible.
+
+Lo segundo es que Hugo me mandó un mail explicando su perspectiva sobre el tema de las
+oscilaciones y que justamente ellos veían esto. Le parece un poco llamativo el resultado
+con oscilaciones periódicas y me propone hacer una simulación con un dt menor para ver qué
+se observa. Puedo hacer eso sin duda.
+
+Tercero, puedo anotar la lista de cosas que no son lo que generan las oscilaciones y continuar
+de dónde dejé ayer el problema.
+
+Pero antes de eso, debería reunirme con Lupi y hablar del otro trabajo. Hablando con Lupi nos
+pusimos al día de nuevo con esto y charlamos unos puntos que nos parecen importantes para
+arrancar. Una vez que tengamos esos resultados, podemos ir viendo qué más hacer. Tengo anotado
+en el cuaderno lo que tengo que hacer.
+
+Por otro lado, tengo que mandar a correr lo que me dijo Hugo sobre el caso 2D con un dt más chico.
+Ya mandé a correr eso. Así que ahora puedo pasar a otra cosa. Pablo me pidió que arme
+un resumen del estado actual del trabajo.
+
+Antes de arrancar con eso, me quedo pensando en el tema de que las simulaciones en Algarve tardan
+más a medida que le mando más hilos. No entiendo, no debería pasar semejante cosa. Es muy raro.
+Actualmente, las simulaciones que más tardan están tardando 110 minutos aprox. Entonces pasó
+de tardar 50 minutos en el caso de 5 hilos, a tardar 110 minutos en el caso de 10 hilos.
+No comprendo esto, es como si la pc no pudiera trabajar todas las cosas al mismo tiempo.
+¿El problema es mi código? No tiene ningún sentido, hay algo mal acá. No puede ser que el
+programa tarde maś, si es que estoy usando una cantidad de hilos razonable. Además, cada
+proceso se tiene que asginar a un hilo distinto y ser separado de lo otro. Son independientes,
+no puede tardar más porque sería como que está haciéndolos en secuencia, cuando debería poder
+mandar a correr todos juntos.
+
+Hagamos rápido la lista que estaba pensando y de ahí me pongo a hacer el resumen para Pablo.
+Y me hago un café que no me aguanto del sueño.
+
+.) Cálculo de distancia no ortogonal. Eso no afecta porque el Cos(delta) es cero en las simulaciones.
+.) Evolución del Runge Kutta. Eso lo probé unos días antes, daba muy similar a un integrador
+de Euler.
+.) Cálculo de los pesos. Eso se está resolviendo correctamente. La ecuación está planteada
+igual que lo que tienen la gente de España.
+.) El número de dimensiones. Eso tampoco, probamos hacerlo en 1 dimensión y también se ven
+oscilaciones.
+.) Mi código. Eso tampoco puede ser, porque mandé a correr la simulación en el código de
+Hugo y da algo similar.
+
+
+Hablando con Pablo, me propuso que haga dos cosas para revisar el tema del tiempo que va
+creciendo a medida que aumento la cantidad de hilos que utilizo. Lo primero es considerar
+que el proceso de escritura de cada uno de los códigos interfiere con el de otro, entonces
+debería reducir las escrituras de los testigos, a ver si eso reduce los tiempos y si
+además hace que se vuelva independiente de la cantidad de hilos.
+ Lo segundo sería probar esto en varias pc's distintas, como Coimbra, Oporto y Setubal.
+Para mandar esto lo que voy a hacer es tomar la función en la pc de la facultad, sacarle
+la escritura a testigos y de ahí ver qué pasa.
+
+Armé el resumen que Pablo me pidió. Antes de irme, voy a mandar a correr el código del
+sistema en 2D en Coimbra, porque no llegó a terminar en la pc de la facultad. Ahí mandé
+eso a correr, mañana debería estar.
+
+------------------------------------------------------------------------------------------
+
+14/01/2024
+
+Modifiqué el archivo de evolución temporal para que no haga escritura, que sea de 1D
+y que el dt sea 0,1. Luego, mandé esa carpeta a Algarve, Coimbra y Setubal. Mandé
+a correr 5 hilos en cada pc.
+
+Para mandar a correr las cosas en Setubal necesito descargar los archivos de Programas C
+de alguna de las carpetas. Mientras eso se descarga hubiera estado bueno descargar el archivo
+del dt_chico y revisar lo que da, pero no me animo a tener dos terminales de Windows abiertas.
+
+------------------------------------------------------------------------------------------
+
+15/01/2024
+
+Estoy trabajando desde casa hoy, y estoy un poco perdido. Primero, descargué el archivo
+de 2D_dtchico e hice el gráfico de Opiniónvstiempo. Lo que pude ver es que ese comportamiento
+regular que tenía en el gráfico con dt=0.1 desapareció, ahora el sistema tiene oscilaciones
+mucho más caóticas. Por lo que tal cuál propuso Hugo, parece que lo que estaba viendo era
+un artefacto de la simulación, no era un resultado real.
+
+No tengo los gráficos de Distancia y tiempo, aunque esos los puedo hacer, sólo necesito
+descargarme las matrices de Algarve. Me descargué la matriz que necesitaba y ahí armé los
+gráficos de Pesos en función del tiempo.
+
+Tengo un poco de nervios porque no sé si necesito algo más para charlar con Hugo, pero al
+mismo tiempo tampoco tengo mucho más para consultarle. Me parece importante aclarar los
+tantos al respecto de las oscilaciones, llevarle tranquilidad a Pablo y cerrar este tema
+así nos ponemos con cosas nuevas. Puedo aprovechar a consultar con Hugo el tema
+de las memorias estáticas. Y no olvidarme de charlar el tema de que si es posible, estaría
+bueno pasar la reunión del miércoles a la semana siguiente.
+
+Reunión con Hugo:
+-----------------
+
+-) Siempre que haya opiniones intermedias tiene que haber variación de opinión.
+-) Una idea sería tomar una configuración que oscila y ver si numéricamente podemos
+encontrar el ciclo.
+-) Ellos hicieron un análisis con diferenciales para probar lo inestable del sistema
+y como un agente fuera de la posición de equilibrio se perturba fácilmente.
+
+De la reunión con Hugo recordé que parte de lo que me estaba contando estaba en el paper.
+Fingí demencia, pero me parece que está bueno revisar eso en la semana, como para tenerlo
+más interiorizado. Me parece igual que con esto podemos cerrar el capítulo sobre el tema
+de las oscilaciones de las trayectorias de opiniones y ya dedicarnos a mirar resultados.
+Y también, discutir qué carajos voy a hacer con el hecho de que no tengo resueltas todas
+las simulaciones que quiero en Oporto. Creo que si reduzco la cantidad de Hilos, la cosa
+va a ser mejor, debería probar eso.
+
+Hablando de los hilos, más temprano mandé a correr 10 hilos a las pc's de Coimbra y Algarve,
+así como también cargué archivos en Setubal. Dicho esto, ¿qué voy a hacer hoy?
+
+Mi plan es primero, asegurarme que puedo correr cosas en Setubal, lo cuál de seguro implica tener
+que instalar python y cosas.
+ Segundo, seguir con el tema de los hilos, quiero tener una buena idea de cuánto tardan los
+programas así me hago un plan de cuánto puedo reducir usando menos hilos. De paso, mis
+simulaciones de pruebas estas están usando sistemas unidimensionales. Quizás me conviene usar
+sistemas de dos dimensiones, como para no llevarme sorpresas.
+ Tercero, tengo que preparar los archivos de graficación, cosa de que ya mañana me conecto
+y mando a hacer los gráficos que había charlado con Pablo que son importantes. Una vez
+que tenga los gráficos, ahí veremos cuál es el próximo paso.
+ Cuarto, podría implementar algunos de los códigos de Hugo para que todo corra más rápido.
+Podría hacer eso mientras los programas ya están corriendo.
+
+Mandé a correr en Coimbra y Algarve sistemas con dos tópicos y lo hice en 5 hilos. Me sigue
+preocupando que los procesos tarden más cada vez que mando más hilos. Esto me confunde y me jode,
+porque siento que si reduzco los hilos entonces no estoy ganando tiempo. Para aclarar, arranqué
+con lo segundo. Ahora paso a lo primero. Estoy descargando los archivos del environment de
+Oporto y voy a mandar eso a Setubal. Mandé archivos a Setubal, pero no pude hacerlo funcionar.
+Después charlarlo con Seba o alguien que tenga más autoridad en Setubal.
+
+Los gráficos que quiero construir son los de Entropía, y los de frecuencia de estados en el
+espacio de parámetros. Me estoy dando cuenta que las funciones no están corregidas como
+yo creí que estaban. Esto me preocupa, voy a corregirlas ahora.
+
+Modifiqué las funciones de graficación, debería enviarlas a las pc's para ver si
+funcan, aunque ya hoy no voy a poder porque van a cortar la luz mañana y Pablo apagó
+las pc's. Ya mañana hago eso.
+
+------------------------------------------------------------------------------------------
+
+16/01/2024
+
+Hoy llegué temprano, me encargué de prender las pc's y reafirmé el hecho de que yo no tengo
+acceso al cuarto de las compus. Y por lo visto, no hay planes para darme acceso pronto.
+Luego de encender todas las pc's con la ayuda de Martín me puse a mandar cosas a correr
+en oporto, algarve y coimbra como para ver cuáles son los tiempos de simulación si mando
+a correr 5 hilos simultáneos con sistemas de 2 tópicos.
+
+Luego de eso, repasé algunas funciones y documentación. Ahora debería entrar a las pc's,
+organizar los datos y mandar a armar los gráficos. Por lo menos tenerlos encima y después
+ver qué pasa.
+
+Mandé a armar los gráficos en Oporto. Espero que no tenga problemas. Mandemos mientra los
+gráficos a armar en Coimbra. Aunque para eso creo que los datos de Coimbra necesitan primero
+datos de Algarve. Cargué los datos de Algarve a Coimbra y mandé a hacer los gráficos.
+En Oporto estoy teniendo unos problemas con los conjuntos que no se terminaron de simular.
+Mientras esto se resuelve, puedo revisar el tema de los gráficos de Algarve que Pablo me
+pidió.
+
+Descubrí que en Algarve tengo funciones que grafican la fracción de estados polarizados que no
+tengo en otras etapas. Así que eso lo tuve que descargar aparte. Actualmente lo tengo
+en una carpeta llamada Python, voy a tener que cambiarle el nombre después. La cosa de esto
+es que tengo entonces una carpeta con funciones particulares pero que no corresponde directamente
+a una etapa particular del código. Atento a eso, mañana prestarle atención al tema de
+la documentación.
+
+Por otro lado, logré descargar los gráficos que hice en Oporto y Coimbra, salieron bastante bien.
+Sería genial que esos gráficos cuenten con una mayor estadística de fondo, pero ya iremos viendo
+eso, hay que trabajar en cómo resolver ese asunto. Dicho eso, mañana charlaremos con Pablo al
+respecto. Por otro lado, después debería agregar a la presentación de resumen el resto de laburo
+que queda por hacer. Y debería repasar la parte del paper donde hacen la demostración que 
+con una pequeña perturbación a la opinión de un agente, este sale del equilibrio.
+
+Así que la clave del laburo mañana es:
+1) Completar las funciones que grafican la fracción de estados en función del parámetro Y.
+2) Corregir las documentaciones y ver que esté todo correctamente guardado. En especial
+considerando las carpetas extra que van dando vueltas en las pcs.
+3) Agregar cosas a la presentación de resumen.
+4) Ponerme a trabajar en el tp que tengo que hacer con Lupi. Va a ser un tema cómo organizar
+esas carpetas y volver a tomar ese trabajo desde el principio.
+
+------------------------------------------------------------------------------------------
+
+17/01/2024
+
+Llegué a la mañana, estaba abierto el local de comida así que me compré una hamburguesa completa.
+Hecho eso, prendí las pcs y después me puse a revisar mails y cosas.
+
+Armé la función que grafica la fracción de estados en función de Beta. Lo mandé a correr y me guardé
+los gráficos en la pc de la facultad.
+
+Ahora me voy a poner a revisar la documentación de los archivos. Lo único que no borré es el MARE en
+Coimbra, porque no estoy seguro si es el mismo MARE que el de Algarve o no.
+
+Releí el paper y anoté las ideas de lo que queda hacer con el trabajo. Queda BASTANTE trabajo por
+hacer. Digo, tenemos algo que corre y genera las simulaciones. Necesitamos que trabaje más rápido
+y tener más estadística, pero hecho eso, lo importante ya lo tenemos. Lo que sigue es hacer análisis
+digo yo.
+
+Ahora voy a ver de separar el trabajo del modelo de Opinión y el trabajo del modelo de Interés. Haré dos
+carpetas separadas, y separaré los datos de cada cosa. Hice la separación. Saqué el archivo de progreso
+por fuera de ambas carpetas, porque necesito que sea común a ambos trabajos. Lo siguiente sería ir
+repasando las funciones y el código para ver dónde quedé y qué hace qué. Podría aprovechar para hacer
+una pequeña actualización del código.
+
+Definitivamente tengo que volver a corregir el RK4, pero me sorprende que la mayor parte del código está
+bastante actualizada. Estoy muy sorprendido.
