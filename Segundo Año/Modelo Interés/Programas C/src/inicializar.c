@@ -36,6 +36,7 @@ int GenerarAng(ps_Red ps_variable, ps_Param ps_parametro){
 
 // Esta función me arma una matriz de Adyacencia de una red totalmente conectada
 int GenerarAdy_Conectada(ps_Red ps_variable, ps_Param ps_parametro){
+	/*
 	// Obtengo las dimensiones de la matriz de Adyacencia.
 	int i_F,i_C;
 	i_F = ps_variable->pi_Adyacencia[0];
@@ -44,6 +45,7 @@ int GenerarAdy_Conectada(ps_Red ps_variable, ps_Param ps_parametro){
 	// Escribo la matriz de Adyacencia
 	for(register int i_i=1; i_i<i_F; i_i++) for(register int i_j=0; i_j<i_i; i_j++) ps_variable->pi_Adyacencia[i_i*i_C+i_j+2] = 1;  // Esto me pone 1 debajo de la diagonal
 	for(register int i_i=0; i_i<i_F; i_i++) for(register int i_j=i_i+1; i_j<i_C; i_j++) ps_variable->pi_Adyacencia[i_i*i_C+i_j+2] = ps_variable->pi_Adyacencia[i_j*i_C+i_i+2]; // Esta sola línea simetriza la matriz
+	*/
 	return 0;
 }
 
@@ -72,6 +74,91 @@ int Lectura_Adyacencia(int *pi_vector, FILE *pa_archivo){
 	
 	return 0;
 }
+
+
+// // Esta función es la que lee un archivo y me arma la lista de vecinos en el puntero de punteros de pi_Adyacencia
+int Lectura_Adyacencia_Ejes(ps_Red ps_variable, FILE *pa_archivo){
+	//##########################################################################################
+	// Defino las variables que voy a usar para leer el archivo y escribir sobre el vector.
+	int i_N, i_L; // N es el número de agentes, L es el número de enlaces.
+	while(fscanf(pa_archivo,"%d %d",&i_N,&i_L) != EOF) break;
+	
+	int i_n, i_m; // n y m son los agentes 	
+	
+	// Construyo un vector que tenga los grados de todos los agentes
+	int* pi_grado;
+	pi_grado = (int*) calloc(i_N+2,sizeof(int));
+	*pi_grado = 1;
+	*(pi_grado+1) = i_N;
+	
+	// Construyo un vector auxiliar que tenga los grados de todos los agentes
+	int* pi_grado_auxiliar;
+	pi_grado_auxiliar = (int*) calloc(i_N+2,sizeof(int));
+	*pi_grado_auxiliar = 1;
+	*(pi_grado_auxiliar+1) = i_N;
+	
+	//#########################################################################################
+	
+	// Construyo la lista de vecinos
+	
+	// Leo tantas lineas como enlaces haya en la red
+	for(register int i_i=0; i_i<i_L; i_i++){ 
+		while(fscanf(pa_archivo,"%d %d",&i_n,&i_m) != EOF)  break;
+        *(pi_grado+i_n+2) += 1;
+		*(pi_grado+i_m+2) += 1;
+    }
+	
+	// En cada componente de Adyacencia se declaran tantas componentes como enlaces tenga, no más
+	for(register int i_i=0; i_i<i_N; i_i++){
+		ps_variable->pi_Adyacencia[i_i+2] = (int*) calloc(*(pi_grado+i_i+2),sizeof(int));
+		ps_variable->pi_Adyacencia[i_i+2][0] = 1;
+		ps_variable->pi_Adyacencia[i_i+2][1] = *(pi_grado+i_i+2);
+	}
+	
+	if(fscanf(pa_archivo,"%d %d",&i_n,&i_m) == EOF){
+		rewind(pa_archivo);
+		while(fscanf(pa_archivo, "%d %d", &i_N, &i_L) !=EOF) break;
+	}
+	else{
+		printf("Leí mal la matriz");
+		return 1;
+	}
+
+    for(register int i_i=0; i_i<i_L; i_i++){
+		while(fscanf(pa_archivo,"%d %d",&i_n,&i_m) != EOF) break;
+        ps_variable->pi_Adyacencia[i_n+2][*(pi_grado_auxiliar+i_n+2)+2] = i_m;
+		ps_variable->pi_Adyacencia[i_m+2][*(pi_grado_auxiliar+i_m+2)+2] = i_n;
+        *(pi_grado_auxiliar+i_n+2) += 1;
+		*(pi_grado_auxiliar+i_m+2) += 1;
+    }
+
+    free(pi_grado_auxiliar);
+	
+	//#########################################################################################
+	
+	// Construyo la lista de vecinos complementaria
+	
+	int i_l,i_vecino;
+
+    for(register int i_i=0; i_i<i_N; i_i++){
+		ps_variable->pi_Adyacencia_vecinos[i_i+2] = (int*) calloc(*(pi_grado+i_i+2),sizeof(int));
+		ps_variable->pi_Adyacencia_vecinos[i_i+2][0] = 1;
+		ps_variable->pi_Adyacencia_vecinos[i_i+2][1] = *(pi_grado+i_i+2);
+
+        for(register int i_j=0; i_j<*(pi_grado+i_i+2); i_j++){
+            i_vecino = ps_variable->pi_Adyacencia[i_i+2][i_j+2];
+            for(i_l=0; i_l<*(pi_grado+i_vecino+2); i_l++)
+                if(ps_variable->pi_Adyacencia[i_vecino+2][i_l] == i_i) break;
+            ps_variable->pi_Adyacencia_vecinos[i_i][i_j] = i_l;
+        }
+    }
+	
+	
+	free(pi_grado);
+	
+	return 0;
+}
+
 
 // Me saco estas funciones de encima, total por ahora no las voy a usar, voy a trabajar con redes estáticas
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

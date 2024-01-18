@@ -53,7 +53,7 @@ double Dinamica_interes(ps_Red ps_variable, ps_Param ps_parametro){
 	double d_sumatoria=0; // d_sumatoria es el total de la sumatoria del segundo término de la ecuación diferencial.
 	int i_grado = 0;  // i_grado es el grado del agente 1
 	
-	
+	/*
 	// Calculo la sumatoria de la ecuación diferencial. Para esto es que existe la función Din1.
 	// Aprovecho este for y también calculo el grado del agente
 	// La sumatoria es sobre todos los agentes conectados en la red de adyacencia
@@ -69,6 +69,7 @@ double Dinamica_interes(ps_Red ps_variable, ps_Param ps_parametro){
 	int i_C = (int) ps_variable->pd_Opiniones[1];
 	// d_resultado = -ps_var->pd_Opi[ps_var->i_agente*i_C+ps_var->i_topico+2] * ps_var->pd_Sat[ps_var->i_agente*i_C+ps_var->i_topico+2] + d_sumatoria/i_grado; // Término con saturación
 	d_resultado = -ps_variable->pd_Opiniones[ps_variable->i_agente*i_C+ps_variable->i_topico+2] + ps_parametro->d_kappa*(d_sumatoria/i_grado);
+	*/
 	return d_resultado;
 }
 

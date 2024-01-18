@@ -134,6 +134,9 @@ double RK4(double *pd_sistema, double (*pf_funcion)(ps_Red ps_variable, ps_Param
 	// Acá hago las iteraciones del RK4 para hallar las pendientes k
 	for(register int i_j=0; i_j<4; i_j++){
 		
+		// Avanzo el sistema para el cálculo de la siguiente pendiente.
+		for(register int i_i=0; i_i<i_F*i_C; i_i++) *(pd_sistema+i_i+2) = *(pd_inicial+i_i+2)+*(ap_pendientes[i_j]+ps_variable->i_agente*i_C+ps_variable->i_topico+2)*DT[i_j];
+		
 		// Avanzo en todos los agentes
 		for(ps_variable->i_agente=0; ps_variable->i_agente<i_F; ps_variable->i_agente++){
 			
@@ -141,7 +144,6 @@ double RK4(double *pd_sistema, double (*pf_funcion)(ps_Red ps_variable, ps_Param
 			for(ps_variable->i_topico=0; ps_variable->i_topico<i_C; ps_variable->i_topico++){
 				
 				// Calculo el elemento de la pendiente k(i_j+1)
-				for(register int i_i=0; i_i<i_F*i_C; i_i++) *(pd_sistema+i_i+2) = *(pd_inicial+i_i+2)+*(ap_pendientes[i_j]+ps_variable->i_agente*i_C+ps_variable->i_topico+2)*DT[i_j];
 				*(ap_pendientes[i_j+1]+ps_variable->i_agente*i_C+ps_variable->i_topico+2) = (*pf_funcion)(ps_variable,ps_parametro);
 				
 			}

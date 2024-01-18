@@ -2496,7 +2496,7 @@ que identifican a los vecinos del agente i-ésimo.
  Es decir, consideremos el agente 1. Si este agente tiene grado tres, entonces A[1] es un vector
 de tamaño 3. Luego, si el agente 1 estuviera conectado con los agentes 5, 8 y 12, entonces
 A[1] podría ser [8,5,12]. A[1] no está necesariamente ordenado. Al menos no lo parece
-porque los archivos de asociados a las redes complejas guardan los enlaces ordenados según el
+porque los archivos asociados a las redes complejas guardan los enlaces ordenados según el
 primer agente, pero no según el segundo.
  En esa misma función que crea a la matriz A, tiene un conjunto de tres fors más abajo que 
 construyen la matriz A_neigh. Dado A_neigh[i][j] = l, lo que me está diciendo eso es lo siguiente.
@@ -2926,3 +2926,27 @@ una pequeña actualización del código.
 
 Definitivamente tengo que volver a corregir el RK4, pero me sorprende que la mayor parte del código está
 bastante actualizada. Estoy muy sorprendido.
+
+------------------------------------------------------------------------------------------
+
+18/01/2024
+
+Hoy llegué a las 10 y cuando me quise dar cuenta eran las 11. El tiempo pasa rápido y nos hacemos
+viejos. Voy a ponerme serio con el tema de medir los tiempos de simulación según cantidad de hilos.
+Voy a correr simulaciones con Beta entre [0.5,1], para 1 hilo, 2 hilos, 5 hilos, 10 hilos y 15 hilos.
+Voy a hacer esto en Coimbra y Oporto. Voy a llamar a los archivos resultados Tiempo_Nhilos_2D.
+
+Ahora voy a seguir con el trabajo de Interés. Corregía la función RK4. Revisemos la función de arriba
+a abajo. Después, si todo está bien, podría considerar implementar las ideas que tiene Hugo. Para eso
+después quizás tenga que corregir las matrices de MARE. Bueno, dejaré eso para después.
+
+Corregí la función de Crear Redes para que construya archivos con los enlaces de las redes. Ahora puedo
+ver de corregír la matriz de Adyacencia para que se construya como lista de vecinos, igual que como lo
+arma Hugo.
+
+Voy a cortar acá por hoy, son las 18. Vengo peleando bastante con lograr armar un código que haga la
+lista de vecinos como la hace Hugo. Es una buena idea para reducir un poco los tiempos de simulación
+del código, tanto en el modelo de interés como en el de Opiniones. Aunque llevo todo el día con esto
+y eso es mucho, no me gusta. Bueno, ya mañana veré cómo viene la cosa con esto. Parece que el problema
+final está en el free al final del main. Tengo que resolver eso. Hice algo raro para no ignorar las
+warnings de los fscanf, si se me ocurre algo mejor después lo tendré en cuenta eso.

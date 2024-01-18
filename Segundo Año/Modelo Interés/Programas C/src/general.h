@@ -15,7 +15,8 @@ typedef struct Red{
 	double *pd_Opiniones; // Vector de opinión de cada individuo
 	double *pd_Angulos; // Matriz de superposición entre tópicos. Tiene tamaño T*T
 	double d_Variacion_promedio; // Esto es la Variación promedio del sistema. Es cuanto cambia en promedio cada opinión
-	int *pi_Adyacencia; // Matriz de adyacencia que define mis conexiones. Tiene tamaño N*N
+	int **pi_Adyacencia; // Lista de vecinos que define mis conexiones. Tiene tamaño que no es rectangular. N filas, y cada fila tiene tamaño variable.
+	int **pi_Adyacencia_vecinos; // Lista de la posición de los vecinos de cada agente. Si A[i][j] = l, entonces eso signfica que A[j][l] = i
 	int i_agente; // Entero que representa el agente que estoy mirando. Es un valor que va entre 0 y N-1
 	int i_agente2; // Este es el segundo agente con el cual se pone en contacto el primero.
 	int i_topico; // Entero que representa el tópico que estoy mirando. Es un valor que va entre 0 y T-1
