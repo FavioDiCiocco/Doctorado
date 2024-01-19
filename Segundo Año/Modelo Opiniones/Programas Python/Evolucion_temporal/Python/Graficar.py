@@ -19,11 +19,11 @@ from pathlib import Path
 
 t0 = time.time()
 
-T=2 # Defino el número de tópicos
+T=1 # Defino el número de tópicos
 Etapa = Path("Evolucion_temporal") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["2D_dtchico"]
+Carpetas = ["1D"]
 
 for carp in Carpetas:
     

@@ -137,7 +137,7 @@ int main(int argc, char *argv[]){
 	
 	// Genero los datos de las matrices de mi sistema
 	
-	GenerarOpi(ps_red, (int) i_iteracion%4, ps_datos->d_kappa); // Esto me inicializa mi matriz de opiniones 
+	GenerarOpi(ps_red, 0, ps_datos->d_kappa); // Esto me inicializa mi matriz de opiniones 
 	GenerarAng(ps_red, ps_datos); // Esto me inicializa mi matriz de superposición, definiendo el solapamiento entre tópicos.
 	
 	Lectura_Adyacencia_Ejes(ps_red, pa_matriz_adyacencia); // Leo el archivo de la red estática y lo traslado a la matriz de adyacencia
@@ -242,21 +242,17 @@ int main(int argc, char *argv[]){
 	fprintf(pa_Opiniones,"%ld\n",semilla);
 	*/
 	
-	// Visualizar_i(ps_red->pi_Adyacencia[0+2]);
-	// Visualizar_i(ps_red->pi_Adyacencia[1+2]);
-	// Visualizar_i(ps_red->pi_Adyacencia[2+2]);
-	
 	// Libero los espacios dedicados a mis vectores y cierro mis archivos
-	// for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++) free(ap_OpinionesPrevias[i_i]);
-	// free(ps_red->pd_Angulos);
-	// for(register int i_i=0; i_i<ps_datos->i_N; i_i++) free(ps_red->pi_Adyacencia[i_i]);
-	// free(ps_red->pi_Adyacencia);
-	// for(register int i_i=0; i_i<ps_datos->i_N; i_i++) free(ps_red->pi_Adyacencia_vecinos[i_i]);
-	// free(ps_red->pi_Adyacencia_vecinos);
-	// free(ps_red->pd_Opiniones);
-	// free(ps_red->pd_Diferencia);
-	// free(ps_red);
-	// free(ps_datos);
+	for(register int i_i=0; i_i<ps_datos->i_pasosprevios; i_i++) free(ap_OpinionesPrevias[i_i]);
+	free(ps_red->pd_Angulos);
+	for(int i_i=0; i_i<ps_datos->i_N+2; i_i++) free(ps_red->pi_Adyacencia[i_i]);
+	free(ps_red->pi_Adyacencia);
+	for(register int i_i=0; i_i<ps_datos->i_N+2; i_i++) free(ps_red->pi_Adyacencia_vecinos[i_i]);
+	free(ps_red->pi_Adyacencia_vecinos);
+	free(ps_red->pd_Opiniones);
+	free(ps_red->pd_Diferencia);
+	free(ps_red);
+	free(ps_datos);
 	// fclose(pa_Opiniones);
 	// fclose(pa_Testigos);
 	

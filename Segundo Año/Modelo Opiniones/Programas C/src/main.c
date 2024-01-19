@@ -16,7 +16,7 @@ int main(int argc, char *argv[]){
 	// Empecemos con la base. Defino variables de tiempo para medir cuanto tardo y cosas básicas
 	time_t tt_prin,tt_fin,semilla;
 	time(&tt_prin);
-	semilla = time(NULL);
+	semilla = 1702971081; // time(NULL);
 	srand(semilla); // Voy a definir la semilla a partir de time(NULL);
 	float f_tardanza; // Este es el float que le paso al printf para saber cuanto tardé
 	
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]){
 	int i_iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
 	
 	// Los siguientes son los parámetros que están dados en los structs
-	ps_datos->i_T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
+	ps_datos->i_T = 1;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
 	ps_datos->i_Iteraciones_extras = 500; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	ps_datos->d_dt = 0.1; // Paso temporal de iteración del sistema
 	ps_datos->d_alfa = 1; // Controversialidad de los tópicos
@@ -108,15 +108,15 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char s_Opiniones[355];
-	sprintf(s_Opiniones,"../Programas Python/Evolucion_temporal/1D_Hilos/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+	sprintf(s_Opiniones,"../Programas Python/Evolucion_temporal/1D/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
 		,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
 	FILE *pa_Opiniones=fopen(s_Opiniones,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// // Este archivo es el que guarda las opiniones de todos los agentes del sistema.
-	// char s_Testigos[355];
-	// sprintf(s_Testigos,"../Programas Python/Evolucion_temporal/2D_dtchico/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
-		// ,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
-	// FILE *pa_Testigos=fopen(s_Testigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
+	char s_Testigos[355];
+	sprintf(s_Testigos,"../Programas Python/Evolucion_temporal/1D/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+		,ps_datos->i_N,ps_datos->d_kappa,ps_datos->d_beta,ps_datos->d_Cosangulo,i_iteracion);
+	FILE *pa_Testigos=fopen(s_Testigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
 	char s_matriz_adyacencia[355];
@@ -147,9 +147,9 @@ int main(int argc, char *argv[]){
 	Escribir_d(ps_red->pd_Opiniones,pa_Opiniones);
 	
 	// // Me guardo los valores de opinión de mis agentes testigos
-	// fprintf(pa_Testigos,"Opiniones Testigos\n");
-	// for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]);
-	// fprintf(pa_Testigos,"\n");
+	fprintf(pa_Testigos,"Opiniones Testigos\n");
+	for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]);
+	fprintf(pa_Testigos,"\n");
 	
 	// Sumo el estado inicial de las opiniones de mis agentes en el vector de Prom_Opi. Guardo esto en la primer fila
 	for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Prom_Opi[i_j+2] += ps_red->pd_Opiniones[i_j+2];
@@ -161,6 +161,10 @@ int main(int argc, char *argv[]){
 		// Voy sumando las opiniones de mis agentes en el vector de Prom_Opi. Guardo esto en la primer fila
 		for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Prom_Opi[i_j+2] += ps_red->pd_Opiniones[i_j+2];
 		
+		// Escritura
+		for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]);
+		fprintf(pa_Testigos,"\n");
+		
 	}
 	
 	// Promedio el valor de Prom_Opi al dividir por el tamaño de la ventana
@@ -171,8 +175,8 @@ int main(int argc, char *argv[]){
 	// Realizo la simulación del modelo hasta que este alcance un estado estable
 	// También preparo para guardar los valores de Varprom en mi archivo
 	
-	// for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]);
-	// fprintf(pa_Testigos,"\n");
+	for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]);
+	fprintf(pa_Testigos,"\n");
 	
 	fprintf(pa_Opiniones,"Variación promedio \n");
 	
@@ -200,12 +204,12 @@ int main(int argc, char *argv[]){
 				// Reinicio los promedios
 				for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Prom_Opi[i_j+2] = ps_red->pd_Prom_Opi[i_j+ps_datos->i_N*ps_datos->i_T+2];
 				for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Prom_Opi[i_j+ps_datos->i_N*ps_datos->i_T+2] = 0;
-				
-				// Escritura
-				fprintf(pa_Opiniones, "%lf\t",ps_red->d_Variacion_promedio); // Guardo el valor de variación promedio
-				// for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]);
-				// fprintf(pa_Testigos,"\n");
 			}
+			
+			// Escritura
+			fprintf(pa_Opiniones, "%lf\t",ps_red->d_Variacion_promedio); // Guardo el valor de variación promedio
+			for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]);
+			fprintf(pa_Testigos,"\n");
 		}
 		while( ps_red->d_Variacion_promedio > ps_datos->d_CritCorte && i_pasos_simulados < i_pasos_maximos);
 		
@@ -231,12 +235,12 @@ int main(int argc, char *argv[]){
 				// Reinicio los promedios
 				for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Prom_Opi[i_j+2] = ps_red->pd_Prom_Opi[i_j+ps_datos->i_N*ps_datos->i_T+2];
 				for(register int i_j=0; i_j<ps_datos->i_N*ps_datos->i_T; i_j++) ps_red->pd_Prom_Opi[i_j+ps_datos->i_N*ps_datos->i_T+2] = 0;
-				
-				// Escritura
-				fprintf(pa_Opiniones, "%lf\t",ps_red->d_Variacion_promedio); // Guardo el valor de variación promedio
-				// for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]);
-				// fprintf(pa_Testigos,"\n");
 			}
+			
+			// Escritura
+			fprintf(pa_Opiniones, "%lf\t",ps_red->d_Variacion_promedio); // Guardo el valor de variación promedio
+			for(register int i_j=0; i_j<ps_datos->i_testigos; i_j++) for(register int i_k=0; i_k<ps_datos->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",ps_red->pd_Opiniones[i_j*ps_datos->i_T+i_k+2]);
+			fprintf(pa_Testigos,"\n");
 			
 		}
 		
@@ -273,7 +277,7 @@ int main(int argc, char *argv[]){
 	free(ps_red);
 	free(ps_datos);
 	fclose(pa_Opiniones);
-	// fclose(pa_Testigos);
+	fclose(pa_Testigos);
 	
 	// Finalmente imprimo el tiempo que tarde en ejecutar todo el programa
 	time(&tt_fin);

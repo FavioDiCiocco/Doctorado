@@ -2950,3 +2950,51 @@ del código, tanto en el modelo de interés como en el de Opiniones. Aunque llev
 y eso es mucho, no me gusta. Bueno, ya mañana veré cómo viene la cosa con esto. Parece que el problema
 final está en el free al final del main. Tengo que resolver eso. Hice algo raro para no ignorar las
 warnings de los fscanf, si se me ocurre algo mejor después lo tendré en cuenta eso.
+
+------------------------------------------------------------------------------------------
+
+19/01/2024
+
+A la mañana fui al turno médico de la ortopedia. Hice algunas cosas en casa con el código, pero
+no avancé nada importante. Cuestión que llegué al mediodía a la facultad, continuo repasando el código.
+Estoy teniendo problemas para liberar memoria, pero no logro saber cómo hacerlo. Pero sí puedo
+acceder bien a la info de los punteros de la lista de vecinos. Así que eso funciona bien, lo
+cuál es un éxito.
+
+Encontré el problema que estaba teniendo, resulta que estaba armando mal los punteros, tanto de Adyacencia
+como el de Adyacencia_vecinos. Estaba armando mal el tamaño, faltaba sumar el +2. Cuestión que por
+eso seguro estaba pisando lugares de memoria erróneos y a partir de ahí los vectores se armaban raro.
+Por eso después el programa tiraba errores al intentar liberar los punteros. Corregí eso y ahora todo
+va bárbaro.
+ Ahora que eso corre bien, lo que queda es corregir el comportamiento del sistema para que funcione
+según la lista de vecinos y no con una matriz de Adyacencia. También podría agregar una matriz que
+se encargue de calcular previamente las exponenciales, así las calculo una menor cantidad de veces.
+Eso lo resolveré después, pero ya logré hacer que esto funque. Golazo para el código de Opiniones
+también.
+
+Ahí miré en la carpeta de Labo de Datos, son la clase 11 y 12 las que tienen los clasificadores
+de imágenes, así que eso tendré que verlo después el lunes o el martes. Seguro el martes.
+Por otra parte, hablando con Pablo, me dijo que arme los gráficos de Traza de Covarianza también.
+Yo los dejé de lado para no llenarme de gráficos al pedo.
+
+Otra cosa que estaría bueno lograr rápido es chequear que mi código esté correctamente identificando
+estados. Para eso puedo descargar una tanda de archivos, graficarlos y después usar las funciones
+de Diccionario_metricas y la de Calculo_Entropia para revisar que todo esté yendo bien. Creo que
+eso lo puedo hacer con los datos de Coimbra, eso va a funcionar fácil y directo con eso. Estaría
+bueno tomar unas 100 iteraciones o algo así.
+
+También puedo continuar con el tema de mirar el tiempo de simulación y los hilos. Hasta ahora mandé
+a correr una simulación con 1 sólo hilo. Ahora mandé una simulación con 2 hilos.
+
+Hacer simulaciones con dt más chicos me pidió Pablo. Y debería revisar por qué lo que yo calculé
+no es exactamente igual a lo que hizo Hugo. Podría arrancar con eso ahora. Ahí mandé a correr
+lo de Hugo de nuevo escribiendo todos los pasos, y lo mismo hice con el código mio. Una vez que
+tenga los datos de las opiniones en cada paso temporal, lo que puedo hacer es calcular el valor de 
+opinión media y ver cómo van variando. O calcular la diferencia entre ambos archivos y de ahí ir
+calculando la norma, como para ver cuánto se diferencian las opiniones en el tiempo. Claro, porque
+quizás grafiqué mal lo que le mostré a Pablo.
+
+El sábado voy a ver de continuar con el tema de correr cosas con varios hilos. Y el domingo me pondré
+a revisar el código para mandar a hacer los gráficos de traza de Covarianza. Hecho eso, empezaré a 
+plantear la presentación, y veré de armarme las cosas para constatar que mi clasificador
+condicional esté funcionando bien.

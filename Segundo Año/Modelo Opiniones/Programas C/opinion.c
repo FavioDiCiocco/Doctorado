@@ -559,7 +559,7 @@ int main()
         compute_opinions(network, N, &mean_opinion, &desv_opinion); // Se calcula la opinion media y desv. estandar
 	
 		// Escritura
-        if(step %100 == 0) Escribir_d(network,1,N,pa_Testigos);
+        Escribir_d(network,1,N,pa_Testigos);
 		
     }
 	

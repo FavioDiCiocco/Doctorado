@@ -182,7 +182,7 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T,
                 # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
                 Handles = dict()
-                    
+                
                 
                 # Armo mi gráfico, lo guardo y lo cierro
                 for topico in range(T):
@@ -193,8 +193,8 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T,
                     X = np.arange(Testigos.shape[0])*0.001
                     # sujeto = 79
 #                    for sujeto in [79,5,112,122,374,388,633,968]:
-                    for sujeto in range(500):
-                        Handles[sujeto], = plt.plot(X[10000:12000],Testigos[:,sujeto*T+topico][10000:12000],color = "tab:brown", linewidth = 3, alpha = 0.5)
+                    for sujeto in range(AGENTES):
+                        Handles[sujeto], = plt.plot(X,Testigos[:,sujeto*T+topico],color = "tab:brown", linewidth = 2, alpha = 0.5)
                     # plt.axvline(10.75, color = "tab:red" ,linestyle = "--", linewidth = 3)
                     plt.xlabel(r"Tiempo$(10^3)$")
                     plt.ylabel(r"$x^i$")

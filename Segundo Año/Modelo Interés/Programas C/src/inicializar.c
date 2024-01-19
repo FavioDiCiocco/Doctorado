@@ -16,7 +16,7 @@ int GenerarOpi(ps_Red ps_variable, int i_region, double d_kappa){
 	i_C = (int) ps_variable->pd_Opiniones[1];
 	
 	// Inicializo la "matriz" de opiniones de mis agentes.
-	for(register int i_i=0;i_i<i_F*i_C;i_i++) ps_variable->pd_Opiniones[i_i+2] = (Random()+i_region)*0.25*d_kappa;
+	for(register int i_i=0;i_i<i_F*i_C;i_i++) ps_variable->pd_Opiniones[i_i+2] = (Random()+i_region)*d_kappa;
 	return 0;
 }
 
@@ -34,9 +34,11 @@ int GenerarAng(ps_Red ps_variable, ps_Param ps_parametro){
 	return 0;
 }
 
+/*
+##################################################################################
 // Esta función me arma una matriz de Adyacencia de una red totalmente conectada
 int GenerarAdy_Conectada(ps_Red ps_variable, ps_Param ps_parametro){
-	/*
+	
 	// Obtengo las dimensiones de la matriz de Adyacencia.
 	int i_F,i_C;
 	i_F = ps_variable->pi_Adyacencia[0];
@@ -45,9 +47,11 @@ int GenerarAdy_Conectada(ps_Red ps_variable, ps_Param ps_parametro){
 	// Escribo la matriz de Adyacencia
 	for(register int i_i=1; i_i<i_F; i_i++) for(register int i_j=0; i_j<i_i; i_j++) ps_variable->pi_Adyacencia[i_i*i_C+i_j+2] = 1;  // Esto me pone 1 debajo de la diagonal
 	for(register int i_i=0; i_i<i_F; i_i++) for(register int i_j=i_i+1; i_j<i_C; i_j++) ps_variable->pi_Adyacencia[i_i*i_C+i_j+2] = ps_variable->pi_Adyacencia[i_j*i_C+i_i+2]; // Esta sola línea simetriza la matriz
-	*/
+	
 	return 0;
 }
+##################################################################################
+*/
 
 
 // // Esta función es la que lee un archivo y me arma la matriz de Adyacencia
@@ -110,7 +114,7 @@ int Lectura_Adyacencia_Ejes(ps_Red ps_variable, FILE *pa_archivo){
 	
 	// En cada componente de Adyacencia se declaran tantas componentes como enlaces tenga, no más
 	for(register int i_i=0; i_i<i_N; i_i++){
-		ps_variable->pi_Adyacencia[i_i+2] = (int*) calloc(*(pi_grado+i_i+2),sizeof(int));
+		ps_variable->pi_Adyacencia[i_i+2] = (int*) calloc(*(pi_grado+i_i+2)+2,sizeof(int));
 		ps_variable->pi_Adyacencia[i_i+2][0] = 1;
 		ps_variable->pi_Adyacencia[i_i+2][1] = *(pi_grado+i_i+2);
 	}
@@ -141,18 +145,17 @@ int Lectura_Adyacencia_Ejes(ps_Red ps_variable, FILE *pa_archivo){
 	int i_l,i_vecino;
 
     for(register int i_i=0; i_i<i_N; i_i++){
-		ps_variable->pi_Adyacencia_vecinos[i_i+2] = (int*) calloc(*(pi_grado+i_i+2),sizeof(int));
+		ps_variable->pi_Adyacencia_vecinos[i_i+2] = (int*) calloc(*(pi_grado+i_i+2)+2,sizeof(int));
 		ps_variable->pi_Adyacencia_vecinos[i_i+2][0] = 1;
 		ps_variable->pi_Adyacencia_vecinos[i_i+2][1] = *(pi_grado+i_i+2);
 
         for(register int i_j=0; i_j<*(pi_grado+i_i+2); i_j++){
             i_vecino = ps_variable->pi_Adyacencia[i_i+2][i_j+2];
             for(i_l=0; i_l<*(pi_grado+i_vecino+2); i_l++)
-                if(ps_variable->pi_Adyacencia[i_vecino+2][i_l] == i_i) break;
-            ps_variable->pi_Adyacencia_vecinos[i_i][i_j] = i_l;
+                if(ps_variable->pi_Adyacencia[i_vecino+2][i_l+2] == i_i) break;
+            ps_variable->pi_Adyacencia_vecinos[i_i+2][i_j+2] = i_l;
         }
     }
-	
 	
 	free(pi_grado);
 	
