@@ -2998,3 +2998,47 @@ El sábado voy a ver de continuar con el tema de correr cosas con varios hilos. 
 a revisar el código para mandar a hacer los gráficos de traza de Covarianza. Hecho eso, empezaré a 
 plantear la presentación, y veré de armarme las cosas para constatar que mi clasificador
 condicional esté funcionando bien.
+
+------------------------------------------------------------------------------------------
+
+21/01/2024
+
+Ayer mandé a correr el caso de tres hilos, hoy mandé a correr el de cuatro hilos. Pareciera que
+en Oporto no está teniendo tanto problema del tiempo de simulación.
+
+Ahora voy a ponerme con el modelo de opiniones, voy a corregir las funciones que grafican cosa de que
+incluyan el gráfico de la traza de la covarianza. Pablo me pidió que además, en el caso de 
+Beta-Cos(Delta) agregue un gráfico de los términos fuera de las diagonales. Lo que voy a hacer
+es poner a graficar ambas cosas en ambos conjuntos de datos y después simplemente me quedo con los
+gráficos interesantes.
+ El gráfico de la Traza de la Covarianza ya está hecho en ambos casos, no es necesario volver a mandar
+a hacerlo. Entonces me puedo poner a hacer el de los términos fuera de las diagonales.
+
+Ahí armé los gráficos de las covarianzas, en principio parece bien resuelto. Mañana lo mandaré a correr
+desde la facultad. Con esto tendré los gráficos que Pablo me pide que arme. ¿Qué otra cosa puedo hacer hoy?
+Tengo que pensar en la presentación que voy a armar. Y también en la aplicación del clasificador.
+
+Pensemos en la presentación. Se me ocurre que puedo colocar los gráficos que sean más informativos en
+cada caso. La idea es contar que barrimos tal espacio de valores y tal otro espacio de valores. 
+De ambos espacios de valores, poner dos o tres gráficos generales para mostrar lo que observamos.
+Luego, al final de la presentación, tener a mano el resto de los gráficos, cosa de que cuando sea necesario
+se los puedo mostrar si quieren.
+
+¿Cómo sería la presentación?:
+------------------------------
+.) Tanto para los datos de Coimbra como los de Oporto, mostraría dos o tres gráficos sobre las métricas
+más informativas en el espacio de parámetros.
+.) Usando los datos de Algarve, mostraría cómo va cambiando la frecuencia de estados. Lo que podría hacer
+es rearmar los gráficos de forma tal que ciertas configuraciones van agrupadas. Las configuraciones serían
+Consenso radicalizado, Polarización en un tópico con consenso en el otro, Polarización ideológica,
+Polarización descorrelacionada y después algo similar pero con anchura.
+.) Podría armar unos gráficos de torta que adjuntar en las distintas regiones, para indicar en un sólo gráfico
+cuál es la composición de estados. Y al final de la presentación tener las fracciones de estados, sólo para que
+se pueda corroborar de dónde saqué esto. ES IMPORTANTE REVISAR QUE EL CÓDIGO ESTÉ CLASIFICANDO CORRECTAMENTE.
+TENGO QUE DESCARGAR DATOS Y MIRAR ESO MAÑANA.
+.) Estaría bueno a lo de arriba hacerlo junto con un gráfico de fracción de estados que grafique curvas en
+función de cuál es el conjunto que es más grande. Tengo que ver cómo armar eso, puede tomar tiempo y ser
+mucho bardo.
+
+Todo esto es trabajo que puedo hacer entre el lunes y martes. Creo que esto puede salir.
+Hoy tengo que después volver a mandar a hacer lo de los hilos. 

@@ -694,6 +694,112 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
 
 
 #-----------------------------------------------------------------------------------------------
+    
+# Esta función calcula la traza de la matriz de Covarianza de las distribuciones
+# de opiniones respecto a los T tópicos
+
+def Mapa_Colores_Covarianzas(DF,path,carpeta,
+                       SIM_param_x,SIM_param_y,
+                       ID_param_extra_1):
+    
+    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
+    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
+    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
+
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF["n"]))
+    
+    # Defino los arrays de parámetros diferentes
+    EXTRAS = int(np.unique(DF["Extra"]))
+    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_y = np.unique(DF["parametro_y"])
+    
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
+                   for j,param_y in enumerate(Arr_param_y)]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
+    # Gráfico de Opi vs T y en tres no se vería mejor.
+    T=2
+    
+    #--------------------------------------------------------------------------------
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    ZZ = np.zeros(XX.shape)
+    
+    #--------------------------------------------------------------------------------
+    
+    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                    (DF["n"]==AGENTES) & 
+                                    (DF["Extra"]==EXTRAS) & 
+                                    (DF["parametro_x"]==PARAM_X) &
+                                    (DF["parametro_y"]==PARAM_Y), "nombre"])
+        #-----------------------------------------------------------------------------------------
+        
+        Covarianzas = np.zeros(archivos.shape[0])
+        
+        for nombre in archivos:
+            
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
+            # Semilla
+            
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
+            
+            # Leo los datos de las Opiniones Finales
+            Opifinales = np.zeros((T,AGENTES))
+            
+            # Normalizo mis datos usando el valor de Kappa
+            for topico in range(T):
+                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")/EXTRAS
+            
+            # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+            
+            repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+            
+            M_cov = np.cov(Opifinales)
+            Covarianzas[repeticion] = M_cov[0,1]
+            
+        #------------------------------------------------------------------------------------------
+        # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
+        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Covarianzas)
+            
+    #--------------------------------------------------------------------------------
+    
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores
+    direccion_guardado = Path("../../../Imagenes/{}/Covarianzas_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
+    
+    plt.rcParams.update({'font.size': 24})
+    plt.figure("Covarianzas",figsize=(20,15))
+    plt.xlabel(r"${}$".format(SIM_param_x))
+    plt.ylabel(r"${}$".format(SIM_param_y))
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    
+    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "plasma")
+    plt.colorbar()
+    plt.title("Covarianza en Espacio de Parametros")
+    
+    # Guardo la figura y la cierro
+    
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("Covarianzas")
+    
+
+
+#-----------------------------------------------------------------------------------------------
 
 # Esta función calcula la traza de la matriz de Covarianza de las distribuciones
 # de opiniones respecto a los T tópicos
