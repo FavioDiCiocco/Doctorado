@@ -558,8 +558,10 @@ int main()
 		actualize_network(network, new_network, K, beta, delta); // Se actualizan las opiniones
         compute_opinions(network, N, &mean_opinion, &desv_opinion); // Se calcula la opinion media y desv. estandar
 	
-		// Escritura
-        Escribir_d(network,1,N,pa_Testigos);
+		if(step%100 == 0){
+			// Escritura
+			Escribir_d(network,1,N,pa_Testigos);
+		}
 		
     }
 	

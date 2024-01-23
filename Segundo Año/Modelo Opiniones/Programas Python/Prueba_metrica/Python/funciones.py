@@ -172,7 +172,7 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
     AGENTES = int(np.unique(DF["n"]))
     
     # Defino los arrays de parámetros diferentes
-    Arr_KAPPAS = np.unique(DF["Kappas"])
+    Arr_EXTRAS = np.unique(DF["Extra"])
     Arr_param_x = np.unique(DF["parametro_x"])
     Arr_param_y = np.unique(DF["parametro_y"])
     
@@ -188,13 +188,13 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
     # Gráfico de Opi vs T y en tres no se vería mejor.
     T=2
     
-    for KAPPAS in Arr_KAPPAS:
+    for EXTRAS in Arr_EXTRAS:
         for PARAM_X,PARAM_Y in Tupla_total:
             
             # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
             archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                         (DF["n"]==AGENTES) & 
-                                        (DF["Kappas"]==KAPPAS) & 
+                                        (DF["Extra"]==EXTRAS) & 
                                         (DF["parametro_x"]==PARAM_X) &
                                         (DF["parametro_y"]==PARAM_Y), "nombre"])
             #-----------------------------------------------------------------------------------------
@@ -211,7 +211,7 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                 Datos = ldata(path / nombre)
                 
                 # Leo los datos de las Opiniones Finales
-                Opifinales = np.array(Datos[5][::], dtype="float")
+                Opifinales = np.array(Datos[5][:-1:], dtype="float")
                 
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
                 
@@ -219,16 +219,16 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                 
                 # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-                # if repeticion < 2 :
+                # if repeticion < 2:
                 direccion_guardado = Path("../../../Imagenes/{}/Histograma_opiniones_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
-                                                                                                                                                 ID_param_y,PARAM_Y,ID_param_extra_1,KAPPAS,repeticion))
+                                                                                                                                                 ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,repeticion))
                 
                 # Armo mi gráfico, lo guardo y lo cierro
                 
                 plt.rcParams.update({'font.size': 32})
                 plt.figure(figsize=(20,15))
                 _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
-                                         range=[[-KAPPAS,KAPPAS],[-KAPPAS,KAPPAS]],density=True,
+                                         range=[[-EXTRAS,EXTRAS],[-EXTRAS,EXTRAS]],density=True,
                                          cmap=cmap)
                 plt.xlabel(r"$x_i^1$")
                 plt.ylabel(r"$x_i^2$")
@@ -1006,7 +1006,7 @@ def Diccionario_metricas(DF,path,N):
     AGENTES = int(np.unique(DF["n"]))
     
     # Defino los arrays de parámetros diferentes
-    Arr_KAPPAS = np.unique(DF["Kappas"])
+    Arr_EXTRAS = np.unique(DF["Extra"])
     Arr_param_x = np.unique(DF["parametro_x"])
     Arr_param_y = np.unique(DF["parametro_y"])
     
@@ -1022,14 +1022,14 @@ def Diccionario_metricas(DF,path,N):
     # Gráfico de Opi vs T y en tres no se vería mejor.
     T=2
     Salida = dict()
-    for KAPPAS in Arr_KAPPAS:
-        Salida[KAPPAS] = dict()
+    for EXTRAS in Arr_EXTRAS:
+        Salida[EXTRAS] = dict()
         for PARAM_X,PARAM_Y in Tupla_total:
             
             # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
             archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                         (DF["n"]==AGENTES) & 
-                                        (DF["Kappas"]==KAPPAS) & 
+                                        (DF["Extra"]==EXTRAS) & 
                                         (DF["parametro_x"]==PARAM_X) &
                                         (DF["parametro_y"]==PARAM_Y), "nombre"])
             #-----------------------------------------------------------------------------------------
@@ -1038,7 +1038,7 @@ def Diccionario_metricas(DF,path,N):
             Varianza_Y = np.zeros(archivos.shape[0])
             Entropia = np.zeros(archivos.shape[0])
             
-            for indice,nombre in enumerate(archivos):
+            for nombre in archivos:
                 
         
                 # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
@@ -1049,41 +1049,45 @@ def Diccionario_metricas(DF,path,N):
         
                 # Levanto los datos del archivo
                 Datos = ldata(path / nombre)
-        
+                
                 # Leo los datos de las Opiniones Finales
                 Opifinales = np.zeros((T,AGENTES))
         
                 for topico in range(T):
-                    Opifinales[topico,:] = np.array(Datos[5][topico::T], dtype="float")
-                    Opifinales[topico,:] = Opifinales[topico,:]/ KAPPAS
-        
+                    Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
+                    Opifinales[topico,:] = Opifinales[topico,:]/ EXTRAS
+                
+                # Esta función normaliza las Opiniones Finales usando la 
+                # variable EXTRA, porque asume que EXTRA es el Kappa. De no serlo,
+                # corregir a que EXTRAS sea PARAM_X o algo así
+                
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
         
-#                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
         
                 M_cov = np.cov(Opifinales)
-                Varianza_X[indice] = M_cov[0,0]
-                Varianza_Y[indice] = M_cov[1,1]
+                Varianza_X[repeticion] = M_cov[0,0]
+                Varianza_Y[repeticion] = M_cov[1,1]
                 
                 # Tengo que rearmar Opifinales para que sea un sólo vector con todo
                 
-                Opifinales = np.array(Datos[5], dtype="float")
-                Opifinales = Opifinales/KAPPAS
+                Opifinales = np.array(Datos[5][:-1], dtype="float")
+                Opifinales = Opifinales/EXTRAS
                 
                 # Armo mi array de Distribucion, que tiene la proba de que una opinión
                 # pertenezca a una región del espacio de tópicos
                 Probas = Clasificacion(Opifinales,N,T)
                 
                 # Con esa distribución puedo directamente calcular la entropía.
-                Entropia[indice] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
+                Entropia[repeticion] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
                 
-            if PARAM_X not in Salida[KAPPAS].keys():
-                Salida[KAPPAS][PARAM_X] = dict()
-            if PARAM_Y not in Salida[KAPPAS][PARAM_X].keys():
-                Salida[KAPPAS][PARAM_X][PARAM_Y] = dict()
-            Salida[KAPPAS][PARAM_X][PARAM_Y]["Entropia"] = Entropia/np.log2(N*N)
-            Salida[KAPPAS][PARAM_X][PARAM_Y]["Sigmax"] = Varianza_X
-            Salida[KAPPAS][PARAM_X][PARAM_Y]["Sigmay"] = Varianza_Y
+            if PARAM_X not in Salida[EXTRAS].keys():
+                Salida[EXTRAS][PARAM_X] = dict()
+            if PARAM_Y not in Salida[EXTRAS][PARAM_X].keys():
+                Salida[EXTRAS][PARAM_X][PARAM_Y] = dict()
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Entropia"] = Entropia/np.log2(N*N)
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"] = Varianza_X
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"] = Varianza_Y
             
     return Salida
 

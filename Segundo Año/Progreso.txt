@@ -3042,3 +3042,50 @@ mucho bardo.
 
 Todo esto es trabajo que puedo hacer entre el lunes y martes. Creo que esto puede salir.
 Hoy tengo que después volver a mandar a hacer lo de los hilos. 
+
+------------------------------------------------------------------------------------------
+
+22/01/2024
+
+Llegué y mandé a correr cinco hilos en las pc's de Oporto y de Coimbra. Hecho eso, lo siguiente
+es mandar en Oporto, Coimbra y Algarve el armado de los gráficos que plantee ayer. Con eso, ya me
+puedo poner a preparar la presentación. Ahí mandé a hacer los gráficos, en unos minutos reviso
+que esté todo bien.
+
+Lo que voy a hacer ahora es descargar algunos datos de simulaciones y con eso empezar a revisar que
+mi programa clasifique bien los datos. Lo que puedo hacer es descargar de Coimbra las simulaciones
+de la iteración 0 y 1, llevar esos datos a la carpeta de Prueba_Metricas y ahí ponerme a corroborar
+que las clasificaciones sean correctas.
+
+De paso, recién terminó la simulación que es con K=10, Beta=0.3 y cos(delta)=0, la cuál quiero comparar
+con la simulación hecha con el código de Hugo. El plan es ver si los dos códigos evolucionan similares
+o no. Lo que voy a hacer es mirar la distancia entre los vectores de opinión paso a paso, y de ahí ver
+si realmente se separan mucho o no, es decir, si las simulaciones son equivalentes o no.
+ Los archivos de 2 GB de tamaño no son muy amigables para levantar en la pc. Voy a ver si puedo hacer mi
+análisis con los archivos que tienen una foto del estado del sistema cada 100 pasos. Aunque ahora que
+lo pienso, eso tiene el problema de que necesito seriamente matchear los momentos en que se guarda el
+sistema de ambas simulaciones. Corrijamos eso.
+
+Pablo me dijo de mandar a hacer lo del dt chico. Voy a mandarlo más tarde, cuando se termine lo de simulaciones
+con cinco hilos. De paso, en estas simulaciones hubo un poco de interferencia porque en Oporto había mandado
+algo Franco a correr, entonces eso quizás estuvo aumentando el tiempo de simulación. Lo digo para
+considerarlo.
+
+Comparé los gráficos de histogramas 2D con la identificación de estados que hace el programa. El programa
+parece tener una muy buena detección de los distintos estados. Aunque algo a destacar es que el estado 
+de polarización a tres picos no se observa mucho, y cuando el código clasifica un estado como tres picos,
+las chances son que en realidad esté detectando un estado que se encuentra en la transición entre 
+polarización a dos picos y polarización a cuatro picos. Si miro los mapas de colores de Frecuencia
+de estados finales en la región de Coimbra lo que se observa es que justamente el estado 4, que es el
+de polarización a tres picos sin anchura, surge en la región entre la polarización a 4 picos y la polarización
+a 2 picos. Eso sucede porque justamente al ir aumentando el cos(delta) los picos con opiniones contrarias
+en ambos temas se van despoblando a la vez que se pueblan los que tienen opiniones coincidentes.
+Esto lleva a que estos estados intermedios tengan una entropía que es menor al caso de 4 picos
+pero mayor al caso de 2 picos. Y justamente esa entropía intermedia es la que clasifiqué como 
+polarización a 3 picos.
+
+Lo siguiente es mandar a correr los datos de salida con dt_chico que Pablo me pidió. La idea de eso
+es comprobar que efectivamente disminuyendo el dt, el programa resuelve el tema de las oscilaciones.
+Ahí mandé a hacer las cuentas con los dt más chicos. Vamos a ver si eso se resuelve pronto.
+No me está saliendo el armar la función que grafique la diferencia entre la simulación de Hugo y la
+mía, voy a resolver esto mañana, si hay tiempo.

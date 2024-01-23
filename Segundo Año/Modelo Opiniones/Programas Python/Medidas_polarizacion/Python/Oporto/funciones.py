@@ -567,7 +567,7 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                 
                 # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-                if repeticion < 5:
+                if repeticion < 2:
                     direccion_guardado = Path("../../../Imagenes/{}/Histograma_opiniones_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
                                                                                                                                                      ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,repeticion))
                     
@@ -1210,7 +1210,7 @@ def Calculo_Entropia(DF,path,N):
         
             if PARAM_X not in Salida[EXTRAS].keys():
                 Salida[EXTRAS][PARAM_X] = dict()
-            Salida[EXTRAS][PARAM_X][PARAM_Y] = entropias[entropias != 0]/np.log2(N*N)
+            Salida[EXTRAS][PARAM_X][PARAM_Y] = entropias/np.log2(N*N)
     
     return Salida
 

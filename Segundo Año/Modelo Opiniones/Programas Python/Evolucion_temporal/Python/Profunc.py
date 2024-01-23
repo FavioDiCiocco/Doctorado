@@ -22,7 +22,7 @@ import funciones as func
 t0 = time.time()
 
 
-
+"""
 ###################################################################################################
 
 # Defino la cantidad de agentes
@@ -47,7 +47,7 @@ Vecinos = [nodo for nodo in G[79]]
 # gradomedio /= N
 
 # print("El grado medio de la red es: ", gradomedio)
-"""
+
 ###################################################################################################
 
 # Dada una red, me armo un archivo como los que tiene Hugo de enlaces del sistema.
@@ -61,7 +61,7 @@ with open(filename, "w") as file:
 
 
 ###################################################################################################
-"""
+
 # Acá voy a mirar el tema del peso y la distancia entre los agentes 79 y 388
 
 Datos = func.ldata("../2D_dtchico/Testigos_N=1000_kappa=10.0_beta=0.90_cosd=0.00_Iter=51.file")
@@ -154,6 +154,31 @@ plt.grid(alpha = 0.8)
 plt.legend()
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close("Pesos_opuestos")
+
+###################################################################################################
+"""
+
+# Acá voy a comparar la simulación que armé yo con la simulación de Hugo, para
+# ver qué puede ser lo que esté trabajando distinto y resultando en que los códigos
+# no dan exactamente iguales al final. Quizás es una cosa de que no están corriendo
+# la misma cantidad exacta de pasos y mi código está en un punto distinto de oscilación.
+
+Datos_mios = func.ldata("../1D/Testigos_N=1000_kappa=10.0_beta=0.90_cosd=0.00_Iter=51.file")
+Datos_Hugo = func.ldata("../1D_Hugo/Testigos_N=1000_kappa=10_beta=0.9_cosd=0_Iter=51.file")
+
+Opiniones_mios = np.zeros(len(Datos_mios[1]))
+Opiniones_Hugo = np.zeros(len(Datos_Hugo[1]))
+
+T = np.arange(2000)*0.01
+Diferencia = np.zeros(2000)
+
+for fila in range(1,2001):
+    Opiniones_mios = np.array([float(x) for x in [Datos_mios[fila][:-1]]])
+    Opiniones_Hugo = np.array([float(x) for x in [Datos_Hugo[fila][:-1]]])
+    
+    Diferencia[fila] = np.linalg.norm(Opiniones_mios-Opiniones_Hugo)
+
+
 
 
 func.Tiempo(t0)
