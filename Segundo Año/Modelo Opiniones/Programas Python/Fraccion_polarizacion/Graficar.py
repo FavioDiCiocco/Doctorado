@@ -85,5 +85,9 @@ for carp in Carpetas:
     #----------------------------------------------------------------------------------------------
     
     func.Fraccion_polarizados_vs_Y(Df_archivos, Direccion, Etapa/carpeta)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    func.Fraccion_dominante_vs_Y(Df_archivos, Direccion, Etapa/carpeta)
 
 func.Tiempo(t0)

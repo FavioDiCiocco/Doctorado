@@ -3089,3 +3089,29 @@ es comprobar que efectivamente disminuyendo el dt, el programa resuelve el tema 
 Ahí mandé a hacer las cuentas con los dt más chicos. Vamos a ver si eso se resuelve pronto.
 No me está saliendo el armar la función que grafique la diferencia entre la simulación de Hugo y la
 mía, voy a resolver esto mañana, si hay tiempo.
+
+------------------------------------------------------------------------------------------
+
+23/01/2024
+
+Hubo un corte de luz ayer, lo que mandé a correr se apagó. Así que mandaré las cosas con dt chico
+de nuevo y después veré qué pasa. No van a llegar a estar para mañana los datos.
+
+Hablando con Pablo, él propone investigar un poco más sobre estos estados cuyos valores de opinión
+se mantienen oscilando. En particular me dijo que son tres preguntas. ¿Cómo clasifico estos estados?
+¿En qué región se encuentran? ¿Cuál es el porcentaje de estos estados que se observan?
+
+Eso lo dejaré para después, si me meto con eso ahora no termino más. Arranquemos con la presentación.
+Armé una buena presentación, me parece clara y concisa. Y casi está completa. Falta agregar el gráfico
+que me propuso Pablo sobre cuáles son las fracciones de estado que dominan en cada región.
+ Aparte de esto, yo agregaría los ejemplos de los estados clasificados, como para dar una mejor idea
+de cómo está reconociendo estados el programa. Pablo también me dijo que debería agregar las cosas que
+anoté como cosas para hacer a futuro.
+
+Ya mandé a hacer los gráficos de fracción de estados que quería. También tengo los gráficos de Traza
+de Covarianza corregidos para que los títulos sean de Varianzas. Tengo que agregar eso a la presentación
+y el gráfico que Pablo me propuso. Mañana mando a hacer de nuevo los gráficos, borro los gráficos
+de Histograma que no necesito, corrijo el color de uno de los gráficos de fracción de estados y
+con eso estoy ahí. Después hago el gráfico que Pablo me propuso, agrego al final la idea de lo
+que vamos a hacer después y algunos gráficos de ejemplo sobre cómo el sistema está catalogando los
+estados finales.

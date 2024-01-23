@@ -670,7 +670,7 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
     #--------------------------------------------------------------------------------
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/Traza_Covarianza_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
+    direccion_guardado = Path("../../../Imagenes/{}/Varianzas_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
     
     plt.rcParams.update({'font.size': 24})
     plt.figure("Traza_Covarianza",figsize=(20,15))
@@ -681,7 +681,7 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
     
     plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "plasma")
     plt.colorbar()
-    plt.title("Traza Matriz Covarianza en Espacio de Parametros")
+    plt.title("Varianzas en Espacio de Parametros")
     
     # Guardo la figura y la cierro
     

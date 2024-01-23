@@ -766,3 +766,132 @@ def Fraccion_estados_vs_Y(DF,path,carpeta):
         plt.title("Fracción de estados {} finales".format(estado))
         plt.savefig(direccion_guardado , bbox_inches = "tight")
         plt.close("FracEstado")
+        
+#-----------------------------------------------------------------------------------------------
+
+# Esta función arma las curvas de fracción de estados
+# en función del parámetro Y. La fracción de estados
+# se refiere a los estados numerados de 0 a 9.
+
+def Fraccion_dominante_vs_Y(DF,path,carpeta):
+    
+    # Defino los arrays de parámetros diferentes    
+    EXTRAS = int(np.unique(DF["Extra"]))
+    PARAM_X = float(np.unique(DF["parametro_x"]))
+    Arr_param_y = np.unique(DF["parametro_y"])
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    
+    Tupla_total = [(j,param_y) for j,param_y in enumerate(Arr_param_y)]
+    
+    # Construyo el array de fracción estados polarizados
+    Fraccion_polarizados = np.zeros((10,Arr_param_y.shape[0]))
+    
+    #--------------------------------------------------------------------------------
+    
+    # Diccionario con la entropía, Sigma_x y Sigma_y de todas las simulaciones
+    # para cada punto del espacio de parámetros.
+    Dic_Total = Diccionario_metricas(DF,path,20)
+    
+    for indice,PARAM_Y in Tupla_total:
+                
+        Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
+                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
+                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"])
+        
+        for estado in range(10):
+            Fraccion_polarizados[estado,indice] = np.count_nonzero(Frecuencias == estado)/Frecuencias.shape[0]
+
+    
+    # Armo los gráficos de fracción de estados para mis cuatro conjuntos de estados.
+    
+    # Estados de Consenso
+    
+    Consenso = Fraccion_polarizados[0]+Fraccion_polarizados[6]
+    
+    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_Consenso.png".format(carpeta))
+    plt.rcParams.update({'font.size': 24})
+    plt.figure("FracConsenso",figsize=(20,15))
+    plt.plot(Arr_param_y,Consenso,"--",color = "tab:blue",linewidth=4)
+        
+    # Guardo la figura y la cierro
+    plt.xlabel(r"$\beta$")
+    # plt.ylabel()
+    plt.grid()
+    # plt.legend()
+    plt.title("Estados finales de Consenso Radicalizado")
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("FracConsenso")
+    
+    # Estados de Polarización Unidimensional
+    
+    Pol_Uni = Fraccion_polarizados[1]+Fraccion_polarizados[2]+Fraccion_polarizados[7]+Fraccion_polarizados[8]
+    
+    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_Pol_Uni.png".format(carpeta))
+    plt.rcParams.update({'font.size': 24})
+    plt.figure("FracPolUni",figsize=(20,15))
+    plt.plot(Arr_param_y,Pol_Uni,"--",color = "tab:green",linewidth=4)
+        
+    # Guardo la figura y la cierro
+    plt.xlabel(r"$\beta$")
+    # plt.ylabel()
+    plt.grid()
+    # plt.legend()
+    plt.title("Estados finales de Polarización Unidimensional")
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("FracPolUni")
+    
+    # Estados de Polarización Ideológica sin anchura
+    
+    Pol_Id_sA = Fraccion_polarizados[3]
+    
+    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_Pol_Id_sA.png".format(carpeta))
+    plt.rcParams.update({'font.size': 24})
+    plt.figure("FracPolIdsA",figsize=(20,15))
+    plt.plot(Arr_param_y,Pol_Id_sA,"--",color = "tab:red",linewidth=4)
+        
+    # Guardo la figura y la cierro
+    plt.xlabel(r"$\beta$")
+    # plt.ylabel()
+    plt.grid()
+    # plt.legend()
+    plt.title("Estados finales de Polarización Ideológica sin Anchura")
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("FracPolIdsA")
+    
+    # Estados de Polarización Descorrelacionada sin anchura
+    
+    Pol_Des_sA = Fraccion_polarizados[5]
+    
+    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_Pol_Des_sA.png".format(carpeta))
+    plt.rcParams.update({'font.size': 24})
+    plt.figure("FracPolDessA",figsize=(20,15))
+    plt.plot(Arr_param_y,Pol_Des_sA,"--",color = "tab:orange",linewidth=4)
+        
+    # Guardo la figura y la cierro
+    plt.xlabel(r"$\beta$")
+    # plt.ylabel()
+    plt.grid()
+    # plt.legend()
+    plt.title("Estados finales de Polarización Descorrelacionada sin Anchura")
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("FracPolDessA")
+    
+    # Estados de Polarización
+    
+    Pol = Fraccion_polarizados[9]
+    
+    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_Pol.png".format(carpeta))
+    plt.rcParams.update({'font.size': 24})
+    plt.figure("FracPol",figsize=(20,15))
+    plt.plot(Arr_param_y,Pol,"--",color = "tab:orange",linewidth=4)
+        
+    # Guardo la figura y la cierro
+    plt.xlabel(r"$\beta$")
+    # plt.ylabel()
+    plt.grid()
+    # plt.legend()
+    plt.title("Estados finales de Polarización con Anchura")
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("FracPol")
+    
