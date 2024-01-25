@@ -3115,3 +3115,24 @@ de Histograma que no necesito, corrijo el color de uno de los gráficos de fracc
 con eso estoy ahí. Después hago el gráfico que Pablo me propuso, agrego al final la idea de lo
 que vamos a hacer después y algunos gráficos de ejemplo sobre cómo el sistema está catalogando los
 estados finales.
+
+
+------------------------------------------------------------------------------------------
+
+24/01/2024
+
+Ya borré los histogramas y mandé a hacer los gráficos de nuevo, corrigiendo los detalles que
+faltaban. Ahora tengo que descargar los gráficos y agregarlos a la presentación.
+
+Hice el gráfico que me pedía Pablo, y agregué las imágenes que me parecían estaban buenas
+para mostrar cómo el programa viene clasificando estados.
+
+.) Ver de armar los Gifs para ver si las polarizaciones con anchura se mantienen porque todavía
+no decayeron.
+.) Ver de estudiar las oscilaciones y cómo eso afecta en las simulaciones con anchura.
+.) Clasificar mejor los estados intermedios, los cuáles en general son estados de transición.
+.) Pedirle ayuda a Hugo para bajar los datos de la ANNES. Así podemos ir viendo las distribuciones
+de a pares de preguntas.
+.) Mandar a correr datos para aumentar las simulaciones que tengo, tener más estadística.
+
+Mandé a correr unas cosas más para ver lo de varios hilos, así ya mañana voy viendo qué pasa.
