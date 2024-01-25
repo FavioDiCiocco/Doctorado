@@ -14,84 +14,81 @@ double Random(){
 }
 
 // Esta función me da un valor tomado de una distribución gaussiana con valor medio mu y desviación sigma
-double Gaussiana(float f_mu, float f_sigma){
+double Gaussiana(float mu, float sigma){
+	
 	// Defino mis variables iniciales
-	int i_n=100;
-	double d_z=0;
+	int n=100;
+	double z=0;
 	
 	// Genero el número que voy a obtener de mi Gaussiana.
 	// Para ser sincero, esto es un código legado del cual no comprendo la matemática involucrada.
-	for(int i_i=0;i_i<i_n;i_i++) d_z += Random();
-	d_z = sqrt(12*i_n) * (d_z/i_n-0.5);
-	return d_z*f_sigma+f_mu;
+	for(int i=0; i<n; i++) z += Random();
+	z = sqrt(12*n) * (z/n-0.5);
+	return z*sigma+mu;
 }
 
 // Esta función me calcula la norma de un vector
-double Norma_d(double *pd_x){
+double Norma_d(double *x){
+	
 	// Defino mis variables iniciales que son el resultado final, la suma de los cuadrados y el tamao de mi vector
-	double d_norm,d_sum = 0;
-	int i_C,i_F;
-	i_F = *pd_x;
-	i_C = *(pd_x+1);
+	double norm, sum = 0;
+	int C, F;
+	F = *x;
+	C = *(x+1);
 	
 	// Calculo la norma como la raíz cuadrada de la sumatoria de los cuadrados de cada coordenada.
-	for(register int i_i=0; i_i<i_C*i_F; ++i_i) d_sum += *(pd_x+i_i+2)*(*(pd_x+i_i+2));
-	d_norm = sqrt(d_sum);
-	return d_norm;
+	for(int i=0; i< C*F; ++i) sum += *(x+i+2) * (*(x+i+2));
+	norm = sqrt(sum);
+	return norm;
 }
 
 
 //Funciones de Visualización
 //---------------------------------------------------------------------------------------------------------------------------------------
 // Esta función es para observar los vectores double
-int Visualizar_d(double *pd_vector){
+void Visualizar_d(double *vec){
+	
 	// Defino las variables que voy a necesitar.
-	int i_F,i_C;
-	i_F = *pd_vector;
-	i_C = *(pd_vector+1);
+	int F,C;
+	F = *vec;
+	C = *(vec+1);
 	
 	// Printeo mi vector
-	for(register int i_i=0; i_i<i_F; i_i++){
-		for(register int i_j=0; i_j<i_C; i_j++) printf("%lf\t",*(pd_vector+i_i*i_C+i_j+2));
+	for(int i=0; i<F; i++){
+		for(int j=0; j<C; j++) printf("%lf\t", *(vec+i*C+j+2));
 		printf("\n");
 	}
 	printf("\n");
-	
-	return 0;
 }
 
 // Esta función es para observar los vectores float
-int Visualizar_f(float *pf_vector){
+void Visualizar_f(float *vec){
 	// Defino las variables que voy a necesitar.
-	int i_F,i_C;
-	i_F = *pf_vector;
-	i_C = *(pf_vector+1);
+	int F,C;
+	F = *vec;
+	C = *(vec+1);
 	
 	// Printeo mi vector
-	for(register int i_i=0; i_i<i_F; i_i++){
-		for(register int i_j=0; i_j<i_C; i_j++) printf("%lf\t",*(pf_vector+i_i*i_C+i_j+2));
+	for(int i=0; i<F; i++){
+		for(int j=0; j<C; j++) printf("%lf\t", *(vec+i*C+j+2));
 		printf("\n");
 	}
 	printf("\n");
-	
-	return 0;
 }
 
 // Esta función es para observar los vectores int
-int Visualizar_i(int *pi_vector){
+void Visualizar_i(int *vec){
 	// Defino las variables que voy a necesitar.
-	int i_F,i_C;
-	i_F = *pi_vector;
-	i_C = *(pi_vector+1);
+	int F,C;
+	F = *vec;
+	C = *(vec+1);
 	
 	// Printeo mi vector
-	for(register int i_i=0; i_i<i_F; i_i++){
-		for(register int i_j=0; i_j<i_C; i_j++) printf("%d\t",*(pi_vector+i_i*i_C+i_j+2));
+	for(int i=0; i<F; i++){
+		for(int j=0; j<C; j++) printf("%d\t", *( vec+i*C+j+2 ));
 		printf("\n");
 	}
 	printf("\n");
-	
-	return 0;
 }
 
 
@@ -101,64 +98,60 @@ int Visualizar_i(int *pi_vector){
 // los punteros a struct con la info relevante para pasar a la ecuación dinámica y luego con eso evoluciona mi sistema.
 // La idea es evolucionar TODO el array en una sola llamada de RK4, a diferencia de implementaciones anteriores.
 
-double RK4(double *pd_sistema, double (*pf_funcion)(ps_Red ps_variable, ps_Param ps_parametro), ps_Red ps_variable, ps_Param ps_parametro){
+void RK4(double *sistema, double (*func)(puntero_Matrices red, puntero_Parametros param), puntero_Matrices red, puntero_Parametros param){
+	
 	// Defino las variables y vectores que voy a necesitar
-	int i_F = (int) *pd_sistema; // Este es el número de filas del vector principal
-	int i_C = (int) *(pd_sistema+1); // Este es el número de columnas del vector principal
+	int F = (int) *sistema; // Este es el número de filas del vector principal
+	int C = (int) *(sistema+1); // Este es el número de columnas del vector principal
 	double DT[4]; // Esto me ayuda a meter el paso temporal que se usa para calcular cada pendiente.
 	
 	// Este me guarda las condiciones iniciales del sistema, que las voy a necesitar al calcular cada paso del RK4
-	double *pd_inicial;
-	pd_inicial = (double*) malloc((i_F*i_C+2)*sizeof(double));
+	double *inicial;
+	inicial = (double*) malloc(( F*C+2 )*sizeof(double));
 	
 	// Inicializo mi puntero inicial
-	for(register int i_i=0; i_i<i_F*i_C+2; i_i++) *(pd_inicial+i_i) = *(pd_sistema+i_i);
+	for(int i=0; i<F*C+2; i++) *(inicial+i) = *(sistema+i);
 	
 	// Armo un puntero a arrays para las pendientes
-	double *ap_pendientes[5];
+	double *pendientes[5];
 	
 	// Malloqueo e incializo los punteros
-	for(register int i_i=0; i_i<5; i_i++){
-		ap_pendientes[i_i] = (double*) malloc((i_F*i_C+2)*sizeof(double)); // Hago el malloc
-		*(ap_pendientes[i_i]) = i_F; // Defino el tamaño de las filas
-		*(ap_pendientes[i_i]+1) = i_C; // Defino el tamaño de las columnas
-		for(register int i_j=0; i_j<i_F*i_C; i_j++) *(ap_pendientes[i_i]+i_j+2) = 0; // Pongo cero en todos lados
+	for(int i=0; i<5; i++){
+		pendientes[i] = (double*) calloc( F*C+2 , sizeof(double)); // Hago el malloc
+		*(pendientes[i]) = F; // Defino el tamaño de las filas
+		*( pendientes[i]+1 ) = C; // Defino el tamaño de las columnas
 	}
 	
 	// Armo mi vector DT. Este hay que armarlo uno por uno, si o si.
 	DT[0] = 0;
-	DT[1] = ps_parametro->d_dt*0.5;
-	DT[2] = ps_parametro->d_dt*0.5;
-	DT[3] = ps_parametro->d_dt;
+	DT[1] = param->dt * 0.5;
+	DT[2] = param->dt * 0.5;
+	DT[3] = param->dt;
 	
 	// Acá hago las iteraciones del RK4 para hallar las pendientes k
-	for(register int i_j=0; i_j<4; i_j++){
+	for(int j=0; j<4; j++){
 		
 		// Avanzo el sistema para el cálculo de la siguiente pendiente.
-		for(register int i_i=0; i_i<i_F*i_C; i_i++) *(pd_sistema+i_i+2) = *(pd_inicial+i_i+2)+*(ap_pendientes[i_j]+ps_variable->i_agente*i_C+ps_variable->i_topico+2)*DT[i_j];
+		for(int i=0; i<F*C; i++) *( sistema+i+2 ) = *( inicial+i+2 )+*( pendientes[j] +red->agente*C +param->topico +2 )*DT[j];
 		
 		// Avanzo en todos los agentes
-		for(ps_variable->i_agente=0; ps_variable->i_agente<i_F; ps_variable->i_agente++){
+		for(red->agente=0; red->agente < F; red->agente++){
 			
 			// Avanzo en todos los tópicos
-			for(ps_variable->i_topico=0; ps_variable->i_topico<i_C; ps_variable->i_topico++){
+			for(red->topico=0; red->topico < C; red->topico++){
 				
 				// Calculo el elemento de la pendiente k(i_j+1)
-				*(ap_pendientes[i_j+1]+ps_variable->i_agente*i_C+ps_variable->i_topico+2) = (*pf_funcion)(ps_variable,ps_parametro);
-				
+				*(pendientes[j+1] +red->agente*C +red->topico+2) = (*func) (red, param);
 			}
 		}
 	}
 	
 	// Reescribo el vector de mi sistema con los valores luego de haber hecho la evolución dinámica
-	for(register int i_i=0; i_i<i_F*i_C; i_i++) *(pd_sistema+i_i+2) = *(pd_inicial+i_i+2) +	(ps_parametro->d_dt/6)*(*(ap_pendientes[1]+i_i+2)+*(ap_pendientes[2]+i_i+2)*2+*(ap_pendientes[3]+i_i+2)*2+*(ap_pendientes[4]+i_i+2));
+	for(int i=0; i< F*C; i++) *( sistema+i+2 ) = *( inicial+i+2 ) + (param->dt/6) * (*( pendientes[1]+i+2 ) +*( pendientes[2]+i+2 )*2 +*( pendientes[3]+i+2 )*2 +*( pendientes[4]+i+2 ));
 	
 	// Libero el espacio de memoria ocupada por los arrays.
-	free(pd_inicial);
-	for(register int i_i=0; i_i<5; i_i++) free(ap_pendientes[i_i]);
-
-	return 0;
-	
+	free(inicial);
+	for(int i=0; i<5; i++) free(pendientes[i]);
 }
 
 
@@ -167,139 +160,137 @@ double RK4(double *pd_sistema, double (*pf_funcion)(ps_Red ps_variable, ps_Param
 // Las siguientes funciones son complementos para escribir datos en un archivo
 
 // Esta función va a recibir un vector double y va a escribir ese vector en mi archivo.
-int Escribir_d(double *pd_vector, FILE *pa_archivo){
-	// Defino las variables del tamao de mi vector
-	int i_C,i_F;
-	i_F = *pd_vector;
-	i_C = *(pd_vector+1);
+void Escribir_d(double *vec, FILE *archivo){
+	
+	// Defino las variables del tamaño de mi vector
+	int C,F;
+	F = *vec;
+	C = *(vec+1);
 	
 	// Ahora printeo todo el vector en mi archivo
-	for(register int i_i=0; i_i<i_C*i_F; i_i++) fprintf(pa_archivo,"%.6lf\t",*(pd_vector+i_i+2));
-	fprintf(pa_archivo,"\n");
-	
-	return 0;
+	for(int i=0; i<C*F; i++) fprintf(archivo,"%.6lf\t",*( vec+i+2 ));
+	fprintf(archivo,"\n");
 }
 
 // Esta función va a recibir un vector int y va a escribir ese vector en mi archivo.
-int Escribir_i(int *pi_vector, FILE *pa_archivo){
+void Escribir_i(int *vec, FILE *archivo){
+	
 	// Defino las variables del tamao de mi vector
-	int i_C,i_F;
-	i_F = *pi_vector;
-	i_C = *(pi_vector+1);
+	int C,F;
+	F = *vec;
+	C = *(vec+1);
 	
 	// Ahora printeo todo el vector en mi archivo
-	for(register int i_i=0; i_i<i_C*i_F; i_i++) fprintf(pa_archivo,"%d\t",*(pi_vector+i_i+2));
-	fprintf(pa_archivo,"\n");
-	
-	return 0;
+	for(int i=0; i<C*F; i++) fprintf(archivo,"%d\t",*( vec+i+2 ));
+	fprintf(archivo,"\n");
 }
 
 // Esta función me mide el tamao del grupo al cual pertenece el nodo inicial: i_inicial
-int Tamano_Comunidad(int *pi_adyacencia, int i_inicial){
-	// Defino la variable del tamao del grupo, el número de filas de la matriz de Adyacencia, el número de agentes
+int Tamano_Comunidad(int *ady, int inicial){
+	
+	// Defino la variable del tamaño del grupo, el número de filas de la matriz de Adyacencia, el número de agentes
 	// restantes por visitar; y los inicializo
-	int i_tamao, i_F, i_restantes;
-	i_tamao = 0;
-	i_F = *pi_adyacencia;
-	i_restantes = 0;
+	int tamano, F, restantes;
+	tamano = 0;
+	F = *ady;
+	restantes = 0;
 	
 	// Defino un puntero que registre cuáles agentes están conectados y lo inicializo
-	int *pi_Grupo;
-	pi_Grupo = (int*) malloc((2+i_F)*sizeof(int));
+	int *Grupo;
+	Grupo = (int*) calloc((2+F), sizeof(int));
 	
-	*pi_Grupo = 1;
-	*(pi_Grupo+1) = i_F;
-	for(register int i_i=0; i_i<i_F; i_i++) *(pi_Grupo+i_i+2) = 0;
+	*Grupo = 1;
+	*(Grupo+1) = F;
 	
 	// Defino un puntero que me marque los nuevos sujetos que visitar. Lo hago de tamao i_F para poder asignar un 1 al visitar el agente en cada posición correcta.
-	int *pi_Visitar;
-	pi_Visitar = (int*) malloc((2+i_F)*sizeof(int));
+	int *Visitar;
+	Visitar = (int*) calloc( (2+F), sizeof(int));
 	
-	*pi_Visitar = 1;
-	*(pi_Visitar+1) = i_F;
-	for(register int i_i=0; i_i<i_F; i_i++) *(pi_Visitar+i_i+2) = 0;
+	*Visitar = 1;
+	*( Visitar+1 ) = F;
 	
 	// Empiezo recorriendo la matriz desde un nodo inicial, que será el primero siempre.
-	for(register int i_i=0; i_i<i_F; i_i++){
-		*(pi_Grupo+i_i+2) = *(pi_adyacencia+i_i+i_inicial*i_F+2);
-		*(pi_Visitar+i_i+2) = *(pi_adyacencia+i_i+i_inicial*i_F+2);
+	for(int i=0; i<F; i++){
+		*( Grupo+i+2 ) = *( ady+i+inicial*F+2 );
+		*( Visitar+i+2 ) = *( ady+i+inicial*F+2 );
 	}
 	
 	do{
-		i_restantes = 0;
+		restantes = 0;
+		
 		// Primero reviso mi lista de gente por visitar
-		for(register int i_i=0; i_i<i_F; i_i++){
+		for(int i=0; i<F; i++){
+			
 			// Si encuentro un uno en la lista, reviso esa fila de la matriz de adyacencia. Es decir, la fila i_i
-			if(*(pi_Visitar+i_i+2) == 1){
+			if( *( Visitar+i+2 ) == 1){
+				
+				// EXPLICACIÓN DE ESTA MARAÑA DE FUNCIONES
 				// Si en esa fila encuentro un uno, tengo que agregar eso al grupo y a la lista de Visitar. Pero no siempre.
 				// La idea es: Si el sujeto no estaba marcado en grupo, entonces lo visito y lo marco en el grupo.
 				// Si ya estaba marcado, es porque lo visité o está en mi lista de visitar.
 				// La idea de esto es no revisitar nodos ya visitados.
-				for(register int i_j=0; i_j<i_F; i_j++){
-					if(*(pi_adyacencia+i_j+i_i*i_F+2) == 1){
-						if(*(pi_Grupo+i_j+2) == 0) *(pi_Visitar+i_j+2) = 1; // Esta línea me agrega el sujeto a visitar sólo si no estaba en el grupo
-						*(pi_Grupo+i_j+2) = *(pi_adyacencia+i_j+i_i*i_F+2); // Esta línea me marca al sujeto en el grupo, porque al final si ya había un uno ahí, simplemente lo vuelve a escribir.
+				
+				for(int j=0; j<F; j++){
+					if( *( ady+j+i*F+2 ) == 1){
+						if( *(Grupo+j+2 ) == 0) *( Visitar+j+2 ) = 1; // Esta línea me agrega el sujeto a visitar sólo si no estaba en el grupo
+						*( Grupo+j+2 ) = *( ady+j+i*F+2 ); // Esta línea me marca al sujeto en el grupo, porque al final si ya había un uno ahí, simplemente lo vuelve a escribir.
 					}
 				}
-				*(pi_Visitar+i_i+2) = 0;
+				*( Visitar+i+2 ) = 0;
 			}
 		}
-		for(int register i_i=0; i_i<i_F; i_i++) i_restantes += *(pi_Visitar+i_i+2);
+		for(int i=0; i<F; i++) restantes += *( Visitar+i+2 );
 	}
-	while(i_restantes > 0);
+	while(restantes > 0);
 	
 	// Finalmente mido el tamao de mi grupo
-	for(register int i_i=0; i_i<i_F; i_i++) i_tamao += *(pi_Grupo+i_i+2);
+	for(int i=0; i<F; i++) tamano += *( Grupo+i+2 );
 	
 	// Libero las memorias malloqueadas
-	free(pi_Grupo);
-	free(pi_Visitar);
+	free(Grupo);
+	free(Visitar);
 	
-	return i_tamao;
+	return tamano;
 }
 
 // Esta función me calcula la diferencia entre dos vectores
-int Delta_Vec_d(double *pd_restado, double *pd_restar, double *pd_resultado){
+void Delta_Vec_d(double *restado, double *restar, double *resultado){
+	
 	// Compruebo primero que mis dos vectores sean iguales en tamao
-	if(*pd_restado!=*pd_restar || *(pd_restado+1)!=*(pd_restar+1) || *pd_restado!=*pd_resultado || *(pd_restado+1)!=*(pd_resultado+1)){
+	if(*restado != *restar || *( restado+1 ) != *( restar+1 ) || *restado != *resultado || *( restado+1 ) != *( resultado+1 )){
 		printf("Los vectores son de tamaños distintos, no puedo restarlos\n");
-		return 0;
 	}
 	
 	// Defino las variables de tamao de mis vectores
-	int i_C,i_F;
-	i_F = *pd_restado;
-	i_C = *(pd_restado+1);
+	int C, F;
+	F = *restado;
+	C = *( restado+1 );
 	
 	// Calculo la diferencia entre dos vectores
-	for(register int i_i=0; i_i<i_C*i_F; ++i_i) *(pd_resultado+i_i+2) = *(pd_restado+i_i+2)-*(pd_restar+i_i+2);
-	
-	// Me anoto la diferencia en un vector que está en el main del programa, y luego libero el espacio usado.
-	return 0;
+	for(int i=0; i<C*F; ++i) *( resultado+i+2 ) = *( restado+i+2 ) - *( restar+i+2 );
 }
 
 
 // // Me defino funciones de máximo y mínimo
-double Max(double d_a, double d_b){
+double Max(double a, double b){
 	// Defino la variable a usar
-	double d_max = 0;
+	double max = 0;
 	
-	d_max = (d_a > d_b)? d_a : d_b; // Uso un operador ternario. La idea es que se evalúa la función antes del
+	max = (a > b)? a : b; // Uso un operador ternario. La idea es que se evalúa la función antes del
 	// signo de pregunta. Si es verdadera, se devuelve lo que está a la izquierda de los dos puntos.
 	// Sino se devuelve lo que está a la derecha
-	
 	return d_max;
 }
 
-double Min(double d_a, double d_b){
+double Min(double a, double b){
 	// Defino la variable a usar
-	double d_min = 0;
+	double min = 0;
 	
-	d_min = (d_a < d_b)? d_a : d_b; // Uso un operador ternario. La idea es que se evalúa la función antes del
+	min = (a < b)? a : b; // Uso un operador ternario. La idea es que se evalúa la función antes del
 	// signo de pregunta. Si es verdadera, se devuelve lo que está a la izquierda de los dos puntos.
 	// Sino se devuelve lo que está a la derecha
 	
-	return d_min;
+	return min;
 }
 
 
@@ -316,15 +307,15 @@ double Min(double d_a, double d_b){
 // desde afuera, de forma de que el d_deltax no sea nunca cero. Total, una vez obtenido
 // d_y2, no necesito respetar el valor de índice i_i2 obtenido antes. Al final, el d_x2
 // sólamente tendría el propósito de definir correctametne el d_deltax
-double Interpolacion(double d_y1, double d_y2,double d_x1,double d_x){
+double Interpolacion(double y1, double y2,double x1,double x){
 	// Defino las variables que voy a necesitar
-	double d_resultado = 0;
-	double d_deltax = 0.00001;
-	double d_deltay = d_y2-d_y1;
+	double resultado = 0;
+	double deltax = 0.00001;
+	double deltay = y2 - y1;
 	
-	d_resultado = (d_deltay/d_deltax)*d_x+d_y1+(-d_deltay/d_deltax)*d_x1; // Esta es la cuenta de la interpolación
+	resultado = (deltay / deltax)* x+y1+(- deltay / deltax)* x1; // Esta es la cuenta de la interpolación
 	
-	return d_resultado;
+	return resultado;
 }
 
 

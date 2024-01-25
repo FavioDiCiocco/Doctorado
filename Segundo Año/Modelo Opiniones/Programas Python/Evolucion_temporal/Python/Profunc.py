@@ -166,19 +166,25 @@ plt.close("Pesos_opuestos")
 Datos_mios = func.ldata("../1D/Testigos_N=1000_kappa=10.0_beta=0.90_cosd=0.00_Iter=51.file")
 Datos_Hugo = func.ldata("../1D_Hugo/Testigos_N=1000_kappa=10_beta=0.9_cosd=0_Iter=51.file")
 
-Opiniones_mios = np.zeros(len(Datos_mios[1]))
-Opiniones_Hugo = np.zeros(len(Datos_Hugo[1]))
-
 T = np.arange(2000)*0.01
 Diferencia = np.zeros(2000)
 
 for fila in range(1,2001):
-    Opiniones_mios = np.array([float(x) for x in [Datos_mios[fila][:-1]]])
-    Opiniones_Hugo = np.array([float(x) for x in [Datos_Hugo[fila][:-1]]])
+    Opiniones_mios = np.array([float(x) for x in Datos_mios[fila][:-1]])
+    Opiniones_Hugo = np.array([float(x) for x in Datos_Hugo[fila][:-1]])
     
-    Diferencia[fila] = np.linalg.norm(Opiniones_mios-Opiniones_Hugo)
+    Diferencia[fila-1] = np.linalg.norm(Opiniones_mios-Opiniones_Hugo)
 
+direccion_guardado = Path("../../../Imagenes/Evolucion_temporal/1D/Distancia_simulaciones.png")
 
+plt.rcParams.update({'font.size': 32})
+plt.figure("Distancia_sistemas",figsize=(20,15))
+plt.plot(T,Diferencia,linewidth = 6)
+plt.xlabel(r"Tiempo$(10^3)$")
+plt.title("Distancia entre estados")
+plt.grid(alpha = 0.8)
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close("Distancia_sistemas")
 
 
 func.Tiempo(t0)

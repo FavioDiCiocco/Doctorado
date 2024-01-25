@@ -3136,3 +3136,38 @@ de a pares de preguntas.
 .) Mandar a correr datos para aumentar las simulaciones que tengo, tener más estadística.
 
 Mandé a correr unas cosas más para ver lo de varios hilos, así ya mañana voy viendo qué pasa.
+
+------------------------------------------------------------------------------------------
+
+25/01/2024
+
+Soy un boludo, borré los datos de 7 hilos en Oporto. Bueno, no es algo tan terrible, queda para
+después revisar eso. La simulación con dt chico sigue corriendo, vamos a ver a qué llega eso.
+ Considerando lo que tengo anotado, creo que lo primero por hacer sería resolver eso de comparar
+mi simulación en 1D con la simulación que hizo Hugo, de forma tal de ver que efectivamente las 
+simulaciones son similares. De ahí, con alguna prueba más contundente de si son similares, yo
+continuaría con el código de interés implementando lo que tiene Hugo en su código, de forma de
+lograr hacer correr ese código. Hecho eso, pasaría a implementar eso en el código de Opiniones.
+Y hecho eso, empezaría a mandar a correr cosas para engrosar la estadística en Coimbra y en Oporto.
+
+Volví a mandar la simulación de 1D para que los estados del sistema que se guarden, se obtengan en
+el mismo momento en que se guardan en la simulación de Hugo. Por otro lado, ya armé la función
+que toma los datos y grafica la distancia entre los agentes. Ese gráfico me da que el sistema
+oscila en torno a una norma que vale 50. Considerando que tengo mil agentes, eso significa que en
+promedio la opinión de cada agente está separada 1.58 entre un sistema y el otro. Es un montón.
+
+Hecho esto, debería ponerme con el código de Interés, corregirlo para que funcione con las ideas
+de Hugo y ya que estoy aprovechar para hacer una revisión del código, así lo hago un poco más
+legible y agradable. Siento que el código es muy largo actualmente. Creo que puedo resumir
+muchos nombres de variables y cosas.
+
+Revisé de nuevo la diferencia entre mi simulación y la de Hugo, peor ahora, la norma oscila entorno
+a 80. Esto es raro.
+
+¿Le saco el tipo de variable al inicio del nombre? Sí, probemos hacer eso. Leyendo el código
+de Hugo no me pareció imposible de entender porque no tuviera eso.
+¿Achico los nombres? Todos los que pueda y que resulte necesario.
+¿Reduzco la cantidad de comentarios? No, creo que eso está bien en general
+
+Arranqué con la reescritura del código para hacerlo más legible. Corregí los archivos de general y
+general.h. Empecé a corregir el del main.
