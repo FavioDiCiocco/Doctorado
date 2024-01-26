@@ -9,69 +9,68 @@
 
 
 // Esta función me genera los vectores opinión iniciales del sistema. Esto es una matriz de tamaño N*T
-int GenerarOpi(ps_Red ps_variable, int i_region, double d_kappa){
+void GenerarOpi(puntero_Matrices red, int region, double kappa){
+	
 	// Obtengo las dimensiones de la "matriz" de opiniones de mis agentes.
-	int i_F,i_C;
-	i_F = (int) ps_variable->pd_Opiniones[0];
-	i_C = (int) ps_variable->pd_Opiniones[1];
+	int F,C;
+	F = (int) red->Opi[0];
+	C = (int) red->Opi[1];
 	
 	// Inicializo la "matriz" de opiniones de mis agentes.
-	for(register int i_i=0;i_i<i_F*i_C;i_i++) ps_variable->pd_Opiniones[i_i+2] = (Random()+i_region)*d_kappa;
-	return 0;
+	for(int i=0; i<F*C; i++) red->Opi[i+2] = ( Random()+region ) * kappa;
 }
 
 // Esta función me genera la matriz de Superposicion del sistema. Esto es una matriz de T*T
-int GenerarAng(ps_Red ps_variable, ps_Param ps_parametro){
+void GenerarAng(puntero_Matrices red, puntero_Parametros param){
+	
 	// Obtengo las dimensiones de la matriz de Superposicion.
-	int i_F,i_C;
-	i_F = (int) ps_variable->pd_Angulos[0];
-	i_C = (int) ps_variable->pd_Angulos[1];
+	int F,C;
+	F = (int) red->Ang[0];
+	C = (int) red->Ang[1];
 	
 	// Inicializo la matriz de Superposicion de mi sistema.
-	for(register int i_i=0; i_i<i_F; i_i++) for(register int i_j=0; i_j<i_i; i_j++) ps_variable->pd_Angulos[i_i*i_C+i_j+2] = ps_parametro->d_Cosangulo; //
-	for(register int i_i=0; i_i<i_F; i_i++) ps_variable->pd_Angulos[i_i*i_C+i_i+2] = 1; // Esto me pone 1 en toda la diagonal
-	for(register int i_i=0; i_i<i_F; i_i++) for(register int i_j=i_i+1; i_j<i_C; i_j++) ps_variable->pd_Angulos[i_i*i_C+i_j+2] = ps_variable->pd_Angulos[i_j*i_C+i_i+2]; // Esta sola línea simetriza la matriz
-	return 0;
+	for(int i=0; i<F; i++) for(int j=0; j<i; j++) red->Ang[ i*C+j+2 ] = param->Cosd; //
+	for(int i=0; i<F; i++) red->Ang[ i*C+i+2 ] = 1; // Esto me pone 1 en toda la diagonal
+	for(int i=0; i<F; i++) for(int j=i+1; j<C; j++) red->Ang[ i*C+j+2] = red->Ang[ j*C+i+2 ]; // Esta sola línea simetriza la matriz
 }
 
 /*
 ##################################################################################
 // Esta función me arma una matriz de Adyacencia de una red totalmente conectada
-int GenerarAdy_Conectada(ps_Red ps_variable, ps_Param ps_parametro){
+void GenerarAdy_Conectada(puntero_Matrices red, puntero_Parametros param){
 	
 	// Obtengo las dimensiones de la matriz de Adyacencia.
-	int i_F,i_C;
-	i_F = ps_variable->pi_Adyacencia[0];
-	i_C = ps_variable->pi_Adyacencia[1];
+	int F,C;
+	F = red->Ady[0];
+	C = red->Ady[1];
 	
 	// Escribo la matriz de Adyacencia
-	for(register int i_i=1; i_i<i_F; i_i++) for(register int i_j=0; i_j<i_i; i_j++) ps_variable->pi_Adyacencia[i_i*i_C+i_j+2] = 1;  // Esto me pone 1 debajo de la diagonal
-	for(register int i_i=0; i_i<i_F; i_i++) for(register int i_j=i_i+1; i_j<i_C; i_j++) ps_variable->pi_Adyacencia[i_i*i_C+i_j+2] = ps_variable->pi_Adyacencia[i_j*i_C+i_i+2]; // Esta sola línea simetriza la matriz
-	
-	return 0;
+	for(int i=1; i<F; i++) for(int j=0; j<i; j++) red->Ady[ i*C+j+2 ] = 1;  // Esto me pone 1 debajo de la diagonal
+	for(int i=0; i<F; i++) for(int j=i+1; j<C; j++) red->Ady[ i*C+j+2 ] = red->Ady[ j*C+i+2 ]; // Esta sola línea simetriza la matriz
 }
 ##################################################################################
 */
 
 
 // // Esta función es la que lee un archivo y me arma la matriz de Adyacencia
-int Lectura_Adyacencia(int *pi_vector, FILE *pa_archivo){
+int Lectura_Adyacencia(int *vec, FILE *archivo){
+	
 	// Defino los enteros que voy a usar para leer el archivo y escribir sobre el vector.	
-	int i_indice = 2;
-	int i_salida = 0;
+	int indice = 2;
+	int salida = 0;
 	
 	// Leo la matriz de Adyacencia del archivo y la guardo en el vector de Adyacencia.
-	while(fscanf(pa_archivo,"%d",&i_salida) != EOF && i_indice < *pi_vector * *(pi_vector+1)+2){
-		*(pi_vector+i_indice) = i_salida;
-		i_indice++;
+	while( fscanf(archivo,"%d", &salida ) != EOF && indice < *vec * *(vec+1)+2){
+		*(vec+indice) = salida;
+		indice++;
 	}
 	
 	// Aviso si hubo algún problema.
-	if(fscanf(pa_archivo,"%d",&i_salida) != EOF){
+	if( fscanf(archivo,"%d", &salida) != EOF ){
 		printf("La matriz del archivo es mas grande que tu vector\n");
 		return 1;
 	}
-	if(fscanf(pa_archivo,"%d",&i_salida) == EOF && i_indice < *pi_vector * *(pi_vector+1)+2){
+	if( fscanf(archivo,"%d", &salida) == EOF && indice < *vec * *(vec+1)+2){
 		printf("La matriz del archivo es mas chica que el vector\n");
 		return 1;
 	}
@@ -81,83 +80,84 @@ int Lectura_Adyacencia(int *pi_vector, FILE *pa_archivo){
 
 
 // // Esta función es la que lee un archivo y me arma la lista de vecinos en el puntero de punteros de pi_Adyacencia
-int Lectura_Adyacencia_Ejes(ps_Red ps_variable, FILE *pa_archivo){
+int Lectura_Adyacencia_Ejes(puntero_Matrices red, FILE *archivo){
 	//##########################################################################################
-	// Defino las variables que voy a usar para leer el archivo y escribir sobre el vector.
-	int i_N, i_L; // N es el número de agentes, L es el número de enlaces.
-	while(fscanf(pa_archivo,"%d %d",&i_N,&i_L) != EOF) break;
 	
-	int i_n, i_m; // n y m son los agentes 	
+	// Defino las variables que voy a usar para leer el archivo y escribir sobre el vector.
+	int N, L; // N es el número de agentes, L es el número de enlaces.
+	while( fscanf(archivo,"%d %d",&N,&L ) != EOF) break;
+	
+	int n, m; // n y m son los agentes 	
 	
 	// Construyo un vector que tenga los grados de todos los agentes
-	int* pi_grado;
-	pi_grado = (int*) calloc(i_N+2,sizeof(int));
-	*pi_grado = 1;
-	*(pi_grado+1) = i_N;
+	int* grado;
+	grado = (int*) calloc(N+2, sizeof(int) );
+	*grado = 1;
+	*( grado+1 ) = N;
 	
 	// Construyo un vector auxiliar que tenga los grados de todos los agentes
-	int* pi_grado_auxiliar;
-	pi_grado_auxiliar = (int*) calloc(i_N+2,sizeof(int));
-	*pi_grado_auxiliar = 1;
-	*(pi_grado_auxiliar+1) = i_N;
+	int* grado_aux;
+	grado_aux = (int*) calloc(N+2, sizeof(int));
+	*grado_aux = 1;
+	*( grado_aux+1 ) = N;
 	
 	//#########################################################################################
 	
 	// Construyo la lista de vecinos
 	
 	// Leo tantas lineas como enlaces haya en la red
-	for(register int i_i=0; i_i<i_L; i_i++){ 
-		while(fscanf(pa_archivo,"%d %d",&i_n,&i_m) != EOF)  break;
-        *(pi_grado+i_n+2) += 1;
-		*(pi_grado+i_m+2) += 1;
+	for(int i=0; i<L; i++){ 
+		while( fscanf(archivo,"%d %d", &n, &m ) != EOF )  break;
+        *( grado+n+2 ) += 1;
+		*( grado+m+2 ) += 1;
     }
 	
 	// En cada componente de Adyacencia se declaran tantas componentes como enlaces tenga, no más
-	for(register int i_i=0; i_i<i_N; i_i++){
-		ps_variable->pi_Adyacencia[i_i+2] = (int*) calloc(*(pi_grado+i_i+2)+2,sizeof(int));
-		ps_variable->pi_Adyacencia[i_i+2][0] = 1;
-		ps_variable->pi_Adyacencia[i_i+2][1] = *(pi_grado+i_i+2);
+	for(int i=0; i<N; i++){
+		red->Ady[i+2] = (int*) calloc( *(grado+i+2)+2, sizeof(int));
+		red->Ady[i+2][0] = 1;
+		red->Ady[i+2][1] = *( grado+i+2 );
 	}
 	
-	if(fscanf(pa_archivo,"%d %d",&i_n,&i_m) == EOF){
-		rewind(pa_archivo);
-		while(fscanf(pa_archivo, "%d %d", &i_N, &i_L) !=EOF) break;
+	if( fscanf(archivo,"%d %d", &n, &m) == EOF ){
+		rewind(archivo);
+		while( fscanf(archivo, "%d %d", &N, &L) !=EOF ) break;
 	}
 	else{
 		printf("Leí mal la matriz");
 		return 1;
 	}
 
-    for(register int i_i=0; i_i<i_L; i_i++){
-		while(fscanf(pa_archivo,"%d %d",&i_n,&i_m) != EOF) break;
-        ps_variable->pi_Adyacencia[i_n+2][*(pi_grado_auxiliar+i_n+2)+2] = i_m;
-		ps_variable->pi_Adyacencia[i_m+2][*(pi_grado_auxiliar+i_m+2)+2] = i_n;
-        *(pi_grado_auxiliar+i_n+2) += 1;
-		*(pi_grado_auxiliar+i_m+2) += 1;
+    for(int i=0; i<L; i++){
+		while( fscanf(archivo,"%d %d", &n, &m) != EOF ) break;
+        red->Ady[n+2][ *(grado_aux+n+2) +2 ] = m;
+		red->Ady[m+2][ *(grado_aux+m+2) +2 ] = n;
+        *(grado_aux+n+2) += 1;
+		*(grado_aux+m+2) += 1;
     }
 
-    free(pi_grado_auxiliar);
+    free(grado_aux);
 	
 	//#########################################################################################
 	
 	// Construyo la lista de vecinos complementaria
 	
-	int i_l,i_vecino;
+	int l,vecino;
 
-    for(register int i_i=0; i_i<i_N; i_i++){
-		ps_variable->pi_Adyacencia_vecinos[i_i+2] = (int*) calloc(*(pi_grado+i_i+2)+2,sizeof(int));
-		ps_variable->pi_Adyacencia_vecinos[i_i+2][0] = 1;
-		ps_variable->pi_Adyacencia_vecinos[i_i+2][1] = *(pi_grado+i_i+2);
+    for(int i=0; i<N; i++){
+		red->Ady_vecinos[i+2] = (int*) calloc( *(grado+i+2)+2, sizeof(int));
+		red->Ady_vecinos[i+2][0] = 1;
+		red->Ady_vecinos[i+2][1] = *( grado+i+2 );
 
-        for(register int i_j=0; i_j<*(pi_grado+i_i+2); i_j++){
-            i_vecino = ps_variable->pi_Adyacencia[i_i+2][i_j+2];
-            for(i_l=0; i_l<*(pi_grado+i_vecino+2); i_l++)
-                if(ps_variable->pi_Adyacencia[i_vecino+2][i_l+2] == i_i) break;
-            ps_variable->pi_Adyacencia_vecinos[i_i+2][i_j+2] = i_l;
+        for(int j=0; j<*( grado+i+2 ); j++){
+            vecino = red->Ady[i+2][j+2];
+            for(l=0; l< *(grado+vecino+2); l++)
+                if( red->Ady[vecino+2][l+2] == i ) break;
+            red->Ady_vecinos[i+2][j+2] = l;
         }
     }
 	
-	free(pi_grado);
+	free(grado);
 	
 	return 0;
 }
@@ -194,7 +194,7 @@ int Actividad(double* pd_vec, double d_epsilon, double d_potencia){
 // Esta función va a recibir a la matriz de adyacencia y la va a armar según la actividad de los agentes
 // Creo que voy a cambiar esto en la función haciendo que directamente reciba los punteros de struct de Red
 // y de Parametros
-int Adyacencia_Actividad(ps_Red ps_red, ps_Param ps_datos){
+int Adyacencia_Actividad(ps_Red ps_red, puntero_Parametros ps_datos){
 	// Primero armo las variables que voy a necesitar, como el tamaño de mis vectores
 	int i_F;
 	i_F = ps_red->pi_Ady[0];
@@ -208,7 +208,7 @@ int Adyacencia_Actividad(ps_Red ps_red, ps_Param ps_datos){
 
 
 // Esta función recibe la matriz de Adyacencia y el agente, y lo conecta con m agentes.
-int Conectar_agentes(ps_Red ps_red, ps_Param ps_datos){
+int Conectar_agentes(ps_Red ps_red, puntero_Parametros ps_datos){
 	// Defino las variables del tamaño de la matriz y otras que voy a usar
 	
 	// Obtengo los valores de filas y columnas de mi matriz de Adyacencia

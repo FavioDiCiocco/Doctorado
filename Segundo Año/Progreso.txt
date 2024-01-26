@@ -3171,3 +3171,18 @@ de Hugo no me pareció imposible de entender porque no tuviera eso.
 
 Arranqué con la reescritura del código para hacerlo más legible. Corregí los archivos de general y
 general.h. Empecé a corregir el del main.
+
+------------------------------------------------------------------------------------------
+
+26/01/2024
+
+Corregí el main hasta la mitad. Antes de seguir, me conviene empezar a corregir los códigos de Inicializar.
+Ya corregí las partes de Inicializar. La verdad, el código se ve mucho más limpio y lindo ahora, me
+gusta mucho más.
+
+Ya hice los cambios de la nomenclatura en el código de Interés. Se ve más lindo y ya está aplicado
+todo el tema del puntero de punteros que es la lista de vecinos. Habiendo aplicado la lista de vecinos,
+lo que sigue es agregar el puntero que tiene los valores de función logística de todos los agentes.
+
+Logré hacer que el programa corra, pero ahora tengo que revisar por qué es que los valores de interés toman
+valores negativos, no tiene sentido que pase eso.

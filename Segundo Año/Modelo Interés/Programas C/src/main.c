@@ -37,13 +37,13 @@ int main(int argc, char *argv[]){
 	param->N = strtol(argv[1],NULL,10); // Cantidad de agentes en el modelo
 	param->kappa = strtof(argv[2],NULL); // Esta amplitud regula la relación entre el término lineal y el término logístico
 	param->epsilon = strtof(argv[3],NULL); // Este es el umbral que determina si el interés del vecino puede generarme más interés.
-	param->Cosangulo = strtof(argv[4],NULL);// Este es el coseno de Delta que define la relación entre tópicos.
+	param->Cosd = strtof(argv[4],NULL);// Este es el coseno de Delta que define la relación entre tópicos.
 	int iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
 	
 	// Los siguientes son los parámetros que están dados en los structs
 	param->T = 2;  // Cantidad de temas sobre los que opinar
 	param->Iteraciones_extras = 100; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
-	param->pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
+	param->pasosprevios = 1; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
 	param->alfa = 4; // Ex-Controversialidad de los tópicos
 	param->dt = 0.01; // Paso temporal de iteración del sistema
 	param->NormDif = sqrt(param->N*param->T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
@@ -67,41 +67,46 @@ int main(int argc, char *argv[]){
 	
 	// Defino mis matrices y las inicializo
 	
-	// Matrices de mi sistema. Estas son la de Adyacencia, la de Superposición de Tópicos y la de vectores de opinión de los agentes.
+	// Matrices de mi sistema. Estas son la de Adyacencia, Adyacencia_vecinos, la de Superposición de Tópicos y la de vectores de opinión de los agentes.
 	red->Ady = (int**) malloc( ( 2+param->N ) * sizeof(int*) ); // Lista de vecinos de la red. Determina quienes están conectados con quienes
 	red->Ady_vecinos = (int**) malloc( ( 2+param->N ) * sizeof(int*) ); // Complemento de lista de vecinos de la red. Determina quienes están conectados con quienes
 	
-	red->Ang = (double*) calloc( ( 2+param->T * param->T ), sizeof(double) ); // Matriz simétrica de superposición entre tópicos.
-	red->Opi = (double*) calloc( ( 2+param->T * param->N ), sizeof(double) ); // Lista de vectores de opinión de la red, Tengo T elementos para cada agente.
+	red->Ang = (double*) calloc( 2+param->T * param->T , sizeof(double) ); // Matriz simétrica de superposición entre tópicos.
+	red->Opi = (double*) calloc( 2+param->T * param->N , sizeof(double) ); // Lista de vectores de opinión de la red, Tengo T elementos para cada agente.
 	
-	// También hay un vector para guardar la diferencia entre el paso previo y el actual, un vector con los valores de saturación,
-	red->Dif = (double*) calloc( ( 2+param->T * param->N ), sizeof(double) ); // Vector que guarda la diferencia entre dos pasos del sistema
+	// También hay un vector para guardar la diferencia entre el paso previo y el actual y un vector con los valores de la exponencial aplicada a los agentes,
+	red->Dif = (double*) calloc( 2+param->T * param->N , sizeof(double) ); // Vector que guarda la diferencia entre dos pasos del sistema
+	red->Exp = (double*) calloc( 2+param->T * param->N , sizeof(double) ); // Vector que guarda los cálculos de las exponenciales de cada agente.
 	
 	
 	// Inicializo mis cinco "matrices".
 	// Lista de vecinos. Tiene N filas y cada fila tiene tamaño variable
-	red->pi_Adyacencia[0] = (int*) malloc(sizeof(int));
-	red->pi_Adyacencia[0][0] = param->i_N; // Pongo el número de filas en la primer coordenada
-	red->pi_Adyacencia[1] = (int*) malloc(sizeof(int));
-	red->pi_Adyacencia[1][0] = 1; // Pongo el número de columnas en la segunda coordenada
+	red->Ady[0] = (int*) malloc( sizeof(int) );
+	red->Ady[0][0] = param->N; // Pongo el número de filas en la primer coordenada
+	red->Ady[1] = (int*) malloc( sizeof(int) );
+	red->Ady[1][0] = 1; // Pongo el número de columnas en la segunda coordenada
 	
 	// Complemento de lista de vecinos. Tiene N filas y cada fila tiene tamaño variable
-	red->pi_Adyacencia_vecinos[0] = (int*) malloc(sizeof(int));
-	red->pi_Adyacencia_vecinos[0][0] = param->i_N; // Pongo el número de filas en la primer coordenada
-	red->pi_Adyacencia_vecinos[1] = (int*) malloc(sizeof(int));
-	red->pi_Adyacencia_vecinos[1][0] = 1; // Pongo el número de columnas en la segunda coordenada
+	red->Ady_vecinos[0] = (int*) malloc(sizeof(int));
+	red->Ady_vecinos[0][0] = param->N; // Pongo el número de filas en la primer coordenada
+	red->Ady_vecinos[1] = (int*) malloc(sizeof(int));
+	red->Ady_vecinos[1][0] = 1; // Pongo el número de columnas en la segunda coordenada
 	
 	// Matriz de Superposición de Tópicos. Es de tamaño T*T
-	red->pd_Angulos[0] = param->i_T; // Pongo el número de filas en la primer coordenada
-	red->pd_Angulos[1] = param->i_T; // Pongo el número de columnas en la segunda coordenada
+	red->Ang[0] = param->T; // Pongo el número de filas en la primer coordenada
+	red->Ang[1] = param->T; // Pongo el número de columnas en la segunda coordenada
 	
 	// Matriz de vectores de opinión. Es de tamaño N*T
-	red->pd_Opiniones[0] = param->i_N; // Pongo el número de filas en la primer coordenada
-	red->pd_Opiniones[1] = param->i_T; // Pongo el número de columnas en la segunda coordenada
+	red->Opi[0] = param->N; // Pongo el número de filas en la primer coordenada
+	red->Opi[1] = param->T; // Pongo el número de columnas en la segunda coordenada
 	
 	// Matriz de diferencia entre los vectores Opi y PreOpi. Es de tamaño N*T
-	red->pd_Diferencia[0] = param->i_N; // Pongo el número de filas en la primer coordenada
-	red->pd_Diferencia[1] = param->i_T; // Pongo el número de columnas en la segunda coordenada
+	red->Dif[0] = param->N; // Pongo el número de filas en la primer coordenada
+	red->Dif[1] = param->T; // Pongo el número de columnas en la segunda coordenada
+	
+	// Matriz de cálculo de exponencial para cada agetne. Es de tamaño N*T
+	red->Exp[0] = param->N; // Pongo el número de filas en la primer coordenada
+	red->Exp[1] = param->T; // Pongo el número de columnas en la segunda coordenada
 	
 	//################################################################################################################################
 	
@@ -113,61 +118,63 @@ int main(int argc, char *argv[]){
 	// En el cuarto me anoto la dirección del archivo de texto con la matriz de adyacencia.
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
-	// char s_Opiniones[355];
-	// sprintf(s_Opiniones,"../Programas Python/CI_variables/Datos/Opiniones_N=%d_Cosd=%.2f_kappa=%.2f_epsilon=%.2f_Iter=%d.file"
-		// ,param->i_N,param->d_Cosangulo,param->d_kappa,param->d_epsilon,i_iteracion);
-	// FILE *pa_Opiniones=fopen(s_Opiniones,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
+	char TextOpi[355];
+	sprintf(TextOpi,"../Programas Python/Interes_actualizado/Datos/gm=6/Opiniones_N=%d_Cosd=%.2f_kappa=%.2f_epsilon=%.2f_Iter=%d.file"
+		,param->N, param->Cosd, param->kappa, param->epsilon, iteracion);
+	FILE *FileOpi = fopen(TextOpi,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
-	// char s_Testigos[355];
-	// sprintf(s_Testigos,"../Programas Python/CI_variables/Datos/Testigos_N=%d_Cosd=%.2f_kappa=%.2f_epsilon=%.2f_Iter=%d.file"
-		// ,param->i_N,param->d_Cosangulo,param->d_kappa,param->d_epsilon,i_iteracion);
-	// FILE *pa_Testigos=fopen(s_Testigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
+	char TextTestigos[355];
+	sprintf(TextTestigos,"../Programas Python/Interes_actualizado/Datos/gm=6/Testigos_N=%d_Cosd=%.2f_kappa=%.2f_epsilon=%.2f_Iter=%d.file"
+		,param->N, param->Cosd, param->kappa, param->epsilon, iteracion);
+	FILE *FileTestigos = fopen(TextTestigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
-	char s_matriz_adyacencia[355];
-	sprintf(s_matriz_adyacencia,"MARE/Erdos-Renyi/gm=8/ErdosRenyi_N=%d_ID=%d.file"
-		,param->i_N,(int) i_iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
-	FILE *pa_matriz_adyacencia=fopen(s_matriz_adyacencia,"r");
+	char TextMatriz[355];
+	sprintf(TextMatriz,"MARE/Erdos-Renyi/gm=6/ErdosRenyi_N=%d_ID=%d.file"
+		,param->N, (int) iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
+	FILE *FileMatriz = fopen(TextMatriz,"r");
 	
 	// Puntero a la función que define mi ecuación diferencial
-	// double (*pf_Din_Sat)(red var, ps_Param par) = &Din_saturacion;
-	// double (*pf_Dinamica_Interaccion)(red ps_variables, ps_Param ps_parametros) = &Dinamica_interes;
+	double (*func_dinamica)(puntero_Matrices red, puntero_Parametros param) = &Dinamica_interes;
+	double (*func_activacion)(puntero_Matrices red, puntero_Parametros param) = &Dinamica_sumatoria;
 	
 	//################################################################################################################################
 	
 	// Genero los datos de las matrices de mi sistema
 	
-	GenerarOpi(red, 0, param->d_kappa); // Esto me inicializa mi matriz de opiniones 
+	GenerarOpi(red, 0, param->kappa); // Esto me inicializa mi matriz de opiniones 
 	GenerarAng(red, param); // Esto me inicializa mi matriz de superposición, definiendo el solapamiento entre tópicos.
 	
-	Lectura_Adyacencia_Ejes(red, pa_matriz_adyacencia); // Leo el archivo de la red estática y lo traslado a la matriz de adyacencia
-	fclose(pa_matriz_adyacencia); // Aprovecho y cierro el puntero al archivo de la matriz de adyacencia
+	Lectura_Adyacencia_Ejes(red, FileMatriz); // Leo el archivo de la red estática y lo traslado a la matriz de adyacencia
+	fclose(FileMatriz); // Aprovecho y cierro el puntero al archivo de la matriz de adyacencia
 	
 	
 	//################################################################################################################################
 
-	/*
+	
 	// Acá voy a hacer las simulaciones de pasos previos del sistema
 	
 	// Guardo la distribución inicial de las opiniones de mis agentes y preparo para guardar la Varprom.
-	fprintf(pa_Opiniones,"Opiniones Iniciales\n");
-	Escribir_d(red->pd_Opiniones,pa_Opiniones);
+	fprintf(FileOpi,"Opiniones Iniciales\n");
+	Escribir_d(red->Opi,FileOpi);
 	
-	// fprintf(pa_Testigos,"Opiniones Testigos\n");
+	// fprintf(FileTestigos,"Opiniones Testigos\n");
+	
+	for(int i=0; i<3; i++) Visualizar_i(red->Ady[i+2]);
 	
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar
-	for(register int i_i=0; i_i<param->i_pasosprevios; i_i++){
+	for(int i=0; i<param->pasosprevios; i++){
 		
 		// Evolución
-		RK4(red->pd_Opiniones, pf_Dinamica_Interaccion, red, param);
+		RK4(red->Opi, func_dinamica, func_activacion, red, param);
 		
 		// Escritura
-		// for(register int i_j=0; i_j<param->i_testigos; i_j++) for(register int i_k=0; i_k<param->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",red->pd_Opiniones[i_j*param->i_T+i_k+2]);
-		// fprintf(pa_Testigos,"\n");
+		for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[j*param->T+k+2]);
+		fprintf(FileTestigos,"\n");
 		
 		// Registro el estado actual en el array de OpinionesPrevias.
-		for(register int i_j=0; i_j<param->i_N*param->i_T; i_j++) *(ap_OpinionesPrevias[i_i]+i_j+2) = red->pd_Opiniones[i_j+2];
+		for(int j=0; j<param->N*param->T; j++) *(OpiPrevias[i]+j+2) = red->Opi[j+2];
 	}
 	
 	//################################################################################################################################
@@ -175,53 +182,58 @@ int main(int argc, char *argv[]){
 	// Realizo la simulación del modelo hasta que este alcance un estado estable
 	// También preparo para guardar los valores de Varprom en mi archivo
 	
-	fprintf(pa_Opiniones,"Variación promedio \n");
+	fprintf(FileOpi,"Variación promedio \n");
 	
-	int i_IndiceOpiPasado = 0; 
+	int iOpiPasado = 0; 
 	
-	while(i_contador < param->i_Iteraciones_extras){
+	while(contador < param->Iteraciones_extras){
 		
-		i_contador = 0; // Inicializo el contador
+		contador = 0; // Inicializo el contador
 		
 		// Evoluciono el sistema hasta que se cumpla el criterio de corte
 		do{
 			// Evolución
-			RK4(red->pd_Opiniones, pf_Dinamica_Interaccion, red, param); // Itero los intereses
+			RK4(red->Opi, func_dinamica, func_activacion, red, param); // Itero los intereses
 			
 			// Cálculos derivados
-			Delta_Vec_d(red->pd_Opiniones,ap_OpinionesPrevias[i_IndiceOpiPasado%param->i_pasosprevios],red->pd_Diferencia); // Veo la diferencia entre $i_pasosprevios pasos anteriores y el actual en las opiniones
-			for(register int i_p=0; i_p<param->i_N*param->i_T; i_p++) *(ap_OpinionesPrevias[i_IndiceOpiPasado%param->i_pasosprevios]+i_p+2) = red->pd_Opiniones[i_p+2]; // Me guardo el estado actual en la posición correspondiente de ap_OpinionesPrevias
-			red->d_Variacion_promedio = Norma_d(red->pd_Diferencia)/param->d_NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
+			Delta_Vec_d(red->Opi, OpiPrevias[iOpiPasado % param->pasosprevios], red->Dif); // Veo la diferencia entre $i_pasosprevios pasos anteriores y el actual en las opiniones
+			for(int p=0; p<param->N*param->T; p++) *(OpiPrevias[iOpiPasado % param->pasosprevios] +p+2) = red->Opi[p+2]; // Me guardo el estado actual en la posición correspondiente de ap_OpinionesPrevias
+			red->Variacion_promedio = Norma_d(red->Dif) / param->NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
 			
 			// Escritura
-			fprintf(pa_Opiniones, "%lf\t",red->d_Variacion_promedio); // Guardo el valor de variación promedio
-			// for(register int i_j=0; i_j<param->i_testigos; i_j++) for(register int i_k=0; i_k<param->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",red->pd_Opiniones[i_j*param->i_T+i_k+2]); // Me guardo los valores de opinión de mis agentes testigo
-			// fprintf(pa_Testigos,"\n");
+			fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio
+			for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos,"%lf\t", red->Opi[ j*param->T+k+2 ] ); // Me guardo los valores de opinión de mis agentes testigo
+			fprintf(FileTestigos,"\n");
+			
+			if(iOpiPasado % 100 == 0) printf("El paso es %d y la VarProm es %.3f\n", iOpiPasado, red->Variacion_promedio);
 			
 			// Actualización de índices
-			i_IndiceOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
+			iOpiPasado++; // Avanzo el valor de iOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
+			
 		}
-		while( red->d_Variacion_promedio > param->d_CritCorte);
+		while( red->Variacion_promedio > param->CritCorte);
 		
 		// Ahora evoluciono el sistema una cantidad i_Itextra de veces. Le pongo como condición que si el sistema deja de cumplir la condición de corte, deje de evolucionar
 		
-		while(i_contador < param->i_Iteraciones_extras && red->d_Variacion_promedio <= param->d_CritCorte ){
+		while(contador < param->Iteraciones_extras && red->Variacion_promedio <= param->CritCorte ){
 			// Evolución
-			RK4(red->pd_Opiniones, pf_Dinamica_Interaccion, red, param); // Itero los intereses
+			RK4(red->Opi, func_dinamica, func_activacion, red, param); // Itero los intereses
 			
 			// Cálculos derivados
-			Delta_Vec_d(red->pd_Opiniones,ap_OpinionesPrevias[i_IndiceOpiPasado%param->i_pasosprevios],red->pd_Diferencia); // Veo la diferencia entre $i_pasosprevios pasos anteriores y el actual en las opiniones
-			for(register int i_p=0; i_p<param->i_N*param->i_T; i_p++) *(ap_OpinionesPrevias[i_IndiceOpiPasado%param->i_pasosprevios]+i_p+2) = red->pd_Opiniones[i_p+2]; // Me guardo el estado actual en la posición correspondiente de ap_OpinionesPrevias
-			red->d_Variacion_promedio = Norma_d(red->pd_Diferencia)/param->d_NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
+			Delta_Vec_d(red->Opi, OpiPrevias[ iOpiPasado % param->pasosprevios], red->Dif); // Veo la diferencia entre $i_pasosprevios pasos anteriores y el actual en las opiniones
+			for(int p=0; p<param->N*param->T; p++) *(OpiPrevias[ iOpiPasado % param->pasosprevios ] +p+2) = red->Opi[p+2]; // Me guardo el estado actual en la posición correspondiente de ap_OpinionesPrevias
+			red->Variacion_promedio = Norma_d(red->Dif) / param->NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
 			
 			// Escritura
-			fprintf(pa_Opiniones, "%lf\t",red->d_Variacion_promedio); // Guardo el valor de variación promedio 
-			// for(register int i_j=0; i_j<param->i_testigos; i_j++) for(register int i_k=0; i_k<param->i_T; i_k++) fprintf(pa_Testigos,"%lf\t",red->pd_Opiniones[i_j*param->i_T+i_k+2]); // Me guardo los valores de opinión de mis agentes testigo
-			// fprintf(pa_Testigos,"\n");
+			fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio 
+			for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] ); // Me guardo los valores de opinión de mis agentes testigo
+			fprintf(FileTestigos,"\n");
+			
+			if(iOpiPasado % 100 == 0) printf("El paso es %d y la VarProm es %.3f\n", iOpiPasado, red->Variacion_promedio);
 			
 			// Actualización de índices
-			i_IndiceOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
-			i_contador +=1; // Avanzo el contador para que el sistema haga una cantidad $i_Itextra de iteraciones extras
+			iOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
+			contador +=1; // Avanzo el contador para que el sistema haga una cantidad $i_Itextra de iteraciones extras
 		}
 		
 		// Si el sistema evolucionó menos veces que la cantidad arbitraria, es porque rompió la condiciones de corte.
@@ -234,34 +246,35 @@ int main(int argc, char *argv[]){
 	// Guardo las últimas cosas, libero las memorias malloqueadas y luego termino
 	
 	// Guardo las opiniones finales, la matriz de adyacencia y la semilla en el primer archivo.
-	fprintf(pa_Opiniones,"\n");
-	fprintf(pa_Opiniones,"Opiniones finales\n");
-	Escribir_d(red->pd_Opiniones,pa_Opiniones);
-	fprintf(pa_Opiniones,"Matriz de Adyacencia\n"); // Guardo esto para poder comprobar que la red sea conexa.
-	Escribir_i(red->pi_Adyacencia,pa_Opiniones);
-	fprintf(pa_Opiniones,"Semilla\n");
-	fprintf(pa_Opiniones,"%ld\n",semilla);
-	*/
+	fprintf(FileOpi, "\n");
+	fprintf(FileOpi, "Opiniones finales\n");
+	Escribir_d(red->Opi, FileOpi);
+	fprintf(FileOpi, "Semilla\n");
+	fprintf(FileOpi, "%ld\n", semilla);
+	fprintf(FileOpi, "Matriz de Adyacencia\n"); // Guardo esto para poder comprobar que la red sea conexa.
+	for(int i=0; i<param->N; i++) Escribir_i(red->Ady[i+2], FileOpi);
+	
 	
 	// Libero los espacios dedicados a mis vectores y cierro mis archivos
-	for(register int i_i=0; i_i<param->i_pasosprevios; i_i++) free(ap_OpinionesPrevias[i_i]);
-	free(red->pd_Angulos);
-	for(int i_i=0; i_i<param->i_N+2; i_i++) free(red->pi_Adyacencia[i_i]);
-	free(red->pi_Adyacencia);
-	for(register int i_i=0; i_i<param->i_N+2; i_i++) free(red->pi_Adyacencia_vecinos[i_i]);
-	free(red->pi_Adyacencia_vecinos);
-	free(red->pd_Opiniones);
-	free(red->pd_Diferencia);
-	free(red);
-	free(param);
-	// fclose(pa_Opiniones);
-	// fclose(pa_Testigos);
+	for(int i=0; i<param->pasosprevios; i++) free( OpiPrevias[i] );
+	free( red->Ang );
+	for(int i=0; i<param->N+2; i++) free( red->Ady[i] );
+	free( red->Ady );
+	for(int i=0; i<param->N+2; i++) free( red->Ady_vecinos[i] );
+	free( red->Ady_vecinos );
+	free( red->Opi );
+	free( red->Dif );
+	free( red->Exp );
+	free( red );
+	free( param );
+	fclose( FileOpi );
+	fclose( FileTestigos );
 	
 	// Finalmente imprimo el tiempo que tarde en ejecutar todo el programa
-	time(&tt_fin);
-	f_tardanza = tt_fin-tt_prin;
+	time(&tfin);
+	Tiempo = tfin-tprin;
 	// sleep(1);
-	printf("Tarde %.1f segundos \n",f_tardanza);
+	printf("Tarde %.1f segundos \n", Tiempo);
 	
 	return 0;
  }

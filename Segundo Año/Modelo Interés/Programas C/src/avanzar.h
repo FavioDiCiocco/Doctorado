@@ -4,8 +4,7 @@
 #define Avanzar_H
 #include <math.h>
 
-double Dinamica_sumatoria(ps_Red ps_variable, ps_Param ps_parametro);
-double Dinamica_interes(ps_Red ps_variable, ps_Param ps_parametro);
-// double Din_saturacion(ps_Red ps_variable, ps_Param ps_parametro);
+double Dinamica_sumatoria(puntero_Matrices red, puntero_Parametros param);
+double Dinamica_interes(puntero_Matrices red, puntero_Parametros param);
 
 #endif

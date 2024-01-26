@@ -98,7 +98,7 @@ void Visualizar_i(int *vec){
 // los punteros a struct con la info relevante para pasar a la ecuación dinámica y luego con eso evoluciona mi sistema.
 // La idea es evolucionar TODO el array en una sola llamada de RK4, a diferencia de implementaciones anteriores.
 
-void RK4(double *sistema, double (*func)(puntero_Matrices red, puntero_Parametros param), puntero_Matrices red, puntero_Parametros param){
+void RK4(double *sistema, double (*func_din)(puntero_Matrices red, puntero_Parametros param), double (*func_act)(puntero_Matrices red, puntero_Parametros param), puntero_Matrices red, puntero_Parametros param){
 	
 	// Defino las variables y vectores que voy a necesitar
 	int F = (int) *sistema; // Este es el número de filas del vector principal
@@ -132,7 +132,10 @@ void RK4(double *sistema, double (*func)(puntero_Matrices red, puntero_Parametro
 	for(int j=0; j<4; j++){
 		
 		// Avanzo el sistema para el cálculo de la siguiente pendiente.
-		for(int i=0; i<F*C; i++) *( sistema+i+2 ) = *( inicial+i+2 )+*( pendientes[j] +red->agente*C +param->topico +2 )*DT[j];
+		for(int i=0; i<F*C; i++) *( sistema+i+2 ) = *( inicial+i+2 )+*( pendientes[j] +red->agente*C +red->topico +2 )*DT[j];
+		for(red->agente_vecino=0; red->agente_vecino < F; red->agente_vecino++){
+			for(red->topico=0; red->topico < C; red->topico++) red->Exp[red->agente_vecino*C +red->topico +2] = (*func_act) (red, param);
+		}
 		
 		// Avanzo en todos los agentes
 		for(red->agente=0; red->agente < F; red->agente++){
@@ -141,7 +144,7 @@ void RK4(double *sistema, double (*func)(puntero_Matrices red, puntero_Parametro
 			for(red->topico=0; red->topico < C; red->topico++){
 				
 				// Calculo el elemento de la pendiente k(i_j+1)
-				*(pendientes[j+1] +red->agente*C +red->topico+2) = (*func) (red, param);
+				*(pendientes[j+1] +red->agente*C +red->topico+2) = (*func_din) (red, param);
 			}
 		}
 	}
@@ -279,8 +282,9 @@ double Max(double a, double b){
 	max = (a > b)? a : b; // Uso un operador ternario. La idea es que se evalúa la función antes del
 	// signo de pregunta. Si es verdadera, se devuelve lo que está a la izquierda de los dos puntos.
 	// Sino se devuelve lo que está a la derecha
-	return d_max;
+	return max;
 }
+
 
 double Min(double a, double b){
 	// Defino la variable a usar

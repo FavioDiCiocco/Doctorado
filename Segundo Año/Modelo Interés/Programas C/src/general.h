@@ -11,12 +11,13 @@
 // Acá vienen los structs.
 // El struct Matrices_Redes tiene los datos que definen mi red, y la info de la red
 typedef struct Matrices_Redes{
+	int **Ady; // Lista de vecinos que define mis conexiones. Tiene tamaño que no es rectangular. N filas, y cada fila tiene tamaño variable.
+	int **Ady_vecinos; // Lista de la posición de los vecinos de cada agente. Si A[i][j] = l, entonces eso signfica que A[j][l] = i
 	double *Dif; // Vector que guarda las diferencias entre PreOpi y Opi.
 	double *Opi; // Vector de opinión de cada individuo
 	double *Ang; // Matriz de superposición entre tópicos. Tiene tamaño T*T
+	double *Exp; // Matriz con los valores de las exponenciales calculadas sobre los agentes. Tiene tamaño N*T
 	double Variacion_promedio; // Esto es la Variación promedio del sistema. Es cuanto cambia en promedio cada opinión
-	int **Ady; // Lista de vecinos que define mis conexiones. Tiene tamaño que no es rectangular. N filas, y cada fila tiene tamaño variable.
-	int **Ady_vecinos; // Lista de la posición de los vecinos de cada agente. Si A[i][j] = l, entonces eso signfica que A[j][l] = i
 	int agente; // Entero que representa el agente que estoy mirando. Es un valor que va entre 0 y N-1
 	int agente_vecino; // Este es el segundo agente con el cual se pone en contacto el primero.
 	int topico; // Entero que representa el tópico que estoy mirando. Es un valor que va entre 0 y T-1
@@ -30,7 +31,7 @@ typedef struct Parametros{
 	double CritCorte; // Este número es el piso que tiene que cruzar el Varprom para que se corte la iteración
 	double alfa; // Controversialidad de los temas
 	double dt; // Paso temporal de iteración del sistema
-	double Cosangulo; // Este es el coseno del ángulo entre los tópicos
+	double Cosd; // Este es el coseno del ángulo entre los tópicos
 	double epsilon; // Umbral que determina si el interés del vecino puede generarme más interés.
 	double lambda; // Constante asociada a la evolución del término de saturación
 	double kappa; // Esta amplitud regula la relación entre el término lineal y el término logístico
@@ -42,14 +43,14 @@ typedef struct Parametros{
 	int testigos; // Esta es la cantidad de agentes de cada distancia que voy registrar como máximo
 }struct_Parametros;
 
-typedef Parametros * puntero_Parametros;
+typedef struct_Parametros * puntero_Parametros;
 
 //################################################################################################
 
 double Random();
 double Gaussiana(float mu, float sigma);
 double Norma_d(double *x);
-double RK4(double *sistema, double (*func)(puntero_Matrices red,puntero_Parametros param), puntero_Matrices red, puntero_Parametros param);
+void RK4(double *sistema, double (*func_din)(puntero_Matrices red,puntero_Parametros param), double (*func_act)(puntero_Matrices red,puntero_Parametros param), puntero_Matrices red, puntero_Parametros param);
 double Max(double a, double b);
 double Min(double a, double b);
 double Interpolacion(double y1, double y2, double x1,double x);
