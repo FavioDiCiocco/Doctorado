@@ -35,9 +35,9 @@ void GenerarAng(puntero_Matrices red, puntero_Parametros param){
 }
 
 /*
-##################################################################################
+// ##################################################################################
 // Esta función me arma una matriz de Adyacencia de una red totalmente conectada
-void GenerarAdy_Conectada(puntero_Matrices red, puntero_Parametros param){
+void GenerarAdy_Conectada(puntero_Matrices red){
 	
 	// Obtengo las dimensiones de la matriz de Adyacencia.
 	int F,C;
@@ -48,11 +48,11 @@ void GenerarAdy_Conectada(puntero_Matrices red, puntero_Parametros param){
 	for(int i=1; i<F; i++) for(int j=0; j<i; j++) red->Ady[ i*C+j+2 ] = 1;  // Esto me pone 1 debajo de la diagonal
 	for(int i=0; i<F; i++) for(int j=i+1; j<C; j++) red->Ady[ i*C+j+2 ] = red->Ady[ j*C+i+2 ]; // Esta sola línea simetriza la matriz
 }
-##################################################################################
+// ##################################################################################
 */
 
 
-// // Esta función es la que lee un archivo y me arma la matriz de Adyacencia
+// Esta función es la que lee un archivo y me arma la matriz de Adyacencia
 int Lectura_Adyacencia(int *vec, FILE *archivo){
 	
 	// Defino los enteros que voy a usar para leer el archivo y escribir sobre el vector.	
@@ -79,7 +79,7 @@ int Lectura_Adyacencia(int *vec, FILE *archivo){
 }
 
 
-// // Esta función es la que lee un archivo y me arma la lista de vecinos en el puntero de punteros de pi_Adyacencia
+// Esta función es la que lee un archivo y me arma la lista de vecinos en el puntero de punteros de pi_Adyacencia
 int Lectura_Adyacencia_Ejes(puntero_Matrices red, FILE *archivo){
 	//##########################################################################################
 	

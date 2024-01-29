@@ -132,7 +132,7 @@ void RK4(double *sistema, double (*func_din)(puntero_Matrices red, puntero_Param
 	for(int j=0; j<4; j++){
 		
 		// Avanzo el sistema para el cálculo de la siguiente pendiente.
-		for(int i=0; i<F*C; i++) *( sistema+i+2 ) = *( inicial+i+2 )+*( pendientes[j] +red->agente*C +red->topico +2 )*DT[j];
+		for(int i=0; i<F*C; i++) *( sistema+i+2 ) = *( inicial+i+2 )+ *( pendientes[j] +i+2 )*DT[j];
 		for(red->agente_vecino=0; red->agente_vecino < F; red->agente_vecino++){
 			for(red->topico=0; red->topico < C; red->topico++) red->Exp[red->agente_vecino*C +red->topico +2] = (*func_act) (red, param);
 		}
@@ -147,6 +147,7 @@ void RK4(double *sistema, double (*func_din)(puntero_Matrices red, puntero_Param
 				*(pendientes[j+1] +red->agente*C +red->topico+2) = (*func_din) (red, param);
 			}
 		}
+		
 	}
 	
 	// Reescribo el vector de mi sistema con los valores luego de haber hecho la evolución dinámica

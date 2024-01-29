@@ -4,14 +4,13 @@
 #define Inicializar_H
 #include <math.h>
 
-int GenerarOpi(ps_Red ps_variable, double d_kappa);
-int GenerarAng(ps_Red ps_variable, ps_Param ps_parametro);
-int Lectura_Adyacencia(int *pi_vector, FILE *pa_archivo);
-// int Actividad(double* pd_vec, double d_epsilon, double d_potencia);
-// int Adyacencia_Actividad(ps_Red ps_red, ps_Param ps_datos);
-// int Conectar_agentes(ps_Red ps_red, ps_Param ps_datos);
-int GenerarAdy_Conectada(ps_Red ps_variable, ps_Param ps_parametro);
-int Generar_Separacion(ps_Red ps_variable, ps_Param ps_parametro);
+void GenerarOpi(puntero_Matrices red, double kappa);
+void GenerarAng(puntero_Matrices red, puntero_Parametros param);
+void GenerarAdy_Conectada(puntero_Matrices red);
+void Generar_Separacion(puntero_Matrices red, puntero_Parametros param);
+int Lectura_Adyacencia(int *vec, FILE *archivo);
+int Lectura_Adyacencia_Ejes(puntero_Matrices red, FILE *archivo);
+
 
 #endif
 

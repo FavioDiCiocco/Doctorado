@@ -6,9 +6,9 @@
 
 void GenerarOpi(puntero_Matrices red, int region, double kappa);
 void GenerarAng(puntero_Matrices red, puntero_Parametros param);
+void GenerarAdy_Conectada(puntero_Matrices red);
 int Lectura_Adyacencia(int *vec, FILE *archivo);
 int Lectura_Adyacencia_Ejes(puntero_Matrices red, FILE *archivo);
-// int GenerarAdy_Conectada(ps_Red ps_variable, ps_Param ps_parametro);
 // int Actividad(double* pd_vec, double d_epsilon, double d_potencia);
 // int Adyacencia_Actividad(ps_Red ps_red, ps_Param ps_datos);
 // int Conectar_agentes(ps_Red ps_red, ps_Param ps_datos);

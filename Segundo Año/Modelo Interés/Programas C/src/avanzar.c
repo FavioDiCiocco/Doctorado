@@ -37,7 +37,7 @@ double Dinamica_sumatoria(puntero_Matrices red, puntero_Parametros param){
 	denominador = 1+exp( -exponente );
 	
 	// Ahora que tengo todo, calculo el resultado y returneo
-	resultado = 1/denominador;
+	resultado = 1.0/denominador;
 	return resultado; // La función devuelve el número que buscás, no te lo asigna en una variable.
 }
 

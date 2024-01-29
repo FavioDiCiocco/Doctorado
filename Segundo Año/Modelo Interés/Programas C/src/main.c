@@ -43,7 +43,7 @@ int main(int argc, char *argv[]){
 	// Los siguientes son los parámetros que están dados en los structs
 	param->T = 2;  // Cantidad de temas sobre los que opinar
 	param->Iteraciones_extras = 100; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
-	param->pasosprevios = 1; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
+	param->pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
 	param->alfa = 4; // Ex-Controversialidad de los tópicos
 	param->dt = 0.01; // Paso temporal de iteración del sistema
 	param->NormDif = sqrt(param->N*param->T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
@@ -159,9 +159,8 @@ int main(int argc, char *argv[]){
 	fprintf(FileOpi,"Opiniones Iniciales\n");
 	Escribir_d(red->Opi,FileOpi);
 	
-	// fprintf(FileTestigos,"Opiniones Testigos\n");
+	fprintf(FileTestigos,"Opiniones Testigos\n");
 	
-	for(int i=0; i<3; i++) Visualizar_i(red->Ady[i+2]);
 	
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar
 	for(int i=0; i<param->pasosprevios; i++){
@@ -205,8 +204,6 @@ int main(int argc, char *argv[]){
 			for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos,"%lf\t", red->Opi[ j*param->T+k+2 ] ); // Me guardo los valores de opinión de mis agentes testigo
 			fprintf(FileTestigos,"\n");
 			
-			if(iOpiPasado % 100 == 0) printf("El paso es %d y la VarProm es %.3f\n", iOpiPasado, red->Variacion_promedio);
-			
 			// Actualización de índices
 			iOpiPasado++; // Avanzo el valor de iOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
 			
@@ -216,6 +213,7 @@ int main(int argc, char *argv[]){
 		// Ahora evoluciono el sistema una cantidad i_Itextra de veces. Le pongo como condición que si el sistema deja de cumplir la condición de corte, deje de evolucionar
 		
 		while(contador < param->Iteraciones_extras && red->Variacion_promedio <= param->CritCorte ){
+			
 			// Evolución
 			RK4(red->Opi, func_dinamica, func_activacion, red, param); // Itero los intereses
 			
@@ -228,8 +226,6 @@ int main(int argc, char *argv[]){
 			fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio 
 			for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] ); // Me guardo los valores de opinión de mis agentes testigo
 			fprintf(FileTestigos,"\n");
-			
-			if(iOpiPasado % 100 == 0) printf("El paso es %d y la VarProm es %.3f\n", iOpiPasado, red->Variacion_promedio);
 			
 			// Actualización de índices
 			iOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios

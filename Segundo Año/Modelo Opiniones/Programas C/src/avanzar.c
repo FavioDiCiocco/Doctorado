@@ -20,55 +20,55 @@
 // Esta función resuelve un término de los de la sumatoria. Lo que va a hacer es el producto de la matriz
 // de superposición y luego calcular el valor de la función logística asociada usando ese producto en su exponente.
 // Más algunos otros parámetros relevantes.
-double Dinamica_sumatoria(ps_Red ps_variable, ps_Param ps_parametro){
+double Dinamica_sumatoria(puntero_Matrices red, puntero_Parametros param){
+	
 	// Defino las variables locales de mi función
-	double d_opiniones_superpuestas = 0; // Es el producto de la matriz de superposición de tópicos con el vector opinión de un agente.
-	double d_resultado; // Es el valor que returnea la función
+	double opiniones_superpuestas = 0; // Es el producto de la matriz de superposición de tópicos con el vector opinión de un agente.
+	double resultado; // Es el valor que returnea la función
 	
 	// Obtengo el tamaño de columnas de mis dos matrices
-	int i_Co,i_Cs;
-	i_Co = (int) ps_variable->pd_Opiniones[1]; // Número de columnas en la matriz de opiniones
-	i_Cs = (int) ps_variable->pd_Angulos[1]; // Número de columnas en la matriz de superposición
+	int Co,Cs;
+	Co = (int) red->Opi[1]; // Número de columnas en la matriz de opiniones
+	Cs = (int) red->Ang[1]; // Número de columnas en la matriz de superposición
 	
 	// Calculo el producto de la matriz con el vector.
-	for(register int i_p=0; i_p<i_Cs; i_p++){
-		d_opiniones_superpuestas += ps_variable->pd_Angulos[ps_variable->i_topico*i_Cs+i_p+2]*ps_variable->pd_Opiniones[ps_variable->i_agente2*i_Co+i_p+2];
-	}
+	for(int p=0; p<Cs; p++) opiniones_superpuestas += red->Ang[ red->topico*Cs+p+2 ]*red->Opi[ red->agente_vecino*Co+p+2 ];
 	
 	// Ahora que tengo todo, calculo el resultado y returneo
-	d_resultado = tanh(d_opiniones_superpuestas);
-	return d_resultado; // La función devuelve el número que buscás, no te lo asigna en una variable.
+	resultado = tanh(opiniones_superpuestas);
+	return resultado; // La función devuelve el número que buscás, no te lo asigna en una variable.
 }
 
 // Esta es la segunda parte de la ecuación dinámica, con esto puedo realizar una iteración del sistema.
-double Dinamica_opiniones(ps_Red ps_variable, ps_Param ps_parametro){
+double Dinamica_opiniones(puntero_Matrices red, puntero_Parametros param){
+	
 	// Defino las variables locales de mi función.
-	double d_resultado; // d_resultado es lo que voy a returnear.
-	double d_sumatoria = 0; // d_sumatoria es el total de la sumatoria del segundo término de la ecuación diferencial.
-	double d_denominador = 0; // d_denominador es el denominador de la normalización de los pesos por homofilia.
+	double resultado; // resultado es lo que voy a returnear.
+	double sumatoria = 0; // sumatoria es el total de la sumatoria del segundo término de la ecuación diferencial.
+	double denominador = 0; // denominador es el denominador de la normalización de los pesos por homofilia.
 	
 	// Obtengo los valores de la cantidad de columnas de varias de mis matrices
-	int i_Co,i_Ca,i_Cs;
-	i_Co = (int) ps_variable->pd_Opiniones[1]; // Número de columnas en la matriz de opiniones
-	i_Ca = (int) ps_variable->pi_Adyacencia[1]; // Número de columnas en la matriz de adyacencia
-	i_Cs = (int) ps_variable->pd_Separacion[1]; // Número de columnas en la matriz de separaciones
+	int Co, Cs, grado;
+	Co = (int) red->Opi[1]; // Número de columnas en la matriz de opiniones
+	Cs = (int) red->Sep[1]; // Número de columnas en la matriz de separaciones
+	grado = (int) red->Ady[ red->agente+2 ][1]; // Número de columnas en la matriz de adyacencia
 	
 	// Calculo el denominador de los pesos haciendo la sumatoria de los pesos de la matriz de Separacion.
 	// No considero si el agente1 tiene conexión con el agente2, porque de no tener conexión, la matriz de separación tiene un cero.
-	for(ps_variable->i_agente2=0; ps_variable->i_agente2<ps_parametro->i_N; ps_variable->i_agente2++) d_denominador += ps_variable->pd_Separacion[ps_variable->i_agente*i_Cs+ps_variable->i_agente2+2];
+	for(int i=0; i<grado; i++){
+		red->agente_vecino = red->Ady[ red->agente+2 ][i+2];
+		denominador += red->Sep[ red->agente*Cs +red->agente_vecino+2 ];
+	}
 	
 	// Calculo la sumatoria de la ecuación diferencial
 	// La sumatoria es sobre todos los agentes conectados en la red de adyacencia
-	for(ps_variable->i_agente2=0; ps_variable->i_agente2<ps_parametro->i_N; ps_variable->i_agente2++){
-		
-		if(ps_variable->pi_Adyacencia[ps_variable->i_agente*i_Ca+ps_variable->i_agente2+2] == 1){
-			d_sumatoria += ps_variable->pd_Separacion[ps_variable->i_agente*i_Cs+ps_variable->i_agente2+2]*Dinamica_sumatoria(ps_variable,ps_parametro); // Sumo los valores de las funciones logísticas
-		}
-		
+	for(int j=0; j<grado; j++){
+		red->agente_vecino = red->Ady[ red->agente+2 ][j+2];
+		sumatoria += red->Sep[ red->agente*Cs +red->agente_vecino+2 ] * red->Exp[ red->agente_vecino*C +red->topico +2 ]; // Sumo los valores de las funciones logísticas
 	}
 	
-	d_resultado = -ps_variable->pd_Opiniones[ps_variable->i_agente*i_Co+ps_variable->i_topico+2] + ps_parametro->d_kappa*(d_sumatoria/d_denominador);
-	return d_resultado;
+	resultado = -red->Opi[ red->agente*Co +red->topico+2 ] + param->kappa * (sumatoria / denominador);
+	return resultado;
 }
 
 
@@ -117,45 +117,33 @@ double Normalizacion_homofilia(ps_Red ps_variable, ps_Param ps_parametro){
 
 // Esta función calcula el numerador de los pesos en la ecuación dinámica.
 // Estos pesos son los que determinan el valor que el agente i le da a la opinión del agente j según la homofilia.
-double Numerador_homofilia(ps_Red ps_variable, ps_Param ps_parametro){
-	// Defino las variables locales de mi función.
-	double d_resultado = 0; // d_resultado es lo que returneo
-	double d_distancia = 0; // d_distancia es la distancia en el espacio de opiniones entre el agente i y el agente j
+double Numerador_homofilia(puntero_Matrices red, puntero_Parametros param){
 	
-	int i_Co;
-	i_Co = (int) ps_variable->pd_Opiniones[1]; // Número de columnas en la matriz de opiniones
+	// Defino las variables locales de mi función.
+	double resultado = 0; // resultado es lo que returneo
+	double distancia = 0; // distancia es la distancia en el espacio de opiniones entre el agente i y el agente j
+	
+	int Co;
+	Co = (int) red->Opi[1]; // Número de columnas en la matriz de opiniones
 	
 	// Armo un puntero a un vector en el cuál pondre la diferencia entre las opiniones del
 	// agente i y el agente j.
-	double *pd_Vector_Diferencia;
-	pd_Vector_Diferencia = (double*) malloc((2+i_Co)*sizeof(double));
-	*pd_Vector_Diferencia = 1;
-	*(pd_Vector_Diferencia+1) = i_Co;
+	double *Vec_Dif;
+	Vec_Dif = (double*) malloc( ( 2+Co )*sizeof(double));
+	*Vec_Dif = 1;
+	*(Vec_Dif+1) = Co;
 	
-	// Armo el vector que apunta del agente i al agente 2 en el espacio de opiniones
-	for(register int i_topic=0; i_topic<i_Co; i_topic++){
-		*(pd_Vector_Diferencia+i_topic+2) = ps_variable->pd_Opiniones[ps_variable->i_agente*i_Co+i_topic+2]-ps_variable->pd_Opiniones[ps_variable->i_agente2*i_Co+i_topic+2];
-	}
+	// Armo el vector que apunta del agente i al agente vecino en el espacio de opiniones
+	for(int topic=0; topic<Co; topic++) *(Vec_Dif +topic+2) = red->Opi[ red->agente*Co +topic+2 ] - red->Opi[ red->agente_vecino*Co +topic+2 ];
+	
 	// Calculo la distancia entre las opiniones de los agentes
-	d_distancia = Norma_No_Ortogonal_d(pd_Vector_Diferencia, ps_variable->pd_Angulos);
+	distancia = Norma_No_Ortogonal_d(Vec_Dif, red->Ang);
 	
 	// Agrego el término del agente j a la sumatoria del denominador
-	d_resultado += pow(d_distancia+ps_parametro->d_delta,-ps_parametro->d_beta);
+	resultado += pow(distancia + param->delta, -param->beta);
 	
-	free(pd_Vector_Diferencia);
+	free(Vec_Dif);
 	
-	return d_resultado;
+	return resultado;
 }
 
-
-
-// double Dinamica_saturacion(ps_Red ps_variable, ps_Param ps_parametro){
-	// // Defino las variables locales de mi función
-	// double d_resultado; // d_resultado es lo que voy a returnear.
-	// int i_C = (int) ps_variable->pd_Opiniones[1]; // Tamaño de columnas de mi vector de opiniones
-	
-	// // Hago la cuenta de la ecuación dinámica
-	// d_resultado = ps_variable->pd_Opiniones[ps_variable->i_agente*i_C+ps_variable->i_topico+2] - ps_parametro->d_lambda * ps_variable->pd_Saturacion[ps_variable->i_agente*i_C+ps_variable->i_topico+2];
-	
-	// return d_resultado;
-// }

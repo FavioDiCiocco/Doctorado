@@ -3186,3 +3186,52 @@ lo que sigue es agregar el puntero que tiene los valores de función logística 
 
 Logré hacer que el programa corra, pero ahora tengo que revisar por qué es que los valores de interés toman
 valores negativos, no tiene sentido que pase eso.
+
+------------------------------------------------------------------------------------------
+
+29/01/2024
+
+Al final en el finde no pude lograr hacer nada. Estoy mirando el código desde la mañana y no estoy
+pudiendo descubrir por qué es que está corriendo mal. El problema que tiene es que no parece
+converger a valores razonables.
+ Por un lado, probé con 100, 500 y 1000 agentes. Siendo Kappa = 5, con 100 converge a 4.5 de opinión,
+con 500 converge a 2.5 y con 1000 converge a -0.82. Por otro lado, los valores de las exponenciales me
+dan siempre 1 para todos los agentes en todos los tópicos, pero eso debería pasar sólo si las opiniones
+son muy grandes. Así que algo raro está pasando.
+
+Es mediodía, no estoy pudiendo encontrar la solución a esto. Voy a armar en el código una versión simplificada
+que corra uno o dos pasos temporales y a empezar a estudiar en ese caso qué es lo que está ocurriendo.
+Revisé cómo se calculan las exponenciales, está haciendo el cálculo correctamente, así que
+eso no es el problema. También revisé las pendientes, parecen estar calculándose de forma correcta.
+No hice las cuentas en detalle, eso requeriría que revise los agentes conectados y las opiniones
+de los vecinos. Pero parece correctamente impulsar las opiniones a valores positivos si la opinión del
+agente es baja y a valores negativos si es alta. (Digamos que hay una sutileza en lo que acabo de
+escribir, pero prometo que la cosa va bien).
+ Lo que parece estar pasando es que luego del primer paso de RK4, las opiniones se actualizan
+en el punto intermedio a un valor mucho más alto del que deberían. No se entiende por qué.
+Por lo que estoy viendo, simplemente se les suma 5 a la opinión de todos los agentes. No comprendo
+de dónde sale esa suma. Creo que solucionar eso es solucionar todo el problema.
+
+Encontré el error, estaba calculando las opiniones intermedias mal. El valor de pendiente que estaba usando
+era el mismo para todos los agentes, porque buscaba siempre el mismo valor fijo del vector.
+En vez de buscar los valores con la variable que estaba cambiando "i", lo hacía usando las variables
+de red->agente y red->topico, ambas variables que en ese for estaban fijas. Lo que no me queda para
+nada claro es por qué sumaba cinco a las opiniones de los agentes. Para eso lo que tenía que pasar
+es que la pendiente valiera 1000. No tiene sentido, ninguna pendiente podía valer eso. Ahí había
+algo raro.
+
+Resuelto esto, el próximo objetivo es hacer la misma actualización en el código de Opiniones. Y hecho
+eso, puedo mandar a correr datos en Oporto y Coimbra para aumentar la estadística de mis simulaciones.
+Y vamos a ver si así ahora el código va más rápido, ignorando el problema que tenía antes de que tardaba
+más si tenía más hilos corriendo. Yo confío en que lo que sea que funcionaba mal se habrá corregido.
+
+Estoy actualizando el código para el modelo de opiniones. Por un lado, me guardé el main en la carpeta
+de Evolución Temporal, ese tenía lo último que estaba haciendo ahí anotado.
+ Por el otro, tengo para mencionar que si estuviera teniendo un problema con el espacio que me ocupan
+algunas matrices, como por ejemplo la de Separación, podría también construirla como una lista al
+igual que la matriz de Adyacencia y reducirle el tamaño. Igualmente no creo que ahora sea necesario
+eso.
+
+Bien, ahí corregí el código de las Opiniones, a las 19:01. Justo a tiempo. Ahora queda mañana agregar
+en el RK4 el armado de la matriz de Exp, que tenga las tangentes hiperbólicas correspondientes.
+Hecho eso, ya lo puedo probar y ver que funque todo bien.
