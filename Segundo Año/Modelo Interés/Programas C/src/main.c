@@ -37,18 +37,19 @@ int main(int argc, char *argv[]){
 	param->N = strtol(argv[1],NULL,10); // Cantidad de agentes en el modelo
 	param->kappa = strtof(argv[2],NULL); // Esta amplitud regula la relación entre el término lineal y el término logístico
 	param->epsilon = strtof(argv[3],NULL); // Este es el umbral que determina si el interés del vecino puede generarme más interés.
-	param->Cosd = strtof(argv[4],NULL);// Este es el coseno de Delta que define la relación entre tópicos.
+	param->alfa = strtof(argv[4],NULL); // Ex-Controversialidad de los tópicos
 	int iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
 	
 	// Los siguientes son los parámetros que están dados en los structs
-	param->T = 2;  // Cantidad de temas sobre los que opinar
+	param->T = 1;  // Cantidad de temas sobre los que opinar
 	param->Iteraciones_extras = 100; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	param->pasosprevios = 20; // Elegimos 20 de manera arbitraria con Pablo y Sebas. Sería la cantidad de pasos hacia atrás que miro para comparar cuanto varió el sistema
-	param->alfa = 4; // Ex-Controversialidad de los tópicos
+	param->Cosd = 0; // Este es el coseno de Delta que define la relación entre tópicos.
 	param->dt = 0.01; // Paso temporal de iteración del sistema
 	param->NormDif = sqrt(param->N*param->T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	param->CritCorte = pow(10,-4); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
 	param->testigos = fmin(param->N,6); // Esta es la cantidad de agentes de cada distancia que voy registrar
+	param->Gradomedio = 4; // Este es el grado medio de la red utilizada
 	
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
@@ -119,20 +120,20 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char TextOpi[355];
-	sprintf(TextOpi,"../Programas Python/Interes_actualizado/Datos/gm=6/Opiniones_N=%d_Cosd=%.2f_kappa=%.2f_epsilon=%.2f_Iter=%d.file"
-		,param->N, param->Cosd, param->kappa, param->epsilon, iteracion);
+	sprintf(TextOpi,"../Programas Python/Interes_actualizado/Datos/gm=%d/Opiniones_N=%d_Cosd=%.2f_kappa=%.2f_epsilon=%.2f_Iter=%d.file"
+		, param->Gradomedio, param->N, param->Cosd, param->kappa, param->epsilon, iteracion);
 	FILE *FileOpi = fopen(TextOpi,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char TextTestigos[355];
-	sprintf(TextTestigos,"../Programas Python/Interes_actualizado/Datos/gm=6/Testigos_N=%d_Cosd=%.2f_kappa=%.2f_epsilon=%.2f_Iter=%d.file"
-		,param->N, param->Cosd, param->kappa, param->epsilon, iteracion);
+	sprintf(TextTestigos,"../Programas Python/Interes_actualizado/Datos/gm=%d/Testigos_N=%d_Cosd=%.2f_kappa=%.2f_epsilon=%.2f_Iter=%d.file"
+		, param->Gradomedio, param->N, param->Cosd, param->kappa, param->epsilon, iteracion);
 	FILE *FileTestigos = fopen(TextTestigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
 	char TextMatriz[355];
-	sprintf(TextMatriz,"MARE/Erdos-Renyi/gm=6/ErdosRenyi_N=%d_ID=%d.file"
-		,param->N, (int) iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
+	sprintf(TextMatriz,"MARE/Erdos-Renyi/gm=%d/ErdosRenyi_N=%d_ID=%d.file"
+		, param->Gradomedio, param->N, (int) iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
 	FILE *FileMatriz = fopen(TextMatriz,"r");
 	
 	// Puntero a la función que define mi ecuación diferencial

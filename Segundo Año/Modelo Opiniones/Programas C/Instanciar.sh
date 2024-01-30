@@ -14,16 +14,16 @@ echo "El ID del script es $$"
 # Voy a Hardcodear algunos Arrays
 
 Arr_Agentes=(1000)
-Arr_Beta=(0.5)
+Arr_Beta=(0.5 0.6 0.7 0.8 0.9 1)
 Arr_CosD=(0)
-Arr_Kappas=(3)
+Arr_Kappas=(10)
 
 
 if [ -z $decision ]
 then
 	for N in ${Arr_Agentes[@]}
 	do
-		for iteracion in {0..1}
+		for iteracion in {0..5}
 		do
 			for Kappa in ${Arr_Kappas[@]}
 			do

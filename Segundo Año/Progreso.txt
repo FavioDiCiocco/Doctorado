@@ -3235,3 +3235,67 @@ eso.
 Bien, ahí corregí el código de las Opiniones, a las 19:01. Justo a tiempo. Ahora queda mañana agregar
 en el RK4 el armado de la matriz de Exp, que tenga las tangentes hiperbólicas correspondientes.
 Hecho eso, ya lo puedo probar y ver que funque todo bien.
+
+------------------------------------------------------------------------------------------
+
+30/01/2024
+
+Implementé la parte del cálculo de las tangentes hiperbólicas y logré hacer correr el código. 
+Parece que funciona bien, el programa arranca con una dada distribución, calcula sin problemas,
+arma los datos pareciera que bien. Tengo una leve sensación de que hay algo mal porque hice
+5 simulaciones, todas me dieron consenso radicalizado en un mismo lugar, todas las opiniones
+tendieron al valor de Kappa. Hagamos unas pruebas más con valores bajos de Kappa y cosas así.
+Todas las simulaciones van al mismo valor. ¿Es un problema de que estoy usando la misma red?
+
+No, el problema es que estaba distribuyendo las opiniones iniciales en valores positivos únicamente.
+Entonces claramente iban a converger siempre en consenso radicalizado. Corregí eso
+y todo funcionó bárbaro. Así que lo puedo mandar a correr en las pc's de Oporto y de Coimbra.
+Aunque también tengo que modificar los archivos de redes en las pc's. Primero cambiemos los src.
+Después cargo el archivo de Python de Crear Redes. Armo las carpetas, armo los nuevos archivos
+y después reviso cuáles son las regiones que tengo que repasar para obtener más simulaciones
+y datos.
+
+De paso, en mi pc, sin nada extra, correr una simulación hasta tiempo final me tomó 1018 segundos.
+Es decir, unos 17 minutos. Mucho menos que las 5 horas que estaba tardando cuando mandaba 20 hilos
+a correr en simultáneo. Veamos si se sostienen estos tiempos de simulación. Ya armé las redes y cargué
+los archivos de src. Iba a mandar a correr simulaciones, pero Ale está usando las pc's de
+Oporto y Coimbra. Podría mandar cosas en Algarve, pero esperémoslo dos días antes de eso. Más que
+nada porque es un bardo mandar a correr cosas en Algarve y después tener que unir los datos. Lo que
+podría hacer mientras es revisar cuáles son los espacios de datos a barrer, cosa de que la próxima vez
+simplemente ejecuto el archivo de Metainstanciación y listo. De paso, puedo aprovechar y mover
+las carpetas como para reorganizar y no confundir lo que estoy haciendo, así tengo mis carpetas con barridos
+bien separadas.
+
+En Oporto tengo un barrido hecho en beta y Kappa, con cosd=0. La idea es barrer Kappa de [0.2,20]. Los
+primeros valores son 0.2, 0.4, 0.6 y 0.8. De ahí en adelante, va desde 1 a 20 de a 0.5. Beta en cambio va
+desde 0 hasta 2 de a 0.1. El único tema es que cuando mandé a correr esto, no logré completar una corrida
+entera, me quedaron regiones con valores faltantes. Para rellenar estos huecos en los datos, convendría primero
+mandar a correr una simulación con Kappa desde 11 hasta 20, recorriendo todos los Beta y con iteraciones de
+0 a 19. Hecho esto, mando a correr el resto de iteraciones recorriendo todo el espacio. Preparemos el
+archivo de Instanciar. (Me parece que una buena idea va a ser usar 10 hilos, no 20).
+
+En Coimbra tengo un barrido hecho en Beta y cosd, con Kappa=10. Beta va entre 0 y 2 de a 0.05, Cosd va entre
+0 y 1 de a 0.1. Hay un detalle de que para los valores de Beta entre 0.5 y 1 tengo 40 simulaciones, en vez de
+20 como el resto. Lo que puedo hacer es preparar para mandar a correr toda la región aledaña a eso y después
+de que haya hecho que todo tenga 40 simulaciones, recomponer eso para correr todo junto hasta 100 simulaciones.
+
+Algo que me había olvidado, es el hecho de que voy a estar guardando datos de testigos. Eso no es una
+buena idea, va a ocupar mucho espacio y tiempo al pedo. Veamos si lo puedo comentar en ambos
+códigos. Eso sería lo último. Ya está todo listo, en cuanto Ale termine lo que está haciendo
+mando a correr esto. Suponiendo que los archivos que resuelvan rápido tarden 10 segundos, y que los
+que resuelvan lento tarden 1600 segundos, creo que el promedio va a estar en 300 segundos.
+Entonces, la corrida en Coimbra de 20 simulaciones tardaría dos días aproximadamente. Hermoso.
+
+Lo que habíamos charlado con Lupi es ver si podíamos construir redes más chicas y ver si en ese caso
+el sistema lograba polarizar. Hagamos algunas simulaciones de esto en la pc de la facultad.
+Mandé a correr el programa, va a los chapazos, en especial comparado con lo que tengo del modelo
+de Opiniones. La gran pregunta es, ahora que corrí unas simulaciones, ¿Qué quiero ver, en qué región
+y cómo me aseguro de verlo?
+
+Necesito barrer un espacio de Kappa-Epsilon. Kappa entre [0.5,2] y Epsilon entre [1.5,3.5], esas son las
+regiones que exploré antes. Podría armar ensambles con cien simulaciones, barriendo ambos de a 0.1 cada uno,
+para cuatro grados medios, desde 2 hasta 6. Ya mañana mando eso a correr y después voy revisando los
+resultados. La idea es ver algunos gráficos a ver si los agentes polarizan. Para eso necesitaría que
+las opiniones tengan alta varianza y un promedio entorno a un valor de 0.5. Estoy pensando que voy a
+tener que normalizar mis resultados. Y voy a empezar a tomar funciones de la carpeta de Python de
+Evolucion_temporal.

@@ -22,7 +22,7 @@ import funciones as func
 t0 = time.time()
 
 
-"""
+
 ###################################################################################################
 
 # Defino la cantidad de agentes
@@ -59,7 +59,7 @@ with open(filename, "w") as file:
     for edge in G.edges():
         file.write(f"{edge[0]} {edge[1]}\n")
 
-
+"""
 ###################################################################################################
 
 # Acá voy a mirar el tema del peso y la distancia entre los agentes 79 y 388
@@ -156,7 +156,7 @@ plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close("Pesos_opuestos")
 
 ###################################################################################################
-"""
+
 
 # Acá voy a comparar la simulación que armé yo con la simulación de Hugo, para
 # ver qué puede ser lo que esté trabajando distinto y resultando en que los códigos
@@ -186,6 +186,7 @@ plt.grid(alpha = 0.8)
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close("Distancia_sistemas")
 
+"""
 
 func.Tiempo(t0)
 
