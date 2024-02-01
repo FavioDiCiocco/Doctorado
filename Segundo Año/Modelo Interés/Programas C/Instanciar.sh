@@ -15,14 +15,15 @@ echo "El ID del script es $$"
 
 Arr_Agentes=(1000)
 Arr_Alfas=(4)
+Arr_Grados=(3 4 5 6)
 
 ############################################################
 
 Arr_Epsilon=()
 
-for val in {0..40}
+for val in {0..20}
 do
-	cuenta=`echo $val*0.05+1.5 | bc -l`
+	cuenta=`echo $val*0.1+1.5 | bc -l`
 	Arr_Epsilon+=( $cuenta )
 done
 
@@ -30,9 +31,9 @@ done
 
 
 Arr_Kappas=()
-for val in {0..30}
+for val in {0..15}
 do
-	cuenta=`echo $val*0.05+0.5 | bc -l`
+	cuenta=`echo $val*0.1+0.5 | bc -l`
 	Arr_Kappas+=( $cuenta )
 done
 
@@ -42,16 +43,19 @@ if [ -z $decision ]
 then
 	for N in ${Arr_Agentes[@]}
 	do
-		for iteracion in {0..5}
+		for iteracion in {0..3}
 		do
-			for Kappa in ${Arr_Kappas[@]}
+			for Grado in ${Arr_Grados[@]}
 			do
-				for Alfa in ${Arr_Alfas[@]}
+				for Kappa in ${Arr_Kappas[@]}
 				do
-					for Epsilon in ${Arr_Epsilon[@]}
+					for Alfa in ${Arr_Alfas[@]}
 					do
-						echo Kappa=$Kappa, Epsilon = $Epsilon, Alfa = $Alfa
-						./$1.e $N $Kappa $Epsilon $Alfa $iteracion
+						for Epsilon in ${Arr_Epsilon[@]}
+						do
+							echo Grado = $Grado, Kappa=$Kappa, Epsilon = $Epsilon
+							./$1.e $N $Kappa $Epsilon $Alfa $Grado $iteracion
+						done
 					done
 				done
 			done

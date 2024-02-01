@@ -3320,7 +3320,7 @@ sobre estos datos lo que yo querría hacer es armar gráficos de opinión en fun
 principio. Si observo lo que busco en esos gráficos, entonces vale la pena pensar cómo detectar
 esos estados.
 
-También tengo anotado que debería mirarl el tema de la transición. Creo que con Lupi lo que habíamos
+También tengo anotado que debería mirar el tema de la transición. Creo que con Lupi lo que habíamos
 hablado es armar un nuevo gráfico como el que tengo donde se ve que para distintos epsilons se produce
 un salto en el valor medio final del sistema. Eso lo puedo ver usando los datos que tengo, 
 armando los gráficos a partir de fijar algunos de los valores de Epsilon barridos.
@@ -3354,3 +3354,93 @@ fino. Considerar eso más tarde.
 Tengo que ponerme a estudiar para el final de Flujos geofísicos, es el final que puedo rendir.
 Así que arrancaré con eso. Voy a repasar lo que tengo anotado de la teórica. Seguiré con mi
 plan de repasar todo y después veré qué le puedo presentar a Mininni.
+
+------------------------------------------------------------------------------------------
+
+01/02/2024
+
+Rearmé los datos que se construyen para el modelo de interés, más que nada porque me doy
+cuenta que no estoy del todo seguro qué es lo que busco conseguir con esto. Primero, hice
+el barrido menos fino. Me parece que no tenía sentido tanto detalle. Lo segundo es reducir
+la cantidad de iteraciones, porque claramente no voy a hacer tantos gráficos. Al
+final del día, no voy a ver tantos gráficos yo. Por último, hice que se guarden datos cada
+50 pasos, porque no es necesario tener los datos en cada paso. Aproveche que reduje la
+cantidad de pasos que guardo para aumentar la cantidad de agentes, cosa de tener más chances
+de ver el tema de la polarización que espero encontrar.
+
+Mientras terminan de correr los datos que se están construyendo del barrido en Kappa-Epsilon,
+voy a continuar armando la función de Python para hacer el gráfico que me permite observar
+el gráfico de la transición. De paso, podría empezar a trabajar con los valores de los intereses
+normalizados según la influencia de los vecinos.
+
+Genial, toqué algo por querer hacer esa actualización del orto que siempre me propone el spyder.
+Ahora nada funciona. Y tengo que volver a reinstalar el environment o algo así. Dios, por qué
+toco cosas que no son necesarias. Logré volver a una versión anterior del environment,
+ahora el código corre. Pero no solucioné el tema del memory leak. Creo que voy a cargar
+los datos a Oporto o Algarve y mandar a correr y listo.
+
+Después de años de usar el ldata, acabo de darme cuenta que mis problemas de memory leak estaban
+generados porque en esa función nunca cerraba correctamente los archivos creados. Chat GPT
+es una cosa hermosa. Alto, festejé muy rápido. Se sigue produciendo el memory_leak. Dios,
+esto no se termina nunca. Ahí parece estar corriendo, confiemos en que va a lograr terminar
+con todo antes de comerse la RAM entera. Y después veré qué carajo puedo hacer para continuar
+con esto. Si lo mando todo a alguna pc o qué corno hago.
+
+Decidí usar el memory profiler para revisar qué está pasando. Mandé a correr el programa con
+eso analizando lo que ocurre de fondo. Mientras eso se resuelve, puedo ponerme a armar la
+función que grafique las curvas en las que observe el salto de la transición en función de
+Kappa.
+
+Usando el memory profiler no descubrí nueva info. Tira una lista de procesos, paso por paso, 
+e indica el consumo de memoria. Está bastante bueno, aunque no podría decir que lo supe
+interpretar del todo bien. También tiene un gráfico de consumo de memoria en función del tiempo
+que está bueno para ir viendo cómo va cambiando el consumo de memoria de la función, porque es
+importante recordar que el memory profiler presta atención a una función (o quizás varias funciones)
+definidas previamente. Cuestión que mirando eso se ve un comportamiento esperado en el cual
+el consumo de memoria es dentro de todo constante y varía posiblemente con el tamaño de los archivos.
+
+Lo bueno es que estoy corriendo el programa de python desde la terminal, en vez de hacerlo desde
+spyder, y no está teniendo un memory_leak. Lo cual es genial. Es así que pude aprovechar y armar
+los gráficos de opinión en función del tiempo. En algunos gráficos se llega a observar que mientras
+el grueso de los agentes converge a un valor, algunos pocos no lo hacen. En el caso de gradomedio 4
+incluso veo un sistema en el que la mayoría de los agentes converge a cero, pero unos pocos toman
+valores por encima de cero. Por tanto, pareciera que estos grados medios permiten la existencia
+de agentes con bajo interés y agentes con alto interés.
+ Quedaría revisar en esto si estos estados que estoy viendo son "estables" o por lo menos meta estables.
+Chances hay que de dárseles un poco más de tiempo, llegarían a converger. En especial lo digo porque algunos
+de estos estados con agentes "fraccionados" resulta que corren en tiempos más cortos que otros estados
+que están en la región de transición y los cuales si se cortaran en el tiempo en que se cortan estas
+simulaciones "fraccionadas" tendrían la misma pinta. Digo, revisemos que esos estados se mantenían así
+por más tiempo y que no es que les faltaba un poco de tiempo de simulación para decaer.
+
+Así que parcialmente es un resultado. Siento que PROBAR que esos estados son meta estables no
+es un detalle, pero puedo tomar algunas de esas simulaciones que me resultan dudosas, mandarlas
+a correr por tiempo definido y ver qué pasa. En especial porque voy a tardar mucho más tiempo
+en preparar el código, buscar los parámetros y todo lo necesario para hacer correr que en resolver
+esa simulación extendida.
+
+Por otro lado, puedo tomar las simulaciones y armar un mapa de colores con las varianzas de los
+intereses finales. La idea sería tomar para cada simulación en un punto del espacio tomarle la
+varianza a los intereses finales. Luego promedio esas varianzas. Lo que obtenga será una medida
+de cuántos estados fraccionados tengo. Aunque siendo sincero, si la cantidad de agentes que
+se desvía de la norma es muy chico, yo esperaría que la varianza no cambie mucho. Quizás sea
+dificil diferenciar lo que vea de ruido. Habrá que hacer el gráfico y ver.
+
+Lo siguiente es mirar con mis datos si se da la transición y cómo se da para diferentes grados
+medios y diferentes epsilons. Eso será lo último que haga hoy creo.
+
+Bien, el gráfico se arma bien. Ahora quedaría hacer unos ajustes. Primero, necesito más simulaciones
+de Kappa en valores intermedios, es decir, un barrido en Kappa más fino. Ese barrido fino en Kappa
+se puede acelerar si además tomo sólo los valores de Epsilon que voy a graficar. También necesita
+más estadística, es cierto que esto está hecho con tres simulaciones por punto nomás.
+ Sobre la función, podría deshacerme de cierto bardo que hago con el cómo construyo el scatter,
+más que nada considerando que yo pongo muchos puntos esperando ver si hay una variabilidad vertical,
+pero eso no se ve para nada. Honestamente, puedo resumir eso poniendo un sólo punto promediado
+para cada valor de Kappa del eje x. También puedo revisar de actualizar la función para que
+reciba externamente la cantidad de curvas a graficar y que pueda decidir si va a graficar en
+función del parámetro X o del parámetro Y.
+
+Dicho esto, mañana creo que me voy a poner a trabajar directo en el proyecto de la gente de España.
+Y definitivamente voy a por lo menos revisar la carpeta teórica de la materia que tengo que
+rendir con Mininni. Y tengo que mandar a correr los datos en las pc's de Oporto y demás.
+Así que seguramente aproveche para separar en dos carpetas los datos.

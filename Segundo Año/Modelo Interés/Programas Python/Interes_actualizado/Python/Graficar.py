@@ -23,7 +23,7 @@ T=1 # Defino el número de tópicos
 Etapa = Path("Interes_actualizado") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Datos/gm=6"]
+Carpetas = ["Datos/gm=3","Datos/gm=4","Datos/gm=5","Datos/gm=6"]
 
 for carp in Carpetas:
     
@@ -74,23 +74,14 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    # func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-    #                                      SIM_param_x, SIM_param_y, True)
+    # func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta, T,
+    #                         ID_param_x, ID_param_y, ID_param_extra_1)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    func.Punto_fijo_vs_Kappa(Df_archivos, Direccion, Etapa/carpeta, T,
+                             SIM_param_x, SIM_param_y, ID_param_y, ID_param_extra_1)
 
-    #----------------------------------------------------------------------------------------------
-    
-    # func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
-    #                                      SIM_param_x, SIM_param_y, True)
-    
-    #----------------------------------------------------------------------------------------------
-    
-    func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta, T,
-                            ID_param_x = "epsilon", ID_param_y = "kappa")
-    
-    #----------------------------------------------------------------------------------------------
-    
-    # func.Graf_Derivada_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta, T,
-    #                         nombre_parametro_1, nombre_parametro_2)
 
 
 func.Tiempo(t0)

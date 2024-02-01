@@ -1,0 +1,251 @@
+Warning: Ignoring XDG_SESSION_TYPE=wayland on Gnome. Use QT_QPA_PLATFORM=wayland to run on Wayland anyway.
+Filename: /home/favio/Documentos/GitHub/Doctorado/Segundo Año/Modelo Interés/Programas Python/Interes_actualizado/Python/funciones.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   234    125.9 MiB    125.9 MiB           1   @profile
+   235                                         def Graf_opi_vs_tiempo(DF,path,carpeta,T,
+   236                                                                ID_param_x,ID_param_y,
+   237                                                                ID_param_extra_1):
+   238                                             # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
+   239                                             # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
+   240                                             # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
+   241                                             
+   242                                             # Como graficar en todas las combinaciones de parámetros implica muchos gráficos, voy a 
+   243                                             # simplemente elegir tres valores de cada array, el primero, el del medio y el último.
+   244                                             
+   245    125.9 MiB      0.0 MiB           1       AGENTES = int(np.unique(DF["n"]))
+   246                                             
+   247                                             # Defino los arrays de parámetros diferentes
+   248                                             
+   249    125.9 MiB      0.0 MiB           1       Arr_EXTRAS = np.unique(DF["Extra"])
+   250    125.9 MiB      0.0 MiB           1       Arr_param_x = np.unique(DF["parametro_x"])
+   251    125.9 MiB      0.0 MiB           1       Arr_param_y = np.unique(DF["parametro_y"])
+   252                                             
+   253                                             
+   254                                             # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+   255    125.9 MiB      0.0 MiB         360       Tupla_total = [(param_x,param_y) for param_x in Arr_param_x
+   256    125.9 MiB      0.0 MiB         357                      for param_y in Arr_param_y]
+   257                                             
+   258                                             # Defino el tipo de archivo del cuál tomaré los datos
+   259    125.9 MiB      0.0 MiB           1       TIPO = "Testigos"
+   260                                             
+   261    211.7 MiB    -20.5 MiB           2       for EXTRAS in Arr_EXTRAS:
+   262    232.2 MiB  -1976.6 MiB         337           for PARAM_X,PARAM_Y in Tupla_total:
+   263                                                     
+   264                                                     # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+   265    232.2 MiB -11736.4 MiB        2016               archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+   266    232.2 MiB  -1956.1 MiB         336                                           (DF["n"]==AGENTES) & 
+   267    232.2 MiB  -1956.1 MiB         336                                           (DF["Extra"]==EXTRAS) & 
+   268    232.2 MiB  -1956.1 MiB         336                                           (DF["parametro_x"]==PARAM_X) &
+   269    232.2 MiB  -3912.1 MiB         672                                           (DF["parametro_y"]==PARAM_Y), "nombre"])
+   270                                             
+   271                                                     #-----------------------------------------------------------------------------------------
+   272                                                     
+   273    232.2 MiB  -9900.5 MiB        1680               for nombre in archivos:
+   274                                                         
+   275                                                         # De los archivos de Testigos levanto las opiniones de todos los agentes a lo largo de todo el proceso.
+   276                                                         # Estos archivos tienen las opiniones de dos agentes.
+   277                                                         
+   278    232.6 MiB  -7798.3 MiB        1344                   Datos = ldata(path / nombre)
+   279                                                         
+   280    232.6 MiB  -7950.5 MiB        1344                   Testigos = np.zeros((len(Datos)-2,len(Datos[1])-1)) # Inicializo mi array donde pondré las opiniones de los testigos.
+   281                                                         
+   282    232.6 MiB -222289.9 MiB       36027                   for i,fila in enumerate(Datos[1:-1:]):
+   283    232.6 MiB -214339.4 MiB       34683                       Testigos[i] = fila[:-1]
+   284    232.6 MiB -214339.4 MiB       34683                       Testigos[i] = Testigos[i]/PARAM_Y
+   285                                                         
+   286                                                         # De esta manera tengo mi array que me guarda los datos de los agentes a lo largo de la evolución del sistema.
+   287                                                         
+   288                                                         #----------------------------------------------------------------------------------------------------------------------------------
+   289                                                         
+   290                                                         # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
+   291    232.6 MiB  -7950.5 MiB        1344                   repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"]) 
+   292    232.6 MiB  -7950.5 MiB        1344                   if repeticion < 3:
+   293                                                         
+   294                                                             # Armo mi gráfico, lo guardo y lo cierro
+   295    232.6 MiB -11794.2 MiB        2016                       for topico in range(T):
+   296    232.6 MiB -11879.8 MiB        2016                           direccion_guardado = Path("../../../Imagenes/{}/OpivsT_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_Topico={}_Iter={}.png".format(carpeta,AGENTES,
+   297    232.6 MiB  -5924.0 MiB        1008                                                     ID_param_x,PARAM_X,ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,topico,repeticion))
+   298    232.6 MiB  -5924.0 MiB        1008                           plt.rcParams.update({'font.size': 32})
+   299    232.6 MiB  -5893.4 MiB        1008                           plt.figure(figsize=(20,15))
+   300    232.6 MiB  -5926.5 MiB        1008                           X = np.arange(Testigos.shape[0])*0.5
+   301    232.6 MiB -2969343.1 MiB      505008                           for sujeto in range(int(Testigos.shape[1])):
+   302    232.6 MiB -2963408.9 MiB      504000                               plt.plot(X,Testigos[:,sujeto*T+topico],color = "tab:purple", linewidth = 2, alpha = 0.4)
+   303    232.6 MiB  -5926.7 MiB        1008                           plt.xlabel("Tiempo")
+   304    232.6 MiB  -5926.7 MiB        1008                           plt.ylabel(r"$x^i$")
+   305    232.6 MiB  -5926.7 MiB        1008                           plt.title("Evolución temporal")
+   306    232.6 MiB  -5926.7 MiB        1008                           plt.grid(alpha = 0.5)
+   307    243.4 MiB    145.8 MiB        1008                           plt.savefig(direccion_guardado ,bbox_inches = "tight")
+   308    243.4 MiB  -2045.5 MiB        1008                           plt.close()
+   309    243.4 MiB  -2045.2 MiB        1008                           plt.clf()
+   310    232.2 MiB  -8050.3 MiB        1008                           gc.collect()
+
+
+Filename: /home/favio/Documentos/GitHub/Doctorado/Segundo Año/Modelo Interés/Programas Python/Interes_actualizado/Python/funciones.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   234    211.7 MiB    211.7 MiB           1   @profile
+   235                                         def Graf_opi_vs_tiempo(DF,path,carpeta,T,
+   236                                                                ID_param_x,ID_param_y,
+   237                                                                ID_param_extra_1):
+   238                                             # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
+   239                                             # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
+   240                                             # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
+   241                                             
+   242                                             # Como graficar en todas las combinaciones de parámetros implica muchos gráficos, voy a 
+   243                                             # simplemente elegir tres valores de cada array, el primero, el del medio y el último.
+   244                                             
+   245    211.7 MiB      0.0 MiB           1       AGENTES = int(np.unique(DF["n"]))
+   246                                             
+   247                                             # Defino los arrays de parámetros diferentes
+   248                                             
+   249    211.7 MiB      0.0 MiB           1       Arr_EXTRAS = np.unique(DF["Extra"])
+   250    211.7 MiB      0.0 MiB           1       Arr_param_x = np.unique(DF["parametro_x"])
+   251    211.7 MiB      0.0 MiB           1       Arr_param_y = np.unique(DF["parametro_y"])
+   252                                             
+   253                                             
+   254                                             # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+   255    211.7 MiB      0.0 MiB         360       Tupla_total = [(param_x,param_y) for param_x in Arr_param_x
+   256    211.7 MiB      0.0 MiB         357                      for param_y in Arr_param_y]
+   257                                             
+   258                                             # Defino el tipo de archivo del cuál tomaré los datos
+   259    211.7 MiB      0.0 MiB           1       TIPO = "Testigos"
+   260                                             
+   261    252.4 MiB     -0.1 MiB           2       for EXTRAS in Arr_EXTRAS:
+   262    252.4 MiB  -6170.2 MiB         337           for PARAM_X,PARAM_Y in Tupla_total:
+   263                                                     
+   264                                                     # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+   265    252.4 MiB  -2027.9 MiB        2016               archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+   266    252.4 MiB   -338.0 MiB         336                                           (DF["n"]==AGENTES) & 
+   267    252.4 MiB   -338.0 MiB         336                                           (DF["Extra"]==EXTRAS) & 
+   268    252.4 MiB   -338.0 MiB         336                                           (DF["parametro_x"]==PARAM_X) &
+   269    252.4 MiB   -676.0 MiB         672                                           (DF["parametro_y"]==PARAM_Y), "nombre"])
+   270                                             
+   271                                                     #-----------------------------------------------------------------------------------------
+   272                                                     
+   273    252.4 MiB -24917.7 MiB        1680               for nombre in archivos:
+   274                                                         
+   275                                                         # De los archivos de Testigos levanto las opiniones de todos los agentes a lo largo de todo el proceso.
+   276                                                         # Estos archivos tienen las opiniones de dos agentes.
+   277                                                         
+   278    252.4 MiB -24579.7 MiB        1344                   Datos = ldata(path / nombre)
+   279                                                         
+   280    252.4 MiB -24579.7 MiB        1344                   Testigos = np.zeros((len(Datos)-2,len(Datos[1])-1)) # Inicializo mi array donde pondré las opiniones de los testigos.
+   281                                                         
+   282    252.4 MiB -600432.6 MiB       32846                   for i,fila in enumerate(Datos[1:-1:]):
+   283    252.4 MiB -575852.9 MiB       31502                       Testigos[i] = fila[:-1]
+   284    252.4 MiB -575852.9 MiB       31502                       Testigos[i] = Testigos[i]/PARAM_Y
+   285                                                         
+   286                                                         # De esta manera tengo mi array que me guarda los datos de los agentes a lo largo de la evolución del sistema.
+   287                                                         
+   288                                                         #----------------------------------------------------------------------------------------------------------------------------------
+   289                                                         
+   290                                                         # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
+   291    252.4 MiB -24579.7 MiB        1344                   repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"]) 
+   292    252.4 MiB -24579.7 MiB        1344                   if repeticion < 3:
+   293                                                         
+   294                                                             # Armo mi gráfico, lo guardo y lo cierro
+   295    252.4 MiB -36859.7 MiB        2016                       for topico in range(T):
+   296    252.4 MiB -36859.7 MiB        2016                           direccion_guardado = Path("../../../Imagenes/{}/OpivsT_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_Topico={}_Iter={}.png".format(carpeta,AGENTES,
+   297    252.4 MiB -18429.8 MiB        1008                                                     ID_param_x,PARAM_X,ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,topico,repeticion))
+   298    252.4 MiB -18429.8 MiB        1008                           plt.rcParams.update({'font.size': 32})
+   299    252.4 MiB -18429.8 MiB        1008                           plt.figure(figsize=(20,15))
+   300    252.4 MiB -18429.8 MiB        1008                           X = np.arange(Testigos.shape[0])*0.5
+   301    252.4 MiB -9233232.2 MiB      505008                           for sujeto in range(int(Testigos.shape[1])):
+   302    252.4 MiB -9214802.3 MiB      504000                               plt.plot(X,Testigos[:,sujeto*T+topico],color = "tab:purple", linewidth = 2, alpha = 0.4)
+   303    252.4 MiB -18429.6 MiB        1008                           plt.xlabel("Tiempo")
+   304    252.4 MiB -18429.6 MiB        1008                           plt.ylabel(r"$x^i$")
+   305    252.4 MiB -18429.6 MiB        1008                           plt.title("Evolución temporal")
+   306    252.4 MiB -18429.6 MiB        1008                           plt.grid(alpha = 0.5)
+   307    252.4 MiB   8698.2 MiB        1008                           plt.savefig(direccion_guardado ,bbox_inches = "tight")
+   308    252.4 MiB  -3603.0 MiB        1008                           plt.close()
+   309    252.4 MiB  -3603.0 MiB        1008                           plt.clf()
+   310    252.4 MiB -30690.4 MiB        1008                           gc.collect()
+
+
+Filename: /home/favio/Documentos/GitHub/Doctorado/Segundo Año/Modelo Interés/Programas Python/Interes_actualizado/Python/funciones.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+   234    252.4 MiB    252.4 MiB           1   @profile
+   235                                         def Graf_opi_vs_tiempo(DF,path,carpeta,T,
+   236                                                                ID_param_x,ID_param_y,
+   237                                                                ID_param_extra_1):
+   238                                             # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
+   239                                             # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
+   240                                             # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
+   241                                             
+   242                                             # Como graficar en todas las combinaciones de parámetros implica muchos gráficos, voy a 
+   243                                             # simplemente elegir tres valores de cada array, el primero, el del medio y el último.
+   244                                             
+   245    252.4 MiB      0.0 MiB           1       AGENTES = int(np.unique(DF["n"]))
+   246                                             
+   247                                             # Defino los arrays de parámetros diferentes
+   248                                             
+   249    252.4 MiB      0.0 MiB           1       Arr_EXTRAS = np.unique(DF["Extra"])
+   250    252.4 MiB      0.0 MiB           1       Arr_param_x = np.unique(DF["parametro_x"])
+   251    252.4 MiB      0.0 MiB           1       Arr_param_y = np.unique(DF["parametro_y"])
+   252                                             
+   253                                             
+   254                                             # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+   255    252.4 MiB      0.0 MiB         360       Tupla_total = [(param_x,param_y) for param_x in Arr_param_x
+   256    252.4 MiB      0.0 MiB         357                      for param_y in Arr_param_y]
+   257                                             
+   258                                             # Defino el tipo de archivo del cuál tomaré los datos
+   259    252.4 MiB      0.0 MiB           1       TIPO = "Testigos"
+   260                                             
+   261    264.5 MiB     -0.0 MiB           2       for EXTRAS in Arr_EXTRAS:
+   262    264.6 MiB     -6.6 MiB         337           for PARAM_X,PARAM_Y in Tupla_total:
+   263                                                     
+   264                                                     # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+   265    264.6 MiB    -39.4 MiB        2016               archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+   266    264.6 MiB     -6.6 MiB         336                                           (DF["n"]==AGENTES) & 
+   267    264.6 MiB     -6.6 MiB         336                                           (DF["Extra"]==EXTRAS) & 
+   268    264.6 MiB     -6.6 MiB         336                                           (DF["parametro_x"]==PARAM_X) &
+   269    264.6 MiB    -13.1 MiB         672                                           (DF["parametro_y"]==PARAM_Y), "nombre"])
+   270                                             
+   271                                                     #-----------------------------------------------------------------------------------------
+   272                                                     
+   273    264.6 MiB    -32.7 MiB        1680               for nombre in archivos:
+   274                                                         
+   275                                                         # De los archivos de Testigos levanto las opiniones de todos los agentes a lo largo de todo el proceso.
+   276                                                         # Estos archivos tienen las opiniones de dos agentes.
+   277                                                         
+   278    264.6 MiB    -26.2 MiB        1344                   Datos = ldata(path / nombre)
+   279                                                         
+   280    264.6 MiB    -26.2 MiB        1344                   Testigos = np.zeros((len(Datos)-2,len(Datos[1])-1)) # Inicializo mi array donde pondré las opiniones de los testigos.
+   281                                                         
+   282    264.6 MiB   -575.1 MiB       31909                   for i,fila in enumerate(Datos[1:-1:]):
+   283    264.6 MiB   -549.0 MiB       30565                       Testigos[i] = fila[:-1]
+   284    264.6 MiB   -549.0 MiB       30565                       Testigos[i] = Testigos[i]/PARAM_Y
+   285                                                         
+   286                                                         # De esta manera tengo mi array que me guarda los datos de los agentes a lo largo de la evolución del sistema.
+   287                                                         
+   288                                                         #----------------------------------------------------------------------------------------------------------------------------------
+   289                                                         
+   290                                                         # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
+   291    264.6 MiB    -26.2 MiB        1344                   repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"]) 
+   292    264.6 MiB    -26.2 MiB        1344                   if repeticion < 3:
+   293                                                         
+   294                                                             # Armo mi gráfico, lo guardo y lo cierro
+   295    264.6 MiB    -39.2 MiB        2016                       for topico in range(T):
+   296    264.6 MiB    -39.1 MiB        2016                           direccion_guardado = Path("../../../Imagenes/{}/OpivsT_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_Topico={}_Iter={}.png".format(carpeta,AGENTES,
+   297    264.6 MiB    -19.6 MiB        1008                                                     ID_param_x,PARAM_X,ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,topico,repeticion))
+   298    264.6 MiB    -19.6 MiB        1008                           plt.rcParams.update({'font.size': 32})
+   299    264.6 MiB    -19.6 MiB        1008                           plt.figure(figsize=(20,15))
+   300    264.6 MiB    -19.6 MiB        1008                           X = np.arange(Testigos.shape[0])*0.5
+   301    264.6 MiB  -9812.6 MiB      505008                           for sujeto in range(int(Testigos.shape[1])):
+   302    264.6 MiB  -9792.2 MiB      504000                               plt.plot(X,Testigos[:,sujeto*T+topico],color = "tab:purple", linewidth = 2, alpha = 0.4)
+   303    264.6 MiB    -19.6 MiB        1008                           plt.xlabel("Tiempo")
+   304    264.6 MiB    -19.6 MiB        1008                           plt.ylabel(r"$x^i$")
+   305    264.6 MiB    -19.6 MiB        1008                           plt.title("Evolución temporal")
+   306    264.6 MiB    -19.6 MiB        1008                           plt.grid(alpha = 0.5)
+   307    264.6 MiB     -8.0 MiB        1008                           plt.savefig(direccion_guardado ,bbox_inches = "tight")
+   308    264.6 MiB    -19.4 MiB        1008                           plt.close()
+   309    264.6 MiB    -19.4 MiB        1008                           plt.clf()
+   310    264.6 MiB    -19.6 MiB        1008                           gc.collect()
+
+
+Esto tardó 7910.323601722717 segundos

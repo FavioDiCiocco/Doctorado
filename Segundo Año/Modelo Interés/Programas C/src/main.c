@@ -38,7 +38,8 @@ int main(int argc, char *argv[]){
 	param->kappa = strtof(argv[2],NULL); // Esta amplitud regula la relación entre el término lineal y el término logístico
 	param->epsilon = strtof(argv[3],NULL); // Este es el umbral que determina si el interés del vecino puede generarme más interés.
 	param->alfa = strtof(argv[4],NULL); // Ex-Controversialidad de los tópicos
-	int iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
+	param->Gradomedio = strtol(argv[5],NULL,10); // Este es el grado medio de la red utilizada
+	int iteracion = strtol(argv[6],NULL,10); // Número de instancia de la simulación.
 	
 	// Los siguientes son los parámetros que están dados en los structs
 	param->T = 1;  // Cantidad de temas sobre los que opinar
@@ -48,8 +49,7 @@ int main(int argc, char *argv[]){
 	param->dt = 0.01; // Paso temporal de iteración del sistema
 	param->NormDif = sqrt(param->N*param->T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	param->CritCorte = pow(10,-4); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
-	param->testigos = fmin(param->N,50); // Esta es la cantidad de agentes de cada distancia que voy registrar
-	param->Gradomedio = 6; // Este es el grado medio de la red utilizada
+	param->testigos = fmin(param->N,500); // Esta es la cantidad de agentes de cada distancia que voy registrar
 	
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
@@ -162,7 +162,8 @@ int main(int argc, char *argv[]){
 	Escribir_d(red->Opi,FileOpi);
 	
 	fprintf(FileTestigos,"Opiniones Testigos\n");
-	
+	for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos,"%lf\t", red->Opi[ j*param->T+k+2 ] ); // Me guardo los valores de opinión de mis agentes testigo
+	fprintf(FileTestigos,"\n");
 	
 	// Hago los primeros pasos del sistema para tener estados previos con los que comparar
 	for(int i=0; i<param->pasosprevios; i++){
@@ -201,7 +202,7 @@ int main(int argc, char *argv[]){
 			red->Variacion_promedio = Norma_d(red->Dif) / param->NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
 			
 			// Escritura
-			if(iOpiPasado % 50 == 0){
+			if(pasos % 50 == 0){
 				fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio
 				for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos,"%lf\t", red->Opi[ j*param->T+k+2 ] ); // Me guardo los valores de opinión de mis agentes testigo
 				fprintf(FileTestigos,"\n");
@@ -227,7 +228,7 @@ int main(int argc, char *argv[]){
 			red->Variacion_promedio = Norma_d(red->Dif) / param->NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
 			
 			// Escritura
-			if(iOpiPasado % 50 == 0){
+			if(pasos % 50 == 0){
 				fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio 
 				for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] ); // Me guardo los valores de opinión de mis agentes testigo
 				fprintf(FileTestigos,"\n");
