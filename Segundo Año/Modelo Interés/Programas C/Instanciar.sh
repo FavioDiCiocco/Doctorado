@@ -14,26 +14,35 @@ echo "El ID del script es $$"
 # Voy a Hardcodear algunos Arrays
 
 Arr_Agentes=(1000)
+Arr_Alfas=(4)
+
+############################################################
 
 Arr_Epsilon=()
 
-for val in {0..20}
+for val in {0..40}
 do
-	cuenta=`echo $val*0.1+1.8 | bc -l`
+	cuenta=`echo $val*0.05+1.5 | bc -l`
 	Arr_Epsilon+=( $cuenta )
 done
 
+############################################################
 
-Arr_Alfas=(4)
 
-Arr_Kappas=(3)
+Arr_Kappas=()
+for val in {0..30}
+do
+	cuenta=`echo $val*0.05+0.5 | bc -l`
+	Arr_Kappas+=( $cuenta )
+done
+
 
 
 if [ -z $decision ]
 then
 	for N in ${Arr_Agentes[@]}
 	do
-		for iteracion in {0..40}
+		for iteracion in {0..5}
 		do
 			for Kappa in ${Arr_Kappas[@]}
 			do
@@ -41,7 +50,7 @@ then
 				do
 					for Epsilon in ${Arr_Epsilon[@]}
 					do
-						echo Kappa=$Kappa, Alfa = $Alfa, Epsilon = $Epsilon
+						echo Kappa=$Kappa, Epsilon = $Epsilon, Alfa = $Alfa
 						./$1.e $N $Kappa $Epsilon $Alfa $iteracion
 					done
 				done

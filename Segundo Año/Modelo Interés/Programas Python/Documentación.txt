@@ -32,4 +32,11 @@ guardan datos de 100 agentes con el objetivo de armar gráficos de Interes vs Ti
 con las líneas grises finitas. El plan es a partir de estos datos armar gráficos de 
 Promedio de Opiniones, Tiempo de convergencia e interés vs Tiempo.
 
-
+Interes_actualizado:
+--------------------
+En esta carpeta pongo datos de un barrido en Kappa y Epsilon. Barro Kappa entre [0.5,2]
+y Epsilon entre [1.5,3.5]. La idea es armar un ensamble de datos en el espacio de parámetros
+para estudiar el comportamiento del sistema en función del grado medio de las redes.
+Uso para esto redes de grado medio 3 a 6. No puedo usar redes de grado medio 2
+ La carpeta dice actualizado porque en el código implementé el uso de una lista de vecinos como
+la que usaba Hugo en su código. Esto me sirve para mejorar la velocidad de las simulaciones.

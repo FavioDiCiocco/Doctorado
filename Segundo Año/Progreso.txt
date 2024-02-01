@@ -3299,3 +3299,58 @@ resultados. La idea es ver algunos gráficos a ver si los agentes polarizan. Par
 las opiniones tengan alta varianza y un promedio entorno a un valor de 0.5. Estoy pensando que voy a
 tener que normalizar mis resultados. Y voy a empezar a tomar funciones de la carpeta de Python de
 Evolucion_temporal.
+
+------------------------------------------------------------------------------------------
+
+31/01/2024
+
+En la mañana fui a cambiar el libro y a comprar unas cosas. Vine más tarde a la facultad. Me
+puse a preparar las cosas en Setubal para poder mandar a correr los datos, pero resulta que
+no tengo permiso para actualizar los paquetes de Python que necesito, y tampoco tengo
+permiso para usar Bash para mandar a correr mis programas. Así que nada, no puedo hacer nada ahí.
+
+Mandé a correr esto en la pc de la facultad. Mi miedo es cuánto espacio terminaría ocupando esto.
+Hoy estoy muerto de sueño, no es un gran día para el laburo. Intentemos poner de vuelta en
+perspectiva lo que tengo que hacer, organizar el trabajo y ponerme metas para hoy, mañana
+y el viernes.
+
+Por un lado estoy mandando a correr datos para el modelo de interés. Estos datos son para observar
+si el sistema logra obtener polarización en casos con redes de grado medio bajo. Así que
+sobre estos datos lo que yo querría hacer es armar gráficos de opinión en función del tiempo en
+principio. Si observo lo que busco en esos gráficos, entonces vale la pena pensar cómo detectar
+esos estados.
+
+También tengo anotado que debería mirarl el tema de la transición. Creo que con Lupi lo que habíamos
+hablado es armar un nuevo gráfico como el que tengo donde se ve que para distintos epsilons se produce
+un salto en el valor medio final del sistema. Eso lo puedo ver usando los datos que tengo, 
+armando los gráficos a partir de fijar algunos de los valores de Epsilon barridos.
+
+Lo tercero por hacer era mirar la ecuación dinámica para ver si permite que haya polarización
+de la forma en que lo estudiaron la gente de GOTHAM. Ahora que lo pienso, no suena muy realista
+encontrar una solución de este tipo.
+
+Entonces no estoy tan atrasado en laburo, los datos que estoy mandando a hacer y que van a estar
+terminados hoy, me sirven para el primer y segundo punto. Lo que podría hacer ahora es preparar
+el código de Python para que eso esté resuelto. Después puedo ponerme a ver el tema analítico
+a ver si el modelo admite que haya dos puntos estables simultáneos. O más bien un estado en el
+cual algunos agentes ganen interés y otros no. Por último, haré los gráficos pertinentes.
+
+Me está guardando los datos de testigos a cada paso. Y además, me está guardando datos de un puñado
+de testigos, me estoy dando cuenta que esto no va para ningún lado. Hagamos una cosa, corrijamos
+la escritura de datos testigos y veamos de mandar tres iteraciones para resolver esto.
+
+Voy a tener que ver cómo correctamente separar mis datos en Coimbra y en Oporto. Creo que voy
+a armar carpetas de Interés y de Opiniones, igual que en la pc mia.
+
+
+Mañana Jueves:
+--------------
+
+Ya mañana me pondré a pensar cómo estudiar el tema de los estados oscilantes, la región en la que
+aparecen y la fracción de estados que tengo. Eso creo que está supeditado a que realice las
+simulaciones que necesito en Oporto y Coimbra. Pablo decía además que haga un barrido más
+fino. Considerar eso más tarde.
+
+Tengo que ponerme a estudiar para el final de Flujos geofísicos, es el final que puedo rendir.
+Así que arrancaré con eso. Voy a repasar lo que tengo anotado de la teórica. Seguiré con mi
+plan de repasar todo y después veré qué le puedo presentar a Mininni.

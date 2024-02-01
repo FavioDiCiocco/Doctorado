@@ -48,11 +48,12 @@ int main(int argc, char *argv[]){
 	param->dt = 0.01; // Paso temporal de iteración del sistema
 	param->NormDif = sqrt(param->N*param->T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	param->CritCorte = pow(10,-4); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
-	param->testigos = fmin(param->N,6); // Esta es la cantidad de agentes de cada distancia que voy registrar
-	param->Gradomedio = 4; // Este es el grado medio de la red utilizada
+	param->testigos = fmin(param->N,50); // Esta es la cantidad de agentes de cada distancia que voy registrar
+	param->Gradomedio = 6; // Este es el grado medio de la red utilizada
 	
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
+	int pasos = 0; // Esta es la cantidad de pasos de simulación que realiza el código
 	
 	// Voy a armar mi array de punteros, el cual voy a usar para guardar los datos de pasos previos del sistema
 	double* OpiPrevias[param->pasosprevios];
@@ -169,12 +170,11 @@ int main(int argc, char *argv[]){
 		// Evolución
 		RK4(red->Opi, func_dinamica, func_activacion, red, param);
 		
-		// Escritura
-		for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[j*param->T+k+2]);
-		fprintf(FileTestigos,"\n");
-		
 		// Registro el estado actual en el array de OpinionesPrevias.
 		for(int j=0; j<param->N*param->T; j++) *(OpiPrevias[i]+j+2) = red->Opi[j+2];
+		
+		// Actualización índices
+		pasos++;
 	}
 	
 	//################################################################################################################################
@@ -201,12 +201,15 @@ int main(int argc, char *argv[]){
 			red->Variacion_promedio = Norma_d(red->Dif) / param->NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
 			
 			// Escritura
-			fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio
-			for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos,"%lf\t", red->Opi[ j*param->T+k+2 ] ); // Me guardo los valores de opinión de mis agentes testigo
-			fprintf(FileTestigos,"\n");
+			if(iOpiPasado % 50 == 0){
+				fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio
+				for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos,"%lf\t", red->Opi[ j*param->T+k+2 ] ); // Me guardo los valores de opinión de mis agentes testigo
+				fprintf(FileTestigos,"\n");
+			}
 			
 			// Actualización de índices
 			iOpiPasado++; // Avanzo el valor de iOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
+			pasos++;
 			
 		}
 		while( red->Variacion_promedio > param->CritCorte);
@@ -224,13 +227,16 @@ int main(int argc, char *argv[]){
 			red->Variacion_promedio = Norma_d(red->Dif) / param->NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
 			
 			// Escritura
-			fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio 
-			for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] ); // Me guardo los valores de opinión de mis agentes testigo
-			fprintf(FileTestigos,"\n");
+			if(iOpiPasado % 50 == 0){
+				fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio 
+				for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] ); // Me guardo los valores de opinión de mis agentes testigo
+				fprintf(FileTestigos,"\n");
+			}
 			
 			// Actualización de índices
 			iOpiPasado++; // Avanzo el valor de IndiceOpiPasado para que las comparaciones entre pasos se mantengan a distancia $i_pasosprevios
-			contador +=1; // Avanzo el contador para que el sistema haga una cantidad $i_Itextra de iteraciones extras
+			contador++; // Avanzo el contador para que el sistema haga una cantidad $i_Itextra de iteraciones extras
+			pasos++;
 		}
 		
 		// Si el sistema evolucionó menos veces que la cantidad arbitraria, es porque rompió la condiciones de corte.
@@ -246,6 +252,8 @@ int main(int argc, char *argv[]){
 	fprintf(FileOpi, "\n");
 	fprintf(FileOpi, "Opiniones finales\n");
 	Escribir_d(red->Opi, FileOpi);
+	fprintf(FileOpi, "Pasos Simulados\n");
+	fprintf(FileOpi, "%d\n", pasos);
 	fprintf(FileOpi, "Semilla\n");
 	fprintf(FileOpi, "%ld\n", semilla);
 	fprintf(FileOpi, "Matriz de Adyacencia\n"); // Guardo esto para poder comprobar que la red sea conexa.

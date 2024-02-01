@@ -20,10 +20,10 @@ from pathlib import Path
 t0 = time.time()
 
 T=1 # Defino el número de tópicos
-Etapa = Path("Exploracion_Logistica") # Defino el nombre de la etapa del trabajo en la que estoy
+Etapa = Path("Interes_actualizado") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Datos"]
+Carpetas = ["Datos/gm=6"]
 
 for carp in Carpetas:
     
@@ -41,44 +41,51 @@ for carp in Carpetas:
     
     #-------------------------------------------------------------------------------------------------------
     
-    # Es importante partir del hecho de que mis archivos llevan por nombre: "Opiniones_N=$_kappa=$_alfa=$_Iter=$.file"
-    # También tengo otros archivos llamados "Testigos_N=$_kappa=$_alfa=$_Iter=$.file" y
+    # Es importante partir del hecho de que mis archivos llevan por nombre: "Opiniones_N=$_Cosd=$_kappa=$_epsilon=$_Iter=$.file"
+    # También tengo otros archivos llamados "Testigos_N=$_Cosd=$_kappa=$_epsilon=$_Iter=$.file" y
     
     Df_archivos = pd.DataFrame({"nombre": Archivos_Datos})
     
     # Hecho mi dataframe, voy a armar columnas con los parámetros que varían en los nombres de mis archivos
     Df_archivos["tipo"] = Df_archivos["nombre"].apply(lambda x: x.split("_")[0])
-    Df_archivos["n"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[1].split("=")[1]))
-    Df_archivos["parametro_1"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
-    Df_archivos["parametro_2"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
-    Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1].strip(".file")))
+    Df_archivos["n"] = Df_archivos["nombre"].apply(lambda x: int(x.split("_")[1].split("=")[1]))
+    Df_archivos["Extra"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
+    Df_archivos["parametro_x"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1]))
+    Df_archivos["parametro_y"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
+    Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[5].split("=")[1].strip(".file")))
     
     #----------------------------------------------------------------------------------------------
 
     # Por un lado necesito los nombres que pasaré a los títulos de los archivos
+    # ID es por el nombre del parámetro.
+    # Todo parámetro que no grafique es un parámetro extra
     
-    nombre_parametro_1 = "kappa"
-    nombre_parametro_2 = "alfa"
+    ID_param_extra_1 = "Cosd"
+    ID_param_x = "epsilon"
+    ID_param_y = "kappa"
     
     # Lo otro que necesito es el nombre que pasaré a los ejes de los gráficos de las funciones
+    # SIM significa símbolo, porque esto lo uso para escribir el símbolo de ese parámetro
+    # Todo parámetro que no grafique es un parámetro extra
     
-    titulo_parametro_1 = r"\kappa"
-    titulo_parametro_2 = r"\alpha"
+    SIM_param_extra_1 = r"Cos(\delta)"
+    SIM_param_x = r"\epsilon"
+    SIM_param_y = r"\kappa"
     
     #----------------------------------------------------------------------------------------------
     
-    func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-                                         titulo_parametro_1, titulo_parametro_2, True)
+    # func.Mapa_Colores_Promedio_opiniones(Df_archivos, Direccion, Etapa/carpeta,
+    #                                      SIM_param_x, SIM_param_y, True)
 
     #----------------------------------------------------------------------------------------------
     
-    func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
-                                         titulo_parametro_1, titulo_parametro_2, True)
+    # func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
+    #                                      SIM_param_x, SIM_param_y, True)
     
     #----------------------------------------------------------------------------------------------
     
     func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta, T,
-                            nombre_parametro_1, nombre_parametro_2)
+                            ID_param_x = "epsilon", ID_param_y = "kappa")
     
     #----------------------------------------------------------------------------------------------
     

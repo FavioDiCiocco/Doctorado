@@ -17,7 +17,7 @@ ahora no barro en dos parámetros, sino en 3. Eso hace que tenga tres opciones:
 .) La primera es actualizar el código considerando tres parámetros de barrido
 .) La segunda es que extienda el código de graficar cosa de que dependiendo
 de qué quiera graficar asigne los nombres de parametro 1 y 2 en el pandas.
-.) La tercer es usar el código como está asumiendo que no necesito hacer todos los 
+.) La tercera es usar el código como está asumiendo que no necesito hacer todos los 
 gráficos en todas las posibles combinaciones de parámetros.
 
 Veremos finalmente qué resuelvo. Se me ocurre que será una mezcla del 1 y 2

@@ -229,8 +229,9 @@ def MaxProm_vs_olvido(DF,path,carpeta,T=2):
 # Esta función me construye el gráfico de opinión en función del tiempo
 # para cada tópico para los agentes testigos.
 
-def Graf_opi_vs_tiempo(DF,path,carpeta,T=2,
-                       nombre_parametro_1="parametro1",nombre_parametro_2="parametro2"):
+def Graf_opi_vs_tiempo(DF,path,carpeta,T,
+                       ID_param_x,ID_param_y,
+                       ID_param_extra_1):
     # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
     # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
     # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
@@ -238,86 +239,68 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T=2,
     # Como graficar en todas las combinaciones de parámetros implica muchos gráficos, voy a 
     # simplemente elegir tres valores de cada array, el primero, el del medio y el último.
     
-    Ns = np.unique(DF["n"])
+    AGENTES = int(np.unique(DF["n"]))
     
-    """
-    # Defino los valores de Parametro_1 que planeo graficar
-    Valores_importantes_1 = [0,math.floor(len(np.unique(DF["parametro_1"]))/4),
-                            math.floor(3*len(np.unique(DF["parametro_1"]))/4),
-                            math.floor(3*len(np.unique(DF["parametro_1"]))/4),
-                            len(np.unique(DF["parametro_1"]))-1]
+    # Defino los arrays de parámetros diferentes
     
-    # Defino los valores de Parametro_2 que planeo graficar
-    Valores_importantes_2 = [0,math.floor(len(np.unique(DF["parametro_2"]))/4),
-                            math.floor(3*len(np.unique(DF["parametro_2"]))/4),
-                            math.floor(3*len(np.unique(DF["parametro_2"]))/4),
-                            len(np.unique(DF["parametro_2"]))-1]
+    Arr_EXTRAS = np.unique(DF["Extra"])
+    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_y = np.unique(DF["parametro_y"])
     
-    # Armo los arrays de mis parámetros y después armo la Tupla_Total
-    Array_parametro_1 = np.unique(DF["parametro_1"])[Valores_importantes_1]
-    Array_parametro_2 = np.unique(DF["parametro_2"])[Valores_importantes_2]
     
-    #-----------------------------------------------------------------------------
-    
-    Array_parametro_1 = np.unique(DF["parametro_1"])[np.unique(DF["parametro_1"]) <= 2]
-    Array_parametro_2 = np.unique(DF["parametro_2"])
-    """
-    
-    # Armo los arrays de mis parámetros y después armo la Tupla_Total
-    
-    Array_parametro_1 = np.array([1,1.1,1.3,1.5])
-    Array_parametro_2 = np.array([6,6.1,7.3])
-    
-    Tupla_total = [(n,parametro_1,parametro_2) for n in Ns
-                   for parametro_1 in Array_parametro_1
-                   for parametro_2 in Array_parametro_2]
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(param_x,param_y) for param_x in Arr_param_x
+                   for param_y in Arr_param_y]
     
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Testigos"
     
-    for AGENTES,PARAMETRO_1,PARAMETRO_2 in Tupla_total:
-        
-        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
-        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
-                                    (DF["n"]==AGENTES) & 
-                                    (DF["parametro_1"]==PARAMETRO_1) & 
-                                    (DF["parametro_2"]==PARAMETRO_2), "nombre"])
-
-        #-----------------------------------------------------------------------------------------
-        
-        for nombre in archivos:
+    for EXTRAS in Arr_EXTRAS:
+        for PARAM_X,PARAM_Y in Tupla_total:
             
-            # De los archivos de Testigos levanto las opiniones de todos los agentes a lo largo de todo el proceso.
-            # Estos archivos tienen las opiniones de dos agentes.
+            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                        (DF["n"]==AGENTES) & 
+                                        (DF["Extra"]==EXTRAS) & 
+                                        (DF["parametro_x"]==PARAM_X) &
+                                        (DF["parametro_y"]==PARAM_Y), "nombre"])
+    
+            #-----------------------------------------------------------------------------------------
             
-            Datos = ldata(path / nombre)
-            
-            Testigos = np.zeros((len(Datos)-2,len(Datos[1])-1)) # Inicializo mi array donde pondré las opiniones de los testigos.
-            
-            for i,fila in enumerate(Datos[1:-1:]):
-                Testigos[i] = fila[:-1]
-            
-            # De esta manera tengo mi array que me guarda los datos de los agentes a lo largo de la evolución del sistema.
-            
-            #----------------------------------------------------------------------------------------------------------------------------------
-            
-            # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
-            repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-            direccion_guardado = Path("../../../Imagenes/{}/OpivsT_N={:.0f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,nombre_parametro_1,PARAMETRO_1,nombre_parametro_2,PARAMETRO_2,repeticion))
-            
-            # Armo mi gráfico, lo guardo y lo cierro
-            
-            plt.rcParams.update({'font.size': 32})
-            plt.figure("Topico",figsize=(20,15))
-            X = np.arange(Testigos.shape[0])*0.01
-            for sujeto in range(int(Testigos.shape[1]/T)):
+            for nombre in archivos:
+                
+                # De los archivos de Testigos levanto las opiniones de todos los agentes a lo largo de todo el proceso.
+                # Estos archivos tienen las opiniones de dos agentes.
+                
+                Datos = ldata(path / nombre)
+                
+                Testigos = np.zeros((len(Datos)-2,len(Datos[1])-1)) # Inicializo mi array donde pondré las opiniones de los testigos.
+                
+                for i,fila in enumerate(Datos[1:-1:]):
+                    Testigos[i] = fila[:-1]
+                
+                # De esta manera tengo mi array que me guarda los datos de los agentes a lo largo de la evolución del sistema.
+                
+                #----------------------------------------------------------------------------------------------------------------------------------
+                
+                # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
+                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"]) 
+                
+                # Armo mi gráfico, lo guardo y lo cierro
                 for topico in range(T):
-                    plt.plot(X,Testigos[:,sujeto*T+topico], color = "tab:brown" ,linewidth = 2, alpha = 0.3)
-            plt.xlabel("Tiempo")
-            plt.ylabel(r"$x^i$")
-            plt.grid(alpha = 0.5)
-            plt.savefig(direccion_guardado ,bbox_inches = "tight")
-            plt.close("Topico")
+                    direccion_guardado = Path("../../../Imagenes/{}/OpivsT_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_Topico={}_Iter={}.png".format(carpeta,AGENTES,
+                                              ID_param_x,PARAM_X,ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,topico,repeticion))
+                    plt.rcParams.update({'font.size': 32})
+                    plt.figure("Topico",figsize=(20,15))
+                    X = np.arange(Testigos.shape[0])*0.1
+                    for sujeto in range(int(Testigos.shape[1]/2)):
+                        plt.plot(X,Testigos[:,sujeto*T+topico],color = "tab:purple", linewidth = 2, alpha = 0.4)
+                    plt.xlabel("Tiempo")
+                    plt.ylabel(r"$x^i$")
+                    plt.title("Evolución temporal")
+                    plt.grid(alpha = 0.5)
+                    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+                    plt.close("Topico")
 
         
 #-----------------------------------------------------------------------------------------------
