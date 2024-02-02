@@ -211,7 +211,7 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                 Datos = ldata(path / nombre)
                 
                 # Leo los datos de las Opiniones Finales
-                Opifinales = np.array(Datos[5][:-1:], dtype="float")
+                Opifinales = np.array(Datos[5][::], dtype="float")
                 
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
                 
@@ -1036,6 +1036,8 @@ def Diccionario_metricas(DF,path,N):
             
             Varianza_X = np.zeros(archivos.shape[0])
             Varianza_Y = np.zeros(archivos.shape[0])
+            Covarianza = np.zeros(archivos.shape[0])
+            Promedios = np.zeros(archivos.shape[0])
             Entropia = np.zeros(archivos.shape[0])
             
             for nombre in archivos:
@@ -1054,7 +1056,7 @@ def Diccionario_metricas(DF,path,N):
                 Opifinales = np.zeros((T,AGENTES))
         
                 for topico in range(T):
-                    Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
+                    Opifinales[topico,:] = np.array(Datos[5][topico::T], dtype="float")
                     Opifinales[topico,:] = Opifinales[topico,:]/ EXTRAS
                 
                 # Esta función normaliza las Opiniones Finales usando la 
@@ -1068,6 +1070,8 @@ def Diccionario_metricas(DF,path,N):
                 M_cov = np.cov(Opifinales)
                 Varianza_X[repeticion] = M_cov[0,0]
                 Varianza_Y[repeticion] = M_cov[1,1]
+                Covarianza[repeticion] = M_cov[0,1]
+                Promedios[repeticion] = np.linalg.norm(np.array(Datos[5][::], dtype="float"),ord=1) / np.array(Datos[5][::], dtype="float").shape[0]
                 
                 # Tengo que rearmar Opifinales para que sea un sólo vector con todo
                 
@@ -1088,16 +1092,19 @@ def Diccionario_metricas(DF,path,N):
             Salida[EXTRAS][PARAM_X][PARAM_Y]["Entropia"] = Entropia/np.log2(N*N)
             Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"] = Varianza_X
             Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"] = Varianza_Y
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"] = Covarianza
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Promedios"] = Promedios
             
     return Salida
 
 #-----------------------------------------------------------------------------------------------
 
-def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y):
+def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y, Covarianza, Promedios):
     
     Resultados = np.zeros(len(Entropia))
     
-    for i,ent,sx,sy in zip(np.arange(len(Entropia)),Entropia,Sigma_X,Sigma_Y):
+    for i,ent,sx,sy,cov,prom in zip(np.arange(len(Entropia)),
+                                    Entropia, Sigma_X, Sigma_Y, Covarianza, Promedios):
         
         # Reviso la entropía y separo en casos con y sin anchura
         
@@ -1106,38 +1113,43 @@ def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y):
             # Estos son casos sin anchura
             
             if sx < 0.1 and sy < 0.1:
+                
                 # Caso de un sólo extremo
-                Resultados[i] = 0
+                
+                # Consenso neutral
+                if prom < 0.1:
+                    Resultados[i] = 0
+                
+                # Consenso radicalizado
+                else:
+                    Resultados[i] = 1
+                    
             
             # Casos de dos extremos
             elif sx >= 0.1 and sy < 0.1:
                 # Dos extremos horizontal
-                Resultados[i] = 1
+                Resultados[i] = 2
             elif sx < 0.1 and sy >= 0.1:
                 # Dos extremos vertical
-                Resultados[i] = 2
+                Resultados[i] = 3
                 
             else:
                 if ent < 0.18:
                     # Dos extremos ideológico
-                    Resultados[i] = 3
-                elif ent < 0.22:
-                    # Tres extremos
                     Resultados[i] = 4
+                elif ent < 0.23:
+                    # Estados de Transición
+                    Resultados[i] = 5
                 else:
                     # Cuatro extremos
-                    Resultados[i] = 5
+                    Resultados[i] = 6
         
         else:
             
             # Estos son los casos con anchura
             
-            if sx < 0.1 and sy < 0.1:
-                # Caso de un sólo extremo
-                Resultados[i] = 6
-            
             # Casos de dos extremos
-            elif sx >= 0.1 and sy < 0.1:
+            if sx >= 0.1 and sy < 0.1:
                 # Dos extremos horizontal
                 Resultados[i] = 7
             elif sx < 0.1 and sy >= 0.1:
@@ -1145,8 +1157,14 @@ def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y):
                 Resultados[i] = 8
             
             else:
-                # Dos extremos ideológico, tres extremos y cuatro extremos
-                Resultados[i] = 9
+                # Polarización
+                # Polarización ideológica
+                if np.abs(cov) >= 0.1:
+                    Resultados[i] = 9
+                    
+                # Polarización descorrelacionada
+                else:
+                    Resultados[i] = 10
                 
     return Resultados
 

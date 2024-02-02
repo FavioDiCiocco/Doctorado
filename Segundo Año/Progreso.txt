@@ -3444,3 +3444,81 @@ Dicho esto, mañana creo que me voy a poner a trabajar directo en el proyecto de
 Y definitivamente voy a por lo menos revisar la carpeta teórica de la materia que tengo que
 rendir con Mininni. Y tengo que mandar a correr los datos en las pc's de Oporto y demás.
 Así que seguramente aproveche para separar en dos carpetas los datos.
+
+------------------------------------------------------------------------------------------
+
+02/02/2024
+
+Ayer antes de irme aproveché y mandé a correr en Oporto simulaciones para completar
+el espacio con Kappa hasta 20 en el barrido Beta-Kappa. Por lo que vi, Ale no está
+usando la pc de Algarve, sólo Coimbra. Así que debería pasar los datos de Coimbra
+a Algarve para poder mandar a correr eso. Y ya que estoy, aprovecho para separar en
+Algarve los datos en dos carpetas.
+
+Ahí mandé en Algarve a correr los datos para complementar las simulaciones en el espacio
+Beta-cos(delta). La idea es que para la región de Beta [0,0.5) y de (1,2] se completen las
+simulaciones de 20 a 39. Ya hecho eso, puedo mandar a simular toda la región entera para
+conseguir ensambles de 100 simulaciones. De paso, por lo que vi del tiempo que está tardando
+en completarse las simulaciones de Oporto, creo que siendo generoso eso va a estar el lunes.
+Siendo realista, va a estar el jueves. Es  mucho tiempo diría yo. Creo que voy a dejar
+simulaciones hasta Kappa=20, pero en general haré simulaciones hasta Kappa=15 para completar
+estadística. En especial porque acordate que esto necesita completar dos iteraciones. 
+Me sorprende mucho lo que está tardando. Como empecé a cambiar los nombres de los archivos
+de salida, resultó necesario actualizar el código Bash de Asesinar.sh para que detecte
+correctamente los archivos con los nombres tales que corte las simulaciones.
+
+El plan para hoy es continuar con el trabajo con la gente de España y revisar un poco
+la materia de Mininni. 
+
+Para el trabajo con la gente de España puedo ponerme a revisar el tema de los
+estados que no terminan de converger o puedo revisar la clasificación de estados,
+incorporando el uso de la covarianza para identificar estados y corregir mi algoritmo
+de clasificación, así como empezar a ver cómo emplear un clasificador.
+
+Sobre lo primero, Pablo quiere que revise en qué región existen estados y en qué proporción.
+Eso sólo puedo verlo teniendo un ensamble de datos. Considerando lo que tardan en hacerse
+las simulaciones, no sé si tendré eso para la próxima juntada, pero puedo intentar
+resolver la mayor parte posible. O quizás hacer estadística con lo que tenga.
+Creo que haré esto último, así que la semana que viene tengo que arrancar preparando
+funciones para revisar lo que me pidió Pablo. Básicamente un único gráfico que construya
+la fracción de estados que corren hasta el tiempo máximo.
+
+NO OLVIDAR LA SEMANA QUE VIENE HACER LA PRESENTACIÓN DEL AVANCE DEL DOCTORADO.
+
+Creo que voy a arrancar con lo segundo. Agregar la detección de la covarianza es un detalle.
+En los casos de consenso radical, la covarianza da cercana a cero. En casos de polarización
+en un eje, la covarianza da cercana a cero. Cuando la polarización es ideológica da cercana
+a 0.7. El caso de tres ejes no importa porque no aparece mucho. En el caso de polarización
+descorrelacionada en cambio da cercano a cero. En los casos con anchura pasa algo parecido.
+
+Bien, esto diferencia fácilmente los estados de polarización ideológica respecto de los de
+polarización descorrelacionada. Aprovechemos para diferenciar los estados con la info que
+tuvimos antes. Implementé el uso de la covarianza y de los promedios como una métrica en
+mi archivo.
+ Lo siguiente es cambiar las etiquetas que coloca la función que identifica estados.
+Tengo que considerar que entonces los estados que voy a observar son otros, en consideración
+de lo que mencioné en la última charla:
+
+
+Estados sin anchura:
+--------------------
+0) Estados de consenso Neutral
+1) Consenso radicalizado
+2) Polarización unidimensional horizontal
+3) Polarización unidimensional vertical
+4) Polarización ideológica
+5) Estado de Transición (Previamente tres picos)
+6) Polarización Descorrelacionada
+
+Estados con anchura:
+--------------------
+7) Polarización unidimensional horizontal
+8) Polarización unidimensional vertical
+9) Polarización Ideológica
+10) Polarización Descorrelacionada
+
+Tuve una reunión con Lupi, anotamos varias cosas para hacer con el trabajo del modelo de interés.
+Vamos a ver si puedo tener la mayoría resuelta para la semana que viene. Después de eso,
+terminé de modificar la forma de detectar estados de mi función que Identifica estados.
+Como última cosa hoy, voy a poner esos cambios en el archivo de funciones tanto en Coimbra como
+en Oporto.
