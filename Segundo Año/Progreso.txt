@@ -3522,3 +3522,38 @@ Vamos a ver si puedo tener la mayoría resuelta para la semana que viene. Despu�
 terminé de modificar la forma de detectar estados de mi función que Identifica estados.
 Como última cosa hoy, voy a poner esos cambios en el archivo de funciones tanto en Coimbra como
 en Oporto.
+
+------------------------------------------------------------------------------------------
+
+05/02/2024
+
+Hoy llegué un poco más tarde, la alarma me traicionó. También me traicionó el Instanciar que estaba en
+la computadora de Algarve, hubo una parte de las simulaciones que no se corrió porque había mal
+escrito un comando.
+
+Estas correcciones que hice nos las puedo mandar de una porque ahora estoy armando más datos, y sería
+un problema intentar acceder a un archivo mientras se está creando. Así que eso queda descartado por ahora.
+Lo que tengo para hacer es charlar con Hugo sobre el tema de obtener datos de las distribuciones de ANES
+formados de a pares. Mientras eso se resuelve, lo único que quedaría revisar por mi parte es investigar
+sobre la aplicación de un clasificador para poder catalogar los distintos estados.
+ ¿No hay algo más que pueda hacer en la caracterización de la oscilación? Mandé a correr nuevamente la
+simulación de 1D en mi pc, mi objetivo es comparar si finalmente es cierto que se ven tan distintos
+los gráficos de OpivsTiempo de la simulación de Hugo y la mía. Podría ponerme a ver el detalle de cómo
+van evolucionando y ver si puedo encontrar el error ahí. Eso es una opción. Vamos a concentrarnos en
+revisar el tema de los clasificadores.
+
+
+################################################################################################
+Una cosa que podría hacer es mandar a correr los datos para completar el gráfico que
+muestra el salto de la transición. Eso lo voy a hacer mañana así no tengo que quedarme hoy
+hasta tarde esperándolo.
+################################################################################################
+
+Estoy mirando como hacer el tema del clasificador, por lo que me propone el ChatGPT, no es algo muy
+complejo, siento que hay varios huecos en mi entendimiento, pero puedo hacer funcionar esto.
+Probemos trabajar con escalas de gris, creo que va bien eso. Si no funca, puedo probar con algo
+más.
+
+Tengo que revisar que al armar los gráficos, estos se hagan teniendo todos el mismo tamaño. Tengo
+que ver si puedo definir la cantidad de píxels que tienen que tener los gráficos. Quizás esa cantidad
+varía por culpa de los textos y de los ejes, tengo que limpiar eso.

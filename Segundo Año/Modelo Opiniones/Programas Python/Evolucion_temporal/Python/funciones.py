@@ -292,8 +292,6 @@ def Calculo_Entropia(DF,path,N):
 
 #-----------------------------------------------------------------------------------------------
 
-#-----------------------------------------------------------------------------------------------
-
 # Esta función es la que arma los gráficos de los mapas de colores en el espacio de
 # parámetros de alfa y umbral usando el valor medio de la opinión.
 
@@ -612,8 +610,6 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                 
                 # Levanto los datos del archivo
                 Datos = ldata(path / nombre)
-                if len(Datos)< 7:
-                    continue
                 
                 # Leo los datos de las Opiniones Finales
                 Opifinales = np.array(Datos[5][:-1:], dtype="float")

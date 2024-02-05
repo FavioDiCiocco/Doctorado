@@ -120,3 +120,8 @@ Entre las simulaciones que mandé con el código de NI_Homofilia, mandé en Alga
 con K=10 y Cos(delta)=0, variando Beta [0.1,1.5]. Para esta tanda, generé 100 simulaciones para cada punto
 de ensamble. El código en esta carpeta se encarga de generar las curvas de fracción de polarización 
 y de fracción de estados en función de Beta.
+
+Clasificador neuronal:
+----------------------
+Acá voy a probar la función para construir un clasificador a partir de una red neuronal. Voy a construir
+uno usando mis gráficos de distribuciones de histogramas 2D.

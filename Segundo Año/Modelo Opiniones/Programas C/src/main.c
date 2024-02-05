@@ -40,9 +40,9 @@ int main(int argc, char *argv[]){
 	int iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
 	
 	// Los siguientes son los parámetros que están dados en los structs
-	param->T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
+	param->T = 1;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
 	param->Iteraciones_extras = 500; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
-	param->dt = 0.1; // Paso temporal de iteración del sistema
+	param->dt = 0.01; // Paso temporal de iteración del sistema
 	param->alfa = 1; // Controversialidad de los tópicos
 	param->delta = 0.002*param->kappa; // Es un término que se suma en la homofilia y ayuda a que los pesos no diverjan.
 	param->NormDif = sqrt(param->N*param->T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]){
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
 	int pasos_simulados = 0; // Esta variable me sirve para cortar si simulo demasiado tiempo.
-	int pasos_maximos = 200000; // Esta es la cantidad de pasos máximos a simular
+	int pasos_maximos = 2000000; // Esta es la cantidad de pasos máximos a simular
 	int ancho_ventana = 100; // Este es el ancho temporal que voy a tomar para promediar las opiniones de mis agentes.
 		
 	//#############################################################################################
@@ -125,13 +125,13 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char TextOpi[355];
-	sprintf(TextOpi,"../Programas Python/Evolucion_temporal/Datos/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+	sprintf(TextOpi,"../Programas Python/Evolucion_temporal/1D/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
 		,param->N, param->kappa, param->beta, param->Cosd, iteracion);
 	FILE *FileOpi = fopen(TextOpi,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// // Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char TextTestigos[355];
-	sprintf(TextTestigos,"../Programas Python/Evolucion_temporal/Datos/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+	sprintf(TextTestigos,"../Programas Python/Evolucion_temporal/1D/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
 		,param->N, param->kappa, param->beta, param->Cosd, iteracion);
 	FILE *FileTestigos = fopen(TextTestigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
