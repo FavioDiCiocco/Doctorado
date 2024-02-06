@@ -3557,3 +3557,41 @@ más.
 Tengo que revisar que al armar los gráficos, estos se hagan teniendo todos el mismo tamaño. Tengo
 que ver si puedo definir la cantidad de píxels que tienen que tener los gráficos. Quizás esa cantidad
 varía por culpa de los textos y de los ejes, tengo que limpiar eso.
+
+------------------------------------------------------------------------------------------
+
+06/02/2024
+
+Llegué y revisé lo que mandé a correr en Algarve y Oporto. Todo sigue bien parece. Después
+le mandé a Hugo un mail pidiéndole ayuda con el tema de las distribuciones de las preguntas
+de ANES. Luego estuve peleando para lograr mandar a correr cosas en Coimbra y tener las
+simulaciones que me armen las curvas de interés promedio en función de Kappa. Creo que
+está corriendo bien, pero me extraña que me aparecen los procesos de Instanciar, que no
+recuerdo verlos antes. Al parecer siempre estuvieron ahí. Esto me genera algunas dudas.
+
+Mientras se resuelven esas simulaciones, debería continuar con otras cosas. Lo primero que
+quiero hacer es revisar el tema de plantear una ecuación para la suma de todos los términos
+juntos. Y además considerar qué ocurre en el caso de ver el interés normalizado según
+la influencia de los vecinos.
+
+Hay algo mal conmigo. No entiendo qué, desde que volví de las vacaciones siento que
+no estoy trabajando bien. Siento que los días pasan y no hago nada. Siento que simplemente
+el tiempo pasa y no consigo nada. Tengo confianza en mi y en mi laburo, pero me cuesta
+creer que estoy yendo bien. No sé por qué. Realmente me estoy distrayendo tanto? Estoy
+tan perdido? Tengo que tomar acción clara. No puedo estar perdiendo tanto el tiempo.
+No pueden pasar tantos días con tan poco resuelto. Algo tiene que cambiar.
+
+Perdí bastante tiempo peleando con lograr que el Instanciar en Coimbra corra correctamente
+los archivos. Al final lo logró, corrió toda la región que tenía que resolver en dos pedos.
+
+Después estuve intentando plantear el modelo en el caso con el kappa despejado, reduciendo
+los parámetros y planteando la ecuación del valor medio del sistema. La idea está,
+pero me parece que no puedo construir una simulación que sólo evolucione el valor medio,
+tengo que hacer evolucionar al sistema y de ahí calcular la evolución del valor medio. 
+Lo cuál hace que plantear la evolución del valor medio sea un poco una tonería, diría
+yo. Tengo que mirar eso un poco más. Aun así, hacer esto implica una complejidad un poco
+mayor, hay que ahcer cambios en el código.
+
+Voy a volver temprano, parece que se va a largar a llover con ganas. Mañana debería
+continuar con el trabajo de la gente de España. Definitivamente estar saltando entre
+trabajos me hace perderme un poco.

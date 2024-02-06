@@ -19,13 +19,13 @@ Arr_Grados=(3 4 5 6)
 
 ############################################################
 
-Arr_Epsilon=()
+Arr_Epsilon=(1.5 2 2.5 3)
 
-for val in {0..20}
-do
-	cuenta=`echo $val*0.1+1.5 | bc -l`
-	Arr_Epsilon+=( $cuenta )
-done
+# for val in {0..20}
+# do
+	# cuenta=`echo $val*0.1+1.5 | bc -l`
+	# Arr_Epsilon+=( $cuenta )
+# done
 
 ############################################################
 
