@@ -79,8 +79,11 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
+    func.Histogramas_2D_Clasificador(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
                                       ID_param_x, ID_param_y, ID_param_extra_1)
     
+    #----------------------------------------------------------------------------------------------
+    
+    # Dic_Total = func.Diccionario_metricas(Df_archivos, Direccion, 20)
 
 func.Tiempo(t0)

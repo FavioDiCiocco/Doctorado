@@ -11,6 +11,9 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 from pathlib import Path
+from sklearn.preprocessing import OneHotEncoder # importo el modulo para crear el objeto OneHotEncoder
+from sklearn.model_selection import train_test_split
+from tensorflow.keras import layers, models
 import math
 import time
 import os
@@ -56,6 +59,7 @@ def load_image(file_path):
 
 def load_images(directory):
     X = []
+    y = []
     for filename in os.listdir(directory):
         if filename.endswith(".png"):
             file_path = os.path.join(directory, filename)
@@ -65,8 +69,12 @@ def load_images(directory):
             img_array_flat = img_array.flatten() / 255.0
             
             X.append(img_array_flat)
-
-    return np.array(X,dtype="float")
+            
+            # Los nombres de los archivos son Estado_y_Img_X,
+            # donde X e y son números enteros
+            label = int(filename.split("_")[1])
+            y.append(label)
+    return np.array(X,dtype="float"), np.array(y)
 
 #-----------------------------------------------------------------------------------------------
 
@@ -89,9 +97,36 @@ Archivos_Datos = [nombre for nombre in CarpCheck[0][1]]
 # Example usage
 file_path = Direccion / Archivos_Datos[0]
 image_matrix = load_image(file_path)
+
 """
 
-X = load_images("../Imagenes")
+# Levanto los datos de mis imágenes para poder trabajar con los arrays
+# que tienen los valores que toman cada pixel de mi imagen
+
+X,Y = load_images("../Imagenes")
+"""
+# Armo un encoder para realizar un OneHotEncoding de las etiquetas
+# de los gráficos.
+
+encoder = OneHotEncoder(sparse=False)
+"""
+
+outputs = np.unique(Y).shape[0]
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+# Build a simple neural network
+model = models.Sequential([
+    layers.InputLayer(input_shape=(X_train.shape[1],)),
+    layers.Dense(128, activation='relu'),
+    layers.Dense(outputs+1, activation='softmax')  # Adjust the number of output units based on your classes
+])
+
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
+# Train the model
+model.fit(X_train, y_train, epochs=10, validation_data=(X_test, y_test))
 
 
 func.Tiempo(t0)

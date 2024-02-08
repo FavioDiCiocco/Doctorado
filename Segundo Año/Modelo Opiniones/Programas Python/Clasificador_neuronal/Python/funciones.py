@@ -67,464 +67,6 @@ def ldata(archive):
 ##################################################################################
 ##################################################################################
 
-# Esta función es la que arma los gráficos de los mapas de colores en el espacio de
-# parámetros de alfa y umbral usando el valor medio de la opinión.
-
-def Promedio_opiniones_vs_T(DF,path,carpeta,T,ID_param_x,ID_param_y):
-    
-    # Defino el tipo de archivo del cuál tomaré los datos
-    TIPO = "Opiniones"
-    
-    # Defino la cantidad de agentes de la red
-    AGENTES = int(np.unique(DF["n"]))
-    
-    # Defino los arrays de parámetros diferentes    
-    KAPPAS = int(np.unique(DF["Kappas"]))
-    Arr_param_x = np.unique(DF["parametro_x"])
-    Arr_param_y = np.unique(DF["parametro_y"])
-    
-    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
-    
-    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
-                   for j,param_y in enumerate(Arr_param_y)]
-    
-    for topico in range(T):
-        
-        #--------------------------------------------------------------------------------
-        for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
-            
-            
-            
-            
-            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
-            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
-                                        (DF["n"]==AGENTES) & 
-                                        (DF["Kappas"]==KAPPAS) & 
-                                        (DF["parametro_x"]==PARAM_X) &
-                                        (DF["parametro_y"]==PARAM_Y), "nombre"])      
-    
-            #------------------------------------------------------------------------------------------
-            
-            for nombre in archivos:
-                
-                # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-                # Evolución de Opiniones
-                # n filas con opiniones del total de agentes
-                # Semilla
-                # Número de la semilla
-                
-                # Es decir, mi archivo tiene n+3 filas
-                
-                # Levanto los datos del archivo
-                Datos = ldata(path / nombre)
-                
-                # Me defino el array en el cual acumulo los datos de las opiniones de todas
-                # mis iteraciones
-                Opiniones = np.zeros((len(Datos)-3,len(Datos[1])-1))
-                
-                # Leo los datos de las Opiniones
-                for fila in range(len(Datos)-3):
-                    Opiniones[fila,:] = Datos[fila+1][:-1:]
-                    Opiniones[fila,:] = Opiniones[fila,:]/KAPPAS
-            
-                #------------------------------------------------------------------------------------------
-                
-                # Armo el array que va a contener los promedios de cada estado
-                # guardado del sistema
-                Promedios = np.array([np.mean(Opiniones[:,topico::T],axis=1) for topico in range(T)])
-        
-                #--------------------------------------------------------------------------------
-                
-                # Con los promedios armos el gráfico de opiniones vs T para ambos tópicos
-                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-                direccion_guardado = Path("../../../Imagenes/{}/PromediovsT_{}={}_{}={}_Iter={}.png".format(carpeta,ID_param_x,PARAM_X,
-                                          ID_param_y,PARAM_Y,repeticion))
-                
-                plt.rcParams.update({'font.size': 24})
-                plt.figure("PromediovsT",figsize=(20,15))
-                plt.xlabel(r"Tiempo$(10^3)$")
-                plt.ylabel("Promedio Opiniones")
-                plt.grid()
-                
-                # Hago el ploteo de las curvas de opinión en función del tiempo
-                
-                Tiempo = np.arange(Opiniones.shape[0])+1
-                
-                for topico in range(T):
-                    plt.plot(Tiempo,Promedios[topico,:],"--",linewidth=3,label ="Topico {}".format(topico))
-                
-                plt.legend()
-                plt.title(r"Promedio de opiniones vs T")
-                
-                # Guardo la figura y la cierro
-                plt.savefig(direccion_guardado , bbox_inches = "tight")
-                plt.close("PromediovsT")
-
-    
-#--------------------------------------------------------------------------------
-
-# Esta función es la que arma los gráficos de los histogramas de opiniones
-# finales en el espacio de tópicos
-
-def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
-                       ID_param_x,ID_param_y,
-                       ID_param_extra_1):
-    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
-    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
-    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
-
-    # Defino la cantidad de agentes de la red
-    AGENTES = int(np.unique(DF["n"]))
-    
-    # Defino los arrays de parámetros diferentes
-    Arr_EXTRAS = np.unique(DF["Extra"])
-    Arr_param_x = np.unique(DF["parametro_x"])
-    Arr_param_y = np.unique(DF["parametro_y"])
-    
-    
-    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
-    Tupla_total = [(param_x,param_y) for param_x in Arr_param_x
-                   for param_y in Arr_param_y]
-    
-    # Defino el tipo de archivo del cuál tomaré los datos
-    TIPO = "Opiniones"
-    
-    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
-    # Gráfico de Opi vs T y en tres no se vería mejor.
-    T=2
-    
-    for EXTRAS in Arr_EXTRAS:
-        for PARAM_X,PARAM_Y in Tupla_total:
-            
-            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
-            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
-                                        (DF["n"]==AGENTES) & 
-                                        (DF["Extra"]==EXTRAS) & 
-                                        (DF["parametro_x"]==PARAM_X) &
-                                        (DF["parametro_y"]==PARAM_Y), "nombre"])
-            #-----------------------------------------------------------------------------------------
-            
-            for nombre in archivos:
-                
-                # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-                # Opinión Inicial del sistema
-                # Variación Promedio
-                # Opinión Final
-                # Semilla
-                
-                # Levanto los datos del archivo
-                Datos = ldata(path / nombre)
-                
-                # Leo los datos de las Opiniones Finales
-                Opifinales = np.array(Datos[5][::], dtype="float")
-                
-                # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
-                
-                #----------------------------------------------------------------------------------------------------------------------------------
-                
-                # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
-                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-                direccion_guardado = Path("../Imagenes/Histograma_opiniones_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(AGENTES,ID_param_x,PARAM_X,
-                                                                                                                                                 ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,repeticion))
-                
-                # Armo mi gráfico, lo guardo y lo cierro
-                
-                plt.rcParams.update({'font.size': 32})
-                plt.figure(figsize=(20,15))
-                _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
-                                         range=[[-EXTRAS,EXTRAS],[-EXTRAS,EXTRAS]],density=True,
-                                         cmap=cmap)
-                plt.xlabel(r"$x_i^1$")
-                plt.ylabel(r"$x_i^2$")
-                plt.title('Histograma 2D, {}={:.2f}_{}={:.2f}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y))
-                # plt.colorbar(im, label='Frecuencias')
-                plt.savefig(direccion_guardado ,bbox_inches = "tight")
-                plt.close()
-
-#-----------------------------------------------------------------------------------------------
-
-# Esta función calcula la traza de la matriz de Covarianza de las distribuciones
-# de opiniones respecto a los T tópicos
-
-def Traza_Covarianza_vs_T(DF,path,carpeta,T,ID_param_x,ID_param_y):
-    
-   # Defino el tipo de archivo del cuál tomaré los datos
-    TIPO = "Opiniones"
-    
-    # Defino la cantidad de agentes de la red
-    AGENTES = int(np.unique(DF["n"]))
-    
-    # Defino los arrays de parámetros diferentes    
-    KAPPAS = int(np.unique(DF["Kappas"]))
-    Arr_param_x = np.unique(DF["parametro_x"])
-    Arr_param_y = np.unique(DF["parametro_y"])
-    
-    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
-    
-    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
-                   for j,param_y in enumerate(Arr_param_y)]
-    
-    for topico in range(T):
-        
-        #--------------------------------------------------------------------------------
-        for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
-            
-            
-            
-            
-            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
-            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
-                                        (DF["n"]==AGENTES) & 
-                                        (DF["Kappas"]==KAPPAS) & 
-                                        (DF["parametro_x"]==PARAM_X) &
-                                        (DF["parametro_y"]==PARAM_Y), "nombre"])      
-    
-            #------------------------------------------------------------------------------------------
-            
-            for nombre in archivos:
-                
-                # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-                # Evolución de Opiniones
-                # n filas con opiniones del total de agentes
-                # Semilla
-                # Número de la semilla
-                
-                # Es decir, mi archivo tiene n+3 filas
-                
-                # Levanto los datos del archivo
-                Datos = ldata(path / nombre)
-                
-                # Me defino el array en el cual acumulo los datos de las opiniones de todas
-                # mis iteraciones
-                Opiniones = np.zeros((len(Datos)-3,len(Datos[1])-1))
-                
-                # Leo los datos de las Opiniones
-                for fila in range(len(Datos)-3):
-                    Opiniones[fila,:] = Datos[fila+1][:-1:]
-                    Opiniones[fila,:] = Opiniones[fila,:]/KAPPAS
-            
-                #------------------------------------------------------------------------------------------
-                
-                # Armo el array que va a contener las trazas de covarianza 
-                # de cada estado guardado del sistema
-                Covarianzas = np.array([np.trace(
-                        np.cov(np.array([Opiniones[fila,topico::T] for topico in range(T)])
-                                )
-                        )/2 for fila in range(Opiniones.shape[0])])
-
-                #--------------------------------------------------------------------------------
-                
-                # Con los promedios armos el gráfico de opiniones vs T para ambos tópicos
-                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-                direccion_guardado = Path("../../../Imagenes/{}/TrazaCovvsT_{}={}_{}={}_Iter={}.png".format(carpeta,ID_param_x,PARAM_X,
-                                          ID_param_y,PARAM_Y,repeticion))
-                
-                plt.rcParams.update({'font.size': 24})
-                plt.figure("TrazacovvsT",figsize=(20,15))
-                plt.xlabel(r"Tiempo$(10^3)$")
-                plt.ylabel("Traza Covarianzas")
-                plt.grid()
-                plt.title(r"Suma Varianzas vs T")
-                
-                # Hago el ploteo de las curvas de opinión en función del tiempo
-                
-                Tiempo = np.arange(Opiniones.shape[0])+1
-                
-                plt.plot(Tiempo,Covarianzas,"--",linewidth=4)
-                
-                # Guardo la figura y la cierro
-                plt.savefig(direccion_guardado , bbox_inches = "tight")
-                plt.close("TrazacovvsT")
-
-
-#-----------------------------------------------------------------------------------------------
-
-# Esta función calcula la traza de la matriz de Covarianza de las distribuciones
-# de opiniones respecto a los T tópicos
-
-def Fraccion_polarizados_vs_T(DF,path,carpeta):
-    
-   # Defino el tipo de archivo del cuál tomaré los datos
-    TIPO = "Opiniones"
-    
-    # Defino la cantidad de agentes de la red
-    AGENTES = int(np.unique(DF["n"]))
-    
-    # Defino los arrays de parámetros diferentes    
-    KAPPAS = int(np.unique(DF["Kappas"]))
-    Arr_param_x = np.unique(DF["parametro_x"])
-    Arr_param_y = np.unique(DF["parametro_y"])
-    
-    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
-    
-    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
-                   for j,param_y in enumerate(Arr_param_y)]
-    
-    # Con los promedios armos el gráfico de opiniones vs T para ambos tópicos
-    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_polarizados.png".format(carpeta))
-    plt.rcParams.update({'font.size': 24})
-    plt.figure("FracPol",figsize=(20,15))
-    
-    #--------------------------------------------------------------------------------
-    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
-        
-        
-        
-        
-        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
-        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
-                                    (DF["n"]==AGENTES) & 
-                                    (DF["Kappas"]==KAPPAS) & 
-                                    (DF["parametro_x"]==PARAM_X) &
-                                    (DF["parametro_y"]==PARAM_Y), "nombre"])      
-        
-        
-        Tiempos_polarizados = np.zeros(len(archivos))
-        
-        #------------------------------------------------------------------------------------------
-        
-        for indice,nombre in enumerate(archivos):
-            
-            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-            # Evolución de Opiniones
-            # n filas con opiniones del total de agentes
-            # Semilla
-            # Número de la semilla
-            
-            # Es decir, mi archivo tiene n+3 filas
-            
-            # Levanto los datos del archivo
-            Datos = ldata(path / nombre)
-            
-            # El tiempo de polarización es n. Si n fuera cero,
-            # fijo a mano el tiempo de polarización a 1
-            Tiempos_polarizados[indice] = max(len(Datos)-3,1)
-
-            #--------------------------------------------------------------------------------
-        
-        # Construyo el array de estados polarizados
-        Fraccion_polarizados = np.zeros(100)
-        for i in range(100):
-            Fraccion_polarizados[i] = np.count_nonzero(Tiempos_polarizados > i)
-        Fraccion_polarizados = Fraccion_polarizados/100
-        # Hago el ploteo de las curvas de opinión en función del tiempo
-        
-        Tiempo = np.arange(Fraccion_polarizados.shape[0])+1
-        plt.plot(Tiempo,Fraccion_polarizados,"--",linewidth=4,label="Beta = {}".format(PARAM_Y))
-        
-    # Guardo la figura y la cierro
-    plt.xlabel(r"Tiempo$(10^3)$")
-    plt.ylabel(r"$f_p$")
-    plt.grid()
-    plt.legend()
-    plt.title("Fracción de estados polarizados")
-    plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close("FracPol")
-    
-#-----------------------------------------------------------------------------------------------
-
-# Esta función calcula la traza de la matriz de Covarianza de las distribuciones
-# de opiniones respecto a los T tópicos
-
-def Fraccion_polarizados_vs_Y(DF,path,carpeta):
-    
-    # Defino el tipo de archivo del cuál tomaré los datos
-    TIPO = "Opiniones"
-    
-    # Defino la cantidad de agentes de la red
-    AGENTES = int(np.unique(DF["n"]))
-    
-    # Defino los arrays de parámetros diferentes    
-    EXTRAS = int(np.unique(DF["Extra"]))
-    PARAM_X = float(np.unique(DF["parametro_x"]))
-    Arr_param_y = np.unique(DF["parametro_y"])
-    
-    # Defino el número de tópicos
-    T=2
-    
-    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
-    
-    Tupla_total = [(j,param_y) for j,param_y in enumerate(Arr_param_y)]
-    
-    # Con los promedios armos el gráfico de opiniones vs T para ambos tópicos
-    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_polarizados.png".format(carpeta))
-    plt.rcParams.update({'font.size': 24})
-    plt.figure("FracPol",figsize=(20,15))
-    
-    # Construyo el array de fracción estados polarizados
-    Fraccion_polarizados = np.zeros(Arr_param_y.shape[0])
-    
-    #--------------------------------------------------------------------------------
-    for i_y,PARAM_Y in Tupla_total:
-        
-        
-        
-        
-        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
-        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
-                                    (DF["n"]==AGENTES) & 
-                                    (DF["Extra"]==EXTRAS) & 
-                                    (DF["parametro_x"]==PARAM_X) &
-                                    (DF["parametro_y"]==PARAM_Y), "nombre"])      
-        
-        
-        Estados_polarizados = np.zeros(len(archivos))
-        
-        #------------------------------------------------------------------------------------------
-        
-        for nombre in archivos:
-            
-            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-            # Evolución de Opiniones
-            # n filas con opiniones del total de agentes
-            # Semilla
-            # Número de la semilla
-            
-            # Es decir, mi archivo tiene n+3 filas
-            
-            # Levanto los datos del archivo
-            Datos = ldata(path / nombre)
-            
-            repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-            
-            # Leo los datos de las Opiniones Finales
-            Opifinales = np.zeros((T,AGENTES))
-    
-            for topico in range(T):
-                Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
-                Opifinales[topico,:] = Opifinales[topico,:]/ EXTRAS
-            
-            # Esta función normaliza las Opiniones Finales usando la 
-            # variable EXTRA, porque asume que EXTRA es el Kappa. De no serlo,
-            # corregir a que EXTRAS sea PARAM_X o algo así
-            
-            # De esta manera tengo mi array que me guarda las opiniones finales de los agentes
-    
-            M_cov = np.cov(Opifinales)
-            
-            # Defino si el estado que observé está polarizado si la suma de sus
-            # varianzas me da mayor a 0.1.
-            if np.trace(M_cov)/2 > 0.1:
-                Estados_polarizados[repeticion] = 1
-
-            #--------------------------------------------------------------------------------
-        
-        Fraccion_polarizados[i_y] = np.sum(Estados_polarizados)/len(archivos)
-    
-
-    plt.plot(Arr_param_y,Fraccion_polarizados,"--",linewidth=4)
-    
-    # Guardo la figura y la cierro
-    plt.xlabel(r"$\beta$")
-    plt.ylabel(r"$f_p$")
-    plt.grid()
-    # plt.legend()
-    plt.title("Fracción de estados polarizados")
-    plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close("FracPol")
-
-#-----------------------------------------------------------------------------------------------
-
 def Clasificacion(Array,N,T):
     
     # Recibo un array de opiniones que van entre [-1,1]. Le sumo 1
@@ -618,7 +160,7 @@ def Diccionario_metricas(DF,path,N):
                 Opifinales = np.zeros((T,AGENTES))
         
                 for topico in range(T):
-                    Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
+                    Opifinales[topico,:] = np.array(Datos[5][topico::T], dtype="float")
                     Opifinales[topico,:] = Opifinales[topico,:]/ EXTRAS
                 
                 # Esta función normaliza las Opiniones Finales usando la 
@@ -657,240 +199,185 @@ def Diccionario_metricas(DF,path,N):
 
 #-----------------------------------------------------------------------------------------------
 
-def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y):
+def Identificacion_Estados(ent, sx, sy, cov, prom):
+
     
-    Resultados = np.zeros(len(Entropia))
+    # Reviso la entropía y separo en casos con y sin anchura
     
-    for i,ent,sx,sy in zip(np.arange(len(Entropia)),Entropia,Sigma_X,Sigma_Y):
+    if ent <= 0.3:
         
-        # Reviso la entropía y separo en casos con y sin anchura
+        # Estos son casos sin anchura
         
-        if ent <= 0.3:
+        if sx < 0.1 and sy < 0.1:
             
-            # Estos son casos sin anchura
+            # Caso de un sólo extremo
             
-            if sx < 0.1 and sy < 0.1:
-                # Caso de un sólo extremo
-                Resultados[i] = 0
+            # Consenso neutral
+            if prom < 0.1:
+                return 0
             
-            # Casos de dos extremos
-            elif sx >= 0.1 and sy < 0.1:
-                # Dos extremos horizontal
-                Resultados[i] = 1
-            elif sx < 0.1 and sy >= 0.1:
-                # Dos extremos vertical
-                Resultados[i] = 2
-                
+            # Consenso radicalizado
             else:
-                if ent < 0.18:
-                    # Dos extremos ideológico
-                    Resultados[i] = 3
-                elif ent < 0.22:
-                    # Tres extremos
-                    Resultados[i] = 4
-                else:
-                    # Cuatro extremos
-                    Resultados[i] = 5
+                return 1
+                
+        
+        # Casos de dos extremos
+        elif sx >= 0.1 and sy < 0.1:
+            # Dos extremos horizontal
+            return 2
+        elif sx < 0.1 and sy >= 0.1:
+            # Dos extremos vertical
+            return 3
+            
+        else:
+            if ent < 0.18:
+                # Dos extremos ideológico
+                return 4
+            elif ent < 0.23:
+                # Estados de Transición
+                return 5
+            else:
+                # Cuatro extremos
+                return 6
+    
+    else:
+        
+        # Estos son los casos con anchura
+        
+        # Casos de dos extremos
+        if sx >= 0.1 and sy < 0.1:
+            # Dos extremos horizontal
+            return 7
+        elif sx < 0.1 and sy >= 0.1:
+            # Dos extremos vertical
+            return 8
         
         else:
-            
-            # Estos son los casos con anchura
-            
-            if sx < 0.1 and sy < 0.1:
-                # Caso de un sólo extremo
-                Resultados[i] = 6
-            
-            # Casos de dos extremos
-            elif sx >= 0.1 and sy < 0.1:
-                # Dos extremos horizontal
-                Resultados[i] = 7
-            elif sx < 0.1 and sy >= 0.1:
-                # Dos extremos vertical
-                Resultados[i] = 8
-            
+            # Polarización
+            # Polarización ideológica
+            if np.abs(cov) >= 0.1:
+                return 9
+                
+            # Polarización descorrelacionada
             else:
-                # Dos extremos ideológico, tres extremos y cuatro extremos
-                Resultados[i] = 9
-                
-    return Resultados
+                return 10
 
+        
+#--------------------------------------------------------------------------------
 
-#-----------------------------------------------------------------------------------------------
+# Esta función es la que arma los gráficos de los histogramas de opiniones
+# finales en el espacio de tópicos
 
-# Esta función arma las curvas de fracción de estados
-# en función del parámetro Y. La fracción de estados
-# se refiere a los estados numerados de 0 a 9.
+def Histogramas_2D_Clasificador(DF,path,carpeta,bins,cmap,
+                       ID_param_x,ID_param_y,
+                       ID_param_extra_1):
+    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
+    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
+    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
 
-def Fraccion_estados_vs_Y(DF,path,carpeta):
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF["n"]))
     
-    # Defino los arrays de parámetros diferentes    
-    EXTRAS = int(np.unique(DF["Extra"]))
-    PARAM_X = float(np.unique(DF["parametro_x"]))
+    # Defino los arrays de parámetros diferentes
+    Arr_EXTRAS = np.unique(DF["Extra"])
+    Arr_param_x = np.unique(DF["parametro_x"])
     Arr_param_y = np.unique(DF["parametro_y"])
     
+    
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(param_x,param_y) for param_x in Arr_param_x
+                   for param_y in Arr_param_y]
     
-    Tupla_total = [(j,param_y) for j,param_y in enumerate(Arr_param_y)]
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
     
-    # Construyo el array de fracción estados polarizados
-    Fraccion_polarizados = np.zeros((10,Arr_param_y.shape[0]))
+    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
+    # Gráfico de Opi vs T y en tres no se vería mejor.
+    T=2
+    imagen=0
     
-    #--------------------------------------------------------------------------------
-    
-    # Diccionario con la entropía, Sigma_x y Sigma_y de todas las simulaciones
-    # para cada punto del espacio de parámetros.
-    Dic_Total = Diccionario_metricas(DF,path,20)
-    
-    for indice,PARAM_Y in Tupla_total:
-                
-        Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
-                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
-                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"])
-        
-        for estado in range(10):
-            Fraccion_polarizados[estado,indice] = np.count_nonzero(Frecuencias == estado)/Frecuencias.shape[0]
-
-    for estado in range(10):
-        # Con los promedios armos el gráfico de opiniones vs T para ambos tópicos
-        direccion_guardado = Path("../../../Imagenes/{}/Fraccion_EF{}.png".format(carpeta,estado))
-        plt.rcParams.update({'font.size': 24})
-        plt.figure("FracEstado",figsize=(20,15))
-        plt.plot(Arr_param_y,Fraccion_polarizados[estado],"--", label = "estado {}".format(estado),linewidth=4)
+    for EXTRAS in Arr_EXTRAS:
+        for PARAM_X,PARAM_Y in Tupla_total:
             
-        # Guardo la figura y la cierro
-        plt.xlabel(r"$\beta$")
-        plt.ylabel(r"$f_p$")
-        plt.grid()
-        # plt.legend()
-        plt.title("Fracción de estados {} finales".format(estado))
-        plt.savefig(direccion_guardado , bbox_inches = "tight")
-        plt.close("FracEstado")
-        
-#-----------------------------------------------------------------------------------------------
-
-# Esta función arma las curvas de fracción de estados
-# en función del parámetro Y. La fracción de estados
-# se refiere a los estados numerados de 0 a 9.
-
-def Fraccion_dominante_vs_Y(DF,path,carpeta):
-    
-    # Defino los arrays de parámetros diferentes    
-    EXTRAS = int(np.unique(DF["Extra"]))
-    PARAM_X = float(np.unique(DF["parametro_x"]))
-    Arr_param_y = np.unique(DF["parametro_y"])
-    
-    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
-    
-    Tupla_total = [(j,param_y) for j,param_y in enumerate(Arr_param_y)]
-    
-    # Construyo el array de fracción estados polarizados
-    Fraccion_polarizados = np.zeros((10,Arr_param_y.shape[0]))
-    
-    #--------------------------------------------------------------------------------
-    
-    # Diccionario con la entropía, Sigma_x y Sigma_y de todas las simulaciones
-    # para cada punto del espacio de parámetros.
-    Dic_Total = Diccionario_metricas(DF,path,20)
-    
-    for indice,PARAM_Y in Tupla_total:
+            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                        (DF["n"]==AGENTES) & 
+                                        (DF["Extra"]==EXTRAS) & 
+                                        (DF["parametro_x"]==PARAM_X) &
+                                        (DF["parametro_y"]==PARAM_Y), "nombre"])
+            #-----------------------------------------------------------------------------------------
+            
+            for nombre in archivos:
                 
-        Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
-                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
-                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"])
+                # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+                # Opinión Inicial del sistema
+                # Variación Promedio
+                # Opinión Final
+                # Semilla
+                
+                # Levanto los datos del archivo
+                Datos = ldata(path / nombre)
+                
+                # Leo los datos de las Opiniones Finales
+                Opifinales = np.zeros((T,AGENTES))
         
-        for estado in range(10):
-            Fraccion_polarizados[estado,indice] = np.count_nonzero(Frecuencias == estado)/Frecuencias.shape[0]
+                for topico in range(T):
+                    Opifinales[topico,:] = np.array(Datos[5][topico::T], dtype="float")
+                    Opifinales[topico,:] = Opifinales[topico,:]/ EXTRAS
+                
+                # Esta función normaliza las Opiniones Finales usando la 
+                # variable EXTRA, porque asume que EXTRA es el Kappa. De no serlo,
+                # corregir a que EXTRAS sea PARAM_X o algo así
+                
+                # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+                # Calculo la matriz de Covarianza.
 
-    
-    # Armo los gráficos de fracción de estados para mis cuatro conjuntos de estados.
-    
-    # Estados de Consenso
-    
-    Consenso = Fraccion_polarizados[0]+Fraccion_polarizados[6]
-    
-    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_Consenso.png".format(carpeta))
-    plt.rcParams.update({'font.size': 24})
-    plt.figure("FracConsenso",figsize=(20,15))
-    plt.plot(Arr_param_y,Consenso,"--",color = "tab:blue",linewidth=4)
-        
-    # Guardo la figura y la cierro
-    plt.xlabel(r"$\beta$")
-    # plt.ylabel()
-    plt.grid()
-    # plt.legend()
-    plt.title("Estados finales de Consenso Radicalizado")
-    plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close("FracConsenso")
-    
-    # Estados de Polarización Unidimensional
-    
-    Pol_Uni = Fraccion_polarizados[1]+Fraccion_polarizados[2]+Fraccion_polarizados[7]+Fraccion_polarizados[8]
-    
-    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_Pol_Uni.png".format(carpeta))
-    plt.rcParams.update({'font.size': 24})
-    plt.figure("FracPolUni",figsize=(20,15))
-    plt.plot(Arr_param_y,Pol_Uni,"--",color = "tab:green",linewidth=4)
-        
-    # Guardo la figura y la cierro
-    plt.xlabel(r"$\beta$")
-    # plt.ylabel()
-    plt.grid()
-    # plt.legend()
-    plt.title("Estados finales de Polarización Unidimensional")
-    plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close("FracPolUni")
-    
-    # Estados de Polarización Ideológica sin anchura
-    
-    Pol_Id_sA = Fraccion_polarizados[3]
-    
-    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_Pol_Id_sA.png".format(carpeta))
-    plt.rcParams.update({'font.size': 24})
-    plt.figure("FracPolIdsA",figsize=(20,15))
-    plt.plot(Arr_param_y,Pol_Id_sA,"--",color = "tab:red",linewidth=4)
-        
-    # Guardo la figura y la cierro
-    plt.xlabel(r"$\beta$")
-    # plt.ylabel()
-    plt.grid()
-    # plt.legend()
-    plt.title("Estados finales de Polarización Ideológica sin Anchura")
-    plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close("FracPolIdsA")
-    
-    # Estados de Polarización Descorrelacionada sin anchura
-    
-    Pol_Des_sA = Fraccion_polarizados[5]
-    
-    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_Pol_Des_sA.png".format(carpeta))
-    plt.rcParams.update({'font.size': 24})
-    plt.figure("FracPolDessA",figsize=(20,15))
-    plt.plot(Arr_param_y,Pol_Des_sA,"--",color = "tab:orange",linewidth=4)
-        
-    # Guardo la figura y la cierro
-    plt.xlabel(r"$\beta$")
-    # plt.ylabel()
-    plt.grid()
-    # plt.legend()
-    plt.title("Estados finales de Polarización Descorrelacionada sin Anchura")
-    plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close("FracPolDessA")
-    
-    # Estados de Polarización
-    
-    Pol = Fraccion_polarizados[9]
-    
-    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_Pol.png".format(carpeta))
-    plt.rcParams.update({'font.size': 24})
-    plt.figure("FracPol",figsize=(20,15))
-    plt.plot(Arr_param_y,Pol,"--",color = "tab:orange",linewidth=4)
-        
-    # Guardo la figura y la cierro
-    plt.xlabel(r"$\beta$")
-    # plt.ylabel()
-    plt.grid()
-    # plt.legend()
-    plt.title("Estados finales de Polarización con Anchura")
-    plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close("FracPol")
-    
+                M_cov = np.cov(Opifinales)
+                VarX = M_cov[0,0]
+                VarY = M_cov[1,1]
+                Covar = M_cov[0,1]
+                
+                # Tengo que rearmar Opifinales para que sea un sólo vector con todo
+                
+                Opifinales = np.array(Datos[5][:], dtype="float")
+                Opifinales = Opifinales/EXTRAS
+                
+                # Armo mi array de Distribucion, que tiene la proba de que una opinión
+                # pertenezca a una región del espacio de tópicos
+                Probas = Clasificacion(Opifinales,bins,T)
+                
+                # Con esa distribución puedo directamente calcular la entropía y el promedio de las opiniones.
+                Entropia = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1) / np.log2(bins*bins)
+                Prom = np.linalg.norm(np.array(Datos[5][::], dtype="float"),ord=1) / np.array(Datos[5][::], dtype="float").shape[0]
+                
+                # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+                
+                #----------------------------------------------------------------------------------------------------------------------------------
+                
+                # Ahora que tengo todas mis métricas, puedo clasificar el estado final de mi distribución
+                estado = Identificacion_Estados(Entropia, VarX, VarY, Covar, Prom)
+                
+                # Vuelvo a construir mi array de Opifinales para que los gráficos salgan bien
+                Opifinales = np.array(Datos[5][:], dtype="float")
+                
+                #----------------------------------------------------------------------------------------------------------------------------------
+                # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
+                # repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+                direccion_guardado = Path("../Imagenes/Estado_{}_Img_{}.png".format(estado, imagen))
+                
+                # Armo mi gráfico, lo guardo y lo cierro
+                
+                plt.rcParams.update({'font.size': 32})
+                plt.figure(figsize=(1240/100, 950/100))
+                _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
+                                         range=[[-EXTRAS,EXTRAS],[-EXTRAS,EXTRAS]],density=True,
+                                         cmap=cmap)
+                plt.xticks([])
+                plt.yticks([])
+                plt.savefig(direccion_guardado ,dpi = 100)
+                plt.close()
+                
+                # Avanzo el número de imagen, que avanza con cada nuevo archivo
+                imagen+=1
+
+#-----------------------------------------------------------------------------------------------

@@ -3595,3 +3595,61 @@ mayor, hay que ahcer cambios en el código.
 Voy a volver temprano, parece que se va a largar a llover con ganas. Mañana debería
 continuar con el trabajo de la gente de España. Definitivamente estar saltando entre
 trabajos me hace perderme un poco.
+
+------------------------------------------------------------------------------------------
+
+07/02/2024
+
+Mañana o pasado sigo con el laburo de escribir el código que contemple la evolución del 
+promedio de interés del sistema. Cuando hago eso, tengo que usar la versión de la ecuación
+ya normalizada.
+
+Hoy sigo con el trabajo de implementar el clasificador. Ya resolví el tema de los píxeles,
+también aproveché para remover los ejes de los gráficos. Algo que voy a necesitar es tener
+las etiquetas de mis estados. Podría aprovechar y clasificar los estados usando mi algoritmo
+y después pegarle yo una repasada para ver que esté todo bien. Eso definitivamente es mejor
+que intentar hacer todos yo, uno por uno. Se me ocurre que la misma función que crea el archivo
+de histograma 2D. Así que tendría que modificar la función que arma los histogramas y hacer
+que cuando los construya los clasifique. ¿Cómo deberían ser los nombres de mis archivos,
+cosa de que cuando el clasificador levante los archivos sepa automáticamente cuál etiqueta
+le corresponde a cada archivo? "Estado_X_Img_Y", donde X es la clasificación de mi estado e
+Y es un número que sirve para que los archivos no se vayan sobreescribiendo uno sobre el otro.
+
+Empecé a armar una nueva función de gráfico de Histogramas 2D que para cada archivo le calcule
+su Entropía, Varianzas, Covarianza y Promedio de los valores absolutos de opinión. También tengo
+junto con eso una función que recibe estos cinco valores y con eso determina el estado que
+corresponde a esa distribución.
+
+Estoy dudando un poco del código porque está catalogando mal tres tipos de estados finales, pero
+justamente esos estados son los que yo digo que casi no existen o no se ven. Por eso no debería
+ser un problema la forma en que el código trabaja. Lo que hace el código es tomar los datos
+y a partir de estos construye las imágenes con el tipo de estado en el nombre. Lo siguiente
+es implementar esa sugerencia de ChatGPT para que el código levante el tipo de estado
+del nombre del archivo. Bien, en principio tengo una función que levanta imágenes y a partir
+de ellas construye dos arrays, uno con las matrices de mis archivos y otro con los labels.
+
+Lo siguiente es a partir de los labels realizar un OneHotEncoding. En realidad, en vez de hacer
+esto estoy viendo de hacer lo que me propuso Chat GPT tal cual. Creo que es más sencillo seguir
+eso y en concepto es lo mismo, sólo que lo de Chat GPT es una red con una capa oculta.
+ Voy a ver si puedo lograr que me explique que hace cada parte del código. Me dió una explicación
+bastante clara, creo que entiendo qué está haciendo. Ahora me estoy dando cuenta que mi pc no
+estaría siendo suficiente para correr esto, así que quizás sea una buena idea correr esto
+en un google Colab, así no me mata la pc el código.
+
+Ahora tengo que pelearme para lograr levantar las imágenes en el Google Colab. Veré si puedo
+resolver eso el viernes u otro día.
+
+------------------------------------------------------------------------------------------
+
+08/02/2024
+
+Hoy voy a completar el informe de avance de Doctorado. Bueno, tomó un buen rato y bastante
+ayuda del Chat GPT para escribir el informe. Y Ale me dió una re ayuda con el archivo suyo
+que me pasó. Ahora tengo que rearmar el CV y llenar el otro formulario. Hecho eso, dejo
+todo ordenado y junto en una carpeta, cosa de mostrárselo a Pablo y mandarlo después cuando
+Pablo vuelva. Y le tengo que pedir a Marcos su firma. Me va a pasar a que se la pida a Sofi,
+pero igual tengo que avisarle que voy a mandar algo firmado por él.
+
+No estoy del todo de acuerdo con lo que puse en el CV, preguntarle a Pablo o a Ale que puso
+como para que sea razonable. Lo malo es que ayer no subí a Github lo que hice. Lo bueno es que
+hoy terminé todo el tema del informe de avance. Son una paja estos temas burocráticos.

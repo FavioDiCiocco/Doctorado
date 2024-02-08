@@ -88,11 +88,11 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    Estados = func.Identificacion_Estados(Dic_Total[6][0][1.1]["Entropia"],
-                                          Dic_Total[6][0][1.1]["Sigmax"],
-                                          Dic_Total[6][0][1.1]["Sigmay"],
-                                          Dic_Total[6][0][1.1]["Covarianza"],
-                                          Dic_Total[6][0][1.1]["Promedios"])
+    Estados = func.Identificacion_Estados(Dic_Total[6][0][1.5]["Entropia"],
+                                          Dic_Total[6][0][1.5]["Sigmax"],
+                                          Dic_Total[6][0][1.5]["Sigmay"],
+                                          Dic_Total[6][0][1.5]["Covarianza"],
+                                          Dic_Total[6][0][1.5]["Promedios"])
     
 
 func.Tiempo(t0)
