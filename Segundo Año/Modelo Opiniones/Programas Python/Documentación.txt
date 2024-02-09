@@ -124,4 +124,10 @@ y de fracción de estados en función de Beta.
 Clasificador neuronal:
 ----------------------
 Acá voy a probar la función para construir un clasificador a partir de una red neuronal. Voy a construir
-uno usando mis gráficos de distribuciones de histogramas 2D.
+uno usando mis gráficos de distribuciones de histogramas 2D. Probé hacer funcionar esto en la pc
+y no anda, me consume mucha memoria, voy a tener que pasar esto a un Google Colab y ver si ahí funciona.
+
+Distribuciones ANES:
+--------------------
+Guardo el código de jupyter notebook y datos de la ANES que me pasó Hugo para poder revisar y construir
+esto como distribuciones de a pares de preguntas.

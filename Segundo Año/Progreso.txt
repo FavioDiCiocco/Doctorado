@@ -3653,3 +3653,52 @@ pero igual tengo que avisarle que voy a mandar algo firmado por él.
 No estoy del todo de acuerdo con lo que puse en el CV, preguntarle a Pablo o a Ale que puso
 como para que sea razonable. Lo malo es que ayer no subí a Github lo que hice. Lo bueno es que
 hoy terminé todo el tema del informe de avance. Son una paja estos temas burocráticos.
+
+------------------------------------------------------------------------------------------
+
+09/02/2024
+
+Durante la primera parte del día estuve leyendo la guía de ANES sobre cómo están estructurados
+sus datos y las preguntas que realizan en la encuesta. Después miré el archivo que me pasó
+Hugo y revisé un poco cómo funciona. Ahí tiene bastante notas sobre cómo tienen armada
+la encuesta y las preguntas que ellos revisaron. Ellos decidieron revisar unas 30 preguntas
+aprox. Cada pregunta tiene un código identificatorio que es una mezcla de números y letras.
+Los primeros tres números sirven para identificar si la pregunta es pre elecciones, 161,
+si es post elecciones, 162, o si es una pregunta de datos técnicos, 160.
+ Después si para una pregunta hay varias respuestas, como por ejemplo la raza con la que una
+persona se identifica, al final del código se agrega una letra. Por ejemplo, la pregunta
+161310 es sobre la raza autopercibida. Las respuestas con letra "a" al final corresponden
+a gente blanca, con letra "b" corresponden a gente negra y así. Todas estas respuestas se
+juntan en la respuesta que tiene una x al final.
+ También a tener en cuenta, tienen una columna de pesos cuyo objetivo es compensar la sobre
+o sub representación de los encuestados. Cómo calculan esos pesos nos resulta algo complejo
+de definir, pero lo importante es que lo hacen y lo tienen estipulado.
+ Ahí probé comparar dos preguntas, que es la identificación partidaria y la postura sobre
+los beneficios de vacunas. Elegí esas dos preguntas totalmente al azar, pero se ve bastante
+bien que se forma uno de los resultados que observamos, que es el caso de polarización en un
+tópico pero consenso en el otro. De paso, sí me genera un poco de duda que por alguna razón
+el gráfico para esas preguntas no estaba invertido en el eje Y, cosa que si lo estaba para
+las preguntas que Hugo dejó de ejemplo. Igual eso es un detalle.
+
+Queda preguntarme, ¿Qué carajos voy a presentar el miércoles que viene? La primer propuesta
+es hacer los gráficos de Frecuencia de estados que tengo pensados, esos gráficos los puedo hacer
+tranca, sólo que no van a tener una estadística con números redondos. Lo segundo es armar
+gráficos de tiempo de simulación y varianza en los tiempos de simulación. Eso ayudaría a reconocer
+la región en la cuál se dan estos estados que tardan tanto en resolver. Eso lo puedo
+hacer rápido, el martes posiblemente.
+
+Acordate que la reunión es el miércoles a las 14, tengo más tiempo a la mañana para preparar
+eso.
+
+Por último lo que podría comentar es que revisé el código que Hugo me pasó y observé un estado
+que se parece mucho a nuestros estados de polarización en un eje y consenso en el otro.
+
+Dicho todo esto, que sería un plan para realizar el lunes y martes feriado (así de mal estamos),
+yo diría de ponerme con el tema del clasificador neuronal. No quiero ya mandar a correr algo a
+Coimbra porque si bien no hay nadie corriendo nada ahí, me parece que sería copar todas las
+pc's al pedo. Bah, hacelo, al carajo.
+
+Ahí retoqué unas cosas, el modelo parece estar funcionando. O mejor dicho, el código corre. Ahora
+tengo que ver cómo puedo revisar si el modelo ajusta bien, si registra correctamente los estados.
+Lo siguiente que necesito hacer es revisar cómo pasarle una imagen y ver si la identifica bien o no.
+También estaría bueno ver si puedo de alguna manera 
