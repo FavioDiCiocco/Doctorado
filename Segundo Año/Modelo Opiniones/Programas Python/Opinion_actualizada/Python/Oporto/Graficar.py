@@ -20,7 +20,7 @@ from pathlib import Path
 t0 = time.time()
 
 T=2 # Defino el número de tópicos
-Etapa = Path("Medidas_polarizacion") # Defino el nombre de la etapa del trabajo en la que estoy
+Etapa = Path("Opinion_actualizada") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
 Carpetas = ["Datos"]

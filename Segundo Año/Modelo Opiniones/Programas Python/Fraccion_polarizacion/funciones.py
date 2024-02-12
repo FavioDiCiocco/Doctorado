@@ -601,6 +601,8 @@ def Diccionario_metricas(DF,path,N):
             
             Varianza_X = np.zeros(archivos.shape[0])
             Varianza_Y = np.zeros(archivos.shape[0])
+            Covarianza = np.zeros(archivos.shape[0])
+            Promedios = np.zeros(archivos.shape[0])
             Entropia = np.zeros(archivos.shape[0])
             
             for nombre in archivos:
@@ -633,6 +635,8 @@ def Diccionario_metricas(DF,path,N):
                 M_cov = np.cov(Opifinales)
                 Varianza_X[repeticion] = M_cov[0,0]
                 Varianza_Y[repeticion] = M_cov[1,1]
+                Covarianza[repeticion] = M_cov[0,1]
+                Promedios[repeticion] = np.linalg.norm(np.array(Datos[5][:-1:], dtype="float"),ord=1) / np.array(Datos[5][:-1:], dtype="float").shape[0]
                 
                 # Tengo que rearmar Opifinales para que sea un sólo vector con todo
                 
@@ -653,16 +657,19 @@ def Diccionario_metricas(DF,path,N):
             Salida[EXTRAS][PARAM_X][PARAM_Y]["Entropia"] = Entropia/np.log2(N*N)
             Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"] = Varianza_X
             Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"] = Varianza_Y
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"] = Covarianza
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Promedios"] = Promedios
             
     return Salida
 
 #-----------------------------------------------------------------------------------------------
 
-def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y):
+def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y, Covarianza, Promedios):
     
     Resultados = np.zeros(len(Entropia))
     
-    for i,ent,sx,sy in zip(np.arange(len(Entropia)),Entropia,Sigma_X,Sigma_Y):
+    for i,ent,sx,sy,cov,prom in zip(np.arange(len(Entropia)),
+                                    Entropia, Sigma_X, Sigma_Y, Covarianza, Promedios):
         
         # Reviso la entropía y separo en casos con y sin anchura
         
@@ -671,38 +678,43 @@ def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y):
             # Estos son casos sin anchura
             
             if sx < 0.1 and sy < 0.1:
+                
                 # Caso de un sólo extremo
-                Resultados[i] = 0
+                
+                # Consenso neutral
+                if prom < 0.1:
+                    Resultados[i] = 0
+                
+                # Consenso radicalizado
+                else:
+                    Resultados[i] = 1
+                    
             
             # Casos de dos extremos
             elif sx >= 0.1 and sy < 0.1:
                 # Dos extremos horizontal
-                Resultados[i] = 1
+                Resultados[i] = 2
             elif sx < 0.1 and sy >= 0.1:
                 # Dos extremos vertical
-                Resultados[i] = 2
+                Resultados[i] = 3
                 
             else:
                 if ent < 0.18:
                     # Dos extremos ideológico
-                    Resultados[i] = 3
-                elif ent < 0.22:
-                    # Tres extremos
                     Resultados[i] = 4
+                elif ent < 0.23:
+                    # Estados de Transición
+                    Resultados[i] = 5
                 else:
                     # Cuatro extremos
-                    Resultados[i] = 5
+                    Resultados[i] = 6
         
         else:
             
             # Estos son los casos con anchura
             
-            if sx < 0.1 and sy < 0.1:
-                # Caso de un sólo extremo
-                Resultados[i] = 6
-            
             # Casos de dos extremos
-            elif sx >= 0.1 and sy < 0.1:
+            if sx >= 0.1 and sy < 0.1:
                 # Dos extremos horizontal
                 Resultados[i] = 7
             elif sx < 0.1 and sy >= 0.1:
@@ -710,8 +722,14 @@ def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y):
                 Resultados[i] = 8
             
             else:
-                # Dos extremos ideológico, tres extremos y cuatro extremos
-                Resultados[i] = 9
+                # Polarización
+                # Polarización ideológica
+                if np.abs(cov) >= 0.1:
+                    Resultados[i] = 9
+                    
+                # Polarización descorrelacionada
+                else:
+                    Resultados[i] = 10
                 
     return Resultados
 
@@ -734,7 +752,7 @@ def Fraccion_estados_vs_Y(DF,path,carpeta):
     Tupla_total = [(j,param_y) for j,param_y in enumerate(Arr_param_y)]
     
     # Construyo el array de fracción estados polarizados
-    Fraccion_polarizados = np.zeros((10,Arr_param_y.shape[0]))
+    Fraccion_polarizados = np.zeros((11,Arr_param_y.shape[0]))
     
     #--------------------------------------------------------------------------------
     
@@ -748,10 +766,10 @@ def Fraccion_estados_vs_Y(DF,path,carpeta):
                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"])
         
-        for estado in range(10):
+        for estado in range(11):
             Fraccion_polarizados[estado,indice] = np.count_nonzero(Frecuencias == estado)/Frecuencias.shape[0]
 
-    for estado in range(10):
+    for estado in range(11):
         # Con los promedios armos el gráfico de opiniones vs T para ambos tópicos
         direccion_guardado = Path("../../../Imagenes/{}/Fraccion_EF{}.png".format(carpeta,estado))
         plt.rcParams.update({'font.size': 24})
@@ -785,7 +803,7 @@ def Fraccion_dominante_vs_Y(DF,path,carpeta):
     Tupla_total = [(j,param_y) for j,param_y in enumerate(Arr_param_y)]
     
     # Construyo el array de fracción estados polarizados
-    Fraccion_polarizados = np.zeros((10,Arr_param_y.shape[0]))
+    Fraccion_polarizados = np.zeros((11,Arr_param_y.shape[0]))
     
     #--------------------------------------------------------------------------------
     
@@ -799,99 +817,103 @@ def Fraccion_dominante_vs_Y(DF,path,carpeta):
                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"])
         
-        for estado in range(10):
+        for estado in range(11):
             Fraccion_polarizados[estado,indice] = np.count_nonzero(Frecuencias == estado)/Frecuencias.shape[0]
 
     
     # Armo los gráficos de fracción de estados para mis cuatro conjuntos de estados.
     
-    # Estados de Consenso
+    # Estados de Consenso 
     
-    Consenso = Fraccion_polarizados[0]+Fraccion_polarizados[6]
+    ConsNeut = Fraccion_polarizados[0]
+    ConsRad = Fraccion_polarizados[1]
     
-    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_Consenso.png".format(carpeta))
+    direccion_guardado = Path("../../../Imagenes/{}/Fraccion Consenso.png".format(carpeta))
     plt.rcParams.update({'font.size': 24})
-    plt.figure("FracConsenso",figsize=(20,15))
-    plt.plot(Arr_param_y,Consenso,"--",color = "tab:blue",linewidth=4)
+    plt.figure("FracCons",figsize=(20,15))
+    plt.plot(Arr_param_y,ConsNeut,"--",color = "tab:blue", label = "Consenso Neutral",linewidth=4)
+    plt.plot(Arr_param_y,ConsRad,"--",color = "tab:green", label = "Consenso Radicalizado",linewidth=4)
+    plt.plot(Arr_param_y,ConsNeut + ConsRad,color = "tab:orange", label = "Consenso Total",linewidth=5)
+        
         
     # Guardo la figura y la cierro
     plt.xlabel(r"$\beta$")
-    # plt.ylabel()
     plt.grid()
-    # plt.legend()
-    plt.title("Estados finales de Consenso Radicalizado")
+    plt.title("Estados finales de Consenso")
     plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close("FracConsenso")
+    plt.close("FracCons")
+    
     
     # Estados de Polarización Unidimensional
     
-    Pol_Uni = Fraccion_polarizados[1]+Fraccion_polarizados[2]+Fraccion_polarizados[7]+Fraccion_polarizados[8]
+    Pol_Uni_sA = Fraccion_polarizados[2]+Fraccion_polarizados[3]
+    Pol_Uni_cA = Fraccion_polarizados[7]+Fraccion_polarizados[8]
     
-    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_Pol_Uni.png".format(carpeta))
+    direccion_guardado = Path("../../../Imagenes/{}/Fraccion Pol Uni.png".format(carpeta))
     plt.rcParams.update({'font.size': 24})
     plt.figure("FracPolUni",figsize=(20,15))
-    plt.plot(Arr_param_y,Pol_Uni,"--",color = "tab:green",linewidth=4)
-        
+    plt.plot(Arr_param_y,Pol_Uni_sA,"--",color = "tab:blue", label = "Polarización sin Anchura",linewidth=4)
+    plt.plot(Arr_param_y,Pol_Uni_cA,"--",color = "tab:blue", label = "Polarización con Anchura",linewidth=4)
+    plt.plot(Arr_param_y,Pol_Uni_sA + Pol_Uni_cA,color = "tab:orange", label = "Polarización total",linewidth=5)
+    
     # Guardo la figura y la cierro
     plt.xlabel(r"$\beta$")
-    # plt.ylabel()
     plt.grid()
-    # plt.legend()
     plt.title("Estados finales de Polarización Unidimensional")
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close("FracPolUni")
     
-    # Estados de Polarización Ideológica sin anchura
+    # Estados de Polarización Ideológica
     
-    Pol_Id_sA = Fraccion_polarizados[3]
+    Pol_Id_sA = Fraccion_polarizados[4]
+    Pol_Id_cA = Fraccion_polarizados[9]
     
-    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_Pol_Id_sA.png".format(carpeta))
+    direccion_guardado = Path("../../../Imagenes/{}/Fraccion Pol Id.png".format(carpeta))
     plt.rcParams.update({'font.size': 24})
-    plt.figure("FracPolIdsA",figsize=(20,15))
-    plt.plot(Arr_param_y,Pol_Id_sA,"--",color = "tab:red",linewidth=4)
+    plt.figure("FracPolId",figsize=(20,15))
+    plt.plot(Arr_param_y,Pol_Id_sA,"--",color = "tab:blue", label = "Polarización sin Anchura",linewidth=4)
+    plt.plot(Arr_param_y,Pol_Id_cA,"--",color = "tab:green", label = "Polarización con Anchura",linewidth=4)
+    plt.plot(Arr_param_y,Pol_Id_sA,color = "tab:orange", label = "Polarización total",linewidth=5)
         
     # Guardo la figura y la cierro
     plt.xlabel(r"$\beta$")
-    # plt.ylabel()
     plt.grid()
-    # plt.legend()
-    plt.title("Estados finales de Polarización Ideológica sin Anchura")
+    plt.title("Estados finales de Polarización Ideológica")
     plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close("FracPolIdsA")
+    plt.close("FracPolId")
     
-    # Estados de Polarización Descorrelacionada sin anchura
+    # Estados de Polarización Descorrelacionada
     
-    Pol_Des_sA = Fraccion_polarizados[5]
+    Pol_Des_sA = Fraccion_polarizados[6]
+    Pol_Des_cA = Fraccion_polarizados[10]
     
-    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_Pol_Des_sA.png".format(carpeta))
+    direccion_guardado = Path("../../../Imagenes/{}/Fraccion Pol Des.png".format(carpeta))
     plt.rcParams.update({'font.size': 24})
-    plt.figure("FracPolDessA",figsize=(20,15))
-    plt.plot(Arr_param_y,Pol_Des_sA,"--",color = "tab:orange",linewidth=4)
+    plt.figure("FracPolDes",figsize=(20,15))
+    plt.plot(Arr_param_y,Pol_Des_sA,"--",color = "tab:blue", label ="Polarización sin Anchura",linewidth=4)
+    plt.plot(Arr_param_y,Pol_Des_cA,"--",color = "tab:green", label ="Polarización con Anchura",linewidth=4)
+    plt.plot(Arr_param_y,Pol_Des_sA + Pol_Des_cA,color = "tab:orange", label ="Polarización Total",linewidth=5)
         
     # Guardo la figura y la cierro
     plt.xlabel(r"$\beta$")
-    # plt.ylabel()
     plt.grid()
-    # plt.legend()
-    plt.title("Estados finales de Polarización Descorrelacionada sin Anchura")
+    plt.title("Estados finales de Polarización Descorrelacionada")
     plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close("FracPolDessA")
+    plt.close("FracPolDes")
     
-    # Estados de Polarización
+    # Estados de Transición
     
-    Pol = Fraccion_polarizados[9]
+    Trans = Fraccion_polarizados[5]
     
-    direccion_guardado = Path("../../../Imagenes/{}/Fraccion_Pol.png".format(carpeta))
+    direccion_guardado = Path("../../../Imagenes/{}/Fraccion Trans.png".format(carpeta))
     plt.rcParams.update({'font.size': 24})
-    plt.figure("FracPol",figsize=(20,15))
-    plt.plot(Arr_param_y,Pol,"--",color = "tab:orange",linewidth=4)
+    plt.figure("FracTrans",figsize=(20,15))
+    plt.plot(Arr_param_y,Trans,color = "tab:red",linewidth=4)
         
     # Guardo la figura y la cierro
     plt.xlabel(r"$\beta$")
-    # plt.ylabel()
     plt.grid()
-    # plt.legend()
-    plt.title("Estados finales de Polarización con Anchura")
+    plt.title("Estados finales de Transición")
     plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close("FracPol")
+    plt.close("FracTrans")
     

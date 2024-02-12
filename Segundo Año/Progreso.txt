@@ -3698,7 +3698,75 @@ yo diría de ponerme con el tema del clasificador neuronal. No quiero ya mandar 
 Coimbra porque si bien no hay nadie corriendo nada ahí, me parece que sería copar todas las
 pc's al pedo. Bah, hacelo, al carajo.
 
+(Volviendo al clasificador Neuronal):
+-------------------------------------
 Ahí retoqué unas cosas, el modelo parece estar funcionando. O mejor dicho, el código corre. Ahora
 tengo que ver cómo puedo revisar si el modelo ajusta bien, si registra correctamente los estados.
 Lo siguiente que necesito hacer es revisar cómo pasarle una imagen y ver si la identifica bien o no.
-También estaría bueno ver si puedo de alguna manera 
+También estaría bueno ver si puedo de alguna manera comprobar cuál es la precisión del
+clasificador.
+
+------------------------------------------------------------------------------------------
+
+12/02/2024
+
+Revisé Coimbra, al pedo lo que dije el viernes, no mandé nada a Coimbra al final. El miércoles
+solucionaré eso. O quizás mañana.
+
+Es feriado, me jode un poco tener que laburar hoy. Dicho eso, arranquemos. La pregunta es qué
+presentar el miércoles que viene. Estaba pensando en hacer dos cosas. Por un lado, revisar
+que el código que arma los gráficos de Frecuencias de Estados esté preparado, cosa de que ya
+el miércoles a la mañana lo mando de una y listo. Es importante notar que para el miércoles
+lo que está corriendo en Oporto habrá terminado, pero lo que está en Algarve no va a estar ni
+cerca. ¿Entonces cuántas simulaciones tengo?
+
+En oporto tengo 20 iteraciones de todo el espacio K=[0.2,20] y Beta=[0,2]. Después tengo que definir
+si sigo barriendo todo ese espacio o si reduzco el espacio barrido, pero eso lo veré el miércoles.
+Por otro lado, en Algarve lo que tengo, sin importar lo que está corriendo ahora, son 40 iteraciones
+en todo el espacio Beta=[0,2] y Cos(delta)=[0,1]. Lo que tengo resuelto además son unas 20 iteraciones
+extra barriendo todos los Cos(delta) en la región Beta=[0,0.5]. Para el miércoles quizás esté resuelto
+hasta Beta=0.9. Igual el martes a la noche lo corto.
+
+El plan entonces por un lado sería tomar el código de Frecuencias de Estado y ya cargarlo, tanto
+en Oporto como Algarve. Revisar que el código que tengo en Algarve sea el mismo que tengo
+en Fracción Polarización en las pc's, cosa de no perder ese código de Python.
+ Después podría justamente actualizar el código ese que tenía en Algarve para que arme las
+curvas teniendo en cuenta que ahora puedo diferenciar los estados con polarización ideológica.
+ Si termino eso, puedo ponerme a ver el tema de armar los gráficos que me muestren la región en
+la que se encuentran los estados que corren hasta el tiempo final, cuántos son y cosas así.
+No sé si hay algo más que pueda ver así a grandes rasgos en este momento.
+
+No sé si llegue hoy a hacer esto, pero podría mañana ponerme a trabajar con el clasificador neuronal,
+intentar arrancar con una única capa que reciba como input todos los píxeles y devuelva todos los
+estados considerados. Tengo que ver de dónde saco las imágenes para entrenarlo, es decir si lo saco
+del barrido Beta-Kappa o del de Beta-Cos(delta). O si puedo cruzar datos. Me parece que ambas ideas
+son interesantes.
+ Lo interesante de arrancar con una red con una única capa es que puedo después hacer lo mismo que
+hice en la materia de Labo de Datos para ver qué es lo que la red está intentado identificar en
+cada neurona y con eso quizás es más fácil ver la precisión del clasificador.
+
+Actualicé las funciones que hacen los gráficos de fracción de estados en función del parámetro Beta.
+Podría mandar esto a Algarve ahora. Estaba mandándolo, pero justo se cayeron las pc's parece.
+ Mientras esto se resuelve, voy a revisar entonces que los código de funciones de Coimbra y de
+Oporto estén actualizados con los nuevos estados que reconoce mi algoritmo. Bien, están actualizados.
+Si lo mando a correr eso arma los gráficos que quiero.
+
+Ahroa veamos si puedo armar las funciones que armen el mapa de colores de la región en la que observo
+estos estados "oscilantes". Lo primero que se me ocurre son dos gráficos. Uno que sea la fracción de estados
+que observo como estados "oscilantes". Eso sería simplemente la cantidad de estados que llegan hasta
+el final de tiempo de simulación. Lo segundo sería armar una varianza de los tiempos finales de simulación,
+aunque no sé si eso de mucho. Los tiempos de simulación puedo obtenerlos directamente a través del
+dato de pasos simulados. Recordá que está anotado, la cantidad de pasos máximos de simulación es doscientos
+mil, cosa de que el dt=0.1 por la cantidad de pasos máximos de simulación, me de un tiempo máximo de 
+simulación de 20 mil. Ya armé este código, simplemente retoqué un poco la vieja función de mapa de colores
+de Tiempo de Convergencia.
+
+Mañana a primera hora:
+----------------------
+.) Subir estos códigos a Oporto y Algarve para mandar a hacer los mapas de colores.
+.) Continuar con lo que estaba subiendo en Algarve, cosa de mandar a correr el armado de las
+curvas de fracción de estados.
+.) Actualizar el archivo de funciones generales según las funciones de Mapa de colores FEF,
+las funciones de Fracción de Polarización y la nueva función de Tiempos de Convergencia.
+(Esto puede esperar al miércoles)
+.) Ponerme con el clasificador neuronal.
