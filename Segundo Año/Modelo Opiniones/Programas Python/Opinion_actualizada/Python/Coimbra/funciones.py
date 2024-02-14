@@ -49,13 +49,13 @@ def Tiempo(t0):
 # Esta es la función que uso por excelencia para levantar datos de archivos. Lo
 # bueno es que lee archivos de forma general, no necesita que sean csv o cosas así
 def ldata(archive):
-        f = open(archive)
+    with open(archive) as f:
         data = []
         for line in f:
             col = line.split("\t")
             col = [x.strip() for x in col]
             data.append(col)
-        return data 
+        return data
 
 #--------------------------------------------------------------------------------
 
@@ -407,13 +407,13 @@ def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
                 # Leo los datos de las Opiniones Finales
                 Tiempos[repeticion] = int(Datos[7])
                 
-        #------------------------------------------------------------------------------------------
-        # Con los "tiempos" de las simulaciones calculo la fracción de estados que llegaron hasta el final
-        # de la simulación, así la variación de esos tiempos de simulación
-        
-        ZZ[0,Arr_param_y.shape[0]-1-fila,columna] = np.count_nonzero(Tiempos==200000) / Tiempos.shape[0]
-        ZZ[1,Arr_param_y.shape[0]-1-fila,columna] = np.mean(Tiempos/200000)
-        ZZ[2,Arr_param_y.shape[0]-1-fila,columna] = np.var(Tiempos/200000)
+            #------------------------------------------------------------------------------------------
+            # Con los "tiempos" de las simulaciones calculo la fracción de estados que llegaron hasta el final
+            # de la simulación, así la variación de esos tiempos de simulación
+            
+            ZZ[0,Arr_param_y.shape[0]-1-fila,columna] = np.count_nonzero(Tiempos==200000) / Tiempos.shape[0]
+            ZZ[1,Arr_param_y.shape[0]-1-fila,columna] = np.mean(Tiempos/200000)
+            ZZ[2,Arr_param_y.shape[0]-1-fila,columna] = np.var(Tiempos/200000)
         
     #--------------------------------------------------------------------------------
     

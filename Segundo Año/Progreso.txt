@@ -3751,7 +3751,7 @@ Podría mandar esto a Algarve ahora. Estaba mandándolo, pero justo se cayeron l
 Oporto estén actualizados con los nuevos estados que reconoce mi algoritmo. Bien, están actualizados.
 Si lo mando a correr eso arma los gráficos que quiero.
 
-Ahroa veamos si puedo armar las funciones que armen el mapa de colores de la región en la que observo
+Ahora veamos si puedo armar las funciones que armen el mapa de colores de la región en la que observo
 estos estados "oscilantes". Lo primero que se me ocurre son dos gráficos. Uno que sea la fracción de estados
 que observo como estados "oscilantes". Eso sería simplemente la cantidad de estados que llegan hasta
 el final de tiempo de simulación. Lo segundo sería armar una varianza de los tiempos finales de simulación,
@@ -3770,3 +3770,37 @@ curvas de fracción de estados.
 las funciones de Fracción de Polarización y la nueva función de Tiempos de Convergencia.
 (Esto puede esperar al miércoles)
 .) Ponerme con el clasificador neuronal.
+
+------------------------------------------------------------------------------------------
+
+13/02/2024
+
+Las pc's de la facultad siguen andando raro desde la pc de mi casa, pero aun así logré mandar a
+hacer los gráficos de fracción de estados en función de Beta. Así que en un rato voy a poder
+descargar eso. Como esto tiene simulaciones con Cos(delta)=0, no espero ver muchos estados con
+polarización ideológica.
+
+Bien, eso se resolvió. Ahora tengo que subir los códigos de Oporto y "Coimbra" (En realidad va
+a Algarve, pero la idea es que uno es para el barrido Beta-Kappa, el otro para Beta-Cos[delta]).
+Sólo voy a mandar a correr el caso de Oporto ahora, porque ese código se terminó de correr entero.
+
+El caso de Oporto corrió bien. Ahora me queda hacer que funque en Algarve. Voy a subir el código,
+preparar todo, y ya ponerme a descargar los gráficos. Y eso será por hoy creo. Mañana prepararé
+lo que voy a contar, que yo siento que no es mucho.
+
+Algo que tengo que actualizar que Pablo me pidió, es que el colorbar de los mapas de colores
+de frecuencia de estados asigne los colores siempre según la región de 0 a 1. Y pareciera que el
+programa no levanta correctamente el valor de pasos simulados, porque por alguna razón todo está
+dando cero, lo cuál es raro. Veré de resolver esto hoy. Tampoco les puse el plt.legend a los 
+gráficos de fracción de polarizados en función de Beta.
+
+Estoy revisando el código que tengo en la carpeta de Opinion_actualizada dentro de Programas.
+Está mal cargado, tiene cosas de Evolución_temporal todavía. Corregir eso en el futuro.
+No estaba mal cargado, me estoy mezclando los laburos de Modelo Interés y de Modelo Opiniones.
+Ya mandé a matar todos los programas que simulaban, así ya mañana trabajo con lo que tengo.
+En Algarve el barrido llegó hasta Beta=0.7.
+
+Conseguí que los gráficos de Fracción de estados oscilantes se armen correctamente. Así que para
+mañana tengo que resolver dos cosas claves. La primera, es modificar los colorbar de los mapas de
+colores de Frecuencia y la otra es agregar las leyendas a los gráficos de Estados vs Beta. Puedo
+corregir eso segundo ahora, lo otro quizás lo haga mañana, no es prioritario.

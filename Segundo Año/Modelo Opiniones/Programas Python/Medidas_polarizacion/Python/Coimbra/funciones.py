@@ -49,13 +49,13 @@ def Tiempo(t0):
 # Esta es la función que uso por excelencia para levantar datos de archivos. Lo
 # bueno es que lee archivos de forma general, no necesita que sean csv o cosas así
 def ldata(archive):
-        f = open(archive)
+    with open(archive) as f:
         data = []
         for line in f:
             col = line.split("\t")
             col = [x.strip() for x in col]
             data.append(col)
-        return data 
+        return data
 
 #--------------------------------------------------------------------------------
 

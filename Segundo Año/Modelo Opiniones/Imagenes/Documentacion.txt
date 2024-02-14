@@ -78,3 +78,16 @@ detalle algunas simulaciones particulares que tardaban mucho para diversos valor
 es que observamos cosas preocupantes como comportamientos oscilatorios de los agentes. Esos
 comportamientos no son para nada razonables y generan que empecemos a dudar de si nuestros códigos
 están bien. Lo primero que armamos son gráficos de opinión en función del tiempo.
+
+.) Opinion_actualizada:
+-----------------------
+Esto sigue el modelo que tenía en Medidas_polarización, incluso se apropió de esas simulaciones
+y se encarga de completar los barridos en el espacio de parámetro para tener un poco más de
+estadística. La diferencia con Medidas_polarización es que actualicé todo el código, reduciendo
+el tamaño de los nombres de variables al quitar la indicación del tipo de dato al principio de cada
+nombre, y por otro lado, implementando la lista de vecinos que usa Hugo en su código. Todo con el fin
+de reducir el tiempo de simulación de mi código. Aprendí cosas interesantes, como el uso del
+doble puntero.
+ Lo que voy a estar guardando entonces son carpetas con barridos en Beta-Kappa, Beta-Cosdelta y
+el barrido que hice en Beta fijando Kappa y Epsilon. La idea es observar la Entropía, Covarianza
+Varianzas y otras métricas de los datos en el espacio de parámetros para los ensambles de datos.

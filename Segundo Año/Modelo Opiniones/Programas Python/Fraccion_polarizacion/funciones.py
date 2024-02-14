@@ -49,13 +49,13 @@ def Tiempo(t0):
 # Esta es la función que uso por excelencia para levantar datos de archivos. Lo
 # bueno es que lee archivos de forma general, no necesita que sean csv o cosas así
 def ldata(archive):
-        f = open(archive)
+    with open(archive) as f:
         data = []
         for line in f:
             col = line.split("\t")
             col = [x.strip() for x in col]
             data.append(col)
-        return data 
+        return data
 
 #--------------------------------------------------------------------------------
 
@@ -764,7 +764,9 @@ def Fraccion_estados_vs_Y(DF,path,carpeta):
                 
         Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
-                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"])
+                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
+                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
+                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
         
         for estado in range(11):
             Fraccion_polarizados[estado,indice] = np.count_nonzero(Frecuencias == estado)/Frecuencias.shape[0]
@@ -815,7 +817,9 @@ def Fraccion_dominante_vs_Y(DF,path,carpeta):
                 
         Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
-                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"])
+                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
+                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
+                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
         
         for estado in range(11):
             Fraccion_polarizados[estado,indice] = np.count_nonzero(Frecuencias == estado)/Frecuencias.shape[0]
@@ -839,6 +843,7 @@ def Fraccion_dominante_vs_Y(DF,path,carpeta):
     # Guardo la figura y la cierro
     plt.xlabel(r"$\beta$")
     plt.grid()
+    plt.legend()
     plt.title("Estados finales de Consenso")
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close("FracCons")
@@ -853,12 +858,13 @@ def Fraccion_dominante_vs_Y(DF,path,carpeta):
     plt.rcParams.update({'font.size': 24})
     plt.figure("FracPolUni",figsize=(20,15))
     plt.plot(Arr_param_y,Pol_Uni_sA,"--",color = "tab:blue", label = "Polarización sin Anchura",linewidth=4)
-    plt.plot(Arr_param_y,Pol_Uni_cA,"--",color = "tab:blue", label = "Polarización con Anchura",linewidth=4)
+    plt.plot(Arr_param_y,Pol_Uni_cA,"--",color = "tab:green", label = "Polarización con Anchura",linewidth=4)
     plt.plot(Arr_param_y,Pol_Uni_sA + Pol_Uni_cA,color = "tab:orange", label = "Polarización total",linewidth=5)
     
     # Guardo la figura y la cierro
     plt.xlabel(r"$\beta$")
     plt.grid()
+    plt.legend()
     plt.title("Estados finales de Polarización Unidimensional")
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close("FracPolUni")
@@ -873,11 +879,12 @@ def Fraccion_dominante_vs_Y(DF,path,carpeta):
     plt.figure("FracPolId",figsize=(20,15))
     plt.plot(Arr_param_y,Pol_Id_sA,"--",color = "tab:blue", label = "Polarización sin Anchura",linewidth=4)
     plt.plot(Arr_param_y,Pol_Id_cA,"--",color = "tab:green", label = "Polarización con Anchura",linewidth=4)
-    plt.plot(Arr_param_y,Pol_Id_sA,color = "tab:orange", label = "Polarización total",linewidth=5)
+    plt.plot(Arr_param_y,Pol_Id_sA + Pol_Id_cA,color = "tab:orange", label = "Polarización total",linewidth=5)
         
     # Guardo la figura y la cierro
     plt.xlabel(r"$\beta$")
     plt.grid()
+    plt.legend()
     plt.title("Estados finales de Polarización Ideológica")
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close("FracPolId")
@@ -897,6 +904,7 @@ def Fraccion_dominante_vs_Y(DF,path,carpeta):
     # Guardo la figura y la cierro
     plt.xlabel(r"$\beta$")
     plt.grid()
+    plt.legend()
     plt.title("Estados finales de Polarización Descorrelacionada")
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close("FracPolDes")
