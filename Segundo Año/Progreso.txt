@@ -3834,3 +3834,63 @@ En especial el tema de la polarización ideológica
 .) Tener en cuenta que descargar la info de la ANES no es nada obvio ni simple. Considerar
 cómo hacer eso. Hugo proponía armar los histogramas en el código, porque descargar las
 distribuciones era una cantidad de info infernal.
+
+------------------------------------------------------------------------------------------
+
+15/02/2024
+
+Hablando con Pablo, él me envió la siguiente lista de cosas por hacer en estos días para ya charlar
+el lunes. Vamos a ir viendo qué puedo tener resuelto para entonces.
+
+1 - Mandar a correr con más estadística
+2 - Ver por qué hay polarización ideológica para cos(delta)=0
+3 - Armar un clasificador de estados robustos
+4 - Graficar el % de estados finales en ambos
+5 - Ver la fracción de oscilantes y polarizados. Son polarizados todos los oscilantes?
+6 - Hacer corridas largas de 1 estado oscilante, guardandose las configuraciones finales.
+7 - Analizar bien las zonas intermedias de beta<1
+  7a- Aparecen estados radicalizados en 0.75 < beta <1?
+  7b - Aparecen estados de polarización decorrelacionadas para betas chicos?
+
+Sobre lo primero, ya mandé a correr datos en Oporto. Debería mandar a correr datos en Algarve y Coimbra
+también. De paso, las redes que estoy usando son de grado medio 8 todas, ¿verdad?
+Ahí revisé lo que tengo, no es cierto que esté trabajando con redes de grado medio 8, estaba trabajando con
+redes de grado medio 10. Así que en algún punto empecé a mezclar estas redes. Posiblemente, a partir
+de haber implementado la lista de vecinos que saqué del código de Hugo. No tengo las redes de Oporto
+como para comprobar que en el caso de Oporto también hayan sido redes de grado Medio 10, ni tengo las redes
+de Algarve, las cuáles al parecer si eran de grado medio 8, de ahí la confusión.
+
+
+##################################################################################################
+¿Cuáles son entonces las posibles regiones con grado medio 8, que deberían tener grado medio 10?
+.) Barrido Beta-Kappa: Kappa [11,20], todo Beta, iteraciones 0 a 20 
+.) Barrido Beta-Cosdelta: Beta [0,0.5] más [1,2], todo Cos(delta) iteraciones 20 a 40
+##################################################################################################
+
+Esta es info crucial que debería pasar a mi cuaderno. Por suerte, siempre guardo la matriz de Adyacencia
+utilizada entre los datos. Así que lo que voy a hacer es lo siguiente. Voy a descargar mis datos de a poco
+e intentar revisar los grados de las redes. Si resultan que están mal, después reemplazo esos datos.
+Entonces, para resolver esto, el plan es el siguiente:
+.) En Oporto, voy a correr todo el espacio de parámetros, ignorando la región con Kappa menor a 1, y barrer
+a partir de la iteración 20 con grado medio 10.
+.) En Algarve y Coimbra voy a correr los datos con grado medio 10 desde el principio, usando la misma carpeta
+de MARE. Al ser 2 pc's juntas, va a valer la pena. Con eso voy a solucionar la mayor parte, y ya sólo
+tendré que revisar que pasa en la región Beta-Kappa. Planazo.
+
+Golpe al planazo, no tengo anotadas las matrices de Adyacencia en las primeras simulaciones. Me cago en todo.
+Bueno, mandé a correr los datos, ocupé 10 hilos de cada pc, creo que eso es lo mejor para apurar los trámites.
+El barrido Beta-Kappa me consume 819 simulaciones por cada iteración, mientras que el barrido Beta-Cos(delta)
+consume 451. Sería de esperar que se resuelva más rápido el de Beta-Cos(delta) que el Beta-Kappa.
+
+Para dejar en claro, el barrido Beta-Kappa se está haciendo con grado medio 10 desde la iteración 20 en adelante.
+En el peor de los casos, tengo que rearmar las iteraciones de la 0 a la 20. El barrido Beta-Cos(delta) en cambio
+se está rearmando TODO, ese ya no va a tener problemas.
+
+Mañana me gustaría juntarme con Lupi y charlar el tema del otro modelo. Por otro lado, quiero ponerme a
+revisar el final de Mininni. Tengo que empezar a encontrar tiempo para estas dos cosas. Pablo me dijo de
+charlar el lunes el tema de este laburo, yo diría de preparar cosas para el lunes, charlar con él
+lo de qué es lo que estoy viendo sobre la polarización ideologíca en el barrido Beta-Kappa y de ahí
+plantearle que voy a ponerme a estudiar para el final. Creo que ese es el mejor plan.
+
+En el barrido Beta-Cos(delta) borré todos los archivos con iteraciones entre 40 y 80, porque esos
+los estoy rehaciendo en Coimbra.

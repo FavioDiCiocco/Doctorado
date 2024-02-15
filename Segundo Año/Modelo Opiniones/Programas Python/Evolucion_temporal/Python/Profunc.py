@@ -28,28 +28,31 @@ t0 = time.time()
 # Defino la cantidad de agentes
 N = 1000
 
+# Grados = np.zeros(3)
+
 # Cargo el archivo con la matriz de adyacencia Erdos-Renyi
+for elemento in np.array([40,51,66]):
+    Datos = func.ldata("../MARE_Algarve/Erdos-Renyi/ErdosRenyi_N=1000_ID={}.file".format(elemento))
+    Adyacencia  = np.reshape(np.array([i for i in Datos[0][:-1:]],dtype = "int"),(N,N))
+    
+    # Armo el grafo a partir de la matriz de Adyacencia
+    
+    G = nx.from_numpy_matrix(Adyacencia)
+    
+    Vecinos = [nodo for nodo in G[79]]
+    
+    
+    gradomedio = 0
+    for nodo in G.nodes():
+        gradomedio += G.degree[nodo]
+    
+    # Grados[elemento] = gradomedio / N
+    print(gradomedio / N)
 
-Datos = func.ldata("../MARE_Algarve/Erdos-Renyi/ErdosRenyi_N=1000_ID=51.file")
-Adyacencia  = np.reshape(np.array([i for i in Datos[0][:-1:]],dtype = "int"),(N,N))
-
-# Armo el grafo a partir de la matriz de Adyacencia
-
-G = nx.from_numpy_matrix(Adyacencia)
-
-Vecinos = [nodo for nodo in G[79]]
-
-
-# gradomedio = 0
-# for nodo in G.nodes():
-#     gradomedio += G.degree[nodo]
-
-# gradomedio /= N
-
-# print("El grado medio de la red es: ", gradomedio)
+# plt.hist(Grados)
 
 ###################################################################################################
-
+"""
 # Dada una red, me armo un archivo como los que tiene Hugo de enlaces del sistema.
 
 filename = "ER1000k=8.file"
@@ -59,7 +62,7 @@ with open(filename, "w") as file:
     for edge in G.edges():
         file.write(f"{edge[0]} {edge[1]}\n")
 
-"""
+
 ###################################################################################################
 
 # Acá voy a mirar el tema del peso y la distancia entre los agentes 79 y 388
