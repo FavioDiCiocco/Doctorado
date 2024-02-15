@@ -3804,3 +3804,33 @@ Conseguí que los gráficos de Fracción de estados oscilantes se armen correcta
 mañana tengo que resolver dos cosas claves. La primera, es modificar los colorbar de los mapas de
 colores de Frecuencia y la otra es agregar las leyendas a los gráficos de Estados vs Beta. Puedo
 corregir eso segundo ahora, lo otro quizás lo haga mañana, no es prioritario.
+
+------------------------------------------------------------------------------------------
+
+14/02/2024
+
+Estoy mandando a correr en Algarve el armado de todos los gráficos. Tuve que corregir el
+armado de los vectores de métrica para que no use el "repetición" sino que vaya llenando
+los vectores según va repasando archivos con un "índice". Problemas de tener un barrido
+truncado.
+
+Borré los archivos de Opiniones con iteración 100 en los datos de polarización, cosa de que
+esté mejor normalizado eso. Era muy feo de ver.
+ Estoy corrigiendo los límites de los colorbars para que vayan todos entre 0 y 1. Esto es corregir
+las funciones de Varianzas, Covarianzas, Pasos de Simulación, Frecuencia de Estados y Entropía.
+Siento que varias cosas se oscurecen de esta forma y no se llegan a ver.
+
+Hice un montón de correcciones en las pc's de Algarve y Oporto, considerar que tengo que descargar
+esos cambios a mis pc's para que queden contabilizados en el Github.
+
+Mirar el paper de Pastor-Satorras y la comparación con ANES para tener una idea de cómo funciona
+eso.
+
+.) Considerar armar un ensamble de Beta-Kappa con otro cos(delta).
+.) Podríamos tomar un único Kappa y ver qué pasa si aumentamos al doble el tamaño de la red.
+.) Revisar que lo que estoy viendo sea efectivamente lo que es. Ahora tengo dudas de eso.
+En especial el tema de la polarización ideológica
+.) Revisar cuál es la relación de estados oscilantes en comparación con estados polarizados.
+.) Tener en cuenta que descargar la info de la ANES no es nada obvio ni simple. Considerar
+cómo hacer eso. Hugo proponía armar los histogramas en el código, porque descargar las
+distribuciones era una cantidad de info infernal.
