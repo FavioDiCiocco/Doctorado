@@ -131,3 +131,14 @@ Distribuciones ANES:
 --------------------
 Guardo el código de jupyter notebook y datos de la ANES que me pasó Hugo para poder revisar y construir
 esto como distribuciones de a pares de preguntas.
+
+Opinion actualizada:
+--------------------
+Estoy realizando dos barridos. Por un lado, un barrido de Beta-Cos(delta), por el otro un barrido de
+Beta-Kappa. El primero se realiza con Beta entre [0,2] y Cos(delta) entre [0,1], mientras que el segundo
+se realiza con Beta en la misma región y Kappa entre [0,20]. Sobre esto, estoy realizando mapas de colores
+del espacio de parámetros usando la Entropía, Varianza y Covarianza para más o menos ver lo que ocurre con
+el sistema, mientras que por otro lado implementé un algoritmo que identifica estados y lo estamos usando
+para caracterizar el comportamiento del sistema en las distintas regiones.
+ Actualmente, armé una carpeta llamada Revisión, la cuál tiene las simulaciones de un conjunto de estados,
+los cuáles el programa reconoce como estados de polarización ideológica, pero difícilmente sean tales.

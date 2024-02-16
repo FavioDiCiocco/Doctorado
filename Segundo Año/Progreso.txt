@@ -3894,3 +3894,43 @@ plantearle que voy a ponerme a estudiar para el final. Creo que ese es el mejor 
 
 En el barrido Beta-Cos(delta) borré todos los archivos con iteraciones entre 40 y 80, porque esos
 los estoy rehaciendo en Coimbra.
+
+------------------------------------------------------------------------------------------
+
+16/02/2024
+
+Hoy llegué tarde, el tema del perro me está complicando.
+
+Lo primero que voy a hacer es copiar los archivos que estaba mirando antes e intentar descubrir
+por qué el algoritmo clasificaba estados como si fueran estados de polarización ideológica.
+
+Cuando mandé a hacer los gráficos de los histogramas, me surgió un problema de que el programa de
+Python me estaba comiendo toda la memoria. Si mando a hacer los gráficos desde Spyder, siempre
+tengo ese problema. Si lo mando desde la terminal de comando, pareciera estar teniendo ese mismo
+problema, pero se hace mucho más lento el memory leak. Casi podría decir que ni lo tiene el problema.
+Si armar estos gráficos le tomara todo el día, en ese caso sería posible que se rompa todo, pero
+en general estas cosas se resuelven en 10 minutos.
+
+Cada tanto el programa encontraba problemas con colocar el número de repitición en el vector de
+Tiempos o el de Varianzas. No es que el código esté mal, efectivamente es que faltan simulaciones
+en el medio. Lo cuál es un problemilla. Resolví esto hardcodeando el tamaño de mis vectores
+de métricas.
+
+Empecemos a ver qué es lo que el algoritmo observa y por qué esto pasa y cómo podría solucionarlo.
+Resulta que en Kappa=14, Beta=0.7, iteración 7, tengo un estado que parece ser más un estado 
+descorrelacionado que uno de polarización ideológica. A decir verdad, parece más como una distribución
+a tres puntas. Eso justamente determina que la covarianza sea negativa en este caso y mayor a 0.1
+en módulo. La covarianza me dió -0.16.
+
+Ahora mirando Kappa=14, Beta=0.8, iteración 9, también tengo un estado que parece más polarización
+descorrelacionada que ideológica. Sin embargo, como está un poco más poblado en la antidiagonal,
+la covarianza da -0.15.
+
+En el caso de Kappa=14, Beta=0.9, tengo dos estados que se identifican como polarización ideológica.
+Son el 0 y el 6. Estos también son estados que parecen más de polarización descorrelacionada
+que de polarización ideológica. Su covarianza es 0.15 y -0.15.
+
+Bien, efectivamente no estoy viendo claros estados ideológicos, sino que estoy mal clasificando
+estados de polarización descorrelacionada. Queda discernir entonces cómo catalogar estos estados.
+Pero se caracterizan justamente porque tienen más poblada una diagonal que otra, pero parecen
+más una situación intermedia entre polarización descorrelacionada e ideológica.
