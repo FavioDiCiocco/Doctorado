@@ -630,9 +630,15 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                     
                     plt.rcParams.update({'font.size': 32})
                     plt.figure(figsize=(20,15))
+                    
                     _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
                                              range=[[-PARAM_X,PARAM_X],[-PARAM_X,PARAM_X]],density=True,
                                              cmap=cmap)
+                    """
+                    _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
+                                             range=[[-EXTRAS,EXTRAS],[-EXTRAS,EXTRAS]],density=True,
+                                             cmap=cmap)
+                    """
                     plt.xlabel(r"$x_i^1$")
                     plt.ylabel(r"$x_i^2$")
                     plt.title('Histograma 2D, {}={:.2f}_{}={:.2f}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y))
@@ -970,14 +976,14 @@ def Diccionario_metricas(DF,path,N):
                                         (DF["parametro_y"]==PARAM_Y), "nombre"])
             #-----------------------------------------------------------------------------------------
             
-            Varianza_X = np.zeros(16)
-            Varianza_Y = np.zeros(16)
-            Covarianza = np.zeros(16)
-            Promedios = np.zeros(16)
-            Entropia = np.zeros(16)
-            # Identidad = np.zeros(archivos.shape[0])
+            Varianza_X = np.zeros(archivos.shape[0])
+            Varianza_Y = np.zeros(archivos.shape[0])
+            Covarianza = np.zeros(archivos.shape[0])
+            Promedios = np.zeros(archivos.shape[0])
+            Entropia = np.zeros(archivos.shape[0])
+            Identidad = np.zeros(archivos.shape[0], dtype=int)
             
-            for nombre in archivos:
+            for indice,nombre in enumerate(archivos):
                 
         
                 # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
@@ -1002,13 +1008,13 @@ def Diccionario_metricas(DF,path,N):
                 
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-                # Identidad[indice] = repeticion
+                Identidad[indice] = repeticion
         
                 M_cov = np.cov(Opifinales)
-                Varianza_X[repeticion] = M_cov[0,0]
-                Varianza_Y[repeticion] = M_cov[1,1]
-                Covarianza[repeticion] = M_cov[0,1]
-                Promedios[repeticion] = np.linalg.norm(np.array(Datos[5][:-1:], dtype="float"),ord=1) / np.array(Datos[5][:-1:], dtype="float").shape[0]
+                Varianza_X[indice] = M_cov[0,0]
+                Varianza_Y[indice] = M_cov[1,1]
+                Covarianza[indice] = M_cov[0,1]
+                Promedios[indice] = np.linalg.norm(np.array(Datos[5][:-1:], dtype="float"),ord=1) / np.array(Datos[5][:-1:], dtype="float").shape[0]
                 
                 # Tengo que rearmar Opifinales para que sea un sólo vector con todo
                 
@@ -1020,18 +1026,42 @@ def Diccionario_metricas(DF,path,N):
                 Probas = Clasificacion(Opifinales,N,T)
                 
                 # Con esa distribución puedo directamente calcular la entropía.
-                Entropia[repeticion] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
+                Entropia[indice] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
+                
+            #----------------------------------------------------------------------------------------------------------------------
+            
+            # Mis datos no están ordenados, pero con esto los ordeno según el
+            # valor de la simulación. Primero inicializo el vector que tiene los índices
+            # de cada simulación en sus elementos. El elemento 0 tiene la ubicación
+            # de la simulación cero en los demás vectores.
+            Ubicacion = np.zeros(max(Identidad)+1,dtype = int)
+            
+            # Para cada elemento en el vector de identidad, le busco su indice en el
+            # vector y coloco ese índice en el vector de Ubicacion en la posición
+            # del elemento observado
+            for i in np.unique(Identidad):
+                indice = np.where(Identidad == i)[0][0]
+                Ubicacion[i] = indice
+            
+            # Ahora tengo que remover las simulaciones faltantes. Armo un vector
+            # que tenga sólamente los índices de las simulaciones faltantes
+            Faltantes = np.arange(max(Identidad)+1)
+            Faltantes = np.delete(Faltantes,Identidad)
+            
+            # Borro esas simulaciones de mi vector de Ubicacion
+            Ubicacion = np.delete(Ubicacion,Faltantes)
+                
                 
             if PARAM_X not in Salida[EXTRAS].keys():
                 Salida[EXTRAS][PARAM_X] = dict()
             if PARAM_Y not in Salida[EXTRAS][PARAM_X].keys():
                 Salida[EXTRAS][PARAM_X][PARAM_Y] = dict()
-            Salida[EXTRAS][PARAM_X][PARAM_Y]["Entropia"] = Entropia/np.log2(N*N)
-            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"] = Varianza_X
-            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"] = Varianza_Y
-            Salida[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"] = Covarianza
-            Salida[EXTRAS][PARAM_X][PARAM_Y]["Promedios"] = Promedios
-            # Salida[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] = Identidad
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Entropia"] = Entropia[Ubicacion] / np.log2(N*N)
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"] = Varianza_X[Ubicacion]
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"] = Varianza_Y[Ubicacion]
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"] = Covarianza[Ubicacion]
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Promedios"] = Promedios[Ubicacion]
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] = np.unique(Identidad)
             
     return Salida
 
@@ -1097,12 +1127,16 @@ def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y, Covarianza, Promedios):
             else:
                 # Polarización
                 # Polarización ideológica
-                if np.abs(cov) >= 0.1:
+                if np.abs(cov) >= 0.3:
                     Resultados[i] = 9
-                    
+                
+                # Transición con anchura
+                elif np.abs(cov) >= 0.1 and np.abs(cov) < 0.3:
+                    Resultados[i] = 10
+                
                 # Polarización descorrelacionada
                 else:
-                    Resultados[i] = 10
+                    Resultados[i] = 11
                 
     return Resultados
 

@@ -3934,3 +3934,79 @@ Bien, efectivamente no estoy viendo claros estados ideológicos, sino que estoy 
 estados de polarización descorrelacionada. Queda discernir entonces cómo catalogar estos estados.
 Pero se caracterizan justamente porque tienen más poblada una diagonal que otra, pero parecen
 más una situación intermedia entre polarización descorrelacionada e ideológica.
+
+------------------------------------------------------------------------------------------
+
+19/02/2024
+
+Llegué a la facultad, me puse a organizar unas cosas, hacer unas llamadas y anotar unos
+papers que pasó Pablo en el Drive.
+
+Veamos algunos estados de Kappa=14.5, como para tener un poco más de datos sobre que el
+clasificador trabaje bien sobre los estados que no son el 9 y para tener un poco más de
+estadística sobre los valores que toman las covarianzas.
+
+Mirando varios de los estados de Kappa=14.5, en Beta=0.6 recién encuentro un caso mal clasificado.
+Este caso también tiene una covarianza de -0.16. En beta=0.7 encontré otros dos estados mal
+clasificados, donde la covarianza da apenas -0.10... y 0.10... es decir que apenás cumplen
+con el criterio.
+
+¿Con qué criterio digo que no son estados de polarización ideológica? Con el criterio de que
+no parecen para nada distribuciones repartidas a lo largo de una diagonal, sino que son
+más bien opiniones repartidas en todo el espacio, y resulta que en las puntas de una diagonal
+se agolpan algunos agentes de más, formando un valor de covarianza que supera
+el umbral de corte.
+ Podría revisar entonces cuánto valen los valores de covarianza que se observan en los
+estados que realmente considero estados de polarización ideológica. Para eso me voy a
+descargar algunos datos de Algarve y desde ahí ver cómo laburar con eso. El plan sería
+entonces ajustar las funciones que catalogan estados para que si la Covarianza está entre
+0.1 y X, con X a determinar, pero posiblemente valiendo 0.3, esos son estados de transición
+en los casos con anchura. De paso, supongo que podría guardarme los gráficos que obtuve
+de estos estados que detecté como mal clasificados.
+
+Ahora estoy mirando el barrido Beta-Cosdelta, con Cosd=0.5 y Beta=0.45 un estado
+claramente de polarización ideológica tiene una covarianza de 0.54. En Beta=0.55 el estado
+tiene algunos puntos faltantes de la diagonal, y sin embargo la covarianza es de 0.65.
+En Cosd=0.6 y Beta=0.5 tengo los datos más uniformemente distribuidos en la diagonal
+y me da esto una covarianza de 0.58. Bueno, básicamente entonces estoy viendo valores
+en ese orden. ¿Puedo encontrar estados con covarianza más cercana a 0.3 pero que parezcan
+ser polarización ideológica? Por lo visto no. En cuanto tengo un poco de Cos(delta) el sistema
+si forma estados de polarización ideológica lo hace con valores de covarianza de 0.5
+o más. Se me ocurre que quizás un barrido más fino de Cos(delta) podría generar unos
+estados más intermedios, pero no es lo que estoy viendo. De paso, estoy viendo sólo 1
+iteración de mis estados Beta-Cos(delta), no tengo la estadística para ver más.
+
+Por ahora me la voy a jugar, voy a asumir que entonces en el caso de Cos(delta)=0 sólo
+veo estos estados que parecen no converger y que tienen covarianza entre 0.1 y 0.18 en módulo.
+Después existen entonces los estados con polarización descorrelacionada con covarianza
+menor a 0.1 y los que son polarización ideológica con covarianza de aprox. 0.55. Entonces,
+si bien no vi ningún estado con covarianza entre 0.3 y 0.5, propongamos como primer intento
+que si la covarianza está entre 0.1 y 0.3, entonces tengo un estado de transición con anchura,
+si la covarianza es menor a 0.1 tengo polarización descorelacionada y si es mayor a 0.3 tengo
+polarización ideológica. Hagamos los cambios a la función que identifica estados.
+
+Implementé en el algoritmo que clasifica estados el nuevo estado de transición con anchura,
+el cuál cumple con tener entropía mayor a 0.3, sigmax y sigmay mayor a 0.1 y covarianza
+entre 0.1 y 0.3. Hecho esto, logré armar un pequeño proceso extra para ya de una vez por todas
+solucionar el problema que tenía con las iteraciones faltantes en el código, cosa de no tener
+que rearmar el código cada vez que me encontraba con que había iteraciones intermedias faltantes.
+Lo que hago es que el diccionario de métricas construya vectores del tamaño de la cantidad
+de archivos registrados, de forma tal que no sobren ni falten elementos. Luego, agregué un vector
+llamado Identidad, el cuál registra cuál es la simulación que coloqué en cada posición. A partir
+de este vector, armé otro que en cada elemento coloque la posición de cada simulación. Es
+un poco difícil de explicar, pero la cosa es que este vector lo uso como índices sobre los demás
+vectores para ordenarlos. Y después a lo último ordeno también el vector de Identidad y ya saco
+mis vectores todos ordenados de menor a mayor las iteraciones. De esta forma, aún si mis simulaciones
+tienen 3 iteraciones faltantes en un punto del ensamble, por ejemplo las iteraciones 3,8,9; organiza
+las métricas según simulaciones de la siguiente forma: [0,1,2,4,5,6,7,10]. Y justamente así sale
+también el vector de identidad. Hermoso.
+
+Mañana veo de pasar estas nuevas implementaciones que coloqué en el código que está en Opinión Actualizada
+y lo paso a los archivos de funciones de Oporto y Coimbra. Lo que hay que corregir es la identificación
+de estados y el diccionario de métricas.
+ Mañana también tengo que corregir el informe de avance de doctorado. Por un lado, Pablo me dijo que aclare
+un poco mejor el laburo de docencia que hice. Puedo poner las materias que di y tengo que aclarar que
+trabajé para FCEyN. Por otro lado, tengo que agregar el ítem de avance de plan de estudios, en el cuál
+comento los proyectos en los que estoy trabajando, los explico lo mejor posible, pongo algunas figuras
+que me parezcan representativas y menciono que estamos encaminando el trabajo con la idea de realizar
+publicaciones a partir de ellos. Si me sobra tiempo, me pongo con el final de Mininni, sino el miércoles.

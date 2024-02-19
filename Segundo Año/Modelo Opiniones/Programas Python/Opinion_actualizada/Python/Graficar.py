@@ -9,6 +9,7 @@ Created on Wed Nov 16 14:21:12 2022
 
 
 import pandas as pd
+import numpy as np
 import time
 import os
 import funciones as func
@@ -23,7 +24,7 @@ T=2 # Defino el número de tópicos
 Etapa = Path("Opinion_actualizada") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Revision"]
+Carpetas = ["Revision/Beta-Kappa"]
 
 for carp in Carpetas:
     
@@ -85,14 +86,16 @@ for carp in Carpetas:
     #----------------------------------------------------------------------------------------------
     
     Kappa = 14
-    Beta = 0.8
+    Beta = 0.7
     
     Estados = func.Identificacion_Estados(Dic_Total[0][Kappa][Beta]["Entropia"],
                                           Dic_Total[0][Kappa][Beta]["Sigmax"],
                                           Dic_Total[0][Kappa][Beta]["Sigmay"],
                                           Dic_Total[0][Kappa][Beta]["Covarianza"],
                                           Dic_Total[0][Kappa][Beta]["Promedios"])
-
     
+    print(Estados)
+    print(Dic_Total[0][Kappa][Beta]["Covarianza"])
+
 
 func.Tiempo(t0)
