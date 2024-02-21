@@ -125,20 +125,19 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char TextOpi[355];
-	sprintf(TextOpi,"../Programas Python/Evolucion_temporal/Datos/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+	sprintf(TextOpi,"../Programas Python/Opinion_actualizada/Datos/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
 		,param->N, param->kappa, param->beta, param->Cosd, iteracion);
 	FILE *FileOpi = fopen(TextOpi,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// // Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char TextTestigos[355];
-	sprintf(TextTestigos,"../Programas Python/Evolucion_temporal/Datos/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+	sprintf(TextTestigos,"../Programas Python/Opinion_actualizada/Datos/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
 		,param->N, param->kappa, param->beta, param->Cosd, iteracion);
 	FILE *FileTestigos = fopen(TextTestigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
 	char TextMatriz[355];
-	sprintf(TextMatriz, "ER1000k=8.file");
-	// "MARE/Erdos-Renyi/gm=8/ErdosRenyi_N=%d_ID=%d.file",param->N, (int) iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
+	sprintf(TextMatriz, "MARE/Erdos-Renyi/gm=10/ErdosRenyi_N=%d_ID=%d.file", param->N, (int) iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
 	FILE *FileMatriz = fopen(TextMatriz,"r");
 	
 	// Puntero a la función que define mi ecuación diferencial

@@ -89,3 +89,27 @@ anotados en el cuaderno, en los que anoté los betas, las iteraciones y las semi
 Las redes que usé para armar estos datos son las redes de Erdos-Renyi que tenía armadas en la pc
 de Algarve. La base de este código surge de NI_homofilia, pero adaptado para guardar los datos
 de los testigos cada 100 pasos de iteración.
+
+.) Actualización Opiniones:
+---------------------------
+
+Lo que hice es tomar el código de Medidas_polarización e implementar el uso de una lista de vecinos en
+vez de una matriz de Adyacencia. También armé matrices para precalcular algunos datos previos
+que surgen de funciones no lineales y que si los puedo precalcular reducen tiempo de simulación.
+Todo esto lo hice en consonancia con el ejemplo de código que me pasó Hugo. Esto también implicó un
+cambio en la construcción de las matrices de adyacencia, las cuales ahora se construyen indicando
+los enlaces entre agentes, no escribiendo la matriz entera. Este código lo voy a usar para
+realizar un barrido en el espacio Beta-Kappa y otro en el espacio Beta-Cos(delta). Si bien hubo algunos
+problemas antes, decidí aprovechar y rehacer todas mis simulaciones, cosa de tener todas mis redes
+construidas con grado medio=10.
+
+.) Simulacion sin fin:
+----------------------
+
+Partiendo del código de Actualización de Opiniones, quería descubrir si ciertos estados observados son
+metaestables o no. Para eso lo que puedo hacer es armar un código que tome la opinión final de un código
+y continue simulando desde ahí. De esa manera, es básicamente lo mismo que retomar ese sistema,
+porque mi código sólo hace uso de números random en la distribución inicial de opiniones, después
+no usa números random para nada más. Así que este código se va a encargar de tomar datos previos y cargarlos
+como input para la nueva simulación. Por el formato de simulación que esto va a tener, no creo que tenga
+que preocuparme por el tema de usar el Instanciar con esto.

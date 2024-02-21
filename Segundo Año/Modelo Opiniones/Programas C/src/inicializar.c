@@ -72,7 +72,7 @@ void Generar_Separacion(puntero_Matrices red, puntero_Parametros param){
 }
 
 // Esta función es la que lee un archivo y me arma la matriz de Adyacencia
-int Lectura_Adyacencia(int *vec, FILE *archivo){
+void Lectura_Adyacencia(int *vec, FILE *archivo){
 	
 	// Defino los enteros que voy a usar para leer el archivo y escribir sobre el vector.	
 	int indice = 2;
@@ -93,12 +93,10 @@ int Lectura_Adyacencia(int *vec, FILE *archivo){
 		printf("La matriz del archivo es mas chica que el vector\n");
 		return 1;
 	}
-	
-	return 0;
 }
 
 // Esta función es la que lee un archivo y me arma la lista de vecinos en el puntero de punteros de pi_Adyacencia
-int Lectura_Adyacencia_Ejes(puntero_Matrices red, FILE *archivo){
+void Lectura_Adyacencia_Ejes(puntero_Matrices red, FILE *archivo){
 	//##########################################################################################
 	
 	// Defino las variables que voy a usar para leer el archivo y escribir sobre el vector.
@@ -176,9 +174,35 @@ int Lectura_Adyacencia_Ejes(puntero_Matrices red, FILE *archivo){
     }
 	
 	free(grado);
-	
-	return 0;
 }
 
-
-
+// Esta función toma el archivo de Opiniones viejo y asigna los valores
+// de opinión finales al vector de opiniones
+void Lectura_Opiniones(double* vec, int* pasos_simulados , FILE *archivo){
+	
+	// Defino las variables que voy a usar para leer el archivo y escribir sobre el vector.
+	int c;
+	int indice;
+	double salida;
+	
+	// Los archivos de opiniones tienen la siguiente estructura:
+	// Opiniones iniciales
+	// Variación Promedio
+	// Opiniones finales
+	// Pasos simulados
+	// Semilla
+	
+	// Salteo las primeras filas que no me interesan
+	// Salteo 5 filas
+	for(int i=0; i<5; i++) while ((c = fgetc(archivo)) != EOF && c != '\n'); // Esto saltea una fila
+	
+	// Ahora estoy en la fila de Opiniones finales, voy guardando los datos en mi vector de opiniones
+	// Acá estoy asumiendo fuerte que no va a haber ningún problema al levantar los datos.
+	indice = 0;
+	while( fscanf(archivo,"%lf", vec+indice+2 ) != EOF && indice < *vec * *(vec+1)) indice++;
+	
+	// Levantados estos datos, paso a levantar también la cantidad de pasos simulados
+	while ((c = fgetc(archivo)) != EOF && c != '\n'); // Salteo una fila
+	while( fscanf(archivo,"%d", pasos_simulados ) != EOF ) break;
+	
+}

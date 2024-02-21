@@ -4010,3 +4010,23 @@ trabajé para FCEyN. Por otro lado, tengo que agregar el ítem de avance de plan
 comento los proyectos en los que estoy trabajando, los explico lo mejor posible, pongo algunas figuras
 que me parezcan representativas y menciono que estamos encaminando el trabajo con la idea de realizar
 publicaciones a partir de ellos. Si me sobra tiempo, me pongo con el final de Mininni, sino el miércoles.
+
+------------------------------------------------------------------------------------------
+
+21/02/2024
+
+Me olvidé de comittear lo que hice ayer, igual ayer estuve básicamente trabajando sobre el
+informe y otras cosas, no hice mucho en el código por lo que no es un gran problema, después
+lo mergeo eso.
+
+Entre cansancio físico y dormir mal, hoy empecé a laburar un poco más tarde. Pero la idea
+es primero armar el programa que me decía Pablo que tome el estado final de una simulación
+anterior y que continue corriendo, así tengo simulaciones que se extiendan en el tiempo
+y no tengo que ir hacia atrás con los datos.
+
+Bueno, no hice lo que quería, pero hice parte de eso. Cuestión que armé la función que levanta
+las opiniones de un archivo y de ahí continua corriendo. No lo probé ya implementado, pero
+probé en Prosem que levantara bien los datos. Lo que sigue es ver cómo armar los nombres
+de los archivos y si puedo mandar esto en Oporto o algo así. Siento que al final del día voy
+a estar haciendo esto en mi pc nomás. No debería dejar pasar el día como hice hoy, después
+no llego con nada.
