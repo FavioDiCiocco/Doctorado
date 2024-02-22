@@ -9,7 +9,6 @@ Created on Wed Nov 16 14:21:12 2022
 
 
 import pandas as pd
-import numpy as np
 import time
 import os
 import funciones as func
@@ -20,11 +19,11 @@ from pathlib import Path
 
 t0 = time.time()
 
-T=2 # Defino el número de tópicos
-Etapa = Path("Opinion_actualizada") # Defino el nombre de la etapa del trabajo en la que estoy
+T=1 # Defino el número de tópicos
+Etapa = Path("Evolucion_temporal") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Revision/Beta-Kappa"]
+Carpetas = ["1D"]
 
 for carp in Carpetas:
     
@@ -42,7 +41,11 @@ for carp in Carpetas:
     
     #-------------------------------------------------------------------------------------------------------
     
-    # Mis archivos tienen nombres con la forma:
+    # Es importante partir del hecho de que mis archivos llevan por nombre:
+    # "Opiniones_N=$_kappa=$_beta=$_Iter=$.file" y "Testigos_N=$_kappa=$_beta=$_Iter=$.file"
+    # En la carpeta 1D
+    
+    # En cambio, en la carpeta 2D llevan por nombre:
     # "Opiniones_N=$_kappa=$_beta=$_cosd=$_Iter=$.file" y "Testigos_N=$_kappa=$_beta=$_cosd=$_Iter=$.file"
     
     Df_archivos = pd.DataFrame({"nombre": Archivos_Datos})
@@ -50,9 +53,9 @@ for carp in Carpetas:
     # Hecho mi dataframe, voy a armar columnas con los parámetros que varían en los nombres de mis archivos
     Df_archivos["tipo"] = Df_archivos["nombre"].apply(lambda x: x.split("_")[0])
     Df_archivos["n"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[1].split("=")[1]))
-    Df_archivos["parametro_x"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
+    Df_archivos["Extra"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
     Df_archivos["parametro_y"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
-    Df_archivos["Extra"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1]))
+    Df_archivos["parametro_x"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1]))
     Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[5].split("=")[1].strip(".file")))
     
     #----------------------------------------------------------------------------------------------
@@ -61,41 +64,23 @@ for carp in Carpetas:
     # ID es por el nombre del parámetro.
     # Todo parámetro que no grafique es un parámetro extra
     
-    ID_param_x = "kappa"
+    ID_param_extra_1 = "kappa"
     ID_param_y = "beta"
-    ID_param_extra_1 = "cosd"
-    
+    ID_param_x = "cosd"
     
     # Lo otro que necesito es el nombre que pasaré a los ejes de los gráficos de las funciones
     # SIM significa símbolo, porque esto lo uso para escribir el símbolo de ese parámetro
     # Todo parámetro que no grafique es un parámetro extra
     
-    SIM_param_x = r"\kappa"
+    SIM_param_extra_1 = r"\kappa"
     SIM_param_y = r"\beta"
-    SIM_param_extra_1 = r"cos(\delta)" 
+    SIM_param_x = r"cos(\delta)"
     
     #----------------------------------------------------------------------------------------------
     
-    # func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
-    #                                   ID_param_x, ID_param_y, ID_param_extra_1)
-    
-    #----------------------------------------------------------------------------------------------
-    
-    Dic_Total = func.Diccionario_metricas(Df_archivos, Direccion, 20)
-    
-    #----------------------------------------------------------------------------------------------
-    
-    Kappa = 19.5
-    Beta = 0.5
-    
-    Estados = func.Identificacion_Estados(Dic_Total[0][Kappa][Beta]["Entropia"],
-                                          Dic_Total[0][Kappa][Beta]["Sigmax"],
-                                          Dic_Total[0][Kappa][Beta]["Sigmay"],
-                                          Dic_Total[0][Kappa][Beta]["Covarianza"],
-                                          Dic_Total[0][Kappa][Beta]["Promedios"])
-    
-    print(Estados)
-    print(Dic_Total[0][Kappa][Beta]["Covarianza"])
+    func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta,T,
+                            ID_param_x, ID_param_y,ID_param_extra_1)
 
+    
 
 func.Tiempo(t0)

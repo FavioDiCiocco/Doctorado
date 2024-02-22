@@ -4013,6 +4013,13 @@ publicaciones a partir de ellos. Si me sobra tiempo, me pongo con el final de Mi
 
 ------------------------------------------------------------------------------------------
 
+20/02/2024
+
+Voy a arrancar con corregir el informe de avance de doctorado. Estuve todo el día con esto.
+Después me junté con Lupi y con Pablo para resolver cosas y charlar del paper del modelo de Interés.
+
+------------------------------------------------------------------------------------------
+
 21/02/2024
 
 Me olvidé de comittear lo que hice ayer, igual ayer estuve básicamente trabajando sobre el
@@ -4030,3 +4037,71 @@ probé en Prosem que levantara bien los datos. Lo que sigue es ver cómo armar l
 de los archivos y si puedo mandar esto en Oporto o algo así. Siento que al final del día voy
 a estar haciendo esto en mi pc nomás. No debería dejar pasar el día como hice hoy, después
 no llego con nada.
+
+------------------------------------------------------------------------------------------
+
+22/02/2024
+
+Al mediodía vamos a tener una charla con pablo sobre el estado del proyecto con vistas
+a la reunión de la semana que viene. En lo que a las simulaciones respecta, estoy
+armando un ensamble de 80 simulaciones en Coimbra y Algarve para el barrido en Beta-Cosd.
+Esto lo hago corriendo 10 hilos en cada pc, realizando 4 iteraciones por hilo para todo
+el espacio. El jueves pasado mandé a correr eso, desde entonces a hoy, una semana después,
+se resolvieron 2 iteraciones y media. Por lo tanto, puedo suponer que más o menos para el
+lunes o martes deberían estar todas las simulaciones hechas. Es decir, que a diferencia
+de antes que tenía un ensamble de 40 simulaciones, ahora tendré 80 simulaciones por punto
+del ensamble para armar mi estadística.
+ Por otra parte, en Oporto mandé unas 30 simulaciones extra por cada punto del ensamble,
+usando 10 hilos y 3 iteraciones por hilo. Desde el jueves pasado hasta hoy se completó
+recién una iteración y medio, en promedio. Hay varios que recién están arrancando la
+segunda iteración. Creo que puedo contar con que la segunda iteración se termine de acá
+al lunes, pero no puedo contar con la tercera. Así que tendré una estadística de 40
+simulaciones para este espacio nomás. Eso es una lástima para lo que son estas simulaciones,
+pero dentro de todo me da la esperanza de que para la siguiente reunión podré tener aproximadamente
+resuelto ambos barridos con 100 simulaciones por punto de ensamble, considerando que 
+el barrido Beta-Cosd sólo le faltarán 20 simulaciones que puedo resolver más o menos rápido,
+y por tanto puedo dedicar dos pc's en vez de 1 para el barrido Beta-Kappa. Aunque algo importante
+a recordar es que voy a tener que rehacer las simulaciones que van de 0 a 19, porque en 
+principio esas podrían estar hechas con grado medio 8 y no quisiera que eso sea un problema.
+Así que en verdad tengo que considerar que si se realizan dos iteraciones esta semana, entonces
+lo que me van a faltar son 80 simulaciones. Y si con 10 hilos se tarda una semana en realizar
+una iteración entera, entonces tengo que pensar que en 2 semanas con 20 hilos voy a resolver
+sólo 40 simulaciones. Es decir, que voy a necesitar un mes para resolver mis 80 simulaciones.
+ Así que tendría que considerar que para Abril voy a tener esto armado correctamente. Una vez
+resuelto todo, debería ver de guardar todos los datos en alguna que otra pc extra, no vaya a
+ser que pase una desgracia.
+
+Habiendo charlado esto, lo que me queda es ponerme a revisar si puedo terminar el informe
+de avance anual. Así ya termino este asunto. Trabajé apenas con eso, como lo urgente le gana
+a lo importante, vuelta al laburo del modelo de opiniones.
+
+Pablo me dijo que haga dos cosas principalmente. La primera es mandar a correr una simulación
+de un estado durante más tiempo y observar si el estado converge a algo o si permanece oscilando.
+Ahora, mi plan es simularlo durante mucho tiempo y observar el comportamiento del sistema
+cada cierto tiempo, no pretendo guardar la opinión en cada paso. Para ver oscilación necesito
+la opinión en varios tiempos, cosa que no tengo en los barridos que estoy armando.
+ Lo que puedo hacer es mirar cuántos de los que simularon hasta el final están polarizados,
+eso lo hago mirando las varianzas como hice antes. Lo otro que puedo hacer, es mirar qué
+estados componen los estados que corren hasta el final. Eso lo puedo hacer mirando su
+clasificación.
+ Por último puedo tomar algunos de los estados que corren hasta el final, y utilizando el
+último programa que armé, puedo ver qué pasa si el estado sigue corriendo, a ver si en algún
+momento converge a algo.
+
+Para hacer correctamente las simulaciones de Oporto, me descargué la carpeta de MARE de Oporto
+a la computadora de la facultad, voy a usar eso para extender la simulación de los datos de
+un estado que no converge. O de varios.
+ Encontré en Kappa=19.5 y Beta=0.5 cuatro iteraciones consecutivas que todas corren hasta el
+final del tiempo. Además, dos corresponden a polarizaciones descorrelacionadas, una a polarización
+ideológica y otra a polarización en un tópico. Puedo correr esos cuatro estados y ver qué
+ocurre.
+
+El código que corre estados a partir de estados previos está corriendo bien. Eso es bueno.
+Ahora queda ver si está dando buenos resultados o no.
+
+Mientras esto se resuelve, debería ver si puedo agregar la parte del código que a partir de los
+estados que evolucionan hasta el final, puede decirme qué tipos de estados son. Al final no
+hice esto, sino que estuve revisando que el código de la simulación sin fin corra bien, y actualizando
+algunos códigos que necesitaban corregirse, como el de funciones generales. Quedarán actualizar
+los códigos de Opinión Actualizada con la nueva detección de estados, el nuevo diccionario métricas
+y no me acuerdo si algo más.

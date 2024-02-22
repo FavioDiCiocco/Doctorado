@@ -72,7 +72,7 @@ void Generar_Separacion(puntero_Matrices red, puntero_Parametros param){
 }
 
 // Esta función es la que lee un archivo y me arma la matriz de Adyacencia
-void Lectura_Adyacencia(int *vec, FILE *archivo){
+int Lectura_Adyacencia(int *vec, FILE *archivo){
 	
 	// Defino los enteros que voy a usar para leer el archivo y escribir sobre el vector.	
 	int indice = 2;
@@ -93,10 +93,12 @@ void Lectura_Adyacencia(int *vec, FILE *archivo){
 		printf("La matriz del archivo es mas chica que el vector\n");
 		return 1;
 	}
+	
+	return 0;
 }
 
 // Esta función es la que lee un archivo y me arma la lista de vecinos en el puntero de punteros de pi_Adyacencia
-void Lectura_Adyacencia_Ejes(puntero_Matrices red, FILE *archivo){
+int Lectura_Adyacencia_Ejes(puntero_Matrices red, FILE *archivo){
 	//##########################################################################################
 	
 	// Defino las variables que voy a usar para leer el archivo y escribir sobre el vector.
@@ -174,6 +176,8 @@ void Lectura_Adyacencia_Ejes(puntero_Matrices red, FILE *archivo){
     }
 	
 	free(grado);
+	
+	return 0;
 }
 
 // Esta función toma el archivo de Opiniones viejo y asigna los valores
@@ -183,7 +187,6 @@ void Lectura_Opiniones(double* vec, int* pasos_simulados , FILE *archivo){
 	// Defino las variables que voy a usar para leer el archivo y escribir sobre el vector.
 	int c;
 	int indice;
-	double salida;
 	
 	// Los archivos de opiniones tienen la siguiente estructura:
 	// Opiniones iniciales

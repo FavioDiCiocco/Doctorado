@@ -38,6 +38,7 @@ int main(int argc, char *argv[]){
 	param->beta = strtof(argv[3],NULL); // Esta es la potencia que determina el grado de homofilia.
 	param->Cosd = strtof(argv[4],NULL); // Este es el coseno de Delta que define la relación entre tópicos.
 	int iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
+	int continuacion = strtol(argv[6],NULL,10); // Número de simulación consecutiva
 	
 	// Los siguientes son los parámetros que están dados en los structs
 	param->T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
@@ -47,7 +48,7 @@ int main(int argc, char *argv[]){
 	param->delta = 0.002*param->kappa; // Es un término que se suma en la homofilia y ayuda a que los pesos no diverjan.
 	param->NormDif = sqrt(param->N*param->T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	param->CritCorte = pow(10,-3); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
-	param->testigos = fmin(param->N,8); // Esta es la cantidad de agentes de cada distancia que voy registrar
+	param->testigos = param->N; // Esta es la cantidad de agentes de cada distancia que voy registrar
 	
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
@@ -127,15 +128,15 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char TextOpi[355];
-	sprintf(TextOpi,"../Programas Python/Opinion_actualizada/Datos/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
-		,param->N, param->kappa, param->beta, param->Cosd, iteracion);
+	sprintf(TextOpi,"../Programas Python/Simulacion_sin_fin/Datos/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Cont=%d_Iter=%d.file"
+		,param->N, param->kappa, param->beta, param->Cosd, continuacion, iteracion);
 	FILE *FileOpi = fopen(TextOpi,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
-	// // Este archivo es el que guarda las opiniones de todos los agentes del sistema.
-	// char TextTestigos[355];
-	// sprintf(TextTestigos,"../Programas Python/Opinion_actualizada/Datos/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
-		// ,param->N, param->kappa, param->beta, param->Cosd, iteracion);
-	// FILE *FileTestigos = fopen(TextTestigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
+	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
+	char TextTestigos[355];
+	sprintf(TextTestigos,"../Programas Python/Simulacion_sin_fin/Datos/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Cont=%d_Iter=%d.file"
+		,param->N, param->kappa, param->beta, param->Cosd, continuacion, iteracion);
+	FILE *FileTestigos = fopen(TextTestigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
 	char TextMatriz[355];
@@ -144,9 +145,9 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el archivo previo de opiniones
 	char TextPrevio[355];
-	sprintf(TextPrevio,"../Programas Python/Opinion_actualizada/Datos/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
-		,param->N, param->kappa, param->beta, param->Cosd, iteracion);
-	FILE *FilePrevio = fopen(TextPrevio,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
+	sprintf(TextPrevio,"../Programas Python/Simulacion_sin_fin/Datos/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Cont=%d_Iter=%d.file"
+		,param->N, param->kappa, param->beta, param->Cosd, continuacion-1, iteracion);
+	FILE *FilePrevio = fopen(TextPrevio,"r"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Puntero a la función que define mi ecuación diferencial
 	double (*func_dinamica)(puntero_Matrices red, puntero_Parametros param) = &Dinamica_opiniones;
@@ -178,9 +179,9 @@ int main(int argc, char *argv[]){
 	Escribir_d(red->Opi,FileOpi);
 	
 	// // Me guardo los valores de opinión de mis agentes testigos
-	// fprintf(FileTestigos,"Opiniones Testigos\n");
-	// for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] );
-	// fprintf(FileTestigos,"\n");
+	fprintf(FileTestigos,"Opiniones Testigos\n");
+	for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] );
+	fprintf(FileTestigos,"\n");
 	
 	
 	// Sumo el estado inicial de las opiniones de mis agentes en el vector de Prom_Opi. Guardo esto en la primer fila
@@ -202,8 +203,8 @@ int main(int argc, char *argv[]){
 	// Realizo la simulación del modelo hasta que este alcance un estado estable
 	// También preparo para guardar los valores de Varprom en mi archivo
 	
-	// for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] );
-	// fprintf(FileTestigos,"\n");
+	for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] );
+	fprintf(FileTestigos,"\n");
 	
 	fprintf(FileOpi,"Variación promedio \n");
 	
@@ -234,44 +235,13 @@ int main(int argc, char *argv[]){
 				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] = 0;
 				
 				// Escritura
-				// for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] );
-				// fprintf(FileTestigos,"\n");
+				for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] );
+				fprintf(FileTestigos,"\n");
 				fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio
 			}
 
 		}
-		while( red->Variacion_promedio > param->CritCorte && pasos_simulados < pasos_maximos);
-		
-		// Ahora evoluciono el sistema una cantidad i_Itextra de veces. Le pongo como condición que si el sistema deja de cumplir la condición de corte, deje de evolucionar
-		
-		while( contador < param->Iteraciones_extras && red->Variacion_promedio <= param->CritCorte && pasos_simulados < pasos_maximos){
-			
-			// Evolución
-			RK4(red->Opi, func_dinamica, func_activacion, red, param); // Itero los intereses
-			// Sumo las opiniones en la segunda fila de Prom_Opi
-			for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] += red->Opi[j+2];
-			
-			// Actualización de índices
-			contador++; // Avanzo el contador para que el sistema haga una cantidad $i_Itextra de iteraciones extras
-			pasos_simulados++; // Avanzo el contador de la cantidad de pasos simulados
-			
-			// Cálculos derivados
-			if( pasos_simulados%100==0 ){
-				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] = red->Prom_Opi[ j+param->N*param->T+2 ] / ancho_ventana;
-				for(int j=0; j<param->N*param->T; j++) red->Dif[j+2] = red->Prom_Opi[ j+param->N*param->T+2 ] - red->Prom_Opi[j+2];
-				red->Variacion_promedio = Norma_d(red->Dif) / param->NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
-				
-				// Reinicio los promedios
-				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[j+2] = red->Prom_Opi[ j+param->N*param->T+2 ];
-				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] = 0;
-				
-				// Escritura
-				// for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] );
-				// fprintf(FileTestigos,"\n");
-				fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio
-			}
-			
-		}
+		while( pasos_simulados < pasos_maximos);
 		
 		// Si el sistema evolucionó menos veces que la cantidad arbitraria, es porque rompió la condiciones de corte.
 		// Por tanto lo vuelvo a hacer trabajar hasta que se vuelva a cumplir la condición de corte.
@@ -308,7 +278,7 @@ int main(int argc, char *argv[]){
 	free( red );
 	free( param );
 	fclose( FileOpi );
-	// fclose( FileTestigos );
+	fclose( FileTestigos );
 	
 	// Finalmente imprimo el tiempo que tarde en ejecutar todo el programa
 	time(&tfin);
