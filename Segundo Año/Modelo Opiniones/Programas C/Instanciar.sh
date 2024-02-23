@@ -17,14 +17,13 @@ Arr_Agentes=(1000)
 Arr_Beta=(0.5)
 Arr_CosD=(0)
 Arr_Kappas=(19.5)
-Arr_Iter=(5)
 
 
 if [ -z $decision ]
 then
 	for N in ${Arr_Agentes[@]}
 	do
-		for iteracion in ${Arr_Iter[@]}
+		for iteracion in {5..8}
 		do
 			for Kappa in ${Arr_Kappas[@]}
 			do
@@ -32,7 +31,7 @@ then
 				do
 					for CosD in ${Arr_CosD[@]}
 					do
-						for consecutivo in {1..3}
+						for consecutivo in {8..10}
 						do
 							echo Kappa=$Kappa, Beta = $Beta, CosD = $CosD, consecutivo = $consecutivo
 							./$1.e $N $Kappa $Beta $CosD $iteracion $consecutivo

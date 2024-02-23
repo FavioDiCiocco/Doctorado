@@ -4105,3 +4105,59 @@ hice esto, sino que estuve revisando que el código de la simulación sin fin co
 algunos códigos que necesitaban corregirse, como el de funciones generales. Quedarán actualizar
 los códigos de Opinión Actualizada con la nueva detección de estados, el nuevo diccionario métricas
 y no me acuerdo si algo más.
+
+------------------------------------------------------------------------------------------
+
+23/02/2024
+
+Llegué tarde hoy por motivos varios. Lo siguiente que tendría que armar ahora por un lado
+es una charla para tener con pablo y Sebas. Por otro, tengo que ver de armar un código que
+revise una región del espacio, tome los estados finales de varias simulaciones y las extienda
+por 2000 pasos más, cosa de tener los datos de los testigos de esos agentes. Eso lo podría
+hacer y después me podría guardar esos testigos en una carpeta aparte. Mi tema es que
+necesito tener los datos de las simulaciones que voy a extender. Eso lo podría sacar de
+Oporto, descargarlo a la pc de la facultad y ahí extender todas las simulaciones. Planazo.
+
+Entonces:
+--------
+1) Reunión con Pablo y Sebas.
+2) Programa que extiende simulaciones de Oporto en la región con Beta menor a 1
+3) Programa que identifica los estados que corren hasta el final
+4) Programa que levanta las opiniones y arma archivos de opiniones vs t.
+
+Para la reunión tengo ya pensado que charlar. Eso es un punto a favor, pasemos a lo siguiente.
+Tengo que extender las simulaciones, así que tengo que tomar los datos de Oporto
+y traerlos a la pc. Los datos del barrido beta-Kappa que tengo básicamente son los datos
+de la región que queremos ver, puedo agarrar esos y construir archivos de testigos para
+esos datos, armarlos en una carpeta aparte para no mezclar los tantos.
+
+Estoy armando el código que haga la extensión sobre los archivos que tengo en la carpeta 
+barrido Beta-Kappa de Opinión Actualizada. Pero no quiero que eso se pise con la simulación
+que se está haciendo actualmente de Simulacion_sin_fin. Así que lo que voy a hacer, medio
+polémico, es modificar el archivo de Makefile para que al compilar genere un nuevo archivo
+ejecutable, cosa de que las otras simulaciones continuen tranca y poder hacer esto en paralelo.
+Estar atento a eso en el futuro.
+
+Bien, armé una función que toma un archivo de Opiniones, levanta las opiniones finales y lo
+evoluciona un rato más para construir el archivo de Testigos. Lo que me parece que voy a hacer
+con esto es mandarlo a correr en Oporto con un hilo extra. Consideremos que acá en la pc
+de la facultad esto me tomó 160 segundos. Considerando que voy a barrer para Kappa entre 1
+y 20, es decir 39 valores, y voy a barrer Beta entre 0 y 1, que serían 11 valores. Como
+además voy a correr esto para 10 simulaciones, en total esto debería tomar 190 horas.
+Es mucho tiempo, arranquemos más simple, barramos Kappas enteros, y Kappa entre 5 y 10.
+Suponiendo que se duplica o triplica el tiempo, será igualmente dos o tres días.
+
+Por alguna razón mis archivos de Opinion actualizada mantenían la creación de los archivos
+de Testigos, cosa que los archivos que tengo en Algarve, Coimbra y Oporto no tiene. Cosa
+rara, confío en que esto no volverá para ser un problema en el futuro. Mirando los datos
+de Oporto, no parece que falte la iteración 10. No entiendo qué pasó ahí, por qué cuando
+descargué las simulaciones, esa iteración en particular no se descargó.
+
+Ahí mandé a correr eso en Oporto, de forma tal que vaya tomando los datos en la carpeta
+de Datos de la Opinion Actualizada y extienda esas simulaciones. Eso debería estar hecho
+para el lunes.
+
+¿Qué haré el finde? Primero, terminar el informe de avance anual. Segundo, armar el código
+que armar los gráficos de opinión en función del tiempo de los archivos de testigo que hice
+de las extensiones. También necesito hacer los histogramas 2D de las corridas largas que
+construí antes.

@@ -113,3 +113,11 @@ porque mi código sólo hace uso de números random en la distribución inicial 
 no usa números random para nada más. Así que este código se va a encargar de tomar datos previos y cargarlos
 como input para la nueva simulación. Por el formato de simulación que esto va a tener, no creo que tenga
 que preocuparme por el tema de usar el Instanciar con esto.
+
+.) Extensión Testigos:
+----------------------
+
+La idea es tomar los estados resueltos en el espacio Beta-Kappa para Betas menores a 1 y evolucionar
+esos estados unos 20000 pasos extras, que implican un tiempo extra de 2000. Busco ver en ese tiempo
+el comportamiento de los agentes en función del tiempo. En principio sólo necesito guardarme los datos
+de los testigos.

@@ -142,3 +142,10 @@ el sistema, mientras que por otro lado implementé un algoritmo que identifica e
 para caracterizar el comportamiento del sistema en las distintas regiones.
  Actualmente, armé una carpeta llamada Revisión, la cuál tiene las simulaciones de un conjunto de estados,
 los cuáles el programa reconoce como estados de polarización ideológica, pero difícilmente sean tales.
+
+Simulacion_sin_fin:
+-------------------
+Tomé cuatro archivos del barrido Beta-Kappa que vi que corrieron hasta el tiempo máximo. Estos cuatro
+estados los coloqué en la carpeta de Datos y luego los continué evolucionando, en principio
+hasta tiempo 100 k. La idea es ver si eventualmente estos estados convergen o si siguen
+oscilando.

@@ -8,7 +8,7 @@ OBJECTS_C = $(patsubst src/%.c, bin/%_c.o, $(SOURCE_C))
 
 
 CFLAGS = -std=gnu99 -O3 -Wall
-EXECUTABLE = Opiniones.e
+EXECUTABLE = Opiniones2.e
 
 default: help
 
