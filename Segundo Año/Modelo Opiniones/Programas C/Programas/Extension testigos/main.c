@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
 	red = malloc(sizeof( struct_Matrices )); 
 	
 	//#############################################################################################
-		
+	
 	// Defino los parámetros de mi modelo. Esto va desde número de agentes hasta el paso temporal de integración.
 	// Primero defino los parámetros que requieren un input.
 	param->N = strtol(argv[1],NULL,10); // Cantidad de agentes en el modelo
@@ -38,7 +38,6 @@ int main(int argc, char *argv[]){
 	param->beta = strtof(argv[3],NULL); // Esta es la potencia que determina el grado de homofilia.
 	param->Cosd = strtof(argv[4],NULL); // Este es el coseno de Delta que define la relación entre tópicos.
 	int iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
-	int continuacion = strtol(argv[6],NULL,10); // Número de simulación consecutiva
 	
 	// Los siguientes son los parámetros que están dados en los structs
 	param->T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
@@ -53,7 +52,7 @@ int main(int argc, char *argv[]){
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
 	int pasos_simulados = 0; // Esta variable me sirve para cortar si simulo demasiado tiempo.
-	int pasos_maximos = 0; // Esta es la cantidad de pasos máximos a simular. Acá lo inicializo nomás
+	int pasos_maximos = 20000; // Esta es la cantidad de pasos máximos a simular. Acá lo inicializo nomás
 	int ancho_ventana = 100; // Este es el ancho temporal que voy a tomar para promediar las opiniones de mis agentes.
 		
 	//#############################################################################################
@@ -127,15 +126,15 @@ int main(int argc, char *argv[]){
 	// El cuarto es el archivo de opiniones previo.
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
-	char TextOpi[355];
-	sprintf(TextOpi,"../Programas Python/Simulacion_sin_fin/Datos/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Cont=%d_Iter=%d.file"
-		,param->N, param->kappa, param->beta, param->Cosd, continuacion, iteracion);
-	FILE *FileOpi = fopen(TextOpi,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
+	// char TextOpi[355];
+	// sprintf(TextOpi,"../Programas Python/Simulacion_sin_fin/Datos/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Cont=%d_Iter=%d.file"
+		// ,param->N, param->kappa, param->beta, param->Cosd, continuacion, iteracion);
+	// FILE *FileOpi = fopen(TextOpi,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
 	char TextTestigos[355];
-	sprintf(TextTestigos,"../Programas Python/Simulacion_sin_fin/Datos/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Cont=%d_Iter=%d.file"
-		,param->N, param->kappa, param->beta, param->Cosd, continuacion, iteracion);
+	sprintf(TextTestigos,"../Programas Python/Extension_testigos/Beta-Kappa/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+		,param->N, param->kappa, param->beta, param->Cosd, iteracion);
 	FILE *FileTestigos = fopen(TextTestigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
@@ -145,8 +144,8 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el archivo previo de opiniones
 	char TextPrevio[355];
-	sprintf(TextPrevio,"../Programas Python/Simulacion_sin_fin/Datos/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Cont=%d_Iter=%d.file"
-		,param->N, param->kappa, param->beta, param->Cosd, continuacion-1, iteracion);
+	sprintf(TextPrevio,"../Programas Python/Opinion_actualizada/Revision/Beta-Kappa/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+		,param->N, param->kappa, param->beta, param->Cosd, iteracion);
 	FILE *FilePrevio = fopen(TextPrevio,"r"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Puntero a la función que define mi ecuación diferencial
@@ -166,7 +165,7 @@ int main(int argc, char *argv[]){
 	
 	
 	// Actualizo la cantidad de simulaciones máximas
-	pasos_maximos = pasos_simulados + 100000; // La idea es que cada simulación guarde datos cada 10000 pasos temporales.
+	pasos_maximos = pasos_simulados + pasos_maximos; // La idea es que cada simulación guarde datos cada 10000 pasos temporales.
 	
 	//################################################################################################################################
 
@@ -174,8 +173,8 @@ int main(int argc, char *argv[]){
 	
 	
 	// Guardo la distribución inicial de las opiniones de mis agentes y preparo para guardar la Varprom.
-	fprintf(FileOpi,"Opiniones Iniciales\n");
-	Escribir_d(red->Opi,FileOpi);
+	// fprintf(FileOpi,"Opiniones Iniciales\n");
+	// Escribir_d(red->Opi,FileOpi);
 	
 	// // Me guardo los valores de opinión de mis agentes testigos
 	fprintf(FileTestigos,"Opiniones Testigos\n");
@@ -205,7 +204,7 @@ int main(int argc, char *argv[]){
 	for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] );
 	fprintf(FileTestigos,"\n");
 	
-	fprintf(FileOpi,"Variación promedio \n");
+	// fprintf(FileOpi,"Variación promedio \n");
 	
 	
 	while(contador < param->Iteraciones_extras && pasos_simulados < pasos_maximos){
@@ -236,7 +235,7 @@ int main(int argc, char *argv[]){
 				// Escritura
 				for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] );
 				fprintf(FileTestigos,"\n");
-				fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio
+				// fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio
 			}
 
 		}
@@ -252,15 +251,15 @@ int main(int argc, char *argv[]){
 	// Guardo las últimas cosas, libero las memorias malloqueadas y luego termino
 	
 	// Guardo las opiniones finales, la matriz de adyacencia y la semilla en el primer archivo.
-	fprintf(FileOpi, "\n");
-	fprintf(FileOpi, "Opiniones finales\n");
-	Escribir_d(red->Opi, FileOpi);
-	fprintf(FileOpi, "Pasos Simulados\n");
-	fprintf(FileOpi, "%d\n", pasos_simulados);
-	fprintf(FileOpi, "Semilla\n");
-	fprintf(FileOpi, "%ld\n", semilla);
-	fprintf(FileOpi, "Matriz de Adyacencia\n"); // Guardo esto para poder comprobar que la red sea conexa.
-	for(int i=0; i<param->N; i++) Escribir_i(red->Ady[i+2], FileOpi);
+	// fprintf(FileOpi, "\n");
+	// fprintf(FileOpi, "Opiniones finales\n");
+	// Escribir_d(red->Opi, FileOpi);
+	// fprintf(FileOpi, "Pasos Simulados\n");
+	// fprintf(FileOpi, "%d\n", pasos_simulados);
+	// fprintf(FileOpi, "Semilla\n");
+	// fprintf(FileOpi, "%ld\n", semilla);
+	// fprintf(FileOpi, "Matriz de Adyacencia\n"); // Guardo esto para poder comprobar que la red sea conexa.
+	// for(int i=0; i<param->N; i++) Escribir_i(red->Ady[i+2], FileOpi);
 	
 	
 	// Libero los espacios dedicados a mis vectores y cierro mis archivos
@@ -276,7 +275,7 @@ int main(int argc, char *argv[]){
 	free( red->Exp );
 	free( red );
 	free( param );
-	fclose( FileOpi );
+	// fclose( FileOpi );
 	fclose( FileTestigos );
 	
 	// Finalmente imprimo el tiempo que tarde en ejecutar todo el programa

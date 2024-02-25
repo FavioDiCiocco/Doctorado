@@ -4158,6 +4158,32 @@ de Datos de la Opinion Actualizada y extienda esas simulaciones. Eso debería es
 para el lunes.
 
 ¿Qué haré el finde? Primero, terminar el informe de avance anual. Segundo, armar el código
-que armar los gráficos de opinión en función del tiempo de los archivos de testigo que hice
+que arma los gráficos de opinión en función del tiempo de los archivos de testigo que hice
 de las extensiones. También necesito hacer los histogramas 2D de las corridas largas que
 construí antes.
+
+------------------------------------------------------------------------------------------
+
+24/02/2024
+
+Por un lado, la simulación de extensión de testigos no va a terminar para el lunes. Revisar
+con cuánto trabajamos para entonces. Igual si tengo cinco iteraciones resueltas, sigue siendo
+casi negocio. Por otro lado, puse a preparar los gráficos histogramas 2D 
+
+------------------------------------------------------------------------------------------
+
+25/02/2024
+
+Cosas que hice y observé hoy. Por un lado, las 40 simulaciones de Coimbra se terminaron. Las de
+Algarve creo que todavía no se terminaron porque Ale está corriendo cosas ahí. Pero esto muestra
+que claramente para la próxima reunión voy a tener hechas todas las simulaciones que quiero. Mañana
+podría encargarme de mover las simulaciones que están en Coimbra y juntarlas con las de Algarve.
+
+Lo segundo que hice fue terminar el informe de avance anual. Mostrárselo a Pablo mañana así tengo 
+la aprobación final. También mostrárselo a Marcos para que sepa qué cosas tienen su firma.
+
+Tercero, repliqué en la pc de mi computadora la simulación sin fin de uno de los estados que
+llega hasta tiempo 20 mil, para poder trabajar sobre esto y armar los gráficos de opiniones vs T
+y de Distribución de opiniones en el espacio de tópicos. Al final no hice eso en casa, veré de hacerlo
+mañana en la facultad. De paso, mañana tengo turno en el consultorio a las 11:30 por la radiografía
+panorámica.

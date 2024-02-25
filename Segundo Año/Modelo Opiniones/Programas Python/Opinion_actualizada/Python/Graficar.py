@@ -76,26 +76,26 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    # func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
-    #                                   ID_param_x, ID_param_y, ID_param_extra_1)
+    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
+                                       ID_param_x, ID_param_y, ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
-    Dic_Total = func.Diccionario_metricas(Df_archivos, Direccion, 20)
+#    Dic_Total = func.Diccionario_metricas(Df_archivos, Direccion, 20)
+#    
+#    #----------------------------------------------------------------------------------------------
+#    
+#    Kappa = 19.5
+#    Beta = 0.5
+#    
+#    Estados = func.Identificacion_Estados(Dic_Total[0][Kappa][Beta]["Entropia"],
+#                                          Dic_Total[0][Kappa][Beta]["Sigmax"],
+#                                          Dic_Total[0][Kappa][Beta]["Sigmay"],
+#                                          Dic_Total[0][Kappa][Beta]["Covarianza"],
+#                                          Dic_Total[0][Kappa][Beta]["Promedios"])
     
-    #----------------------------------------------------------------------------------------------
-    
-    Kappa = 19.5
-    Beta = 0.5
-    
-    Estados = func.Identificacion_Estados(Dic_Total[0][Kappa][Beta]["Entropia"],
-                                          Dic_Total[0][Kappa][Beta]["Sigmax"],
-                                          Dic_Total[0][Kappa][Beta]["Sigmay"],
-                                          Dic_Total[0][Kappa][Beta]["Covarianza"],
-                                          Dic_Total[0][Kappa][Beta]["Promedios"])
-    
-    print(Estados)
-    print(Dic_Total[0][Kappa][Beta]["Covarianza"])
+#    print(Estados)
+#    print(Dic_Total[0][Kappa][Beta]["Covarianza"])
 
 
 func.Tiempo(t0)
