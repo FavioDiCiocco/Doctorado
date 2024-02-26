@@ -4187,3 +4187,29 @@ llega hasta tiempo 20 mil, para poder trabajar sobre esto y armar los gráficos 
 y de Distribución de opiniones en el espacio de tópicos. Al final no hice eso en casa, veré de hacerlo
 mañana en la facultad. De paso, mañana tengo turno en el consultorio a las 11:30 por la radiografía
 panorámica.
+
+------------------------------------------------------------------------------------------
+
+26/02/2024
+
+Armé los histogramas 2D de una de las simulaciones largas. Lo observado es que el sistema
+no cambia mucho del estado en el cuál se encuentra, e incluso que tiene una estructura bastante
+fija.
+
+Lo que podría hacer ahora es tomar los archivos de Testigos, agruparlos todos juntos y con eso
+construir gráficos de opinión vs Tiempo. Si tengo hecho eso, después puedo ponerme a ver cuántos
+agentes tienen una varianza significativa, considerando que quiero saber cuántos de esos agentes
+están variando y cuántos se mantienen básicamente fijos en un lugar.
+
+Armé los gráficos de opiniones vs tiempo, increíblemente en el caso que estoy mirando, no se observa
+grandes oscilaciones. Si acerco la imagen veo algo, pero es muy chico. Lo que voy a hacer ahora
+es construir un gráfico que sea un histograma 2D que tenga en el eje X los valores de Varianza
+de los agentes, y en el eje Y los valores de opinión promedio. Quiero ver cómo se distribuyen
+las varianzas según los promedios de opinión.
+
+Lo que se ve en parte me resulta raro, pero en parte no. Los valores de Varianza son muy chicos,
+el más grande está en 0.006, y en promedio están en 10^-5. No me sorprende desde el lado de que
+mirando el gráfico de las opiniones en función del tiempo, no parecía que estuvieran oscilando mucho.
+Pero la pregunta entonces sería por qué es que la simulación no corta si están oscilando tan poco.
+Estaría bueno revisar qué pasa con la Variación Promedio, e intentar calcularla aparte con los datos
+que tengo desde python, a ver si me da algo similar. Veré si hago eso hoy o mañana.

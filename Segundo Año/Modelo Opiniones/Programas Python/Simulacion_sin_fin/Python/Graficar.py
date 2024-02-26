@@ -19,11 +19,11 @@ from pathlib import Path
 
 t0 = time.time()
 
-T=1 # Defino el número de tópicos
-Etapa = Path("Evolucion_temporal") # Defino el nombre de la etapa del trabajo en la que estoy
+T=2 # Defino el número de tópicos
+Etapa = Path("Simulacion_sin_fin") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["1D"]
+Carpetas = ["Pruebas"]
 
 for carp in Carpetas:
     
@@ -41,12 +41,8 @@ for carp in Carpetas:
     
     #-------------------------------------------------------------------------------------------------------
     
-    # Es importante partir del hecho de que mis archivos llevan por nombre:
-    # "Opiniones_N=$_kappa=$_beta=$_Iter=$.file" y "Testigos_N=$_kappa=$_beta=$_Iter=$.file"
-    # En la carpeta 1D
-    
-    # En cambio, en la carpeta 2D llevan por nombre:
-    # "Opiniones_N=$_kappa=$_beta=$_cosd=$_Iter=$.file" y "Testigos_N=$_kappa=$_beta=$_cosd=$_Iter=$.file"
+    # Los archivos llevan por nombre:
+    # "Opiniones_N=$_kappa=$_beta=$_cosd=$_Cont=$_Iter=$.file" y "Testigos_N=$_kappa=$_beta=$_cosd=$_Cont=$_Iter=$.file"
     
     Df_archivos = pd.DataFrame({"nombre": Archivos_Datos})
     
@@ -56,7 +52,8 @@ for carp in Carpetas:
     Df_archivos["Extra"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
     Df_archivos["parametro_y"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
     Df_archivos["parametro_x"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1]))
-    Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[5].split("=")[1].strip(".file")))
+    Df_archivos["continuacion"] = Df_archivos["nombre"].apply(lambda x: int(x.split("_")[5].split("=")[1]))
+    Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[6].split("=")[1].strip(".file")))
     
     #----------------------------------------------------------------------------------------------
 
@@ -78,8 +75,18 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta,T,
-                            ID_param_x, ID_param_y,ID_param_extra_1)
+#    func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta,T,
+#                            ID_param_x, ID_param_y,ID_param_extra_1)
+#    
+#    #----------------------------------------------------------------------------------------------
+#    
+#    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta,20,"viridis",
+#                                      ID_param_x, ID_param_y, ID_param_extra_1)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    Varianza = func.Histograma_Varianza_vs_Promedio(Df_archivos, Direccion, Etapa/carpeta,T,20,"magma",
+                                      ID_param_x, ID_param_y, ID_param_extra_1)
 
     
 

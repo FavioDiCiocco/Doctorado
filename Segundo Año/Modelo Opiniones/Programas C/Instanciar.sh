@@ -17,7 +17,7 @@ Arr_Agentes=(1000)
 Arr_Beta=(0.5)
 Arr_CosD=(0)
 Arr_Kappas=(19.5)
-Arr_Iteracion=(5)
+Arr_Iteracion=(6 7 8)
 
 
 if [ -z $decision ]
