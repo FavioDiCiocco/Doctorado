@@ -23,7 +23,7 @@ T=2 # Defino el número de tópicos
 Etapa = Path("Simulacion_sin_fin") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Pruebas"]
+Carpetas = ["Datos"]
 
 for carp in Carpetas:
     
@@ -75,18 +75,28 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-#    func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta,T,
-#                            ID_param_x, ID_param_y,ID_param_extra_1)
-#    
-#    #----------------------------------------------------------------------------------------------
-#    
-#    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta,20,"viridis",
-#                                      ID_param_x, ID_param_y, ID_param_extra_1)
+    # func.Graf_opi_vs_tiempo(Df_archivos, Direccion, Etapa/carpeta,T,
+    #                         ID_param_x, ID_param_y,ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
-    Varianza = func.Histograma_Varianza_vs_Promedio(Df_archivos, Direccion, Etapa/carpeta,T,20,"magma",
-                                      ID_param_x, ID_param_y, ID_param_extra_1)
+    # func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta,20,"viridis",
+    #                                   ID_param_x, ID_param_y, ID_param_extra_1)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    # func.Histograma_Varianza_vs_Promedio(Df_archivos, Direccion, Etapa/carpeta,T,20,"magma",
+    #                                   ID_param_x, ID_param_y, ID_param_extra_1)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    # func.Graf_densidad_trayectorias(Df_archivos, Direccion, Etapa/carpeta,T,
+    #                                      ID_param_x, ID_param_y,ID_param_extra_1)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    func.Varprom_vs_T(Df_archivos, Direccion, Etapa/carpeta,
+                      ID_param_x, ID_param_y,ID_param_extra_1)
 
     
 

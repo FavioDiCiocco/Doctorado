@@ -4213,3 +4213,61 @@ mirando el gráfico de las opiniones en función del tiempo, no parecía que est
 Pero la pregunta entonces sería por qué es que la simulación no corta si están oscilando tan poco.
 Estaría bueno revisar qué pasa con la Variación Promedio, e intentar calcularla aparte con los datos
 que tengo desde python, a ver si me da algo similar. Veré si hago eso hoy o mañana.
+
+------------------------------------------------------------------------------------------
+
+27/02/2024
+
+Por un lado, las simulaciones en Algarve se terminaron, así que eso ya está completo. Tengo
+entonces 80 simulaciones para el Barrido Beta-Cos(delta), aunque están repartidas en dos
+pc's. Tengo que juntar los datos.
+
+En un segundo tema, las simulaciones en Oporto ya están en su iteración final, así que entre
+mañana y pasado deberían terminarse. Lo mismo las iteraciones de Extensión Testigo.
+ Así que lo que voy a hacer con esto es agregar 20 iteraciones al barrido en Beta-Cos(delta),
+mandar otras 20 en Coimbra del barrido Beta-Kappa y después mandar en Oporto también otras
+20. De esa forma, voy a tener del Barrido Beta-kappa 70 simulaciones con grado medio 10 y
+del barrido Beta-Cos(delta) voy a tener 100 simulaciones con grado medio 10.
+
+Lo siguiente que debería hacer es lo que me propuso Pablo de hacer un gráfico que sean las densidades
+de trayectorias, como para tener una mejor idea de cuántos puntos tengo en cada region de valores
+de opinión. 
+
+A mi me genera dudas el por qué las simulaciones no cortan. Bueno, la Variación promedio cumple
+que no desciende por debajo del valor pedido para que esto corte, pero no entiendo cómo es
+que si la varianza da tan chica y las oscilaciones son tan bajas, el sistema no contemple
+que está en un estado definido. Una segunda pregunta es: ¿Estoy 100% seguro que evolucioné
+correctamente el sistema? Debería revisar que las continuaciones en Simulación sin fin están
+bien hechas.
+
+Ahí armé los gráficos de densidad de trayectorias como me proponía Pablo. Lo que se puede ver
+es que en cada banda de tamaño 1, en general no llego a observar más del 10% de los agentes.
+Algunas bandas suficientemente juntas logran nuclear el 30% aprox. Pero el número de agentes
+estás bastante distribuido por lo que parece.
+
+Mandé a correr en Algarve las 20 iteraciones que faltan para que el barrido Beta-Cos(delta)
+tenga 100 simulaciones. Mientras tanto, también mandé en Coimbra simulaciones para completar
+el Barrido Beta-Kappa, estoy mandando las simulaciones 50 a 59. En cuanto terminen las que
+están ahora en Oporto, que van de 20 a 49, mandaré nuevas simulaciones en Oporto para completar
+el barrido Beta-Kappa con las iteraciones de 0 a 19. 
+
+Ya tengo esto, podría empezar a ver el tema de las variaciones promedio. Miré las Variaciones
+Promedio, lo que observo es que justamente las curvas no logran en general cruzar el valor
+de corte para que la simulación termine. Una de las simulaciones se mantiene oscilando en 
+valores que suben y bajan respecto de este valor de corte, pero se ve que no se mantiene
+el suficiente tiempo por debajo como para cortar. Ahora, estos valores que calculo en C,
+¿Son lo que realmente está pasando? Se me ocurre que puedo tomar los valores de los Testigos
+y calcular la Variación tiempo a tiempo y con eso comparar con el valor calculado en el programa.
+La Variación calculada de esta manera debería ser más abrupta que la calculada durante la
+corrida, ya que esa Variación se calcula promediando las opiniones de los agentes a lo
+largo de una ventana. Pero aún así, debería dentro de todo dar similar.
+
+Estuve pensando que podría aumentar el tamaño de las ventanas de promedio que uso para definir
+la variación promedio, se me ocurre que la ventana que estoy tomando de cien pasos temporales,
+que implican un tiempo total de 10, son muy chicas si considero que el sistema le estoy dando
+como mucho una cantidad de simulaciones de 200000 pasos, que implica un tiempo 20 mil. Estoy
+pidiendo que la variación promediada en un ancho de ventana de 0.05% de la simulación total sea
+tal que el sistema apenas varíe, pero quizás justamente como la ventana es tan chica no captura
+una oscilación entera, sino que captura pedazos y por eso no logra cortar a tiempo. Mañana revisaré
+eso, consideraré usar ventanas de ancho 2000. Esa es la cuenta que me hice rápido que me parece
+razonable. O quizás por lo menos un ancho de 1000.

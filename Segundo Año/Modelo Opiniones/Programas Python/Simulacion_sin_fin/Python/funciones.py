@@ -201,7 +201,7 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T,
                 direccion_guardado = Path("../../../Imagenes/{}/OpivsT_Iter={}_N={:.0f}_{}={:.1f}_{}={:.1f}_{}={:.1f}_Topico={}.png".format(carpeta,REP,AGENTES,
                                           ID_param_x,PARAM_X,ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,topico))
                 plt.rcParams.update({'font.size': 44})
-                plt.figure("Topico",figsize=(20,15))
+                plt.figure("Topico",figsize=(32,24))
                 X = np.arange(Testigos_Total.shape[0])*0.01+20
                 Agentes_graf = int(AGENTES/2)
                 for sujeto in range(Agentes_graf):
@@ -215,7 +215,108 @@ def Graf_opi_vs_tiempo(DF,path,carpeta,T,
 
 
 #-----------------------------------------------------------------------------------------------
+
+# Esta función me construye el gráfico de densidad de trayectorias.
+
+def Graf_densidad_trayectorias(DF,path,carpeta,T,
+                       ID_param_x,ID_param_y,
+                       ID_param_extra_1):
+    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
+    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
+    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
+    
+    # Como graficar en todas las combinaciones de parámetros implica muchos gráficos, voy a 
+    # simplemente elegir tres valores de cada array, el primero, el del medio y el último.
+    
+    AGENTES = int(np.unique(DF["n"]))
+    
+    # Defino los arrays de parámetros diferentes
+    
+    Arr_EXTRAS = np.unique(DF["Extra"])
+    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_y = np.unique(DF["parametro_y"])
+    Arr_iteraciones = np.unique(DF["iteracion"])
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(param_x,param_y,int(iteracion)) for param_x in Arr_param_x
+                   for param_y in Arr_param_y
+                   for iteracion in Arr_iteraciones]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Testigos"
+    
+    for EXTRAS in Arr_EXTRAS:
+        for PARAM_X,PARAM_Y,REP in Tupla_total:
+            
+            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                        (DF["n"]==AGENTES) & 
+                                        (DF["Extra"]==EXTRAS) & 
+                                        (DF["parametro_x"]==PARAM_X) &
+                                        (DF["parametro_y"]==PARAM_Y) &
+                                        (DF["iteracion"]==REP), "nombre"])
+    
+            #-----------------------------------------------------------------------------------------
+            
+            Testigos_Total = np.empty((0,AGENTES*T))
+            
+            for orden in range(1,len(archivos)+1):
+                for nombre in archivos:
+                    
+                    cont = int(DF.loc[DF["nombre"]==nombre,"continuacion"])
+                    
+                    if cont == orden:
+                    
+                        # De los archivos de Testigos levanto las opiniones de todos los agentes a lo largo de todo el proceso.
+                        # Estos archivos tienen las opiniones de dos agentes.
+                        
+                        Datos = ldata(path / nombre)
+                        
+                        Testigos = np.zeros((len(Datos)-2,len(Datos[1])-1)) # Inicializo mi array donde pondré las opiniones de los testigos.
+                        
+                        for i,fila in enumerate(Datos[1:-1:]):
+                            Testigos[i] = fila[:-1]
+                            Testigos[i] = Testigos[i]/EXTRAS
+                        
+                        # De esta manera tengo mi array que me guarda los datos de los agentes a lo largo de la evolución del sistema.
+                        
+                        Testigos_Total = np.concatenate((Testigos_Total,Testigos),axis=0)
+                        
+                        break
+            
+            #--------------------------------------------------------------------------------
+            
+            # Armo mi gráfico, lo guardo y lo cierro
+            bins = np.linspace(-1,1,21)
+            
+            for topico in range(T):
+                direccion_guardado = Path("../../../Imagenes/{}/Densidad_trayec_Iter={}_N={:.0f}_{}={:.1f}_{}={:.1f}_{}={:.1f}_Topico={}.png".format(carpeta,REP,AGENTES,
+                                          ID_param_x,PARAM_X,ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,topico))
+                plt.rcParams.update({'font.size': 44})
+                plt.figure("Topico",figsize=(32,24))
                 
+                # Construyo las grillas que voy a necesitar para el pcolormesh.
+                X = np.arange(Testigos_Total.shape[0])*0.01+20
+                XX,YY = np.meshgrid(X,np.flip(np.linspace(-0.95,0.95,20)))
+                ZZ = np.zeros(XX.shape)
+                
+                # Guardo los valores de las fracciones de trayectorias
+                for tiempo in range(Testigos_Total.shape[0]):
+                    dens, descarte = np.histogram(Testigos_Total[tiempo,topico::T],bins=bins)
+                    ZZ[:,tiempo] = np.flip(dens) / AGENTES
+                
+                # Ploteo mis datos
+                plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "BuGn")
+                plt.colorbar()
+                
+                plt.xlabel(r"Tiempo$(10^3)$")
+                plt.ylabel(r"$x^i$")
+                plt.title("Densidad de trayectorias tópico {}".format(topico))
+                plt.savefig(direccion_guardado ,bbox_inches = "tight")
+                plt.close("Topico")
+
+
+#-----------------------------------------------------------------------------------------------             
 
 # Esta función es la que arma los gráficos de los histogramas de opiniones
 # finales en el espacio de tópicos
@@ -294,7 +395,7 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                                          cmap=cmap)
                 plt.xlabel(r"$x_i^1$")
                 plt.ylabel(r"$x_i^2$")
-                plt.title('Histograma 2D, {}={:.1f}_{}={:.1f}_Tiempo={}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y,(20+cont*10)*1000))
+                plt.title('Histograma 2D, {}={:.1f}_{}={:.1f}_Tiempo={}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y,20+cont*10))
                 cbar = plt.colorbar(im, label='Frecuencias')
                 cbar.ax.yaxis.set_major_formatter(plt.FormatStrFormatter('%.3f'))
                 plt.savefig(direccion_guardado ,bbox_inches = "tight")
@@ -329,7 +430,6 @@ def Histograma_Varianza_vs_Promedio(DF,path,carpeta,T,bins,cmap,
     Tupla_total = [(param_x,param_y,int(iteracion)) for param_x in Arr_param_x
                    for param_y in Arr_param_y
                    for iteracion in Arr_iteraciones]
-    
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Testigos"
     
@@ -399,8 +499,91 @@ def Histograma_Varianza_vs_Promedio(DF,path,carpeta,T,bins,cmap,
 #            cbar.ax.yaxis.set_major_formatter(plt.FormatStrFormatter('%.3f'))
             plt.savefig(direccion_guardado ,bbox_inches = "tight")
             plt.close()
-            return(Varianza)
+            print(REP)
 
+
+
+#-----------------------------------------------------------------------------------------------
+
+# Esta función me construye el gráfico de la variación promedio en función del tiempo
+
+def Varprom_vs_T(DF,path,carpeta,ID_param_x,ID_param_y,
+                 ID_param_extra_1):
+    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
+    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
+    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
+    
+    # Como graficar en todas las combinaciones de parámetros implica muchos gráficos, voy a 
+    # simplemente elegir tres valores de cada array, el primero, el del medio y el último.
+    
+    AGENTES = int(np.unique(DF["n"]))
+    
+    # Defino los arrays de parámetros diferentes
+    
+    Arr_EXTRAS = np.unique(DF["Extra"])
+    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_y = np.unique(DF["parametro_y"])
+    Arr_iteraciones = np.unique(DF["iteracion"])
+    
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(param_x,param_y,int(iteracion)) for param_x in Arr_param_x
+                   for param_y in Arr_param_y
+                   for iteracion in Arr_iteraciones]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    for EXTRAS in Arr_EXTRAS:
+        for PARAM_X,PARAM_Y,REP in Tupla_total:
+            
+            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                        (DF["n"]==AGENTES) & 
+                                        (DF["Extra"]==EXTRAS) & 
+                                        (DF["parametro_x"]==PARAM_X) &
+                                        (DF["parametro_y"]==PARAM_Y) &
+                                        (DF["iteracion"]==REP), "nombre"])
+    
+            #-----------------------------------------------------------------------------------------
+            
+            Varprom = np.empty(0)
+            
+            for orden in range(len(archivos)+1):
+                for nombre in archivos:
+                    
+                    cont = int(DF.loc[DF["nombre"]==nombre,"continuacion"])
+                    
+                    if cont == orden:
+                    
+                        # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+                        # Opinión Inicial del sistema
+                        # Variación Promedio
+                        # Opinión Final
+                        # Semilla
+                        
+                        Datos = ldata(path / nombre)
+                        
+                        Varprom = np.concatenate((Varprom,np.array(Datos[3][:-1], dtype=float)))
+                        
+                        break
+            
+            #----------------------------------------------------------------------------------------------------------------------------------
+            
+            # Armo mi gráfico, lo guardo y lo cierro
+            direccion_guardado = Path("../../../Imagenes/{}/Varprom_Iter={}_N={:.0f}_{}={:.1f}_{}={:.1f}_{}={:.1f}.png".format(carpeta,REP,AGENTES,
+                                      ID_param_x,PARAM_X,ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS))
+            plt.rcParams.update({'font.size': 44})
+            plt.figure("Varprom",figsize=(32,24))
+            T = np.arange(Varprom.shape[0])*0.01+20
+            plt.semilogy(T[0:2500],Varprom[0:2500],color = "tab:purple", linewidth = 6, alpha = 0.9)
+            plt.axhline(0.001,linestyle = "--", color = "red")
+            plt.xlabel(r"Tiempo$(10^3)$")
+            plt.ylabel("Variación Promedio")
+            plt.title("Curva de Variación promedio vs T")
+            plt.grid()
+            plt.savefig(direccion_guardado ,bbox_inches = "tight")
+            plt.close("Varprom")
 
 
 #-----------------------------------------------------------------------------------------------
