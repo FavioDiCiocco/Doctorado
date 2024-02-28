@@ -95,7 +95,7 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    func.Varprom_vs_T(Df_archivos, Direccion, Etapa/carpeta,
+    Var = func.Varprom_vs_T(Df_archivos, Direccion, Etapa/carpeta,
                       ID_param_x, ID_param_y,ID_param_extra_1)
 
     

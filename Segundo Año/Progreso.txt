@@ -4271,3 +4271,59 @@ tal que el sistema apenas varíe, pero quizás justamente como la ventana es tan
 una oscilación entera, sino que captura pedazos y por eso no logra cortar a tiempo. Mañana revisaré
 eso, consideraré usar ventanas de ancho 2000. Esa es la cuenta que me hice rápido que me parece
 razonable. O quizás por lo menos un ancho de 1000.
+
+------------------------------------------------------------------------------------------
+
+28/02/2024
+
+Hoy llegué, no había agua, me agarró un sueño terrible. Al final logré hacerme un café.
+Ayer cuando me confundí y cambié el nombre de la carpeta, arruiné el armado de algunos
+archivos que tuvieron un segmentation fault. Voy a volver a mandar a correr esos datos
+de nuevo hoy.
+
+Voy a hacer lo de los promedios que había planeado ayer. Hecho el gráfico, siento que no
+puedo decir mucho al respecto. En dos casos, la curva se encuentra por encima de la curva
+calculada durante la simulación, así que no daría mejor en el corte, creo. Puedo probarlo igual,
+pero no parece lo más importante ahora. 
+
+Hoy la verdad vengo haciendo poco y nada. Entre el sueño y no saber bien qué hacer. Planteemos
+la pregunta, ¿Qué quiero hacer? Caracterizar el espacio en el cuál tengo los estados que tardan
+mucho en resolver. Estos estados cuyas opiniones oscilan no cortan por sí mismos, cortan cuando
+el sistema evoluciona demasiado. ¿Qué quiero caracterizar de estos estados? Estuve mirando
+algunas simulaciones a ver si evolucionándolas más tiempo convergía a otra cosa, sin embargo
+se mantuvieron en la forma que tenían. LOS GIFS QUE ARMÉ ESTÁN BUENOS PARA MOSTRÁRSELOS A LA
+GENTE DE ESPAÑA.
+ Vengo estudiando las distribuciones de opiniones finales, la evolución de los agentes a lo largo
+de esa evolución y la variación promedio. ¿Qué conclusión saco de todo esto?
+
+1) Los estados obtenidos son estados finales, se ve que aún evolucionando el sistema durante
+un tiempo cinco veces más grande al usado, el sistema apenas si cambia su forma.
+2) Mirando las densidades de trayectorias, puedo ver la realidad de estos estados con anchura,
+en los cuales entre un 50% y 60% de los agentes se encuentran más o menos en las regiones de
+opiniones extremas, siendo que el resto está muy tenuemente esparcido en el resto de la
+región de opiniones.
+3) Intenté mirar la varianza de las opiniones de los agentes, pero lo que descubrí es que esas
+varianzas son muy chicas, no sé si puedo realmente caracterizar estados que oscilan de estados
+que no. Debería quizás considerar qué es lo que interpreto como una oscilación grande. O como
+oscilaciones. PODRÍA REVISAR LAS OSCILACIONES Y HACER UNA CUENTA A TRAVÉS DE LA CUÁL DEFINA
+UN VALOR DE OSCILACIÓN QUE ME PAREZCA RAZONABLE.
+4) Miré las variaciones promedio para ver qué pasa que el sistema no converge. Efectivamente
+lo que observo es que la variación promedio se mantiene oscilando. Lo comparé con un cálculo 
+de variación promedio usando las mediciones de los testigos, las cuales a diferencia del
+cálculo hecho en C durante la simulación, no promedia 100 estados al calcular la variación
+promedio. Las curvas son bastante similares en los cuatro gráficos, sólo en uno dan un poco
+por debajo del valor de la variación calculada en la simulación.
+ También probé comparar con una simulación que promedie 10 valores de testigos, emulando una
+ventana de ancho 10 veces más grande que las ventanas consideradas en la simulación. No puedo
+decir que esa variación promedio sea mejor, en algunos casos da por arriba de la variación
+calculada en la simulación, en otros casos da por abajo. Sigo pensando que estaría bueno
+utilizar ventanas de un mayor ancho, pero no parece ser la solución a nada.
+
+¿Qué cosas me quedan por hacer o estaría bueno que retomara?
+.) Podría hacer lo que dijo Hugo de revisar cuántos de los estados que se quedan oscilando
+hasta el final son estados polarizados. Yo creo que la respuesta es todos. Eso se define
+a través de mirar las Varianzas.
+.) Podría hacer los gráficos de FEF con los datos que ya tengo, como para completar un poco
+la estadística, ver que el sistema este clasificando bien, que la cosa tenga un poco más de
+sentido.
+.) 

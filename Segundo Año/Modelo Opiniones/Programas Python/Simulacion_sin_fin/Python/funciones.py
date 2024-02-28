@@ -509,9 +509,6 @@ def Histograma_Varianza_vs_Promedio(DF,path,carpeta,T,bins,cmap,
 
 def Varprom_vs_T(DF,path,carpeta,ID_param_x,ID_param_y,
                  ID_param_extra_1):
-    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
-    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
-    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
     
     # Como graficar en todas las combinaciones de parámetros implica muchos gráficos, voy a 
     # simplemente elegir tres valores de cada array, el primero, el del medio y el último.
@@ -525,18 +522,65 @@ def Varprom_vs_T(DF,path,carpeta,ID_param_x,ID_param_y,
     Arr_param_y = np.unique(DF["parametro_y"])
     Arr_iteraciones = np.unique(DF["iteracion"])
     
-    
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
     Tupla_total = [(param_x,param_y,int(iteracion)) for param_x in Arr_param_x
                    for param_y in Arr_param_y
                    for iteracion in Arr_iteraciones]
     
-    # Defino el tipo de archivo del cuál tomaré los datos
-    TIPO = "Opiniones"
+    #----------------------------------------------------------------------------------------------------
+    # Me armo el vector de Testigos_Total, el cuál voy a necesitar para calcular
+    # la variación promedio post simulación
+    
     
     for EXTRAS in Arr_EXTRAS:
         for PARAM_X,PARAM_Y,REP in Tupla_total:
             
+            # Defino el tipo de archivo del cuál tomaré los datos
+            TIPO = "Testigos"
+            T=2
+            
+            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                        (DF["n"]==AGENTES) & 
+                                        (DF["Extra"]==EXTRAS) & 
+                                        (DF["parametro_x"]==PARAM_X) &
+                                        (DF["parametro_y"]==PARAM_Y) &
+                                        (DF["iteracion"]==REP), "nombre"])
+    
+            #-----------------------------------------------------------------------------------------
+            
+            Testigos_Total = np.empty((0,AGENTES*T))
+            
+            for orden in range(1,len(archivos)+1):
+                for nombre in archivos:
+                    
+                    cont = int(DF.loc[DF["nombre"]==nombre,"continuacion"])
+                    
+                    if cont == orden:
+                    
+                        # De los archivos de Testigos levanto las opiniones de todos los agentes a lo largo de todo el proceso.
+                        # Estos archivos tienen las opiniones de dos agentes.
+                        
+                        Datos = ldata(path / nombre)
+                        
+                        Testigos = np.zeros((len(Datos)-2,len(Datos[1])-1)) # Inicializo mi array donde pondré las opiniones de los testigos.
+                        
+                        for i,fila in enumerate(Datos[1:-1:]):
+                            Testigos[i] = fila[:-1]
+                            Testigos[i] = Testigos[i]/EXTRAS
+                        
+                        # De esta manera tengo mi array que me guarda los datos de los agentes a lo largo de la evolución del sistema.
+                        
+                        Testigos_Total = np.concatenate((Testigos_Total,Testigos),axis=0)
+                        
+                        break
+    
+    #---------------------------------------------------------------------------------------------------
+    
+                
+            # Defino el tipo de archivo del cuál tomaré los datos
+            TIPO = "Opiniones"
+    
             # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
             archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
                                         (DF["n"]==AGENTES) & 
@@ -570,18 +614,50 @@ def Varprom_vs_T(DF,path,carpeta,ID_param_x,ID_param_y,
             
             #----------------------------------------------------------------------------------------------------------------------------------
             
+            # Ahora construyo mi Varprom post simulación a partir de los datos de Testigos_Total
+            # Voy a primero armar un cálculo de Variación Promedio restando cada fila con la anterior.
+            # Esto se debería parecer a lo hecho durante la simulación, porque estoy restando estados
+            # separados 100 pasos entre ellos, aunque en el código lo que hace es construir un promedio
+            # de las 100 iteraciones y resta esos dos promedios. Pero un poco debería parecerse.
+            
+            Varprom_testigos = np.zeros(Testigos_Total.shape[0]-1)
+            
+            for tiempo in range(Varprom_testigos.shape[0]):
+                Norma = np.linalg.norm(Testigos_Total[tiempo+1,:]-Testigos_Total[tiempo,:])
+                Varprom_testigos[tiempo] = Norma / np.sqrt(AGENTES*T)
+            
+            #----------------------------------------------------------------------------------------------------------------------------------
+            
+            # Ya que estoy, pongo a prueba una idea que tengo sobre esto, intento graficar promediando
+            # cada 1000 pasos. Que en este caso se resuelve promediando 10 filas y restándole las
+            # anteriores 10 promediadas. Veamos que pasa en ese caso
+            
+            Varprom_mil_pasos = np.zeros(math.floor(Testigos_Total.shape[0]/10)-1)
+            T_mil = np.zeros(Varprom_mil_pasos.shape[0])
+            
+            for tiempo in range(Varprom_mil_pasos.shape[0]):
+                Norma = np.linalg.norm(np.mean(Testigos_Total[(tiempo+1)*10:(tiempo+2)*10,:],axis=0)-np.mean(Testigos_Total[tiempo*10:(tiempo+1)*10,:], axis=0))
+                Varprom_mil_pasos[tiempo] = Norma / np.sqrt(AGENTES*T)
+                T_mil[tiempo] = tiempo*0.1+20
+            
+            #----------------------------------------------------------------------------------------------------------------------------------
+            
             # Armo mi gráfico, lo guardo y lo cierro
             direccion_guardado = Path("../../../Imagenes/{}/Varprom_Iter={}_N={:.0f}_{}={:.1f}_{}={:.1f}_{}={:.1f}.png".format(carpeta,REP,AGENTES,
                                       ID_param_x,PARAM_X,ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS))
+            
             plt.rcParams.update({'font.size': 44})
             plt.figure("Varprom",figsize=(32,24))
             T = np.arange(Varprom.shape[0])*0.01+20
-            plt.semilogy(T[0:2500],Varprom[0:2500],color = "tab:purple", linewidth = 6, alpha = 0.9)
+            plt.semilogy(T[100:3000:10],Varprom[100:3000:10],color = "tab:purple", label="Simulación" ,linewidth = 6, alpha = 0.9)
+            plt.semilogy(T[101:3001:10],Varprom_testigos[100:3000:10],color = "tab:blue", label="Testigos" ,linewidth = 6, alpha = 0.9)
+            plt.semilogy(T_mil[10:300],Varprom_mil_pasos[10:300],color = "tab:orange", label="Ventana Ancha" ,linewidth = 6, alpha = 0.9)
             plt.axhline(0.001,linestyle = "--", color = "red")
             plt.xlabel(r"Tiempo$(10^3)$")
             plt.ylabel("Variación Promedio")
             plt.title("Curva de Variación promedio vs T")
             plt.grid()
+            plt.legend()
             plt.savefig(direccion_guardado ,bbox_inches = "tight")
             plt.close("Varprom")
 
