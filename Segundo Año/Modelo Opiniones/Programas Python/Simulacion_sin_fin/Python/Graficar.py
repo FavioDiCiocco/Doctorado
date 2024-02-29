@@ -91,12 +91,17 @@ for carp in Carpetas:
     #----------------------------------------------------------------------------------------------
     
     # func.Graf_densidad_trayectorias(Df_archivos, Direccion, Etapa/carpeta,T,
-    #                                      ID_param_x, ID_param_y,ID_param_extra_1)
+    #                                       ID_param_x, ID_param_y,ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
-    Var = func.Varprom_vs_T(Df_archivos, Direccion, Etapa/carpeta,
-                      ID_param_x, ID_param_y,ID_param_extra_1)
+    # func.Varprom_vs_T(Df_archivos, Direccion, Etapa/carpeta,
+    #                   ID_param_x, ID_param_y,ID_param_extra_1)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    func.Fraccion_vs_Varianza(Df_archivos, Direccion, Etapa/carpeta, 2,
+                              ID_param_x, ID_param_y,ID_param_extra_1)
 
     
 

@@ -4326,4 +4326,28 @@ a través de mirar las Varianzas.
 .) Podría hacer los gráficos de FEF con los datos que ya tengo, como para completar un poco
 la estadística, ver que el sistema este clasificando bien, que la cosa tenga un poco más de
 sentido.
-.) 
+.) ¿Cuánto tardan estos estados en llegar a un estado definido? Estaría bueno eso para
+quizás definir un nuevo valor de corte.
+.) Veamos el tema de cuánto es una varianza razonable, considerando lo que observo, para determinar
+un valor tal que si los agentes tienen más varianza que eso, entonces están oscilando.
+.) ¿Qué voy a hacer con los datos de Extensión Testigos? ¿Para qué quería esas simulaciones?
+
+------------------------------------------------------------------------------------------
+
+29/02/2024
+
+Hoy vine un poco tarde, pero mucho más determinado y con ganas. Voy a intentar hacer dos cosas
+a la vez, por un lado el análisis de una varianza razonable para determinar los agentes que
+se quedan oscilando, por el otro un análisis de qué valores toma la Variación promedio en el caso
+de un estado que llega a un estado final definido rápidamente. Para esto me parece importante
+analizar justamente algunos estados que hallan llegado a Polarización Descorrelacionada, Unidimensional
+o Consenso radicalizado. 
+
+Leer papers siempre es una opción, diría.
+
+Se me ocurrió armar un gráfico de Fracción de agentes en función de la Varianza. La idea era ver
+si puedo encontrar una relación en la distribución de varianzas con la cantidad de agentes que oscila
+para los estados que se mantienen oscilando. Lo observado es interesante, me queda definir bien el texto
+que quiero poner en el gráfico sobre la línea vertical. Pero me gusta porque lo que estoy viendo es que
+las varianzas tienen una forma particular en los casos en los que el sistema oscila. Me resulta interesante
+de revisar.
