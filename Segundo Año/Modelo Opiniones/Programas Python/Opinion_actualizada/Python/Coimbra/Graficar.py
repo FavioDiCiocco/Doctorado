@@ -23,7 +23,7 @@ T=2 # Defino el número de tópicos
 Etapa = Path("Opinion_actualizada") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Datos"]
+Carpetas = ["Beta-Cosd"]
 
 for carp in Carpetas:
     
@@ -79,35 +79,45 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
 
-    func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
-                                          SIM_param_x, SIM_param_y,
-                                          ID_param_extra_1)
+#    func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
+#                                          SIM_param_x, SIM_param_y,
+#                                          ID_param_extra_1)
 
     #----------------------------------------------------------------------------------------------
 
-    func.Mapa_Colores_Entropia_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-                                          SIM_param_x, SIM_param_y,
-                                          ID_param_extra_1)
+#    func.Mapa_Colores_Entropia_opiniones(Df_archivos, Direccion, Etapa/carpeta,
+#                                          SIM_param_x, SIM_param_y,
+#                                          ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
-    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
-                                      ID_param_x, ID_param_y, ID_param_extra_1)
+    # func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
+    #                                   ID_param_x, ID_param_y, ID_param_extra_1)
 
     #----------------------------------------------------------------------------------------------
     
-    func.Mapa_Colores_Traza_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
-                            SIM_param_x, SIM_param_y, ID_param_extra_1)
+#    func.Mapa_Colores_Traza_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
+#                            SIM_param_x, SIM_param_y, ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
-    func.Mapa_Colores_Covarianzas(Df_archivos, Direccion, Etapa/carpeta,
-                            SIM_param_x, SIM_param_y, ID_param_extra_1)
+#    func.Mapa_Colores_Covarianzas(Df_archivos, Direccion, Etapa/carpeta,
+#                            SIM_param_x, SIM_param_y, ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
-    func.Mapas_Colores_FEF(Df_archivos, Direccion, Etapa/carpeta,
-                          SIM_param_x, SIM_param_y, ID_param_extra_1)
+#    func.Mapas_Colores_FEF(Df_archivos, Direccion, Etapa/carpeta,
+#                          SIM_param_x, SIM_param_y, ID_param_extra_1)
+    
+    #----------------------------------------------------------------------------------------------
+    
+#    func.Mapa_Colores_Pol_vs_Oscil(Df_archivos, Direccion, Etapa/carpeta, 2,
+#                                   SIM_param_x, SIM_param_y, ID_param_extra_1)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    func.Histogramas_Multiples(Df_archivos, Direccion, Etapa/carpeta, 2,
+                               ID_param_x, ID_param_y, ID_param_extra_1)
     
 
     

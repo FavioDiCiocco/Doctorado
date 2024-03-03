@@ -4351,3 +4351,21 @@ para los estados que se mantienen oscilando. Lo observado es interesante, me que
 que quiero poner en el gráfico sobre la línea vertical. Pero me gusta porque lo que estoy viendo es que
 las varianzas tienen una forma particular en los casos en los que el sistema oscila. Me resulta interesante
 de revisar.
+
+
+------------------------------------------------------------------------------------------
+
+02/03/2024
+
+Descargué los gráficos que Pablo me dijo que arme, le ajusté los nombres y los cargué a la
+carpeta del Drive. Estoy trabajando con el código que armé en la pc de la facultad. Me olvidé el
+viernes de comittear mi trabajo.
+
+------------------------------------------------------------------------------------------
+
+03/03/2024
+
+Hoy voy a armar la función que grafica los histogramas que Pablo me dijo que arme. La idea es que
+tome para algunos valores de Beta y algún Kappa fijo o Cos(delta) fijo.
+ Impresionante, pero el gráfico parece que salió bastante bien. Tengo que repetir esto mañana y 
+armarlo un poco más grande, tanto para el barrido Beta-Kappa y para el barrido Beta-Cosd.

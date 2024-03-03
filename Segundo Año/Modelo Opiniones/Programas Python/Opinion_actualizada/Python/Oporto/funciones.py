@@ -144,208 +144,12 @@ def Ecuacion_dinamica(x,K,A,Cdelta,Eps):
 ##################################################################################
 ##################################################################################
 
-# Esta función me construye el gráfico de opinión en función del tiempo
-# para cada tópico para los agentes testigos.
-
-def Graf_opi_vs_tiempo(DF,path,carpeta,T=2,
-                       nombre_parametro_1="parametro1",nombre_parametro_2="parametro2"):
-    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
-    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
-    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
-    
-    # Como graficar en todas las combinaciones de parámetros implica muchos gráficos, voy a 
-    # simplemente elegir tres valores de cada array, el primero, el del medio y el último.
-    
-    Ns = np.unique(DF["n"])
-    
-    """
-    # Defino los valores de Parametro_1 que planeo graficar
-    Valores_importantes_1 = [0,math.floor(len(np.unique(DF["parametro_1"]))/4),
-                            math.floor(3*len(np.unique(DF["parametro_1"]))/4),
-                            math.floor(3*len(np.unique(DF["parametro_1"]))/4),
-                            len(np.unique(DF["parametro_1"]))-1]
-    
-    # Defino los valores de Parametro_2 que planeo graficar
-    Valores_importantes_2 = [0,math.floor(len(np.unique(DF["parametro_2"]))/4),
-                            math.floor(3*len(np.unique(DF["parametro_2"]))/4),
-                            math.floor(3*len(np.unique(DF["parametro_2"]))/4),
-                            len(np.unique(DF["parametro_2"]))-1]
-    
-    # Armo los arrays de mis parámetros y después armo la Tupla_Total
-    Array_parametro_1 = np.unique(DF["parametro_1"])[Valores_importantes_1]
-    Array_parametro_2 = np.unique(DF["parametro_2"])[Valores_importantes_2]
-    
-    #-----------------------------------------------------------------------------
-    """
-    
-    # Armo los arrays de mis parámetros y después armo la Tupla_Total
-    
-    Array_parametro_1 = np.unique(DF["parametro_1"])
-    Array_parametro_2 = np.unique(DF["parametro_2"])
-
-    
-    Tupla_total = [(n,parametro_1,parametro_2) for n in Ns
-                   for parametro_1 in Array_parametro_1
-                   for parametro_2 in Array_parametro_2]
-    
-    # Defino el tipo de archivo del cuál tomaré los datos
-    TIPO = "Testigos"
-    
-    for AGENTES,PARAMETRO_1,PARAMETRO_2 in Tupla_total:
-        
-        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
-        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
-                                    (DF["n"]==AGENTES) & 
-                                    (DF["parametro_1"]==PARAMETRO_1) & 
-                                    (DF["parametro_2"]==PARAMETRO_2), "nombre"])
-
-        #-----------------------------------------------------------------------------------------
-        
-        for nombre in archivos:
-            
-            # De los archivos de Testigos levanto las opiniones de todos los agentes a lo largo de todo el proceso.
-            # Estos archivos tienen las opiniones de dos agentes.
-            
-            Datos = ldata(path / nombre)
-            
-            Testigos = np.zeros((len(Datos)-2,len(Datos[1])-1)) # Inicializo mi array donde pondré las opiniones de los testigos.
-            
-            for i,fila in enumerate(Datos[1:-1:]):
-                Testigos[i] = fila[:-1]
-            
-            # De esta manera tengo mi array que me guarda los datos de los agentes a lo largo de la evolución del sistema.
-            
-            #----------------------------------------------------------------------------------------------------------------------------------
-            
-            # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
-            repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-            direccion_guardado = Path("../../../Imagenes/{}/OpivsT_N={:.0f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,nombre_parametro_1,PARAMETRO_1,nombre_parametro_2,PARAMETRO_2,repeticion))
-            
-            # Armo mi gráfico, lo guardo y lo cierro
-            
-            plt.rcParams.update({'font.size': 32})
-            plt.figure("Topico",figsize=(20,15))
-            X = np.arange(Testigos.shape[0])*0.01
-            for sujeto in range(int(Testigos.shape[1]/T)):
-                for topico in range(T):
-                    plt.plot(X,Testigos[:,sujeto*T+topico], color = "tab:brown" ,linewidth = 2, alpha = 0.3)
-            plt.xlabel("Tiempo")
-            plt.ylabel(r"$x^i$")
-            plt.grid(alpha = 0.5)
-            plt.savefig(direccion_guardado ,bbox_inches = "tight")
-            plt.close("Topico")
-
-        
-
-#-----------------------------------------------------------------------------------------------
-
-# Esta función es la que arma los gráficos de los mapas de colores en el espacio de
-# parámetros de alfa y umbral usando el valor medio de la opinión.
-
-def Mapa_Colores_Promedio_opiniones(DF,path,carpeta,T,
-                                    SIM_param_x,SIM_param_y,
-                                    SIM_param_extra_1,ID_param_extra_1):
-    
-    # Defino el tipo de archivo del cuál tomaré los datos
-    TIPO = "Opiniones"
-    
-    # Defino la cantidad de agentes de la red
-    AGENTES = int(np.unique(DF["n"]))
-    
-    # Defino los arrays de parámetros diferentes    
-    KAPPAS = int(np.unique(DF["Kappas"]))
-    Arr_param_x = np.unique(DF["parametro_x"])
-    Arr_param_y = np.unique(DF["parametro_y"])
-    
-    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
-    
-    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
-                   for j,param_y in enumerate(Arr_param_y)]
-    
-    #--------------------------------------------------------------------------------
-    
-    # Construyo las grillas que voy a necesitar para el pcolormesh.
-    
-    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
-    ZZ = np.zeros(XX.shape)
-    
-    #--------------------------------------------------------------------------------
-    
-    # Separo la construcción del ZZ para poder meterla en un for de los tópicos
-    
-    for topico in range(T):
-        
-        #--------------------------------------------------------------------------------
-        for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
-            
-            # Me defino el array en el cual acumulo los datos de las opiniones finales de todas
-            # mis simulaciones
-            Opifinales = np.array([])
-            
-            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
-            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
-                                        (DF["n"]==AGENTES) & 
-                                        (DF["Kappas"]==KAPPAS) & 
-                                        (DF["parametro_x"]==PARAM_X) &
-                                        (DF["parametro_y"]==PARAM_Y), "nombre"])      
-    
-            #------------------------------------------------------------------------------------------
-            
-            for nombre in archivos:
-                
-                # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-                # Opinión Inicial del sistema
-                # Variación Promedio
-                # Opinión Final
-                # Semilla
-                
-                # Levanto los datos del archivo
-                Datos = ldata(path / nombre)
-                
-                # Leo los datos de las Opiniones Finales
-                Opifinales = np.concatenate((Opifinales, np.array(Datos[5][:-1:], dtype="float")), axis = None)
-            
-            #------------------------------------------------------------------------------------------
-            # Voy a primero tomar el promedio de opiniones de una simulación, luego a eso tomarle
-            # el valor absoluto y por último promediarlo
-            
-            # Armo un array donde me guardo el promedio de cada una de mis simulaciones
-            Promedios = np.zeros(archivos.shape[0])
-            
-            for simulacion in range(archivos.shape[0]):
-                Promedios[simulacion] = np.mean(Opifinales[AGENTES*T*simulacion+topico:AGENTES*T*(simulacion+1)+topico:2])
-            
-            ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(np.abs(Promedios))
-        
-        #--------------------------------------------------------------------------------
-        
-        # Una vez que tengo el ZZ completo, armo mi mapa de colores
-        direccion_guardado = Path("../../../Imagenes/{}/Promedio Opiniones Topico {}.png".format(carpeta,topico))
-        
-        plt.rcParams.update({'font.size': 24})
-        plt.figure("Promedio Opiniones",figsize=(20,15))
-        plt.xlabel(r"${}$".format(SIM_param_x))
-        plt.ylabel(r"${}$".format(SIM_param_y))
-        
-        # Hago el ploteo del mapa de colores con el colormesh
-        
-        plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "cividis")
-        plt.colorbar()
-        plt.title(r"Promedio de opiniones Topico {}".format(topico))
-        
-        # Guardo la figura y la cierro
-        plt.savefig(direccion_guardado , bbox_inches = "tight")
-        plt.close("Promedio Opiniones")
-    
-
-#-----------------------------------------------------------------------------------------------
 
 # Esta función es la que arma los gráficos de los mapas de colores en el espacio de
 # parámetros de alfa y umbral usando la varianza de las opiniones como métrica.
 
-def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
-                                    SIM_param_x,SIM_param_y,
-                                    ID_param_extra_1):
+def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,SIM_param_x,SIM_param_y,
+                                     ID_param_extra_1):
     
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Opiniones"
@@ -358,13 +162,9 @@ def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
     Arr_param_x = np.unique(DF["parametro_x"])
     Arr_param_y = np.unique(DF["parametro_y"])
     
-    
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
     Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
                    for j,param_y in enumerate(Arr_param_y)]
-    
-    # Defino el tipo de archivo del cuál tomaré los datos
-    TIPO = "Opiniones"
     
     #--------------------------------------------------------------------------------
     
@@ -390,7 +190,7 @@ def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
             
             #-----------------------------------------------------------------------------------------
             
-            for nombre in archivos:
+            for indice,nombre in enumerate(archivos):
                 
                 # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
                 # Opinión Inicial del sistema
@@ -401,10 +201,10 @@ def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
                 
                 # Levanto los datos del archivo
                 Datos = ldata(path / nombre)
-                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+                # repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
                 
                 # Leo los datos de las Opiniones Finales
-                Tiempos[repeticion] = int(Datos[7][0])
+                Tiempos[indice] = int(Datos[7][0])
                 
             #------------------------------------------------------------------------------------------
             # Con los "tiempos" de las simulaciones calculo la fracción de estados que llegaron hasta el final
@@ -414,16 +214,15 @@ def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
             ZZ[1,Arr_param_y.shape[0]-1-fila,columna] = np.mean(Tiempos/200000)
             ZZ[2,Arr_param_y.shape[0]-1-fila,columna] = np.var(Tiempos/200000)
         
-    #--------------------------------------------------------------------------------
+        #--------------------------------------------------------------------------------
     
         # Una vez que tengo los ZZ completos, armo mis mapas de colores
         
-        #--------------------------------------------------------------------------------
         # Fracción de estados oscilantes
         direccion_guardado = Path("../../../Imagenes/{}/Fraccion Oscilantes_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
         
-        plt.rcParams.update({'font.size': 24})
-        plt.figure("FraccionOscilantes",figsize=(20,15))
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("FraccionOscilantes",figsize=(28,21))
         plt.xlabel(r"${}$".format(SIM_param_x))
         plt.ylabel(r"${}$".format(SIM_param_y))
         
@@ -443,8 +242,8 @@ def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
         # Promedio de cantidad de pasos de simulación
         direccion_guardado = Path("../../../Imagenes/{}/Promedio Pasos_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
         
-        plt.rcParams.update({'font.size': 24})
-        plt.figure("PromedioPasos",figsize=(20,15))
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("PromedioPasos",figsize=(28,21))
         plt.xlabel(r"${}$".format(SIM_param_x))
         plt.ylabel(r"${}$".format(SIM_param_y))
         
@@ -464,8 +263,8 @@ def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
         # Varianza de cantidad de pasos de simulación
         direccion_guardado = Path("../../../Imagenes/{}/Varianza Pasos_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
         
-        plt.rcParams.update({'font.size': 24})
-        plt.figure("VarianzaPasos",figsize=(20,15))
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("VarianzaPasos",figsize=(28,21))
         plt.xlabel(r"${}$".format(SIM_param_x))
         plt.ylabel(r"${}$".format(SIM_param_y))
         
@@ -483,93 +282,12 @@ def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
 
 #-----------------------------------------------------------------------------------------------
 
-# Esta función me construye el gráfico trayectorias en el espacio de fases
-
-def Graf_trayectorias_opiniones(DF,path,carpeta,
-                       ID_param_x,ID_param_y,
-                       ID_param_extra_1):
-    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
-    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
-    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
-
-    # Defino la cantidad de agentes de la red
-    AGENTES = int(np.unique(DF["n"]))
-    
-    # Defino los arrays de parámetros diferentes
-    KAPPAS = int(np.unique(DF["Kappas"]))
-    Arr_param_x = np.unique(DF["parametro_x"])
-    Arr_param_y = np.unique(DF["parametro_y"])
-    
-    
-    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
-    Tupla_total = [(param_x,param_y) for param_x in Arr_param_x
-                   for param_y in Arr_param_y]
-    
-    # Defino el tipo de archivo del cuál tomaré los datos
-    TIPO = "Testigos"
-    
-    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
-    # Gráfico de Opi vs T y en tres no se vería mejor.
-    T=2
-    
-    
-    for PARAM_X,PARAM_Y in Tupla_total:
-        
-        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
-        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
-                                    (DF["n"]==AGENTES) & 
-                                    (DF["Kappas"]==KAPPAS) & 
-                                    (DF["parametro_x"]==PARAM_X) &
-                                    (DF["parametro_y"]==PARAM_Y), "nombre"])
-        #-----------------------------------------------------------------------------------------
-        
-        for nombre in archivos:
-            
-            # De los archivos de Testigos levanto las opiniones de todos los agentes a lo largo de todo el proceso.
-            # Estos archivos tienen las opiniones de dos agentes.
-            
-            Datos = ldata(path / nombre)
-            
-            Testigos = np.zeros((len(Datos)-2,len(Datos[1])-1)) # Inicializo mi array donde pondré las opiniones de los testigos.
-            
-            for i,fila in enumerate(Datos[1:-1:]):
-                Testigos[i] = fila[:-1]
-            
-            # De esta manera tengo mi array que me guarda los datos de los agentes a lo largo de la evolución del sistema.
-            
-            #----------------------------------------------------------------------------------------------------------------------------------
-            
-            # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
-            repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-            direccion_guardado = Path("../../../Imagenes/{}/Trayectorias_opiniones_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
-                                                                                                                                             ID_param_y,PARAM_Y,ID_param_extra_1,KAPPAS,repeticion))
-            
-            # Armo mi gráfico, lo guardo y lo cierro
-            
-            plt.rcParams.update({'font.size': 32})
-            plt.figure("Trayectorias",figsize=(20,15))
-            # X = np.arange(Testigos.shape[0])*0.01
-            for sujeto in range(int(Testigos.shape[1]/T)):
-                plt.plot(Testigos[:,sujeto*T],Testigos[:,sujeto*T+1], color = "tab:gray" ,linewidth = 3, alpha = 0.3)
-            plt.scatter(Testigos[-1,0::2],Testigos[-1,1::2], s=30,label="Opinión Final")
-            plt.xlabel(r"$x_i^1$")
-            plt.ylabel(r"$x_i^2$")
-            # plt.grid(alpha = 0.5)
-            plt.savefig(direccion_guardado ,bbox_inches = "tight")
-            plt.close("Trayectorias")
-
-
-#-----------------------------------------------------------------------------------------------
-
 # Esta función es la que arma los gráficos de los histogramas de opiniones
 # finales en el espacio de tópicos
 
 def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
-                       ID_param_x,ID_param_y,
-                       ID_param_extra_1):
-    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
-    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
-    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
+                                 ID_param_x,ID_param_y,
+                                 ID_param_extra_1):
 
     # Defino la cantidad de agentes de la red
     AGENTES = int(np.unique(DF["n"]))
@@ -622,14 +340,14 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                 
                 # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-                if repeticion < 2:
+                if repeticion < 3:
                     direccion_guardado = Path("../../../Imagenes/{}/Histograma_opiniones_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
                                                                                                                                                      ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,repeticion))
                     
                     # Armo mi gráfico, lo guardo y lo cierro
                     
-                    plt.rcParams.update({'font.size': 32})
-                    plt.figure(figsize=(20,15))
+                    plt.rcParams.update({'font.size': 44})
+                    plt.figure(figsize=(28,21))
                     _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
                                              range=[[-PARAM_X,PARAM_X],[-PARAM_X,PARAM_X]],density=True,
                                              cmap=cmap)
@@ -646,8 +364,8 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
 # de opiniones respecto a los T tópicos
 
 def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
-                       SIM_param_x,SIM_param_y,
-                       ID_param_extra_1):
+                                  SIM_param_x,SIM_param_y,
+                                  ID_param_extra_1):
     
     # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
     # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
@@ -694,7 +412,7 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
         
         Covarianzas = np.zeros(archivos.shape[0])
         
-        for nombre in archivos:
+        for indice,nombre in enumerate(archivos):
             
             # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
             # Opinión Inicial del sistema
@@ -713,10 +431,10 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
                 Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")/PARAM_X
             
             # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
-            repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+            # repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
             
             M_cov = np.cov(Opifinales)
-            Covarianzas[repeticion] = np.trace(M_cov)/T
+            Covarianzas[indice] = np.trace(M_cov)/T
             
         #------------------------------------------------------------------------------------------
         # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
@@ -727,8 +445,8 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
     direccion_guardado = Path("../../../Imagenes/{}/Varianzas_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
     
-    plt.rcParams.update({'font.size': 24})
-    plt.figure("Traza_Covarianza",figsize=(20,15))
+    plt.rcParams.update({'font.size': 44})
+    plt.figure("Traza_Covarianza",figsize=(28,21))
     plt.xlabel(r"${}$".format(SIM_param_x))
     plt.ylabel(r"${}$".format(SIM_param_y))
     
@@ -752,8 +470,8 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
 # de opiniones respecto a los T tópicos
 
 def Mapa_Colores_Covarianzas(DF,path,carpeta,
-                       SIM_param_x,SIM_param_y,
-                       ID_param_extra_1):
+                             SIM_param_x,SIM_param_y,
+                             ID_param_extra_1):
     
     # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
     # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
@@ -800,7 +518,7 @@ def Mapa_Colores_Covarianzas(DF,path,carpeta,
         
         Covarianzas = np.zeros(archivos.shape[0])
         
-        for nombre in archivos:
+        for indice,nombre in enumerate(archivos):
             
             # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
             # Opinión Inicial del sistema
@@ -819,10 +537,10 @@ def Mapa_Colores_Covarianzas(DF,path,carpeta,
                 Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")/PARAM_X
             
             # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
-            repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+            # repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
             
             M_cov = np.cov(Opifinales)
-            Covarianzas[repeticion] = M_cov[0,1]
+            Covarianzas[indice] = M_cov[0,1]
             
         #------------------------------------------------------------------------------------------
         # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
@@ -833,8 +551,8 @@ def Mapa_Colores_Covarianzas(DF,path,carpeta,
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
     direccion_guardado = Path("../../../Imagenes/{}/Covarianzas_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
     
-    plt.rcParams.update({'font.size': 24})
-    plt.figure("Covarianzas",figsize=(20,15))
+    plt.rcParams.update({'font.size': 44})
+    plt.figure("Covarianzas",figsize=(28,21))
     plt.xlabel(r"${}$".format(SIM_param_x))
     plt.ylabel(r"${}$".format(SIM_param_y))
     
@@ -850,93 +568,12 @@ def Mapa_Colores_Covarianzas(DF,path,carpeta,
     plt.close("Covarianzas")
     
 
-
-#-----------------------------------------------------------------------------------------------
-
-# Esta función calcula la traza de la matriz de Covarianza de las distribuciones
-# de opiniones respecto a los T tópicos
-
-def Calculo_Traza_Covarianza(DF,path):
-    
-    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
-    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
-    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
-
-    # Defino la cantidad de agentes de la red
-    AGENTES = int(np.unique(DF["n"]))
-    
-    # Defino los arrays de parámetros diferentes
-    Arr_KAPPAS = np.unique(DF["Kappas"])
-    Arr_param_x = np.unique(DF["parametro_x"])
-    Arr_param_y = np.unique(DF["parametro_y"])
-    
-    
-    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
-    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
-                   for j,param_y in enumerate(Arr_param_y)]
-    
-    # Defino el tipo de archivo del cuál tomaré los datos
-    TIPO = "Opiniones"
-    
-    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
-    # Gráfico de Opi vs T y en tres no se vería mejor.
-    T=2
-    
-    Salida = dict()
-    for KAPPAS in Arr_KAPPAS:
-        Salida[KAPPAS] = dict()
-        for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
-            
-            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
-            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
-                                        (DF["n"]==AGENTES) & 
-                                        (DF["Kappas"]==KAPPAS) & 
-                                        (DF["parametro_x"]==PARAM_X) &
-                                        (DF["parametro_y"]==PARAM_Y), "nombre"])
-            #-----------------------------------------------------------------------------------------
-            
-            covarianzas = np.zeros(archivos.shape[0])
-            
-            for nombre in archivos:
-        
-                # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-                # Opinión Inicial del sistema
-                # Variación Promedio
-                # Opinión Final
-                # Semilla
-        
-                # Levanto los datos del archivo
-                Datos = ldata(path / nombre)
-        
-                # Leo los datos de las Opiniones Finales
-                Opifinales = np.zeros((T,AGENTES))
-        
-                for topico in range(T):
-                    Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
-        
-                # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
-        
-                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-        
-                M_cov = np.cov(Opifinales)
-                covarianzas[repeticion] = np.trace(M_cov)/(2*(KAPPAS-1)*(KAPPAS-1))
-        
-            if PARAM_X not in Salida[KAPPAS].keys():
-                Salida[KAPPAS][PARAM_X] = dict()
-            Salida[KAPPAS][PARAM_X][PARAM_Y] = covarianzas
-    
-    return Salida
-
 #-----------------------------------------------------------------------------------------------
 
 # Esta función calcula la traza de la matriz de Covarianza de las distribuciones
 # de opiniones respecto a los T tópicos
 
 def Diccionario_metricas(DF,path,N):
-    
-    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
-    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
-    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
 
     # Defino la cantidad de agentes de la red
     AGENTES = int(np.unique(DF["n"]))
@@ -975,8 +612,9 @@ def Diccionario_metricas(DF,path,N):
             Covarianza = np.zeros(archivos.shape[0])
             Promedios = np.zeros(archivos.shape[0])
             Entropia = np.zeros(archivos.shape[0])
+            Identidad = np.zeros(archivos.shape[0], dtype=int)
             
-            for nombre in archivos:
+            for indice,nombre in enumerate(archivos):
                 
         
                 # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
@@ -1000,14 +638,14 @@ def Diccionario_metricas(DF,path,N):
                 # corregir a que EXTRAS sea PARAM_X o algo así
                 
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
-        
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+                Identidad[indice] = repeticion
         
                 M_cov = np.cov(Opifinales)
-                Varianza_X[repeticion] = M_cov[0,0]
-                Varianza_Y[repeticion] = M_cov[1,1]
-                Covarianza[repeticion] = M_cov[0,1]
-                Promedios[repeticion] = np.linalg.norm(np.array(Datos[5][:-1:], dtype="float"),ord=1) / np.array(Datos[5][:-1:], dtype="float").shape[0]
+                Varianza_X[indice] = M_cov[0,0]
+                Varianza_Y[indice] = M_cov[1,1]
+                Covarianza[indice] = M_cov[0,1]
+                Promedios[indice] = np.linalg.norm(np.array(Datos[5][:-1:], dtype="float"),ord=1) / np.array(Datos[5][:-1:], dtype="float").shape[0]
                 
                 # Tengo que rearmar Opifinales para que sea un sólo vector con todo
                 
@@ -1019,17 +657,42 @@ def Diccionario_metricas(DF,path,N):
                 Probas = Clasificacion(Opifinales,N,T)
                 
                 # Con esa distribución puedo directamente calcular la entropía.
-                Entropia[repeticion] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
+                Entropia[indice] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
+                
+            #----------------------------------------------------------------------------------------------------------------------
+            
+            # Mis datos no están ordenados, pero con esto los ordeno según el
+            # valor de la simulación. Primero inicializo el vector que tiene los índices
+            # de cada simulación en sus elementos. El elemento 0 tiene la ubicación
+            # de la simulación cero en los demás vectores.
+            Ubicacion = np.zeros(max(Identidad)+1,dtype = int)
+            
+            # Para cada elemento en el vector de identidad, le busco su indice en el
+            # vector y coloco ese índice en el vector de Ubicacion en la posición
+            # del elemento observado
+            for i in np.unique(Identidad):
+                indice = np.where(Identidad == i)[0][0]
+                Ubicacion[i] = indice
+            
+            # Ahora tengo que remover las simulaciones faltantes. Armo un vector
+            # que tenga sólamente los índices de las simulaciones faltantes
+            Faltantes = np.arange(max(Identidad)+1)
+            Faltantes = np.delete(Faltantes,Identidad)
+            
+            # Borro esas simulaciones de mi vector de Ubicacion
+            Ubicacion = np.delete(Ubicacion,Faltantes)
+                
                 
             if PARAM_X not in Salida[EXTRAS].keys():
                 Salida[EXTRAS][PARAM_X] = dict()
             if PARAM_Y not in Salida[EXTRAS][PARAM_X].keys():
                 Salida[EXTRAS][PARAM_X][PARAM_Y] = dict()
-            Salida[EXTRAS][PARAM_X][PARAM_Y]["Entropia"] = Entropia/np.log2(N*N)
-            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"] = Varianza_X
-            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"] = Varianza_Y
-            Salida[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"] = Covarianza
-            Salida[EXTRAS][PARAM_X][PARAM_Y]["Promedios"] = Promedios
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Entropia"] = Entropia[Ubicacion] / np.log2(N*N)
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"] = Varianza_X[Ubicacion]
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"] = Varianza_Y[Ubicacion]
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"] = Covarianza[Ubicacion]
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Promedios"] = Promedios[Ubicacion]
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] = np.unique(Identidad)
             
     return Salida
 
@@ -1095,22 +758,24 @@ def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y, Covarianza, Promedios):
             else:
                 # Polarización
                 # Polarización ideológica
-                if np.abs(cov) >= 0.1:
+                if np.abs(cov) >= 0.3:
                     Resultados[i] = 9
-                    
-                # Polarización descorrelacionada
-                else:
+                
+                # Transición con anchura
+                elif np.abs(cov) >= 0.1 and np.abs(cov) < 0.3:
                     Resultados[i] = 10
                 
+                # Polarización descorrelacionada
+                else:
+                    Resultados[i] = 11
+                
     return Resultados
-
 
 #-----------------------------------------------------------------------------------------------
 # Esta función arma todos los mapas de colores de frecuencias de los estados finales.    
 
-def Mapas_Colores_FEF(DF,path,carpeta,
-                       SIM_param_x,SIM_param_y,
-                       ID_param_extra_1):
+def Mapas_Colores_FEF(DF,path,carpeta,SIM_param_x,SIM_param_y,
+                      ID_param_extra_1):
     
     # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
     # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
@@ -1132,7 +797,7 @@ def Mapas_Colores_FEF(DF,path,carpeta,
     
     XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
     # Voy a armar 11 mapas de colores
-    ZZ = np.zeros((11,XX.shape[0],XX.shape[1]))
+    ZZ = np.zeros((12,XX.shape[0],XX.shape[1]))
     
     #--------------------------------------------------------------------------------
     
@@ -1149,17 +814,24 @@ def Mapas_Colores_FEF(DF,path,carpeta,
                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
         
         # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
-        for grafico in range(11):
+        for grafico in range(12):
             ZZ[grafico,(Arr_param_y.shape[0]-1)-fila,columna] = np.count_nonzero(Frecuencias == grafico)/Frecuencias.shape[0]
             
     #--------------------------------------------------------------------------------
     
-    for grafico in range(11):
-        # Una vez que tengo el ZZ completo, armo mi mapa de colores
-        direccion_guardado = Path("../../../Imagenes/{}/FEF{}_{}={}.png".format(carpeta,grafico,ID_param_extra_1,EXTRAS))
+    Nombres = ["Consenso neutral", "Consenso radicalizado", "Polarización Unidimensional Horizontal",
+               "Polarización Unidimensional Vertical", "Polarización Ideológica", "Transición",
+               "Polarización Descorrelacionada", "Polarización Unidimensional Horizontal con anchura",
+               "Polarización Unidimensional Vertical con anchura", "Polarización Ideológica con anchura",
+               "Transición con anchura", "Polarización Descorrelacionada con anchura"]
+    
+    for grafico in range(12):
         
-        plt.rcParams.update({'font.size': 24})
-        plt.figure("FEF",figsize=(20,15))
+        # Una vez que tengo el ZZ completo, armo mi mapa de colores
+        direccion_guardado = Path("../../../Imagenes/{}/Fracción estados finales {}_{}={}.png".format(carpeta,grafico,ID_param_extra_1,EXTRAS))
+        
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("FEF",figsize=(28,21))
         plt.xlabel(r"${}$".format(SIM_param_x))
         plt.ylabel(r"${}$".format(SIM_param_y))
         
@@ -1167,7 +839,7 @@ def Mapas_Colores_FEF(DF,path,carpeta,
         
         plt.pcolormesh(XX,YY,ZZ[grafico],shading="nearest", cmap = "plasma")
         plt.colorbar()
-        plt.title("Frecuencia del estado {}".format(grafico))
+        plt.title("Fracción del estado {}".format(Nombres[grafico]))
         
         # Guardo la figura y la cierro
         
@@ -1253,7 +925,7 @@ def Calculo_Entropia(DF,path,N):
             
             entropias = np.zeros(archivos.shape[0])
             
-            for nombre in archivos:
+            for indice,nombre in enumerate(archivos):
         
                 # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
                 # Opinión Inicial del sistema
@@ -1274,14 +946,14 @@ def Calculo_Entropia(DF,path,N):
         
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
         
-                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+                # repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
                 
                 # Armo mi array de Distribucion, que tiene la proba de que una opinión
                 # pertenezca a una región del espacio de tópicos
                 Probas = Clasificacion(Opifinales,N,T)
                 
                 # Con esa distribución puedo directamente calcular la entropía.
-                entropias[repeticion] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
+                entropias[indice] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
         
             if PARAM_X not in Salida[EXTRAS].keys():
                 Salida[EXTRAS][PARAM_X] = dict()
@@ -1336,8 +1008,8 @@ def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
     direccion_guardado = Path("../../../Imagenes/{}/Entropia EP_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
     
-    plt.rcParams.update({'font.size': 24})
-    plt.figure("Entropia Opiniones",figsize=(20,15))
+    plt.rcParams.update({'font.size': 44})
+    plt.figure("Entropia Opiniones",figsize=(28,21))
     plt.xlabel(r"${}$".format(SIM_param_x))
     plt.ylabel(r"${}$".format(SIM_param_y))
     
@@ -1352,8 +1024,8 @@ def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
     direccion_guardado = Path("../../../Imagenes/{}/Varianza Entropia EP_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
     
-    plt.rcParams.update({'font.size': 24})
-    plt.figure("Varianza Entropia",figsize=(20,15))
+    plt.rcParams.update({'font.size': 44})
+    plt.figure("Varianza Entropia",figsize=(28,21))
     plt.xlabel(r"${}$".format(SIM_param_x))
     plt.ylabel(r"${}$".format(SIM_param_y))
     
@@ -1365,3 +1037,205 @@ def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close("Varianza Entropia")
 
+#-----------------------------------------------------------------------------------------------
+
+# Esta función es la que arma los gráficos de los mapas de colores en el espacio de
+# parámetros de alfa y umbral usando la varianza de las opiniones como métrica.
+
+def Mapa_Colores_Pol_vs_Oscil(DF,path,carpeta,T,SIM_param_x,SIM_param_y,
+                              ID_param_extra_1):
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF["n"]))
+    
+    # Defino los arrays de parámetros diferentes
+    Arr_EXTRAS = np.unique(DF["Extra"])
+    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_y = np.unique(DF["parametro_y"])
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
+                   for j,param_y in enumerate(Arr_param_y)]
+    
+    #--------------------------------------------------------------------------------
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    ZZ = np.ones(XX.shape)*(-1)
+    
+    #--------------------------------------------------------------------------------
+    
+    for EXTRAS in Arr_EXTRAS:
+        
+        for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
+            
+            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                        (DF["n"]==AGENTES) & 
+                                        (DF["Extra"]==EXTRAS) & 
+                                        (DF["parametro_x"]==PARAM_X) &
+                                        (DF["parametro_y"]==PARAM_Y), "nombre"])
+        
+            # Me defino el array en el cual acumulo los datos de las opiniones finales de todas mis simulaciones
+            Pasos = np.zeros(len(archivos))
+            Varianzas = np.zeros(len(archivos))
+            
+            #-----------------------------------------------------------------------------------------
+            
+            for indice,nombre in enumerate(archivos):
+                
+                # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+                # Opinión Inicial del sistema
+                # Variación Promedio
+                # Opinión Final
+                # Pasos simulados
+                # Semilla
+                
+                # Levanto los datos del archivo
+                Datos = ldata(path / nombre)
+                # repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+                
+                # Leo los datos de las Opiniones Finales
+                Opifinales = np.zeros((T,AGENTES))
+                
+                # Normalizo mis datos usando el valor de Kappa
+                for topico in range(T):
+                    Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")/PARAM_X
+                
+                
+                Pasos[indice] = int(Datos[7][0])
+                M_cov = np.cov(Opifinales)
+                Varianzas[indice] = np.trace(M_cov) / T
+                
+                
+            #------------------------------------------------------------------------------------------
+            # Con los "tiempos" de las simulaciones calculo la fracción de estados que llegaron hasta el final
+            # de la simulación, así la variación de esos tiempos de simulación
+            
+            Varianzas_oscil = Varianzas[Pasos == 200000]
+            
+            if (Pasos == 200000).any():
+                ZZ[Arr_param_y.shape[0]-1-fila,columna] = np.count_nonzero(Varianzas_oscil > 0.1) / np.count_nonzero(Pasos == 200000)
+        
+        #--------------------------------------------------------------------------------
+    
+        # Una vez que tengo los ZZ completos, armo mis mapas de colores
+        
+        #--------------------------------------------------------------------------------
+        # Fracción de estados oscilantes
+        direccion_guardado = Path("../../../Imagenes/{}/Pol_vs_Oscil_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
+        
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("PolOscil",figsize=(28,21))
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        
+        # Hago el ploteo del mapa de colores con el colormesh
+        
+        plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "magma")
+        plt.colorbar()
+        plt.title("Fraccion de estados Polarizados respecto de Oscilantes")
+    
+        # Guardo la figura y la cierro
+        
+        plt.savefig(direccion_guardado , bbox_inches = "tight")
+        plt.close("PolOscil")
+
+#-----------------------------------------------------------------------------------------------
+
+# Esta función es la que arma los gráficos de los histogramas de opiniones
+# finales en el espacio de tópicos
+
+def Histogramas_Multiples(DF,path,carpeta,T,ID_param_x,ID_param_y,
+                          ID_param_extra_1):
+
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF["n"]))
+    
+    # Defino los arrays de parámetros diferentes
+    Arr_EXTRAS = np.unique(DF["Extra"])
+    Arr_param_x = np.array([10])
+    Arr_param_y = np.array([0.3,0.7,0.9])
+    
+    # Defino la cantidad de filas y columnas que voy a graficar
+    Filas = 5
+    Columnas = T
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(param_x,param_y) for param_x in Arr_param_x
+                   for param_y in Arr_param_y]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    for EXTRAS in Arr_EXTRAS:
+        for PARAM_X,PARAM_Y in Tupla_total:
+            
+            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                        (DF["n"]==AGENTES) & 
+                                        (DF["Extra"]==EXTRAS) & 
+                                        (DF["parametro_x"]==PARAM_X) &
+                                        (DF["parametro_y"]==PARAM_Y), "nombre"])
+            #-----------------------------------------------------------------------------------------
+
+#            plt.rcParams.update({'font.size': 44})
+#            plt.figure(figsize=(28,21))
+            plots = [[plt.subplot(Filas, Columnas, i*Columnas + j + 1) for j in range(Columnas)] for i in range(Filas)]
+            
+            for nombre in archivos:
+
+                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])                
+                if repeticion < 5:
+                
+                    # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+                    # Opinión Inicial del sistema
+                    # Variación Promedio
+                    # Opinión Final
+                    # Semilla
+                    
+                    # Levanto los datos del archivo
+                    Datos = ldata(path / nombre)
+                    
+                    # Leo los datos de las Opiniones Finales y las normalizo
+                    Opifinales = np.array(Datos[5][:-1:], dtype="float")
+                    Opifinales =  Opifinales / PARAM_X
+                    
+                    #----------------------------------------------------------------------------------------------------------------------------------
+                    
+                    # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
+                    # Armo mi gráfico, lo guardo y lo cierro
+                    
+                    for topico in range(T):
+                        plots[repeticion][topico].hist(Opifinales[topico::T], bins=np.linspace(-1, 1, 21), density=True, color='tab:blue')
+                        plots[repeticion][topico].set_xlim(-1, 1)  # Set x-axis limits
+            
+            # Le pongo nombres a los ejes más externos
+            for i, row in enumerate(plots):
+                for j, subplot in enumerate(row):
+                    if j == 0:  # First column, set y label
+                        subplot.set_ylabel('Densidad')
+                    if i == Filas - 1:  # Last row, set x label
+                        subplot.set_xlabel("Opiniones")# r"$x_i$")
+                        
+            # Set titles for each column
+            column_titles = ['Histogramas tópico 0', 'Histogramas Tópico 1']
+            for j, title in enumerate(column_titles):
+                plt.subplot(Filas, Columnas, j + 1)  # Go to first subplot in the column
+                plt.title(title, fontsize=10)  # Set title for the column
+                
+            
+            # Adjust layout
+            plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+            
+            # Set main title for the entire figure
+            plt.suptitle(r'Histogramas en $\beta$ = {}'.format(PARAM_Y), fontsize=12)
+            
+            direccion_guardado = Path("../../../Imagenes/{}/Conjunto Histogramas_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
+                                      ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS))
+            plt.savefig(direccion_guardado ,bbox_inches = "tight")
+            plt.close()
