@@ -4415,3 +4415,36 @@ tome para algunos valores de Beta y algún Kappa fijo o Cos(delta) fijo.
  Impresionante, pero el gráfico parece que salió bastante bien. Tengo que repetir esto mañana y 
 armarlo un poco más grande, tanto para el barrido Beta-Kappa y para el barrido Beta-Cosd.
 
+------------------------------------------------------------------------------------------
+
+04/03/2024
+
+Charlamos con pablo los gráficos armados. Lo que me propone es que revise bien qué son los gráficos que
+estoy viendo y que sea un poco más claro con los nombres. Y que después le paso los gráficos de
+histogramas apilados que me dijo que arme. También me dijo que deje de armar ciertos gráficos
+innecesarios. Así que vamos a intentar corregir y ordenar toda esta info.
+
+.) Contar como una sola cosa los gráficos de polarización unidimensional. De paso, corregirles
+los nombres.
+.) Revisar qué pasa con la transición así como con los estados de polarización ideológica. ¿Realmente
+estoy viendo lo que digo que veo?
+.) Borrar los gráficos que no son necesarios.
+.) Hacer que se vean bien los gráficos de histogramas apilados.
+
+Mi gran pregunta es, ¿Modifico la función de clasificación o ajusto esto en la función de graficación?
+Modifiquémoslo en la clasificación. Ahí estoy mandando a correr todo, juntando las polarizaciones
+unidimensionales en un solo gráfico.
+
+Mandé a correr simulaciones en Algarve, al igual que en Oporto y en Coimbra. Fijate que las que están en
+Algarve están corriendo con redes distintas a las de Oporto. Voy a ver de corregir eso pronto, pero primero
+voy a preparar una presentación con los gráficos para mostrarle a Pablo.
+
+Estoy haciendo muchas cosas juntas y me estoy perdiendo, y además no están saliendo como yo quiero. Así que
+estoy teniendo algunos problemas.
+1) No logro identificar cómo es que el sistema está clasificando los estados observados. Así que me descargué
+estados para la carpeta de revisión, algunos gráficos nomás. En la región Beta-Kappa descargué para Kappa
+[5,10,12.5] y Betas [0.7,1,1.5,1.7]. Para la región Beta-Cosd descargué Cosd [0,0.4,0.6], Beta [0.5,1,1.5].
+2) Intenté ponerle los nombres de los estados a los gráficos de Histograma 2D, pero me tiran error. No entiendo
+por qué.
+3) Ni arranqué la presentación que me dijo Pablo, llevo peleando con estos gráficos todo el puto día. Mañana
+debería poder armarla fácil. Dios nos acompañe.
