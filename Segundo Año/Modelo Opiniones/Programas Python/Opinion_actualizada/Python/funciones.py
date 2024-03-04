@@ -480,6 +480,114 @@ def Mapa_Colores_Tiempo_convergencia(DF,path,carpeta,
         plt.savefig(direccion_guardado , bbox_inches = "tight")
         plt.close("VarianzaPasos")
 
+#-----------------------------------------------------------------------------------------------
+
+# Esta función es la que arma los gráficos de los mapas de colores en el espacio de
+# parámetros de alfa y umbral usando la varianza de las opiniones como métrica.
+
+def Mapa_Colores_Pol_vs_Oscil(DF,path,carpeta,T,SIM_param_x,SIM_param_y,
+                              ID_param_extra_1):
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF["n"]))
+    
+    # Defino los arrays de parámetros diferentes
+    Arr_EXTRAS = np.unique(DF["Extra"])
+    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_y = np.unique(DF["parametro_y"])
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
+                   for j,param_y in enumerate(Arr_param_y)]
+    
+    #--------------------------------------------------------------------------------
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    ZZ = np.ones(XX.shape)*(-1)
+    
+    #--------------------------------------------------------------------------------
+    
+    for EXTRAS in Arr_EXTRAS:
+        
+        for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
+            
+            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                        (DF["n"]==AGENTES) & 
+                                        (DF["Extra"]==EXTRAS) & 
+                                        (DF["parametro_x"]==PARAM_X) &
+                                        (DF["parametro_y"]==PARAM_Y), "nombre"])
+        
+            # Me defino el array en el cual acumulo los datos de las opiniones finales de todas mis simulaciones
+            Pasos = np.zeros(len(archivos))
+            Varianzas = np.zeros(len(archivos))
+            
+            #-----------------------------------------------------------------------------------------
+            
+            for indice,nombre in enumerate(archivos):
+                
+                # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+                # Opinión Inicial del sistema
+                # Variación Promedio
+                # Opinión Final
+                # Pasos simulados
+                # Semilla
+                
+                # Levanto los datos del archivo
+                Datos = ldata(path / nombre)
+                # repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+                
+                # Leo los datos de las Opiniones Finales
+                Opifinales = np.zeros((T,AGENTES))
+                
+                # Normalizo mis datos usando el valor de Kappa
+                for topico in range(T):
+                    Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")/PARAM_X
+                
+                
+                Pasos[indice] = int(Datos[7][0])
+                M_cov = np.cov(Opifinales)
+                Varianzas[indice] = np.trace(M_cov) / T
+                
+                
+            #------------------------------------------------------------------------------------------
+            # Con los "tiempos" de las simulaciones calculo la fracción de estados que llegaron hasta el final
+            # de la simulación, así la variación de esos tiempos de simulación
+            
+            Varianzas_oscil = Varianzas[Pasos == 200000]
+            
+            if (Pasos == 200000).any():
+                ZZ[Arr_param_y.shape[0]-1-fila,columna] = np.count_nonzero(Varianzas_oscil > 0.1) / np.count_nonzero(Pasos == 200000)
+        
+        #--------------------------------------------------------------------------------
+    
+        # Una vez que tengo los ZZ completos, armo mis mapas de colores
+        
+        #--------------------------------------------------------------------------------
+        # Fracción de estados oscilantes
+        direccion_guardado = Path("../../../Imagenes/{}/Pol_vs_Oscil_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
+        
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("PolOscil",figsize=(28,21))
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        
+        # Hago el ploteo del mapa de colores con el colormesh
+        
+        plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "magma")
+        plt.colorbar()
+        plt.title("Fraccion de estados Polarizados respecto de Oscilantes")
+    
+        # Guardo la figura y la cierro
+        
+        plt.savefig(direccion_guardado , bbox_inches = "tight")
+        plt.close("PolOscil")
+
 
 #-----------------------------------------------------------------------------------------------
 
@@ -1168,7 +1276,7 @@ def Mapas_Colores_FEF(DF,path,carpeta,
     
     XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
     # Voy a armar 11 mapas de colores
-    ZZ = np.zeros((11,XX.shape[0],XX.shape[1]))
+    ZZ = np.zeros((12,XX.shape[0],XX.shape[1]))
     
     #--------------------------------------------------------------------------------
     
@@ -1185,12 +1293,12 @@ def Mapas_Colores_FEF(DF,path,carpeta,
                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
         
         # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
-        for grafico in range(11):
+        for grafico in range(12):
             ZZ[grafico,(Arr_param_y.shape[0]-1)-fila,columna] = np.count_nonzero(Frecuencias == grafico)/Frecuencias.shape[0]
             
     #--------------------------------------------------------------------------------
     
-    for grafico in range(11):
+    for grafico in range(12):
         # Una vez que tengo el ZZ completo, armo mi mapa de colores
         direccion_guardado = Path("../../../Imagenes/{}/FEF{}_{}={}.png".format(carpeta,grafico,ID_param_extra_1,EXTRAS))
         

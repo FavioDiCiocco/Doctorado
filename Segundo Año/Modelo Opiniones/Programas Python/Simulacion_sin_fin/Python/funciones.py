@@ -588,21 +588,29 @@ def Fraccion_vs_Varianza(DF,path,carpeta,T,ID_param_x,ID_param_y,
                 direccion_guardado = Path("../../../Imagenes/{}/Fraccion_Varianza_sim={}_N={:.0f}_{}={:.1f}_{}={:.1f}_{}={:.1f}.png".format(carpeta,REP,AGENTES,ID_param_x,PARAM_X,
                                               ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS))
                 
-                X = np.logspace(-11,-1,num=50)
-                Y = np.zeros(X.shape[0])
+                colores = ["tab:blue", "tab:orange"]
                 
-                for i,x in enumerate(X):
-                    Y[i] = np.count_nonzero(Varianza >= x) / Varianza.shape[0]
-                
-                # Armo mi gráfico, lo guardo y lo cierro
                 plt.rcParams.update({'font.size': 44})
                 plt.figure(figsize=(28,21))
-                plt.semilogx(X,Y,linestyle="--",color="tab:red",linewidth=8)
-                plt.axvline(x=10**(-6), color = "blue", linewidth = 4)
-                plt.text(10**(-6), 0.5, r'Fracción en exp(-6) = {}'.format(np.count_nonzero(Varianza >= 10**(-6)) / Varianza.shape[0]))
+                
+                for topico in range(T):
+                    
+                    X = np.logspace(-11,-1,num=50)
+                    Y = np.zeros(X.shape[0])
+                    
+                    for i,x in enumerate(X):
+                        Y[i] = np.count_nonzero(Varianza[topico::T] >= x) / AGENTES
+                    
+                    # Armo mi gráfico, lo guardo y lo cierro
+                    plt.semilogx(X,Y,linestyle="--",color=colores[topico], label ="Topico {}".format(topico),linewidth=8)
+                    plt.axvline(x=10**(-6), color = "blue", linewidth = 4)
+                    plt.text(0.55, 0.4+0.1*(1-topico),
+                             r'Fracción tópico {} = {}'.format(topico ,np.count_nonzero(Varianza[topico::T] >= 10**(-6)) / AGENTES), transform=plt.gcf().transFigure)
+                
                 plt.xlabel("Varianza")
                 plt.ylabel("Fracción")
                 plt.grid()
+                plt.legend()
                 plt.title('Fraccion de agentes en función de la varianza, {}={:.1f}_{}={:.1f}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y,))
                 plt.savefig(direccion_guardado ,bbox_inches = "tight")
                 plt.close()

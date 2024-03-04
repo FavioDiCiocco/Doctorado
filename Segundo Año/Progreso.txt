@@ -4351,6 +4351,51 @@ para los estados que se mantienen oscilando. Lo observado es interesante, me que
 que quiero poner en el gráfico sobre la línea vertical. Pero me gusta porque lo que estoy viendo es que
 las varianzas tienen una forma particular en los casos en los que el sistema oscila. Me resulta interesante
 de revisar.
+------------------------------------------------------------------------------------------
+
+01/03/2024
+
+Estoy lento en el arranque. Día complicado. Cuestión que estoy viendo los gráficos de Fracción de agentes
+en función de la varianza. Me cuesta decir que lo observado da una imagen clara de lo
+que estoy viendo. Para empezar, porque no es que haya una fracción claramente mayor de agentes por
+encima de 10^(-6) en los estados que oscilan eternamente que en los que no oscilan. Lo cuál un poco me
+sorprende, considerando que los estados que no oscilan tienen opiniones que quedan clavadas y sus varianzas
+deberían caer a 0. Pero justamente los pocos agentes que no están en cero dan más o menos algo por
+encima de 10^(-6). Igual es bueno aclarar que es uno de los estados presentados el cuál tiene pocos osciladores
+al igual que los estados que convergen. Los demás estados tienen más osciladores.
+
+Algo que venía pensando es el hecho de que esos gráficos tienen ambos tópicos en una misma curva, podría
+hacer una curva para cada tópico. Eso me parece que sería mejor, junta la info en un sólo lugar. Algo
+que me gustaría también es ponerle el tipo de estado que estoy graficando en el título, así se sabe
+qué es lo que tengo ahí. Siento que es mucho tiempo hacer eso ahora, pero lo podría hacer para la
+Extensión Testigos.
+
+Lo otro que debería ir haciendo es el gráfico que decía Hugo de la fracción de estados que se quedan
+oscilando que están polarizados.
+
+Bien, ya resolví lo que quería del gráfico de fracción de agentes en función de la varianza. Ahora sí,
+pasemos a la parte de gráficos de fracción de polarizados respecto de los oscilantes.
+Armé la función que grafica cuál es la fracción de estados polarizados vs oscilantes. Pablo me
+planteó sobre cómo defino estados oscilantes, que eso podría estar mal.
+
+Hablando con Pablo, como era de esperar, resultó que lo que estoy haciendo es no avanzar con estilo.
+Tengo que tener mejores resultados. Necesito tener mejores criterios sobre qué es un ESTADO OSCILANTE.
+Y también sobre CUANTOS AGENTES OSCILAN.
+
+Lo que me propuso es mirar los histogramas de cada tópico por separado en algunos puntos del espacio
+de parámetros y ver si con eso podemos construir alguna métrica para identificar los estados.
+Lo que no me queda claro es a qué nos referimos con identificar los estados. Yo desde mi inocencia
+sostengo que identificarlos es plantear que existen algunos estados que son de transición y listo.
+Pablo creo que plantea que se puede decir más de estos estados. No estoy tan de acuerdo con esa idea,
+pero veremos.
+
+Primero me pidió que haga los gráficos de los espacios de parámetros. Es hora de que pase las funciones
+graficadoras a Oporto y Algarve de nuevo. Y que sea cuidadoso con cuáles archivos voy a usar para graficar,
+porque mientras tanto el programa sigue corriendo.
+
+Me quedé hasta tarde armando los gráficos de Fracciones de estado, Entropía y demás cosas sobre el espacio
+de parámetros. Tengo un tema con los datos de Oporto, tengo que resolver eso pronto, para el miércoles voy
+a tener que fingir demencia, ya la próxima reunión ese problema va a estar resuelto.
 
 
 ------------------------------------------------------------------------------------------
@@ -4369,3 +4414,4 @@ Hoy voy a armar la función que grafica los histogramas que Pablo me dijo que ar
 tome para algunos valores de Beta y algún Kappa fijo o Cos(delta) fijo.
  Impresionante, pero el gráfico parece que salió bastante bien. Tengo que repetir esto mañana y 
 armarlo un poco más grande, tanto para el barrido Beta-Kappa y para el barrido Beta-Cosd.
+

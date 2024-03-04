@@ -1119,6 +1119,7 @@ def Mapa_Colores_Pol_vs_Oscil(DF,path,carpeta,T,SIM_param_x,SIM_param_y,
         plt.savefig(direccion_guardado , bbox_inches = "tight")
         plt.close("PolOscil")
         
+
 #-----------------------------------------------------------------------------------------------
 
 # Esta función es la que arma los gráficos de los histogramas de opiniones
@@ -1212,4 +1213,4 @@ def Histogramas_Multiples(DF,path,carpeta,T,ID_param_x,ID_param_y,
             direccion_guardado = Path("../../../Imagenes/{}/Conjunto Histogramas_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
                                       ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS))
             plt.savefig(direccion_guardado ,bbox_inches = "tight")
-            plt.close()        
+            plt.close()

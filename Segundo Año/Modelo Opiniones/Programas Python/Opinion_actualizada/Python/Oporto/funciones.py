@@ -826,9 +826,8 @@ def Mapas_Colores_FEF(DF,path,carpeta,SIM_param_x,SIM_param_y,
                "Transición con anchura", "Polarización Descorrelacionada con anchura"]
     
     for grafico in range(12):
-        
         # Una vez que tengo el ZZ completo, armo mi mapa de colores
-        direccion_guardado = Path("../../../Imagenes/{}/Fracción estados finales {}_{}={}.png".format(carpeta,grafico,ID_param_extra_1,EXTRAS))
+        direccion_guardado = Path("../../../Imagenes/{}/Fracción estados finales {}_{}={}.png".format(carpeta,Nombres[grafico],ID_param_extra_1,EXTRAS))
         
         plt.rcParams.update({'font.size': 44})
         plt.figure("FEF",figsize=(28,21))
