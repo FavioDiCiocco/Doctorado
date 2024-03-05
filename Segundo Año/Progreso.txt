@@ -4448,3 +4448,103 @@ estados para la carpeta de revisión, algunos gráficos nomás. En la región Be
 por qué.
 3) Ni arranqué la presentación que me dijo Pablo, llevo peleando con estos gráficos todo el puto día. Mañana
 debería poder armarla fácil. Dios nos acompañe.
+
+------------------------------------------------------------------------------------------
+
+05/03/2024
+
+Luego de pelear un poco, logré que el programa coloque las etiquetas de cómo clasifica estados en
+los histogramas. Ahora estoy revisando a ver si los clasifica bien, y no pareciera ser el caso,
+lo cuál me preocupa mucho. Al parecer, hay algunos casos que tienen un conjunto minoritario de
+agentes que están en una esquina contraria al resto de agentes y esto jode completamente el
+uso de las varianzas como medida para detectar polarizaciones. Honestamente, es una cantidad
+tan mínima que son invisibles en el gráfico.
+
+Por otro lado, hay otro que lo identificó como una polarización ideológica, pero que en realidad
+es una polarización unidimensional. Algo que me parece una corrección que podría hacer a esto
+es aumentar el valor de la varianza como criterio para definir polarización, aumentando el valor
+de 0.1 a 0.5. Me parece razonable, porque estoy viendo que siempre que hay polarización la
+varianza toma valores claramente por encima de 0.5, teniendo 0.7 como piso. 
+
+Estoy considerando también cambiar los valores de entropía, pero creo que eso es más delicado.
+En especial considerando que había calculado previamente cuánto tenía que ser la entropía en
+esos casos y viendo que ajustaba correctamente a lo visto. Pero veamos algunos ejemplos más
+y después veré de hacer una prueba o una decisión de modificar eso. La covarianza quizás se
+pueda modificar también. Creo que esto se puede justificar en el hecho de que los estados con
+verdadera anchura tienen entropías que superan el 0.5. Necesito encontrar uno de polarización
+1d con anchura para definir qué entropía tienen esos.
+ En Beta=1.7 tengo un montón de estados que parecieran ser de polarización descorrelacionada
+y que resultan básicamente indistinguibles entre ellos, pero que el sistema diferencia algunos
+como transición y otros como polarización descorrelacionada porque la entropía ronda el 0.23,
+que fue el valor de corte que le definí. Se me ocurre que puedo pedirle que la entropía sea
+menor a un cierto valor, quizás 0.5, y después usar la covarianza para diferenciar los estados,
+porque al final del día, diferenciar un estado que tiene dos puntas de uno de cuatro debería
+salir por la covarianza. Fijate que todos estos estados de polarización descorrelacionada
+tienen covarianza menor a 0.1, en módulo. Mentira, hay un estado con covarianza mayor a 0.1.
+Pero ese estado tampoco deja de ser claramente una Polarización descorrelacionada, así que quizás
+podría considerar un valor un poco más grande de covarianza como criterio.
+ Otro estado que encontré es uno con opiniones más o menos distribuidas. Aún así, me parece que es
+de polarización descorrelacionada sin anchura. Por lo menos sin la anchura masiva que tienen los
+otros. Y su entropía es 0.72. Ok, eso tiene que contar como anchura, definitivamente. También
+vi una polarización horizontal con anchura que tiene entropía 0.308.
+
+¿Esos cuadraditos donde tengo pocos agentes, podría filtrarlos? Siendo que ya son las 13, tengo que
+tomar una decisión. Hagamos el cambio de las Varianzas, ese parece correcto. El de la entropía lo
+podría hacer también, aunque para eso necesito revisar un poco los gráficos con algún cos(delta)
+distinto de cero. Visto el tema de la entropía, yo creo que mejor no tocar eso.
+ Sin anchura, los estados de polarización ideológica tienen covarianza mayor a 0.9. (Están en el
+orden de 0.96). En cambio, los de transción tienen covarianza cercana a 0.75, 0.8.
+Cuando miro estados con anchura, resulta que 0.56 es la covarianza tal que me encuentro en polarización
+ideológica. Quizás resulta entonces que son distintas regiones para estados con y sin anchura.
+
+Por algún motivo, algunas varianzas dan mayor que 1, aunque apenas nomás. Si calculo las varianzas
+con np.var eso se resuelve. Considerar calcular las covarianzas por mi cuenta, no le confio al
+np.cov ahora. Parece que el problema era no utilizar el comando "bias=True", porque entonces
+la matriz de covarianza se normalizaba con N-1 en vez de con N.
+
+Los cambios que voy a hacer entonces son:
+1) El corte para las varianzas no va a ser 0.1, sino 0.5. Los estados polarizados se diferencian bien
+de los no polarizados en este sentido, no tiene sentido el criterio en 0.1, que hace que estados de
+consenso pasen a ser polarización 1D porque algunos pocos agentes se alejan apenas del resto.
+2) La entropía no la voy a tocar por ahora, porque vi estados de polarización 1D que tienen entropías cercanas
+a 0.3. Creo que puedo subir el criterio de separación de anchura a sin anchura, pasando la entropía de
+0.3 a 0.35. Creo que eso es razonable.
+3) Los estados sin anchura, voy a diferenciar polarización ideológica, transición y polarización descorrelacionada
+a partir de la covarianza. Los estados de polarización ideológica tienen covarianza mayor a 0.85.
+Los de polarización descorrelacionada menor a 0.3, creo. El resto es Transición sin anchura.
+4) En los estados con anchura en cambio, la polarización ideológica tiene covarianza mayor a 0.5.
+Diré que la polarización descorrelacionada tiene covarianza menor a 0.2. El resto es transición con
+anchura. Este estado de transición con anchura me parece importante porque al final del día tengo
+estados con "distribución a tres puntas" con anchura.
+
+Dios se apiade de mi y todo resulte mejor. Mandé a armar los gráficos, espero que salga todo bien con eso.
+Lo que sigue entonces es ponerme a hacer las presentaciones que Pablo me dijo. Para ello la idea es mostrar
+lo que se observa en los mapas de colores de Fracción de estados finales.
+
+En buena medida yo siento que está bien, tiene el problema de algunos estados que lo confunden, esos son
+los de transición básicamente. Esos son los que de una manera u otra clasifica mal, pero me parece
+que son los menos, y que se puede trabajar un poco. El verdadero problema lo tengo en Kappa=12.5, beta=0.2,
+donde estados que son claramente de polarización 1D los clasifica como polarización descorrelacionada.
+Esos los tengo que revisar. Lo que sí ocurre es que no cataloga más estados de polarización ideológica,
+lo cuál es lo que Pablo proponía. De paso, en los de transición surge algunos con las dos puntas opuestas
+marcadas.
+
+Hablando con Pablo, la presentación que armé hasta ahora parece estar bien. Me faltan algunos gráficos de
+histogramas. Para obtenerlos voy a agregar gráficos de Beta = 1.1 en el barrido Beta-Kappa, en el
+barrido Beta-Cos(delta) voy a agregar gráficos en Beta=0.35.
+ También me interesa agregar el gráfico de estados polarizados vs estados que corren hasta el final. En ese
+gráfico observé que algunos de los estados que corrieron hasta el final no estaban polarizados. Quiero
+ver qué son esos estados antes de mañana. Me descargué archivos del barrido Beta-Cosd con Beta=0.75 y Cos(delta)=0.6.
+Se supone que hay varios de esos estados que corrieron hasta el final, pero que no son polarizados.
+
+Hay tres estados que encontré que efectivamente son estados de consenso y que sin embargo corren hasta
+el final. Cabe preguntarse entonces, qué pasa con el valor de Variación promedio que no los corta.
+En especial porque lo veo ir pegando saltos, subiendo y bajando. ¿Qué será lo que está calculando,
+considerando que estos estados de consenso finalizan en valores bien determinados de opiniones?
+Estaría bueno mandarlo a correr y revisar el gráfico de opinión versus tiempo. No sé si llego
+a hacerlo para mañana. Yo ahora creo que voy a ir yendo, después de cargar las dos imágenes que
+quería cargar a la presentación. Esos estados son con Kappa=10, Beta=0.75, Cosd=0.6;
+Iteraciones 21, 2 y 14.
+
+Ahí me acuerdo por qué descargué los Kappa=12.5, Beta =0.2. Era para darme cuenta de por qué categoriza
+las polarizaciones unidimensionales como si fueran polarizaciones descorrelacionadas.

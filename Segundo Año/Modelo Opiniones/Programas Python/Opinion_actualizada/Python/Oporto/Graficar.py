@@ -73,6 +73,7 @@ for carp in Carpetas:
     SIM_param_y = r"\beta"
     SIM_param_extra_1 = r"cos(\delta)" 
     
+    func.Tiempo(t0)
     #----------------------------------------------------------------------------------------------
 
 #    func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
@@ -97,8 +98,8 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    # func.Mapas_Colores_FEF(Df_archivos, Direccion, Etapa/carpeta,
-    #                       SIM_param_x, SIM_param_y, ID_param_extra_1)
+    func.Mapas_Colores_FEF(Df_archivos, Direccion, Etapa/carpeta,
+                          SIM_param_x, SIM_param_y, ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     

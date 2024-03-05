@@ -24,7 +24,7 @@ T=2 # Defino el número de tópicos
 Etapa = Path("Opinion_actualizada") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Revision/Beta-Kappa"]
+Carpetas = ["Revision/Beta-Cosd"]
 
 for carp in Carpetas:
     
@@ -50,9 +50,9 @@ for carp in Carpetas:
     # Hecho mi dataframe, voy a armar columnas con los parámetros que varían en los nombres de mis archivos
     Df_archivos["tipo"] = Df_archivos["nombre"].apply(lambda x: x.split("_")[0])
     Df_archivos["n"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[1].split("=")[1]))
-    Df_archivos["parametro_x"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
+    Df_archivos["Extra"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
     Df_archivos["parametro_y"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
-    Df_archivos["Extra"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1]))
+    Df_archivos["parametro_x"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1]))
     Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[5].split("=")[1].strip(".file")))
     
     #----------------------------------------------------------------------------------------------
@@ -61,23 +61,24 @@ for carp in Carpetas:
     # ID es por el nombre del parámetro.
     # Todo parámetro que no grafique es un parámetro extra
     
-    ID_param_x = "kappa"
+    ID_param_extra_1 = "kappa"
     ID_param_y = "beta"
-    ID_param_extra_1 = "cosd"
+    ID_param_x = "cosd"
     
     
     # Lo otro que necesito es el nombre que pasaré a los ejes de los gráficos de las funciones
     # SIM significa símbolo, porque esto lo uso para escribir el símbolo de ese parámetro
     # Todo parámetro que no grafique es un parámetro extra
     
-    SIM_param_x = r"\kappa"
+    SIM_param_extra_1 = r"\kappa"
     SIM_param_y = r"\beta"
-    SIM_param_extra_1 = r"cos(\delta)" 
+    SIM_param_x = r"cos(\delta)"
     
+    func.Tiempo(t0)
     #----------------------------------------------------------------------------------------------
     
     func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
-                                        ID_param_x, ID_param_y, ID_param_extra_1)
+                                      ID_param_x, ID_param_y, ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
@@ -86,21 +87,24 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-#    Dic_Total = func.Diccionario_metricas(Df_archivos, Direccion, 20)
-#    
-#    #----------------------------------------------------------------------------------------------
-#    
-#    Kappa = 19.5
-#    Beta = 0.5
-#    
-#    Estados = func.Identificacion_Estados(Dic_Total[0][Kappa][Beta]["Entropia"],
-#                                          Dic_Total[0][Kappa][Beta]["Sigmax"],
-#                                          Dic_Total[0][Kappa][Beta]["Sigmay"],
-#                                          Dic_Total[0][Kappa][Beta]["Covarianza"],
-#                                          Dic_Total[0][Kappa][Beta]["Promedios"])
+    # Dic_Total = func.Diccionario_metricas(Df_archivos, Direccion, 20)
     
-#    print(Estados)
-#    print(Dic_Total[0][Kappa][Beta]["Covarianza"])
+    #----------------------------------------------------------------------------------------------
+    
+    # Cosd = 0.6
+    # Beta = 0.5
+    
+    # Estados = func.Identificacion_Estados(Dic_Total[10][Cosd][Beta]["Entropia"],
+    #                                       Dic_Total[10][Cosd][Beta]["Sigmax"],
+    #                                       Dic_Total[10][Cosd][Beta]["Sigmay"],
+    #                                       Dic_Total[10][Cosd][Beta]["Covarianza"],
+    #                                       Dic_Total[10][Cosd][Beta]["Promedios"])
+    
+    # print(Estados)
+    # print(Dic_Total[10][Cosd][Beta]["Entropia"])
+    # print(Dic_Total[10][Cosd][Beta]["Sigmax"])
+    # print(Dic_Total[10][Cosd][Beta]["Sigmay"])
+    # print(Dic_Total[10][Cosd][Beta]["Covarianza"])
 
 
 func.Tiempo(t0)

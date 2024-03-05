@@ -285,8 +285,8 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                     direccion_guardado = Path("../../../Imagenes/{}/Hist_opi_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,
                                                                                                 ID_param_x,PARAM_X,ID_param_y,PARAM_Y,repeticion))
                     
-                    indice = np.where(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] == repeticion)
-                    estado = Frecuencias[indice]
+                    indice = np.where(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] == repeticion)[0][0]
+                    estado = int(Frecuencias[indice])
                     
                     Nombres = ["Consenso neutral", "Consenso radicalizado", "Polarización 1D y Consenso",
                                "Polarización Ideológica", "Transición", "Polarización Descorrelacionada",
@@ -584,7 +584,7 @@ def Diccionario_metricas(DF,path,N):
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
                 Identidad[indice] = repeticion
         
-                M_cov = np.cov(Opifinales)
+                M_cov = np.cov(Opifinales, bias = True)
                 Varianza_X[indice] = M_cov[0,0]
                 Varianza_Y[indice] = M_cov[1,1]
                 Covarianza[indice] = M_cov[0,1]
@@ -650,11 +650,11 @@ def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y, Covarianza, Promedios):
         
         # Reviso la entropía y separo en casos con y sin anchura
         
-        if ent <= 0.3:
+        if ent <= 0.35:
             
             # Estos son casos sin anchura
             
-            if sx < 0.1 and sy < 0.1:
+            if sx < 0.5 and sy < 0.5:
                 
                 # Caso de un sólo extremo
                 
@@ -668,44 +668,44 @@ def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y, Covarianza, Promedios):
                     
             
             # Casos de dos extremos
-            elif sx >= 0.1 and sy < 0.1:
+            elif sx >= 0.5 and sy < 0.5:
                 # Dos extremos horizontal
                 Resultados[i] = 2
-            elif sx < 0.1 and sy >= 0.1:
+            elif sx < 0.5 and sy >= 0.5:
                 # Dos extremos vertical
                 Resultados[i] = 2
                 
             else:
-                if ent < 0.18:
+                if np.abs(cov) > 0.85:
                     # Dos extremos ideológico
                     Resultados[i] = 3
-                elif ent < 0.23:
-                    # Estados de Transición
-                    Resultados[i] = 4
-                else:
+                elif np.abs(cov) < 0.3:
                     # Cuatro extremos
                     Resultados[i] = 5
+                else:
+                    # Estados de Transición
+                    Resultados[i] = 4
         
         else:
             
             # Estos son los casos con anchura
             
             # Casos de dos extremos
-            if sx >= 0.1 and sy < 0.1:
+            if sx >= 0.5 and sy < 0.5:
                 # Dos extremos horizontal
                 Resultados[i] = 6
-            elif sx < 0.1 and sy >= 0.1:
+            elif sx < 0.5 and sy >= 0.5:
                 # Dos extremos vertical
                 Resultados[i] = 6
             
             else:
                 # Polarización
                 # Polarización ideológica
-                if np.abs(cov) >= 0.3:
+                if np.abs(cov) >= 0.5:
                     Resultados[i] = 7
                 
                 # Transición con anchura
-                elif np.abs(cov) >= 0.1 and np.abs(cov) < 0.3:
+                elif np.abs(cov) >= 0.2 and np.abs(cov) < 0.5:
                     Resultados[i] = 8
                 
                 # Polarización descorrelacionada

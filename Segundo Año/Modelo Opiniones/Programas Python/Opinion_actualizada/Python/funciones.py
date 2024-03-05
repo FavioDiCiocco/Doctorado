@@ -8,13 +8,10 @@ Created on Mon Sep 19 11:33:00 2022
 # Este archivo es para definir funciones
 
 import matplotlib.pyplot as plt
-from matplotlib.pyplot import cm
 import numpy as np
 import time
 import math
-from scipy.optimize import fsolve
 from pathlib import Path
-from cycler import cycler
 
 ##################################################################################
 ##################################################################################
@@ -201,8 +198,19 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
     # Gráfico de Opi vs T y en tres no se vería mejor.
     T=2
     
+    # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
+    # de todas las simulaciones para cada punto del espacio de parámetros.
+    Dic_Total = Diccionario_metricas(DF,path,20)
+    
     for EXTRAS in Arr_EXTRAS:
         for PARAM_X,PARAM_Y in Tupla_total:
+            
+            
+            Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
+                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
+                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
+                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
+                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
             
             # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
             archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
@@ -232,24 +240,33 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                 
                 # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-                direccion_guardado = Path("../../../Imagenes/{}/Histograma_opiniones_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
+                direccion_guardado = Path("../../../Imagenes/{}/Hist_opi_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
                                                                                                                                                  ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,repeticion))
+
+                indice = np.where(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] == repeticion)[0][0]
+                estado = int(Frecuencias[indice])
+                
+                Nombres = ["Consenso neutral", "Consenso radicalizado", "Polarización 1D y Consenso",
+                           "Polarización Ideológica", "Transición", "Polarización Descorrelacionada",
+                           "Polarización 1D y Consenso con anchura",
+                           "Polarización Ideológica con anchura", "Transición con anchura",
+                           "Polarización Descorrelacionada con anchura"]
                 
                 # Armo mi gráfico, lo guardo y lo cierro
-                plt.rcParams.update({'font.size': 32})
-                plt.figure(figsize=(20,15))
-                
+                plt.rcParams.update({'font.size': 44})
+                plt.figure(figsize=(28,21))
+                """
                 _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
-                                         range=[[-PARAM_X,PARAM_X],[-PARAM_X,PARAM_X]],density=True,
-                                         cmap=cmap)
+                                          range=[[-PARAM_X,PARAM_X],[-PARAM_X,PARAM_X]],density=True,
+                                          cmap=cmap)
                 """
                 _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
                                          range=[[-EXTRAS,EXTRAS],[-EXTRAS,EXTRAS]],density=True,
                                          cmap=cmap)
-                """
+                
                 plt.xlabel(r"$x_i^1$")
                 plt.ylabel(r"$x_i^2$")
-                plt.title('Histograma 2D, {}={:.2f}_{}={:.2f}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y))
+                plt.title('Histograma 2D, {}={:.2f}_{}={:.2f}\n{}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y,Nombres[estado]))
                 plt.colorbar(im, label='Frecuencias')
                 plt.savefig(direccion_guardado ,bbox_inches = "tight")
                 plt.close()
@@ -584,6 +601,7 @@ def Diccionario_metricas(DF,path,N):
                                         (DF["parametro_y"]==PARAM_Y), "nombre"])
             #-----------------------------------------------------------------------------------------
             
+                
             Varianza_X = np.zeros(archivos.shape[0])
             Varianza_Y = np.zeros(archivos.shape[0])
             Covarianza = np.zeros(archivos.shape[0])
@@ -608,7 +626,7 @@ def Diccionario_metricas(DF,path,N):
         
                 for topico in range(T):
                     Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
-                    Opifinales[topico,:] = Opifinales[topico,:]/ PARAM_X
+                    Opifinales[topico,:] = Opifinales[topico,:]/ EXTRAS
                 
                 # Esta función normaliza las Opiniones Finales usando la 
                 # variable EXTRA, porque asume que EXTRA es el Kappa. De no serlo,
@@ -618,16 +636,16 @@ def Diccionario_metricas(DF,path,N):
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
                 Identidad[indice] = repeticion
         
-                M_cov = np.cov(Opifinales)
-                Varianza_X[indice] = M_cov[0,0]
-                Varianza_Y[indice] = M_cov[1,1]
+                M_cov = np.cov(Opifinales, bias=True)
+                Varianza_X[indice] = M_cov[0,0] # np.var(Opifinales[0,:])
+                Varianza_Y[indice] = M_cov[1,1] # np.var(Opifinales[1,:])
                 Covarianza[indice] = M_cov[0,1]
                 Promedios[indice] = np.linalg.norm(np.array(Datos[5][:-1:], dtype="float"),ord=1) / np.array(Datos[5][:-1:], dtype="float").shape[0]
                 
                 # Tengo que rearmar Opifinales para que sea un sólo vector con todo
                 
                 Opifinales = np.array(Datos[5][:-1], dtype="float")
-                Opifinales = Opifinales/PARAM_X
+                Opifinales = Opifinales/EXTRAS
                 
                 # Armo mi array de Distribucion, que tiene la proba de que una opinión
                 # pertenezca a una región del espacio de tópicos
@@ -638,28 +656,30 @@ def Diccionario_metricas(DF,path,N):
                 
             #----------------------------------------------------------------------------------------------------------------------
             
-            # Mis datos no están ordenados, pero con esto los ordeno según el
-            # valor de la simulación. Primero inicializo el vector que tiene los índices
-            # de cada simulación en sus elementos. El elemento 0 tiene la ubicación
-            # de la simulación cero en los demás vectores.
-            Ubicacion = np.zeros(max(Identidad)+1,dtype = int)
+            if len(archivos) > 0:
             
-            # Para cada elemento en el vector de identidad, le busco su indice en el
-            # vector y coloco ese índice en el vector de Ubicacion en la posición
-            # del elemento observado
-            for i in np.unique(Identidad):
-                indice = np.where(Identidad == i)[0][0]
-                Ubicacion[i] = indice
-            
-            # Ahora tengo que remover las simulaciones faltantes. Armo un vector
-            # que tenga sólamente los índices de las simulaciones faltantes
-            Faltantes = np.arange(max(Identidad)+1)
-            Faltantes = np.delete(Faltantes,Identidad)
-            
-            # Borro esas simulaciones de mi vector de Ubicacion
-            Ubicacion = np.delete(Ubicacion,Faltantes)
+                # Mis datos no están ordenados, pero con esto los ordeno según el
+                # valor de la simulación. Primero inicializo el vector que tiene los índices
+                # de cada simulación en sus elementos. El elemento 0 tiene la ubicación
+                # de la simulación cero en los demás vectores.
+                Ubicacion = np.zeros(max(Identidad)+1,dtype = int)
                 
+                # Para cada elemento en el vector de identidad, le busco su indice en el
+                # vector y coloco ese índice en el vector de Ubicacion en la posición
+                # del elemento observado
+                for i in np.unique(Identidad):
+                    indice = np.where(Identidad == i)[0][0]
+                    Ubicacion[i] = indice
                 
+                # Ahora tengo que remover las simulaciones faltantes. Armo un vector
+                # que tenga sólamente los índices de las simulaciones faltantes
+                Faltantes = np.arange(max(Identidad)+1)
+                Faltantes = np.delete(Faltantes,Identidad)
+                
+                # Borro esas simulaciones de mi vector de Ubicacion
+                Ubicacion = np.delete(Ubicacion,Faltantes)
+                    
+                    
             if PARAM_X not in Salida[EXTRAS].keys():
                 Salida[EXTRAS][PARAM_X] = dict()
             if PARAM_Y not in Salida[EXTRAS][PARAM_X].keys():
@@ -684,11 +704,11 @@ def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y, Covarianza, Promedios):
         
         # Reviso la entropía y separo en casos con y sin anchura
         
-        if ent <= 0.3:
+        if ent <= 0.35:
             
             # Estos son casos sin anchura
             
-            if sx < 0.1 and sy < 0.1:
+            if sx < 0.5 and sy < 0.5:
                 
                 # Caso de un sólo extremo
                 
@@ -702,49 +722,49 @@ def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y, Covarianza, Promedios):
                     
             
             # Casos de dos extremos
-            elif sx >= 0.1 and sy < 0.1:
+            elif sx >= 0.5 and sy < 0.5:
                 # Dos extremos horizontal
                 Resultados[i] = 2
-            elif sx < 0.1 and sy >= 0.1:
+            elif sx < 0.5 and sy >= 0.5:
                 # Dos extremos vertical
-                Resultados[i] = 3
+                Resultados[i] = 2
                 
             else:
-                if ent < 0.18:
+                if np.abs(cov) > 0.85:
                     # Dos extremos ideológico
-                    Resultados[i] = 4
-                elif ent < 0.23:
-                    # Estados de Transición
+                    Resultados[i] = 3
+                elif np.abs(cov) < 0.3:
+                    # Cuatro extremos
                     Resultados[i] = 5
                 else:
-                    # Cuatro extremos
-                    Resultados[i] = 6
+                    # Estados de Transición
+                    Resultados[i] = 4
         
         else:
             
             # Estos son los casos con anchura
             
             # Casos de dos extremos
-            if sx >= 0.1 and sy < 0.1:
+            if sx >= 0.5 and sy < 0.5:
                 # Dos extremos horizontal
-                Resultados[i] = 7
-            elif sx < 0.1 and sy >= 0.1:
+                Resultados[i] = 6
+            elif sx < 0.5 and sy >= 0.5:
                 # Dos extremos vertical
-                Resultados[i] = 8
+                Resultados[i] = 6
             
             else:
                 # Polarización
                 # Polarización ideológica
-                if np.abs(cov) >= 0.3:
-                    Resultados[i] = 9
+                if np.abs(cov) >= 0.5:
+                    Resultados[i] = 7
                 
                 # Transición con anchura
-                elif np.abs(cov) >= 0.1 and np.abs(cov) < 0.3:
-                    Resultados[i] = 10
+                elif np.abs(cov) >= 0.2 and np.abs(cov) < 0.5:
+                    Resultados[i] = 8
                 
                 # Polarización descorrelacionada
                 else:
-                    Resultados[i] = 11
+                    Resultados[i] = 9
                 
     return Resultados
 
