@@ -4548,3 +4548,38 @@ Iteraciones 21, 2 y 14.
 
 Ahí me acuerdo por qué descargué los Kappa=12.5, Beta =0.2. Era para darme cuenta de por qué categoriza
 las polarizaciones unidimensionales como si fueran polarizaciones descorrelacionadas.
+
+------------------------------------------------------------------------------------------
+
+07/03/2024
+
+Me olvidé de comittear mi trabajo de ayer, lo resolveré hoy a la noche eso.
+Llegué a la facultad, estaba revisando cosas y buena parte de la mañana pasó rápido.
+Miré lo del workshop que me dijo Pablo para anotarme. La semana que viene veo de armar las
+presentaciones a estos congresos del ICTO-SAIFR.
+
+Hoy voy a ver de mandar a correr las simulaciones que faltan para cubrir el espacio
+Beta-Kappa, y después me voy a poner a estudiar algo para el final de Minnini, de una vez
+por todas. De paso, con Pablo charlábamos las ideas que quedaron después de la reunión.
+
+1) Hacer un barrido más fino en la región Beta-Cos(delta), con un Cos(delta) entre [0,0.2].
+La idea es ver cómo se da que se despuebla la región por fuera de la diagonal y cómo se
+empieza a poblar la diagonal más lentamente. Quizás me muevo con Beta entre [0.4,0.9].
+2) Deberíamos hacer un estudio analítico para ver si la ubicación de las opiniones de
+los agentes a lo largo de la diagonal es un punto fijo para el caso con Cos(delta) = 0,
+y en caso de serlo mirar su estabilidad. QUIZÁS HACERLO NOSOTROS, QUIZÁS QUE LO HAGA
+LA GENTE DE GOTHAM.
+3) ¿Por qué para los estados con Beta por encima de 0.6 en el espacio Beta-Cosd
+los estados radicalizados vuelven a aumentar y casi que ocupan la región, desplazando
+los estados de polarización o estados con anchura?
+
+En Algarve estoy corriendo simulaciones para el barrido Beta-Kappa hasta la simulación
+89. Eso terminará la semana que viene quizás. En Oporto estoy corriendo hasta la simulación
+19, y eso también terminará más o menos en la misma fecha. Así que lo que queda es aprovechar
+Coimbra para simular lo que falta, de 90 a 99. Con esto, la semana que viene deberían estar
+terminadas todas las simulaciones y debería juntarlas todas en una sola carpeta.
+
+Otra cosa que me queda por hacer entonces es ver por qué el mapa de estados FEF dice que
+observa estados de Polarización descorrelacionada con anchura en la región con Cos(delta)=0,
+cuando grafiqué todas las distribuciones y no vi nada al respecto. Vamos a intentar tomar
+un approach un poco más directo a la cosa.
