@@ -4583,3 +4583,58 @@ Otra cosa que me queda por hacer entonces es ver por qué el mapa de estados FEF
 observa estados de Polarización descorrelacionada con anchura en la región con Cos(delta)=0,
 cuando grafiqué todas las distribuciones y no vi nada al respecto. Vamos a intentar tomar
 un approach un poco más directo a la cosa.
+
+------------------------------------------------------------------------------------------
+
+08/03/2024
+
+Ahí hablé con Pablo sobre qué hacer ahora. Mi idea es revisar si modificar el ancho de
+las ventanas de promedio reduciría el tiempo de simulación de algunos estados que oscilan.
+Pablo está de acuerdo en revisar eso hoy, pero que no me cebe. Lo otro que me propuso es que
+me ponga a leer más papers, que no lo deje estar. Así que debería concentrarme un poco en
+eso, en leer los papers. Tengo que encontrar formas adecuadas de leerlos mejor.
+
+Lo que voy a hacer ahora es tomar una de las simulaciones que estuve analizando antes, que
+oscilan completamente y desde ahí ver si lo puedo simular en la pc remota aumentando la
+ventana de promediado. Voy a tomar los datos de esos gráficos que estuve extendiendo,
+porque sé que esos oscilaban y tengo la forma que tomaban más en el futuro.
+Antes de arrancar con eso, voy a guardar los archivos, documentar correctamente y luego
+empiezo con estas simulaciones.
+
+Hay entonces una cosa más por revisar, que es si tengo estados de polarización descorrelacionada
+o descorrelacionada con anchura en el barrido Beta-Cos(delta) cuando Cos(delta)=0. La pregunta
+viene por el hecho de que el algoritmo parece detectar estados de polarización descorrelacionada
+en los gráficos de FEF, pero cuando miro los histogramas, no aparece ninguno. Bueno, eso tendrá
+que esperar, los gráficos no se armaron porque hubo un typo en la función escrita.
+
+En las tres pc's tengo 10 hilos corriendo. Para el martes aprox. va a estar terminado todo y listo
+para mandar a resolver. Lo que podría sino hacer, es empezar a mandar algo en alguna de las pc's
+cosa de que vaya recorriendo el espacio de valores, aunque sea tener 10 simulaciones para ir viendo
+algo el lunes con esos datos, y ya después voy agregando mientras dejo una sola pc para resolver
+los temas de Beta-Kappa. Me parece que eso va a ser lo mejor, a eso de las 16:30 me pongo a resolver
+para organizar esto. Quizás podría ver de cortar una de las simulaciones que tenga un criterio o lugar
+de corte evidente para retomar después.
+
+Lo último que se me ocurre es revisar un poco esos estados duraderos pero que convergen a estados
+de consenso o sin anchura. Creo que esto no va a pasar. Lo que sí hice fue ver lo que pasaba al tomar
+un ancho de ventana de 1000 en el caso de una simulación. Lo observado es que en el caso de paso
+1000, el sistema redujo considerablemente el tiempo de simulación. Aunque en algún punto fue casi
+una casualidad, porque el criterio de corte se cumplió por poco, pero se cumplió. Cuando aumenté el
+ancho de la ventana a 2000, el criterio de corte se cumplía intermitentemente y la simulación duró
+hasta el tiempo máximo. Así que quizás ahí en 2000 fue más de lo necesario el ancho de ventana,
+quizás agarré 1,5 veces el período de la oscilación y por eso duró más la simulación. 
+ La conclusión es que voy a cambiar el ancho de la ventana a 1000 y mandar a correr con eso. Y si
+ayuda genial, y si no, no hace ninguna diferencia.
+
+En Algarve las iteraciones pares están a punto de terminar pero todavía no. Yo diría de no cortar
+eso. En Coimbra están las últimas 10 simulaciones, las cuales resolvieron como mínimo Kappa hasta
+7. Así que cuando necesite volver a mandarlo, puedo arrancar desde Kappa=7 y listo, problema
+solucionado. En Oporto arrancaron las simulaciones impares, pero están muy diferenciadas.
+ Creo que definitivamente lo mejor es cortar las simulaciones en Coimbra y después continuarlas
+en otra pc. Y en Coimbra haré simulaciones enfocando en la región Beta-Cosd. Voy a barrer Beta
+entre [0.4,0.9] de a 0.02, lo cual implican 26 valores. Para Cosd voy a barrer entre [0,0.2]
+de a 0.01, lo cual implica 21 simulaciones. Entonces 21*26 son 546 puntos en el espacio de
+parámetros, debería ser más rápido que el caso de Beta-Kappa que venía haciendo antes.
+
+Voy a intentar usar las redes de Erdos-Renyi que armé en Oporto, así todo usa las mismas redes.
+Ahí mandé a correr la región de beta-Cosd enfocada. Voy para casa.

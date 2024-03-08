@@ -205,12 +205,12 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
     for EXTRAS in Arr_EXTRAS:
         for PARAM_X,PARAM_Y in Tupla_total:
             
-            
             Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
                                                  Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
                                                  Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
                                                  Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
                                                  Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
+            
             
             # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
             archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
@@ -241,8 +241,8 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                 # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
                 direccion_guardado = Path("../../../Imagenes/{}/Hist_opi_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
-                                                                                                                                                 ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,repeticion))
-
+                                                                                                                                ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,repeticion))
+                # Armo mi gráfico, lo guardo y lo cierro
                 indice = np.where(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] == repeticion)[0][0]
                 estado = int(Frecuencias[indice])
                 
@@ -252,25 +252,17 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                            "Polarización Ideológica con anchura", "Transición con anchura",
                            "Polarización Descorrelacionada con anchura"]
                 
-                # Armo mi gráfico, lo guardo y lo cierro
                 plt.rcParams.update({'font.size': 44})
                 plt.figure(figsize=(28,21))
-                """
                 _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
-                                          range=[[-PARAM_X,PARAM_X],[-PARAM_X,PARAM_X]],density=True,
-                                          cmap=cmap)
-                """
-                _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
-                                         range=[[-EXTRAS,EXTRAS],[-EXTRAS,EXTRAS]],density=True,
+                                         range=[[-PARAM_X,PARAM_X],[-PARAM_X,PARAM_X]],density=True,
                                          cmap=cmap)
-                
                 plt.xlabel(r"$x_i^1$")
                 plt.ylabel(r"$x_i^2$")
                 plt.title('Histograma 2D, {}={:.2f}_{}={:.2f}\n{}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y,Nombres[estado]))
                 plt.colorbar(im, label='Frecuencias')
                 plt.savefig(direccion_guardado ,bbox_inches = "tight")
                 plt.close()
-
 #-----------------------------------------------------------------------------------------------
 
 # Esta función calcula la traza de la matriz de Covarianza de las distribuciones

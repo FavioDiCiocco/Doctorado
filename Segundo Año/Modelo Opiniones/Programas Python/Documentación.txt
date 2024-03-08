@@ -149,3 +149,15 @@ Tomé cuatro archivos del barrido Beta-Kappa que vi que corrieron hasta el tiemp
 estados los coloqué en la carpeta de Datos y luego los continué evolucionando, en principio
 hasta tiempo 100 k. La idea es ver si eventualmente estos estados convergen o si siguen
 oscilando.
+
+Prueba_ventana:
+---------------
+La idea es tomar un archivo que sé que oscila, reproducir el estado en la pc remota y luego probar
+con una ventana de tiempo más grande, a ver si el programa corta antes. El archivo que tomé es el
+que tiene Kappa=19.5, Beta=0.5, Cos(delta)=0 e iteración 6.
+ El plan es cambiar el tamaña de la ventana que actualmente es 100 pasos temporales, lo cual implica
+un tiempo de 10, a 2000 pasos temporales, lo cuál implicaría un tiempo de 200. Esto significa que
+tengo también que aumentar la cantidad de iteraciones extra, ya que eso es sólo 500. Podría llevar
+las iteraciones extra a 6000, cosa de que se cumplan tres revisiones por debajo del criterio
+de corte. Igual, creo que empezaría primero aumentando el ancho de la ventana a 1000, cosa
+de tener un primer dato.

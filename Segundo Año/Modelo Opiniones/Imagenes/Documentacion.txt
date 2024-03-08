@@ -91,3 +91,8 @@ doble puntero.
  Lo que voy a estar guardando entonces son carpetas con barridos en Beta-Kappa, Beta-Cosdelta y
 el barrido que hice en Beta fijando Kappa y Epsilon. La idea es observar la Entropía, Covarianza
 Varianzas y otras métricas de los datos en el espacio de parámetros para los ensambles de datos.
+
+.) Prueba_ventana:
+------------------
+Esto es bastante sencillo, quería mirar los histogramas de opinión para ver que los estados finales
+sean iguales. Efectivamente, el sistema genera estados prácticamente iguales, lo cuál es perfecto.
