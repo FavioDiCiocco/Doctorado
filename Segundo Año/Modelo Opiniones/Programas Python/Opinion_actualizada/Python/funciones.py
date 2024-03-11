@@ -131,11 +131,9 @@ def Mapa_Colores_Pol_vs_Oscil(DF,path,carpeta,T,SIM_param_x,SIM_param_y,
                 for topico in range(T):
                     Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")/PARAM_X
                 
-                
                 Pasos[indice] = int(Datos[7][0])
                 M_cov = np.cov(Opifinales)
                 Varianzas[indice] = np.trace(M_cov) / T
-                
                 
             #------------------------------------------------------------------------------------------
             # Con los "tiempos" de las simulaciones calculo la fracción de estados que llegaron hasta el final
@@ -618,7 +616,7 @@ def Diccionario_metricas(DF,path,N):
         
                 for topico in range(T):
                     Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
-                    Opifinales[topico,:] = Opifinales[topico,:]/ EXTRAS
+                    Opifinales[topico,:] = Opifinales[topico,:]/ PARAM_X
                 
                 # Esta función normaliza las Opiniones Finales usando la 
                 # variable EXTRA, porque asume que EXTRA es el Kappa. De no serlo,
@@ -637,7 +635,7 @@ def Diccionario_metricas(DF,path,N):
                 # Tengo que rearmar Opifinales para que sea un sólo vector con todo
                 
                 Opifinales = np.array(Datos[5][:-1], dtype="float")
-                Opifinales = Opifinales/EXTRAS
+                Opifinales = Opifinales/PARAM_X
                 
                 # Armo mi array de Distribucion, que tiene la proba de que una opinión
                 # pertenezca a una región del espacio de tópicos
@@ -648,28 +646,27 @@ def Diccionario_metricas(DF,path,N):
                 
             #----------------------------------------------------------------------------------------------------------------------
             
-            if len(archivos) > 0:
             
-                # Mis datos no están ordenados, pero con esto los ordeno según el
-                # valor de la simulación. Primero inicializo el vector que tiene los índices
-                # de cada simulación en sus elementos. El elemento 0 tiene la ubicación
-                # de la simulación cero en los demás vectores.
-                Ubicacion = np.zeros(max(Identidad)+1,dtype = int)
-                
-                # Para cada elemento en el vector de identidad, le busco su indice en el
-                # vector y coloco ese índice en el vector de Ubicacion en la posición
-                # del elemento observado
-                for i in np.unique(Identidad):
-                    indice = np.where(Identidad == i)[0][0]
-                    Ubicacion[i] = indice
-                
-                # Ahora tengo que remover las simulaciones faltantes. Armo un vector
-                # que tenga sólamente los índices de las simulaciones faltantes
-                Faltantes = np.arange(max(Identidad)+1)
-                Faltantes = np.delete(Faltantes,Identidad)
-                
-                # Borro esas simulaciones de mi vector de Ubicacion
-                Ubicacion = np.delete(Ubicacion,Faltantes)
+            # Mis datos no están ordenados, pero con esto los ordeno según el
+            # valor de la simulación. Primero inicializo el vector que tiene los índices
+            # de cada simulación en sus elementos. El elemento 0 tiene la ubicación
+            # de la simulación cero en los demás vectores.
+            Ubicacion = np.zeros(max(Identidad)+1,dtype = int)
+            
+            # Para cada elemento en el vector de identidad, le busco su indice en el
+            # vector y coloco ese índice en el vector de Ubicacion en la posición
+            # del elemento observado
+            for i in np.unique(Identidad):
+                indice = np.where(Identidad == i)[0][0]
+                Ubicacion[i] = indice
+            
+            # Ahora tengo que remover las simulaciones faltantes. Armo un vector
+            # que tenga sólamente los índices de las simulaciones faltantes
+            Faltantes = np.arange(max(Identidad)+1)
+            Faltantes = np.delete(Faltantes,Identidad)
+            
+            # Borro esas simulaciones de mi vector de Ubicacion
+            Ubicacion = np.delete(Ubicacion,Faltantes)
                     
                     
             if PARAM_X not in Salida[EXTRAS].keys():
@@ -737,10 +734,10 @@ def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y, Covarianza, Promedios):
             # Estos son los casos con anchura
             
             # Casos de dos extremos
-            if sx >= 0.5 and sy < 0.5:
+            if sx >= 0.3 and sy < 0.3:
                 # Dos extremos horizontal
                 Resultados[i] = 6
-            elif sx < 0.5 and sy >= 0.5:
+            elif sx < 0.3 and sy >= 0.3:
                 # Dos extremos vertical
                 Resultados[i] = 6
             

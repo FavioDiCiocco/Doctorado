@@ -4551,6 +4551,42 @@ las polarizaciones unidimensionales como si fueran polarizaciones descorrelacion
 
 ------------------------------------------------------------------------------------------
 
+06/03/2024
+
+Hablando con la gente de GOTHAM:
+.) Las polarizaciones ideológicas con anchura parecen no ser las importantes,
+las vamos a deshechar. Por lo menos en lo que comparación con datos respecta.
+.) Necesitamos que el clasificador sea óptimo en la detección de estados
+de polarización descorrelacionada.
+.) Hacer un enfoque en la región Beta [0.2,0.7], Cos(delta) [0,0.3]. Barrer más
+fino ahí.
+.) Quizás probar usar una red distinta podría dar un efecto distinto. Podría ser
+una Watts Strogatz, una Barabassi-Albert, usar algo con otra conectividad.
+.) Bajar datos y empezar a compararlos.
+.) Quizás Betas grandes puede realizar un efecto similar a un Cos(delta) grande.
+Habría que ver si eso se puede encontrar.
+
+Por motivos que me superan, el barrido de Beta-Cosd indica que observa estados
+de polarización descorrelacionada con anchura en Cos(delta)=0, pero en realidad
+miré todos los estados y eso no está ahí. No entiendo qué está viendo. Tengo que
+revisar eso de nuevo.
+
+Pensar en armar los gráficos de los histogramas de forma de que estén normalizados.
+Yo pensaba que usando 20 bines, lo razonable sería graficar las opiniones entre
+-10 y 10, cosa de que los bines tengan de lado 1, y lo graficado sea la fracción
+de agentes.
+
+¿Por qué en el barrido Beta-Cosd la región con Beta entre 0.6 y 1 tiene mayor cantidad
+de Consensos radicalizados que la región con Beta = 0.5?
+
+¿Qué pasaría si armo un gráfico de barrido Beta-Kappa con un cos(delta) más grande?
+Debería revisar los estados que corren hasta el final pero que no tienen anchura,
+que no oscilan.
+
+Todas estas ideas las voy a poner a prueba el viernes o el lunes.
+
+------------------------------------------------------------------------------------------
+
 07/03/2024
 
 Me olvidé de comittear mi trabajo de ayer, lo resolveré hoy a la noche eso.
