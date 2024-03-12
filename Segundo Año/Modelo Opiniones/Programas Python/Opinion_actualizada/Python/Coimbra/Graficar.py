@@ -91,8 +91,8 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
-                                      ID_param_x, ID_param_y, ID_param_extra_1)
+#    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
+#                                      ID_param_x, ID_param_y, ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
@@ -101,8 +101,8 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    func.Mapas_Colores_FEF(Df_archivos, Direccion, Etapa/carpeta,
-                          SIM_param_x, SIM_param_y, ID_param_extra_1)
+#    func.Mapas_Colores_FEF(Df_archivos, Direccion, Etapa/carpeta,
+#                          SIM_param_x, SIM_param_y, ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
@@ -111,8 +111,13 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    # func.Histogramas_Multiples(Df_archivos, Direccion, Etapa/carpeta, 2,
-    #                             ID_param_x, ID_param_y, ID_param_extra_1)
+    func.Histogramas_Multiples(Df_archivos, Direccion, Etapa/carpeta, 2,
+                               ID_param_x, ID_param_y, ID_param_extra_1)
+    
+    #----------------------------------------------------------------------------------------------
+    
+    func.Graf_Histogramas_Promedio(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
+                                   ID_param_x, ID_param_y, ID_param_extra_1)
     
     
 

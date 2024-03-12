@@ -1102,7 +1102,7 @@ def Histogramas_Multiples(DF,path,carpeta,T,ID_param_x,ID_param_y,
     Arr_param_y = np.array([0.3,0.7,0.9])
     
     # Defino la cantidad de filas y columnas que voy a graficar
-    Filas = 9
+    Filas = 10
     Columnas = T
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
@@ -1151,7 +1151,9 @@ def Histogramas_Multiples(DF,path,carpeta,T,ID_param_x,ID_param_y,
                     # Armo mi gráfico, lo guardo y lo cierro
                     
                     for topico in range(T):
-                        plots[repeticion][topico].hist(Opifinales[topico::T], bins=np.linspace(-1, 1, 21), density=True, color='tab:blue')
+                        hist, bines = np.histogram(Opifinales[0::T], bins=np.linspace(-1, 1, 21), density=True)
+                        X = (bines[1:]+bines[0:-1])/2
+                        plots[repeticion][topico].hist(X,hist,linewidth=8,color='tab:blue')
                         plots[repeticion][topico].set_xlim(-1, 1)  # Set x-axis limits
             
             # Le pongo nombres a los ejes más externos
@@ -1179,3 +1181,110 @@ def Histogramas_Multiples(DF,path,carpeta,T,ID_param_x,ID_param_y,
                                       ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS))
             plt.savefig(direccion_guardado ,bbox_inches = "tight")
             plt.close()
+
+#-----------------------------------------------------------------------------------------------
+
+# Esta función es la que arma los gráficos de los histogramas de opiniones
+# finales en el espacio de tópicos
+
+def Graf_Histogramas_Promedio(DF,path,carpeta,bins,cmap,
+                              ID_param_x,ID_param_y,ID_param_extra_1):
+
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF["n"]))
+    
+    # Defino los arrays de parámetros diferentes
+    Arr_EXTRAS = np.unique(DF["Extra"])
+    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_y = np.unique(DF["parametro_y"])
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(param_x,param_y) for param_x in Arr_param_x
+                   for param_y in Arr_param_y]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
+    # Gráfico de Opi vs T y en tres no se vería mejor.
+    T=2
+    
+    for EXTRAS in Arr_EXTRAS:
+        for PARAM_X,PARAM_Y in Tupla_total:
+            
+            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                        (DF["n"]==AGENTES) & 
+                                        (DF["Extra"]==EXTRAS) & 
+                                        (DF["parametro_x"]==PARAM_X) &
+                                        (DF["parametro_y"]==PARAM_Y), "nombre"])
+            #-----------------------------------------------------------------------------------------
+            
+            OpiTotales = np.empty(0)
+            
+            for nombre in archivos:
+            
+                # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+                # Opinión Inicial del sistema
+                # Variación Promedio
+                # Opinión Final
+                # Semilla
+                
+                # Levanto los datos del archivo
+                Datos = ldata(path / nombre)
+                
+                # Leo los datos de las Opiniones Finales
+                Opifinales = np.array(Datos[5][:-1:], dtype="float")
+                Opifinales = Opifinales * (10 / PARAM_X)
+                # Pongo las opiniones entre [-10,10] para que los valores marcados de
+                # los histogramas sean las fracciones. Esto es porque los bines tienen tamaño 1.
+                
+                # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+                OpiTotales = np.concatenate((OpiTotales,Opifinales),axis=0)
+                
+            #----------------------------------------------------------------------------------------------------------------------------------
+            
+            # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
+            direccion_guardado = Path("../../../Imagenes/{}/Hists_prom_N={:.0f}_{}={:.2f}_{}={:.2f}.png".format(carpeta,AGENTES,
+                                                                                        ID_param_x,PARAM_X,ID_param_y,PARAM_Y))
+            
+            # Armo mi gráfico
+            plt.rcParams.update({'font.size': 32})
+            fig, axs = plt.subplots(1, 3, figsize=(60, 21))
+            
+            # Armo el gráfico 2D primero
+            _, _, _, im = axs[0].hist2d(OpiTotales[0::T], OpiTotales[1::T], bins=bins,
+                                     range=[[-10,10],[-10,10]],density=True,
+                                     cmap=cmap)
+            axs[0].set_xlabel(r"$x_i^1$")
+            axs[0].set_ylabel(r"$x_i^2$")
+            axs[0].set_title('Histograma 2D Promediado')
+            cb = plt.colorbar(im, ax=axs[0])
+            cb.set_label("Fracción")
+            
+            # Armo el gráfico del histograma del tópico 0
+            hist, bines = np.histogram(OpiTotales[0::T], bins=np.linspace(-10, 10, 21), density=True)
+            X = (bines[1:]+bines[0:-1])/2
+            axs[1].plot(X,hist,linewidth=8,color='tab:blue')
+            axs[1].set_xlim(-10, 10)  # Set x-axis limits
+            axs[1].set_xlabel("Opiniones")
+            axs[1].set_ylabel("Fracción")
+            axs[1].set_title('Tópico 0')
+            
+            # Armo el gráfico del histograma del tópico 1
+            hist, bines = np.histogram(OpiTotales[1::T], bins=np.linspace(-10, 10, 21), density=True)
+            X = (bines[1:]+bines[0:-1])/2
+            axs[2].plot(X,hist,linewidth=8,color='tab:blue')
+            axs[2].set_xlim(-10, 10)  # Set x-axis limits
+            axs[2].set_xlabel("Opiniones")
+            axs[2].set_ylabel("Fracción")
+            axs[2].set_title('Tópico 1')
+            
+            # Título de la figura total
+            fig.suptitle('{}={:.2f}_{}={:.2f}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y))
+            plt.tight_layout()
+            
+            # Lo guardo y lo cierro
+            plt.savefig(direccion_guardado ,bbox_inches = "tight")
+            plt.close()
+

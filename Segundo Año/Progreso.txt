@@ -4674,3 +4674,94 @@ parámetros, debería ser más rápido que el caso de Beta-Kappa que venía haci
 
 Voy a intentar usar las redes de Erdos-Renyi que armé en Oporto, así todo usa las mismas redes.
 Ahí mandé a correr la región de beta-Cosd enfocada. Voy para casa.
+
+------------------------------------------------------------------------------------------
+
+11/03/2024
+
+Primero lo que hice fue corregir el tema de los comits mezclados y el merge. Después revisé
+lo de que no estaba encontrando estados de polarización descorrelacionada con anchura en los
+gráficos en el espacio Beta-Cosd. Corregido el tema, observé los estados de polarización
+descorrelacionada como esperaba, se ve bien eso. Buenísimo.
+
+¿Qué hago ahora?
+1) Queríamos hacer un barrido más fino en la región Beta-Cos(delta). Esto lo mandé el viernes,
+estoy esperando que se concrete. Después voy a tener que mandar a agrandar esta región con
+otros datos.
+2) Podría ver de hacer el estudio analítico, aunque siento que Pablo espera que eso se lo
+podamos pedir a la gente de GOTHAM.
+
+Ahí hablé con Pablo para decidir qué hacer. Por un lado me dijo que pruebe de ver si analíticamente
+para cos(delta)=0 el estado ideológico es un punto fijo y estudiar su estabilidad.
+ Lo otro que quiere es que revise bien el comportamiento del sistema en el plano Beta-Cosd
+para comprender correctamente cuáles son los estados que estamos observando. Me pidió que arme
+el gráfico de varios histogramas para algún cos(delta) y lo grafique.
+Lo que voy a hacer ahora es por un lado mandar a armar histogramas 2D para todo el espacio Beta-Cos(delta)
+mientras yo voy a revisar, sólo para cerciorarme, que en este mismo espacio, para cos(delta)=0 no tenga
+estados de polarización descorrelacionada mal catalogados. Eso implica revisar 4100 archivos.
+Supongo que es un camino. Después debería intentar armar el gráfico de histogramas conjuntos
+que me dijo Pablo y debería ver si puedo hacer un gráfico que sea un histograma 2D que sea
+como un promedio de todos los histogramas. Pero la idea no es promediar las opiniones,
+sino graficar todo junto en un sólo histograma. Se me ocurre que quizás es mucha
+data para acumular en un solo array. Son 100 arrays de tamaño 2000. No llegan a un millón
+de elementos, no es muchos datos, dale para adelante flaco.
+
+Bien, ahí mandé a correr los gráficos en Algarve. Con esto voy a tener los histogramas 2D
+que busco. Revisé los gráficos 2D de cos(delta)=0, lo que observo es que para beta
+chico los estados de polarización unidimensional que se forman tienen picos no tan
+en los extremos, sino cerca de los valores 5 y -5. Esto resultó en que la varianza sea menor
+al criterio de corte. A medida que Beta iba creciendo, los picos de agentes se iban acumulando
+en los exremos y aumentando la varianza. Por eso, para betas bajos, hay dos o tres gráficos de
+polarización unidimensional con anchura que el sistema clasifica como polarización descorrelacionada
+con anchura. Luego de eso, mirando los gráficos, la gran mayoría de estados están bien clasificados.
+De los 3000 gráficos que vi, considero que unos 10 gráficos aprox. están mal clasificados.
+
+Hecho esto, debería revisar los gráficos que se hacen en Algarve y voy a intentar armar
+una función que grafique histogramas 2D promediando el estado final de todas las simulaciones
+para cada punto en el espacio de parámetros.
+
+------------------------------------------------------------------------------------------
+
+12/03/2024
+
+Hoy mi plan es hacer tres cosas principalmente.
+1) Función que sea histograma 2D promedio de todos los estados finales en cada punto
+del espacio de parámetros
+2) Análisis de puntos fijos para el caso de Cos(delta)=0, así como su estabilidad.
+3) Lectura de Papers
+
+En este histograma 2D promedio, se me ocurre que puedo además graficar al costado los
+histogramas 1D de cada tópico. Ahí mandé a hacer el gráfico a Algarve. Si funca, copio
+la función al código del barrido de Beta-Kappa.
+
+Ahí miré los gráficos de histogramas, así como están graficados son difíciles de ver.
+Necesito que la línea que se grafica sea más grande y que no siga el contorno de las
+barras, sino que sea la curva que pasa por el punto central de la cima de los bines.
+
+Parece que los gráficos se están haciendo, la cosa va bien. Una vez que tenga los gráficos,
+los reviso y después paso al segundo punto a trabajar hoy. Mañana estudiaré para el final
+de Mininni.
+
+Hoy entonces hice el análisis del punto fijo que me propuse, en principio conduje al mismo
+resultado que tiene la gente de Gotham. Estaría bueno que aparte de encontrar el resultado
+de la polarización ideológica, pueda desdoblar la ecuación al caso de polarización
+descorrelacionada. Tengo que revisar cómo es que ellos hacen el análisis de estabilidad
+y ver cómo puedo llevar mi resultado a través de perturbaciones al caso de polarización
+descorrelacionada, que creo que es lo que Hugo propuso que debería hacer. Por otro lado,
+mañana van a estar resueltas la mayoría de las simulaciones. Así que voy a tener que 
+organizar los archivos del barrido Beta-Kappa, voy a tener que mandar las últimas 10
+simulaciones de ese barrido y después mandar más simulaciones para el barrido en la
+región reducida de Beta-Cosd.
+
+Así que mañana tengo cuatro trabajos que quiero hacer:
+1) Mandar a correr más simulaciones de la región Beta-Cosd, juntar los archivos del barrido
+Beta-Kappa y mandar las últimas simulaciones del barrido Beta-Kappa en Oporto.
+2) Continuar con el análisis de la ecuación dinámica para ver el comportamiento del
+sistema y comprobar si puedo hallar la polarización descorrelacionada como punto fijo
+del sistema.
+3) Leer uno o dos papers
+4) Estudiar para el final de Mininni.
+
+Una quinta cosa es revisar los gráficos de Histogramas en la región Beta-Cosd que Pablo quería que
+mirase, así como los gráficos que armé, para ver si hay algo más interesante que concluir a partir
+de estos.
