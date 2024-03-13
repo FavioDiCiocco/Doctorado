@@ -1150,9 +1150,7 @@ def Histogramas_Multiples(DF,path,carpeta,T,ID_param_x,ID_param_y,
                     # Armo mi gráfico, lo guardo y lo cierro
                     
                     for topico in range(T):
-                        hist, bines = np.histogram(Opifinales[0::T], bins=np.linspace(-1, 1, 21), density=True)
-                        X = (bines[1:]+bines[0:-1])/2
-                        plots[repeticion][topico].plot(X,hist,linewidth=8,color='tab:blue')
+                        plots[repeticion][topico].hist(Opifinales[topico::T], bins=np.linspace(-1, 1, 21), density=True, color='tab:blue')
                         plots[repeticion][topico].set_xlim(-1, 1)  # Set x-axis limits
             
             # Le pongo nombres a los ejes más externos
@@ -1247,7 +1245,7 @@ def Graf_Histogramas_Promedio(DF,path,carpeta,bins,cmap,
             
             # Armo mi gráfico
             plt.rcParams.update({'font.size': 32})
-            fig, axs = plt.subplots(1, 3, figsize=(60, 21))
+            fig, axs = plt.subplots(1, 3, figsize=(54, 21))
             
             # Armo el gráfico 2D primero
             _, _, _, im = axs[0].hist2d(OpiTotales[0::T], OpiTotales[1::T], bins=bins,
@@ -1260,18 +1258,14 @@ def Graf_Histogramas_Promedio(DF,path,carpeta,bins,cmap,
             cb.set_label("Fracción")
             
             # Armo el gráfico del histograma del tópico 0
-            hist, bines = np.histogram(OpiTotales[0::T], bins=np.linspace(-10, 10, 21), density=True)
-            X = (bines[1:]+bines[0:-1])/2
-            axs[1].plot(X,hist,linewidth=8,color='tab:blue')
+            axs[1].hist(OpiTotales[0::T], bins=np.linspace(-10, 10, 21), density=True,color='tab:blue')
             axs[1].set_xlim(-10, 10)  # Set x-axis limits
             axs[1].set_xlabel("Opiniones")
             axs[1].set_ylabel("Fracción")
             axs[1].set_title('Tópico 0')
             
             # Armo el gráfico del histograma del tópico 1
-            hist, bines = np.histogram(OpiTotales[1::T], bins=np.linspace(-10, 10, 21), density=True)
-            X = (bines[1:]+bines[0:-1])/2
-            axs[2].plot(X,hist,linewidth=8,color='tab:blue')
+            axs[2].hist(OpiTotales[1::T], bins=np.linspace(-10, 10, 21), density=True,color='tab:blue')
             axs[2].set_xlim(-10, 10)  # Set x-axis limits
             axs[2].set_xlabel("Opiniones")
             axs[2].set_ylabel("Fracción")

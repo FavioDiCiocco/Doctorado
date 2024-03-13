@@ -4765,3 +4765,63 @@ del sistema.
 Una quinta cosa es revisar los gráficos de Histogramas en la región Beta-Cosd que Pablo quería que
 mirase, así como los gráficos que armé, para ver si hay algo más interesante que concluir a partir
 de estos.
+
+------------------------------------------------------------------------------------------
+
+13/03/2024
+
+Lo primero que hice hoy fue revisar el paper de la gente de Gotham y me genera dudas el análisis
+de estabilidad que hicieron, porque siento que las conclusiones están al revés. Eso me suena
+raro. Claramente estoy interpretando eso mal.
+
+En las pc's de la facultad tengo que:
+.) En algarve están terminando de correr las iteraciones entre 70 y 89. Cuando terminen, las mando
+a oporto. Por otro lado, en Oporto se está completando el barrido de las iteraciones entre 90 y 99.
+.) Por su parte, en Coimbra mandé a hacer barrido en el espacio Beta-Cosd reducido para iteraciones
+entre 10 y 19. Las primeras 10 iteraciones las tengo separadas en una carpeta llamada Datos.
+
+Organizado esto, y revisado que todo esté efectivamente bien, lo que sigue es ponerme a revisar
+algunos gráficos cosa de ver que la clasificación de estados en la región beta-Cos(delta) esté
+bien, así puedo dar por cerrado esa región y concentrarme en la región reducida de Beta-Cos(delta).
+
+Ahí revisé los estados en el espacio Beta-Cosd. Los estados que identifico como mal clasificados son
+los siguientes:
+1) Los estados de polarización descorrelacionada con beta menor a 0,2. Estos estados en realidad son
+estados de polarización unidimensional con anchura. El algoritmo los reconoce mal porque los picos 
+de agentes no se forman en los extremos de opinión, sino en puntos intermedios. El hecho de que
+estén en estos puntos intermedios hace que la varianza en el eje polarizado no sea suficientemente
+grande, y como la covarianza de los estados que polarizan en una dimensión es baja, entonces por
+descarte lo cataloga como un estado de polarización descorrelacionada con anchura. 
+.) Esto podría solucionarse reduciendo el criterio de clasificación de las varianzas en el
+caso con anchura. Esto estaría justificado porque justamente la anchura genera que las varianzas
+observadas sean menores a las observadas en los casos sin anchura.
+2) Los estados de transición con Beta menor a 0.8 que se encuentran en la región con cos(delta)
+entre 0.2 y 1. Esos estados de transición son en realidad polarización ideológica con anchura.
+Por un lado, me sorprende que el valor de entropía no sea el suficiente para detectar esos estados
+como estados con anchura, podría revisar cuánto da su entropía. Por otro lado, los reconoce como
+transición y no como polarización ideológica porque la anchura hace que la covarianza no sea
+suficientemente grande. No sé si esto se soluciona reduciendo un poco el criterio de entropía
+y quizás el de covarianza. No estoy seguro de que se solucione porque no sé si reduciendo el
+criterio de entropía a 0.3 como estaba antes llevaría a que este estado se detecte con anchura.
+NECESITO PRIMERO REVISAR SU ENTROPÍA.
+3) Los estados de transición con anchura observados son todos básicamente estados de polarización
+ideológica con anchura. La diferencia entre detectar uno o el otro es que resulta que los picos
+de agentes no se forman suficientemente en los extremos, y entonces la covarianza no da lo suficientemente
+alta como para detectarlos como si fueran polarización ideológica. Me da cosa modificar el valor
+de clasificación porque siento que no dejo ningún lugar para los estados de transición con anchura,
+como que dejo una región tan chica para detectar estos estados que básicamente sería lo mismo que
+decir que no espero encontrarlos. En ese sentido quiero después revisar un poco más los valores
+de covarianza de esos estados y de ahí ir definiendo un poco mejor el algoritmo cosa de detectar
+bien estos valores, pero que no joda con el criterio usado en el espacio beta-Kappa donde sí me
+aparecen estados que se diferencian de un estado de polarización descorrelacionada.
+
+Contarle esto a Pablo en unos gráficos claros y simples, creo que lo puedo hacer más o menos
+rápido. Todavía NO hice ningún cambio a los criterios para diferenciar estados, esto son sólo
+ideas que PODRÍA llegar a adoptar. Lo que voy a hacer ahora es cambiar los gráficos de los histogramas,
+me cuesta leerlos de la forma en que Pablo me dijo que los arme.
+
+Estoy bastante confiado en que revisé los gráficos para justificar lo que estoy viendo. Para poder
+charlarlo mejor con Pablo, mi plan es armar un gráfico parecido al de Conjunto de histogramas, pero
+esta vez con 4 columnas y 10 filas cada uno.
+
+Pero voy a hacer eso mañana o el viernes.
