@@ -4825,3 +4825,55 @@ charlarlo mejor con Pablo, mi plan es armar un gráfico parecido al de Conjunto 
 esta vez con 4 columnas y 10 filas cada uno.
 
 Pero voy a hacer eso mañana o el viernes.
+
+------------------------------------------------------------------------------------------
+
+14/03/2024
+
+Hoy malgasté toda la mañana, la verdad que no puedo sentirme orgulloso de eso ni nada.
+Quise estudiar los temas de Mininni, pero la verdad me siento bastante lejos de eso.
+Tengo que seguir intentándolo y ver de descargarme en casa el libro de texto que tengo
+descargado allá, así puedo ir estudiando mejor.
+
+Hoy lo que voy a hacer a la tarde son tres cosas. Una es rehacer los gráficos de conjunto
+de histogramas, para que contengan 4 columnas y 20 gráficos, así más o menos se puede
+observar la combinación de estados en cada punto.
+
+Lo segundo es hacer el tratamiento clásico de los datos sobre el barrido enfocado en el espacio
+Beta-Cosd. Mapas de Varianza, de Entropía, Covarianza y demás. Estaría bueno saber qué estamos
+observando.
+
+Lo tercero es ponerme a leer algunos papers y cosas, como para ir teniendo nuevas ideas sobre
+cosas que se observan en el área.
+
+MAÑANA voy a preparar aunque sea una de las presentaciones a escuelas y congresos que me pasó Pablo.
+
+Ahí mandé a rehacer los gráficos en Algarve, cosa de tener lo que Pablo me dijo para revisar.
+Por otro lado, estoy revisando las simulaciones realizadas en Coimbra sobre el espacio reducido
+de Beta-Cosd.
+
+Estoy por último mirando papers hoy. Mirando el de la gente de Gotham, definitivamente el que
+me pasó Pablo tiene un error en el texto al final de la página 3, porque primero dice que
+la perturbación crece para Beta mayor a 1, y después en el gráfico siguiente en la figura
+1b dice que la perturbación crece para beta menor a 1. Consultar esto con Hugo.
+
+Los siguientes dos papers que debería mirar son:
+.) Charting Multidimensional ideological polarization across demographic groups in
+the United States. (Pastor-Satorras y Starnini)
+.) Multidimensional political polarization in online social networks (Peralta, Ramaciotti
+Kertész e Iñiguez)
+
+Descargué para mirar los gráficos de conjuntos de histogramas, esto debería servir para
+convencer a Pablo de que estoy viendo efectivamente estados de radicalización al aumentar
+el beta. Debería ver si tengo alguna forma de demostrar que al aumentar el cos(delta)
+los estados de polarización unidimensional tienden a radicalización. Para empezar debería
+comparar la fracción de estados unidimensionales en el espacio beta-Kappa, para ver que
+efectivamente eso podría explicar esa fracción de estados radicalizados.
+
+También armé todos los gráficos en el espacio Beta-Cosd reducido, mañana los miro.
+
+¿Cuál es mi trabajo mañana?
+1) Revisar los gráficos en el espacio Beta-Cosd reducido.
+2) Ayudar con el etiquetado que Pablo me pidió que hiciera.
+3) Enviar presentaciones a las becas que Pablo me mandó
+4) Mandar a correr más simulaciones del espacio reducido en Algarve.

@@ -1097,12 +1097,12 @@ def Histogramas_Multiples(DF,path,carpeta,T,ID_param_x,ID_param_y,
     
     # Defino los arrays de parámetros diferentes
     Arr_EXTRAS = np.unique(DF["Extra"])
-    Arr_param_x = np.array([0.2,0.5,0.8])
-    Arr_param_y = np.array([0.3,0.7,0.9])
+    Arr_param_x = np.array([0.6])
+    Arr_param_y = np.array([0.2,0.4,0.6,0.8])
     
     # Defino la cantidad de filas y columnas que voy a graficar
     Filas = 10
-    Columnas = T
+    Columnas = T*2
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
     Tupla_total = [(param_x,param_y) for param_x in Arr_param_x
@@ -1123,13 +1123,13 @@ def Histogramas_Multiples(DF,path,carpeta,T,ID_param_x,ID_param_y,
             #-----------------------------------------------------------------------------------------
 
             plt.rcParams.update({'font.size': 28})
-            plt.figure(figsize=(40,21))
+            plt.figure(figsize=(50,42))
             plots = [[plt.subplot(Filas, Columnas, i*Columnas + j + 1) for j in range(Columnas)] for i in range(Filas)]
             
             for nombre in archivos:
 
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])                
-                if repeticion < Filas:
+                if repeticion < Filas*2:
                 
                     # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
                     # Opinión Inicial del sistema
@@ -1149,9 +1149,12 @@ def Histogramas_Multiples(DF,path,carpeta,T,ID_param_x,ID_param_y,
                     # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
                     # Armo mi gráfico, lo guardo y lo cierro
                     
+                    fila = repeticion % Filas
+                    salto = math.floor(repeticion / Filas)
+                    
                     for topico in range(T):
-                        plots[repeticion][topico].hist(Opifinales[topico::T], bins=np.linspace(-1, 1, 21), density=True, color='tab:blue')
-                        plots[repeticion][topico].set_xlim(-1, 1)  # Set x-axis limits
+                        plots[fila][topico+salto*T].hist(Opifinales[topico::T], bins=np.linspace(-1, 1, 21), density=True, color='tab:blue')
+                        plots[fila][topico+salto*T].set_xlim(-1, 1)  # Set x-axis limits
             
             # Le pongo nombres a los ejes más externos
             for i, row in enumerate(plots):
@@ -1162,7 +1165,7 @@ def Histogramas_Multiples(DF,path,carpeta,T,ID_param_x,ID_param_y,
                         subplot.set_xlabel("Opiniones")# r"$x_i$")
                         
             # Set titles for each column
-            column_titles = ['Histogramas tópico 0', 'Histogramas Tópico 1']
+            column_titles = ['Histogramas tópico 0', 'Histogramas Tópico 1', 'Histogramas tópico 0', 'Histogramas Tópico 1']
             for j, title in enumerate(column_titles):
                 plt.subplot(Filas, Columnas, j + 1)  # Go to first subplot in the column
                 plt.title(title, fontsize=35)  # Set title for the column
