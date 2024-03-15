@@ -4877,3 +4877,15 @@ También armé todos los gráficos en el espacio Beta-Cosd reducido, mañana los
 2) Ayudar con el etiquetado que Pablo me pidió que hiciera.
 3) Enviar presentaciones a las becas que Pablo me mandó
 4) Mandar a correr más simulaciones del espacio reducido en Algarve.
+
+------------------------------------------------------------------------------------------
+
+15/03/2024
+
+Le mandé el mail a Hugo consultándole por el tema del análisis de estabilidad. Ya mandé
+a correr nuevos datos en Algarve y junté los datos del barrido Beta-Kappa en Oporto. Sólo
+falta que termine la corrida en Oporto y ya muevo los archivos de Datos a Beta-Kappa.
+Hecho eso, está todo terminado ese barrido.
+
+Pasé el resto de la tarde leyendo noticias y clasificando si son a favor o en contra de
+Unión por la Patria o Cambiemos.
