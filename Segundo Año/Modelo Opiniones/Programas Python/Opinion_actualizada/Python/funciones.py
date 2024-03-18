@@ -253,7 +253,7 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                 plt.rcParams.update({'font.size': 44})
                 plt.figure(figsize=(28,21))
                 _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
-                                         range=[[-PARAM_X,PARAM_X],[-PARAM_X,PARAM_X]],density=True,
+                                         range=[[-EXTRAS,EXTRAS],[-EXTRAS,EXTRAS]],density=True,
                                          cmap=cmap)
                 plt.xlabel(r"$x_i^1$")
                 plt.ylabel(r"$x_i^2$")
@@ -616,7 +616,7 @@ def Diccionario_metricas(DF,path,N):
         
                 for topico in range(T):
                     Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
-                    Opifinales[topico,:] = Opifinales[topico,:]/ PARAM_X
+                    Opifinales[topico,:] = Opifinales[topico,:]/ EXTRAS
                 
                 # Esta función normaliza las Opiniones Finales usando la 
                 # variable EXTRA, porque asume que EXTRA es el Kappa. De no serlo,
@@ -635,7 +635,7 @@ def Diccionario_metricas(DF,path,N):
                 # Tengo que rearmar Opifinales para que sea un sólo vector con todo
                 
                 Opifinales = np.array(Datos[5][:-1], dtype="float")
-                Opifinales = Opifinales/PARAM_X
+                Opifinales = Opifinales/EXTRAS
                 
                 # Armo mi array de Distribucion, que tiene la proba de que una opinión
                 # pertenezca a una región del espacio de tópicos

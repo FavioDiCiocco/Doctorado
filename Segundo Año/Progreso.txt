@@ -4889,3 +4889,57 @@ Hecho eso, está todo terminado ese barrido.
 
 Pasé el resto de la tarde leyendo noticias y clasificando si son a favor o en contra de
 Unión por la Patria o Cambiemos.
+
+------------------------------------------------------------------------------------------
+
+18/03/2024
+
+En la mañana mandé a correr datos en Coimbra y en Oporto. En Algarve está cerca de terminar
+la corrida en el espacio reducido, así que voy a poder juntar esos datos en Coimbra y
+ya con eso voy a tener 30 simulaciones revisadas en ese espacio.
+
+Ahora voy a juntar todos los datos de Oporto cosa de tener ya de una vez armado el conjunto de
+datos con 100 simulaciones cada uno. Mirando la carpeta Beta-Kappa, parece que para Kappa a partir
+de 11, faltan las simulaciones entre 50 y 69. ¿Por qué? Pero para Kappa=17 tengo
+las iteraciones. ¿Qué pasó? Parece que no armé las iteraciones 50-69 para la región con beta mayor
+a 1. ¿Dónde puedo mandar eso? Debería intentar hacer eso en Oporto.
+
+Revisé las carpetas con archivos en Oporto. Para resumir, luego de una hora y algo de revisar
+carpetas y archivos, la conclusión es que en Beta-Kappa tengo CASI todas las iteraciones que quiero.
+Me faltan las simulaciones que van entre 50 y 69, para la región con Beta mayor a 1. Voy a mandar
+a hacer esto el miércoles que viene, o a partir de entonces más o menos.
+ Cuando mande a hacer esto, asegurarme de mandar directamente las simulaciones resueltas a la
+carpeta Beta-Kappa.
+
+Por ahora lo que voy a hacer es dejar eso, y ahora concentrarme en lo que tenía charlado sobre mirar
+mejor el espacio Beta-Cosd, mientras se me van completando las simulaciones del espacio reducido
+en Coimbra. Pablo me dijo que revise los estados y esté seguro de cuál es la proporción de estados
+que tengo conviviendo. Pero me dijo que no me deje llevar por las métricas. ¿Cómo hago entonces para
+medirlos? Podría descargar los datos de esa región y contarlos a mano. Hagamos eso, contemos a mano
+la cantidad de estados y luego armemos un plot de barras apilado. Creo que es lo mejor para hacer
+ahora para darle a Pablo una muestra de que lo que estoy viendo es lo que digo que es.
+ Voy a descargar los archivos en Cosd=0.6, Beta=0.2,0.4,0.6,0.8. Serán 400 gráficos para mirar y clasificar.
+ 
+Cantidad en Beta = 0.2:
+-----------------------
+.) Consenso Radicalizado: 91
+.) Polarización ideológica con anchura: 9
+
+Cantidad en Beta = 0.4:
+-----------------------
+.) Consenso Radicalizado: 63
+.) Polarización ideológica con anchura: 37
+
+Cantidad en Beta = 0.6:
+-----------------------
+.) Consenso Radicalizado: 91
+.) Polarización ideológica con anchura: 9
+
+Cantidad en Beta = 0.8:
+-----------------------
+.) Consenso Radicalizado: 97
+.) Polarización ideológica: 3
+
+Con esto tengo armada la estadística, después voy a armar el gráfico de histograma de barras para mostrarle
+a Pablo cómo está conformados los estados en cada región. Voy a ir yendo temprano para intentar que no me
+agarre la lluvia y para ver si puedo hacer otras cosas en casa.
