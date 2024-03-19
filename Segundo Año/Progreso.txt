@@ -4943,3 +4943,54 @@ Cantidad en Beta = 0.8:
 Con esto tengo armada la estadística, después voy a armar el gráfico de histograma de barras para mostrarle
 a Pablo cómo está conformados los estados en cada región. Voy a ir yendo temprano para intentar que no me
 agarre la lluvia y para ver si puedo hacer otras cosas en casa.
+
+------------------------------------------------------------------------------------------
+
+19/03/2024
+
+Mañana a la mañana voy a pasar los archivos de Algarve a la carpeta de Datos de Coimbra, cosa de tener
+30 simulaciones para hacer mis gráficos y observar los estados de la región reducida del espacio
+Beta-Cosd. (Aproveché un momento para revisar de nuevo el tema del horario y el aula del curso de Alemán).
+Lo que voy a hacer ahora es el gráfico de barras stackeado.
+ Tengo hecho el gráfico, no sé si es lo mejor para ver esto, pero está hecho. Ahora tendría que primero
+definir qué vamos a charlar mañana. Después me gustaría ponerme con la lectura de papers. Y hecho eso,
+mañana armamos definitivamente la presentación. De paso, podría ponerme ahora a revisar los datos que bajé
+cosa de revisar si los cambios que pretendo serían suficientes para corregir la detección en el espacio de
+parámetros.
+
+Mirando los estados para Beta=0.2, lo que veo es que todos los estados que tienen anchura y están mal
+clasificados como transición con anchura tienen covarianza mayor a 0.3. Debería ver si para Betas menores
+aparecen estados así y de ahí debería decidir a cuanto bajar el criterio de covarianza para detectar
+estos estados. Estaría bueno tener los estados en el caso con Beta=0.1 y con Beta=0, para ver si tengo
+configuraciones con anchura con covarianza menor a 0.3.
+
+Mirando los estados con Beta=0.8, están los estados catalogados con Transición cuando deberían ser de
+Polarización ideológica. Este estado tiene covarianza 0.84, que está justo por debajo del criterio que
+diferencia Transición de Polarización Ideológica. En Beta=0.6 tengo otro estado de transición que tiene
+una covarianza de 0.66. Me parece mucho bajar el criterio de Covarianza a 0.65 o 0.6. Pero un estado
+como este podría reinterpretarse como uno con anchura considerando que la entropía es 0.33. Así que si
+reduzco el criterio de entropía, entonces esto estaría correctamente solucionado como un caso de anchura.
+
+En beta=0.1 tengo uno o dos estados de polarización ideológica con anchura, pero que tienen una covarianza
+muy chica, cercana a 0.267. Me parece mucho bajar el valor de covarianza hasta eso. Pero suponete que lo
+hago. ¿Dónde viven los estados de transición con anchura? No queda muy claro y la verdad que no definen
+una región clara. Podría achicarlo un poco y dejarme de joder y listo.
+
+¿Cuál es la conclusión entonces?:
+---------------------------------
+
+1) Modificar en los casos con anchura el criterio de covarianza para que los estados con covarianza
+mayor a 0.25 sean de polarización ideológica con anchura.
+2) Reducir la entropía que define la anchura de 0.35 a 0.3.
+3) En los casos sin anchura, debería bajar el criterio que diferencia polarización ideológica a Transición
+de 0.85 a 0.6.
+
+Creo que con modificar esas tres cosas, resuelvo los problemas. Creo que con los valores que modifiqué de
+los sigmax y sigmay para el caso con anchura, no voy a malinterpretar los estados de polarización 1D con
+beta bajo por estados de polarización descorrelacionada.
+
+Estas modificaciones las hice sólo en el archivo de funciones de Algarve. Después consideraré si es una buena
+idea pasar esto a Oporto también.
+
+Mañana trabajaré desde casa y tengo que ver bien qué les voy a presentar a la gente de España.
+Lo que puedo revisar mejor es qué forma tiene el espacio reducido Beta-Cosd.

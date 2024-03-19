@@ -650,7 +650,7 @@ def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y, Covarianza, Promedios):
         
         # Reviso la entropía y separo en casos con y sin anchura
         
-        if ent <= 0.35:
+        if ent <= 0.3:
             
             # Estos son casos sin anchura
             
@@ -676,7 +676,7 @@ def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y, Covarianza, Promedios):
                 Resultados[i] = 2
                 
             else:
-                if np.abs(cov) > 0.85:
+                if np.abs(cov) > 0.6:
                     # Dos extremos ideológico
                     Resultados[i] = 3
                 elif np.abs(cov) < 0.3:
@@ -691,21 +691,21 @@ def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y, Covarianza, Promedios):
             # Estos son los casos con anchura
             
             # Casos de dos extremos
-            if sx >= 0.5 and sy < 0.5:
+            if sx >= 0.3 and sy < 0.3:
                 # Dos extremos horizontal
                 Resultados[i] = 6
-            elif sx < 0.5 and sy >= 0.5:
+            elif sx < 0.3 and sy >= 0.3:
                 # Dos extremos vertical
                 Resultados[i] = 6
             
             else:
                 # Polarización
                 # Polarización ideológica
-                if np.abs(cov) >= 0.5:
+                if np.abs(cov) >= 0.25:
                     Resultados[i] = 7
                 
                 # Transición con anchura
-                elif np.abs(cov) >= 0.2 and np.abs(cov) < 0.5:
+                elif np.abs(cov) >= 0.15 and np.abs(cov) < 0.25:
                     Resultados[i] = 8
                 
                 # Polarización descorrelacionada
