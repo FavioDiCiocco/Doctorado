@@ -4994,3 +4994,31 @@ idea pasar esto a Oporto también.
 
 Mañana trabajaré desde casa y tengo que ver bien qué les voy a presentar a la gente de España.
 Lo que puedo revisar mejor es qué forma tiene el espacio reducido Beta-Cosd.
+
+------------------------------------------------------------------------------------------
+
+20/03/2024
+
+Estoy intentando mandar a correr los gráficos para la zona reducida, resulta que hay muchos
+archivos que están con errores en la creación, y parecen además ser errores diversos. El corte
+de luz que se produjo el fin de semana al parecer afectó los datos que estaba armando. Lo cuál
+me genera muchas dudas sobre los datos de Oporto, que en ese momento estaba realizando dos tandas
+en simultáneo.
+
+Lo que está pasando con los datos del barrido reducido es que las simulaciones entre 10 y 19 parecen
+estar falladas, quizás el archivo está vacío, quizás le faltan algunas filas. No sé bien qué está
+ocurriendo ahí. Tengo que revisar eso en detalle y definitivamente no voy a tener una solución hoy.
+
+¿QUÉ PASÓ CON EL BARRIDO EN BETA KAPPA? Tengo miedo.
+
+Menciones en la charla:
+----------------------
+
+.) Probar tomar una polarización 1D y Consenso y ver que si a ese
+estado le voy aumentando el cos(delta) ver que el estado cae a un estado de coonsenso
+radicalizado.
+.) Armar un gráfico que muestre los estados dominantes en cada región en el espacio
+Beta-Cos(delta)
+.) Continuar con el análisis de la ecuación dinámica, para observar dónde queda la región
+de transición y si puedo perturbar al sistema para que caiga en un estado de polarización
+descorrelacionada.
