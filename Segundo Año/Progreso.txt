@@ -5015,10 +5015,37 @@ Menciones en la charla:
 ----------------------
 
 .) Probar tomar una polarización 1D y Consenso y ver que si a ese
-estado le voy aumentando el cos(delta) ver que el estado cae a un estado de coonsenso
+estado le voy aumentando el cos(delta) ver que el estado cae a un estado de consenso
 radicalizado.
 .) Armar un gráfico que muestre los estados dominantes en cada región en el espacio
 Beta-Cos(delta)
 .) Continuar con el análisis de la ecuación dinámica, para observar dónde queda la región
 de transición y si puedo perturbar al sistema para que caiga en un estado de polarización
 descorrelacionada.
+
+------------------------------------------------------------------------------------------
+
+21/03/2024
+
+Voy a aprovechar la mañana a revisar que no haya archivos mal armados de mis simulaciones
+por temas del corte de luz del otro finde. Lo primero que noté ayer es que las simulaciones
+entre 10 y 19 para el barrido reducido en Beta-Cosd tiene errores en el armado de los archivos.
+Hay archivos vacíos, otros le faltan filas. Cosas así.
+ Mandé a rearmar las simulaciones entre 10 y 19 en la pc de Algarve. En Coimbra tengo simulaciones
+hasta 39. En Oporto tengo simulaciones hasta 49. Si eso se termina, tendré las primeras 50 simulaciones
+resueltas. Yo diría de borrar en Coimbra las simulaciones entre 10 y 19.
+
+En Coimbra tengo una carpeta de datos de un barrido en Beta-Cosd, no sé por qué o para qué son.
+También tengo un barrido de un Beta-Kappa que tiene simulaciones entre 50 y 69 para la región
+con Beta menor a 1. Por otro lado, tengo simulaciones entre 90 y 99 hasta casi Kappa=10. Parece
+que se cortó. ¿Tengo estos estados resueltos en otro lado? Los había resuelto en Oporto, si no
+recuerdo mal. Posiblemente esos están fallados.
+
+¿Pasó algo con el barrido Beta-Kappa? Veamos. Ahí mandé a correr datos en Oporto para hacer los gráficos,
+a ver si surge algún problema. Por otro lado, voy a ponerme a hacer los gráficos que faltan del barrido
+Beta-Kappa. Mandé a correr cosas en Oporto, hubo problemas, como era de esperar. Los problemas los estoy
+encontrando en la tanda de simulaciones de 90 a 99. Eliminemos eso.
+
+Yo diría de arrancar mañana con las cosas que anoté de la charla del miércoles. Hoy debería resolver
+el tema del Beta-Kappa, después ponerme a leer algunos papers y por último estudiar para lo de Mininni.
+
