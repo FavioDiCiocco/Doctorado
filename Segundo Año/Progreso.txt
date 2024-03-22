@@ -5049,3 +5049,16 @@ encontrando en la tanda de simulaciones de 90 a 99. Eliminemos eso.
 Yo diría de arrancar mañana con las cosas que anoté de la charla del miércoles. Hoy debería resolver
 el tema del Beta-Kappa, después ponerme a leer algunos papers y por último estudiar para lo de Mininni.
 
+------------------------------------------------------------------------------------------
+
+22/03/2024
+
+Al final terminé de revisar los archivos del barrido Beta-Kappa, sólo había problemas en la iteración
+90 a 99. Así que tendré que en Oporto mandar a correr dos conjuntos de datos separados. Uno que recorra
+todo el espacio para iteraciones entre 90 y 99 y otro que recorra el espacio para Beta mayor a 1
+para iteraciones entre 50 y 69.
+
+Voy a aprovechar la mañana para preparar el main cosa de que cuando se termine la corrida de Oporto,
+que va a terminar en uno o dos días, ya lo pueda mandar a correr rápido. Después de comer me pondré
+con el análisis de la ecuación dinámica del modelo. Bien, ya modifiqué el Instanciar. Lo que tengo
+que hacer es mandar las simulaciones de 50 a 69 en Oporto mañana a la tarde.
