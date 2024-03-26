@@ -5062,3 +5062,20 @@ Voy a aprovechar la mañana para preparar el main cosa de que cuando se termine 
 que va a terminar en uno o dos días, ya lo pueda mandar a correr rápido. Después de comer me pondré
 con el análisis de la ecuación dinámica del modelo. Bien, ya modifiqué el Instanciar. Lo que tengo
 que hacer es mandar las simulaciones de 50 a 69 en Oporto mañana a la tarde.
+
+------------------------------------------------------------------------------------------
+
+26/03/2024
+
+En la mañana fui a llevar el documento de matrimonio de mamá al estudio, pero al final el documento
+no estaba actualizado. Tendré que conseguir la actualización del registro civil y de ahí
+volver a intentar.
+
+Las simulaciones en Algarve terminaron, así que podría mandar a resolver las simulaciones entre
+80 a 99.
+
+Hoy la verdad me agaró un sueño imposible, no avancé mucho. Pero estuve mirando lo que me pasó Hugo
+y lo que tengo yo de la cuenta, logré armar la misma expresión para la derivada de la perturbación.
+Queda entonces ver dónde queda efectivamente el valor de Beta de transición. Lo interesante es que
+aparece un factor 2 que antes no estaba. Vamos a ver cómo puedo hallar entonces el valor de Beta de
+equilibrio.
