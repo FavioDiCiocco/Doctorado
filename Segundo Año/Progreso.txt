@@ -5079,3 +5079,15 @@ y lo que tengo yo de la cuenta, logré armar la misma expresión para la derivad
 Queda entonces ver dónde queda efectivamente el valor de Beta de transición. Lo interesante es que
 aparece un factor 2 que antes no estaba. Vamos a ver cómo puedo hallar entonces el valor de Beta de
 equilibrio.
+
+------------------------------------------------------------------------------------------
+
+27/03/2024
+
+Lo primero que hice en la mañana fue revisar mails, después mandé a correr las simulaciones entre
+90 y 99 en el barrido beta-kappa en Oporto. Con eso voy a tener todas las simulaciones en ese espacio
+y voy a poder armar los gráficos con la estadística de 100 simulaciones. Eso debería durar de acá a
+la semana que viene. Quizás.
+
+Mientras estoy haciendo el análisis de la ecuación dinámica para definir el Beta tal que el estado de
+polarización ideológica transiciona de ser inestable a estable.
