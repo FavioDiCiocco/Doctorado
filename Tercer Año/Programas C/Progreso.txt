@@ -1,0 +1,72 @@
+------------------------------------------------------------------------------------------
+
+22/03/2024
+
+Al final terminé de revisar los archivos del barrido Beta-Kappa, sólo había problemas en la iteración
+90 a 99. Así que tendré que en Oporto mandar a correr dos conjuntos de datos separados. Uno que recorra
+todo el espacio para iteraciones entre 90 y 99 y otro que recorra el espacio para Beta mayor a 1
+para iteraciones entre 50 y 69.
+
+Voy a aprovechar la mañana para preparar el main cosa de que cuando se termine la corrida de Oporto,
+que va a terminar en uno o dos días, ya lo pueda mandar a correr rápido. Después de comer me pondré
+con el análisis de la ecuación dinámica del modelo. Bien, ya modifiqué el Instanciar. Lo que tengo
+que hacer es mandar las simulaciones de 50 a 69 en Oporto mañana a la tarde.
+
+------------------------------------------------------------------------------------------
+
+26/03/2024
+
+En la mañana fui a llevar el documento de matrimonio de mamá al estudio, pero al final el documento
+no estaba actualizado. Tendré que conseguir la actualización del registro civil y de ahí
+volver a intentar.
+
+Las simulaciones en Algarve terminaron, así que podría mandar a resolver las simulaciones entre
+80 a 99.
+
+Hoy la verdad me agaró un sueño imposible, no avancé mucho. Pero estuve mirando lo que me pasó Hugo
+y lo que tengo yo de la cuenta, logré armar la misma expresión para la derivada de la perturbación.
+Queda entonces ver dónde queda efectivamente el valor de Beta de transición. Lo interesante es que
+aparece un factor 2 que antes no estaba. Vamos a ver cómo puedo hallar entonces el valor de Beta de
+equilibrio.
+
+------------------------------------------------------------------------------------------
+
+27/03/2024
+
+Lo primero que hice en la mañana fue revisar mails, después mandé a correr las simulaciones entre
+90 y 99 en el barrido beta-kappa en Oporto. Con eso voy a tener todas las simulaciones en ese espacio
+y voy a poder armar los gráficos con la estadística de 100 simulaciones. Eso debería durar de acá a
+la semana que viene. Quizás.
+
+Mientras estoy haciendo el análisis de la ecuación dinámica para definir el Beta tal que el estado de
+polarización ideológica transiciona de ser inestable a estable.
+
+------------------------------------------------------------------------------------------
+
+04/04/2023
+
+En la mañana revisé las carpetas de Oporto y demás para ver que todo estuviera corriendo bien, mandé
+a armar gráficos en Oporto ahora que tengo las 100 simulaciones por punto y estuve intentando pensar
+cómo armar el gráfico que Pablo me pide que haga sobre el espacio Beta-Kappa.
+
+Mientras tanto, se siguen resolviendo las simulaciones que faltan del espacio reducido Beta-Cos(delta).
+Esas simulaciones van a terminar cerca de tres o cuatro días.
+
+Lo que tengo que hacer ahora primero es ver cómo armar un gráfico que muestre clarametne la composición
+de estados en el espacio Beta-Kappa. A partir de eso, podría pensar un mapa para el espacio de
+Beta-Cos(delta).
+
+Hoy apenas miré las cosas, no hice mucho más. La verdad, siento que perdí buena parte del tiempo. Dios,
+como odio estos días. Y eso que vine temprano y todo.
+
+------------------------------------------------------------------------------------------
+
+05/04/2023
+
+Hoy estuve todo el día armando los gráficos de distribución de estados en el espacio de parámetros.
+Logré hacer los gráficos tanto para el espacio Beta-Kappa como para el espacio Beta-Cosd.
+Siento que no son la gran cosa, pero Pablo me dijo que haga algo así, o mejor. Yo saqué esto.
+Tengo que ser mejor que esto, espero estar mejorando con el tiempo, no estar estancándome.
+
+Bueno, no nos matemos, mañana partida, el domingo tarea de Alemán y del curso de aplicaciones
+a becas. Lunes retomamos con ganas y fuerzas.

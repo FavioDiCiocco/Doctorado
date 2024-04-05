@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
 	red = malloc(sizeof( struct_Matrices )); 
 	
 	//#############################################################################################
-		
+	
 	// Defino los parámetros de mi modelo. Esto va desde número de agentes hasta el paso temporal de integración.
 	// Primero defino los parámetros que requieren un input.
 	param->N = strtol(argv[1],NULL,10); // Cantidad de agentes en el modelo

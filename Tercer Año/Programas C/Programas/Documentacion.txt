@@ -1,0 +1,25 @@
+Cada una de las carpetas contiene archivos de C que usé para correr el
+modelo en alguna fase del trabajo. Acá voy a ir anotando qué es lo que
+se suponía que hiciera el código en esa fase.
+
+
+.) Actualización Opiniones:
+---------------------------
+
+Lo que hice es tomar el código de Medidas_polarización e implementar el uso de una lista de vecinos en
+vez de una matriz de Adyacencia. También armé matrices para precalcular algunos datos previos
+que surgen de funciones no lineales y que si los puedo precalcular reducen tiempo de simulación.
+Todo esto lo hice en consonancia con el ejemplo de código que me pasó Hugo. Esto también implicó un
+cambio en la construcción de las matrices de adyacencia, las cuales ahora se construyen indicando
+los enlaces entre agentes, no escribiendo la matriz entera. Este código lo voy a usar para
+realizar un barrido en el espacio Beta-Kappa y otro en el espacio Beta-Cos(delta). Si bien hubo algunos
+problemas antes, decidí aprovechar y rehacer todas mis simulaciones, cosa de tener todas mis redes
+construidas con grado medio=10.
+
+.) Extensión Testigos:
+----------------------
+
+La idea es tomar los estados resueltos en el espacio Beta-Kappa para Betas menores a 1 y evolucionar
+esos estados unos 20000 pasos extras, que implican un tiempo extra de 2000. Busco ver en ese tiempo
+el comportamiento de los agentes en función del tiempo. En principio sólo necesito guardarme los datos
+de los testigos.

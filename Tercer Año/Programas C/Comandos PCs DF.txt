@@ -1,0 +1,105 @@
+----------------------------------------------------------------------------------------------
+
+INFO DE LA CUENTA REMOTA:
+Usuario externo: faviodiciocco2@login.df.uba.ar
+Usuario interno: faviodic@setubal.df.uba.ar
+
+PARA ENTRAR DESDE CASA:
+ssh -J faviodiciocco2@login.df.uba.ar faviodic@setubal.df.uba.ar
+
+PARA ENTRAR DESDE LA PC DE LA FACULTAD:
+ssh faviodic@máquina.df.uba.ar
+
+PARA CORRER ARCHIVOS .PY:
+./Proceso.py (Corre, pero si cerrás la terminal se cierra el programa)
+./script.py > salida.out & (Corre el programa en el Background. Salida .out guarda lo que hubiera
+ido a la terminal como salida. El Ampersand es lo que hace que funcione en el background.
+Al correr te da un número de proceso ID que tenés que guardar por si necesitás matar el proceso más tarde)
+
+PARA COPIAR ARCHIVOS DESDE MI PC A LA DE SETUBAL (Parado en mi pc):
+scp -(r)o "ProxyJump faviodiciocco2@login.df.uba.ar" "PATH LOCAL" "faviodic@setubal.df.uba.ar:PATH REMOTO"
+
+PARA COPIAR ARCHIVOS DESDE UNA PC EXTERNA A LA MIA (Parado en mi pc):
+scp -(r)o "ProxyJump faviodiciocco2@login.df.uba.ar" "faviodic@oporto.df.uba.ar:~/Carpeta/que/quieras" "D:Users/Favio/Documents"
+
+PARA COPIAR ARCHIVOS DESDE MI PC A LA DEL CLUSTER (Parado en la pc de la facultad):
+scp -(r) "PATH LOCAL" "faviodic@setubal.df.uba.ar:PATH REMOTO"
+
+PARA COPIAR ARCHIVOS DESDE UNA PC DEL CLUSTER A LA MIA (Parado en la pc de la facultad):
+scp -(r) "faviodic@oporto.df.uba.ar:~/Carpeta/que/quieras" "./"
+
+PARA VER LOS PROGRAMAS QUE ESTÁN CORRIENDO DE FONDO:
+htop
+
+PARA REVISAR EL ESPACIO OCUPADO POR LOS ARCHIVOS EN LA CARPETA ACTUAL:
+du -sh
+
+PARA REVISAR EL ESPACIO LIBRE EN EL DISCO:
+df -h (Hay que mirar /dev/sda que tiene un espacio total de 3,6T a utilizar por mi)
+
+PARA MANDAR A CORRER UN PROGRAMA EN EL BACKGROUND:
+nohup COMANDO &
+
+PARA CREAR UN AMBIENTE DE PYTHON QUE PERMITA CORRER EN LA MÁQUINA
+virtualenv -p /usr/bin/python3 environment
+
+PARA ACTIVAR EL AMBIENTE DE PYTHON
+source environment/bin/activate
+
+PARA DESACTIVAR EL AMBIENTE DE PYTHON (No me funcionó la última vez)
+source environment/bin/deactivate
+
+PARA CORRER COSAS EN EL AMBIENTE DE PYTHON en el background
+nohup python COMANDO > salida.out &
+
+(La idea del ambiente es que en esa carpeta se guardan programas y cosas
+de Python, entonces podés instalar ahí todo, luego cuando vayas a correr
+algo en Python siempre primero activa el ambiente para asegurarte
+que todo corra bien, tomando como referencia las librerías ahí cargadas.)
+
+PARA INSTALAR COSAS DE PYTHON
+pip ...
+
+------------------------------------------------------------------------------------------------------------
+Cuenta nueva en Oporto: (20 hilos)
+
+faviodic@oporto.df.uba.ar
+contraseña: eYESHIELD21
+
+-------------------------------------------------------------------------------------------------------------
+Cuenta nueva en Algarve: (20 hilos)
+
+faviodic@algarve.df.uba.ar
+contraseña: No1olvi2dar3
+
+-------------------------------------------------------------------------------------------------------------
+Cuenta nueva en Coimbra: (20 hilos)
+
+faviodic@coimbra.df.uba.ar
+contraseña: No1olvi2dar3
+
+-------------------------------------------------------------------------------------------------------------
+Cuenta nueva en Setubal: (8 hilos)
+
+faviodic@Setubal.df.uba.ar
+contraseña: No1olvi2dar3
+
+
+#####################################################################################################################
+#####################################################################################################################
+
+USO DE CONDA EN LA PC DE LA FACULTAD
+
+PARA CREAR NUEVOS ENVIRONMENTS
+conda create --name myenv
+
+PARA ACTIVAR ENVIRONMENTS
+conda activate myenv
+
+PARA DESACTIVAR ENVIRONMENTS (Tengo que estar dentro del environment)
+conda deactivate
+
+LISTA DE ENVIRONMENTS:
+-) fluidos (Este tiene instalado make, fftw y compiladores de fortran)
+-) python (Este tiene instalado spyder)
+-) notebooks (Este tiene instalado jupyter-notebook)

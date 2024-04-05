@@ -1,0 +1,26 @@
+Cada una de las carpetas contiene imágenes armadas en las distintas
+fases del trabajo de la tesis.
+
+
+.) Prueba_tiempos:
+------------------
+Tengo una sola carpeta, la de datos. La idea acá es estudiar cómo varía la fracción de polarización
+de los estados en función del tiempo. Cosa de comprobar si el tiempo de corte para mis simulaciones
+es el correcto, si estoy cortando prematuramente o muy tarde. Si corto prematuro, entonces estoy
+contabilizando como polarización cosas que no lo son. Si corto muy tarde, estoy perdiendo tiempo
+en simulaciones que ya deberían haber terminado.
+
+
+.) Opinion_actualizada:
+-----------------------
+Esto sigue el modelo que tenía en Medidas_polarización, incluso se apropió de esas simulaciones
+y se encarga de completar los barridos en el espacio de parámetro para tener un poco más de
+estadística. La diferencia con Medidas_polarización es que actualicé todo el código, reduciendo
+el tamaño de los nombres de variables al quitar la indicación del tipo de dato al principio de cada
+nombre, y por otro lado, implementando la lista de vecinos que usa Hugo en su código. Todo con el fin
+de reducir el tiempo de simulación de mi código. Aprendí cosas interesantes, como el uso del
+doble puntero.
+ Lo que voy a estar guardando entonces son carpetas con barridos en Beta-Kappa, Beta-Cosdelta y
+el barrido que hice en Beta fijando Kappa y Epsilon. La idea es observar la Entropía, Covarianza
+Varianzas y otras métricas de los datos en el espacio de parámetros para los ensambles de datos.
+

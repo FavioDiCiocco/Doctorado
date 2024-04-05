@@ -103,6 +103,12 @@ realizar un barrido en el espacio Beta-Kappa y otro en el espacio Beta-Cos(delta
 problemas antes, decidí aprovechar y rehacer todas mis simulaciones, cosa de tener todas mis redes
 construidas con grado medio=10.
 
+.) Prueba_tiempos:
+-------------------
+
+Ya me olvidé que era esta etapa, creo que quería observar si podía reducir los tiempos de simulación
+mirando las varianzas de las opiniones en cada tópico.
+
 .) Simulacion sin fin:
 ----------------------
 
