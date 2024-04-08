@@ -70,3 +70,41 @@ Tengo que ser mejor que esto, espero estar mejorando con el tiempo, no estar est
 
 Bueno, no nos matemos, mañana partida, el domingo tarea de Alemán y del curso de aplicaciones
 a becas. Lunes retomamos con ganas y fuerzas.
+
+------------------------------------------------------------------------------------------
+
+08/04/2023
+
+Hoy llegué más o menos temprano, los trenes están tardando mucho ahora, temas de despidos.
+VLLC. A la mañana voy al curso de inglés. Revisé las simulaciones en el espacio reducido.
+Ya casi están todas terminadas, queda una sola en la carpeta de algarve. Así que después de
+comer, junto todas las simulaciones de Algarve en Coimbra y desde ahí armo los gráficos del
+parámetro de espacios.
+
+Veamos qué simulaciones tengo en cada pc. En Coimbra tengo dos carpetas.
+) Datos: 0-9.
+) Zoom_beta-Cosd: 30-39, 50-79.
+
+Algarve.
+) Zoom_beta-Cosd: 10-29, 80-99
+
+Oporto.
+) Zoom_Beta-Cosd: 40-49
+
+Ahora lo junto todo. Ahí mandé a correr para que se armen todos los gráficos del espacio reducido.
+La pregunta es qué hago ahora. Para mi tiene interés revisar qué es lo que pasa con el sistema
+para el punto fijo de cuatro extremos, ese análisis de la ecuación dinámica, que creo que
+razonablemente dará que Beta crítico es 1, yo creo que será una investigación interesante.
+
+Otra cosa que puedo hacer esperando a la reunión con Pablo, es armar la presentación para el
+miércoles. Aunque eso lo puedo hacer mañana. Lo tercero sería ponerme a leer algún paper en
+el tiempo hasta juntarme hoy con Pablo.
+
+Hablé con Pablo, la idea es armar los gráficos indicando las regiones no con colores, sino delineando
+los contornos, usando números romanos para indicar las regiones, luego colocar cerca gráficos que
+indiquen estados finales característicos y explicar cómo es que terminé definiendo esas regiones.
+En particular, si habría alguna forma de identificar mejor la curva que surge en el espacio Beta-Kappa,
+la cuál yo definí puramente a ojo.
+
+Ahí armé los gráficos que me dijo Pablo, me falta colocarle los números romanos al segundo. Mientras
+se están terminando los gráficos en la región reducida. Tengo mala espina.
