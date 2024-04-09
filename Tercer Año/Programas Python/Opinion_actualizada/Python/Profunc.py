@@ -119,6 +119,7 @@ plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
 """
+
 #####################################################################################
 #####################################################################################
 
@@ -135,42 +136,49 @@ x = [0, 1, 1, 0.8, 0.6, 0.2, 0.3, 1, 1, 0.1, 0.1, 0, 0]  # x-coordinates
 y = [0, 0, 0.15, 0.2, 0.25, 0.3, 0.6, 0.6, 1.1, 1.1, 0.3, 0.2, 0]  # y-coordinates
 # ax.fill(x, y, color='tab:green')  # 'alpha' adjusts transparency
 ax.plot(x, y, color='k', linewidth=tlinea)
+ax.text(0.1, 1.6, 'I', fontsize=40, ha='center', va='center', color='k')
 
 # Región de Polarización Descorrelacionada
 x = [0, 0.1, 0.2, 0.2, 0, 0]  # x-coordinates
 y = [1.1, 1.1, 1.3, 2, 2, 1.1]  # y-coordinates
 # ax.fill(x, y, color='tab:orange')  # 'alpha' adjusts transparency
 ax.plot(x, y, color='k', linewidth=tlinea) #, label='Polarización Descorrelacionada')
+ax.text(0.3, 1.6, 'II', fontsize=40, ha='center', va='center', color='k')
 
 # Región de Transición
 x = [0.1, 0.2, 0.3, 0.4, 0.4, 0.2]  # x-coordinates
 y = [1.1, 1.1, 1.3, 1.5, 2, 2]  # y-coordinates
 # ax.fill(x, y, color='tab:olive')  # 'alpha' adjusts transparency
 ax.plot(x, y, color='k', linewidth=tlinea)
+ax.text(0.7, 1.6, 'III', fontsize=40, ha='center', va='center', color='k')
 
 # Región de Polarización ideológica
 x = [0.2, 1, 1, 0.4, 0.4, 0.3] # x-coordinates
 y = [1.1, 1.1, 2, 2, 1.5, 1.3] # y-coordinates
 # ax.fill(x, y, color='tab:red')  # 'alpha' adjusts transparency
 ax.plot(x, y, color='k', linewidth=tlinea)
+ax.text(0.05, 0.9, 'IV', fontsize=40, ha='center', va='center', color='k')
 
 # Región de Mezcla 1
 x = [0.2, 0.6, 0.8, 1, 1, 0.3] # x-coordinates
 y = [0.3, 0.25, 0.2, 0.15, 0.6, 0.6] # y-coordinates
 # ax.fill(x, y, color='tab:blue')  # 'alpha' adjusts transparency
 ax.plot(x, y, color='k', linewidth=tlinea) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
+ax.text(0.05, 0.5, 'V', fontsize=40, ha='center', va='center', color='k')
 
 # Región de Mezcla 2
 x = [0, 0.1, 0.1, 0] # x-coordinates
 y = [0.2, 0.3, 0.7, 0.7] # y-coordinates
 # ax.fill(x, y, color='tab:purple')  # 'alpha' adjusts transparency
 ax.plot(x, y, color='k', linewidth=tlinea)  # label=r'Mezcla: CR (50~80%), P1Da (20~35%)')
+ax.text(0.5, 0.85, 'VI', fontsize=40, ha='center', va='center', color='k')
 
 # Región de Mezcla 3
 x = [0, 0.1, 0.1, 0, 0] # x-coordinates
 y = [0.7, 0.7, 1.1, 1.1, 0.2] # y-coordinates
 # ax.fill(x, y, color='tab:brown')  # 'alpha' adjusts transparency
 ax.plot(x, y, color='k', linewidth=tlinea) # label=r'Mezcla: CR (30~40%), P1D (10~50%)')
+ax.text(0.6, 0.4, 'VII', fontsize=40, ha='center', va='center', color='k')
 
 ax.set_xlabel(r"$cos(\delta)$")
 ax.set_ylabel(r"$\beta$")

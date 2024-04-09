@@ -108,3 +108,16 @@ la cuál yo definí puramente a ojo.
 
 Ahí armé los gráficos que me dijo Pablo, me falta colocarle los números romanos al segundo. Mientras
 se están terminando los gráficos en la región reducida. Tengo mala espina.
+
+------------------------------------------------------------------------------------------
+
+09/04/2023
+
+Revisé Coimbra, se hicieron los gráficos del espacio reducido. Se ve algo interesante respecto
+de los estados con anchura, y se ve que coinciden los resultados con lo observado en el espacio
+total Beta-Cos(delta).
+
+Sigamos con el trabajo de Pablo hasta eso de las 11 y algo. Después a las 12 voy a comer, a las
+13 voy al abrazo en el 0+inf y después a cursar. 
+
+
