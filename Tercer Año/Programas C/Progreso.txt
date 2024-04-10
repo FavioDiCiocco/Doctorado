@@ -118,6 +118,43 @@ de los estados con anchura, y se ve que coinciden los resultados con lo observad
 total Beta-Cos(delta).
 
 Sigamos con el trabajo de Pablo hasta eso de las 11 y algo. Después a las 12 voy a comer, a las
-13 voy al abrazo en el 0+inf y después a cursar. 
+13 voy al abrazo en el 0+inf y después a cursar.
 
+Terminé de cursar, trabajé un poco en la presentación y después me fui a casa temprano para que
+no me agarre la lluvia.
 
+------------------------------------------------------------------------------------------
+
+10/04/2023
+
+A la mañana llegué y mandé a armar gráficos de Histogramas 2D. Después tuvimos la reunión de grupo.
+Comí en la oficina y rápido terminé de armar lo que pude de la presentación para la
+gente de GOTHAM. Pablo hoy no pudo venir, lo mismo Jesús. La charla la tuve yo con Hugo
+y Mario.
+
+De la charla saqué los siguientes puntos:
+1) En el espacio de parámetros Beta-kappa, la curva que diferencia estados de Consenso Radicalizado
+respecto de los estados Polarizados, en principio Hugo la estudió bastante desde varias perspectivas.
+Su conclusión es que es un resultado de la saturación de la función de tanh. Una propuesta que
+me hizo es intentar ver si reemplazando la función tanh por una función signo, entonces
+debería ver si esa curva desaparece y sólo veo una línea constante en Beta aprox. 0.2.
+2) Hugo me dice que esos estados de polarización descorrelacionada que estoy observando
+si los dejara correr más tiempo, posiblemente vería que convergen a otro tipo de estados,
+quizás Pol 1D con anchura o Pol 1D nomás, yo no creo que sea el caso. Vamos viendo.
+3) Algo interesante sería intentar ver si el modelo 2D para el caso de Cos(delta) = 0 se puede interpretar
+como dos modelos unidimensionales independientes. Una forma de comprobar eso sería tomar un
+punto del espacio de parámetros en el cuál surjan estados de polarización descorrelacionada
+y comparar esos estados con estados polarizados en el caso unidimensional. Si el caso 2D con
+Cos(delta)=0 se pudiera interpretar como dos simulaciones independientes, una para cada tópico,
+entonces lo que debería poder observar es que la polarización simultánea de ambos tópicos debería
+ocurrir con una probabilidad que es la probabilidad al cuadrado de que cada tópico polarice. Y
+eso se debería obtener a partir de realizar simulaciones 1D. Para ellos esto es una pregunta
+interesante respecto de cómo el modelo 2D no es sólo el modelo 1D 2 veces, sino que trae algo
+propio a la formación de opiniones por la distancia entre opiniones. (Creo)
+4) Cuando vaya a hacer los cálculos analíticos, probar hacer unas simulaciones primero, para
+ver que efectivamente lo que quiero ver se da como yo planteo y no perder un montón de tiempo
+en cuentas que no llevan a nada.
+5) Al hacer las simulaciones con las que vamos a trabajar, no guardar todos los datos, sino guardar
+sólamente el histograma de datos. Y considerar que ese histograma de datos tiene que tener
+una cantidad de cajas que coincidan con la cantidad de cajas de las preguntas que voy a mirar,
+porque algunas preguntas tienen 6 cajas y otras 7.
