@@ -158,3 +158,70 @@ en cuentas que no llevan a nada.
 sólamente el histograma de datos. Y considerar que ese histograma de datos tiene que tener
 una cantidad de cajas que coincidan con la cantidad de cajas de las preguntas que voy a mirar,
 porque algunas preguntas tienen 6 cajas y otras 7.
+
+------------------------------------------------------------------------------------------
+
+11/04/2023
+
+A la mañana hablé con Pablo sobre lo que fue la charla con la gente de GOTHAM. El plan ahora
+es armar una lista de cosas para hacer en estas tres semanas hasta la próxima reunión. Ahora
+mismo no estoy realizando simulaciones. Debería considerar arrancar con eso, para que ya
+esté funcionando antes de hacer el resto de cosas.
+
+En la mañana estuve organizando cosas, mandando mensajes, imprimiendo comprobantes y así.
+Mañana voy a ir a buscar las fotos de mi recibida. Para eso, tengo que llamar antes. Entonces,
+a eso de las 14 llamo y después a las 17 salgo para allá, total es tomarme el tren hasta Retiro,
+pedalear 10 minutos desde ahí y después volverme.
+
+Hagamos la lista de orden de cosas por hacer esta semana y la que viene:
+(Una idea que propusimos es ya fijar Kappa=10 y dejar de preocuparnos)
+-----------------------------------------------------------------------
+
+Es importante arrancar con esto porque requiere simulaciones, así que eso puede ir corriendo
+mientras hago otras cosas.
+########################################################################################################
+1) Podría arrancar con las simulaciones del sistema usando la función signo en vez de la función
+tanh. Eso me parece importante para arrancar porque va a requerir varias simulaciones. Digamos
+que lo armo con 30 iteraciones, eso debería alcanzar para ver algo. Y el espacio que voy
+a barrer debería ser de Kappa [1,10], con Beta de [0,1]. Después puedo ver de agregar
+más Kappa, pero lo importante es hacer un barrido bien rápido de la cosa, variar grueso,
+con Kappa variando de a 1 y Beta variando de a 0.1. Esto ya lo podría mandar hoy.
+2) Empezar a descargar los datos de la ANES, ir construyendo un conjunto de datos con 10000
+agentes cosa de tener para ir comparando nuestras simulaciones con los datos extraídos de las
+encuestas. La idea sería armar datos en la región reducida de Beta-Cos(delta). Además, tengo
+que asegurarme de guardar los datos, no guardando las opiniones de TODOS los agentes finales,
+sino guardar el histograma final de los agentes. Hugo me dió un consejo de cómo guardar los
+datos de forma de poder comparar mis resultados en el caso de que la opinión tenga 6 respuestas
+o de que tenga 7.
+3) Hugo me dijo de hacer simulaciones en un punto del espacio de Parámetros donde observe
+varios casos de simulación y que por un lado corra simulaciones en el modelo 1D y por el otro
+corra simulaciones en el modelo 2D. La idea es ver si la probabilidad de observar estados polarizados
+2D es igual al cuadrado de la posibilidad de que polarice un estado 1D. Esto tendría alguna comparación
+en el caso en que Cos(Delta)=0, siendo que en ese caso la ecuación del tópico 1 queda casi
+completamente desacoplada de la ecuación del tópico 2. Hay todavía un pequeño acople en lo que
+a los pesos refiere, así que no debería ser lo mismo. Digo yo. Esto puedo mandarlo por un lado
+en Algarve y por el otro en Coimbra, con 10000 agentes. Creo que habíamos discutido que era
+una buena idea usar esa cantidad de agentes.
+########################################################################################################
+
+4) Antes de continuar las cuentas analíticas sobre el valor de Beta que cambia la estabilidad de las soluciones,
+conviene intentar primero hacer simulaciones con redes completas y con la pequeña perturbación
+propuestas, para ver si el resultado corrobora lo esperado. Así nos damos una idea del resultado
+final. Después de esto puedo retomar mis cuentas. Eso significa, PRIMERO, revisar que me quedó
+una cuenta pendiente del caso en el que considero la solución ideológica. LUEGO, continuo la cuenta
+del caso de polarización descorrelacionada.
+
+Cosas más opcionales:
+---------------------
+5) Hugo me había dicho la otra semana que revise si pasaba que partiendo de un estado que yo
+sé que finaliza en un estado de polarización radicalizada, al ir aumentando el cos(delta) el
+estado se transforma en un estado de polarización ideológica. La idea está buena y no requiere
+mucho esfuerzo. Creo.
+6) Me dijeron de revisar si encuentro encuestas en Argentina que nos permitan observar
+polarización, porque en las encuestas que buscaron en España, la mayoría no tiene casos de polarización.
+7) Podría ver de continuar con el clasificador neuronal, aunque en principio no es ni de
+cerca necesario ahora.
+
+Después de haberme distraído un poco, resolví el punto 1. Cambié la función en el archivo de avanzar,
+armé una nueva etapa llamada Func_sign y mandé en Oporto a correr este barrido en la región que 
+determiné antes.

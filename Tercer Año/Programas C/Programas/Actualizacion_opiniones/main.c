@@ -41,19 +41,19 @@ int main(int argc, char *argv[]){
 	
 	// Los siguientes son los parámetros que están dados en los structs
 	param->T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
-	param->Iteraciones_extras = 500; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
+	param->Iteraciones_extras = 5000; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	param->dt = 0.1; // Paso temporal de iteración del sistema
 	param->alfa = 1; // Controversialidad de los tópicos
 	param->delta = 0.002*param->kappa; // Es un término que se suma en la homofilia y ayuda a que los pesos no diverjan.
 	param->NormDif = sqrt(param->N*param->T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	param->CritCorte = pow(10,-3); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
-	param->testigos = fmin(param->N,8); // Esta es la cantidad de agentes de cada distancia que voy registrar
+	param->testigos = fmin(param->N,50); // Esta es la cantidad de agentes de cada distancia que voy registrar
 	
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
 	int pasos_simulados = 0; // Esta variable me sirve para cortar si simulo demasiado tiempo.
 	int pasos_maximos = 200000; // Esta es la cantidad de pasos máximos a simular
-	int ancho_ventana = 100; // Este es el ancho temporal que voy a tomar para promediar las opiniones de mis agentes.
+	int ancho_ventana = 1000; // Este es el ancho temporal que voy a tomar para promediar las opiniones de mis agentes.
 		
 	//#############################################################################################
 	
@@ -125,7 +125,7 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char TextOpi[355];
-	sprintf(TextOpi,"../Programas Python/Opinion_actualizada/Datos/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+	sprintf(TextOpi,"../Programas Python/Opinion_actualizada/Zoom_Beta-Cosd/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
 		,param->N, param->kappa, param->beta, param->Cosd, iteracion);
 	FILE *FileOpi = fopen(TextOpi,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
@@ -167,7 +167,6 @@ int main(int argc, char *argv[]){
 	// fprintf(FileTestigos,"Opiniones Testigos\n");
 	// for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] );
 	// fprintf(FileTestigos,"\n");
-	
 	
 	// Sumo el estado inicial de las opiniones de mis agentes en el vector de Prom_Opi. Guardo esto en la primer fila
 	for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[j+2] += red->Opi[j+2];
@@ -211,18 +210,23 @@ int main(int argc, char *argv[]){
 			
 			// Cálculos derivados
 			if( pasos_simulados%100==0 ){
+				// Escritura
+				// for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] );
+				// fprintf(FileTestigos,"\n");
+			}
+			
+			if( pasos_simulados%ancho_ventana==0 ){
+				// Mido la variación de promedios
 				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] = red->Prom_Opi[ j+param->N*param->T+2 ] / ancho_ventana;
 				for(int j=0; j<param->N*param->T; j++) red->Dif[j+2] = red->Prom_Opi[ j+param->N*param->T+2 ] - red->Prom_Opi[j+2];
 				red->Variacion_promedio = Norma_d(red->Dif) / param->NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
 				
+				// Escritura
+				fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio
+				
 				// Reinicio los promedios
 				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[j+2] = red->Prom_Opi[ j+param->N*param->T+2 ];
 				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] = 0;
-				
-				// Escritura
-				// for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] );
-				// fprintf(FileTestigos,"\n");
-				fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio
 			}
 
 		}
@@ -243,18 +247,23 @@ int main(int argc, char *argv[]){
 			
 			// Cálculos derivados
 			if( pasos_simulados%100==0 ){
+				// Escritura
+				// for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] );
+				// fprintf(FileTestigos,"\n");
+			}
+			
+			if( pasos_simulados%ancho_ventana==0 ){
+				// Mido la variación de promedios
 				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] = red->Prom_Opi[ j+param->N*param->T+2 ] / ancho_ventana;
 				for(int j=0; j<param->N*param->T; j++) red->Dif[j+2] = red->Prom_Opi[ j+param->N*param->T+2 ] - red->Prom_Opi[j+2];
 				red->Variacion_promedio = Norma_d(red->Dif) / param->NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
 				
+				// Escritura
+				fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio
+				
 				// Reinicio los promedios
 				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[j+2] = red->Prom_Opi[ j+param->N*param->T+2 ];
 				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] = 0;
-				
-				// Escritura
-				// for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] );
-				// fprintf(FileTestigos,"\n");
-				fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio
 			}
 			
 		}
@@ -299,7 +308,6 @@ int main(int argc, char *argv[]){
 	// Finalmente imprimo el tiempo que tarde en ejecutar todo el programa
 	time(&tfin);
 	Tiempo = tfin-tprin;
-	// sleep(1);
 	printf("Tarde %.1f segundos \n", Tiempo);
 	
 	return 0;

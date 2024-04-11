@@ -42,3 +42,12 @@ para caracterizar el comportamiento del sistema en las distintas regiones.
  Actualmente, armé una carpeta llamada Revisión, la cuál tiene las simulaciones de un conjunto de estados,
 los cuáles el programa reconoce como estados de polarización ideológica, pero difícilmente sean tales.
 
+
+Func sign:
+----------
+Estábamos interesados en ver de caracterizar la curva que se produce en el espacio Beta-Kappa
+que diferencia la región donde tengo sólo Consenso Radicalizado y la región en la que tengo
+mezcla de estados. Hugo nos dijo que cuando lo revisaron, llegaron a la conclusión de que
+era un efecto de saturación de la función de tanh. Así que una forma de ponerlo a prueba
+es hacer un barrido en el espacio Beta-Kappa cambiando la función de tanh por una función
+signo, que sea 1 o -1 en caso de que la función del vecino sea positiva o negativa.

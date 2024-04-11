@@ -2,6 +2,11 @@ Cada una de las carpetas contiene archivos de C que usé para correr el
 modelo en alguna fase del trabajo. Acá voy a ir anotando qué es lo que
 se suponía que hiciera el código en esa fase.
 
+.) Prueba_tiempos:
+-------------------
+
+Ya me olvidé que era esta etapa, creo que quería observar si podía reducir los tiempos de simulación
+mirando las varianzas de las opiniones en cada tópico.
 
 .) Actualización Opiniones:
 ---------------------------

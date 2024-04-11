@@ -35,7 +35,10 @@ double Dinamica_sumatoria(puntero_Matrices red, puntero_Parametros param){
 	for(int p=0; p<Cs; p++) opiniones_superpuestas += red->Ang[ red->topico*Cs+p+2 ]*red->Opi[ red->agente_vecino*Co+p+2 ];
 	
 	// Ahora que tengo todo, calculo el resultado y returneo
-	resultado = tanh(opiniones_superpuestas);
+	if(opiniones_superpuestas > 0) resultado = 1;
+	if(opiniones_superpuestas < 0) resultado = -1;
+	if(opiniones_superpuestas == 0) resultado = 0;
+	
 	return resultado; // La función devuelve el número que buscás, no te lo asigna en una variable.
 }
 
