@@ -225,3 +225,22 @@ cerca necesario ahora.
 Después de haberme distraído un poco, resolví el punto 1. Cambié la función en el archivo de avanzar,
 armé una nueva etapa llamada Func_sign y mandé en Oporto a correr este barrido en la región que 
 determiné antes.
+
+------------------------------------------------------------------------------------------
+
+12/04/2023
+
+A la mañana fui a realizar el trámite del Banco Provincia. Llegué a la facultad a las 13.
+
+Ahora estoy revisando la lista de cosas por hacer. Entre lo que tengo que hacer, me parece que
+es mejor empezar por el punto 3 y no por el 2. Más que nada porque el punto 2 va a tardar tanto
+que empezarlo ahora o el lunes da lo mismo, el otro punto en cambio me parece que me va
+a dar resultados más rápido.
+
+Estuve muy distraído hoy, pero armé el programa que simula en 1D. Más tardé con el armar una función
+que en C me construya mi histograma. No era tan difícil, sólo soy un boludo que está desatento.
+Ahora tengo que subir esto a Algarve o Coimbra y mandarlo a correr. Fijate que esto no contempla
+estar en una carpeta de src. Pero creo que no es problema, simplemente tengo que compilarlo y
+mandarlo. Voy a tener que modificar el archivo de Instanciar quizás, pero nada grave. O el
+de Metainstanciacion. Espero que cuando arme la función para el caso 2D esto sea más fácil.
+Vamos para casa. No es temprano en realidad.
