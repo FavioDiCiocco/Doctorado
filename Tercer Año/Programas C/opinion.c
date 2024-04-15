@@ -112,10 +112,12 @@ void create_header(FILE *f, double mean_opinion, double desv_opinion, double bet
 
 
 
-void readNetwork(char TextMatriz[]){
+void readNetwork(int iteracion){
 
     int i, n, l, *v_degree_aux;
     FILE *fin;
+	char TextMatriz[355];
+	sprintf(TextMatriz, "MARE/Erdos-Renyi/gm=10/ErdosRenyi_N=1000_ID=%d.file", (int) iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
     printf("Leemos la red...");
     #ifdef RRN
     //fin=fopen("networks/RR10000k=4.txt", "r");
@@ -487,15 +489,10 @@ int main(int argc, char *argv[])
 	semilla = time(NULL);
 	srand(semilla); // Voy a definir la semilla a partir de time(NULL);
 	float tardanza; // Este es el float que le paso al printf para saber cuanto tardé
-
 	int iteracion = strtol(argv[1],NULL,10);
 	
-	char TextMatriz[355];
-	sprintf(TextMatriz, "MARE/Erdos-Renyi/gm=10/ErdosRenyi_N=%d_ID=%d.file", N, (int) iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
-    readNetwork(TextMatriz);
-
+    readNetwork(iteracion);
     mean_degree = L*2.0/N;
-    printf("N: %d L: %d\n", N, L);
 
     double *network, *new_network;
     network = (double*)calloc(N, sizeof(double));

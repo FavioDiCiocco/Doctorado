@@ -244,3 +244,31 @@ estar en una carpeta de src. Pero creo que no es problema, simplemente tengo que
 mandarlo. Voy a tener que modificar el archivo de Instanciar quizás, pero nada grave. O el
 de Metainstanciacion. Espero que cuando arme la función para el caso 2D esto sea más fácil.
 Vamos para casa. No es temprano en realidad.
+
+------------------------------------------------------------------------------------------
+
+15/04/2023
+
+Al final el finde no hice la tarea que planeaba hacer, pero no fue tan terrible, la semana
+arrancó igual y estamos todos bien. A veces no tiene tanto sentido hacerse la cabeza con
+eso.
+
+Hoy lo que tengo que tener terminado es el armado de las opiniones en cajas al final de la simulación,
+cosa de ya mandar eso y entonces de los siete puntos que marqué para hacer, tener ya dos
+resueltos.
+ Repasé la función para el caso 1D, ahí logré hacer que funcione. El caso 1D está planteado
+para redes con N=1000, Beta=0.7, Kappa=10 y Cosd=0. Cada simulación tarda 215 segundos.
+Así que si corro 30 simulaciones en ese punto, no debería costarme más de 20 minutos,
+siendo que esas simulaciones las voy a repartir en 10 hilos. Después tengo que subir
+el archivo de opinion.e a Algarve y desde ahí modificar el Instanciar para mandar a correr
+la simulaciones 1D.
+
+Ahora me pongo con las simulaciones 2D. Logré que compile. Mañana lo mando a correr en las
+pc's de la facultad. O quizá hoy en casa si llego temprano y no estoy para jugar ranked.
+Perdí un poco de tiempo en esto, pero al final del el armar estas funciones que me construyan
+los histogramas en el código en C es importante para el siguiente punto a trabajar.
+Es cierto que faltan dos cosas importantes:
+1) Probar que la función esa esté laburando bien. MUCHO MUY IMPORTANTE.
+2) Organizar correctamente el cómo interpreto los números que la cosa esta
+me tira. Así identifico correctamente qué va dónde. Armar las cajitas de 6*6 o las de 7*7
+va a ser un bardo. Bah no, mentira, va a ser una boludez.
