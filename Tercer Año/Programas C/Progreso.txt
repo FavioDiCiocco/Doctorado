@@ -272,3 +272,25 @@ Es cierto que faltan dos cosas importantes:
 2) Organizar correctamente el cómo interpreto los números que la cosa esta
 me tira. Así identifico correctamente qué va dónde. Armar las cajitas de 6*6 o las de 7*7
 va a ser un bardo. Bah no, mentira, va a ser una boludez.
+
+------------------------------------------------------------------------------------------
+
+16/04/2023
+
+No puedo mandar a correr las simulaciones en la pc de Algarve, ya fue, lo corro en la pc
+de la facultad. Mientras eso corre, mandé las simulaciones en Coimbra, eso no fue tan simple.
+Había un error medio boludo en la función de clasificación. Ahora me voy a poner a estudiar
+alemán. Tengo que después hacer caso a mis notas sobre revisar que todo funcione bien,
+no puedo moverme a ciegas como estoy haciendo ahora. Si bien la función está copiada
+de algo que funciona, tengo dudas.
+
+Fui a cursar Alemán.
+
+Mandé en la pc de Coimbra para realizar 1000 simulaciones. Eso debería tardar unos días.
+Mientras, voy a necesitar simulaciones en la pc de la facultad que lleguen hasta 1000 también
+de 1D.
+
+Repito para que no se olvide, es mucho muy importante que pruebe que las funciones de Clasificación
+están funcionando bien. Para eso voy a tomar algunas simulaciones, usar sus semillas y simular en
+la pc de la facultad. A esas simulaciones les voy a guardar las opiniones finales, y las distribuciones.
+Voy a comparar que las distribuciones me den lo mismo que las opiniones finales.

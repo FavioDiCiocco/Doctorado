@@ -518,7 +518,7 @@ int main(int argc, char *argv[])
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char TextOpi[355];
-	sprintf(TextOpi,"../Programas Python/Probas_Pol/1D/Opiniones_N=1000_kappa=10_beta=0.7_cosd=0_Iter=51.file");
+	sprintf(TextOpi,"../Programas Python/Probas_Pol/1D/Opiniones_N=1000_kappa=10_beta=0.7_cosd=0_Iter=%d.file", iteracion);
 	FILE *FileOpi=fopen(TextOpi,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 
 	//################################################################################################################################

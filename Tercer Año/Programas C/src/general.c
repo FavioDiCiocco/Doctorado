@@ -218,13 +218,13 @@ void Clasificacion(puntero_Matrices red, puntero_Parametros param){
 	double ancho = 2/param->bines; // Este es el ancho de cada cajita en la que separo el espacio de opiniones.
 	
 	// Normalizo mi histograma y la corro a la región [0,2]
-	for(int i =0; i< Fo*Co; i++) red->Opi[i] = red->Opi[i] / param->kappa + 1;
+	for(int i =0; i< Fo*Co; i++) red->Opi[i+2] = red->Opi[i+2] / param->kappa + 1;
 	
 	// Hago el conteo de agentes en cada una de las cajitas
 	for(int agente = 0; agente < Fo; agente++ ){
 		columna = fmin(floor(red->Opi[agente*Co+2]/ancho),param->bines-1);
 		fila = fmin(floor(red->Opi[agente*Co+1+2]/ancho),param->bines-1);
-		red->Hist[fila*Fd+columna+2] += 1;
+		red->Hist[fila*Cd+columna+2] += 1;
 	}
 	
 	// Resuelto el conteo, ahora lo normalizo

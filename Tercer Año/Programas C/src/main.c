@@ -209,7 +209,6 @@ int main(int argc, char *argv[]){
 				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[j+2] = red->Prom_Opi[ j+param->N*param->T+2 ];
 				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] = 0;
 			}
-
 		}
 		while( red->Variacion_promedio > param->CritCorte && pasos_simulados < pasos_maximos);
 		
