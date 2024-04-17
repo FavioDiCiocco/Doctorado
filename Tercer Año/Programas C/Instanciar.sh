@@ -24,7 +24,7 @@ if [ -z $decision ]
 then
 	for N in ${Arr_Agentes[@]}
 	do
-		for iteracion in {0..30}
+		for iteracion in {751..999}
 		do
 			for Kappa in ${Arr_Kappas[@]}
 			do

@@ -294,3 +294,47 @@ Repito para que no se olvide, es mucho muy importante que pruebe que las funcion
 están funcionando bien. Para eso voy a tomar algunas simulaciones, usar sus semillas y simular en
 la pc de la facultad. A esas simulaciones les voy a guardar las opiniones finales, y las distribuciones.
 Voy a comparar que las distribuciones me den lo mismo que las opiniones finales.
+
+------------------------------------------------------------------------------------------
+
+17/04/2023
+
+Mandé en la pc de la facultad cuatro procesos para resolver 250 simulaciones en cada terminal.
+En la pc de Coimbra ya está casi terminada la tanda de simulaciones para el punto del espacio
+Kappa=10, Beta=0.7 y Cosd=0. En la carpeta de Oporto está terminado el barrido en el espacio
+Beta-Kappa para la función signo. Así que ya podría trabajar en ver que efectivamente se arma
+el gráfico que esperamos.
+
+Yo creo que hoy tendría que hacer dos cosas. La primera es ver de descargar datos de la ANES,
+así ya puedo mandar a correr datos. Lo segundo es ver que efectivamente la función Clasificación
+funciona bien. Para eso voy a descargar algunas simulaciones, rearmar esas simulaciones en esta
+pc usando las semillas, guardar las opiniones finales y comprobar que los gráficos que puedo
+recrear usando las distribuciones que surgen de la función Clasificación son iguales a las
+distribuciones que surgen de las opiniones finales.
+
+Tengo unas dudas sobre qué hacer con el tema de los datos de la ANES. Vengo revisando mis archivos,
+no encuentro algo de lo que me decía Hugo de tener cuidado al revisar los datos de la ANES.
+Lo que voy a hacer, luego de debatirme y pensar qué corno quiero, es hacer gráficos de distribución
+de opiniones confrontando todas las preguntas entre ellas. 
+
+Estoy revisando las etiquetas. Labels_pre tiene 20 etiquetas mientras que labels_post tiene 9 etiquetas.
+Juntos suman 29 etiquetas. Pero dict_labels tiene apenas 23 etiquetas. Es decir que de las 29 etiquetas
+que mira, sólo 23 están identificadas. Debería esforzarme por identificar las otras 6.
+Ahí vi, las seis que están removidas en labels_pre y labels_post son 6 preguntas en labels_pre
+que tienen 4 respuestas, en vez de seis o siete. En labels_post sacaron la pregunta sobre si Obama es
+musulman, pero no la de ubicación propia a lo largo del eje conservador/liberal. Supongo que para arrancar,
+por hoy, puedo dejarla.
+
+Observando los gráficos, encontré claros casos de: Consenso Radicalizado, Polarización Ideológica, Polarización
+1D con anchura, Polarización descorrelacionada, y quedaría definir qué cuenta como casos con anchura
+o algunas cosas más. Creo que lo que estaría bueno es poder definir qué pares de preguntas vamos a
+revisar y con qué vamos a comparar esos casos. También vale notar que algunos casos resulta que tienen
+algunas casillas vacías. Quizás para no hacer un barrido demasiado grande y poder observar estos
+resultados, estaría bueno moverse con Beta entre [0.6,1.2] y Cos(delta) entre [0.05,0.15]. Y para
+eso hacer un barrido BIEN grueso, total no busco con eso caracterizar alguna curva, sólo quiero tener
+gráficos para comparar con lo observado en la ANES.
+
+Voy a descargar entonces cinco archivos de Probas_Pol en 2D así ya mañana arranco con los gráficos
+para revisar que la Clasificacion está funcionando bien. Descargué cinco simulaciones al azar, las
+cinco pareciera que convergen a estados de Consenso Radicalizado. Voy a tener que armar las simulaciones
+mañana usando esas semillas y ya después veo qué pasó.
