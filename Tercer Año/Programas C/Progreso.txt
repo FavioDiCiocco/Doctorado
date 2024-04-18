@@ -338,3 +338,16 @@ Voy a descargar entonces cinco archivos de Probas_Pol en 2D así ya mañana arra
 para revisar que la Clasificacion está funcionando bien. Descargué cinco simulaciones al azar, las
 cinco pareciera que convergen a estados de Consenso Radicalizado. Voy a tener que armar las simulaciones
 mañana usando esas semillas y ya después veo qué pasó.
+
+------------------------------------------------------------------------------------------
+
+18/04/2023
+
+A la mañana fui a llevar el acta de matrimonio al estudio de traducción, y volví al mediodía. Después
+me puse a ver los datos del barrido en el espacio Beta-Kappa. El gráfico pareciera dar lo que yo busco,
+pero no se ve muy claro. Debería probar extender un poco la región y hacer un poco más fino el barrido.
+Mañana lo hablo con Pablo cualquier cosa.
+
+Ahora me voy a poner a estudiar Alemán. Después me pondré con lo de escribir la carta de motivación y el 
+CV. Por último, con algo de tiempo, quizás lea un paper. Mañana repasaré el tema de las simulaciones
+en el espacio Beta-Kappa, y de las simulaciones en un punto del espacio de parámetros.

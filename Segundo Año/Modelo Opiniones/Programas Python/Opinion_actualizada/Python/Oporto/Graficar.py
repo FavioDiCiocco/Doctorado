@@ -20,10 +20,10 @@ from pathlib import Path
 t0 = time.time()
 
 T=2 # Defino el número de tópicos
-Etapa = Path("Opinion_actualizada") # Defino el nombre de la etapa del trabajo en la que estoy
+Etapa = Path("Func_sign") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Beta-Kappa"]
+Carpetas = ["Datos"]
 
 for carp in Carpetas:
     
@@ -82,9 +82,9 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
 
-    # func.Mapa_Colores_Entropia_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-    #                                       SIM_param_x, SIM_param_y,
-    #                                       ID_param_extra_1)
+    func.Mapa_Colores_Entropia_opiniones(Df_archivos, Direccion, Etapa/carpeta,
+                                         SIM_param_x, SIM_param_y,
+                                         ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
@@ -93,8 +93,8 @@ for carp in Carpetas:
 
     #----------------------------------------------------------------------------------------------
     
-    # func.Mapa_Colores_Traza_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
-    #                         SIM_param_x, SIM_param_y, ID_param_extra_1)
+    func.Mapa_Colores_Traza_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
+                                       SIM_param_x, SIM_param_y, ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
@@ -113,8 +113,8 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    func.Graf_Histogramas_Promedio(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
-                                   ID_param_x, ID_param_y, ID_param_extra_1)
+#    func.Graf_Histogramas_Promedio(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
+#                                   ID_param_x, ID_param_y, ID_param_extra_1)
     
 
 func.Tiempo(t0)
