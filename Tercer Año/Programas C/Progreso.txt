@@ -350,4 +350,49 @@ Mañana lo hablo con Pablo cualquier cosa.
 
 Ahora me voy a poner a estudiar Alemán. Después me pondré con lo de escribir la carta de motivación y el 
 CV. Por último, con algo de tiempo, quizás lea un paper. Mañana repasaré el tema de las simulaciones
-en el espacio Beta-Kappa, y de las simulaciones en un punto del espacio de parámetros.
+en el espacio Beta-Kappa, y de las simulaciones en un punto del espacio de parámetros.c
+
+------------------------------------------------------------------------------------------
+
+19/04/2023
+
+Lo primero que voy a hacer es comparar el gráfico de Func_sign en el espacio Beta-Kappa
+con el gráfico que tengo de esa misma región hecho en la etapa de opinión actualizada.
+Para eso voy a tomar la función que arma el gráfico del espacio de parámetros de Entropía
+y reducir la región de los ejes X e Y.
+
+Mientras se resuelve eso, voy a probar lo de revisar que las funciones de Clasificacion
+estén laburando bien. Aunque me descargué sólo gráficos con estados finales de Consenso.
+Busquemos primero dos o tres gráficos en estados de polarización. No encontré estados de
+polarización, pero encontré estados que tardaron mucho en resolver. ¿Estará funcionando
+mal la función de Clasificación?
+
+Voy a identificar los estados según su número de iteración.
+.) Iter=100: Los agentes convergen a un estado de Consenso radicalizado, en el punto [10,-10].
+Pero la función de clasificación dice que están todos en el lugar final. Lo cuál no tiene
+sentido, porque si el valor de Y es -10, en la asignación el valor de "fila" debería ser 0
+y por tanto la casilla marcada debería ser una de las primeras 42, no la última.
+.) Iter=110: Convergen al punto [10,-10]. Van al mismo lugar que los anteriores
+.) Iter=120: Convergen al punto [10,10]. Este sí le corresponde marcar en la última casilla
+del vector de Distribución. Pero claramente parece que la función está funcionando mal.
+.) Iter=130: Convergen al punto [10,10].
+
+Es al pedo seguir con esto, efectivamente la función de Clasificación está mal, pero lo está
+por un error muy boludo, y es que el ancho que usaba para ver si un número iba a una fila u otra
+era 0, entonces al dividir por cero daba infinito y todos los agentes iban a parar al mismo
+lugar. Así que eso está mal y tengo que rehacer todas las simulaciones corrigiendo simplemente
+ese detalle.
+ De paso, increíblemente, para el caso 1D sí hice bien el cálculo del ancho. Genial, eso significa
+que eso está bien hecho y no necesito rehacerlo. Lo cuál es genial, porque estas simulaciones
+eran más complejas de hacer porque no podía hacerlas en las pc's del cluster.
+
+Voy a cerrar el día de hoy con tres cosas.
+1) Mando a correr en Coimbra las simulaciones de un punto del espacio de nuevo. Esta vez corrijo
+la función de Clasificacion para que funcione correctamente.
+2) Mando en Oporto unas simulaciones extras de la región Beta-Kappa para intentar delinear mejor
+lo que observo. La idea es expandir la región, no la cantidad de simulaciones.
+3) Armo una carpetita con algunas simulaciones separadas del tema de datos de la ANES, así me queda
+más sencillo para mostrarle a Pablo después lo de algunas distribuciones razonables.
+
+Para el punto 2 hago un barrido extra, agregando valores de Kappa en los puntos intermedio.
+1.5, 2.5 y así.
