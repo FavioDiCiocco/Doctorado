@@ -215,7 +215,7 @@ void Clasificacion(puntero_Matrices red, puntero_Parametros param){
 	int Cd = (int) red->Hist[1]; // Este es el número de columnas de la matriz de histograma
 	int Fo = (int) red->Opi[0]; // Este es el número de filas de la matriz de opiniones
 	int Co = (int) red->Opi[1]; // Este es el número de columnas de la matriz de opiniones
-	double ancho = 2/param->bines; // Este es el ancho de cada cajita en la que separo el espacio de opiniones.
+	double ancho = (double) 2/param->bines; // Este es el ancho de cada cajita en la que separo el espacio de opiniones.
 	
 	// Normalizo mi histograma y la corro a la región [0,2]
 	for(int i =0; i< Fo*Co; i++) red->Opi[i+2] = red->Opi[i+2] / param->kappa + 1;

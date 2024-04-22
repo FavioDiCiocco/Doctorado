@@ -16,7 +16,7 @@ int main(int argc, char *argv[]){
 	// Empecemos con la base. Defino variables de tiempo para medir cuanto tardo y cosas básicas
 	time_t tprin, tfin, semilla;
 	time(&tprin);
-	semilla = time(NULL);
+	semilla = 1713318762;
 	srand(semilla); // Voy a definir la semilla a partir de time(NULL);
 	float Tiempo; // Este es el float que le paso al printf para saber cuanto tardé
 	
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
 	red = malloc(sizeof( struct_Matrices )); 
 	
 	//#############################################################################################
-		
+	
 	// Defino los parámetros de mi modelo. Esto va desde número de agentes hasta el paso temporal de integración.
 	// Primero defino los parámetros que requieren un input.
 	param->N = strtol(argv[1],NULL,10); // Cantidad de agentes en el modelo

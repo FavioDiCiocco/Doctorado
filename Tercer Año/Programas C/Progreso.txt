@@ -396,3 +396,50 @@ más sencillo para mostrarle a Pablo después lo de algunas distribuciones razon
 
 Para el punto 2 hago un barrido extra, agregando valores de Kappa en los puntos intermedio.
 1.5, 2.5 y así.
+
+------------------------------------------------------------------------------------------
+
+22/04/2023
+
+A la mañana fui a la última clase del curso de "Becas:Help!". Tomé algunas notas sobre cómo
+mejorar el CV y discutimos con los demás consejos para buen CV.
+
+Lo que voy a hacer ahora es armar el gráfico del mapa de entropía para la función signo,
+y después ver cuál es la proba de que un estado esté polarizado para el caso 1D y para el
+caso 2D.
+ Miré los archivos armados. Por motivos que no comprendo, faltan archivos, otros están armados
+a la mitad. Hubo un corte, es imposible que no haya habido un corte.
+
+Tengo descargados los archivos de agentes en un punto del espacio de parámetros, en los cuales
+me guardé la distribución de opiniones finales, no las opiniones finales. Lo que tengo que hacer
+ahora es con Python, levantar los datos, reordenarlo en el formato de una matriz y desde ahí
+construir los gráficos de histogramas. Además de eso, lo otro que tengo que hacer es calcular
+la proba de que un estado sea polarizado en el caso 1D y de que polarice en ambos tópicos
+en el caso 2D.
+
+1) Armo histogramas a partir de la distribución de opiniones.
+2) Clasifico esos estados según los criterios definidos previamente.
+3) Calculo la proba de tener estados polarizados en 1D y la proba de tener estados con
+polarización descorrelacionada en 2D. (¿Debería comparar con polarización descorrelacionada?
+¿Cómo es la proba si considero polarización 1D?)
+
+De estas tres cosas que quería hacer, no hice ninguna. Siento que hoy podría haber hecho
+más, pero estuve trabado toda la tarde. También hice muchas pequeñas cosas. Voy
+a ponerme a pensar mejor cómo trabajar esto y ya el miércoles veré de resolverlo más claro.
+Mañana voy a estudiar para el final de Mininni y después marcha.
+
+Hablando con Pablo, él me dijo de que descargue yo los datos de la ANES para revisarlos,
+así voy trabajando eso por mi cuenta. Debería separar preguntas políticas y no políticas,
+así como separarlas según sus distribuciones. Después con eso ver qué tipo de gráficos
+me quedan así tengo una buena idea de qué cosas espero observar. Mirar el paper de Baumann
+y el de Hugo vendría bien para repasar qué es lo que estoy queriendo buscar.
+
+Hoy y mañana me voy a poner a pensar cómo construir mis nuevas funciones en Python, cosa
+de ya cuando em vuelva a sentar, ponerme a escribirlo de una y no volver a trabarme con
+el cómo armar las funciones en el caso de Probas_Pol.
+
+Por último, Pablo me propuso que arme más estadística a las simulaciones de Func_Sign,
+no que barra más fino. Debería cancelar lo que mandé a correr y mandar de nuevo
+con más estadística. Más que nada porque sino voy a tener un problema al querer armar
+el gráfico porque algunos puntos van a tener más estadística y otros menos.
+Lo que voy a hacer es mañana borrar las simulaciones con valores de Kappa fraccionarios.
