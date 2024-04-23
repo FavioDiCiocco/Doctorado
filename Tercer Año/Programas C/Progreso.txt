@@ -443,3 +443,21 @@ no que barra más fino. Debería cancelar lo que mandé a correr y mandar de nue
 con más estadística. Más que nada porque sino voy a tener un problema al querer armar
 el gráfico porque algunos puntos van a tener más estadística y otros menos.
 Lo que voy a hacer es mañana borrar las simulaciones con valores de Kappa fraccionarios.
+
+------------------------------------------------------------------------------------------
+
+23/04/2023
+
+Ya borré esos archivos con valores de Kappa fraccionarios, mientras en Oporto se completan
+simulaciones para llegar a tener 100 en ese barrido.
+
+Ayer me quedé pensando en lo que dijo Sebas. Quizás es mejor seguir guardando las opiniones
+finales de los agentes. Y además, me hice un quilombo queriendo usar la función de Hugo para
+las simulaciones 1D. ¿Por qué no usar mis simulaciones? Si dan similares los resultados,
+no tiene sentido diferenciar unas de otras. Podría usar mis simulaciones y con eso armarme
+en Coimbra las 1000 simulaciones para el caso 1D y para el caso 2D. Mandemos hoy las 2D 
+guardando las opiniones finales y después veo qué hago mañana.
+
+Hablando con Pablo, los dos pilares para la próxima charla es trabajar con los datos y poner
+en orden el análisis teórico. Así que por lo visto, no es central esto que estoy haciendo.
+Pero como ya empecé, tengo que aprovechar y presentarlo.
