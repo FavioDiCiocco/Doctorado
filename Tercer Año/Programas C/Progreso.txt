@@ -461,3 +461,14 @@ guardando las opiniones finales y después veo qué hago mañana.
 Hablando con Pablo, los dos pilares para la próxima charla es trabajar con los datos y poner
 en orden el análisis teórico. Así que por lo visto, no es central esto que estoy haciendo.
 Pero como ya empecé, tengo que aprovechar y presentarlo.
+
+------------------------------------------------------------------------------------------
+
+24/04/2023
+
+A la mañana lo primero que hice fue mandar a correr la tanda de simulaciones 1D de Probas_Pol
+en la pc de Coimbra. Lo siguiente que voy a hacer es repasar las ecuaciones dinámicas cosa de tener
+algo que presentarle a Pablo mañana y organizar los datos para la presentación.
+
+Estuve avanzando con esto, aunque en eso vamos. Mañana me voy a poner en la mañana a estudiar
+un poco de lo de Mininni y después seguiré con esto un poco más.
