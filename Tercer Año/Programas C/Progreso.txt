@@ -472,3 +472,26 @@ algo que presentarle a Pablo mañana y organizar los datos para la presentación
 
 Estuve avanzando con esto, aunque en eso vamos. Mañana me voy a poner en la mañana a estudiar
 un poco de lo de Mininni y después seguiré con esto un poco más.
+
+------------------------------------------------------------------------------------------
+
+26/04/2023
+
+En el día de ayer estuve trabajando en el análisis de la ecuación dinámica básicamente todo
+el día. Fui a una reunión de grupo y llegué tarde por el tema de estar esperando el link para
+la charla por el Repositorio de Investigación.
+
+Hoy llegué, revisé el tema del análisis dinámico, charlé con Sebas y me propuso considerar un
+análisis matricial similar a lo que veíamos en Mate 3. Igual creo que lo mejor sería probar
+hacer lo que dijo Hugo, de hacer simulaciones sobre el análisis perturbativo y ver qué da eso.
+
+Las simulaciones en Coimbra están terminadas. Las de Oporto todavía no. Debería por un lado
+armar lo de Coimbra, cosa de tener por lo menos ese resultado. Pero creo que puedo dejar
+eso para el próximo lunes sin dramas. Yo hoy me pondría a ver el tema de descargar datos de la
+ANES. Voy a revisar la ANES, ver qué se puede descargar, qué preguntas hay y hacer esa separación
+que me dijo Pablo de preguntas políticas y preguntas apolíticas, cosa de tener un conjunto
+saludable de preguntas a revisar.
+
+Ahí estuve viendo un poco de alemán, ahora sigamos con lo del modelo de opiniones. Descargué
+los datos de la ANES, habrá que ver de armar el conjunto de preguntas que querramos observar.
+Eso tomará un tiempo. 
