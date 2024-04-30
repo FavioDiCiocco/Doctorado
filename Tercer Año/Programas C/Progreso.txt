@@ -495,3 +495,99 @@ saludable de preguntas a revisar.
 Ahí estuve viendo un poco de alemán, ahora sigamos con lo del modelo de opiniones. Descargué
 los datos de la ANES, habrá que ver de armar el conjunto de preguntas que querramos observar.
 Eso tomará un tiempo. 
+
+------------------------------------------------------------------------------------------
+
+29/04/2023
+
+Llegué al horario usual. Me puse a revisar mails y cosas que quedaron pendientes. Ahora que
+resolví eso, me pongo con las cosas que dejé corriendo.
+
+1) Ver lo de la entropía en el espacio Beta-Kappa para la función Signo.
+2) Determinar la fracción de estados polarizados en el caso 1D y en el caso 2D.
+Usaré el algoritmo que tengo para eso y compararé con tomar 200 gráficos de histogramas
+3) Leer un paper
+4) Seguir laburando los datos de la ANES.
+
+El punto 1 ahora no voy a poder, no terminó de correr eso.
+Para el punto 2 necesito armar funciones que trabajen con un sistema 2D y un sistema 1D.
+
+Logré armar uno de los gráficos de torta que quería, pero claramente esto no es lo más
+interesante para charlar en la próxima reunión. Lo que deberíamos charlar en la próxima
+reunión es el trabajo con los datos, de los cuales apenas armé unos gráficos nuevos
+y después descargué los datos de la ANES de 2020. Así que la cosa viene lento en
+ese tramo. Habrá que hacer nuevas cosas si quiero avanzar. Ahora voy a leer rápido
+el paper de Sebas respecto a lo de Granovetter, al final no recuerdo si ese fue el
+paper que leí o no. O si leí un paper en algún momento. Dicho eso, lo que sigue es
+ponerme a revisar las preguntas y cosas del modelo. Así que hagamos esto y preparemos
+para ir a casa temprano hoy. Iré a buscar el documento que necesitaba la semana que viene.
+
+La idea sería primero que nada tomar las preguntas que tenemos y separarlas en función de
+si son políticas o no. ¿Qué definimos como preguntas políticas? La respuesta es que las
+preguntas políticas son aquellas que los demócratas o republicanos responderían distinto,
+mientras que las apolíticas son aquellas que no apelan a esa identidad partidaria.
+
+Anotemos esto en el código. Ahí hice la separación, básicamente todas las preguntas
+son políticas. Razonable. Veré mañana si puedo encontrar unas ocho o diez no
+políticas y de ahí veré cómo resuelvo esto. Pero el armado de los gráficos de histogramas
+funciona de una.
+
+------------------------------------------------------------------------------------------
+
+30/04/2023
+
+No llegué más temprano que lo usual, pero casi. Armé los gráficos de las distribuciones
+de las opiniones diferenciando preguntas políticas y no políticas. Habiendo charlado con
+Pablo, la pregunta sería ver si estas preguntas políticas cruzadas con ellas mismas me
+generan gráficos distintos a cruzarlas con las preguntas no políticas. Aunque siento
+que las preguntas no políticas apenas tengo casos que mirar, quizás valga la pena revisar
+la ANES nueva y de ahí ver qué puedo extraer. Al final del día, la forma de levantar
+datos que usa Hugo me podría servir para la nueva ANES creo yo, simplemente tengo que levantar
+el csv y convertirlo en un pandas.
+
+Lo siguiente que puedo hacer entonces son los gráficos de la distribución en el espacio de
+opiniones y de ahí ver qué puedo rescatar. Comparemos preguntas políticas con otras políticas
+y apolíticas con apolíticas. De ahí vamos armando los gráficos. Una vez que tenga los gráficos,
+ampliar el conjunto de preguntas, porque no me satisface lo que tengo. No creo que tenga
+suficientes apolíticas.
+
+Antes que esto, Pablo me dijo de aplicar la medida de la distancia Jensen Shannon. Olvidemos
+lo anterior, hagamos esto YA. No tengo una distribución para comparar, pero podría aprovechar
+dos distribuciones que tengo acá y medirles su distancia Jensen-Shannon, ver que la idea se
+puede y que da razonable. Bien, ya vi que calcula y cómo hacer la cuenta. En su momento será
+un bardo ver cómo clasificar los gráficos según si son preguntas de 6 casilleros o 7.
+
+Hice la cuenta sobre los datos de la ANES 2020, aprox. tiene 1200 preguntas. Veamos de levantar
+los datos de la ANES 2020. Bien, los datos parece que se levantan sin problemas.
+
+Preguntas Políticas 2020:
+-------------------------
+1) V201200: SCALE LIBERAL-CONSERVATIVE SELF-PLACEMENT (7 Opciones)
+2) V201225x: VOTING AS DUTY OR CHOICE (7 Opciones)
+3) V201231x: PARTY IDENTITY (7 Opciones)
+4) V201246: SPENDING & SERVICES: SELF-PLACEMENT (7 Opciones)
+5) V201249: DEFENSE SPENDING: SELF-PLACEMENT (7 Opciones)
+6) V201252: GOV-PRIVATE MEDICAL INSURANCE SCALE: SELF-PLACEMENT (7 Opciones)
+7) V201255: GUARANTEED JOB-INCOME SCALE: SELF-PLACEMENT (7 Opciones)
+8) V201258: GOV ASSISTANCE TO BLACKS SCALE: SELF-PLACEMENT (7 Opciones)
+9) V201262: ENVIRONMENT-BUSINESS TRADEOFF: SELF-PLACEMENT (7 Opciones)
+10) V201342x: ABORTION RIGHTS SUPREME COURT (7 Opciones)
+11) V201345x: FAVOR/OPPOSE DEATH PENALTY (4 Opciones)
+12) V201356x: FAVOR/OPPOSE VOTE BY MAIL (7 Opciones)
+13) V201362x: FAVOR/OPPOSE ALLOWING FELONS TO VOTE (7 Opciones)
+14) V201372x: HELPFUL/HARMFUL IF PRES DIDN’T HAVE TO WORRY ABOUT CONGRESS/COURTS (7 Opciones)
+15) V201375x: RESTRICTING JOURNALIST ACCESS (7 Opciones)
+16) V201382x: CORRUPTION INCREASED OR DECREASED SINCE TRUMP (7 Opciones)
+17) V201386x: HOUSE IMPEACHMENT DECISION (7 Opciones)
+18) V201405x: REQUIRE EMPLOYERS TO OFFER PAID LEAVE TO PARENTS OF NEW CHILDREN (7 Opciones)
+19) V201408x: SERVICES TO SAME SEX COUPLES (6 Opciones)
+20) V201411x: TRANSGENDER POLICY (6 Opciones)
+21) V201420x: BIRTHRIGHT CITIZENSHIP (7 Opciones)
+22) V201423x: SHOULD CHILDREN BROUGHT ILLEGALLY BE SENT BACK OR ALLOWED TO STAY (7 Opciones)
+23) V201426x: WALL ON BORDER WITH MEXICO (7 Opciones)
+24) V201429: BEST WAY TO DEAL WITH URBAN UNREST (7 Opciones)
+
+
+
+Preguntas Apolíticas 2020:
+--------------------------
