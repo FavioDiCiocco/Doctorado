@@ -48,7 +48,7 @@ t0 = time.time()
 
 # Cargo el archivo de datos total
 
-filename = "../ANES_2020/anes_timeseries_2020.dta"
+filename = "../Anes_2020/anes_timeseries_2020.dta"
 df_raw_data = pd.read_stata(filename)
 
 #############################################################################################
