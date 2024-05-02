@@ -54,11 +54,20 @@ df_raw_data = pd.read_stata(filename)
 #############################################################################################
 
 # Brief description of the codes
-dict_labels = {'V201302x':'Federal Budget Spending: Social Security',
-               'V201308x':'Federal Budget Spending: Tightening Border Security',
-               'V201311x':'Federal Budget Spending: Dealing with crime'}
+dict_labels = {'V201200':'Liberal-Conservative self Placement', 'V201225x':'Voting as duty or choice','V201231x':'Party Identity',
+               'V201246':'Spending & Services', 'V201249':'Defense Spending', 'V201252':'Gov-private Medical Insurance',
+               'V201255':'Guaranteed job Income', 'V201258':'Gov Assistance to Blacks', 'V201262':'Environment-Business Tradeoff',
+               'V201342x':'Abortion Rights Supreme Court', 'V201345x':'Death Penalty','V201356x':'Vote by mail',
+               'V201362x':'Allowing Felons to vote', 'V201372x':'Helpful-Harmful if Pres didnt have to worry about Congress',
+               'V201375x':'Restricting Journalist access', 'V201382x':'Corruption increased or decreased since Trump',
+               'V201386x':'House impeachment decision', 'V201405x':'Require employers to offer paid leave to parents',
+               'V201408x':'Allow to refuse service to same sex couples', 'V201411x':'Transgender Policy', 'V201420x':'Birthright Citizenship',
+               'V201423x':'Should children brought illegally be sent back','V201426x':'Wall on border with Mexico',
+               'V201429':'Best way to deal with Urban Unrest'}
 
-labels = ['V201302x','V201308x','V201311x']
+labels = ['V201200','V201225x','V201231x','V201246','V201249','V201252','V201255','V201258','V201262','V201342x','V201345x',
+          'V201356x','V201362x','V201372x','V201375x','V201382x','V201386x','V201405x','V201408x','V201411x','V201420x',
+          'V201423x','V201426x','V201429']
 
 #############################################################################################
 
@@ -86,7 +95,6 @@ for i,code_1 in enumerate(labels):
         sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
                       joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
                       marginal_kws={'discrete': True, 'weights': df_aux[weights]})
-        
         plt.xlabel(dict_labels[code_1])
         plt.ylabel(dict_labels[code_2])
         plt.gca().invert_yaxis()

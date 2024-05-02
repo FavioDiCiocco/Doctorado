@@ -591,3 +591,38 @@ Preguntas Políticas 2020:
 
 Preguntas Apolíticas 2020:
 --------------------------
+
+
+------------------------------------------------------------------------------------------
+
+01/05/2023
+
+Volví del cumpleaños de Estaban. Ahora queda ponerme a hacer algunas cosas, empezar a preparar
+la presentación de mañana. Se me hace importante primero revisar que las preguntas que
+arme tengan gráficos útiles. Si eso es así, lo siguiente será ir viendo quizás de empezar
+la presentación. Si no es así, me pongo a buscar algunas preguntas más.
+
+Por algún motivo que no comprendo, mi función me está tirando errores, a pesar de que no
+tiene nada distinto a lo que tenía ayer. Resolveré esto mañana en la facultad.
+
+Hagamos un esquema de la charla:
+--------------------------------
+
+1) Les comento que estuve mirando las preguntas que estaban en el archivo que me pasó Hugo
+y revisando esos gráficos que producen para ver cuáles gráficos podríamos querer comparar
+con nuestros datos, en caso de querer observar tal o cual estado.
+ Muestro varios gráficos y coloco al lado las distribuciones con las que digo que se podrían
+comparar.
+2) No creo que de ninguna forma me dé el tiempo, pero podría intentar medir la distancia
+Jensen-Shannon de algún gráfico en particular con la de una de las distribuciones obtenidas
+de la ANES.
+3) Les cuento que bajé los datos de la ANES 2020, logré leer los datos, los cuáles tienen un
+formato muy similar, y construir gráficos parecidos. Para eso estuve revisando la guía de
+datos y de ahí seleccionando preguntas que podrían ser relevantes o útiles.
+¿Por qué queremos la encuesta más nueva?
+4) Debería definir una región en la cuál realizar las simulaciones de 10000 agentes.
+Eso debería poder hacerlo posiblemente si tengo una idea de qué gráficos quiero buscar.
+En Beta razonablemente tenga que ir entre [0,1] y Cos(delta) entre [0,0.15]. Un barrido
+medio crudo sería de a 0.05 para Beta y 0.01 para Cos(delta). Necesito saber cuánto va
+a tardar esto.
+5) Si queda lugar, mostrar alguno de los otros resultados.

@@ -6,7 +6,6 @@ Created on Wed Nov 15 11:32:31 2023
 """
 #############################################################################################
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm 
 import pandas as pd
 import seaborn as sns
 import numpy as np
@@ -128,8 +127,8 @@ plt.show()
 #############################################################################################
 
 # Gráfico de dos preguntas simultáneas con distribuciones individuales en los ejes
-
 """
+
 weights = 'V160101'
 for i,code_1 in enumerate(labels_pre):
     for code_2 in labels_pre[i+1::]:
@@ -167,14 +166,14 @@ for i,code_1 in enumerate(labels_post):
         direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/Datos/{}vs{}.png".format(code_1,code_2))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
-"""
 
+"""
 #############################################################################################
 
 # Voy a armar los gráficos de las distribuciones de mis preguntas, cosa de tener
 # visto cómo se distribuyen los histogramas de cada una. También los voy a separar
 # en políticas y no políticas
-"""
+
 politicas_pre = ['V161114x','V161151x','V161158x','V161194x','V161195x','V161196x','V161198','V161204x',
              'V161213x','V161214x','V161225x','V161226x','V161227x','V161228x']
 
@@ -274,7 +273,7 @@ for i,code_1 in enumerate(no_politicas_post):
         direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/Distribucion preguntas/No politicas/{}vs{}.png".format(code_1,code_2))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
-"""
+
 #############################################################################################
 
 # Voy a calcular la distancia Jensen-Shannon para ver que tengo entendido cómo
