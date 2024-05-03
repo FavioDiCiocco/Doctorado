@@ -53,9 +53,9 @@ def ldata(archive):
 
 
 rng = np.random.default_rng() # Objeto de numpy que genera distribuciones
-N = 1000
+N = 10000
 
-for gmedio in range(4,11):
+for gmedio in range(9,11):
     for elemento in range(100):
         probabilidad = gmedio/(N-1)
         graph1 = nx.erdos_renyi_graph(n=N,p=probabilidad)

@@ -626,3 +626,58 @@ En Beta razonablemente tenga que ir entre [0,1] y Cos(delta) entre [0,0.15]. Un 
 medio crudo sería de a 0.05 para Beta y 0.01 para Cos(delta). Necesito saber cuánto va
 a tardar esto.
 5) Si queda lugar, mostrar alguno de los otros resultados.
+
+------------------------------------------------------------------------------------------
+
+02/05/2023
+
+A la mañana preparé la presentación para la gente de GOTHAM. Armé los gráficos de las
+distribuciones 2D y de ahí fui armando alguna idea de las cosas importantes.
+
+Después de la reunión, fui al coloquio de Darío, aunque no pude ver mucho, volví para
+anotar algunas cosas y después me fui a casa. Estuve como cuatro horas viajando para 
+ir a buscar el documento que faltaba por el tema de la nacionalidad italiana. Todavía
+sin suerte.
+
+No pude mandar a correr el barrido en el espacio de parámetros para el caso de 10000
+agentes. Mañana es lo primero que mando a hacer en la mañana.
+
+------------------------------------------------------------------------------------------
+
+03/05/2023
+
+No estoy pudiendo mandar a correr simulaciones en la pc de Coimbra, no sé qué error está
+encontrando el código. Voy a rehacer un código único desde la pc de la facultad y subir
+eso a las tres pc's y de ahí mando a correr todo. A este código le falta las funciones
+de Clasificación y los vectores asociados.
+
+Mandé a correr en mi pc un archivo de 10000 agentes, veamos cuánto tarda en resolverse.
+Es un estado con Beta 0, debería converger a un estado de Consenso Radicalizado. Está
+tardando más de una hora esto. Es un muy mal presagio esto.
+
+Mientras termina de correr el programa con 10000 agentes, voy a descargar los datos de
+la ANES de años anteriores. Descargué las encuestas de 2012, 2008 y 2004.
+La de 2012 parece que tiene un formato muy similar a las últimas 2, esa creo que se
+podría agregar a lo visto sin mucho problema. Pero la de 2008 y la de 2004 tienen un
+formato muy distinto y no estoy seguro de tener los archivos correctos para observar
+las preguntas consideradas.
+
+La de 2008 tiene un codebook separado para la encuesta pre y otro para la encuesta 
+post. Habría que repasar el codebook para separar las preguntas. Lo bueno es que
+parece que también usan números negativos para respuestas fuera de formato, pero
+algunas preguntas tienen MUCHÍSIMAS respuestas con números por fuera de los primeros
+10, habrá que revisar si son un problema o si se pueden ignorar.
+
+NO TERMINÉ DE VER CÓMO ES EL FORMATO DE LA ANES 2004. TAMBIÉN TENGO QUE VER DE LEVANTAR
+LOS DATOS, VER SI ME TIRA ALGÚN ERROR.
+
+Justo terminó el código en la pc de la facultad. Por lo visto corre y llega a un resultado
+razonable. El problema es la cantidad de tiempo que tarda. Tardó 11813 segundos en resolver
+7000 pasos. Una locura es eso. Para 1000 agentes tardó simplemente 40 segundos. Las escalas
+son completamente distintas. Veamos si funciona con los datos de clasificación. De paso,
+el archivo apenas ocupa 900 kb. Casi un mega. Si tengo 100 simulaciones, para 36 puntos,
+eso es aprox. 3 GB. Puedo simplemente guardarme las opiniones finales por ahora.
+
+El código con la clasificación funca perfecto en la pc. Igual, quedémonos sólo con lo
+importante, que serían las opiniones finales y la semilla. Comitteo esto y ya mañana
+mando a correr todo. ACORDATE DE USAR UNA SOLA CARPETA DE REDES DE ADYACENCIA.

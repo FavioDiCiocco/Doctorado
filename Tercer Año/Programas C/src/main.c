@@ -16,7 +16,7 @@ int main(int argc, char *argv[]){
 	// Empecemos con la base. Defino variables de tiempo para medir cuanto tardo y cosas básicas
 	time_t tprin, tfin, semilla;
 	time(&tprin);
-	semilla = 1713318762;
+	semilla = time(NULL);
 	srand(semilla); // Voy a definir la semilla a partir de time(NULL);
 	float Tiempo; // Este es el float que le paso al printf para saber cuanto tardé
 	
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]){
 	red = malloc(sizeof( struct_Matrices )); 
 	
 	//#############################################################################################
-	
+		
 	// Defino los parámetros de mi modelo. Esto va desde número de agentes hasta el paso temporal de integración.
 	// Primero defino los parámetros que requieren un input.
 	param->N = strtol(argv[1],NULL,10); // Cantidad de agentes en el modelo
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
 	param->NormDif = sqrt(param->N*param->T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	param->CritCorte = pow(10,-3); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
 	param->bines = 42; // Esta es la cantidad de cajas por eje con la que construyo el histograma. Uso 42 porque es un múltiplo de 6 y 7.
-	param->testigos = param->N; // fmin(param->N,50) Esta es la cantidad de agentes de cada distancia que voy registrar
+	param->testigos = fmin(param->N,50); // Esta es la cantidad de agentes de cada distancia que voy registrar
 	
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
@@ -123,7 +123,6 @@ int main(int argc, char *argv[]){
 	red->Hist[0] = param->bines; // Pongo el número de filas en la primer coordenada
 	red->Hist[1] = param->bines; // Pongo el número de columnas en la segunda coordenada
 	
-	
 	//################################################################################################################################
 	
 	// Abro los archivos en los que guardo datos y defino mi puntero a función.
@@ -133,15 +132,9 @@ int main(int argc, char *argv[]){
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char TextOpi[355];
-	sprintf(TextOpi,"../Programas Python/Probas_Pol/2D_local/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
+	sprintf(TextOpi,"../Programas Python/Comparacion_datos/Beta-Cosd/Opiniones_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
 		,param->N, param->kappa, param->beta, param->Cosd, iteracion);
 	FILE *FileOpi = fopen(TextOpi,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
-	
-	// Este archivo es el que guarda las opiniones de todos los agentes del sistema.
-	char TextTestigos[355];
-	sprintf(TextTestigos,"../Programas Python/Probas_Pol/2D_local/Testigos_N=%d_kappa=%.1f_beta=%.2f_cosd=%.2f_Iter=%d.file"
-		,param->N, param->kappa, param->beta, param->Cosd, iteracion);
-	FILE *FileTestigos = fopen(TextTestigos,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 	
 	// Este archivo es el que levanta los datos de la matriz de Adyacencia de las redes generadas con Python
 	char TextMatriz[355];
@@ -171,11 +164,6 @@ int main(int argc, char *argv[]){
 	fprintf(FileOpi,"Opiniones Iniciales\n");
 	Escribir_d(red->Opi,FileOpi);
 	
-	// Me guardo los valores de opinión de mis agentes testigos
-	fprintf(FileTestigos,"Opiniones Testigos\n");
-	for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] );
-	fprintf(FileTestigos,"\n");
-	
 	// Sumo el estado inicial de las opiniones de mis agentes en el vector de Prom_Opi. Guardo esto en la primer fila
 	for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[j+2] += red->Opi[j+2];
 	
@@ -195,8 +183,7 @@ int main(int argc, char *argv[]){
 	// Realizo la simulación del modelo hasta que este alcance un estado estable
 	// También preparo para guardar los valores de Varprom en mi archivo
 	
-	for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] );
-	fprintf(FileTestigos,"\n");
+	fprintf(FileOpi,"Variación promedio \n");
 	
 	while(contador < param->Iteraciones_extras && pasos_simulados < pasos_maximos){
 		
@@ -213,23 +200,20 @@ int main(int argc, char *argv[]){
 			// Actualización de índices
 			pasos_simulados++; // Avanzo el contador de la cantidad de pasos simulados
 			
-			// Cálculos derivados
-			if( pasos_simulados%100==0 ){
-				// Escritura
-				for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] );
-				fprintf(FileTestigos,"\n");
-			}
-			
 			if( pasos_simulados%ancho_ventana==0 ){
 				// Mido la variación de promedios
 				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] = red->Prom_Opi[ j+param->N*param->T+2 ] / ancho_ventana;
 				for(int j=0; j<param->N*param->T; j++) red->Dif[j+2] = red->Prom_Opi[ j+param->N*param->T+2 ] - red->Prom_Opi[j+2];
-				red->Variacion_promedio = Norma_d(red->Dif) / param->NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo
+				red->Variacion_promedio = Norma_d(red->Dif) / param->NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
+				
+				// Escritura
+				fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio
 				
 				// Reinicio los promedios
 				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[j+2] = red->Prom_Opi[ j+param->N*param->T+2 ];
 				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] = 0;
 			}
+
 		}
 		while( red->Variacion_promedio > param->CritCorte && pasos_simulados < pasos_maximos);
 		
@@ -246,18 +230,14 @@ int main(int argc, char *argv[]){
 			contador++; // Avanzo el contador para que el sistema haga una cantidad $i_Itextra de iteraciones extras
 			pasos_simulados++; // Avanzo el contador de la cantidad de pasos simulados
 			
-			// Cálculos derivados
-			if( pasos_simulados%100==0 ){
-				// Escritura
-				for(int j=0; j<param->testigos; j++) for(int k=0; k<param->T; k++) fprintf(FileTestigos, "%lf\t", red->Opi[ j*param->T +k+2 ] );
-				fprintf(FileTestigos,"\n");
-			}
-			
 			if( pasos_simulados%ancho_ventana==0 ){
 				// Mido la variación de promedios
 				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] = red->Prom_Opi[ j+param->N*param->T+2 ] / ancho_ventana;
 				for(int j=0; j<param->N*param->T; j++) red->Dif[j+2] = red->Prom_Opi[ j+param->N*param->T+2 ] - red->Prom_Opi[j+2];
-				red->Variacion_promedio = Norma_d(red->Dif) / param->NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo
+				red->Variacion_promedio = Norma_d(red->Dif) / param->NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
+				
+				// Escritura
+				fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio
 				
 				// Reinicio los promedios
 				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[j+2] = red->Prom_Opi[ j+param->N*param->T+2 ];
@@ -275,6 +255,8 @@ int main(int argc, char *argv[]){
 	
 	// Guardo las últimas cosas, libero las memorias malloqueadas y luego termino
 	
+	// Guardo las opiniones finales, la matriz de adyacencia y la semilla en el primer archivo.
+	fprintf(FileOpi, "\n");
 	fprintf(FileOpi, "Opiniones finales\n");
 	Escribir_d(red->Opi, FileOpi);
 	Clasificacion(red,param);
@@ -300,11 +282,9 @@ int main(int argc, char *argv[]){
 	free( red->Prom_Opi );
 	free( red->Dif );
 	free( red->Exp );
-	free( red->Hist );
 	free( red );
 	free( param );
 	fclose( FileOpi );
-	fclose( FileTestigos );
 	
 	// Finalmente imprimo el tiempo que tarde en ejecutar todo el programa
 	time(&tfin);

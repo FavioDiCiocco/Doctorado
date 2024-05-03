@@ -135,6 +135,7 @@ void Visualizar_i(int *vec){
 	printf("\n");
 }
 
+
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 // La función esta va a recibir un array que es el sistema a evolucionar, la función dinámica para realizar la evolución,
