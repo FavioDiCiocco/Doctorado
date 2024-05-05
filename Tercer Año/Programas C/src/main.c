@@ -47,7 +47,7 @@ int main(int argc, char *argv[]){
 	param->delta = 0.002*param->kappa; // Es un término que se suma en la homofilia y ayuda a que los pesos no diverjan.
 	param->NormDif = sqrt(param->N*param->T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	param->CritCorte = pow(10,-3); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
-	param->bines = 42; // Esta es la cantidad de cajas por eje con la que construyo el histograma. Uso 42 porque es un múltiplo de 6 y 7.
+	// param->bines = 42; // Esta es la cantidad de cajas por eje con la que construyo el histograma. Uso 42 porque es un múltiplo de 6 y 7.
 	param->testigos = fmin(param->N,50); // Esta es la cantidad de agentes de cada distancia que voy registrar
 	
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
@@ -115,7 +115,7 @@ int main(int argc, char *argv[]){
 	red->Prom_Opi[0] = 2; // Pongo el número de filas en la primer coordenada
 	red->Prom_Opi[1] = param->N*param->T; // Pongo el número de columnas en la segunda coordenada
 	
-	// Matriz de cálculo de exponencial para cada agetne. Es de tamaño N*T
+	// Matriz de cálculo de exponencial para cada agente. Es de tamaño N*T
 	red->Exp[0] = param->N; // Pongo el número de filas en la primer coordenada
 	red->Exp[1] = param->T; // Pongo el número de columnas en la segunda coordenada
 	
@@ -259,16 +259,16 @@ int main(int argc, char *argv[]){
 	fprintf(FileOpi, "\n");
 	fprintf(FileOpi, "Opiniones finales\n");
 	Escribir_d(red->Opi, FileOpi);
-	Clasificacion(red,param);
-	// Guardo las opiniones finales, la matriz de adyacencia y la semilla en el primer archivo.
-	fprintf(FileOpi, "Distribucion opiniones\n");
-	Escribir_d(red->Hist, FileOpi);
+	// Clasificacion(red,param);
+	// // Guardo las opiniones finales, la matriz de adyacencia y la semilla en el primer archivo.
+	// fprintf(FileOpi, "Distribucion opiniones\n");
+	// Escribir_d(red->Hist, FileOpi);
 	fprintf(FileOpi, "Pasos Simulados\n");
 	fprintf(FileOpi, "%d\n", pasos_simulados);
 	fprintf(FileOpi, "Semilla\n");
 	fprintf(FileOpi, "%ld\n", semilla);
-	fprintf(FileOpi, "Matriz de Adyacencia\n"); // Guardo esto para poder comprobar que la red sea conexa.
-	for(int i=0; i<param->N; i++) Escribir_i(red->Ady[i+2], FileOpi);
+	fprintf(FileOpi, "Primeras filas de la Matriz de Adyacencia\n"); // Guardo esto para poder corroborar cuál es la Matriz de Adyacencia.
+	for(int i=0; i<10; i++) Escribir_i(red->Ady[i+2], FileOpi);
 	
 	
 	// Libero los espacios dedicados a mis vectores y cierro mis archivos

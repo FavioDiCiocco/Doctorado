@@ -681,3 +681,31 @@ eso es aprox. 3 GB. Puedo simplemente guardarme las opiniones finales por ahora.
 El código con la clasificación funca perfecto en la pc. Igual, quedémonos sólo con lo
 importante, que serían las opiniones finales y la semilla. Comitteo esto y ya mañana
 mando a correr todo. ACORDATE DE USAR UNA SOLA CARPETA DE REDES DE ADYACENCIA.
+
+------------------------------------------------------------------------------------------
+
+04/05/2023
+
+Hoy a la tarde mandé a correr las simulaciones en las tres pc's, pero esto va a tomar
+una eternidad. Hablar con Pablo y contarle que voy a meterme un momento en el código a ver
+si hay algo que pueda hacer para hacerlo correr más rápido.
+
+------------------------------------------------------------------------------------------
+
+05/05/2023
+
+Mirando el código, encontré algo que claramente está gastando mucho tiempo. Estoy calculando
+varias veces el mismo peso. Tengo que hacerlo de forma tal de calcularlo una sola vez. Eso
+va a reducir en mucho el tiempo de simulación. Ese error está en la función de GENERAR_SEPARACIÓN.
+
+Otra cosa que no tiene que ver con tiempos de simulación pero que estaría bueno cambiar
+es el hecho de que la matriz que guarda las tanh se llama Exp. Habrá quedado de otro código,
+cambiar eso.
+
+Lo tercero que se me ocurre que puede servir para achicar los tiempos es reducir primero
+el ancho de la ventana de promedio, de 1000 a 500, y después cambiar el número de iteraciones
+extras que el sistema necesita para cortar a 1500. En especial porque muchas simulaciones que
+cortan rápido hacen 7000 pasos totalmente al pedo, cuando con 4000 o 3000 habrían terminado.
+
+Estoy pensando en quizás cambiar la cantidad de pasos_maximos, pero Hugo y demás usaban esa
+misma cantidad de pasos máximos, me parece que cambiar sería una mala idea.
