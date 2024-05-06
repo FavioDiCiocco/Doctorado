@@ -709,3 +709,29 @@ cortan rápido hacen 7000 pasos totalmente al pedo, cuando con 4000 o 3000 habr�
 
 Estoy pensando en quizás cambiar la cantidad de pasos_maximos, pero Hugo y demás usaban esa
 misma cantidad de pasos máximos, me parece que cambiar sería una mala idea.
+
+------------------------------------------------------------------------------------------
+
+06/05/2023
+
+Ahí hice el cambio sobre el cálculo de los pesos. Veamos en comparación con el cálculo que se hizo
+el otro día. La otra vez tardó 11813 segundos. Voy a usar la misma semilla y correr el mismo
+programa, a ver cuánto menos tarda ahora. No voy a cambiar el tema las iteraciones extras o el
+ancho de la ventana todavía, así la comparación es directamente con eso.
+
+Ahí está corriendo eso. Mientras, voy a hacer las otras dos correcciones. Ya cambié el uso del
+vector Exp por el vector Tanh. Es un cambio  de nombre para ser más claro.
+ También modifiqué la cantidad de iteraciones extras y el ancho de ventanas para que esto corte
+más rápido en los casos en que el sistema deja de variar rápido.
+
+Mientras termina de correr la simulación que mandé, voy a preparar la presentación del miércoles.
+
+Memes y cosas para introducir en la charla:
+-------------------------------------------
+1) Descripción distópica y útopica del tema con imágenes de Megaman battle network.
+
+Después continuo esto.
+
+El cambio que hice en los cálculos de las exponenciales no parece tener ningún efecto.
+Es raro eso, no tiene mucho sentido. A menos que haya algo que está mal anotado en el
+código, revisar eso. Porque tendría que reducirse mucho la cantidad de cuentas.

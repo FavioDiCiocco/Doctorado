@@ -179,7 +179,7 @@ void RK4(double *sistema, double (*func_din)(puntero_Matrices red, puntero_Param
 		for(int i=0; i<F*C; i++) *( sistema+i+2 ) = *( inicial+i+2 )+ *( pendientes[j] +i+2 )*DT[j];
 		// Recalculo los valores de las exponenciales y de la separación entre agentes
 		for(red->agente_vecino=0; red->agente_vecino < F; red->agente_vecino++){
-			for(red->topico=0; red->topico < C; red->topico++) red->Exp[red->agente_vecino*C +red->topico +2] = (*func_act) (red, param);
+			for(red->topico=0; red->topico < C; red->topico++) red->Tanh[red->agente_vecino*C +red->topico +2] = (*func_act) (red, param);
 		}
 		Generar_Separacion(red, param);
 		

@@ -16,7 +16,7 @@ int main(int argc, char *argv[]){
 	// Empecemos con la base. Defino variables de tiempo para medir cuanto tardo y cosas básicas
 	time_t tprin, tfin, semilla;
 	time(&tprin);
-	semilla = time(NULL);
+	semilla = 1714762542; // time(NULL);
 	srand(semilla); // Voy a definir la semilla a partir de time(NULL);
 	float Tiempo; // Este es el float que le paso al printf para saber cuanto tardé
 	
@@ -74,7 +74,7 @@ int main(int argc, char *argv[]){
 	red->Sep = (double*) calloc( 2+param->N*param->N, sizeof(double) ); // Matriz de Separacion. Determina las dsitancias entre agentes.
 	
 	// Vector para los valores de la tangente hiperbólica aplicada a las opiniones de los agentes
-	red->Exp = (double*) calloc( 2+param->T * param->N , sizeof(double) ); // Vector que guarda los cálculos de las exponenciales de cada agente.
+	red->Tanh = (double*) calloc( 2+param->T * param->N , sizeof(double) ); // Vector que guarda los cálculos de las exponenciales de cada agente.
 	
 	// Vector para guardar el promedio temporal de las opiniones de los agentes en todos los tópicos
 	red->Prom_Opi = (double*) calloc( 2+param->T*param->N*2, sizeof(double) ); // Vector que guarda la diferencia entre dos pasos del sistema
@@ -116,8 +116,8 @@ int main(int argc, char *argv[]){
 	red->Prom_Opi[1] = param->N*param->T; // Pongo el número de columnas en la segunda coordenada
 	
 	// Matriz de cálculo de exponencial para cada agente. Es de tamaño N*T
-	red->Exp[0] = param->N; // Pongo el número de filas en la primer coordenada
-	red->Exp[1] = param->T; // Pongo el número de columnas en la segunda coordenada
+	red->Tanh[0] = param->N; // Pongo el número de filas en la primer coordenada
+	red->Tanh[1] = param->T; // Pongo el número de columnas en la segunda coordenada
 	
 	// Matriz de cálculo de exponencial para cada agetne. Es de tamaño N*T
 	red->Hist[0] = param->bines; // Pongo el número de filas en la primer coordenada
@@ -281,7 +281,7 @@ int main(int argc, char *argv[]){
 	free( red->Sep );
 	free( red->Prom_Opi );
 	free( red->Dif );
-	free( red->Exp );
+	free( red->Tanh );
 	free( red );
 	free( param );
 	fclose( FileOpi );

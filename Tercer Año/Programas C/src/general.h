@@ -17,7 +17,7 @@ typedef struct Matrices_Redes{
 	double *Opi; // Vector de opinión de cada individuo
 	double *Ang; // Matriz de superposición entre tópicos. Tiene tamaño T*T
 	double *Sep; // Vector que guarda la inversa de la distancia entre agentes elevada a la -Beta
-	double *Exp; // Matriz con los valores de las exponenciales calculadas sobre los agentes. Tiene tamaño N*T
+	double *Tanh; // Matriz con los valores de las tanh calculadas sobre los agentes. Tiene tamaño N*T
 	double *Prom_Opi; // Vector de Promedios de Opiniones
 	double *Hist; // Matriz de Histograma de agentes en el espacio de Opiniones
 	double Variacion_promedio; // Esto es la Variación promedio del sistema. Es cuanto cambia en promedio cada opinión

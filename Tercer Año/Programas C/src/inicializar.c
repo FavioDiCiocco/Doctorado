@@ -62,8 +62,9 @@ void Generar_Separacion(puntero_Matrices red, puntero_Parametros param){
 	
 	// Esta es una matriz simétrica, construyo la mitad de arriba y después la copio abajo.
 	for(red->agente=0; red->agente<F; red->agente++){
-		for(int i=0; i<red->Ady[red->agente+2][1]; i++){
-			red->agente_vecino = red->Ady[red->agente+2][i+2];
+		for(int j=0; j<red->Ady[red->agente+2][1]; j++){
+			red->agente_vecino = red->Ady[red->agente+2][j+2];
+			// if(red->agente < red->agente_vecino) 
 			red->Sep[ red->agente*C +red->agente_vecino+2 ] = Numerador_homofilia(red, param);
 		}
 	}

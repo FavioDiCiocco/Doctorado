@@ -64,7 +64,7 @@ double Dinamica_opiniones(puntero_Matrices red, puntero_Parametros param){
 	// La sumatoria es sobre todos los agentes conectados en la red de adyacencia
 	for(int j=0; j<grado; j++){
 		red->agente_vecino = red->Ady[ red->agente+2 ][j+2];
-		sumatoria += red->Sep[ red->agente*Cs +red->agente_vecino+2 ] * red->Exp[ red->agente_vecino*Co +red->topico +2 ]; // Sumo los valores de las funciones logísticas
+		sumatoria += red->Sep[ red->agente*Cs +red->agente_vecino+2 ] * red->Tanh[ red->agente_vecino*Co +red->topico +2 ]; // Sumo los valores de las funciones logísticas
 	}
 	
 	resultado = -red->Opi[ red->agente*Co +red->topico+2 ] + param->kappa * (sumatoria / denominador);

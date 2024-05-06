@@ -307,7 +307,7 @@ void compute_derivative(double *network, double *slope, double K, double beta, d
 
 
     for(i=0; i<N; i++)
-    {
+	{
         neighbors_opinions = 0;
         for(j=0; j<v_degree[i]; j++){
             neighbors_opinions += weights[i][j]*tanhs[A[i][j]]/norm_factors[i];
