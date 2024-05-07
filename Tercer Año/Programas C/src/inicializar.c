@@ -60,14 +60,20 @@ void Generar_Separacion(puntero_Matrices red, puntero_Parametros param){
 	F = red->Sep[0];
 	C = red->Sep[1];
 	
+	// int contador=0;
+	
 	// Esta es una matriz simétrica, construyo la mitad de arriba y después la copio abajo.
+	
 	for(red->agente=0; red->agente<F; red->agente++){
 		for(int j=0; j<red->Ady[red->agente+2][1]; j++){
 			red->agente_vecino = red->Ady[red->agente+2][j+2];
-			// if(red->agente < red->agente_vecino) 
-			red->Sep[ red->agente*C +red->agente_vecino+2 ] = Numerador_homofilia(red, param);
+			if(red->agente < red->agente_vecino) red->Sep[ red->agente*C +red->agente_vecino+2 ] = Numerador_homofilia(red, param);
+			// contador++;
+			// printf("%d\t%d\n",red->agente,red->agente_vecino);
 		}
 	}
+	
+	// printf("Realicé %d iteraciones\n",contador);
 	
 	for(int i=0; i<F; i++) for(int j=i+1; j<C; j++) red->Sep[ j*C +i+2 ] = red->Sep[ i*C +j+2 ]; // Esta sola línea simetriza la matriz
 }
@@ -106,7 +112,7 @@ int Lectura_Adyacencia_Ejes(puntero_Matrices red, FILE *archivo){
 	int N, L; // N es el número de agentes, L es el número de enlaces.
 	while( fscanf(archivo,"%d %d",&N,&L ) != EOF) break;
 	
-	int n, m; // n y m son los agentes 	
+	int n, m; // n y m son los agentes 
 	
 	// Construyo un vector que tenga los grados de todos los agentes
 	int* grado;

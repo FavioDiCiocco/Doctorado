@@ -735,3 +735,35 @@ Después continuo esto.
 El cambio que hice en los cálculos de las exponenciales no parece tener ningún efecto.
 Es raro eso, no tiene mucho sentido. A menos que haya algo que está mal anotado en el
 código, revisar eso. Porque tendría que reducirse mucho la cantidad de cuentas.
+
+------------------------------------------------------------------------------------------
+
+07/05/2023
+
+Hoy quería ponerme a estudiar alemán, no creo que lo haga. Primero voy a mandar a correr de nuevo
+los barridos en las pc's, pero modificando el instanciar para que no tenga el cero de cos(delta)
+duplicado y modificando el ancho de ventana e iteraciones extras, eso debería modificar
+algunos tiempos de simulación. Después voy a probar un poco más el tema de la modificación
+en el código sobre el cálculo de las exponenciales, el cuál parece no tener efecto.
+
+IMPORTANTE: EN ALGARVE ALGUNAS SIMULACIONES NO COMPLETARON PARA BETA=0 Y COS(DELTA)=1. REVISAR
+DE MANDARLO DESPUÉS. AHORA MANDÉ PARA QUE ARRANQUE DE NUEVO A PARTIR DE BETA=0.2.
+
+Ya mandé a correr todo de nuevo, haciendo las modificaciones que hice en la pc de la
+facultad. Veamos ahora el tema de si puedo hacer correr esto más rápido. Necesito que
+así sea, porque estas cosas están tardando tiempos imposibles.
+
+No encontré la forma de hacer que esto vaya más rápido. Por ahora lo voy a dejar, voy
+a mandar a correr simulaciones con redes de 5000 agentes a ver si puedo usar eso para
+realizar las comparaciones. Con 5000 agentes el sistema me tarda 15 minutos. Ya fue,
+trabajemos con 5000 agentes por ahora. Es mucho más razonable.
+
+Cargué los archivos en las tres pc's, cuando terminen las corridas previas mando a correr
+las nuevas simulaciones. No debería tardar mucho. A 15 minutos por simulación, me puedo
+dar el lujo de hacer un barrido un poco más fino. Recorriendo 11 puntos en cada eje, son
+121 puntos en el espacio de parámetros. Con 15~20 minutos por simulación, en el peor caso
+eso es 40 horas por iteración. Así que en 2 o 3 días debería tener resuelto esto, considerando
+que para los Betas cerca de 1 los tiempos de simulación se van a disparar. Espero que salga
+bien la cosa, tendré 30 simulaciones para mirar.
+
+Voy a ponerme a preparar la presentación para mañana.

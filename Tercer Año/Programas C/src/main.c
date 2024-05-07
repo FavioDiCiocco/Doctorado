@@ -16,7 +16,7 @@ int main(int argc, char *argv[]){
 	// Empecemos con la base. Defino variables de tiempo para medir cuanto tardo y cosas básicas
 	time_t tprin, tfin, semilla;
 	time(&tprin);
-	semilla = 1714762542; // time(NULL);
+	semilla = time(NULL);
 	srand(semilla); // Voy a definir la semilla a partir de time(NULL);
 	float Tiempo; // Este es el float que le paso al printf para saber cuanto tardé
 	
@@ -41,21 +41,21 @@ int main(int argc, char *argv[]){
 	
 	// Los siguientes son los parámetros que están dados en los structs
 	param->T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
-	param->Iteraciones_extras = 5000; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
+	param->Iteraciones_extras = 1500; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	param->dt = 0.1; // Paso temporal de iteración del sistema
 	param->alfa = 1; // Controversialidad de los tópicos
 	param->delta = 0.002*param->kappa; // Es un término que se suma en la homofilia y ayuda a que los pesos no diverjan.
 	param->NormDif = sqrt(param->N*param->T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	param->CritCorte = pow(10,-3); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
 	// param->bines = 42; // Esta es la cantidad de cajas por eje con la que construyo el histograma. Uso 42 porque es un múltiplo de 6 y 7.
-	param->testigos = fmin(param->N,50); // Esta es la cantidad de agentes de cada distancia que voy registrar
+	// param->testigos = fmin(param->N,50); // Esta es la cantidad de agentes de cada distancia que voy registrar
 	
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	int contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
 	int pasos_simulados = 0; // Esta variable me sirve para cortar si simulo demasiado tiempo.
 	int pasos_maximos = 200000; // Esta es la cantidad de pasos máximos a simular
-	int ancho_ventana = 1000; // Este es el ancho temporal que voy a tomar para promediar las opiniones de mis agentes.
-		
+	int ancho_ventana = 500; // Este es el ancho temporal que voy a tomar para promediar las opiniones de mis agentes.
+	
 	//#############################################################################################
 	
 	// Defino mis matrices y las inicializo
@@ -155,7 +155,6 @@ int main(int argc, char *argv[]){
 	Lectura_Adyacencia_Ejes(red, FileMatriz); // Leo el archivo de la red estática y lo traslado a la matriz de adyacencia
 	fclose(FileMatriz); // Aprovecho y cierro el puntero al archivo de la matriz de adyacencia
 	
-	
 	//################################################################################################################################
 
 	// Acá voy a hacer las simulaciones de pasos previos del sistema
@@ -188,6 +187,7 @@ int main(int argc, char *argv[]){
 	while(contador < param->Iteraciones_extras && pasos_simulados < pasos_maximos){
 		
 		contador = 0; // Inicializo el contador
+		
 		
 		// Evoluciono el sistema hasta que se cumpla el criterio de corte
 		do{
@@ -269,7 +269,6 @@ int main(int argc, char *argv[]){
 	fprintf(FileOpi, "%ld\n", semilla);
 	fprintf(FileOpi, "Primeras filas de la Matriz de Adyacencia\n"); // Guardo esto para poder corroborar cuál es la Matriz de Adyacencia.
 	for(int i=0; i<10; i++) Escribir_i(red->Ady[i+2], FileOpi);
-	
 	
 	// Libero los espacios dedicados a mis vectores y cierro mis archivos
 	for(int i=0; i<param->N+2; i++) free( red->Ady[i] );
