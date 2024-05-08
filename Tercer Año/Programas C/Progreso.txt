@@ -767,3 +767,14 @@ que para los Betas cerca de 1 los tiempos de simulación se van a disparar. Espe
 bien la cosa, tendré 30 simulaciones para mirar.
 
 Voy a ponerme a preparar la presentación para mañana.
+
+------------------------------------------------------------------------------------------
+
+08/05/2023
+
+Revisé los programas que están en las pc's y están tardando aprox. 40 minutos cada simulación.
+Recién resolvió dos betas de los 11. Así que eso va a estar un buen rato, con algo de suerte
+va a estar terminado para el viernes. La pregunta importante es:
+¿Me pongo hoy a estudiar Alemán o mañana? Yo diría que mejor mañana, así mañana cualquier
+cosa tengo algo para mostrarle a Pablo. Hoy pongámonos a armar el Excel que decíamos con
+Pablo de preguntas de las ANES.
