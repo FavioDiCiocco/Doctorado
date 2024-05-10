@@ -778,3 +778,43 @@ va a estar terminado para el viernes. La pregunta importante es:
 ¿Me pongo hoy a estudiar Alemán o mañana? Yo diría que mejor mañana, así mañana cualquier
 cosa tengo algo para mostrarle a Pablo. Hoy pongámonos a armar el Excel que decíamos con
 Pablo de preguntas de las ANES.
+
+------------------------------------------------------------------------------------------
+
+10/05/2023
+
+El 9 trabajé desde casa, pero por lo que veo no lo comitee, quizás genere problemas.
+Tengo problemas más serios. Resulta que lo que estoy mandando a correr está tardando una eternidad.
+Es una eternidad más corta que el caso de 10000 agentes, pero aún así el de 5000 está tardando
+una eternidad siendo que las simulaciones que polarizan tardan 36 horas aprox. en resolverse.
+Tengo que ver de buscarle una vuelta a eso. Simplemente es inviable trabajar así.
+¿Debería resolver eso ahora?
+
+Lo que habíamos charlado con la gente de GOTHAM era catalogar preguntas, armar a partir de eso
+un conjunto de preguntas interesantes y quizás ver a lo largo de varias ANES cómo evoluciona
+la polarización de esas preguntas. Creo que puedo conseguir más resultados si sigo catalogando
+preguntas. Pero en ese caso, ¿Qué buscaría mostrarle a la gente de GOTHAM el miércoles que
+viene? Con suerte, podría mostrarles el subset de preguntas que pensamos mirar y algunos 
+gráficos donde veamos cómo fue evolucionando esa polarización. Porque mostrarles cuáles son
+los tipos de gráficos que planeamos comparar no tiene sentido.
+
+Sabiendo que los datos de simulaciones no van a estar como para hacer un estudio razonable
+de acá al miércoles, yo propondría primero ir comparando lo que tengo con datos obtenidos
+de 1000 agentes, como los que armé para el espacio reducido en Beta-Cosd, y de ahí armar algo
+que funque y que en principio sea un puntapié al análisis, total una vez que tenga los datos
+es una cuestión de cambiar el N del código de 1000 a 5000 o 10000. Entonces primero seguiré
+catalogando preguntas, y ya a la tarde o después de hablar con Pablo definiremos los siguientes
+pasos en estos días de acá al miércoles. Después habrá que volver a ver qué podemos hacer para 
+que el código corra más rápido, porque simplemente no se puede vivir así. La primer idea que
+surge es hacer una Tabla con datos para la función exponencial e interpolar. Tengo que pensarla
+de alguna forma correcta, cosa de que el argumento sea la distancia al cuadrado del vector
+y no la distancia, así aprovecho y me ahorro la raíz cuadrada.
+
+Estoy mirando el guidebook de 2012 y estoy notando dos cosas importantes. La primera, es que el
+formato es mucho más feo que las versiones anteriores, va a tomar mucho revisar las preguntas.
+La segunda es que este guidebook no parece tener separados los datos en códigos como los otros
+dos. Eso me preocupa.
+
+De acá para el lunes es importante mandar a correr mi código para 10000 agentes en una dimensión
+y el código de Hugo para 10000 agentes en una dimensión. Corrido eso, vamos a tener una buena
+idea de la diferencia de tiempos y si los tiempos del código de Hugo es razonable o viable.
