@@ -12,7 +12,7 @@ int *v_degree; // vector con el grado de cada nodo
 int N, L; // n� de nodos y enlaces
 double mean_degree;
 
-#define N_steps 200000
+#define N_steps 5000
 #define dt 0.1
 
 //#define RRN
@@ -117,7 +117,7 @@ void readNetwork(int iteracion){
     int i, n, l, *v_degree_aux;
     FILE *fin;
 	char TextMatriz[355];
-	sprintf(TextMatriz, "MARE/Erdos-Renyi/gm=10/ErdosRenyi_N=1000_ID=%d.file", (int) iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
+	sprintf(TextMatriz, "MARE/Erdos-Renyi/gm=10/ErdosRenyi_N=10000_ID=%d.file", (int) iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
     printf("Leemos la red...");
     #ifdef RRN
     //fin=fopen("networks/RR10000k=4.txt", "r");
