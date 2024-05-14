@@ -1,0 +1,2 @@
+Warning: Ignoring XDG_SESSION_TYPE=wayland on Gnome. Use QT_QPA_PLATFORM=wayland to run on Wayland anyway.
+Esto tardó 178.6025025844574 segundos

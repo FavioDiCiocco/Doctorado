@@ -843,3 +843,64 @@ No creo que sea eso, pero se puede probar.
 
 Mañana habrá que hacer gráficos con las preguntas que tengo de la ANES, armar una clasificación
 clara y después preparar algo para presentar con eso.
+
+------------------------------------------------------------------------------------------
+
+13/05/2023
+
+Soy un reverendo pelotudo, cinco veces pensé en commitear el trabajo de casa y no lo hice.
+Ahora voy a tener un bardo entre los archivos y cosas. En la facultad hoy voy a
+ponerme a trabajar en los archivos de Python para armar la clasificación de las preguntas
+y los gráficos asociados.
+
+El sueño que tengo me está complicando laburar fuerte. Ya no es joda hermano. No sé si
+es la ropa que tengo puesta o el cansancio general, simplemente estoy deteriorándome. Y
+el invierno no me gusta.
+
+Anoté las preguntas que voy a mirar, armé los gráficos y los estuve repasando un poco,
+pero no me parece muy interesante lo que estoy viendo. Pablo me propuso mirar directamente
+las distribuciones 1D y con eso ir descartando cuáles son las preguntas que quiero mirar y
+cuáles no.
+
+¿Qué criterios usé para remover preguntas? Saqué las que tuvieran una gran cantidad de agentes
+en una opinión neutra o que tuvieran distribuciones muy homogéneas.
+
+Hice un primer filtro de cuáles voy a querer y cuáles no. En el drive voy a marcarlas como
+descartadas, mientras que en Python las voy a borrar directamente.
+
+Las preguntas que clasifiqué y separé me parece que son un buen filtro, me dejan los gráficos
+que inicialmente quería mirar. Anotemos las preguntas descartadas en el drive. Después de eso,
+empiezo a ver cómo medir la distancia de jensen-shannon.
+
+Hice las anotaciones que quería en el drive, tengo clasificadas las preguntas que voy a querer
+revisar. Mañana veré de armar el conjunto de preguntas y mostrárselo a Pablo, así como mostrarle
+de estas preguntas cuáles podrían tener una cierta trazabilidad hacia atrás.
+
+Lo que voy a hacer ahora es descargar los datos del barrido de Zoom Beta-Cosd y a partir de esos
+ver cómo comparar esos datos con los datos de las distribuciones. Voy a elegir dos o tres
+gráficos para comparar y a partir de esos voy a intentar armar algunas comparaciones.
+
+Descargué los archivos a la carpeta de Comparacion_datos. Lo que necesito es un archivo de Python
+que arme la Clasificación de las opiniones finales y compare eso con los datos de la encuesta.
+Tengo algo que hace eso creo, que lo preparé para la semana pasada. Así que simplemente tengo
+que lograr hacer un for. Y después voy a tener errores porque obviamente tengo huecos en mis
+distribuciones T.T.
+
+------------------------------------------------------------------------------------------
+
+14/05/2023
+
+Ayer llegué a casa y tampoco comitee mis datos. Soy un re boludo. Voy a copiar los datos de la
+ANES en la carpeta de Comparación_datos y ahí voy a trabajar la parte de las comparaciones de
+las distribuciones usando distancias Jensen-Shannon.
+
+Ya tengo los datos del barrido reducido y tengo los datos de la ANES para comparar. Lo siguiente
+sería empezar a comparar los datos. Voy a probar contra una distribución que tiene una buena
+forma de polarización ideológica, el gráfico que sale de "Govt. Asssitance to Blacks" vs
+"Guaranteed Job Income", que son los códigos "V201258" vs "V201255".
+
+Por lo que leí en Wikipedia, debería revisar un poco más el tema, la idea es que al calcular
+la distancia Jensen-Shannon, la distribución p, que es la primera que le paso a la función,
+es la distribución medida. Es decir que primero le paso la distribución obtenida de la encuesta.
+La segunda distribución, la distribución q, debería ser mi aproximación o mi resultado simulado.
+
