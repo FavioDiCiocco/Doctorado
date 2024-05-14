@@ -113,12 +113,14 @@ labels_apoliticos = ['V201429','V202320x','V202331x','V202341x','V202344x',
 labels_dudosos = ['V201225x','V201246','V201249','V201252','V201255','V201258',
                   'V201262','V202242x','V202248x']
 
+labels_filtrados = labels_politicos + labels_apoliticos + labels_dudosos
+
 #############################################################################################
 
 df_data_aux = df_raw_data[labels]
 df_data = pd.DataFrame()
 
-for code in labels:
+for code in labels_filtrados:
     df_data[code] = df_data_aux[code].apply(data_processor)
     
 df_data[['V200010a','V200010b']] = df_raw_data[['V200010a','V200010b']]
@@ -184,7 +186,6 @@ for i,code_1 in enumerate(labels_dudosos):
 
 
 #############################################################################################
-
 
 
 plt.rcParams.update({'font.size': 28})

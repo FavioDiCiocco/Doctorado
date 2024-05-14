@@ -860,3 +860,21 @@ que arme la Clasificación de las opiniones finales y compare eso con los datos 
 Tengo algo que hace eso creo, que lo preparé para la semana pasada. Así que simplemente tengo
 que lograr hacer un for. Y después voy a tener errores porque obviamente tengo huecos en mis
 distribuciones T.T.
+
+------------------------------------------------------------------------------------------
+
+14/05/2023
+
+Ayer llegué a casa y tampoco comitee mis datos. Soy un re boludo. Voy a copiar los datos de la
+ANES en la carpeta de Comparación_datos y ahí voy a trabajar la parte de las comparaciones de
+las distribuciones usando distancias Jensen-Shannon.
+
+Ya tengo los datos del barrido reducido y tengo los datos de la ANES para comparar. Lo siguiente
+sería empezar a comparar los datos. Voy a probar contra una distribución que tiene una buena
+forma de polarización ideológica, el gráfico que sale de "Govt. Asssitance to Blacks" vs
+"Guaranteed Job Income", que son los códigos "V201258" vs "V201255".
+
+Por lo que leí en Wikipedia, debería revisar un poco más el tema, la idea es que al calcular
+la distancia Jensen-Shannon, la distribución p, que es la primera que le paso a la función,
+es la distribución medida. Es decir que primero le paso la distribución obtenida de la encuesta.
+La segunda distribución, la distribución q, debería ser mi aproximación o mi resultado simulado.
