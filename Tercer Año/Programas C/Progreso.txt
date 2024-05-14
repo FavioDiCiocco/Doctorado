@@ -26,7 +26,7 @@ Las simulaciones en Algarve terminaron, así que podría mandar a resolver las s
 Hoy la verdad me agaró un sueño imposible, no avancé mucho. Pero estuve mirando lo que me pasó Hugo
 y lo que tengo yo de la cuenta, logré armar la misma expresión para la derivada de la perturbación.
 Queda entonces ver dónde queda efectivamente el valor de Beta de transición. Lo interesante es que
-aparece un factor 2 que antes no estaba. Vamos a ver cómo puedo hallar entonces el valor de Beta de
+aparece un factor 2 que antes no estaba. Vamos a ver cómopuedo hallar entonces el valor de Beta de
 equilibrio.
 
 ------------------------------------------------------------------------------------------
@@ -781,6 +781,19 @@ Pablo de preguntas de las ANES.
 
 ------------------------------------------------------------------------------------------
 
+09/05/2023
+
+Por el paro, hoy estoy trabajando en casa. Estoy mirando la ANES y clasificando preguntas.
+En la encuesta ANES 2020 hay preguntas de estereotipos sobre que tan trabajador o violentos
+son según grupo étnico. Esas preguntas van desde V202515 hasta V202526. Todas estas preguntas
+tienen 7 posibles respuestas. A partir de la pregunta V202580 hay muchas preguntas que parecen
+tener 7 respuestas, varias que no son políticas. Pero son demasiadas y poco interesantes
+realmente. Quizás si hace falta las podría revisar, pero en principio no es importante.
+
+Ya revisé toda la ANES 2020. ¿Debería seguir con este trabajo?
+
+------------------------------------------------------------------------------------------
+
 10/05/2023
 
 El 9 trabajé desde casa, pero por lo que veo no lo comitee, quizás genere problemas.
@@ -818,3 +831,15 @@ dos. Eso me preocupa.
 De acá para el lunes es importante mandar a correr mi código para 10000 agentes en una dimensión
 y el código de Hugo para 10000 agentes en una dimensión. Corrido eso, vamos a tener una buena
 idea de la diferencia de tiempos y si los tiempos del código de Hugo es razonable o viable.
+
+------------------------------------------------------------------------------------------
+
+11/05/2023
+
+Mandé a correr el código mío y tardó 7600 segundos. El código de Hugo en cambio tardó 47 segundos.
+Hay una diferencia de dos órdenes de magnitud en el tiempo que tarda mi código y el de ellos.
+No comprendo por qué. Eze me dice que quizás sea un tema de la cantidad de fors que estoy usando.
+No creo que sea eso, pero se puede probar.
+
+Mañana habrá que hacer gráficos con las preguntas que tengo de la ANES, armar una clasificación
+clara y después preparar algo para presentar con eso.

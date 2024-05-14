@@ -12,7 +12,7 @@ int *v_degree; // vector con el grado de cada nodo
 int N, L; // n� de nodos y enlaces
 double mean_degree;
 
-#define N_steps 200000
+#define N_steps 5000
 #define dt 0.1
 
 //#define RRN
@@ -117,7 +117,7 @@ void readNetwork(int iteracion){
     int i, n, l, *v_degree_aux;
     FILE *fin;
 	char TextMatriz[355];
-	sprintf(TextMatriz, "MARE/Erdos-Renyi/gm=10/ErdosRenyi_N=1000_ID=%d.file", (int) iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
+	sprintf(TextMatriz, "MARE/Erdos-Renyi/gm=10/ErdosRenyi_N=10000_ID=%d.file", (int) iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
     printf("Leemos la red...");
     #ifdef RRN
     //fin=fopen("networks/RR10000k=4.txt", "r");
@@ -221,6 +221,14 @@ void free_all(double *network, double *new_network){
 // Esta función me genera un número random entre 0 y 1
 double Random(){
 	return ((double) rand()/(double) RAND_MAX);
+}
+
+// Esta función va a recibir un vector int y va a escribir ese vector en mi archivo.
+void Escribir_i(int *vec,int F, int C, FILE *archivo){
+	
+	// Ahora printeo todo el vector en mi archivo
+	for(int i=0; i<C*F; i++) fprintf(archivo,"%d\t",*( vec+i ));
+	fprintf(archivo,"\n");
 }
 
 // Esta función va a recibir un vector double y va a escribir ese vector en mi archivo.
@@ -486,14 +494,18 @@ int main(int argc, char *argv[])
 	// Empecemos con la base. Defino variables de tiempo para medir cuanto tardo y cosas básicas
 	time_t tprin,tfin,semilla;
 	time(&tprin);
-	semilla = time(NULL);
+	semilla = 1000; // time(NULL);
 	srand(semilla); // Voy a definir la semilla a partir de time(NULL);
 	float tardanza; // Este es el float que le paso al printf para saber cuanto tardé
 	int iteracion = strtol(argv[1],NULL,10);
 	
+	printf("Entre en la función\n");
+	
     readNetwork(iteracion);
     mean_degree = L*2.0/N;
-
+	
+	printf("Leí la red de adyacencia\n");
+	
     double *network, *new_network;
     network = (double*)calloc(N, sizeof(double));
     new_network = (double*)calloc(N, sizeof(double));
@@ -503,7 +515,7 @@ int main(int argc, char *argv[])
     double mean_opinion, desv_opinion;
     double initial_opinion, initial_desv_opinion;
 
-    beta = 0.7;
+    beta = 0;
     K = 10.;
 
     if(K != 0) delta = 2*K*0.001; // Una milesima parte de la diferencia maxima de opiniones
@@ -513,12 +525,14 @@ int main(int argc, char *argv[])
     calculate_mean_var_lf(network, N, &mean_opinion, &desv_opinion);
     initial_opinion = mean_opinion;
     initial_desv_opinion = desv_opinion;
+	
+	printf("Inicialicé la red\n");
 
     // printf("Opinion inicial: %lf +- %lf\n", initial_opinion, initial_desv_opinion);
 	
 	// Este archivo es el que guarda la Varprom del sistema mientras evoluciona
 	char TextOpi[355];
-	sprintf(TextOpi,"../Programas Python/Probas_Pol/1D/Opiniones_N=1000_kappa=10_beta=0.7_cosd=0_Iter=%d.file", iteracion);
+	sprintf(TextOpi,"../Programas Python/Comparacion_datos/Beta-Cosd/Hugo_Opiniones_N=1000_kappa=10_beta=0_cosd=0_Iter=%d.file", iteracion);
 	FILE *FileOpi=fopen(TextOpi,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 
 	//################################################################################################################################
@@ -526,6 +540,9 @@ int main(int argc, char *argv[])
 	// Guardo la distribución inicial de las opiniones de mis agentes y preparo para guardar la Varprom.
 	// fprintf(FileOpi,"Opiniones Iniciales\n");
 	// Escribir_d(network,1,N,FileOpi);
+	fprintf(FileOpi,"Opiniones Iniciales\n");
+	Escribir_d(network,1,N,FileOpi);
+	
 	
 	/*
     FILE *f_opinions;
@@ -569,11 +586,14 @@ int main(int argc, char *argv[])
 	
 	// Tomo el array de opiniones, lo normalizo, armo el histograma de agentes a lo largo de la recta de opiniones
 	// y después lo escribo en mi archivo de opiniones.
-	int bines = 20;
+	int bines = 42;
 	double *distribucion;
 	distribucion = (double*) calloc(bines, sizeof(double));
 	
 	// Antes de clasificar mis agentes, normalizo los valores de mi red y los desplazo para que sean todos positivos.
+	fprintf(FileOpi, "Opiniones finales\n");
+	Escribir_d(network,1,N,FileOpi);
+	
 	for(int i = 0; i<N; i++) network[i] = network[i]/K + 1;
 	
 	Clasificacion(distribucion, network, N, bines);
@@ -585,6 +605,8 @@ int main(int argc, char *argv[])
 	fprintf(FileOpi,"%d\n",N_steps);
 	fprintf(FileOpi,"Semilla\n");
 	fprintf(FileOpi,"%ld\n",semilla);
+	fprintf(FileOpi, "Primeras filas de la Matriz de Adyacencia\n"); // Guardo esto para poder corroborar cuál es la Matriz de Adyacencia.
+	for(int i=0; i<10; i++) Escribir_i(A[i],1,v_degree[i],FileOpi);
 
     #ifdef EXP_ATT
     double *exposures, *attentions, *v_trash;

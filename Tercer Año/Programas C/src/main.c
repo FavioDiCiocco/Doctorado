@@ -1,10 +1,10 @@
 // Voy a armar el código con el término de la ecuación logística
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<math.h>
-#include<time.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <time.h>
+#include <string.h>
 #include <unistd.h> // Esto lo uso para poner un sleep
 #include"general.h"
 #include"inicializar.h"
@@ -16,7 +16,7 @@ int main(int argc, char *argv[]){
 	// Empecemos con la base. Defino variables de tiempo para medir cuanto tardo y cosas básicas
 	time_t tprin, tfin, semilla;
 	time(&tprin);
-	semilla = time(NULL);
+	semilla = 1000;   // time(NULL);
 	srand(semilla); // Voy a definir la semilla a partir de time(NULL);
 	float Tiempo; // Este es el float que le paso al printf para saber cuanto tardé
 	
@@ -40,21 +40,21 @@ int main(int argc, char *argv[]){
 	int iteracion = strtol(argv[5],NULL,10); // Número de instancia de la simulación.
 	
 	// Los siguientes son los parámetros que están dados en los structs
-	param->T = 2;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
-	param->Iteraciones_extras = 1500; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
+	param->T = 1;  //strtol(argv[1],NULL,10); Antes de hacer esto, arranquemos con número fijo   // Cantidad de temas sobre los que opinar
+	// param->Iteraciones_extras = 1500; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	param->dt = 0.1; // Paso temporal de iteración del sistema
 	param->alfa = 1; // Controversialidad de los tópicos
 	param->delta = 0.002*param->kappa; // Es un término que se suma en la homofilia y ayuda a que los pesos no diverjan.
 	param->NormDif = sqrt(param->N*param->T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
-	param->CritCorte = pow(10,-3); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
-	// param->bines = 42; // Esta es la cantidad de cajas por eje con la que construyo el histograma. Uso 42 porque es un múltiplo de 6 y 7.
+	// param->CritCorte = pow(10,-3); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
+	param->bines = 42; // Esta es la cantidad de cajas por eje con la que construyo el histograma. Uso 42 porque es un múltiplo de 6 y 7.
 	// param->testigos = fmin(param->N,50); // Esta es la cantidad de agentes de cada distancia que voy registrar
 	
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
-	int contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
-	int pasos_simulados = 0; // Esta variable me sirve para cortar si simulo demasiado tiempo.
-	int pasos_maximos = 200000; // Esta es la cantidad de pasos máximos a simular
-	int ancho_ventana = 500; // Este es el ancho temporal que voy a tomar para promediar las opiniones de mis agentes.
+	// int contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
+	// int pasos_simulados = 0; // Esta variable me sirve para cortar si simulo demasiado tiempo.
+	int pasos_maximos = 5000; // Esta es la cantidad de pasos máximos a simular
+	// int ancho_ventana = 500; // Este es el ancho temporal que voy a tomar para promediar las opiniones de mis agentes.
 	
 	//#############################################################################################
 	
@@ -163,6 +163,9 @@ int main(int argc, char *argv[]){
 	fprintf(FileOpi,"Opiniones Iniciales\n");
 	Escribir_d(red->Opi,FileOpi);
 	
+	for(int i=0; i<pasos_maximos; i++) RK4(red->Opi, func_dinamica, func_activacion, red, param); // Itero los intereses
+	
+	/*
 	// Sumo el estado inicial de las opiniones de mis agentes en el vector de Prom_Opi. Guardo esto en la primer fila
 	for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[j+2] += red->Opi[j+2];
 	
@@ -176,12 +179,12 @@ int main(int argc, char *argv[]){
 	
 	// Promedio el valor de Prom_Opi al dividir por el tamaño de la ventana
 	for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[j+2] = red->Prom_Opi[j+2] / ancho_ventana;
-	
+	*/
 	//################################################################################################################################
 	
 	// Realizo la simulación del modelo hasta que este alcance un estado estable
 	// También preparo para guardar los valores de Varprom en mi archivo
-	
+	/*
 	fprintf(FileOpi,"Variación promedio \n");
 	
 	while(contador < param->Iteraciones_extras && pasos_simulados < pasos_maximos){
@@ -250,21 +253,21 @@ int main(int argc, char *argv[]){
 		// Por tanto lo vuelvo a hacer trabajar hasta que se vuelva a cumplir la condición de corte.
 		// Si logra evolucionar la cantidad arbitraria de veces sin problemas, termino la evolución.
 	}
-	
+	*/
 	//################################################################################################################################
 	
 	// Guardo las últimas cosas, libero las memorias malloqueadas y luego termino
 	
 	// Guardo las opiniones finales, la matriz de adyacencia y la semilla en el primer archivo.
-	fprintf(FileOpi, "\n");
+	// fprintf(FileOpi, "\n");
 	fprintf(FileOpi, "Opiniones finales\n");
 	Escribir_d(red->Opi, FileOpi);
-	// Clasificacion(red,param);
-	// // Guardo las opiniones finales, la matriz de adyacencia y la semilla en el primer archivo.
-	// fprintf(FileOpi, "Distribucion opiniones\n");
-	// Escribir_d(red->Hist, FileOpi);
+	Clasificacion(red,param);
+	// Guardo las opiniones finales, la matriz de adyacencia y la semilla en el primer archivo.
+	fprintf(FileOpi, "Distribucion opiniones\n");
+	Escribir_d(red->Hist, FileOpi);
 	fprintf(FileOpi, "Pasos Simulados\n");
-	fprintf(FileOpi, "%d\n", pasos_simulados);
+	fprintf(FileOpi, "%d\n", pasos_maximos); // fprintf(FileOpi, "%d\n", pasos_simulados);
 	fprintf(FileOpi, "Semilla\n");
 	fprintf(FileOpi, "%ld\n", semilla);
 	fprintf(FileOpi, "Primeras filas de la Matriz de Adyacencia\n"); // Guardo esto para poder corroborar cuál es la Matriz de Adyacencia.
