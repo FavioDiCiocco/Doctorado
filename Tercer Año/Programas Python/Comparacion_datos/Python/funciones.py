@@ -1470,7 +1470,7 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes,path,carpeta,code_1,code_2, weights,
     
     # Hago el ploteo del mapa de colores con el colormesh
     
-    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "winter")
+    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "summer")
     plt.colorbar()
     plt.title("Distancia Jensen-Shannon\n {} vs {}".format(code_2,code_1))
     

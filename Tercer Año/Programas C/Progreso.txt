@@ -910,3 +910,34 @@ La respuesta es que sí, se corresponden. Eso es genial, no puedo creer que haya
 
 Lo siguiente ahora es armar una función que calcule esta distancia y arme gráficos en el espacio
 de parámetros. Ahí lo mandé a correr, funcionó. Y da razonable. Charlar eso con Pablo mañana.
+
+------------------------------------------------------------------------------------------
+
+15/05/2023
+
+Pablo mandó un mensaje para posponer la reunión hasta la semana que viene. Así que para
+la semana que viene tengo que tener algo más sólido armado. Para eso tengo que trabajar
+en las siguientes cosas:
+
+1) Acondicionar el código de Hugo para que trabaje con dos tópicos.
+2) Continuar estudiando la distancia Jensen-Shannon en el espacio de parámetros para otras
+configuraciones de preguntas. (Esto va a implicar adaptar la función de Clasificación para
+los casos con tamaños que no sean 7x7). También debería estudiar un poco más la función
+que calcula la distancia Jensen-Shannon.
+3) Revisar los resultados analíticos y armar un plan de qué falta hacer. Quizás hacer
+análisis de las ecuaciones en papel mezclado con simulaciones.
+4) Revisar si quedaron ideas que valga la pena estudiar del tema de las simulaciones.
+5) Probar cómo hacer que mi código funcione tan rápido como el de Hugo.
+
+Vuelvo a mirar mi código, no veo nada raro. No comprendo. Pero bueno, empecemos a modificar
+el código de Hugo para que funcione como yo quiero. Mientras, pongamos a prueba los tiempos
+una vez más. Mandé a correr los dos códigos, sólo para comparar los tiempos.
+
+Mandé mi presentación al curso de Verano ese en Uruguay que Pablo había compartido. Por otro
+lado, no terminé de adaptar el código de Hugo. Mañana termino eso. Quedé a mitad de
+adaptar la parte donde evoluciona y calcula la variación promedio. Lo que me queda revisar
+también es agregar el cálculo de la norma no ortogonal. Creo que hechas esas dos cosas,
+debería estar resuelto esto.
+
+De paso, mandé a correr los códigos para comparar los tiempos, sigue ocurriendo que el
+código de Hugo es 100 veces más rápido que el mío.
