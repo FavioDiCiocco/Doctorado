@@ -43,7 +43,7 @@ def Tiempo(t0):
 
 # Cargo el archivo de datos total
 
-filename = "../data/anes_timeseries_2016/anes_timeseries_2016.dta"
+filename = "../Anes_2016/anes_timeseries_2016.dta"
 df_raw_data = pd.read_stata(filename)
 
 #############################################################################################
@@ -173,7 +173,7 @@ for i,code_1 in enumerate(labels_post):
 # Voy a armar los gráficos de las distribuciones de mis preguntas, cosa de tener
 # visto cómo se distribuyen los histogramas de cada una. También los voy a separar
 # en políticas y no políticas
-
+"""
 politicas_pre = ['V161114x','V161151x','V161158x','V161194x','V161195x','V161196x','V161198','V161204x',
              'V161213x','V161214x','V161225x','V161226x','V161227x','V161228x']
 
@@ -215,9 +215,9 @@ for code in no_politicas_post:
     direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/Distribucion preguntas/No politicas/Histograma {}.png".format(code))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
-
+"""
 #############################################################################################
-
+"""
 weights = 'V160101'
 for i,code_1 in enumerate(politicas_pre):
     for code_2 in politicas_pre[i+1::]:
@@ -273,7 +273,7 @@ for i,code_1 in enumerate(no_politicas_post):
         direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/Distribucion preguntas/No politicas/{}vs{}.png".format(code_1,code_2))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
-
+"""
 #############################################################################################
 
 # Voy a calcular la distancia Jensen-Shannon para ver que tengo entendido cómo

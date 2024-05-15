@@ -904,3 +904,9 @@ la distancia Jensen-Shannon, la distribución p, que es la primera que le paso a
 es la distribución medida. Es decir que primero le paso la distribución obtenida de la encuesta.
 La segunda distribución, la distribución q, debería ser mi aproximación o mi resultado simulado.
 
+Estoy armando el código para calcular la distancia entre dos distribuciones. Tengo una primera gran
+duda: ¿Las distribuciones que estoy comparando, elemento a elemento, corresponden entre ellas?
+La respuesta es que sí, se corresponden. Eso es genial, no puedo creer que haya funcionado.
+
+Lo siguiente ahora es armar una función que calcule esta distancia y arme gráficos en el espacio
+de parámetros. Ahí lo mandé a correr, funcionó. Y da razonable. Charlar eso con Pablo mañana.

@@ -9,6 +9,9 @@ Created on Wed Nov 16 14:21:12 2022
 
 
 import pandas as pd
+import numpy as np
+from scipy.spatial.distance import jensenshannon
+import matplotlib.pyplot as plt
 import time
 import os
 import funciones as func
@@ -78,6 +81,7 @@ for carp in Carpetas:
     SIM_param_x = r"cos(\delta)"
     
     func.Tiempo(t0)
+    
     #----------------------------------------------------------------------------------------------
 
 #    func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
@@ -91,8 +95,8 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    # func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
-    #                                   ID_param_x, ID_param_y, ID_param_extra_1)
+#    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
+#                                      ID_param_x, ID_param_y, ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     
@@ -104,7 +108,7 @@ for carp in Carpetas:
     Df_ANES = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
     
     #----------------------------------------------------------------------------------------------
-    
+    """
     # Consideremos que quiero revisar los estados finales de las simulaciones contra uno de mis
     # gráficos. Tengo que tomar las opiniones finales de algún estado y armar la distribución
     # asociada.
@@ -115,6 +119,54 @@ for carp in Carpetas:
                                 (Df_archivos["parametro_x"]==0) &
                                 (Df_archivos["parametro_y"]==0.6) & 
                                 (Df_archivos["iteracion"]==1), "nombre"]
+    
+    for nombre in Sim_prueba:
+        Datos = func.ldata(Direccion / nombre)
+    
+    # Recordemos que los archivos tienen forma
+    
+    # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+    # Opinión Inicial del sistema
+    # Variación Promedio
+    # Opinión Final
+    # Pasos simulados
+    # Semilla
+    # Matriz de Adyacencia
+    
+    Opifinales = np.array(Datos[5][:-1], dtype="float")
+    Opifinales = Opifinales / 10
+    
+    Distr_Sim = np.reshape(func.Clasificacion(Opifinales,7,T),(49,1))
+    
+    
+    # Ya tengo la distribución de opiniones de mi simulación, ahora necesito la
+    # de la encuesta ANES.
+    
+    code_1 = 'V201258' # 'Govt. Asssitance to Blacks'
+    code_2 = 'V201255' # 'Guaranteed Job Income'
+    weights = 'V200010a'
+    
+    # Extraigo la distribución en hist2d
+    df_aux = Df_ANES.loc[(Df_ANES[code_1]>0) & (Df_ANES[code_2]>0)]
+    hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0,
+             bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
+    
+    Distr_Enc = np.reshape(hist2d,(hist2d.shape[0]*hist2d.shape[1],1))
+    
+    # Una vez que tengo las dos distribuciones, hago el cálculo de la distancia
+    # Jensen-Shannon
+    
+    distancia = jensenshannon(Distr_Enc,Distr_Sim)
+    print(distancia)
+    
+    # Esto que me armé efectivamente calcula la distancia Jensen-Shannon entre dos
+    # distribuciones. Extrañamente, no tiene problemas con las distribuciones que tengan
+    # ceros. Muy raro.
+    """
+    #----------------------------------------------------------------------------------------------
+    
+    func.Mapas_Colores_DJS(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, 'V201258', 'V201255', 'V200010a',
+                           SIM_param_x, SIM_param_y, ID_param_extra_1)
     
 
 func.Tiempo(t0)

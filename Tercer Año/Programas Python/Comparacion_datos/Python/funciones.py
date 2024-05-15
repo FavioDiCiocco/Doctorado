@@ -9,6 +9,7 @@ Created on Mon Sep 19 11:33:00 2022
 
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import cm
+from scipy.spatial.distance import jensenshannon
 import pandas as pd
 import numpy as np
 import time
@@ -328,8 +329,7 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
 # Esta función calcula la traza de la matriz de Covarianza de las distribuciones
 # de opiniones respecto a los T tópicos
 
-def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
-                                  SIM_param_x,SIM_param_y,
+def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,SIM_param_x,SIM_param_y,
                                   ID_param_extra_1):
 
     # Defino la cantidad de agentes de la red
@@ -430,8 +430,7 @@ def Mapa_Colores_Traza_Covarianza(DF,path,carpeta,
 # Esta función calcula la traza de la matriz de Covarianza de las distribuciones
 # de opiniones respecto a los T tópicos
 
-def Mapa_Colores_Covarianzas(DF,path,carpeta,
-                             SIM_param_x,SIM_param_y,
+def Mapa_Colores_Covarianzas(DF,path,carpeta,SIM_param_x,SIM_param_y,
                              ID_param_extra_1):
 
     # Defino la cantidad de agentes de la red
@@ -920,8 +919,7 @@ def Calculo_Entropia(DF,path,N):
 # Esta función es la que arma los gráficos de los mapas de colores en el espacio de
 # parámetros de alfa y umbral usando la entropía como métrica.
 
-def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,
-                                    SIM_param_x,SIM_param_y,
+def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,SIM_param_x,SIM_param_y,
                                     ID_param_extra_1):
     
     # Defino los arrays de parámetros diferentes    
@@ -1373,3 +1371,112 @@ def Leer_Datos_ANES(filename,año):
 
     return df_data
 
+#-----------------------------------------------------------------------------------------------
+    
+# Calculo la distancia Jensen-Shannon dadas dos distribuciones.
+
+def Mapas_Colores_DJS(DF_datos,DF_Anes,path,carpeta,code_1,code_2, weights,
+                      SIM_param_x,SIM_param_y,ID_param_extra_1):
+    
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF_datos["n"]))
+    
+    # Defino los arrays de parámetros diferentes
+    EXTRAS = int(np.unique(DF_datos["Extra"]))
+    Arr_param_x = np.unique(DF_datos["parametro_x"])
+    Arr_param_y = np.unique(DF_datos["parametro_y"])
+    
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
+                   for j,param_y in enumerate(Arr_param_y)]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
+    # Gráfico de Opi vs T y en tres no se vería mejor.
+    T=2
+    
+    #--------------------------------------------------------------------------------
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    ZZ = np.zeros(XX.shape)
+    
+    #--------------------------------------------------------------------------------
+    
+    # Extraigo la distribución en hist2d
+    
+    df_aux = DF_Anes.loc[(DF_Anes[code_1]>0) & (DF_Anes[code_2]>0)]
+    hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0,
+             bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
+    plt.close()
+    
+    Distr_Enc = np.reshape(hist2d,(hist2d.shape[0]*hist2d.shape[1],1))
+    
+    #--------------------------------------------------------------------------------
+    
+    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF_datos.loc[(DF_datos["tipo"]==TIPO) & 
+                                    (DF_datos["n"]==AGENTES) & 
+                                    (DF_datos["Extra"]==EXTRAS) & 
+                                    (DF_datos["parametro_x"]==PARAM_X) &
+                                    (DF_datos["parametro_y"]==PARAM_Y), "nombre"])
+        #-----------------------------------------------------------------------------------------
+        
+        DistJS = np.zeros(archivos.shape[0])
+        
+        for nombre in archivos:
+            
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
+            # Pasos simulados
+            # Semilla
+            # Matriz de Adyacencia
+            
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
+            
+            # Leo los datos de las Opiniones Finales
+            Opifinales = np.array(Datos[5][:-1], dtype="float")
+            Opifinales = Opifinales / EXTRAS
+            Distr_Sim = np.reshape(Clasificacion(Opifinales,7,T),(49,1))
+            
+            # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+            
+            repeticion = int(DF_datos.loc[DF_datos["nombre"]==nombre,"iteracion"])
+            
+            DistJS[repeticion] = jensenshannon(Distr_Enc,Distr_Sim)
+            
+        #------------------------------------------------------------------------------------------
+        # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
+        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(DistJS)
+    
+    #--------------------------------------------------------------------------------
+    
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores
+    direccion_guardado = Path("../../../Imagenes/{}/DistanciaJS_{}vs{}_{}={}.png".format(carpeta,code_2,code_1,ID_param_extra_1,EXTRAS))
+    
+    plt.rcParams.update({'font.size': 44})
+    plt.figure("Distancia Jensen-Shannon",figsize=(28,21))
+    plt.xlabel(r"${}$".format(SIM_param_x))
+    plt.ylabel(r"${}$".format(SIM_param_y))
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    
+    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "winter")
+    plt.colorbar()
+    plt.title("Distancia Jensen-Shannon\n {} vs {}".format(code_2,code_1))
+    
+    # Guardo la figura y la cierro
+    
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("Distancia Jensen-Shannon")
+    
+    
