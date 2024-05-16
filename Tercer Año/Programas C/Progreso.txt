@@ -941,3 +941,34 @@ debería estar resuelto esto.
 
 De paso, mandé a correr los códigos para comparar los tiempos, sigue ocurriendo que el
 código de Hugo es 100 veces más rápido que el mío.
+
+------------------------------------------------------------------------------------------
+
+16/05/2023
+
+Llevo toda la mañana y un poco de la tarde en terminar de adaptar el código de Hugo para que
+corra como yo espero. Veamos si realmente funciona. Crucemos los dedos.
+
+Corre y resuelve en poco tiempo. Queda hacer una comparación sobre si mi código genera el
+mismo resultado. Suponiendo que el código funciona bien, tengo que reemplazar lo que ya 
+está en funcionamiento y mandar a correr este nuevo código. Vayamos preparando eso mientras
+se resuelve el código que mandé en la pc de la facultad que compara lo que hace mi código
+con lo que hace el de Hugo.
+
+Ya está corriendo el código de Hugo adaptado, el cuál corre mucho más rápido que el mío.
+Lo que voy a hacer ahora es probar que el cálculo de la distancia de jensen-shannon sea
+razonable, que esa cosa calcula correctamente.
+
+Revisé la función de Jensen Shannon comparando dos distribuciones normales para ver cómo
+varía esta distancia. Parece funcionar perfecto, incluso trabajando sin drama ante la idea
+de tener 0 en partes de la distribución. Parece que no va a generar ningún problema
+esto.
+
+Mañana podría ponerme a modificar la función de Clasificación para poder agrupar las opiniones
+en arrays de 6*7.
+
+Ahora lo siguiente que necesito hacer para presentar es armar una función que primero
+aisle la región de datos en la cuál quiero armar mi ajuste, y que luego haga ese ajuste.
+Como sea que tenga que ser eso. Yo diría que por hoy estoy en horario, guardaría todo,
+iría para casa y luego veré cómo construir eso el finde. O el lunes, creo que el lunes
+tendría que salir eso.

@@ -16,7 +16,7 @@ int main(int argc, char *argv[]){
 	// Empecemos con la base. Defino variables de tiempo para medir cuanto tardo y cosas básicas
 	time_t tprin, tfin, semilla;
 	time(&tprin);
-	semilla = 1000;   // time(NULL);
+	semilla = 1715881304;   // time(NULL);
 	srand(semilla); // Voy a definir la semilla a partir de time(NULL);
 	float Tiempo; // Este es el float que le paso al printf para saber cuanto tardé
 	
@@ -53,7 +53,7 @@ int main(int argc, char *argv[]){
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	// int contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
 	// int pasos_simulados = 0; // Esta variable me sirve para cortar si simulo demasiado tiempo.
-	int pasos_maximos = 5000; // Esta es la cantidad de pasos máximos a simular
+	int pasos_maximos = 500; // Esta es la cantidad de pasos máximos a simular
 	// int ancho_ventana = 500; // Este es el ancho temporal que voy a tomar para promediar las opiniones de mis agentes.
 	
 	//#############################################################################################

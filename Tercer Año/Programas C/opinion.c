@@ -12,7 +12,7 @@ int *v_degree; // vector con el grado de cada nodo
 int N, L; // n� de nodos y enlaces
 double mean_degree;
 
-#define N_steps 5000
+#define N_steps 200000
 #define dt 0.1
 
 //#define RRN
@@ -118,7 +118,7 @@ void readNetwork(int iteracion){
     FILE *fin;
 	char TextMatriz[355];
 	sprintf(TextMatriz, "MARE/Erdos-Renyi/gm=10/ErdosRenyi_N=10000_ID=%d.file", (int) iteracion%100); // El 100 es porque tengo 100 redes creadas. Eso lo tengo que revisar si cambio el código
-    printf("Leemos la red...");
+    // printf("Leemos la red...");
     #ifdef RRN
     //fin=fopen("networks/RR10000k=4.txt", "r");
     fin=fopen("networks/RR10000k=10.txt", "r");
@@ -184,7 +184,7 @@ void readNetwork(int iteracion){
 
     fclose(fin);
     free(v_degree_aux);
-    printf("Red leida.\n");
+    // printf("Red leida.\n");
 
 
     int j, neigh;
@@ -203,7 +203,7 @@ void readNetwork(int iteracion){
 }
 
 
-void free_all(double *network, double *new_network){
+void free_all(double *network, double *new_network, double *Ang, double *Dif, double *Prom_Opi){
     int i;
     free(v_degree);
     for(i=0; i<N-1; i++){
@@ -214,6 +214,9 @@ void free_all(double *network, double *new_network){
     free(A);
     free(A_neigh);
     free(weights);
+	free(Ang);
+	free(Dif);
+	free(Prom_Opi);
     free(network);
     free(new_network);
 }
@@ -232,9 +235,9 @@ void GenerarAng(double *Ang, int T, double cosd){
 	C = T;
 	
 	// Inicializo la matriz de Superposicion de mi sistema.
-	for(int i=0; i<F; i++) for(int j=0; j<i; j++) *(Ang + i*C+j+2) = cosd; //
-	for(int i=0; i<F; i++) *(Ang + i*C+i+2) = 1; // Esto me pone 1 en toda la diagonal
-	for(int i=0; i<F; i++) for(int j=i+1; j<C; j++) *(Ang + i*C+j+2) = *(Ang + j*C+i+2); // Esta sola línea simetriza la matriz
+	for(int i=0; i<F; i++) for(int j=0; j<i; j++) *(Ang + i*C+j) = cosd; //
+	for(int i=0; i<F; i++) *(Ang + i*C+i) = 1; // Esto me pone 1 en toda la diagonal
+	for(int i=0; i<F; i++) for(int j=i+1; j<C; j++) *(Ang + i*C+j) = *(Ang + j*C+i); // Esta sola línea simetriza la matriz
 }
 
 // Esta función va a recibir un vector int y va a escribir ese vector en mi archivo.
@@ -246,11 +249,11 @@ void Escribir_i(int *vec,int F, int C, FILE *archivo){
 }
 
 // Esta función va a recibir un vector double y va a escribir ese vector en mi archivo.
-int Escribir_d(double *pd_vector, int i_F, int i_C, FILE *pa_archivo){
+int Escribir_d(double *vec, int F, int C, FILE *archivo){
 	
 	// Ahora printeo todo el vector en mi archivo
-	for(register int i_i=0; i_i<i_C*i_F; i_i++) fprintf(pa_archivo,"%.6lf\t",*(pd_vector+i_i));
-	fprintf(pa_archivo,"\n");
+	for(register int i=0; i<C*F; i++) fprintf( archivo,"%.6lf\t",*(vec+i) );
+	fprintf(archivo,"\n");
 	
 	return 0;
 }
@@ -274,7 +277,54 @@ void Clasificacion(double* distribucion, double* network, int N,int bines){
 	for(int i=0; i<bines; i++) distribucion[i] = distribucion[i]/sumatoria;
 }
 
-void initialize_network(double *network, double *new_network, double K){
+// Esta función me calcula la norma de un vector
+double Norma_d(double *x, int F, int C){
+	
+	// Defino mis variables iniciales que son el resultado final, la suma de los cuadrados y el tamao de mi vector
+	double norm, sum = 0;
+	
+	// Calculo la norma como la raíz cuadrada de la sumatoria de los cuadrados de cada coordenada.
+	for(int i=0; i< C*F; ++i) sum += *(x+i) * ( *(x+i) );
+	norm = sqrt(sum);
+	return norm;
+}
+
+// Esta función me calcula la norma de un vector
+double Norma_No_Ortogonal_d(double *vec, double *Sup, int F, int C){
+	
+	// Defino mis variables iniciales que son el resultado final, la suma de los cuadrados y el tamao de mi vector
+	double norma = 0; // norma es la norma cuadrada del vector x
+	double sumatoria = 0; // sumatoria es lo que iré sumando de los términos del denominador y después returneo
+	
+	// Yo voy a querer hacer el producto escalar en mi espacio no ortogonal. Para eso
+	// uso mi matriz de Superposición, que contiene el ángulo entre todos los ejes
+	// de mi espacio no ortogonal. Tengo que hacer el producto Vector*matriz*Vector.
+	
+	// Defino un puntero que guarde los valores del producto intermedio matriz*Vector.
+	
+	double *Inter;
+	Inter = (double*) calloc(F, sizeof(double));
+	
+	// Armo el producto de matriz*Vector
+	for(int fila=0; fila<F; fila++){
+		sumatoria = 0; // La seteo a 0 para volver a iniciar la sumatoria
+		
+		for(int columna=0; columna<C; columna++) sumatoria += *( Sup +fila*C +columna ) * ( *(vec +columna ) );
+		*( Inter+fila ) = sumatoria;
+	}
+	
+	// Armo el producto Vector*Intermedios
+	sumatoria = 0;
+	for(int topico=0; topico<F; topico++) sumatoria += *( vec +topico ) * ( * ( Inter+topico ) );
+	norma = sqrt(sumatoria);
+	
+	// Libero el puntero armado
+	free(Inter);
+	
+	return norma;
+}
+
+void initialize_network(double *network, double *new_network, double K, int T){
     int i;
     double alea, max;
     int *order;
@@ -294,15 +344,21 @@ void initialize_network(double *network, double *new_network, double K){
 }
 
 
-void compute_derivative(double *network, double *slope, double K, double beta, double delta){
+void compute_derivative(double *network, double *slope, double *Ang, double K, double beta, double delta,int N, int T){
 
     int i, j;
     double neighbors_opinions;
+	double distancia = 0, opiniones_superpuestas;
+	
+	// Armo un puntero a un vector en el cuál pondre la diferencia entre las opiniones del
+	// agente i y el agente j.
+	double *Vec_Dif;
+	Vec_Dif = (double*) calloc(T, sizeof(double));
 
     /// Favio: No hagas mucho caso de la frikada de los mallocs, no ahorra nada de tiempo y no merece la pena
     static double *norm_factors = NULL;
     static double *tanhs = NULL; // OJO: De esta manera no podemos hacer un free
-    if(!tanhs) tanhs = (double *)malloc(N*sizeof(double));
+    if(!tanhs) tanhs = (double *)malloc(N*T*sizeof(double));
     if(!norm_factors) norm_factors = (double*)malloc(N*sizeof(double));
 
 
@@ -312,14 +368,24 @@ void compute_derivative(double *network, double *slope, double K, double beta, d
 
     for(i=0; i<N; i++)
     {
-        tanhs[i] = tanh(network[i]); // Ahorra algo de tiempo calculando N tanhs en lugar de N*k tanhs
+        for(int topico=0; topico<T; topico++)
+		{
+			opiniones_superpuestas = 0;
+			for(int p=0; p<T; p++) opiniones_superpuestas += *(Ang +topico*T+p) * network[i*T+p];
+			tanhs[i*T+topico] = tanh(opiniones_superpuestas); // Ahorra algo de tiempo calculando N tanhs en lugar de N*k tanhs
+		}
 
         for(j=0; j<v_degree[i]; j++)
         {
             if(i<A[i][j]){ // Solo calculo el pow una vez por link, y lo guardo en dos lugares de la matriz weights[][].
                             //OJO: No son los pesos propiamente dichos, porque falta normalizarlos
                             // La normalización se hace con el vector 'norm_factors', que contiene al final los denominadores para todos los agentes
-                weights[i][j] = weights[A[i][j]][A_neigh[i][j]] = pow(fabs(network[i]-network[A[i][j]]) + delta, -beta);
+				
+				// Armo el vector que apunta del agente i al agente vecino en el espacio de opiniones
+				for(int topic=0; topic<T; topic++) *(Vec_Dif +topic) = network[i*T+topic] - network[A[i][j]*T+topic];
+				distancia = Norma_No_Ortogonal_d(Vec_Dif,Ang,T,T);
+				
+				weights[i][j] = weights[A[i][j]][A_neigh[i][j]] = pow(distancia+ delta, -beta);
 
                 norm_factors[i] += weights[i][j];
                 norm_factors[A[i][j]] += weights[A[i][j]][A_neigh[i][j]];
@@ -330,50 +396,55 @@ void compute_derivative(double *network, double *slope, double K, double beta, d
 
     for(i=0; i<N; i++)
 	{
-        neighbors_opinions = 0;
-        for(j=0; j<v_degree[i]; j++){
-            neighbors_opinions += weights[i][j]*tanhs[A[i][j]]/norm_factors[i];
-        }
-        neighbors_opinions *= K;
-        slope[i] = -network[i] + neighbors_opinions;
+		for(int top=0; top<T; top++)
+		{
+			neighbors_opinions = 0;
+			for(j=0; j<v_degree[i]; j++){
+				neighbors_opinions += weights[i][j]*tanhs[A[i][j]*T+top]/norm_factors[i];
+			}
+			neighbors_opinions *= K;
+			slope[i*T+top] = -network[i*T+top] + neighbors_opinions;
+		}
     }
+	
+	free(Vec_Dif);
 }
 
 
-void actualize_network(double *network, double *new_network, double K, double beta, double delta){
+void actualize_network(double *network, double *new_network, double *Ang, double K, double beta, double delta, int N, int T){
 
     int i;
 
     static double *slope, *new_position;
-    if(!slope) slope = (double *)malloc(N*sizeof(double));
-    if(!new_position) new_position = (double*)malloc(N*sizeof(double));
+    if(!slope) slope = (double *)malloc(N*T*sizeof(double));
+    if(!new_position) new_position = (double*)malloc(N*T*sizeof(double));
 
     /// Step 1
-    compute_derivative(network, slope, K, beta, delta);
-    for(i=0; i<N; i++){
+    compute_derivative(network, slope, Ang, K, beta, delta, N, T);
+    for(i=0; i<N*T; i++){
         new_network[i] = network[i] + slope[i]*dt/6.0;
         new_position[i] = network[i] + slope[i]*dt/2.0;
     }
     /// Step 2
-    compute_derivative(new_position, slope, K, beta, delta);
-    for(i=0; i<N; i++){
+    compute_derivative(new_position, slope, Ang, K, beta, delta, N, T);
+    for(i=0; i<N*T; i++){
         new_network[i] += slope[i]*dt/3.0;
         new_position[i] = network[i] + slope[i]*dt/2.0;
     }
     /// Step 3
-    compute_derivative(new_position, slope, K, beta, delta);
-    for(i=0; i<N; i++){
+    compute_derivative(new_position, slope, Ang, K, beta, delta, N, T);
+    for(i=0; i<N*T; i++){
         new_network[i] += slope[i]*dt/3.0;
         new_position[i] = network[i] + slope[i]*dt;
     }
     /// Step 4
-    compute_derivative(new_position, slope, K, beta, delta);
-    for(i=0; i<N; i++){
+    compute_derivative(new_position, slope, Ang, K, beta, delta, N, T);
+    for(i=0; i<N*T; i++){
         new_network[i] += slope[i]*dt/6.0;
         //printf("\t %d cambio: %lf -> %lf\n", i, network[i], new_network[i]);
     }
 
-    for(i=0; i<N; i++)
+    for(i=0; i<N*T; i++)
         network[i] = new_network[i];
 
 }
@@ -520,6 +591,7 @@ int main(int argc, char *argv[])
 	double K, beta, delta, cosd;
     int step, T;
 	
+	T=2;
 	K = 10.; // Esta amplitud regula la relación entre el término lineal y el término con tanh
 	if(K != 0) delta = 2*K*0.001; // Una milesima parte de la diferencia maxima de opiniones
     else delta = 1E-20;
@@ -532,15 +604,16 @@ int main(int argc, char *argv[])
 	readNetwork(iteracion);
     mean_degree = L*2.0/N;
 	
-	printf("Leí la red de adyacencia\n");
+	// printf("Leí la red de adyacencia\n");
 	
 	// Variables para cortar rápido
-	NormDif = sqrt(N*T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
+	double NormDif = sqrt(N*T); // Este es el valor de Normalización de la variación del sistema, que me da la variación promedio de las opiniones.
 	
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
+	double Variacion_promedio = 0.1; // Esto es la Variación promedio del sistema. Es cuanto cambia en promedio cada opinión
+	double CritCorte = pow(10,-3); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
 	int contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
 	int pasos_simulados = 0; // Esta variable me sirve para cortar si simulo demasiado tiempo.
-	int pasos_maximos = 200000; // Esta es la cantidad de pasos máximos a simular
 	int ancho_ventana = 500; // Este es el ancho temporal que voy a tomar para promediar las opiniones de mis agentes.
 	int Iteraciones_extras = 1500; // Este valor es la cantidad de iteraciones extra que el sistema tiene que hacer para cersiorarse que el estado alcanzado efectivamente es estable
 	
@@ -557,8 +630,8 @@ int main(int argc, char *argv[])
 	
 	// Inicializo la red de opiniones y de superposición
 	
-	Generar_Ang(Ang, T, cosd);
-    initialize_network(network, new_network, K);
+	GenerarAng(Ang, T, cosd);
+    initialize_network(network, new_network, K, T);
     
 	//################################################################################################################################
 	
@@ -574,16 +647,16 @@ int main(int argc, char *argv[])
 	Escribir_d(network,1,N*T,FileOpi);
 	
 	// Sumo el estado inicial de las opiniones de mis agentes en el vector de Prom_Opi. Guardo esto en la primer fila
-	for(int j=0; j<N*T; j++) *(Prom_Opi +j+2) += *(network+j+2);
+	for(int j=0; j<N*T; j++) *(Prom_Opi +j) += *(network+j);
 	
 	for(step=0; step<ancho_ventana-1; step++){
 		// Evolución
-		actualize_network(network, new_network, K, beta, delta); // Se actualizan las opiniones
-		for(int j=0; j<N*T; j++) *(Prom_Opi +j+2) += *(network+j+2);
+		actualize_network(network, new_network, Ang, K, beta, delta, N, T); // Se actualizan las opiniones
+		for(int j=0; j<N*T; j++) *(Prom_Opi +j) += *(network+j);
 	}
 	
 	// Promedio el valor de Prom_Opi al dividir por el tamaño de la ventana
-	for(int j=0; j<N*T; j++) *(Prom_Opi +j+2) = *(Prom_Opi +j+2) / ancho_ventana;
+	for(int j=0; j<N*T; j++) *(Prom_Opi +j) = *(Prom_Opi +j) / ancho_ventana;
 	
 	//################################################################################################################################
 	
@@ -594,7 +667,7 @@ int main(int argc, char *argv[])
 	
 	fprintf(FileOpi,"Variación promedio \n");
 	
-	while(contador < Iteraciones_extras && pasos_simulados < pasos_maximos){
+	while(contador < Iteraciones_extras && pasos_simulados < N_steps){
 		
 		contador = 0; // Inicializo el contador
 		
@@ -602,38 +675,38 @@ int main(int argc, char *argv[])
 		do{
 			
 			// Evolución
-			actualize_network(network, new_network, K, beta, delta); // Se actualizan las opiniones
+			actualize_network(network, new_network, Ang, K, beta, delta, N, T); // Se actualizan las opiniones
 			// Sumo las opiniones en la segunda fila de Prom_Opi
-			for(int j=0; j<N*T; j++) *(Prom_Opi +j+N*T+2) += *(network+j+2);
+			for(int j=0; j<N*T; j++) *(Prom_Opi +j+N*T) += *(network+j);
 			
 			// Actualización de índices
 			pasos_simulados++; // Avanzo el contador de la cantidad de pasos simulados
 			
 			if( pasos_simulados%ancho_ventana==0 ){
 				// Mido la variación de promedios
-				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] = red->Prom_Opi[ j+param->N*param->T+2 ] / ancho_ventana;
-				for(int j=0; j<param->N*param->T; j++) red->Dif[j+2] = red->Prom_Opi[ j+param->N*param->T+2 ] - red->Prom_Opi[j+2];
-				red->Variacion_promedio = Norma_d(red->Dif) / param->NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
+				for(int j=0; j<N*T; j++) *(Prom_Opi +j+N*T) = *(Prom_Opi +j+N*T) / ancho_ventana;
+				for(int j=0; j<N*T; j++) *(Dif +j) = *(Prom_Opi +j+N*T) - *(Prom_Opi +j);
+				Variacion_promedio = Norma_d(Dif,N,T) / NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
 				
 				// Escritura
-				fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio
+				fprintf(FileOpi, "%lf\t", Variacion_promedio); // Guardo el valor de variación promedio
 				
 				// Reinicio los promedios
-				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[j+2] = red->Prom_Opi[ j+param->N*param->T+2 ];
-				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] = 0;
+				for(int j=0; j<N*T; j++) *(Prom_Opi +j) = *(Prom_Opi +j+N*T);
+				for(int j=0; j<N*T; j++) *(Prom_Opi +j+N*T) = 0;
 			}
 
 		}
-		while( red->Variacion_promedio > param->CritCorte && pasos_simulados < pasos_maximos);
+		while( Variacion_promedio > CritCorte && pasos_simulados < N_steps);
 		
 		// Ahora evoluciono el sistema una cantidad i_Itextra de veces. Le pongo como condición que si el sistema deja de cumplir la condición de corte, deje de evolucionar
 		
-		while( contador < param->Iteraciones_extras && red->Variacion_promedio <= param->CritCorte && pasos_simulados < pasos_maximos){
+		while( contador < Iteraciones_extras && Variacion_promedio <= CritCorte && pasos_simulados < N_steps){
 			
 			// Evolución
-			RK4(red->Opi, func_dinamica, func_activacion, red, param); // Itero los intereses
+			actualize_network(network, new_network, Ang, K, beta, delta, N, T); // Se actualizan las opiniones
 			// Sumo las opiniones en la segunda fila de Prom_Opi
-			for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] += red->Opi[j+2];
+			for(int j=0; j<N*T; j++) *(Prom_Opi +j+N*T) += *(network+j);
 			
 			// Actualización de índices
 			contador++; // Avanzo el contador para que el sistema haga una cantidad $i_Itextra de iteraciones extras
@@ -641,16 +714,16 @@ int main(int argc, char *argv[])
 			
 			if( pasos_simulados%ancho_ventana==0 ){
 				// Mido la variación de promedios
-				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] = red->Prom_Opi[ j+param->N*param->T+2 ] / ancho_ventana;
-				for(int j=0; j<param->N*param->T; j++) red->Dif[j+2] = red->Prom_Opi[ j+param->N*param->T+2 ] - red->Prom_Opi[j+2];
-				red->Variacion_promedio = Norma_d(red->Dif) / param->NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
+				for(int j=0; j<N*T; j++) *(Prom_Opi +j+N*T) = *(Prom_Opi +j+N*T) / ancho_ventana;
+				for(int j=0; j<N*T; j++) *(Dif +j) = *(Prom_Opi +j+N*T) - *(Prom_Opi +j);
+				Variacion_promedio = Norma_d(Dif,N,T) / NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
 				
 				// Escritura
-				fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio
+				fprintf(FileOpi, "%lf\t", Variacion_promedio); // Guardo el valor de variación promedio
 				
 				// Reinicio los promedios
-				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[j+2] = red->Prom_Opi[ j+param->N*param->T+2 ];
-				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] = 0;
+				for(int j=0; j<N*T; j++) *(Prom_Opi +j) = *(Prom_Opi +j+N*T);
+				for(int j=0; j<N*T; j++) *(Prom_Opi +j+N*T) = 0;
 			}
 			
 		}
@@ -660,81 +733,20 @@ int main(int argc, char *argv[])
 		// Si logra evolucionar la cantidad arbitraria de veces sin problemas, termino la evolución.
 	}
 	
-    for(step=0; step<N_steps; step++)
-    {
-        // Evolución
-		actualize_network(network, new_network, K, beta, delta); // Se actualizan las opiniones
-		
-		if( step%ancho_ventana==0 ){
-				// Mido la variación de promedios
-				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] = red->Prom_Opi[ j+param->N*param->T+2 ] / ancho_ventana;
-				for(int j=0; j<param->N*param->T; j++) red->Dif[j+2] = red->Prom_Opi[ j+param->N*param->T+2 ] - red->Prom_Opi[j+2];
-				red->Variacion_promedio = Norma_d(red->Dif) / param->NormDif; // Calculo la suma de las diferencias al cuadrado y la normalizo.
-				
-				// Escritura
-				fprintf(FileOpi, "%lf\t", red->Variacion_promedio); // Guardo el valor de variación promedio
-				
-				// Reinicio los promedios
-				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[j+2] = red->Prom_Opi[ j+param->N*param->T+2 ];
-				for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[ j+param->N*param->T+2 ] = 0;
-			}
-    }
-	
-	/*
-	// Tomo el array de opiniones, lo normalizo, armo el histograma de agentes a lo largo de la recta de opiniones
-	// y después lo escribo en mi archivo de opiniones.
-	int bines = 42;
-	double *distribucion;
-	distribucion = (double*) calloc(bines, sizeof(double));
-	*/
-	// Antes de clasificar mis agentes, normalizo los valores de mi red y los desplazo para que sean todos positivos.
-	fprintf(FileOpi, "Opiniones finales\n");
-	Escribir_d(network,1,N*T,FileOpi);
-	
-	for(int i = 0; i<N; i++) network[i] = network[i]/K + 1;
-	
-	Clasificacion(distribucion, network, N, bines);
+	//################################################################################################################################
 	
 	// Escritura final
-	fprintf(FileOpi,"Distribución final\n");
-	Escribir_d(distribucion,1,bines,FileOpi);
+	fprintf(FileOpi, "\n");
+	fprintf(FileOpi, "Opiniones finales\n");
+	Escribir_d(network,1,N*T,FileOpi);
 	fprintf(FileOpi,"Pasos Simulados\n");
-	fprintf(FileOpi,"%d\n",N_steps);
+	fprintf(FileOpi,"%d\n",pasos_simulados);
 	fprintf(FileOpi,"Semilla\n");
 	fprintf(FileOpi,"%ld\n",semilla);
 	fprintf(FileOpi, "Primeras filas de la Matriz de Adyacencia\n"); // Guardo esto para poder corroborar cuál es la Matriz de Adyacencia.
 	for(int i=0; i<10; i++) Escribir_i(A[i],1,v_degree[i],FileOpi);
 
-    #ifdef EXP_ATT
-    double *exposures, *attentions, *v_trash;
-
-    exposures = (double*)calloc(N,sizeof(double));
-    attentions = (double*)calloc(N, sizeof(double));
-    v_trash = (double*)calloc(N, sizeof(double));
-
-    compute_derivative(network, v_trash, K, beta, delta); // Para calcular los pesos de la situacion final, a falta del factor de normalizacion
-    compute_attentions(network, attentions);
-    compute_exposures(network, exposures);
-
-    FILE *f_inter;
-    sprintf(filename_results, "results/%s_%d_inter_measures_K=%.2lf_b=%.2lf.txt", network_type, N, K, beta);
-    f_inter = fopen(filename_results, "wt");
-    create_header(f_inter, initial_opinion, initial_desv_opinion, beta, K);
-    fprintf(f_inter, "# node opinion exposure attention\n");
-
-    for(i=0; i<N; i++){
-        fprintf(f_inter, "%d %lf %lf %lf\n", i, network[i], exposures[i], attentions[i]);
-    }
-    fclose(f_inter);
-
-    free(v_trash);
-    free(exposures);
-    free(attentions);
-    #endif // EXP_ATT
-
-
-    free_all(network, new_network);
-	free(distribucion);
+    free_all(network, new_network, Ang, Dif, Prom_Opi);
 	fclose(FileOpi);
 	
 	// Finalmente imprimo el tiempo que tarde en ejecutar todo el programa
