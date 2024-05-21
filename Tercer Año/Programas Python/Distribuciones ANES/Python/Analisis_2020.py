@@ -128,14 +128,19 @@ df_data[['V200010a','V200010b']] = df_raw_data[['V200010a','V200010b']]
 #############################################################################################
 
 # Gráfico de dos preguntas simultáneas con distribuciones individuales en los ejes
-"""
-weights = 'V200010b'
 
 for i,code_1 in enumerate(labels_politicos):
     for code_2 in labels_politicos[i+1::]:
         
         df_aux = df_data.loc[(df_data[code_1]>0) & (df_data[code_2]>0)]
         
+        if code_1[3] == '1' and code_2[3] == '1':
+            weights = 'V200010a'
+        else:
+            weights = 'V200010b'
+            
+        print(code_1)
+        print(code_2)
         plt.rcParams.update({'font.size': 28})
         # plt.figure(figsize=(40,21))
         sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
@@ -149,10 +154,16 @@ for i,code_1 in enumerate(labels_politicos):
         plt.close()
         
 
+
 for i,code_1 in enumerate(labels_apoliticos):
     for code_2 in labels_apoliticos[i+1::]:
         
         df_aux = df_data.loc[(df_data[code_1]>0) & (df_data[code_2]>0)]
+        
+        if code_1[3] == '1' and code_2[3] == '1':
+            weights = 'V200010a'
+        else:
+            weights = 'V200010b'
         
         plt.rcParams.update({'font.size': 28})
         # plt.figure(figsize=(40,21))
@@ -172,6 +183,11 @@ for i,code_1 in enumerate(labels_dudosos):
         
         df_aux = df_data.loc[(df_data[code_1]>0) & (df_data[code_2]>0)]
         
+        if code_1[3] == '1' and code_2[3] == '1':
+            weights = 'V200010a'
+        else:
+            weights = 'V200010b'
+        
         plt.rcParams.update({'font.size': 28})
         # plt.figure(figsize=(40,21))
         sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
@@ -187,7 +203,7 @@ for i,code_1 in enumerate(labels_dudosos):
 
 #############################################################################################
 
-
+"""
 plt.rcParams.update({'font.size': 28})
 
 for code in labels_politicos:

@@ -988,3 +988,31 @@ el error del ajuste. Pero lo importante es que con esto podría calcular los coe
 de mi paraboloide con el que ajusto este espacio.
 
 Digamos que Beta lo ajusto entre [0.5,0.72] y Cosd entre [0.04,0.15]
+
+------------------------------------------------------------------------------------------
+
+21/05/2023
+
+Ya logré armar el cálculo del mínimo del valor 
+
+Lista de tareas:
+1) Chequear dónde se demoran mis simulaciones.
+2) Resumen de la parte numérica. Qué está hecho y qué faltaría.
+3) Resumen de la parte teórica. Qué está hecho y qué faltaría.
+4) Resumen de la selección de datos y comparación del modelo.
+
+Para la charla de mañana, quizás ver de hacer un ranking y también 
+mostrar el espacio clasificado según las simulaciones.
+
+Estoy teniendo un problema horrible con el cálculo de los gráficos
+de distribución de opiniones de las encuestas. Es ese problema que me ocurre sólo en casa,
+y que no logro comprender por qué. ¿Será mi versión de Win Py? Buscaré cómo actualizar eso.
+
+Mandé a correr las simulaciones de la 30 a la 50 en Coimbra. En Algarve y Oporto no terminaron
+todavía.
+
+Las dos primeras preguntas que revisé son: 'V201258' vs 'V201255'. Son preguntas dudosas
+Las variables óptimas obtenidas fueron: [Cosd = 0.104, Beta = 0.602].
+Revisé 'V201420x' vs 'V201231x'. Son preguntas políticas
+Revisé 'V202320x' vs 'V202320x'. Son preguntas No políticas
+

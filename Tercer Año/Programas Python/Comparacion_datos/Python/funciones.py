@@ -1635,8 +1635,8 @@ def plot_3d_surface(carpeta, Dic_ANES, func, params, x_range, y_range,
     
 # Ploteo el los puntos sobre los que hice el ajuste en un gráfico 3D
     
-def plot_3d_scatter(carpeta, Dic_ANES, x_range, y_range,
-                    SIM_param_x, SIM_param_y,x_samples=100, y_samples=100):
+def plot_3d_scatter(DF_datos,DF_Anes, path, carpeta, Dic_ANES, x_range, y_range,
+                    SIM_param_x, SIM_param_y):
     
     """
     Plot a 3D surface for a given mathematical function.
@@ -1649,13 +1649,19 @@ def plot_3d_scatter(carpeta, Dic_ANES, x_range, y_range,
     - y_samples: Number of samples in the y range.
     """
     
-     # Defino la cantidad de agentes de la red
+    # Defino la cantidad de agentes de la red
     AGENTES = int(np.unique(DF_datos["n"]))
     
     # Defino los arrays de parámetros diferentes
     EXTRAS = int(np.unique(DF_datos["Extra"]))
+    
     Arr_param_x = np.unique(DF_datos["parametro_x"])
+    Arr_param_x = Arr_param_x[Arr_param_x > x_range[0]]
+    Arr_param_x = Arr_param_x[Arr_param_x < x_range[1]]
+    
     Arr_param_y = np.unique(DF_datos["parametro_y"])
+    Arr_param_y = Arr_param_y[Arr_param_y > y_range[0]]
+    Arr_param_y = Arr_param_y[Arr_param_y < y_range[1]]
     
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
@@ -1674,7 +1680,7 @@ def plot_3d_scatter(carpeta, Dic_ANES, x_range, y_range,
     # Construyo las grillas que voy a necesitar para el pcolormesh.
     
     XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
-    ZZ = np.zeros(XX.shape)
+    ZZ = np.zeros((XX.shape[0],XX.shape[1],100))
     
     #--------------------------------------------------------------------------------
     
@@ -1727,29 +1733,21 @@ def plot_3d_scatter(carpeta, Dic_ANES, x_range, y_range,
             
         #------------------------------------------------------------------------------------------
         # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
-        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(DistJS)
-    
-    # Create a grid of points
-    x = np.linspace(x_range[0], x_range[1], x_samples)
-    y = np.linspace(y_range[0], y_range[1], y_samples)
-    X, Y = np.meshgrid(x, y)
-    Z = func(X, Y,params)
+        ZZ[(Arr_param_y.shape[0]-1)-fila,columna,:] = DistJS
 
     # Create the plot
-    direccion_guardado = Path("../../../Imagenes/{}/Paraboloide_ajustado_{}vs{}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"]))
+    direccion_guardado = Path("../../../Imagenes/{}/Scatter de DJS_{}vs{}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"]))
     plt.rcParams.update({'font.size': 44})
     fig = plt.figure(figsize=(40,30))
     ax = fig.add_subplot(111, projection='3d')
-    surf = ax.plot_surface(X, Y, Z, cmap='viridis')
-
-    # Add color bar which maps values to colors
-    fig.colorbar(surf, ax=ax, shrink=0.5, aspect=5)
+    for i in range(100):
+        ax.scatter(XX,YY,ZZ[:,:,i], c="blue", marker="o")
 
     # Labels and title
     ax.set_xlabel(r"${}$".format(SIM_param_x))
     ax.set_ylabel(r"${}$".format(SIM_param_y))
     ax.set_zlabel('Distancia JS')
-    ax.set_title('Paraboloide ajustada para preguntas \n {} vs {}'.format(Dic_ANES["code_2"],Dic_ANES["code_1"]))
+    ax.set_title('Distancias calculadas \n {} vs {}'.format(Dic_ANES["code_2"],Dic_ANES["code_1"]))
 
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close()

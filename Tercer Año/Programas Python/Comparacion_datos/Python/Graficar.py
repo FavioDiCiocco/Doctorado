@@ -11,6 +11,7 @@ Created on Wed Nov 16 14:21:12 2022
 import pandas as pd
 import numpy as np
 from scipy.spatial.distance import jensenshannon
+from scipy.optimize import minimize
 import matplotlib.pyplot as plt
 import time
 import os
@@ -107,7 +108,20 @@ for carp in Carpetas:
     
     Df_ANES = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
     
-    Dic_ANES = {"code_1": 'V201255', "code_2": 'V201258', "weights":'V200010a'}
+    labels_politicos = ['V201200','V201231x','V201372x','V201386x','V201408x',
+                    'V201411x','V201420x','V201426x','V202255x','V202328x','V202336x']
+    for i,code_1 in enumerate(labels_politicos):
+        for code_2 in labels_politicos[i+1::]:
+    
+            if code_1[3] == '1' and code_2[3] == '1':
+                weights = 'V200010a'
+            else:
+                weights = 'V200010b'
+            
+            Dic_ANES = {"code_1": code_1, "code_2": code_2, "weights":weights}
+            
+            func.Mapas_Colores_DJS(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, Dic_ANES,
+                                   SIM_param_x, SIM_param_y, ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
     """
@@ -166,14 +180,15 @@ for carp in Carpetas:
     # ceros. Muy raro.
     
     #----------------------------------------------------------------------------------------------
-    
-    func.Mapas_Colores_DJS(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, Dic_ANES,
-                           SIM_param_x, SIM_param_y, ID_param_extra_1)
     """
-    #----------------------------------------------------------------------------------------------
     
+    
+    #----------------------------------------------------------------------------------------------
+    """
     params = func.Ajuste_DJS(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, Dic_ANES,
                              0.5,0.72,0.04,0.15)
+    
+    func.Tiempo(t0)
     
     # Define the mathematical function
     def my_function(x, y, params):
@@ -182,5 +197,21 @@ for carp in Carpetas:
     func.plot_3d_surface(Etapa/carpeta, Dic_ANES, my_function, params, np.array([0.04,0.15]),
                          np.array([0.5,0.72]),SIM_param_x, SIM_param_y)
     
+    
+#    func.plot_3d_scatter(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, Dic_ANES,
+#                         np.array([0.5,0.72]),np.array([0.04,0.15]), SIM_param_x, SIM_param_y)
+    
+    
+    initial_guess = [0.1,0.5]
+    
+    def my_function_minimize(x, a,b,c,d,e):
+        return a*x[1]**2 + b*x[1] + c*x[0]**2 + d*x[0] + e
+    
+    # Perform the minimization
+    result = minimize(my_function_minimize, initial_guess, args=tuple(params))
+    
+    # Print the result
+    print("Optimal variables:", result.x)
+"""
 
 func.Tiempo(t0)
