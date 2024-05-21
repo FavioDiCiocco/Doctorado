@@ -8,6 +8,7 @@ Created on Mon Sep 19 11:33:00 2022
 # Este archivo es para definir funciones
 
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.pyplot import cm
 from scipy.spatial.distance import jensenshannon
 import pandas as pd
@@ -1375,7 +1376,7 @@ def Leer_Datos_ANES(filename,año):
     
 # Calculo la distancia Jensen-Shannon dadas dos distribuciones.
 
-def Mapas_Colores_DJS(DF_datos,DF_Anes,path,carpeta,code_1,code_2, weights,
+def Mapas_Colores_DJS(DF_datos,DF_Anes,path,carpeta,Dic_ANES,
                       SIM_param_x,SIM_param_y,ID_param_extra_1):
     
     # Defino la cantidad de agentes de la red
@@ -1409,9 +1410,9 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes,path,carpeta,code_1,code_2, weights,
     
     # Extraigo la distribución en hist2d
     
-    df_aux = DF_Anes.loc[(DF_Anes[code_1]>0) & (DF_Anes[code_2]>0)]
-    hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0,
-             bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
+    df_aux = DF_Anes.loc[(DF_Anes[Dic_ANES["code_1"]]>0) & (DF_Anes[Dic_ANES["code_2"]]>0)]
+    hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[Dic_ANES["code_1"]], y=df_aux[Dic_ANES["code_2"]], weights=df_aux[Dic_ANES["weights"]], vmin=0,
+             bins=[np.arange(df_aux[Dic_ANES["code_1"]].min()-0.5, df_aux[Dic_ANES["code_1"]].max()+1.5, 1), np.arange(df_aux[Dic_ANES["code_2"]].min()-0.5, df_aux[Dic_ANES["code_2"]].max()+1.5, 1)])
     plt.close()
     
     Distr_Enc = np.reshape(hist2d,(hist2d.shape[0]*hist2d.shape[1],1))
@@ -1461,7 +1462,7 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes,path,carpeta,code_1,code_2, weights,
     #--------------------------------------------------------------------------------
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/DistanciaJS_{}vs{}_{}={}.png".format(carpeta,code_2,code_1,ID_param_extra_1,EXTRAS))
+    direccion_guardado = Path("../../../Imagenes/{}/DistanciaJS_{}vs{}_{}={}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"],ID_param_extra_1,EXTRAS))
     
     plt.rcParams.update({'font.size': 44})
     plt.figure("Distancia Jensen-Shannon",figsize=(28,21))
@@ -1470,13 +1471,285 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes,path,carpeta,code_1,code_2, weights,
     
     # Hago el ploteo del mapa de colores con el colormesh
     
-    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "summer")
+    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "viridis")
     plt.colorbar()
-    plt.title("Distancia Jensen-Shannon\n {} vs {}".format(code_2,code_1))
+    plt.title("Distancia Jensen-Shannon\n {} vs {}".format(Dic_ANES["code_2"],Dic_ANES["code_1"]))
     
     # Guardo la figura y la cierro
     
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close("Distancia Jensen-Shannon")
     
+
+#-----------------------------------------------------------------------------------------------
     
+# Realizo un ajuste de los parámetros Beta y Cos(delta)
+    
+def Ajuste_DJS(DF_datos,DF_Anes,path,carpeta,Dic_ANES,
+               Bmin,Bmax,Cdmin,Cdmax):
+    
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF_datos["n"]))
+    
+    # Defino los arrays de parámetros diferentes
+    EXTRAS = int(np.unique(DF_datos["Extra"]))
+    Arr_param_x = np.unique(DF_datos["parametro_x"])
+    Arr_param_x = Arr_param_x[Arr_param_x > Cdmin]
+    Arr_param_x = Arr_param_x[Arr_param_x < Cdmax]
+    
+    Arr_param_y = np.unique(DF_datos["parametro_y"])
+    Arr_param_y = Arr_param_y[Arr_param_y > Bmin]
+    Arr_param_y = Arr_param_y[Arr_param_y < Bmax]
+    
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
+                   for j,param_y in enumerate(Arr_param_y)]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
+    # Gráfico de Opi vs T y en tres no se vería mejor.
+    T=2
+    
+    # Armo el vector en el que voy a poner todas las distancias Jensen-Shannon que calcule
+    YY = np.reshape(np.array([]),(0,1))
+    XX = np.reshape(np.array([]),(0,5))
+    
+    #--------------------------------------------------------------------------------
+    
+    # Extraigo la distribución en hist2d
+    
+    df_aux = DF_Anes.loc[(DF_Anes[Dic_ANES["code_1"]]>0) & (DF_Anes[Dic_ANES["code_2"]]>0)]
+    hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[Dic_ANES["code_1"]], y=df_aux[Dic_ANES["code_2"]], weights=df_aux[Dic_ANES["weights"]], vmin=0,
+             bins=[np.arange(df_aux[Dic_ANES["code_1"]].min()-0.5, df_aux[Dic_ANES["code_1"]].max()+1.5, 1), np.arange(df_aux[Dic_ANES["code_2"]].min()-0.5, df_aux[Dic_ANES["code_2"]].max()+1.5, 1)])
+    plt.close()
+    
+    Distr_Enc = np.reshape(hist2d,(hist2d.shape[0]*hist2d.shape[1],1))
+    
+    #--------------------------------------------------------------------------------
+    
+    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF_datos.loc[(DF_datos["tipo"]==TIPO) & 
+                                    (DF_datos["n"]==AGENTES) & 
+                                    (DF_datos["Extra"]==EXTRAS) & 
+                                    (DF_datos["parametro_x"]==PARAM_X) &
+                                    (DF_datos["parametro_y"]==PARAM_Y), "nombre"])
+        #-----------------------------------------------------------------------------------------
+        
+        DistJS = np.zeros((archivos.shape[0],1))
+        
+        for nombre in archivos:
+            
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
+            # Pasos simulados
+            # Semilla
+            # Matriz de Adyacencia
+            
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
+            
+            # Leo los datos de las Opiniones Finales
+            Opifinales = np.array(Datos[5][:-1], dtype="float")
+            Opifinales = Opifinales / EXTRAS
+            Distr_Sim = np.reshape(Clasificacion(Opifinales,7,T),(49,1))
+            
+            # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+            
+            repeticion = int(DF_datos.loc[DF_datos["nombre"]==nombre,"iteracion"])
+            
+            DistJS[repeticion] = jensenshannon(Distr_Enc,Distr_Sim)
+            
+        #------------------------------------------------------------------------------------------
+        # Una vez que calculé todas las distancias Jensen-Shannon, concateno eso con mi
+        # vector YY, así como concateno mi vector XX
+        
+        YY = np.concatenate((YY,DistJS))
+        
+        Bcuad = np.ones((len(archivos),1))*PARAM_Y*PARAM_Y
+        Blin = np.ones((len(archivos),1))*PARAM_Y
+        CDcuad = np.ones((len(archivos),1))*PARAM_X*PARAM_X
+        CDlin = np.ones((len(archivos),1))*PARAM_X
+        Unos = np.ones((len(archivos),1))
+        
+        M = np.concatenate((Bcuad,Blin,CDcuad,CDlin,Unos),axis=1)
+        XX = np.concatenate((XX,M))
+        
+    #------------------------------------------------------------------------------------------
+    
+    # Una vez que tengo armado los vectores XX e YY, ya puedo calcular mis coeficientes
+
+    param = np.matmul(np.linalg.inv(np.matmul(np.transpose(XX),XX)),np.matmul(np.transpose(XX),YY))
+    
+    return param
+
+#-----------------------------------------------------------------------------------------------
+    
+# Ploteo el paraboloide que ajuste en un gráfico 3D
+
+def plot_3d_surface(carpeta, Dic_ANES, func, params, x_range, y_range,
+                    SIM_param_x, SIM_param_y,x_samples=100, y_samples=100):
+    
+    """
+    Plot a 3D surface for a given mathematical function.
+    
+    Parameters:
+    - func: The mathematical function to plot. It should take two arguments (x and y) and return a value.
+    - x_range: A tuple specifying the range of x values (min, max).
+    - y_range: A tuple specifying the range of y values (min, max).
+    - x_samples: Number of samples in the x range.
+    - y_samples: Number of samples in the y range.
+    """
+    # Create a grid of points
+    x = np.linspace(x_range[0], x_range[1], x_samples)
+    y = np.linspace(y_range[0], y_range[1], y_samples)
+    X, Y = np.meshgrid(x, y)
+    Z = func(X, Y,params)
+
+    # Create the plot
+    direccion_guardado = Path("../../../Imagenes/{}/Paraboloide_ajustado_{}vs{}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"]))
+    plt.rcParams.update({'font.size': 44})
+    fig = plt.figure(figsize=(40,30))
+    ax = fig.add_subplot(111, projection='3d')
+    surf = ax.plot_surface(X, Y, Z, cmap='viridis')
+
+    # Add color bar which maps values to colors
+    fig.colorbar(surf, ax=ax, shrink=0.5, aspect=5)
+
+    # Labels and title
+    ax.set_xlabel(r"${}$".format(SIM_param_x))
+    ax.set_ylabel(r"${}$".format(SIM_param_y))
+    ax.set_zlabel('Distancia JS')
+    ax.set_title('Paraboloide ajustada para preguntas \n {} vs {}'.format(Dic_ANES["code_2"],Dic_ANES["code_1"]))
+
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close()
+
+#-----------------------------------------------------------------------------------------------
+    
+# Ploteo el los puntos sobre los que hice el ajuste en un gráfico 3D
+    
+def plot_3d_scatter(carpeta, Dic_ANES, x_range, y_range,
+                    SIM_param_x, SIM_param_y,x_samples=100, y_samples=100):
+    
+    """
+    Plot a 3D surface for a given mathematical function.
+    
+    Parameters:
+    - func: The mathematical function to plot. It should take two arguments (x and y) and return a value.
+    - x_range: A tuple specifying the range of x values (min, max).
+    - y_range: A tuple specifying the range of y values (min, max).
+    - x_samples: Number of samples in the x range.
+    - y_samples: Number of samples in the y range.
+    """
+    
+     # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF_datos["n"]))
+    
+    # Defino los arrays de parámetros diferentes
+    EXTRAS = int(np.unique(DF_datos["Extra"]))
+    Arr_param_x = np.unique(DF_datos["parametro_x"])
+    Arr_param_y = np.unique(DF_datos["parametro_y"])
+    
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
+                   for j,param_y in enumerate(Arr_param_y)]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
+    # Gráfico de Opi vs T y en tres no se vería mejor.
+    T=2
+    
+    #--------------------------------------------------------------------------------
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    ZZ = np.zeros(XX.shape)
+    
+    #--------------------------------------------------------------------------------
+    
+    # Extraigo la distribución en hist2d
+    
+    df_aux = DF_Anes.loc[(DF_Anes[Dic_ANES["code_1"]]>0) & (DF_Anes[Dic_ANES["code_2"]]>0)]
+    hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[Dic_ANES["code_1"]], y=df_aux[Dic_ANES["code_2"]], weights=df_aux[Dic_ANES["weights"]], vmin=0,
+             bins=[np.arange(df_aux[Dic_ANES["code_1"]].min()-0.5, df_aux[Dic_ANES["code_1"]].max()+1.5, 1), np.arange(df_aux[Dic_ANES["code_2"]].min()-0.5, df_aux[Dic_ANES["code_2"]].max()+1.5, 1)])
+    plt.close()
+    
+    Distr_Enc = np.reshape(hist2d,(hist2d.shape[0]*hist2d.shape[1],1))
+    
+    #--------------------------------------------------------------------------------
+    
+    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF_datos.loc[(DF_datos["tipo"]==TIPO) & 
+                                    (DF_datos["n"]==AGENTES) & 
+                                    (DF_datos["Extra"]==EXTRAS) & 
+                                    (DF_datos["parametro_x"]==PARAM_X) &
+                                    (DF_datos["parametro_y"]==PARAM_Y), "nombre"])
+        #-----------------------------------------------------------------------------------------
+        
+        DistJS = np.zeros(archivos.shape[0])
+        
+        for nombre in archivos:
+            
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
+            # Pasos simulados
+            # Semilla
+            # Matriz de Adyacencia
+            
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
+            
+            # Leo los datos de las Opiniones Finales
+            Opifinales = np.array(Datos[5][:-1], dtype="float")
+            Opifinales = Opifinales / EXTRAS
+            Distr_Sim = np.reshape(Clasificacion(Opifinales,7,T),(49,1))
+            
+            # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+            
+            repeticion = int(DF_datos.loc[DF_datos["nombre"]==nombre,"iteracion"])
+            
+            DistJS[repeticion] = jensenshannon(Distr_Enc,Distr_Sim)
+            
+        #------------------------------------------------------------------------------------------
+        # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
+        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(DistJS)
+    
+    # Create a grid of points
+    x = np.linspace(x_range[0], x_range[1], x_samples)
+    y = np.linspace(y_range[0], y_range[1], y_samples)
+    X, Y = np.meshgrid(x, y)
+    Z = func(X, Y,params)
+
+    # Create the plot
+    direccion_guardado = Path("../../../Imagenes/{}/Paraboloide_ajustado_{}vs{}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"]))
+    plt.rcParams.update({'font.size': 44})
+    fig = plt.figure(figsize=(40,30))
+    ax = fig.add_subplot(111, projection='3d')
+    surf = ax.plot_surface(X, Y, Z, cmap='viridis')
+
+    # Add color bar which maps values to colors
+    fig.colorbar(surf, ax=ax, shrink=0.5, aspect=5)
+
+    # Labels and title
+    ax.set_xlabel(r"${}$".format(SIM_param_x))
+    ax.set_ylabel(r"${}$".format(SIM_param_y))
+    ax.set_zlabel('Distancia JS')
+    ax.set_title('Paraboloide ajustada para preguntas \n {} vs {}'.format(Dic_ANES["code_2"],Dic_ANES["code_1"]))
+
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close()

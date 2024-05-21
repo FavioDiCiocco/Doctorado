@@ -107,6 +107,8 @@ for carp in Carpetas:
     
     Df_ANES = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
     
+    Dic_ANES = {"code_1": 'V201255', "code_2": 'V201258', "weights":'V200010a'}
+    
     #----------------------------------------------------------------------------------------------
     """
     # Consideremos que quiero revisar los estados finales de las simulaciones contra uno de mis
@@ -162,11 +164,23 @@ for carp in Carpetas:
     # Esto que me armé efectivamente calcula la distancia Jensen-Shannon entre dos
     # distribuciones. Extrañamente, no tiene problemas con las distribuciones que tengan
     # ceros. Muy raro.
+    
+    #----------------------------------------------------------------------------------------------
+    
+    func.Mapas_Colores_DJS(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, Dic_ANES,
+                           SIM_param_x, SIM_param_y, ID_param_extra_1)
     """
     #----------------------------------------------------------------------------------------------
     
-    func.Mapas_Colores_DJS(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, 'V201258', 'V201255', 'V200010a',
-                           SIM_param_x, SIM_param_y, ID_param_extra_1)
+    params = func.Ajuste_DJS(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, Dic_ANES,
+                             0.5,0.72,0.04,0.15)
+    
+    # Define the mathematical function
+    def my_function(x, y, params):
+        return params[0]*y**2 + params[1]*y + params[2]*x**2 + params[3]*x + params[4]
+    
+    func.plot_3d_surface(Etapa/carpeta, Dic_ANES, my_function, params, np.array([0.04,0.15]),
+                         np.array([0.5,0.72]),SIM_param_x, SIM_param_y)
     
 
 func.Tiempo(t0)

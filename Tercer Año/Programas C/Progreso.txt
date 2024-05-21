@@ -972,3 +972,19 @@ aisle la región de datos en la cuál quiero armar mi ajuste, y que luego haga e
 Como sea que tenga que ser eso. Yo diría que por hoy estoy en horario, guardaría todo,
 iría para casa y luego veré cómo construir eso el finde. O el lunes, creo que el lunes
 tendría que salir eso.
+
+------------------------------------------------------------------------------------------
+
+20/05/2023
+
+Estoy trabajando desde casa, hoy no me siento en condiciones de ir a la facultad.
+Lo que quiero hacer es el ajuste de los parámetros. Para eso recorto una región en
+la cuál observe un mínimo. A esa región, le hago un ajuste por cuadrados mínimos a la
+Distancia de Jensen Shannon en función de los parámetros Beta y Cos(delta), ajustando
+con la función de un paraboloide.
+
+Armé la función que hace el ajuste de cuadrados mínimos. Después tengo que ver cómo obtener
+el error del ajuste. Pero lo importante es que con esto podría calcular los coeficientes
+de mi paraboloide con el que ajusto este espacio.
+
+Digamos que Beta lo ajusto entre [0.5,0.72] y Cosd entre [0.04,0.15]
