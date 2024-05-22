@@ -1016,3 +1016,44 @@ Las variables óptimas obtenidas fueron: [Cosd = 0.104, Beta = 0.602].
 Revisé 'V201420x' vs 'V201231x'. Son preguntas políticas
 Revisé 'V202320x' vs 'V202320x'. Son preguntas No políticas
 
+------------------------------------------------------------------------------------------
+
+22/05/2023
+
+Para bien o para mal, hoy es la reunión. Hay que hacer funcionar esto. Logré graficar 
+las distribuciones de las encuestas usando matplotlib. Gracias por tanto Hugo.
+Lo que tengo que hacer es elegir tres pares de preguntas. Uno ya lo tengo elegido,
+es el que le mostré a Pablo, creo que Govt. Assistance to Blacks vs Guaranteed Job
+Income.
+
+De las preguntas políticas tengo dos opciones que me parece que podrían resultar
+interesantes. La primera es "Birthright Citizenship vs Liberal-Conservative Self placement"
+(V201200 vs V201420x). Se parece un poco a polarización descorrelacionada porque no va
+tanto a extremos sino que llena un poco más las zonas intermedias. La segunda opción es 
+la de "Less or more Government vs Birthright Citizenship" (V201420x vs V202255x).
+Esta no me convence tanto porque tiene bastante vacío el medio, eso se parece más a una
+polarización descorrelacionada sin anchura. Aunque debería igualmente dar mejor 
+cerca de Beta =1.
+
+En el caso de las no políticas, observo que son todas básicamente casos de consenso radicalizado.
+Me parece que razonablemente puedo proponer como ejemplo del de "Government action about opiod
+drug addiction vs Economic Mobility compared to 20 years ago" (V202320x vs V202350x). Todos los
+pares de preguntas parecen razonablemente observarse como consensos, ese par me parece preguntas
+claramente apolíticas.
+
+El par de preguntas apolíticas que estoy mirando está dando muy mal, por algún motivo me queda la
+distribución al revés de lo que esperaría ver. No, ya lo pensé, ahí lo entiendo todo, la forma en
+que calculo la distancia claramente está generando problemas. No estoy rotando las distribuciones.
+
+Probemos cómo da el caos de Vaccines in Schools vs Best way to deal with Urban Unrest. 
+(V201429 vs V202341x).
+
+Considerar que 
+Usar agentes neutros a la fuerza. Es una forma de resolver el tema de la caja de agentes
+con opiniones. La otra es anular el elemento que corresponde 
+Normalizar los gráficos de la distribución de la ANES.
+Salvar los ceros en las regiones que faltan agentes.
+Considerar que quizás tenemos dos Betas. Pensar en temas que tengan Betas distintos quizás,
+como el del Muro con México y el ..., para ver si tienen dos mínimos.
+Arrancar con las preguntas que vieron ellos en el paper que sean bimodal o unimodal.
+Comparar gráficos con igual resolución.

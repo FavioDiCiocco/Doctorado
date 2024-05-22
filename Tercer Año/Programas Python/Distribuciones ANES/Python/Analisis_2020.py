@@ -139,16 +139,16 @@ for i,code_1 in enumerate(labels_politicos):
         else:
             weights = 'V200010b'
             
-        print(code_1)
-        print(code_2)
         plt.rcParams.update({'font.size': 28})
-        # plt.figure(figsize=(40,21))
-        sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
-                      joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
-                      marginal_kws={'discrete': True, 'weights': df_aux[weights]})
+        plt.figure(figsize=(20,20))
+#        sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
+#                      joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
+#                      marginal_kws={'discrete': True, 'weights': df_aux[weights]})
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0, cmap = "inferno",
+                                    bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
         plt.xlabel(dict_labels[code_1])
         plt.ylabel(dict_labels[code_2])
-        plt.gca().invert_yaxis()
+#        plt.gca().invert_yaxis()
         direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Politicos/{}vs{}.png".format(code_1,code_2))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
@@ -166,13 +166,15 @@ for i,code_1 in enumerate(labels_apoliticos):
             weights = 'V200010b'
         
         plt.rcParams.update({'font.size': 28})
-        # plt.figure(figsize=(40,21))
-        sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
-                      joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
-                      marginal_kws={'discrete': True, 'weights': df_aux[weights]})
+        plt.figure(figsize=(20,20))
+#        sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
+#                      joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
+#                      marginal_kws={'discrete': True, 'weights': df_aux[weights]})
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0, cmap = "inferno",
+                                    bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
         plt.xlabel(dict_labels[code_1])
         plt.ylabel(dict_labels[code_2])
-        # plt.gca().invert_yaxis()
+#        plt.gca().invert_yaxis()
         direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/No Politicos/{}vs{}.png".format(code_1,code_2))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
@@ -189,13 +191,15 @@ for i,code_1 in enumerate(labels_dudosos):
             weights = 'V200010b'
         
         plt.rcParams.update({'font.size': 28})
-        # plt.figure(figsize=(40,21))
-        sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
-                      joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
-                      marginal_kws={'discrete': True, 'weights': df_aux[weights]})
+        plt.figure(figsize=(20,20))
+#        sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
+#                      joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
+#                      marginal_kws={'discrete': True, 'weights': df_aux[weights]})
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0, cmap = "inferno",
+                                    bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
         plt.xlabel(dict_labels[code_1])
         plt.ylabel(dict_labels[code_2])
-        # plt.gca().invert_yaxis()
+#        plt.gca().invert_yaxis()
         direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Dudosos/{}vs{}.png".format(code_1,code_2))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()

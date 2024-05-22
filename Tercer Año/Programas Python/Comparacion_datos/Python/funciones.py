@@ -1376,8 +1376,8 @@ def Leer_Datos_ANES(filename,año):
     
 # Calculo la distancia Jensen-Shannon dadas dos distribuciones.
 
-def Mapas_Colores_DJS(DF_datos,DF_Anes,path,carpeta,Dic_ANES,
-                      SIM_param_x,SIM_param_y,ID_param_extra_1):
+def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,
+                      SIM_param_x,SIM_param_y):
     
     # Defino la cantidad de agentes de la red
     AGENTES = int(np.unique(DF_datos["n"]))
@@ -1404,7 +1404,7 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes,path,carpeta,Dic_ANES,
     # Construyo las grillas que voy a necesitar para el pcolormesh.
     
     XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
-    ZZ = np.zeros(XX.shape)
+    ZZ = np.zeros((XX.shape[0],XX.shape[1],100))
     
     #--------------------------------------------------------------------------------
     
@@ -1457,12 +1457,12 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes,path,carpeta,Dic_ANES,
             
         #------------------------------------------------------------------------------------------
         # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
-        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(DistJS)
+        ZZ[(Arr_param_y.shape[0]-1)-fila,columna,:] = np.sort(DistJS)
     
     #--------------------------------------------------------------------------------
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/DistanciaJS_{}vs{}_{}={}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"],ID_param_extra_1,EXTRAS))
+    direccion_guardado = Path("../../../Imagenes/{}/DistanciaJS_{}vs{}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"]))
     
     plt.rcParams.update({'font.size': 44})
     plt.figure("Distancia Jensen-Shannon",figsize=(28,21))
@@ -1471,14 +1471,37 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes,path,carpeta,Dic_ANES,
     
     # Hago el ploteo del mapa de colores con el colormesh
     
-    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "viridis")
+    plt.pcolormesh(XX,YY,np.mean(ZZ,axis=2),shading="nearest", cmap = "viridis")
     plt.colorbar()
-    plt.title("Distancia Jensen-Shannon\n {} vs {}".format(Dic_ANES["code_2"],Dic_ANES["code_1"]))
+    plt.title("Distancia Jensen-Shannon\n {} vs {}".format(dict_labels[Dic_ANES["code_2"]],dict_labels[Dic_ANES["code_1"]]))
     
     # Guardo la figura y la cierro
     
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close("Distancia Jensen-Shannon")
+    
+    # Y ahora me armo los rankings
+    
+    for i in range(1,6):
+        direccion_guardado = Path("../../../Imagenes/{}/DistanciaJS_{}vs{}_r{}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"],i))
+    
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("Ranking Distancia Jensen-Shannon",figsize=(28,21))
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        
+        # Hago el ploteo del mapa de colores con el colormesh
+
+        
+        plt.pcolormesh(XX,YY,np.mean(ZZ[:,:,0:i*20],axis=2),shading="nearest", cmap = "viridis")
+        plt.colorbar()
+        plt.title("ranking distancia Jensen-Shannon\n {} vs {}".format(dict_labels[Dic_ANES["code_2"]],dict_labels[Dic_ANES["code_1"]]))
+        
+        # Guardo la figura y la cierro
+        
+        plt.savefig(direccion_guardado , bbox_inches = "tight")
+        plt.close("Ranking Distancia Jensen-Shannon")
+        
     
 
 #-----------------------------------------------------------------------------------------------
@@ -1500,7 +1523,6 @@ def Ajuste_DJS(DF_datos,DF_Anes,path,carpeta,Dic_ANES,
     Arr_param_y = np.unique(DF_datos["parametro_y"])
     Arr_param_y = Arr_param_y[Arr_param_y > Bmin]
     Arr_param_y = Arr_param_y[Arr_param_y < Bmax]
-    
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
     Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
@@ -1622,6 +1644,11 @@ def plot_3d_surface(carpeta, Dic_ANES, func, params, x_range, y_range,
     # Add color bar which maps values to colors
     fig.colorbar(surf, ax=ax, shrink=0.5, aspect=5)
 
+    # Adjust tick parameters
+    ax.tick_params(axis='x', pad=30)
+    ax.tick_params(axis='y', pad=30)
+    ax.tick_params(axis='z', pad=30)
+    
     # Labels and title
     ax.set_xlabel(r"${}$".format(SIM_param_x))
     ax.set_ylabel(r"${}$".format(SIM_param_y))
