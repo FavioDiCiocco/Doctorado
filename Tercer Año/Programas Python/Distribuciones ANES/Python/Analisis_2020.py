@@ -126,7 +126,7 @@ for code in labels_filtrados:
 df_data[['V200010a','V200010b']] = df_raw_data[['V200010a','V200010b']]
 
 #############################################################################################
-
+"""
 # Gráfico de dos preguntas simultáneas con distribuciones individuales en los ejes
 
 for i,code_1 in enumerate(labels_politicos):
@@ -204,8 +204,8 @@ for i,code_1 in enumerate(labels_dudosos):
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
 
-
-#############################################################################################
+"""
+####################################################################################################################
 
 """
 plt.rcParams.update({'font.size': 28})
@@ -258,4 +258,28 @@ for code in labels_dudosos:
     plt.close()
 
 """
+
+####################################################################################################################
+
+# Veamos si puedo hacer un poco esto que me decían de revisar que los gráficos de las distribuciones
+# estén normalizados. Arranquemos revisando un gráfico en particular, cualquiera.
+
+tuplas_datos = [('V201429','V202341x','V200010b')]# ('V201255','V201258','V200010a'),('V201200','V201420x','V200010a'),('V202320x','V202350x','V200010b')]
+
+code_1 = 'V201258'
+code_2 = 'V201255'
+weights = 'V200010a'
+
+df_aux = df_data.loc[(df_data[code_1]>0) & (df_data[code_2]>0)]
+
+plt.rcParams.update({'font.size': 28})
+plt.figure(figsize=(20,20))
+hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0, cmap = "inferno",density = True,
+                                        bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
+plt.xlabel(dict_labels[code_1])
+plt.ylabel(dict_labels[code_2])
+plt.show()
+
+print(hist2d)
+
 Tiempo(t0)

@@ -11,7 +11,6 @@ carpeta tiene sólo las funciones necesarias. Eso va a hacer que recorrer la lis
 sea mucho más fácil cada vez que quiera buscar funciones.
 
 
-
 Prueba Tiempos:
 ---------------
 Esta carpeta todavía no la use, la idea es hacer el testeo de cómo varía la fracción de estados
@@ -51,3 +50,38 @@ mezcla de estados. Hugo nos dijo que cuando lo revisaron, llegaron a la conclusi
 era un efecto de saturación de la función de tanh. Así que una forma de ponerlo a prueba
 es hacer un barrido en el espacio Beta-Kappa cambiando la función de tanh por una función
 signo, que sea 1 o -1 en caso de que la función del vecino sea positiva o negativa.
+
+
+Clasificador neuronal:
+----------------------
+Acá lo que tengo es una carpeta de Python. Pero creo que lo que ocurre es que en la pc
+de la facultad tengo una segunda carpeta con gráficos de distribuciones. En realidad la 
+mayor parte del código de esto lo tenía en un Google Colab que entrena una red neuronal.
+Logré que se entrene la red, no la probé sobre su eficiencia en nada, así que básicamente
+vi que el código corre y listo. Por ahora esto está en stand-by.
+
+
+Probas Pol:
+-----------
+El objetivo era ver la probabilidad de polarización de una dimensión contra dos dimensiones.
+Había mandado a armar las simulaciones, ahora me doy cuenta que no sé si hice algo con esto.
+Qué bajón. Cuestión que los datos deberían estar en la pc de la facultad.
+
+
+Distribuciones ANES:
+--------------------
+Esta carpeta contiene una carpeta para cada encuesta ANES, con la encuesta en formato .dta
+En Python lo más importante son las funciones Analisis 2016 y Analisis 2020. Estas funciones
+hacen las distribuciones de opiniones a lo largo de un eje y a lo largo de dos, para las
+preguntas consideradas de cada encuesta. En la pc de la facultad puedo armar estos gráficos
+usando Seaborn, pero en casa el seaborn no funciona y tengo que armar simulaciones con
+matplotlib.
+
+
+Comparacion datos:
+------------------
+El objetivo es comparar las distribuciones de ANES con las simulaciones del modelo. Para eso
+tengo la carpeta de ANES_2020 y una carpeta con las simulaciones del espacio Zoom_Beta-Cosd.
+Principalmente estoy armando gráficos de distancia JS promedio en el espacio de parámetros
+para algunos conjuntos de pares de preguntas e intentando ajustar los valores de Beta y Cos(delta)
+óptimos para tener el mínimo de distancia.

@@ -28,3 +28,18 @@ La idea es tomar los estados resueltos en el espacio Beta-Kappa para Betas menor
 esos estados unos 20000 pasos extras, que implican un tiempo extra de 2000. Busco ver en ese tiempo
 el comportamiento de los agentes en función del tiempo. En principio sólo necesito guardarme los datos
 de los testigos.
+
+.) Func_Sign:
+-------------
+
+Teníamos la idea de que la panza que se produce en el gráfico de la entropía en el espacio de parámetros 
+tenía que ver con que en Kappas grandes la función de tanh saturaba. Así que probamos hacer simulaciones
+sacando la tanh y poniendo una función signo. Hice un barrido grueso en Beta-Kappa y vimos qué tal
+da el gráfico de entropía.
+
+.) Probas_pol:
+--------------
+
+Estoy intentando recordar la función de este código, pero no puedo comprender exactamente para qué
+lo quería. Era calcular probabilidad de polarización de ciertas cosas. Pero no me acuerdo qué cosas.
+Ese es el problema de querer documentar mucho tiempo después. En la facultad veré de revisar esto de nuevo.

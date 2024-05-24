@@ -43,7 +43,7 @@ polarización ideológica transiciona de ser inestable a estable.
 
 ------------------------------------------------------------------------------------------
 
-04/04/2023
+04/04/2024
 
 En la mañana revisé las carpetas de Oporto y demás para ver que todo estuviera corriendo bien, mandé
 a armar gráficos en Oporto ahora que tengo las 100 simulaciones por punto y estuve intentando pensar
@@ -61,7 +61,7 @@ como odio estos días. Y eso que vine temprano y todo.
 
 ------------------------------------------------------------------------------------------
 
-05/04/2023
+05/04/2024
 
 Hoy estuve todo el día armando los gráficos de distribución de estados en el espacio de parámetros.
 Logré hacer los gráficos tanto para el espacio Beta-Kappa como para el espacio Beta-Cosd.
@@ -73,7 +73,7 @@ a becas. Lunes retomamos con ganas y fuerzas.
 
 ------------------------------------------------------------------------------------------
 
-08/04/2023
+08/04/2024
 
 Hoy llegué más o menos temprano, los trenes están tardando mucho ahora, temas de despidos.
 VLLC. A la mañana voy al curso de inglés. Revisé las simulaciones en el espacio reducido.
@@ -111,7 +111,7 @@ se están terminando los gráficos en la región reducida. Tengo mala espina.
 
 ------------------------------------------------------------------------------------------
 
-09/04/2023
+09/04/2024
 
 Revisé Coimbra, se hicieron los gráficos del espacio reducido. Se ve algo interesante respecto
 de los estados con anchura, y se ve que coinciden los resultados con lo observado en el espacio
@@ -125,7 +125,7 @@ no me agarre la lluvia.
 
 ------------------------------------------------------------------------------------------
 
-10/04/2023
+10/04/2024
 
 A la mañana llegué y mandé a armar gráficos de Histogramas 2D. Después tuvimos la reunión de grupo.
 Comí en la oficina y rápido terminé de armar lo que pude de la presentación para la
@@ -161,7 +161,7 @@ porque algunas preguntas tienen 6 cajas y otras 7.
 
 ------------------------------------------------------------------------------------------
 
-11/04/2023
+11/04/2024
 
 A la mañana hablé con Pablo sobre lo que fue la charla con la gente de GOTHAM. El plan ahora
 es armar una lista de cosas para hacer en estas tres semanas hasta la próxima reunión. Ahora
@@ -228,7 +228,7 @@ determiné antes.
 
 ------------------------------------------------------------------------------------------
 
-12/04/2023
+12/04/2024
 
 A la mañana fui a realizar el trámite del Banco Provincia. Llegué a la facultad a las 13.
 
@@ -247,7 +247,7 @@ Vamos para casa. No es temprano en realidad.
 
 ------------------------------------------------------------------------------------------
 
-15/04/2023
+15/04/2024
 
 Al final el finde no hice la tarea que planeaba hacer, pero no fue tan terrible, la semana
 arrancó igual y estamos todos bien. A veces no tiene tanto sentido hacerse la cabeza con
@@ -275,7 +275,7 @@ va a ser un bardo. Bah no, mentira, va a ser una boludez.
 
 ------------------------------------------------------------------------------------------
 
-16/04/2023
+16/04/2024
 
 No puedo mandar a correr las simulaciones en la pc de Algarve, ya fue, lo corro en la pc
 de la facultad. Mientras eso corre, mandé las simulaciones en Coimbra, eso no fue tan simple.
@@ -297,7 +297,7 @@ Voy a comparar que las distribuciones me den lo mismo que las opiniones finales.
 
 ------------------------------------------------------------------------------------------
 
-17/04/2023
+17/04/2024
 
 Mandé en la pc de la facultad cuatro procesos para resolver 250 simulaciones en cada terminal.
 En la pc de Coimbra ya está casi terminada la tanda de simulaciones para el punto del espacio
@@ -341,7 +341,7 @@ mañana usando esas semillas y ya después veo qué pasó.
 
 ------------------------------------------------------------------------------------------
 
-18/04/2023
+18/04/2024
 
 A la mañana fui a llevar el acta de matrimonio al estudio de traducción, y volví al mediodía. Después
 me puse a ver los datos del barrido en el espacio Beta-Kappa. El gráfico pareciera dar lo que yo busco,
@@ -354,7 +354,7 @@ en el espacio Beta-Kappa, y de las simulaciones en un punto del espacio de pará
 
 ------------------------------------------------------------------------------------------
 
-19/04/2023
+19/04/2024
 
 Lo primero que voy a hacer es comparar el gráfico de Func_sign en el espacio Beta-Kappa
 con el gráfico que tengo de esa misma región hecho en la etapa de opinión actualizada.
@@ -399,7 +399,7 @@ Para el punto 2 hago un barrido extra, agregando valores de Kappa en los puntos 
 
 ------------------------------------------------------------------------------------------
 
-22/04/2023
+22/04/2024
 
 A la mañana fui a la última clase del curso de "Becas:Help!". Tomé algunas notas sobre cómo
 mejorar el CV y discutimos con los demás consejos para buen CV.
@@ -446,7 +446,7 @@ Lo que voy a hacer es mañana borrar las simulaciones con valores de Kappa fracc
 
 ------------------------------------------------------------------------------------------
 
-23/04/2023
+23/04/2024
 
 Ya borré esos archivos con valores de Kappa fraccionarios, mientras en Oporto se completan
 simulaciones para llegar a tener 100 en ese barrido.
@@ -464,7 +464,7 @@ Pero como ya empecé, tengo que aprovechar y presentarlo.
 
 ------------------------------------------------------------------------------------------
 
-24/04/2023
+24/04/2024
 
 A la mañana lo primero que hice fue mandar a correr la tanda de simulaciones 1D de Probas_Pol
 en la pc de Coimbra. Lo siguiente que voy a hacer es repasar las ecuaciones dinámicas cosa de tener
@@ -475,7 +475,7 @@ un poco de lo de Mininni y después seguiré con esto un poco más.
 
 ------------------------------------------------------------------------------------------
 
-26/04/2023
+26/04/2024
 
 En el día de ayer estuve trabajando en el análisis de la ecuación dinámica básicamente todo
 el día. Fui a una reunión de grupo y llegué tarde por el tema de estar esperando el link para
@@ -498,7 +498,7 @@ Eso tomará un tiempo.
 
 ------------------------------------------------------------------------------------------
 
-29/04/2023
+29/04/2024
 
 Llegué al horario usual. Me puse a revisar mails y cosas que quedaron pendientes. Ahora que
 resolví eso, me pongo con las cosas que dejé corriendo.
@@ -534,7 +534,7 @@ funciona de una.
 
 ------------------------------------------------------------------------------------------
 
-30/04/2023
+30/04/2024
 
 No llegué más temprano que lo usual, pero casi. Armé los gráficos de las distribuciones
 de las opiniones diferenciando preguntas políticas y no políticas. Habiendo charlado con
@@ -595,7 +595,7 @@ Preguntas Apolíticas 2020:
 
 ------------------------------------------------------------------------------------------
 
-01/05/2023
+01/05/2024
 
 Volví del cumpleaños de Estaban. Ahora queda ponerme a hacer algunas cosas, empezar a preparar
 la presentación de mañana. Se me hace importante primero revisar que las preguntas que
@@ -629,7 +629,7 @@ a tardar esto.
 
 ------------------------------------------------------------------------------------------
 
-02/05/2023
+02/05/2024
 
 A la mañana preparé la presentación para la gente de GOTHAM. Armé los gráficos de las
 distribuciones 2D y de ahí fui armando alguna idea de las cosas importantes.
@@ -644,7 +644,7 @@ agentes. Mañana es lo primero que mando a hacer en la mañana.
 
 ------------------------------------------------------------------------------------------
 
-03/05/2023
+03/05/2024
 
 No estoy pudiendo mandar a correr simulaciones en la pc de Coimbra, no sé qué error está
 encontrando el código. Voy a rehacer un código único desde la pc de la facultad y subir
@@ -684,7 +684,7 @@ mando a correr todo. ACORDATE DE USAR UNA SOLA CARPETA DE REDES DE ADYACENCIA.
 
 ------------------------------------------------------------------------------------------
 
-04/05/2023
+04/05/2024
 
 Hoy a la tarde mandé a correr las simulaciones en las tres pc's, pero esto va a tomar
 una eternidad. Hablar con Pablo y contarle que voy a meterme un momento en el código a ver
@@ -692,7 +692,7 @@ si hay algo que pueda hacer para hacerlo correr más rápido.
 
 ------------------------------------------------------------------------------------------
 
-05/05/2023
+05/05/2024
 
 Mirando el código, encontré algo que claramente está gastando mucho tiempo. Estoy calculando
 varias veces el mismo peso. Tengo que hacerlo de forma tal de calcularlo una sola vez. Eso
@@ -712,7 +712,7 @@ misma cantidad de pasos máximos, me parece que cambiar sería una mala idea.
 
 ------------------------------------------------------------------------------------------
 
-06/05/2023
+06/05/2024
 
 Ahí hice el cambio sobre el cálculo de los pesos. Veamos en comparación con el cálculo que se hizo
 el otro día. La otra vez tardó 11813 segundos. Voy a usar la misma semilla y correr el mismo
@@ -738,7 +738,7 @@ código, revisar eso. Porque tendría que reducirse mucho la cantidad de cuentas
 
 ------------------------------------------------------------------------------------------
 
-07/05/2023
+07/05/2024
 
 Hoy quería ponerme a estudiar alemán, no creo que lo haga. Primero voy a mandar a correr de nuevo
 los barridos en las pc's, pero modificando el instanciar para que no tenga el cero de cos(delta)
@@ -770,7 +770,7 @@ Voy a ponerme a preparar la presentación para mañana.
 
 ------------------------------------------------------------------------------------------
 
-08/05/2023
+08/05/2024
 
 Revisé los programas que están en las pc's y están tardando aprox. 40 minutos cada simulación.
 Recién resolvió dos betas de los 11. Así que eso va a estar un buen rato, con algo de suerte
@@ -781,7 +781,7 @@ Pablo de preguntas de las ANES.
 
 ------------------------------------------------------------------------------------------
 
-09/05/2023
+09/05/2024
 
 Por el paro, hoy estoy trabajando en casa. Estoy mirando la ANES y clasificando preguntas.
 En la encuesta ANES 2020 hay preguntas de estereotipos sobre que tan trabajador o violentos
@@ -794,7 +794,7 @@ Ya revisé toda la ANES 2020. ¿Debería seguir con este trabajo?
 
 ------------------------------------------------------------------------------------------
 
-10/05/2023
+10/05/2024
 
 El 9 trabajé desde casa, pero por lo que veo no lo comitee, quizás genere problemas.
 Tengo problemas más serios. Resulta que lo que estoy mandando a correr está tardando una eternidad.
@@ -834,7 +834,7 @@ idea de la diferencia de tiempos y si los tiempos del código de Hugo es razonab
 
 ------------------------------------------------------------------------------------------
 
-11/05/2023
+11/05/2024
 
 Mandé a correr el código mío y tardó 7600 segundos. El código de Hugo en cambio tardó 47 segundos.
 Hay una diferencia de dos órdenes de magnitud en el tiempo que tarda mi código y el de ellos.
@@ -846,7 +846,7 @@ clara y después preparar algo para presentar con eso.
 
 ------------------------------------------------------------------------------------------
 
-13/05/2023
+13/05/2024
 
 Soy un reverendo pelotudo, cinco veces pensé en commitear el trabajo de casa y no lo hice.
 Ahora voy a tener un bardo entre los archivos y cosas. En la facultad hoy voy a
@@ -888,7 +888,7 @@ distribuciones T.T.
 
 ------------------------------------------------------------------------------------------
 
-14/05/2023
+14/05/2024
 
 Ayer llegué a casa y tampoco comitee mis datos. Soy un re boludo. Voy a copiar los datos de la
 ANES en la carpeta de Comparación_datos y ahí voy a trabajar la parte de las comparaciones de
@@ -913,7 +913,7 @@ de parámetros. Ahí lo mandé a correr, funcionó. Y da razonable. Charlar eso 
 
 ------------------------------------------------------------------------------------------
 
-15/05/2023
+15/05/2024
 
 Pablo mandó un mensaje para posponer la reunión hasta la semana que viene. Así que para
 la semana que viene tengo que tener algo más sólido armado. Para eso tengo que trabajar
@@ -944,7 +944,7 @@ código de Hugo es 100 veces más rápido que el mío.
 
 ------------------------------------------------------------------------------------------
 
-16/05/2023
+16/05/2024
 
 Llevo toda la mañana y un poco de la tarde en terminar de adaptar el código de Hugo para que
 corra como yo espero. Veamos si realmente funciona. Crucemos los dedos.
@@ -975,7 +975,7 @@ tendría que salir eso.
 
 ------------------------------------------------------------------------------------------
 
-20/05/2023
+20/05/2024
 
 Estoy trabajando desde casa, hoy no me siento en condiciones de ir a la facultad.
 Lo que quiero hacer es el ajuste de los parámetros. Para eso recorto una región en
@@ -991,7 +991,7 @@ Digamos que Beta lo ajusto entre [0.5,0.72] y Cosd entre [0.04,0.15]
 
 ------------------------------------------------------------------------------------------
 
-21/05/2023
+21/05/2024
 
 Ya logré armar el cálculo del mínimo del valor 
 
@@ -1018,7 +1018,7 @@ Revisé 'V202320x' vs 'V202320x'. Son preguntas No políticas
 
 ------------------------------------------------------------------------------------------
 
-22/05/2023
+22/05/2024
 
 Para bien o para mal, hoy es la reunión. Hay que hacer funcionar esto. Logré graficar 
 las distribuciones de las encuestas usando matplotlib. Gracias por tanto Hugo.
@@ -1036,6 +1036,9 @@ polarización descorrelacionada sin anchura. Aunque debería igualmente dar mejo
 cerca de Beta =1.
 
 En el caso de las no políticas, observo que son todas básicamente casos de consenso radicalizado.
+Si ploteo lo que observo en la salida del plt.hist2d, lo que obtengo no es algo normalizado, es una
+distribución con números más grandes que uno en muchos casos. Pero son todos floats, no es que
+es la cantidad de agentes en cada región exactamente.
 Me parece que razonablemente puedo proponer como ejemplo del de "Government action about opiod
 drug addiction vs Economic Mobility compared to 20 years ago" (V202320x vs V202350x). Todos los
 pares de preguntas parecen razonablemente observarse como consensos, ese par me parece preguntas
@@ -1048,12 +1051,62 @@ que calculo la distancia claramente está generando problemas. No estoy rotando 
 Probemos cómo da el caos de Vaccines in Schools vs Best way to deal with Urban Unrest. 
 (V201429 vs V202341x).
 
-Considerar que 
-Usar agentes neutros a la fuerza. Es una forma de resolver el tema de la caja de agentes
-con opiniones. La otra es anular el elemento que corresponde 
-Normalizar los gráficos de la distribución de la ANES.
-Salvar los ceros en las regiones que faltan agentes.
-Considerar que quizás tenemos dos Betas. Pensar en temas que tengan Betas distintos quizás,
-como el del Muro con México y el ..., para ver si tienen dos mínimos.
-Arrancar con las preguntas que vieron ellos en el paper que sean bimodal o unimodal.
-Comparar gráficos con igual resolución.
+.) Considerar que la gente responde nulo cuando no se le da la opinión de no responder.
+.) Usar agentes neutros a la fuerza. Es una forma de resolver el tema de la caja de agentes
+ con opiniones. La otra es anular el elemento que corresponde a la caja central
+.) Normalizar los gráficos de la distribución de la ANES.
+.) Salvar los ceros en las regiones que faltan agentes.
+.) Considerar que quizás tenemos dos Betas. Pensar en temas que tengan Betas distintos quizás,
+ como el del Muro con México y el ..., para ver si tienen dos mínimos.
+.) Arrancar con las preguntas que vieron ellos en el paper que sean bimodal o unimodal.
+.) Comparar gráficos con igual resolución.
+
+------------------------------------------------------------------------------------------
+
+23/05/2024
+
+Hoy lo primero que quiero hacer es organizar un poco mis archivos, y después resolver alguno
+de los elementos que charlamos con la gente de España.
+
+1) Normalizar los gráficos de distribuciones de ANES.
+2) Armar reversiones de mis gráficos 
+3) Rearmar la función de Clasificación para que tome preguntas de 6 respuestas en vez de 7.
+4) Finalizar los ajustes, así como el graficado scatter de las distancias.
+
+Al final solo logré hacer un poco de orden en las cosas que tenía, no avancé en nada del
+trabajo por el tema de cómo me está resultando la operación. Roguemos que todo va a mejorar.
+
+------------------------------------------------------------------------------------------
+
+24/05/2024
+
+Hoy estuve con el tema de la inflamación. Recién a la tarde arranqué a laburar. Pablo me va
+a proponer usar zealots neutrales en las simulaciones. Mi proposición sería que no porque 
+eso es algo a implementar en el código y más fácil sería hacer lo que dijo Hugo, simplemente
+retirar el elemento del centro de la distribución.
+
+Creo que normalizar los gráficos de la ANES es la primer prioridad. 
+Segunda es modificar la función de Clasificación,
+Tercero es graficar los histogramas 2D de mis simulaciones con la misma resolución que mis distribuciones.
+
+Si eso está hecho, podría ver de pasar a ver cómo hacer lo de comparar distribuciones que tengan
+betas diferentes para comparar. Para eso necesitaría la info que Hugo me dijo que me iba a compartir.
+Si hoy no está, se la pido ya el finde. 
+
+También voy a tener que repasar la parte teórica del modelo y charlar eso como para hacer una
+presentación interesante al respecto. ES IMPORTANTE QUE PARA DENTRO DE DOS SEMANAS TENGAMOS
+MEJOR PRESENTADO EL AJUSTE HECHO EN LOS DATOS, ASÍ COMO UN RESUMEN DE LA PARTE TEÓRICA Y
+LA PARTE DE SIMULACIONES.
+
+Empecemos por la parte de normalizar las distribuciones. Con ponerle un density = True parece
+que alcanza. Aunque me genera un poco de duda eso, por cómo funcionan los pesos. La idea
+es que el histograma cuenta cuántas son las personas que opinaron X o Y. Pero al pesarlo,
+¿Afecta ese valor según un número? ¿No debería ser más bien como que la cantidad de gente
+que cuenta se ve afectada? ¿Está el plt.hist2d haciendo el segundo trabajo o el primero?
+Yo ya no estoy seguro de qué está haciendo.
+ Si esto funciona bien, lo que debe estar haciendo es primero definir donde va cada "evento",
+y luego no los cuenta como unidad, sino como su peso. Entonces si el peso es 0.97, no
+cuenta como una persona, cuenta como 0.97 persona. Bien, es razonable. Normalizar eso
+es una tontería después.
+ En particular, al normalizar me queda algo tal que si sumo todos los valores me da 1. Eso
+es porque cada cajita mide 1 de lado. 

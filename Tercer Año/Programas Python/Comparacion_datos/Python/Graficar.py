@@ -23,6 +23,33 @@ from pathlib import Path
 
 t0 = time.time()
 
+dict_labels = {'V201200':'Liberal-Conservative self Placement', 'V201225x':'Voting as duty or choice','V201231x':'Party Identity',
+               'V201246':'Spending & Services', 'V201249':'Defense Spending', 'V201252':'Gov-private Medical Insurance',
+               'V201255':'Guaranteed job Income', 'V201258':'Gov Assistance to Blacks', 'V201262':'Environment-Business Tradeoff',
+               'V201342x':'Abortion Rights Supreme Court', 'V201345x':'Death Penalty','V201356x':'Vote by mail',
+               'V201362x':'Allowing Felons to vote', 'V201372x':'Helpful-Harmful if Pres didnt have to worry about Congress',
+               'V201375x':'Restricting Journalist access', 'V201382x':'Corruption increased or decreased since Trump',
+               'V201386x':'House impeachment decision', 'V201405x':'Require employers to offer paid leave to parents',
+               'V201408x':'Allow to refuse service to same sex couples', 'V201411x':'Transgender Policy', 'V201420x':'Birthright Citizenship',
+               'V201423x':'Should children brought illegally be sent back','V201426x':'Wall on border with Mexico',
+               'V201429':'Best way to deal with Urban Unrest','V201605x':'Political Violence compared to 4 years ago',
+               'V202236x':'Allowing refugees to come to US','V202239x':'Effect of Illegal inmigration on crime rate',
+               'V202242x':'Providing path to citizenship','V202245x':'Returning unauthorized immigrants to native country',
+               'V202248x':'Separating children from detained immigrants','V202255x':'Less or more Government',
+               'V202256':'Good for society to have more government regulation',
+               'V202259x':'Government trying to reduce income inequality','V202276x':'People in rural areas get more/less from Govt.',
+               'V202279x':'People in rural areas have too much/too little influence','V202282x':'People in rural areas get too much/too little respect',
+               'V202286x':'Easier/Harder for working mother to bond with child','V202290x':'Better/Worse if man works and woman takes care of home',
+               'V202320x':'Economic Mobility compared to 20 years ago','V202328x':'Obamacare','V202331x':'Vaccines in Schools',
+               'V202336x':'Regulation on Greenhouse Emissions','V202341x':'Background checks for guns purchases',
+               'V202344x':'Banning "Assault-style" Rifles','V202347x':'Government buy back of "Assault-Style" Rifles',
+               'V202350x':'Government action about opiod drug addiction','V202361x':'Free trade agreements with other countries',
+               'V202376x':'Federal program giving 12K a year to citizens','V202380x':'Government spending to help pay for health care',
+               'V202383x':'Health benefits of vaccination outweigh risks','V202390x':'Trasgender people serve in military',
+               'V202490x':'Government treats whites or blacks better','V202493x':'Police treats whites or blacks better',
+               'V202542':'Use Facebook','V202544':'Use Twitter'}
+
+
 T=2 # Defino el número de tópicos
 Etapa = Path("Comparacion_datos") # Defino el nombre de la etapa del trabajo en la que estoy
 
@@ -84,67 +111,63 @@ for carp in Carpetas:
     func.Tiempo(t0)
     
     #----------------------------------------------------------------------------------------------
-
-#    func.Mapa_Colores_Tiempo_convergencia(Df_archivos, Direccion, Etapa/carpeta,
-#                                          SIM_param_x, SIM_param_y,
-#                                          ID_param_extra_1)
-
-    #----------------------------------------------------------------------------------------------
-
-    # func.Mapa_Colores_Entropia_opiniones(Df_archivos, Direccion, Etapa/carpeta,
-    #                                      SIM_param_x, SIM_param_y,ID_param_extra_1)
-    
-    #----------------------------------------------------------------------------------------------
-    
-#    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 20, "viridis",
-#                                      ID_param_x, ID_param_y, ID_param_extra_1)
-    
-    #----------------------------------------------------------------------------------------------
-    
-    # func.Mapa_Colores_Covarianzas(Df_archivos, Direccion, Etapa/carpeta,
-    #                               SIM_param_x, SIM_param_y, ID_param_extra_1)
-    
-    #----------------------------------------------------------------------------------------------
-    
-    dict_labels = {'V201200':'Liberal-Conservative self Placement', 'V201225x':'Voting as duty or choice','V201231x':'Party Identity',
-               'V201246':'Spending & Services', 'V201249':'Defense Spending', 'V201252':'Gov-private Medical Insurance',
-               'V201255':'Guaranteed job Income', 'V201258':'Gov Assistance to Blacks', 'V201262':'Environment-Business Tradeoff',
-               'V201342x':'Abortion Rights Supreme Court', 'V201345x':'Death Penalty','V201356x':'Vote by mail',
-               'V201362x':'Allowing Felons to vote', 'V201372x':'Helpful-Harmful if Pres didnt have to worry about Congress',
-               'V201375x':'Restricting Journalist access', 'V201382x':'Corruption increased or decreased since Trump',
-               'V201386x':'House impeachment decision', 'V201405x':'Require employers to offer paid leave to parents',
-               'V201408x':'Allow to refuse service to same sex couples', 'V201411x':'Transgender Policy', 'V201420x':'Birthright Citizenship',
-               'V201423x':'Should children brought illegally be sent back','V201426x':'Wall on border with Mexico',
-               'V201429':'Best way to deal with Urban Unrest','V201605x':'Political Violence compared to 4 years ago',
-               'V202236x':'Allowing refugees to come to US','V202239x':'Effect of Illegal inmigration on crime rate',
-               'V202242x':'Providing path to citizenship','V202245x':'Returning unauthorized immigrants to native country',
-               'V202248x':'Separating children from detained immigrants','V202255x':'Less or more Government',
-               'V202256':'Good for society to have more government regulation',
-               'V202259x':'Government trying to reduce income inequality','V202276x':'People in rural areas get more/less from Govt.',
-               'V202279x':'People in rural areas have too much/too little influence','V202282x':'People in rural areas get too much/too little respect',
-               'V202286x':'Easier/Harder for working mother to bond with child','V202290x':'Better/Worse if man works and woman takes care of home',
-               'V202320x':'Economic Mobility compared to 20 years ago','V202328x':'Obamacare','V202331x':'Vaccines in Schools',
-               'V202336x':'Regulation on Greenhouse Emissions','V202341x':'Background checks for guns purchases',
-               'V202344x':'Banning "Assault-style" Rifles','V202347x':'Government buy back of "Assault-Style" Rifles',
-               'V202350x':'Government action about opiod drug addiction','V202361x':'Free trade agreements with other countries',
-               'V202376x':'Federal program giving 12K a year to citizens','V202380x':'Government spending to help pay for health care',
-               'V202383x':'Health benefits of vaccination outweigh risks','V202390x':'Trasgender people serve in military',
-               'V202490x':'Government treats whites or blacks better','V202493x':'Police treats whites or blacks better',
-               'V202542':'Use Facebook','V202544':'Use Twitter'}
     
     Df_ANES = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
-    """
-    labels = [('V201429','V202341x','V200010b')]# ('V201255','V201258','V200010a'),('V201200','V201420x','V200010a'),('V202320x','V202350x','V200010b')]
-    for code_1,code_2,weights in labels:
-            
-        Dic_ANES = {"code_1": code_1, "code_2": code_2, "weights":weights}
-        
-        func.Mapas_Colores_DJS(Df_archivos, Df_ANES, dict_labels, Direccion, Etapa/carpeta, Dic_ANES,
-                               SIM_param_x, SIM_param_y)
-        
-    """
+    
+    # Esta parte del código la uso para calcular el mapa de colores de DJS de varios pares de preguntas,
+    # todo de un plumazo.
+
+#    labels = [('V201429','V202341x','V200010b')]# ('V201255','V201258','V200010a'),('V201200','V201420x','V200010a'),('V202320x','V202350x','V200010b')]
+#    for code_1,code_2,weights in labels:
+#            
+#        Dic_ANES = {"code_1": code_1, "code_2": code_2, "weights":weights}
+#        
+#        func.Mapas_Colores_DJS(Df_archivos, Df_ANES, dict_labels, Direccion, Etapa/carpeta, Dic_ANES,
+#                               SIM_param_x, SIM_param_y)
+    
     #----------------------------------------------------------------------------------------------
-    """
+    
+    # Esta parte del código la uso para calcular los parámetros del ajuste paraboloidico aplicado
+    # a los datos de las distancias.
+    
+    Dic_ANES = {"code_1": 'V202320x', "code_2": 'V202350x', "weights":'V200010b'}
+    x_range = np.array([0,0.04])
+    y_range = np.array([0.4,0.74])
+    
+    params = func.Ajuste_DJS(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, Dic_ANES,
+                             y_range[0],y_range[1],x_range[0],x_range[1])
+    
+    func.Tiempo(t0)
+    
+    # Define the mathematical function
+    def my_function(x, y, params):
+        return params[0]*y**2 + params[1]*y + params[2]*x**2 + params[3]*x + params[4]
+    
+    func.plot_3d_surface(Etapa/carpeta, Dic_ANES, my_function, params, x_range,
+                         y_range,SIM_param_x, SIM_param_y)
+    
+    
+#    func.plot_3d_scatter(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, Dic_ANES,
+#                         np.array([0.5,0.72]),np.array([0.04,0.15]), SIM_param_x, SIM_param_y)
+    
+    
+    initial_guess = [0.1,0.5]
+    
+    def my_function_minimize(x, a,b,c,d,e):
+        return a*x[1]**2 + b*x[1] + c*x[0]**2 + d*x[0] + e
+    
+    # Perform the minimization
+    result = minimize(my_function_minimize, initial_guess, args=tuple(params))
+    
+    # Print the result
+    print("Optimal variables:", result.x)
+
+
+func.Tiempo(t0)
+
+
+
+"""
     # Consideremos que quiero revisar los estados finales de las simulaciones contra uno de mis
     # gráficos. Tengo que tomar las opiniones finales de algún estado y armar la distribución
     # asociada.
@@ -200,42 +223,4 @@ for carp in Carpetas:
     # ceros. Muy raro.
     
     #----------------------------------------------------------------------------------------------
-    """
-    
-    
-    #----------------------------------------------------------------------------------------------
-    
-    Dic_ANES = {"code_1": 'V202320x', "code_2": 'V202350x', "weights":'V200010b'}
-    x_range = np.array([0,0.04])
-    y_range = np.array([0.4,0.74])
-    
-    params = func.Ajuste_DJS(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, Dic_ANES,
-                             y_range[0],y_range[1],x_range[0],x_range[1])
-    
-    func.Tiempo(t0)
-    
-    # Define the mathematical function
-    def my_function(x, y, params):
-        return params[0]*y**2 + params[1]*y + params[2]*x**2 + params[3]*x + params[4]
-    
-    func.plot_3d_surface(Etapa/carpeta, Dic_ANES, my_function, params, x_range,
-                         y_range,SIM_param_x, SIM_param_y)
-    
-    
-#    func.plot_3d_scatter(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, Dic_ANES,
-#                         np.array([0.5,0.72]),np.array([0.04,0.15]), SIM_param_x, SIM_param_y)
-    
-    
-    initial_guess = [0.1,0.5]
-    
-    def my_function_minimize(x, a,b,c,d,e):
-        return a*x[1]**2 + b*x[1] + c*x[0]**2 + d*x[0] + e
-    
-    # Perform the minimization
-    result = minimize(my_function_minimize, initial_guess, args=tuple(params))
-    
-    # Print the result
-    print("Optimal variables:", result.x)
-
-
-func.Tiempo(t0)
+"""
