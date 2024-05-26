@@ -23,33 +23,6 @@ from pathlib import Path
 
 t0 = time.time()
 
-dict_labels = {'V201200':'Liberal-Conservative self Placement', 'V201225x':'Voting as duty or choice','V201231x':'Party Identity',
-               'V201246':'Spending & Services', 'V201249':'Defense Spending', 'V201252':'Gov-private Medical Insurance',
-               'V201255':'Guaranteed job Income', 'V201258':'Gov Assistance to Blacks', 'V201262':'Environment-Business Tradeoff',
-               'V201342x':'Abortion Rights Supreme Court', 'V201345x':'Death Penalty','V201356x':'Vote by mail',
-               'V201362x':'Allowing Felons to vote', 'V201372x':'Helpful-Harmful if Pres didnt have to worry about Congress',
-               'V201375x':'Restricting Journalist access', 'V201382x':'Corruption increased or decreased since Trump',
-               'V201386x':'House impeachment decision', 'V201405x':'Require employers to offer paid leave to parents',
-               'V201408x':'Allow to refuse service to same sex couples', 'V201411x':'Transgender Policy', 'V201420x':'Birthright Citizenship',
-               'V201423x':'Should children brought illegally be sent back','V201426x':'Wall on border with Mexico',
-               'V201429':'Best way to deal with Urban Unrest','V201605x':'Political Violence compared to 4 years ago',
-               'V202236x':'Allowing refugees to come to US','V202239x':'Effect of Illegal inmigration on crime rate',
-               'V202242x':'Providing path to citizenship','V202245x':'Returning unauthorized immigrants to native country',
-               'V202248x':'Separating children from detained immigrants','V202255x':'Less or more Government',
-               'V202256':'Good for society to have more government regulation',
-               'V202259x':'Government trying to reduce income inequality','V202276x':'People in rural areas get more/less from Govt.',
-               'V202279x':'People in rural areas have too much/too little influence','V202282x':'People in rural areas get too much/too little respect',
-               'V202286x':'Easier/Harder for working mother to bond with child','V202290x':'Better/Worse if man works and woman takes care of home',
-               'V202320x':'Economic Mobility compared to 20 years ago','V202328x':'Obamacare','V202331x':'Vaccines in Schools',
-               'V202336x':'Regulation on Greenhouse Emissions','V202341x':'Background checks for guns purchases',
-               'V202344x':'Banning "Assault-style" Rifles','V202347x':'Government buy back of "Assault-Style" Rifles',
-               'V202350x':'Government action about opiod drug addiction','V202361x':'Free trade agreements with other countries',
-               'V202376x':'Federal program giving 12K a year to citizens','V202380x':'Government spending to help pay for health care',
-               'V202383x':'Health benefits of vaccination outweigh risks','V202390x':'Trasgender people serve in military',
-               'V202490x':'Government treats whites or blacks better','V202493x':'Police treats whites or blacks better',
-               'V202542':'Use Facebook','V202544':'Use Twitter'}
-
-
 T=2 # Defino el número de tópicos
 Etapa = Path("Comparacion_datos") # Defino el nombre de la etapa del trabajo en la que estoy
 
@@ -112,7 +85,7 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    Df_ANES = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
+    Df_ANES, dic_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
     
     # Esta parte del código la uso para calcular el mapa de colores de DJS de varios pares de preguntas,
     # todo de un plumazo.

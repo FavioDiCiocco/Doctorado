@@ -254,7 +254,7 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
     
     # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
     # de todas las simulaciones para cada punto del espacio de parámetros.
-    Dic_Total = Diccionario_metricas(DF,path,20)
+    Dic_Total = Diccionario_metricas(DF,path, 20, 20)
     
     for EXTRAS in Arr_EXTRAS:
         for PARAM_X,PARAM_Y in Tupla_total:
@@ -531,7 +531,7 @@ def Mapa_Colores_Covarianzas(DF,path,carpeta,SIM_param_x,SIM_param_y,
 # Esta función calcula la traza de la matriz de Covarianza de las distribuciones
 # de opiniones respecto a los T tópicos
 
-def Diccionario_metricas(DF,path,N):
+def Diccionario_metricas(DF, path, Nx, Ny):
 
     # Defino la cantidad de agentes de la red
     AGENTES = int(np.unique(DF["n"]))
@@ -612,7 +612,7 @@ def Diccionario_metricas(DF,path,N):
                 
                 # Armo mi array de Distribucion, que tiene la proba de que una opinión
                 # pertenezca a una región del espacio de tópicos
-                Probas = Clasificacion(Opifinales,N,T)
+                Probas = Clasificacion(Opifinales,Nx, Ny,T)
                 
                 # Con esa distribución puedo directamente calcular la entropía.
                 Entropia[indice] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
@@ -645,7 +645,7 @@ def Diccionario_metricas(DF,path,N):
                 Salida[EXTRAS][PARAM_X] = dict()
             if PARAM_Y not in Salida[EXTRAS][PARAM_X].keys():
                 Salida[EXTRAS][PARAM_X][PARAM_Y] = dict()
-            Salida[EXTRAS][PARAM_X][PARAM_Y]["Entropia"] = Entropia[Ubicacion] / np.log2(N*N)
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Entropia"] = Entropia[Ubicacion] / np.log2(Nx*Ny)
             Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"] = Varianza_X[Ubicacion]
             Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"] = Varianza_Y[Ubicacion]
             Salida[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"] = Covarianza[Ubicacion]
@@ -762,7 +762,7 @@ def Mapas_Colores_FEF(DF,path,carpeta,SIM_param_x,SIM_param_y,
     
     # Diccionario con la entropía, Sigma_x y Sigma_y de todas las simulaciones
     # para cada punto del espacio de parámetros.
-    Dic_Total = Diccionario_metricas(DF,path,20)
+    Dic_Total = Diccionario_metricas(DF,path,20,20)
     
     for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
                 
@@ -806,7 +806,7 @@ def Mapas_Colores_FEF(DF,path,carpeta,SIM_param_x,SIM_param_y,
 
 #-----------------------------------------------------------------------------------------------
 
-def Clasificacion(Array,N,T):
+def Clasificacion(Array, Nx, Ny,T):
     
     # Recibo un array de opiniones que van entre [-1,1]. Le sumo 1
     # para que las opiniones vayan entre [0,2].
@@ -814,21 +814,22 @@ def Clasificacion(Array,N,T):
     
     # Divido mi espacio de tópicos 2D en cuadrados. Defino el ancho
     # de esos cuadrados.
-    ancho = 2/N
+    ancho_x = 2/Nx
+    ancho_y = 2/Ny
     
     # Armo un array de tuplas que indiquen "fila" y "columna" en la cuál
     # cae cada opinión.
-    Ubicaciones = np.array([(math.floor(x/ancho),math.floor(y/ancho)) for x,y in zip(Array[0::T],Array[1::T])])
+    Ubicaciones = np.array([(math.floor(x/ancho_x),math.floor(y/ancho_y)) for x,y in zip(Array[0::T],Array[1::T])])
     
     # Ahora me armo mi array de distribución, que cuenta cuántas opiniones tengo
     # por cada cajita.
-    Distribucion = np.zeros((N*N))
+    Distribucion = np.zeros((Nx*Ny))
     for opinion in Ubicaciones:
         # Tomo mínimos para que no intente ir a una cajita no existente. Tendría un problema
         # si algún agente tiene opinión máxima en algún tópico.
-        fila = min(opinion[1],N-1)
-        columna = min(opinion[0],N-1)
-        Distribucion[fila*N+columna] += 1
+        fila = min(opinion[1],Nx-1)
+        columna = min(opinion[0],Ny-1)
+        Distribucion[fila*Nx+columna] += 1
     
     # Una vez armada mi distribucion, la normalizo.
     Distribucion = Distribucion/np.sum(Distribucion)
@@ -841,7 +842,7 @@ def Clasificacion(Array,N,T):
 # Esta función calcula la traza de la matriz de Covarianza de las distribuciones
 # de opiniones respecto a los T tópicos
 
-def Calculo_Entropia(DF,path,N):
+def Calculo_Entropia(DF,path,Nx,Ny):
 
     # Defino la cantidad de agentes de la red
     AGENTES = int(np.unique(DF["n"]))
@@ -904,14 +905,14 @@ def Calculo_Entropia(DF,path,N):
                 
                 # Armo mi array de Distribucion, que tiene la proba de que una opinión
                 # pertenezca a una región del espacio de tópicos
-                Probas = Clasificacion(Opifinales,N,T)
+                Probas = Clasificacion(Opifinales,Nx,Ny,T)
                 
                 # Con esa distribución puedo directamente calcular la entropía.
                 entropias[repeticion] = np.matmul(Probas[Probas != 0], np.log2(Probas[Probas != 0]))*(-1)
         
             if PARAM_X not in Salida[EXTRAS].keys():
                 Salida[EXTRAS][PARAM_X] = dict()
-            Salida[EXTRAS][PARAM_X][PARAM_Y] = entropias/np.log2(N*N)
+            Salida[EXTRAS][PARAM_X][PARAM_Y] = entropias/np.log2(Nx*Ny)
     
     return Salida
 
@@ -944,7 +945,7 @@ def Mapa_Colores_Entropia_opiniones(DF,path,carpeta,SIM_param_x,SIM_param_y,
     
     # Calculo la entropía de mis distribuciones
     
-    Entropias = Calculo_Entropia(DF, path, 20)
+    Entropias = Calculo_Entropia(DF, path, 20, 20)
     
     #--------------------------------------------------------------------------------
     for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
@@ -1370,7 +1371,7 @@ def Leer_Datos_ANES(filename,año):
         # Asigno los pesos
         df_data[['V200010a','V200010b']] = df_raw_data[['V200010a','V200010b']]
 
-    return df_data
+    return df_data, dict_labels
 
 #-----------------------------------------------------------------------------------------------
     
@@ -1447,7 +1448,7 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,
             # Leo los datos de las Opiniones Finales
             Opifinales = np.array(Datos[5][:-1], dtype="float")
             Opifinales = Opifinales / EXTRAS
-            Distr_Sim = np.reshape(Clasificacion(Opifinales,7,T),(49,1))
+            Distr_Sim = np.reshape(Clasificacion(Opifinales,hist2d.shape[0],hist2d.shape[1],T),(hist2d.shape[0]*hist2d.shape[1],1))
             
             # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
             
@@ -1580,7 +1581,7 @@ def Ajuste_DJS(DF_datos,DF_Anes,path,carpeta,Dic_ANES,
             # Leo los datos de las Opiniones Finales
             Opifinales = np.array(Datos[5][:-1], dtype="float")
             Opifinales = Opifinales / EXTRAS
-            Distr_Sim = np.reshape(Clasificacion(Opifinales,7,T),(49,1))
+            Distr_Sim = np.reshape(Clasificacion(Opifinales,hist2d.shape[0],hist2d.shape[1],T),(hist2d.shape[0]*hist2d.shape[1],1))
             
             # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
             
@@ -1750,7 +1751,7 @@ def plot_3d_scatter(DF_datos,DF_Anes, path, carpeta, Dic_ANES, x_range, y_range,
             # Leo los datos de las Opiniones Finales
             Opifinales = np.array(Datos[5][:-1], dtype="float")
             Opifinales = Opifinales / EXTRAS
-            Distr_Sim = np.reshape(Clasificacion(Opifinales,7,T),(49,1))
+            Distr_Sim = np.reshape(Clasificacion(Opifinales,hist2d.shape[0],hist2d.shape[1],T),(hist2d.shape[0]*hist2d.shape[1],1))
             
             # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
             
@@ -1778,3 +1779,4 @@ def plot_3d_scatter(DF_datos,DF_Anes, path, carpeta, Dic_ANES, x_range, y_range,
 
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close()
+    

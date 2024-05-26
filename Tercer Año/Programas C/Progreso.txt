@@ -1110,3 +1110,16 @@ cuenta como una persona, cuenta como 0.97 persona. Bien, es razonable. Normaliza
 es una tontería después.
  En particular, al normalizar me queda algo tal que si sumo todos los valores me da 1. Eso
 es porque cada cajita mide 1 de lado. 
+
+------------------------------------------------------------------------------------------
+
+26/05/2024
+
+Ahí modifiqué el armado de la función de Clasificación, no lo probé, confío en que está bárbaro.
+Acabo de ver que en la función que lee los datos de la ANES ya estaban los nombres de las
+preguntas. Debería ver de extraer eso de ahí y listo.
+
+Revisé la función que arma los histogramas 2D, para conseguir mis gráficos de 7x7 como quiere Pablo,
+necesito simplemente cambiar el número de bins, ni hace falta que arme una función nueva.
+Pero sí aproveché a modificar la función de Clasificación, todos los usos que encontré de eso, y 
+por tanto los de Diccionario Metricas y de Calcular Entropia.
