@@ -1123,3 +1123,29 @@ Revisé la función que arma los histogramas 2D, para conseguir mis gráficos de
 necesito simplemente cambiar el número de bins, ni hace falta que arme una función nueva.
 Pero sí aproveché a modificar la función de Clasificación, todos los usos que encontré de eso, y 
 por tanto los de Diccionario Metricas y de Calcular Entropia.
+
+------------------------------------------------------------------------------------------
+
+27/05/2024
+
+Llegué no tan temprano, pero con motivos. Organicé cosas, revisé que el armado de gráficos con Seaborn
+siga funcionando, aunque pasé a armar los gráficos con matplotlib. Ahora voy a ponerme a hacer
+los gráficos de histogramas de opiniones 2D de 7x7.
+
+Mientras está corriendo el armado de los gráficos de Zoom_Beta-Cosd voy a revisar que se estén armando los
+gráficos correspondientes en las computadoras del cluster. Eso sigue corriendo todavía. En especial en
+Algarve y Oporto creo que están todavía en la primera vuelta, falta la segunda. En cambio en Coimbra
+ya casi está terminado. Mañana voy a ver si ya está terminado y mando a correr de nuevo.
+Estos gráficos se podrían rearmar de forma de que los cuadrados en los que divido el espacio de opiniones
+representen la proba de tener agentes en esa región. Actualmente representan otra cosa porque los cuadrados
+miden 2.8...
+
+Bien, ya resolví las cosas que me anoté el viernes. ¿Qué es lo próximo que tengo que hacer?
+Hay dos cosas que se me ocurren hacer. Lo primero es revisar el tema del estudio analítico.
+Completar el análisis de la polarización ideológica con el análisis de la polarización descorrelacionada.
+La idea sería utilizar alguna simulación para ver la estabilidad del modelo en función de Beta
+para ver si el estado de polarización descorrelacionada se rompe a medida que Beta crece.
+
+La segunda opción es ver cómo puedo rotar las distribuciones de opiniones para poder comparar eso con las
+distribuciones de ANES. Una vez hecho eso, puedo volver a realizar los ajustes que dejé truncados en
+la última reunión.

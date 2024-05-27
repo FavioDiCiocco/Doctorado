@@ -126,7 +126,7 @@ for code in labels_filtrados:
 df_data[['V200010a','V200010b']] = df_raw_data[['V200010a','V200010b']]
 
 #############################################################################################
-"""
+
 # Gráfico de dos preguntas simultáneas con distribuciones individuales en los ejes
 
 for i,code_1 in enumerate(labels_politicos):
@@ -138,14 +138,20 @@ for i,code_1 in enumerate(labels_politicos):
             weights = 'V200010a'
         else:
             weights = 'V200010b'
-            
+        
         plt.rcParams.update({'font.size': 28})
-        plt.figure(figsize=(20,20))
-#        sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
-#                      joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
-#                      marginal_kws={'discrete': True, 'weights': df_aux[weights]})
-        hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0, cmap = "inferno",
+        plt.figure(figsize=(24,20))
+        # sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
+        #               joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
+        #               marginal_kws={'discrete': True, 'weights': df_aux[weights]})
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0, cmap = "inferno", density = True,
                                     bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
+        
+        # Add a colorbar
+        cbar = plt.colorbar(im)
+        cbar.ax.tick_params(labelsize=28)  # Optionally, set the size of the colorbar labels
+        cbar.ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f'{x:.2f}'))  # Format colorbar ticks to 2 decimal places
+
         plt.xlabel(dict_labels[code_1])
         plt.ylabel(dict_labels[code_2])
 #        plt.gca().invert_yaxis()
@@ -166,12 +172,18 @@ for i,code_1 in enumerate(labels_apoliticos):
             weights = 'V200010b'
         
         plt.rcParams.update({'font.size': 28})
-        plt.figure(figsize=(20,20))
-#        sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
-#                      joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
-#                      marginal_kws={'discrete': True, 'weights': df_aux[weights]})
-        hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0, cmap = "inferno",
+        plt.figure(figsize=(24,20))
+        # sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
+        #               joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
+        #               marginal_kws={'discrete': True, 'weights': df_aux[weights]})
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0, cmap = "inferno", density = True,
                                     bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
+        
+        # Add a colorbar
+        cbar = plt.colorbar(im)
+        cbar.ax.tick_params(labelsize=28)  # Optionally, set the size of the colorbar labels
+        cbar.ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f'{x:.2f}'))  # Format colorbar ticks to 2 decimal places
+        
         plt.xlabel(dict_labels[code_1])
         plt.ylabel(dict_labels[code_2])
 #        plt.gca().invert_yaxis()
@@ -191,12 +203,18 @@ for i,code_1 in enumerate(labels_dudosos):
             weights = 'V200010b'
         
         plt.rcParams.update({'font.size': 28})
-        plt.figure(figsize=(20,20))
-#        sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
-#                      joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
-#                      marginal_kws={'discrete': True, 'weights': df_aux[weights]})
-        hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0, cmap = "inferno",
+        plt.figure(figsize=(24,20))
+        # sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
+        #               joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
+        #               marginal_kws={'discrete': True, 'weights': df_aux[weights]})
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0, cmap = "inferno", density = True,
                                     bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
+        
+        # Add a colorbar
+        cbar = plt.colorbar(im)
+        cbar.ax.tick_params(labelsize=28)  # Optionally, set the size of the colorbar labels
+        cbar.ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f'{x:.2f}'))  # Format colorbar ticks to 2 decimal places
+        
         plt.xlabel(dict_labels[code_1])
         plt.ylabel(dict_labels[code_2])
 #        plt.gca().invert_yaxis()
@@ -204,7 +222,7 @@ for i,code_1 in enumerate(labels_dudosos):
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
 
-"""
+
 ####################################################################################################################
 
 """
@@ -260,6 +278,7 @@ for code in labels_dudosos:
 """
 
 ####################################################################################################################
+"""
 
 # Veamos si puedo hacer un poco esto que me decían de revisar que los gráficos de las distribuciones
 # estén normalizados. Arranquemos revisando un gráfico en particular, cualquiera.
@@ -281,5 +300,7 @@ plt.ylabel(dict_labels[code_2])
 plt.show()
 
 print(hist2d)
+
+"""
 
 Tiempo(t0)

@@ -85,7 +85,7 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
-    Df_ANES, dic_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
+    Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
     
     # Esta parte del código la uso para calcular el mapa de colores de DJS de varios pares de preguntas,
     # todo de un plumazo.
@@ -99,7 +99,7 @@ for carp in Carpetas:
 #                               SIM_param_x, SIM_param_y)
     
     #----------------------------------------------------------------------------------------------
-    
+    """
     # Esta parte del código la uso para calcular los parámetros del ajuste paraboloidico aplicado
     # a los datos de las distancias.
     
@@ -134,11 +134,19 @@ for carp in Carpetas:
     
     # Print the result
     print("Optimal variables:", result.x)
-
+    
+    """
+    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 7, "viridis",
+                                      ID_param_x, ID_param_y, ID_param_extra_1)
+    
 
 func.Tiempo(t0)
 
+#########################################################################################
+#########################################################################################
 
+# Este código fue una prueba de cosas para ver cómo calcular la distancia
+# Jensen-Shannon. Ahora lo aislo porque ya generalicé esto en una función.
 
 """
     # Consideremos que quiero revisar los estados finales de las simulaciones contra uno de mis
