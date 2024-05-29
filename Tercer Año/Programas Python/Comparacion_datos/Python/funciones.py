@@ -1780,3 +1780,34 @@ def plot_3d_scatter(DF_datos,DF_Anes, path, carpeta, Dic_ANES, x_range, y_range,
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close()
     
+
+#-----------------------------------------------------------------------------------------------
+    
+# Tomo una matriz y la roto. Repito, roto la matriz como quien gira la cara de un
+# cubo Rubik, no estoy rotando el objeto que la matriz representa.
+
+def Rotar_matriz(M):
+    
+    # Primero miro el tamaño de la matriz que recibí
+    n = M.shape[0]
+    
+    # Armo la matriz P que voy a returnear
+    P = np.zeros(M.shape)
+    
+    # Giro el anillo más externo. Lo hago todo de una.
+    for i in range(n):
+        P[i,n-1] = M[0,i]
+        P[n-1,n-1-i] = M[i,n-1]
+        P[n-1-i,0] = M[n-1,n-1-i]
+        P[0,i] = M[n-1-i,0]
+        
+    # Recursivamente mando la parte interna de la matriz M a resolverse
+    # con esta misma función.
+    if n > 3:
+        P[1:n-1,1:n-1] = Rotar_matriz(M[1:n-1,1:n-1])
+    elif n == 3:
+        P[1:n-1,1:n-1] = M[1:n-1,1:n-1]
+    
+    return P
+
+

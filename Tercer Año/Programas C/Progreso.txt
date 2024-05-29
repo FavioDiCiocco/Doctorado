@@ -1149,3 +1149,55 @@ para ver si el estado de polarización descorrelacionada se rompe a medida que B
 La segunda opción es ver cómo puedo rotar las distribuciones de opiniones para poder comparar eso con las
 distribuciones de ANES. Una vez hecho eso, puedo volver a realizar los ajustes que dejé truncados en
 la última reunión.
+
+------------------------------------------------------------------------------------------
+
+28/05/2024
+
+En la mañana estuve trabajando un rato en mi cuaderno en armar un código que rote la matriz.
+Después me puse a estudiar alemán, fui a cursar y a la vuelta trabajé un poco más antes de
+irme a casa.
+
+------------------------------------------------------------------------------------------
+
+29/05/2024
+
+En la mañana me escribí el código para rotar matrices que necesitaba. Ahora que tengo eso,
+puedo ponerme a hacer lo segundo que es lo que me dijo Pablo, ver de remover elementos de
+las distribuciones. Podríamos removerlos de dos formas. La primera, es remover sólo el elemento
+central. La segunda es remover TODO agente que haya respondido con las preguntas centrales
+an alguna de las preguntas. Vamos a probar hacer las dos cosas y de ahí vamos a ver qué resulta
+mejor.
+
+Pero antes de eso, ¿Tengo resuelto la rotación de mis matrices? Lo que hice funciona bien si mi
+matriz es cuadrada. Pero en caso de no serlo, ¿Cómo puedo rotar mi matriz? ¿Tiene sentido rotar la matriz?
+Creo que por ahora no me voy a preocupar demasiado por esto. Avancemos con lo otro, y cuando surja
+ese problema, lo enfrentaré.
+
+Probaré primero sacando un elemento en el centro. Me parece que va a ser más fácil de implementar.
+Al mismo tiempo implementaré una corrección para el hecho de que las distribuciones no tengan ningún
+punto nulo.
+
+Para remover el punto central, eso es bastante directo. Si mis preguntas son de 7x7, significa que
+tengo que eliminar el punto en la posición [3,3]. O lo que sería lo mismo, de mis 49 elementos de
+mi array con la distribución de la encuesta, tengo que eliminar el elemento 24.
+
+Admito que me gustaría además que el gráfico que hago de la encuesta tenga ese elemento bloqueado.
+Debería ver de pedirle al pandas que al graficar ese punto esté tapado.
+
+Bien, para remover los agentes del centro o para remover la cruz ya Chat GPT me dió una linea fácil de
+cómo hacer eso con Pandas, probé graficarlo y efectivamente lo que se grafica es lo que estoy buscando.
+También miré las distribuciones generadas. Tienen la forma correcta. Lo siguiente es entonces
+Ya vi que eso funca, lo que me queda es hacer lo de que si la distribución de la simulación tiene ceros,
+entonces tengo que agregar agentes en esa distribución. Lo que puedo hacer en ese caso es sumar agentes
+de a 1. Luego, según la cantidad que sumé, restar esos agentes del lugar donde haya más agentes.
+
+Si pongo 1 agente en cada lugar vacío, la distancia Jensen Shannon da distinto que si no tengo agentes
+ahí. En particular, tomé el ejemplo del par de preguntas políticas y lo comparé con una distribución de
+Consenso Radicalizado. Para esta distribución con ceros, la distancia JS da 0.824, en cambio cuando 
+relleno los lugares con cero obtengo una distancia de 0.774. Habrá que hacer esto de rellenar los lugares.
+
+Me queda hoy probar lo de remover el punto central. Al remover el punto central, la distancia da
+distinto a si dejo un cero en ese punto. Ok, definitivamente removeré ese punto cuando haga las cuentas.
+Ya tengo armado el esqueleto para construir el código que quiero hacer, ahora queda nomás pasarlo
+al código de funciones que se encarga de armar el mapa de colores de Distancia JS.

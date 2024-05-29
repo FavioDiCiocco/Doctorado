@@ -54,7 +54,7 @@ def normal_pdf(x, mu, sigma):
 
 
 #-------------------------------------------------------------------------
-
+"""
 # Armada la función que producel las pdf, veo de calcular la distancia
 # jensen-shannon de dos distribuciones a medida que aumento la distancia
 # entre ellas
@@ -75,7 +75,7 @@ for i,mu_2 in enumerate(X):
     pdf_variable = normal_pdf(x_values, mu_2, sigma)
     Y[i] = jensenshannon(pdf_fijo,pdf_variable)
 
-"""
+
 X = np.arange(0,9000,100)
 Y = np.zeros(X.shape[0])
 
@@ -84,7 +84,7 @@ for i,cantidad in enumerate(X):
     pdf_variable = np.zeros(pdf_fijo.shape[0])
     pdf_variable[cantidad::] = pdf_fijo[cantidad::]
     Y[i] = jensenshannon(pdf_fijo,pdf_variable)
-"""
+
 
 # Plot the PDF
 plt.plot(X-mu, Y)
@@ -93,6 +93,45 @@ plt.ylabel('Distancia')
 plt.title('Distancia Jensen-Shannon entre dos distribuciones normales')
 plt.grid()
 plt.show()
+"""
+
+#####################################################################################
+
+# Tomo una matriz y la roto. Repito, roto la matriz como quien gira la cara de un
+# cubo Rubik, no estoy rotando el objeto que la matriz representa.
+
+def Rotar_matriz(M):
+    
+    # Primero miro el tamaño de la matriz que recibí
+    n = M.shape[0]
+    
+    # Armo la matriz P que voy a returnear
+    P = np.zeros(M.shape)
+    
+    # Giro el anillo más externo. Lo hago todo de una.
+    for i in range(n):
+        P[i,n-1] = M[0,i]
+        P[n-1,n-1-i] = M[i,n-1]
+        P[n-1-i,0] = M[n-1,n-1-i]
+        P[0,i] = M[n-1-i,0]
+        
+    # Recursivamente mando la parte interna de la matriz M a resolverse
+    # con esta misma función.
+    if n > 3:
+        P[1:n-1,1:n-1] = Rotar_matriz(M[1:n-1,1:n-1])
+    elif n == 3:
+        P[1:n-1,1:n-1] = M[1:n-1,1:n-1]
+    
+    return P
+
+A = np.reshape(np.arange(25),(5,5))
+
+
+print(A)
+A = Rotar_matriz(A)
+print(A)
+A = Rotar_matriz(A)
+print(A)
 
 
 

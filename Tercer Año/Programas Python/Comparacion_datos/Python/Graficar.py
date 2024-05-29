@@ -135,20 +135,11 @@ for carp in Carpetas:
     # Print the result
     print("Optimal variables:", result.x)
     
-    """
+    
     func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 7, "viridis",
                                       ID_param_x, ID_param_y, ID_param_extra_1)
+    """
     
-
-func.Tiempo(t0)
-
-#########################################################################################
-#########################################################################################
-
-# Este código fue una prueba de cosas para ver cómo calcular la distancia
-# Jensen-Shannon. Ahora lo aislo porque ya generalicé esto en una función.
-
-"""
     # Consideremos que quiero revisar los estados finales de las simulaciones contra uno de mis
     # gráficos. Tengo que tomar las opiniones finales de algún estado y armar la distribución
     # asociada.
@@ -158,7 +149,7 @@ func.Tiempo(t0)
                                 (Df_archivos["Extra"]==10) & 
                                 (Df_archivos["parametro_x"]==0) &
                                 (Df_archivos["parametro_y"]==0.6) & 
-                                (Df_archivos["iteracion"]==1), "nombre"]
+                                (Df_archivos["iteracion"]==0), "nombre"]
     
     for nombre in Sim_prueba:
         Datos = func.ldata(Direccion / nombre)
@@ -176,22 +167,43 @@ func.Tiempo(t0)
     Opifinales = np.array(Datos[5][:-1], dtype="float")
     Opifinales = Opifinales / 10
     
-    Distr_Sim = np.reshape(func.Clasificacion(Opifinales,7,T),(49,1))
+    Distr_Sim = np.reshape(func.Clasificacion(Opifinales,7,7,2),(49,1))
+    
+    # Rearmo la distribución de la simulación de forma de que haya un agente
+    # en cada punto como mínimo. La idea es no tener ceros en ningún lugar.
+    # Después resto todos los agentes que sumé del lugar que tenga más agentes
+    restar = np.count_nonzero(Distr_Sim == 0)
+    ubic = np.argmax(Distr_Sim)
+    Distr_Sim[Distr_Sim == 0] = np.ones(restar)*0.001
+    Distr_Sim[ubic] = Distr_Sim[ubic] - 0.001*restar
     
     
     # Ya tengo la distribución de opiniones de mi simulación, ahora necesito la
     # de la encuesta ANES.
     
-    code_1 = 'V201258' # 'Govt. Asssitance to Blacks'
-    code_2 = 'V201255' # 'Guaranteed Job Income'
+    code_1 = 'V201200' 
+    code_2 = 'V201420x'
     weights = 'V200010a'
     
     # Extraigo la distribución en hist2d
     df_aux = Df_ANES.loc[(Df_ANES[code_1]>0) & (Df_ANES[code_2]>0)]
-    hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0,
-             bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
+    # hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0,cmap = "inferno",
+    #           bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
     
-    Distr_Enc = np.reshape(hist2d,(hist2d.shape[0]*hist2d.shape[1],1))
+    # Filter out rows where either code_1 or code_2 is 3
+    df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
+    # df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
+    hist2d_r, xedges, yedges, im = plt.hist2d(x=df_filtered[code_1], y=df_filtered[code_2], weights=df_filtered[weights], vmin=0,cmap = "inferno",
+              bins=[np.arange(df_filtered[code_1].min()-0.5, df_filtered[code_1].max()+1.5, 1), np.arange(df_filtered[code_2].min()-0.5, df_filtered[code_2].max()+1.5, 1)])
+    
+    Distr_Enc = np.reshape(hist2d_r,(hist2d_r.shape[0]*hist2d_r.shape[1],1))
+    
+    # Para comparar las distribuciones, les remuevo el elemento del centro.
+    # Quizás la función de Jensen Shannon está quitando los elementos con cero
+    # por sí misma, pero ni idea.
+    
+    Distr_Sim = np.delete(Distr_Sim,24)
+    Distr_Enc = np.delete(Distr_Enc,24)
     
     # Una vez que tengo las dos distribuciones, hago el cálculo de la distancia
     # Jensen-Shannon
@@ -204,4 +216,11 @@ func.Tiempo(t0)
     # ceros. Muy raro.
     
     #----------------------------------------------------------------------------------------------
-"""
+
+func.Tiempo(t0)
+
+#########################################################################################
+#########################################################################################
+
+# Este código fue una prueba de cosas para ver cómo calcular la distancia
+# Jensen-Shannon. Ahora lo aislo porque ya generalicé esto en una función.
