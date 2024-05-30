@@ -99,7 +99,7 @@ plt.show()
 
 # Tomo una matriz y la roto. Repito, roto la matriz como quien gira la cara de un
 # cubo Rubik, no estoy rotando el objeto que la matriz representa.
-
+"""
 def Rotar_matriz(M):
     
     # Primero miro el tamaño de la matriz que recibí
@@ -132,7 +132,55 @@ A = Rotar_matriz(A)
 print(A)
 A = Rotar_matriz(A)
 print(A)
+"""
 
+#####################################################################################
+
+# Create some example data
+np.random.seed(0)
+x = np.random.randint(0, 8, size=1000)  # Random integers between 0 and 7
+y = np.random.randint(0, 8, size=1000)  # Random integers between 0 and 7
+
+# Exclude the value '3' from the data
+exclude_value = 3
+mask = (x != exclude_value) & (y != exclude_value)
+filtered_x = x[mask]
+filtered_y = y[mask]
+
+# Define bins excluding the value '3'
+bins_x = np.arange(0, 8)
+bins_x = bins_x[bins_x != exclude_value] - 0.5
+bins_x = np.append(bins_x, exclude_value + 0.5)
+bins_x = np.sort(bins_x)
+
+bins_y = np.arange(0, 8)
+bins_y = bins_y[bins_y != exclude_value] - 0.5
+bins_y = np.append(bins_y, exclude_value + 0.5)
+bins_y = np.sort(bins_y)
+
+# Create the 2D histogram
+plt.figure(figsize=(8, 6))
+hist2d, xedges, yedges, im = plt.hist2d(filtered_x, filtered_y, bins=[bins_x, bins_y], cmap='inferno')
+
+# Add a colorbar
+plt.colorbar(im, label='Counts')
+
+# Set labels and title
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title('2D Histogram with Excluded Bin')
+
+# Customize tick labels to exclude the value '3'
+x_ticks = np.arange(0, 8)
+x_ticks = x_ticks[x_ticks != 3]
+y_ticks = np.arange(0, 8)
+y_ticks = y_ticks[y_ticks != 3]
+
+plt.xticks(x_ticks)
+plt.yticks(y_ticks)
+
+# Show the plot
+plt.show()
 
 
 func.Tiempo(t0)

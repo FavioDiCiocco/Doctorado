@@ -411,7 +411,7 @@ void compute_derivative(double *network, double *slope, double *Ang, double K, d
 }
 
 
-void actualize_network(double *network, double *new_network, double *Ang, double K, double beta, double delta, int N, int T, int cant_zealots){
+void actualize_network(double *network, double *new_network, double *Ang, double K, double beta, double delta, int N, int T){
 
     int i;
 
@@ -425,35 +425,27 @@ void actualize_network(double *network, double *new_network, double *Ang, double
         new_network[i] = network[i] + slope[i]*dt/6.0;
         new_position[i] = network[i] + slope[i]*dt/2.0;
     }
-	for(i=0; i<cant_zealots*T; i++) new_position[i] = 0;
-	
     /// Step 2
     compute_derivative(new_position, slope, Ang, K, beta, delta, N, T);
     for(i=0; i<N*T; i++){
         new_network[i] += slope[i]*dt/3.0;
         new_position[i] = network[i] + slope[i]*dt/2.0;
     }
-	for(i=0; i<cant_zealots*T; i++) new_position[i] = 0;
-	
     /// Step 3
     compute_derivative(new_position, slope, Ang, K, beta, delta, N, T);
     for(i=0; i<N*T; i++){
         new_network[i] += slope[i]*dt/3.0;
         new_position[i] = network[i] + slope[i]*dt;
     }
-	for(i=0; i<cant_zealots*T; i++) new_position[i] = 0;
-	
     /// Step 4
     compute_derivative(new_position, slope, Ang, K, beta, delta, N, T);
     for(i=0; i<N*T; i++){
         new_network[i] += slope[i]*dt/6.0;
         //printf("\t %d cambio: %lf -> %lf\n", i, network[i], new_network[i]);
     }
-	for(i=0; i<cant_zealots*T; i++) new_position[i] = 0;
 
     for(i=0; i<N*T; i++)
         network[i] = new_network[i];
-	for(i=0; i<cant_zealots*T; i++) network[i] = 0;
 
 }
 
@@ -620,7 +612,6 @@ int main(int argc, char *argv[])
 	// Estos son unas variables que si bien podrían ir en el puntero red, son un poco ambiguas y no vale la pena pasarlas a un struct.
 	double Variacion_promedio = 0.1; // Esto es la Variación promedio del sistema. Es cuanto cambia en promedio cada opinión
 	double CritCorte = pow(10,-3); // Este valor es el criterio de corte. Con este criterio, toda variación más allá de la quinta cifra decimal es despreciable.
-	int cant_zealots = (int) N *0.1; // Esta es la cantidad de agentes con opiniones neutras que no varían.
 	int contador = 0; // Este es el contador que verifica que hayan transcurrido la cantidad de iteraciones extra
 	int pasos_simulados = 0; // Esta variable me sirve para cortar si simulo demasiado tiempo.
 	int ancho_ventana = 500; // Este es el ancho temporal que voy a tomar para promediar las opiniones de mis agentes.
@@ -641,13 +632,12 @@ int main(int argc, char *argv[])
 	
 	GenerarAng(Ang, T, cosd);
     initialize_network(network, new_network, K, T);
-	for(int i=0; i<cant_zealots*T; i++) network[i] = 0;
     
 	//################################################################################################################################
 	
 	// Este archivo es el que guarda las opiniones del sistema mientras evoluciona
 	char TextOpi[355];
-	sprintf(TextOpi,"../Programas Python/Agentes_Invariables/Beta-Cosd/Opiniones_N=%d_kappa=10_beta=%.2f_cosd=%.2f_Iter=%d.file", N,beta, cosd, iteracion);
+	sprintf(TextOpi,"../Programas Python/Comparacion_datos/Beta-Cosd/Opiniones_N=%d_kappa=10_beta=%.2f_cosd=%.2f_Iter=%d.file", N,beta, cosd, iteracion);
 	FILE *FileOpi=fopen(TextOpi,"w"); // Con esto abro mi archivo y dirijo el puntero a él.
 
 	//################################################################################################################################
@@ -661,7 +651,7 @@ int main(int argc, char *argv[])
 	
 	for(step=0; step<ancho_ventana-1; step++){
 		// Evolución
-		actualize_network(network, new_network, Ang, K, beta, delta, N, T, cant_zealots); // Se actualizan las opiniones
+		actualize_network(network, new_network, Ang, K, beta, delta, N, T); // Se actualizan las opiniones
 		for(int j=0; j<N*T; j++) *(Prom_Opi +j) += *(network+j);
 	}
 	

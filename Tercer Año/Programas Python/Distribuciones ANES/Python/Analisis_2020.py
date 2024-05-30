@@ -132,20 +132,25 @@ df_data[['V200010a','V200010b']] = df_raw_data[['V200010a','V200010b']]
 for i,code_1 in enumerate(labels_politicos):
     for code_2 in labels_politicos[i+1::]:
         
-        df_aux = df_data.loc[(df_data[code_1]>0) & (df_data[code_2]>0)]
-        
         if code_1[3] == '1' and code_2[3] == '1':
             weights = 'V200010a'
         else:
             weights = 'V200010b'
+        
+        
+        df_aux = df_data.loc[(df_data[code_1]>0) & (df_data[code_2]>0)]
         
         plt.rcParams.update({'font.size': 28})
         plt.figure(figsize=(24,20))
         # sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
         #               joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
         #               marginal_kws={'discrete': True, 'weights': df_aux[weights]})
-        hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0, cmap = "inferno", density = True,
-                                    bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
+        
+        # Filter out rows where either code_1 or code_2 is 3
+#        df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
+        df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_1], y=df_filtered[code_2], weights=df_filtered[weights], vmin=0, cmap = "inferno", density = True,
+                                                bins=[np.arange(df_filtered[code_1].min()-0.5, df_filtered[code_1].max()+1.5, 1), np.arange(df_filtered[code_2].min()-0.5, df_filtered[code_2].max()+1.5, 1)])
         
         # Add a colorbar
         cbar = plt.colorbar(im)
@@ -155,7 +160,7 @@ for i,code_1 in enumerate(labels_politicos):
         plt.xlabel(dict_labels[code_1])
         plt.ylabel(dict_labels[code_2])
 #        plt.gca().invert_yaxis()
-        direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Politicos/{}vs{}.png".format(code_1,code_2))
+        direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Sin Cruz/Politicos/{}vs{}.png".format(code_1,code_2))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
         
@@ -164,20 +169,24 @@ for i,code_1 in enumerate(labels_politicos):
 for i,code_1 in enumerate(labels_apoliticos):
     for code_2 in labels_apoliticos[i+1::]:
         
-        df_aux = df_data.loc[(df_data[code_1]>0) & (df_data[code_2]>0)]
-        
         if code_1[3] == '1' and code_2[3] == '1':
             weights = 'V200010a'
         else:
             weights = 'V200010b'
+        
+        df_aux = df_data.loc[(df_data[code_1]>0) & (df_data[code_2]>0)]
         
         plt.rcParams.update({'font.size': 28})
         plt.figure(figsize=(24,20))
         # sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
         #               joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
         #               marginal_kws={'discrete': True, 'weights': df_aux[weights]})
-        hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0, cmap = "inferno", density = True,
-                                    bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
+        
+        # Filter out rows where either code_1 or code_2 is 3
+#        df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
+        df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_1], y=df_filtered[code_2], weights=df_filtered[weights], vmin=0, cmap = "inferno", density = True,
+                                                bins=[np.arange(df_filtered[code_1].min()-0.5, df_filtered[code_1].max()+1.5, 1), np.arange(df_filtered[code_2].min()-0.5, df_filtered[code_2].max()+1.5, 1)])
         
         # Add a colorbar
         cbar = plt.colorbar(im)
@@ -187,7 +196,7 @@ for i,code_1 in enumerate(labels_apoliticos):
         plt.xlabel(dict_labels[code_1])
         plt.ylabel(dict_labels[code_2])
 #        plt.gca().invert_yaxis()
-        direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/No Politicos/{}vs{}.png".format(code_1,code_2))
+        direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Sin Cruz/No Politicos/{}vs{}.png".format(code_1,code_2))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
 
@@ -195,20 +204,24 @@ for i,code_1 in enumerate(labels_apoliticos):
 for i,code_1 in enumerate(labels_dudosos):
     for code_2 in labels_dudosos[i+1::]:
         
-        df_aux = df_data.loc[(df_data[code_1]>0) & (df_data[code_2]>0)]
-        
         if code_1[3] == '1' and code_2[3] == '1':
             weights = 'V200010a'
         else:
             weights = 'V200010b'
+        
+        df_aux = df_data.loc[(df_data[code_1]>0) & (df_data[code_2]>0)]
         
         plt.rcParams.update({'font.size': 28})
         plt.figure(figsize=(24,20))
         # sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
         #               joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
         #               marginal_kws={'discrete': True, 'weights': df_aux[weights]})
-        hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0, cmap = "inferno", density = True,
-                                    bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
+        
+        # Filter out rows where either code_1 or code_2 is 3
+#        df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
+        df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_1], y=df_filtered[code_2], weights=df_filtered[weights], vmin=0, cmap = "inferno", density = True,
+                                                bins=[np.arange(df_filtered[code_1].min()-0.5, df_filtered[code_1].max()+1.5, 1), np.arange(df_filtered[code_2].min()-0.5, df_filtered[code_2].max()+1.5, 1)])
         
         # Add a colorbar
         cbar = plt.colorbar(im)
@@ -218,7 +231,7 @@ for i,code_1 in enumerate(labels_dudosos):
         plt.xlabel(dict_labels[code_1])
         plt.ylabel(dict_labels[code_2])
 #        plt.gca().invert_yaxis()
-        direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Dudosos/{}vs{}.png".format(code_1,code_2))
+        direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Sin Cruz/Dudosos/{}vs{}.png".format(code_1,code_2))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
 

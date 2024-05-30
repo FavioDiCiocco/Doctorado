@@ -16,7 +16,7 @@ int main(int argc, char *argv[]){
 	// Empecemos con la base. Defino variables de tiempo para medir cuanto tardo y cosas básicas
 	time_t tprin, tfin, semilla;
 	time(&tprin);
-	semilla = 1715881304;   // time(NULL);
+	semilla = time(NULL);
 	srand(semilla); // Voy a definir la semilla a partir de time(NULL);
 	float Tiempo; // Este es el float que le paso al printf para saber cuanto tardé
 	

@@ -1375,13 +1375,18 @@ def Leer_Datos_ANES(filename,año):
 
 #-----------------------------------------------------------------------------------------------
     
-# Calculo la distancia Jensen-Shannon dadas dos distribuciones.
+# Armo dos mapas de colores de DJS. Uno de los mapas de colores considera que la distribución
+# no tiene el punto en el centro en que ambos agentes opinan neutro. El otro mapa de colores
+# no tiene los agentes que hayan opinado neutro en ninguna de las preguntas.
+# En ambos casos estoy considerando que ambas preguntas tienen 7 respuestas. Voy a tener que ir
+# viendo cómo resolver si tienen 6 respuestas.
 
 def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,
                       SIM_param_x,SIM_param_y):
     
     # Defino la cantidad de agentes de la red
     AGENTES = int(np.unique(DF_datos["n"]))
+    frac_agente_ind = 1/AGENTES
     
     # Defino los arrays de parámetros diferentes
     EXTRAS = int(np.unique(DF_datos["Extra"]))
@@ -1405,18 +1410,40 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,
     # Construyo las grillas que voy a necesitar para el pcolormesh.
     
     XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
-    ZZ = np.zeros((XX.shape[0],XX.shape[1],100))
+    ZZ_centro = np.zeros((XX.shape[0],XX.shape[1],100))
+    ZZ_cruz = np.zeros((XX.shape[0],XX.shape[1],100))
     
     #--------------------------------------------------------------------------------
     
-    # Extraigo la distribución en hist2d
+    # Extraigo mis distribuciones sacando el centro, es decir, saco a los agentes que respondieron neutro
+    # en ambas encuestas y también extraigo la distribución sacando la cruz, que sería sacar a los agentes que
+    # respondieron neutro en alguna encuesta.
     
     df_aux = DF_Anes.loc[(DF_Anes[Dic_ANES["code_1"]]>0) & (DF_Anes[Dic_ANES["code_2"]]>0)]
-    hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[Dic_ANES["code_1"]], y=df_aux[Dic_ANES["code_2"]], weights=df_aux[Dic_ANES["weights"]], vmin=0,
-             bins=[np.arange(df_aux[Dic_ANES["code_1"]].min()-0.5, df_aux[Dic_ANES["code_1"]].max()+1.5, 1), np.arange(df_aux[Dic_ANES["code_2"]].min()-0.5, df_aux[Dic_ANES["code_2"]].max()+1.5, 1)])
+    
+    # Distribución de encuesta sin el Centro
+    
+    df_filtered = df_aux[(df_aux[Dic_ANES["code_1"]] != 4) | (df_aux[Dic_ANES["code_2"]] != 4)] # Sólo saca el centro
+    hist2d_centro, xedges, yedges, im = plt.hist2d(x=df_filtered[Dic_ANES["code_1"]], y=df_filtered[Dic_ANES["code_2"]], weights=df_filtered[Dic_ANES["weights"]], vmin=0,cmap = "inferno", density = True,
+              bins=[np.arange(df_filtered[Dic_ANES["code_1"]].min()-0.5, df_filtered[Dic_ANES["code_1"]].max()+1.5, 1), np.arange(df_filtered[Dic_ANES["code_2"]].min()-0.5, df_filtered[Dic_ANES["code_2"]].max()+1.5, 1)])
     plt.close()
     
-    Distr_Enc = np.reshape(hist2d,(hist2d.shape[0]*hist2d.shape[1],1))
+    # Distribución de encuesta sin la Cruz
+    
+    df_filtered = df_aux[(df_aux[Dic_ANES["code_1"]] != 4) | (df_aux[Dic_ANES["code_2"]] != 4)] # Sólo saca el centro
+    df_filtered = df_aux[(df_aux[Dic_ANES["code_1"]] != 4) & (df_aux[Dic_ANES["code_2"]] != 4)] # Saca la cruz
+    hist2d_cruz, xedges, yedges, im = plt.hist2d(x=df_filtered[Dic_ANES["code_1"]], y=df_filtered[Dic_ANES["code_2"]], weights=df_filtered[Dic_ANES["weights"]], vmin=0,cmap = "inferno", density = True,
+              bins=[np.arange(df_filtered[Dic_ANES["code_1"]].min()-0.5, df_filtered[Dic_ANES["code_1"]].max()+1.5, 1), np.arange(df_filtered[Dic_ANES["code_2"]].min()-0.5, df_filtered[Dic_ANES["code_2"]].max()+1.5, 1)])
+    plt.close()
+    
+    # Armo las distribuciones finalmente
+    
+    Distr_Enc_Centro = np.reshape(hist2d_centro,(hist2d_centro.shape[0]*hist2d_centro.shape[1],1))
+    Distr_Enc_Centro = np.delete(Distr_Enc_Centro,24) # Saco el elemento del centro que tiene un cero
+    
+    Distr_Enc_Cruz = np.reshape(hist2d_cruz,(hist2d_cruz.shape[0]*hist2d_cruz.shape[1],1))
+    Ind_nulos = np.array([3,10,17,21,22,23,24,25,26,27,31,38,45])
+    Distr_Enc_Cruz = np.delete(Distr_Enc_Cruz,Ind_nulos)
     
     #--------------------------------------------------------------------------------
     
@@ -1430,7 +1457,8 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,
                                     (DF_datos["parametro_y"]==PARAM_Y), "nombre"])
         #-----------------------------------------------------------------------------------------
         
-        DistJS = np.zeros(archivos.shape[0])
+        Dist_previa_centro = np.zeros(4)
+        Dist_previa_cruz = np.zeros(4)
         
         for nombre in archivos:
             
@@ -1445,63 +1473,154 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,
             # Levanto los datos del archivo
             Datos = ldata(path / nombre)
             
-            # Leo los datos de las Opiniones Finales
+            # Leo los datos de las Opiniones Finales y me armo una distribución en forma de matriz de 7x7
             Opifinales = np.array(Datos[5][:-1], dtype="float")
             Opifinales = Opifinales / EXTRAS
-            Distr_Sim = np.reshape(Clasificacion(Opifinales,hist2d.shape[0],hist2d.shape[1],T),(hist2d.shape[0]*hist2d.shape[1],1))
+            Distr_Orig = Clasificacion(Opifinales,hist2d_centro.shape[0],hist2d_centro.shape[1],T)
             
-            # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+            #-----------------------------------------------------------------------------------------
+            
+            for rotacion in range(4):
+                
+                # Tomo la distribución original, le doy forma de matriz, la roto y luego la plancho
+                Distr_Orig = np.reshape(Distr_Orig, hist2d_centro.shape)
+                Distr_Orig = Rotar_matriz(Distr_Orig)
+                Distr_Orig = np.reshape(Distr_Orig,(hist2d_centro.shape[0]*hist2d_centro.shape[1],1))
+                
+                # A partir de la distribución original voy a fabricarme dos distribuciones de simulaciones, una sin el
+                # punto central, otra sin la cruz.
+                
+                # Primero armo la que no tiene el centro removiendo el punto central
+                Distr_Sim_centro = np.delete(Distr_Orig,24)
+                # Como removí parte de mi distribución, posiblemente ya no esté normalizada
+                # la distribución. Así que debería ahora sumar agentes de a 1 hasta asegurarme
+                # de que otra vez esté normalizada
+                if np.sum(Distr_Sim_centro) != 1:
+                    agentes_agregar = int((1-np.sum(Distr_Sim_centro))/frac_agente_ind)
+                    for i in range(agentes_agregar):
+                        ubic_min = np.argmin(Distr_Sim_centro)
+                        Distr_Sim_centro[ubic_min] += frac_agente_ind
+                # Luego de volver a normalizar mi distribución, si quedaron lugares
+                # sin agentes, los relleno
+                restar = np.count_nonzero(Distr_Sim_centro == 0)
+                ubic = np.argmax(Distr_Sim_centro)
+                Distr_Sim_centro[Distr_Sim_centro == 0] = np.ones(restar)*frac_agente_ind
+                Distr_Sim_centro[ubic] -= frac_agente_ind*restar
+                
+                Dist_previa_centro[rotacion] = jensenshannon(Distr_Enc_Centro,Distr_Sim_centro)
+                
+                
+                # Segundo armo la que no tiene la cruz removiendo los puntos en la cruz de la distribución
+                Distr_Sim_cruz = np.delete(Distr_Orig, Ind_nulos)
+                # Como removí parte de mi distribución, posiblemente ya no esté normalizada
+                # la distribución. Así que debería ahora sumar agentes de a 1 hasta asegurarme
+                # de que otra vez esté normalizada
+                if np.sum(Distr_Sim_cruz) != 1:
+                    agentes_agregar = int((1-np.sum(Distr_Sim_cruz))/frac_agente_ind)
+                    for i in range(agentes_agregar):
+                        ubic_min = np.argmin(Distr_Sim_cruz)
+                        Distr_Sim_cruz[ubic_min] += frac_agente_ind
+                # Luego de volver a normalizar mi distribución, si quedaron lugares
+                # sin agentes, los relleno
+                restar = np.count_nonzero(Distr_Sim_cruz == 0)
+                ubic = np.argmax(Distr_Sim_cruz)
+                Distr_Sim_cruz[Distr_Sim_cruz == 0] = np.ones(restar)*frac_agente_ind
+                Distr_Sim_cruz[ubic] -= frac_agente_ind*restar
+                
+                Dist_previa_cruz[rotacion] = jensenshannon(Distr_Enc_Cruz,Distr_Sim_cruz)
+                
+            #-----------------------------------------------------------------------------------------
+            
+            # Una vez que calcule las 4 distancias habiendo rotado 4 veces la distribución,
+            # lo que me queda es guardar eso en las matrices ZZ correspondientes.
             
             repeticion = int(DF_datos.loc[DF_datos["nombre"]==nombre,"iteracion"])
             
-            DistJS[repeticion] = jensenshannon(Distr_Enc,Distr_Sim)
-            
-        #------------------------------------------------------------------------------------------
-        # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
-        ZZ[(Arr_param_y.shape[0]-1)-fila,columna,:] = np.sort(DistJS)
+            ZZ_centro[(Arr_param_y.shape[0]-1)-fila,columna,repeticion] = np.min(Dist_previa_centro)
+            ZZ_cruz[(Arr_param_y.shape[0]-1)-fila,columna,repeticion] = np.min(Dist_previa_cruz)
     
     #--------------------------------------------------------------------------------
     
-    # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/DistanciaJS_{}vs{}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"]))
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores para el caso sin centro
+    direccion_guardado = Path("../../../Imagenes/{}/Sin Centro/DistanciaJS_{}vs{}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"]))
     
     plt.rcParams.update({'font.size': 44})
-    plt.figure("Distancia Jensen-Shannon",figsize=(28,21))
+    plt.figure("Distancia Jensen-Shannon Centro",figsize=(28,21))
     plt.xlabel(r"${}$".format(SIM_param_x))
     plt.ylabel(r"${}$".format(SIM_param_y))
     
     # Hago el ploteo del mapa de colores con el colormesh
     
-    plt.pcolormesh(XX,YY,np.mean(ZZ,axis=2),shading="nearest", cmap = "viridis")
+    plt.pcolormesh(XX,YY,np.mean(ZZ_centro,axis=2),shading="nearest", cmap = "viridis")
     plt.colorbar()
-    plt.title("Distancia Jensen-Shannon\n {} vs {}".format(dict_labels[Dic_ANES["code_2"]],dict_labels[Dic_ANES["code_1"]]))
+    plt.title("Distancia Jensen-Shannon sin centro\n {} vs {}".format(dict_labels[Dic_ANES["code_2"]],dict_labels[Dic_ANES["code_1"]]))
     
     # Guardo la figura y la cierro
     
     plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close("Distancia Jensen-Shannon")
+    plt.close("Distancia Jensen-Shannon Centro")
+    
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores para el caso sin cruz
+    direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/DistanciaJS_{}vs{}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"]))
+    
+    plt.rcParams.update({'font.size': 44})
+    plt.figure("Distancia Jensen-Shannon Cruz",figsize=(28,21))
+    plt.xlabel(r"${}$".format(SIM_param_x))
+    plt.ylabel(r"${}$".format(SIM_param_y))
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    
+    plt.pcolormesh(XX,YY,np.mean(ZZ_cruz,axis=2),shading="nearest", cmap = "viridis")
+    plt.colorbar()
+    plt.title("Distancia Jensen-Shannon sin cruz\n {} vs {}".format(dict_labels[Dic_ANES["code_2"]],dict_labels[Dic_ANES["code_1"]]))
+    
+    # Guardo la figura y la cierro
+    
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("Distancia Jensen-Shannon Cruz")
     
     # Y ahora me armo los rankings
     
-    for i in range(1,6):
-        direccion_guardado = Path("../../../Imagenes/{}/DistanciaJS_{}vs{}_r{}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"],i))
+    for i in range(3):
+        direccion_guardado = Path("../../../Imagenes/{}/Sin Centro/DistanciaJS_{}vs{}_r{}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"],i))
     
         plt.rcParams.update({'font.size': 44})
-        plt.figure("Ranking Distancia Jensen-Shannon",figsize=(28,21))
+        plt.figure("Ranking Distancia Jensen-Shannon Centro",figsize=(28,21))
         plt.xlabel(r"${}$".format(SIM_param_x))
         plt.ylabel(r"${}$".format(SIM_param_y))
         
         # Hago el ploteo del mapa de colores con el colormesh
 
         
-        plt.pcolormesh(XX,YY,np.mean(ZZ[:,:,0:i*20],axis=2),shading="nearest", cmap = "viridis")
+        plt.pcolormesh(XX,YY,np.mean(ZZ_centro[:,:,0:10+i*30],axis=2),shading="nearest", cmap = "cividis")
         plt.colorbar()
-        plt.title("ranking distancia Jensen-Shannon\n {} vs {}".format(dict_labels[Dic_ANES["code_2"]],dict_labels[Dic_ANES["code_1"]]))
+        plt.title("Distancia Jensen-Shannon sin centro {} simulaciones\n {} vs {}".format(10+i*30,dict_labels[Dic_ANES["code_2"]],dict_labels[Dic_ANES["code_1"]]))
         
         # Guardo la figura y la cierro
         
         plt.savefig(direccion_guardado , bbox_inches = "tight")
-        plt.close("Ranking Distancia Jensen-Shannon")
+        plt.close("Ranking Distancia Jensen-Shannon Centro")
+        
+    
+    for i in range(3):
+        direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/DistanciaJS_{}vs{}_r{}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"],i))
+    
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("Ranking Distancia Jensen-Shannon Cruz",figsize=(28,21))
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        
+        # Hago el ploteo del mapa de colores con el colormesh
+
+        
+        plt.pcolormesh(XX,YY,np.mean(ZZ_cruz[:,:,0:10+i*30],axis=2),shading="nearest", cmap = "cividis")
+        plt.colorbar()
+        plt.title("Distancia Jensen-Shannon sin cruz {} simulaciones\n {} vs {}".format(10+i*30,dict_labels[Dic_ANES["code_2"]],dict_labels[Dic_ANES["code_1"]]))
+        
+        # Guardo la figura y la cierro
+        
+        plt.savefig(direccion_guardado , bbox_inches = "tight")
+        plt.close("Ranking Distancia Jensen-Shannon Cruz")
         
     
 
@@ -1782,7 +1901,7 @@ def plot_3d_scatter(DF_datos,DF_Anes, path, carpeta, Dic_ANES, x_range, y_range,
     
 
 #-----------------------------------------------------------------------------------------------
-    
+
 # Tomo una matriz y la roto. Repito, roto la matriz como quien gira la cara de un
 # cubo Rubik, no estoy rotando el objeto que la matriz representa.
 
@@ -1809,5 +1928,3 @@ def Rotar_matriz(M):
         P[1:n-1,1:n-1] = M[1:n-1,1:n-1]
     
     return P
-
-

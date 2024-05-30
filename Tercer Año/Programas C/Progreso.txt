@@ -1048,7 +1048,7 @@ El par de preguntas apolíticas que estoy mirando está dando muy mal, por algú
 distribución al revés de lo que esperaría ver. No, ya lo pensé, ahí lo entiendo todo, la forma en
 que calculo la distancia claramente está generando problemas. No estoy rotando las distribuciones.
 
-Probemos cómo da el caos de Vaccines in Schools vs Best way to deal with Urban Unrest. 
+Probemos cómo da el caso de Vaccines in Schools vs Best way to deal with Urban Unrest. 
 (V201429 vs V202341x).
 
 .) Considerar que la gente responde nulo cuando no se le da la opinión de no responder.
@@ -1201,3 +1201,52 @@ Me queda hoy probar lo de remover el punto central. Al remover el punto central,
 distinto a si dejo un cero en ese punto. Ok, definitivamente removeré ese punto cuando haga las cuentas.
 Ya tengo armado el esqueleto para construir el código que quiero hacer, ahora queda nomás pasarlo
 al código de funciones que se encarga de armar el mapa de colores de Distancia JS.
+
+------------------------------------------------------------------------------------------
+
+30/05/2024
+
+Hoy el plan es hacer dos cosas importantes. La primera es lograr ver la distancia de JS de pares de
+preguntas removiendo el centro y removiendo la cruz central. Tengo más o menos armado el código para
+hacer eso, ahora tengo que organizar todo en carpetas razonables. Creo que lo que voy a hacer es
+preparar tres carpetas. Una para el caso normal, una para el caso sin el centro y otra para el caso
+sin la cruz. El caso normal lo voy a llamar "Base". El caso sin el centro lo voy a llamar "Sin Centro"
+y razonablemente el último caso va a ser "Sin Cruz".
+
+Hecho eso, puedo empezar a revisar pares de preguntas, medir las distancias JS y hacer los gráficos
+correspondientes.
+
+Lo segundo que voy a querer hacer hoy es mandar las simulaciones con los Zealots. Eso lo tengo
+que mandar a correr en las pc's de la facultad. Igual eso lo voy a mandar a correr recién mañana,
+hoy no voy a poder porque la pc de la facultad todavía está corriendo el barrido en Beta-Cos(delta).
+
+Probé varias cosas, pero ninguna parece resultar para cerrar esa región de la cruz. Así que por ahora
+dejemos eso y sigamos con el resto del laburo. Para lograr esto creo que la idea va a ser en la misma
+función de cálculo de la Distancia de JS hacer las modificaciones para que se calcule correctamente la
+distancia y desde ahí armar los dos gráficos de una sola vez. Eso va a ser lo mejor.
+
+Hice todas las modificaciones como para poder correctamente armar los gráficos. Fue un bardo, va a
+tirar 15 errores, pero bueno, ahora estoy en condiciones de probar a ver qué da. Va a tardar una eternidad
+más, porque ahora hace muchas más operaciones. Además está todo mezclado en un sólo paquete para trabajar
+sólo con preguntas de 7x7. Va a ser un bardo desarmar eso para que trabaje con preguntas de 6x6 o 6x7.
+Voy a tener que ver cómo se automatiza eso para trabajar en esos casos. O, quizás, sólo quizás, cuando
+trabaje con esas preguntas mejor simplemente me pongo a armar una función distinta que ya sepa de antemano
+la forma de la función que le voy a mandar. Veré, no sé honestamente qué es mejor.
+
+Ahora voy a trabajar con tres pares de preguntas que me resultan las más simples de utilizar:
+1) V201255 vs V201258. (Govt. Assistance to Blacks vs Guaranteed Job Income.)
+2) V201200 vs V201420x (Birthright Citizenship vs Liberal-Conservative Self placement)
+3) V202331x vs V202341x (Backgorund checks for gun purchases vs Vaccines in Schools)
+
+Logré que haga los cálculos, pero no da muy lindo. Mañana armaré algunas preguntas más en la facultad
+como para ver qué es lo que da y si ahora el caso de las preguntas no políticas que parecen un consenso
+radicalizado dan mejor.
+
+Lo siguiente es ponerme a trabajar en el código actual para introducir el uso de Zealots cuyas
+opiniones se mantienen fijas en (0,0). Entiendo que la idea es que una fracción de esos
+agentes se mantengan en esa opinión. Supongamos que el plan es que un 10% se mantenga en ese
+número.
+
+Ahí hice lo de los Zealots, la verdad fue bastante rápido, buenísimo. Bueno, ya son las 18:30,
+creo que puedo dejarlo acá por ahora. Mañana seguiré sacando gráficos de distancia JS
+y veré qué tal quedan.

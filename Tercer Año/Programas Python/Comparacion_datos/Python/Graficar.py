@@ -89,8 +89,8 @@ for carp in Carpetas:
     
     # Esta parte del código la uso para calcular el mapa de colores de DJS de varios pares de preguntas,
     # todo de un plumazo.
-
-#    labels = [('V201429','V202341x','V200010b')]# ('V201255','V201258','V200010a'),('V201200','V201420x','V200010a'),('V202320x','V202350x','V200010b')]
+    
+#    labels = [('V201255','V201258','V200010a')] #, ('V201200','V201420x','V200010a'), ('V202331x','V202341x','V200010b')]
 #    for code_1,code_2,weights in labels:
 #            
 #        Dic_ANES = {"code_1": code_1, "code_2": code_2, "weights":weights}
@@ -136,11 +136,20 @@ for carp in Carpetas:
     print("Optimal variables:", result.x)
     
     
-    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/carpeta, 7, "viridis",
+    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/"distribuciones", 7, "viridis",
                                       ID_param_x, ID_param_y, ID_param_extra_1)
     """
-    
-    # Consideremos que quiero revisar los estados finales de las simulaciones contra uno de mis
+    #----------------------------------------------------------------------------------------------
+
+func.Tiempo(t0)
+
+#########################################################################################
+#########################################################################################
+"""
+# Este código fue una prueba de cosas para ver cómo calcular la distancia
+# Jensen-Shannon. Ahora lo aislo porque ya generalicé esto en una función.
+
+# Consideremos que quiero revisar los estados finales de las simulaciones contra uno de mis
     # gráficos. Tengo que tomar las opiniones finales de algún estado y armar la distribución
     # asociada.
     
@@ -214,13 +223,4 @@ for carp in Carpetas:
     # Esto que me armé efectivamente calcula la distancia Jensen-Shannon entre dos
     # distribuciones. Extrañamente, no tiene problemas con las distribuciones que tengan
     # ceros. Muy raro.
-    
-    #----------------------------------------------------------------------------------------------
-
-func.Tiempo(t0)
-
-#########################################################################################
-#########################################################################################
-
-# Este código fue una prueba de cosas para ver cómo calcular la distancia
-# Jensen-Shannon. Ahora lo aislo porque ya generalicé esto en una función.
+""" 
