@@ -90,13 +90,13 @@ for carp in Carpetas:
     # Esta parte del código la uso para calcular el mapa de colores de DJS de varios pares de preguntas,
     # todo de un plumazo.
     
-#    labels = [('V201255','V201258','V200010a')] #, ('V201200','V201420x','V200010a'), ('V202331x','V202341x','V200010b')]
-#    for code_1,code_2,weights in labels:
-#            
-#        Dic_ANES = {"code_1": code_1, "code_2": code_2, "weights":weights}
-#        
-#        func.Mapas_Colores_DJS(Df_archivos, Df_ANES, dict_labels, Direccion, Etapa/carpeta, Dic_ANES,
-#                               SIM_param_x, SIM_param_y)
+    labels = [('V201255','V201258','V200010a'), ('V201200','V201420x','V200010a'), ('V202331x','V202341x','V200010b')]
+    for code_1,code_2,weights in labels:
+            
+        Dic_ANES = {"code_1": code_1, "code_2": code_2, "weights":weights}
+        
+        func.Mapas_Colores_DJS(Df_archivos, Df_ANES, dict_labels, Direccion, Etapa/carpeta, Dic_ANES,
+                              SIM_param_x, SIM_param_y)
     
     #----------------------------------------------------------------------------------------------
     """

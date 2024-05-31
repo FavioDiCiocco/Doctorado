@@ -128,7 +128,7 @@ df_data[['V200010a','V200010b']] = df_raw_data[['V200010a','V200010b']]
 #############################################################################################
 
 # Gráfico de dos preguntas simultáneas con distribuciones individuales en los ejes
-
+"""
 for i,code_1 in enumerate(labels_politicos):
     for code_2 in labels_politicos[i+1::]:
         
@@ -147,8 +147,8 @@ for i,code_1 in enumerate(labels_politicos):
         #               marginal_kws={'discrete': True, 'weights': df_aux[weights]})
         
         # Filter out rows where either code_1 or code_2 is 3
-#        df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
-        df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
+        df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
+        # df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
         hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_1], y=df_filtered[code_2], weights=df_filtered[weights], vmin=0, cmap = "inferno", density = True,
                                                 bins=[np.arange(df_filtered[code_1].min()-0.5, df_filtered[code_1].max()+1.5, 1), np.arange(df_filtered[code_2].min()-0.5, df_filtered[code_2].max()+1.5, 1)])
         
@@ -160,7 +160,7 @@ for i,code_1 in enumerate(labels_politicos):
         plt.xlabel(dict_labels[code_1])
         plt.ylabel(dict_labels[code_2])
 #        plt.gca().invert_yaxis()
-        direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Sin Cruz/Politicos/{}vs{}.png".format(code_1,code_2))
+        direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Sin Centro/Politicos/{}vs{}.png".format(code_1,code_2))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
         
@@ -183,8 +183,8 @@ for i,code_1 in enumerate(labels_apoliticos):
         #               marginal_kws={'discrete': True, 'weights': df_aux[weights]})
         
         # Filter out rows where either code_1 or code_2 is 3
-#        df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
-        df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
+        df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
+        # df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
         hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_1], y=df_filtered[code_2], weights=df_filtered[weights], vmin=0, cmap = "inferno", density = True,
                                                 bins=[np.arange(df_filtered[code_1].min()-0.5, df_filtered[code_1].max()+1.5, 1), np.arange(df_filtered[code_2].min()-0.5, df_filtered[code_2].max()+1.5, 1)])
         
@@ -196,7 +196,7 @@ for i,code_1 in enumerate(labels_apoliticos):
         plt.xlabel(dict_labels[code_1])
         plt.ylabel(dict_labels[code_2])
 #        plt.gca().invert_yaxis()
-        direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Sin Cruz/No Politicos/{}vs{}.png".format(code_1,code_2))
+        direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Sin Centro/No Politicos/{}vs{}.png".format(code_1,code_2))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
 
@@ -218,8 +218,8 @@ for i,code_1 in enumerate(labels_dudosos):
         #               marginal_kws={'discrete': True, 'weights': df_aux[weights]})
         
         # Filter out rows where either code_1 or code_2 is 3
-#        df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
-        df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
+        df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
+        # df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
         hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_1], y=df_filtered[code_2], weights=df_filtered[weights], vmin=0, cmap = "inferno", density = True,
                                                 bins=[np.arange(df_filtered[code_1].min()-0.5, df_filtered[code_1].max()+1.5, 1), np.arange(df_filtered[code_2].min()-0.5, df_filtered[code_2].max()+1.5, 1)])
         
@@ -231,14 +231,14 @@ for i,code_1 in enumerate(labels_dudosos):
         plt.xlabel(dict_labels[code_1])
         plt.ylabel(dict_labels[code_2])
 #        plt.gca().invert_yaxis()
-        direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Sin Cruz/Dudosos/{}vs{}.png".format(code_1,code_2))
+        direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Sin Centro/Dudosos/{}vs{}.png".format(code_1,code_2))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
 
-
+"""
 ####################################################################################################################
 
-"""
+
 plt.rcParams.update({'font.size': 28})
 
 for code in labels_politicos:
@@ -248,11 +248,15 @@ for code in labels_politicos:
     elif code[3] == '2':
         weights = 'V200010b'
     
+    df_aux = df_data.loc[df_data[code]>0]
+    if np.unique(df_aux[code]).shape[0] == 7:
+        df_aux = df_aux[df_aux[code] != 4] # Sólo saca el centro
+    
     # Set the figure size
     plt.figure(figsize=(20, 15))  # Adjust width and height as needed
-    sns.histplot(df_data.loc[df_data[code]>0], x=code, weights=weights, discrete=True)
+    sns.histplot(df_aux, x=code, weights=weights, stat = 'density', discrete=True)
     plt.xlabel(dict_labels[code])
-    direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Politicos/Histograma {}.png".format(code))
+    direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Histogramas/Politicos/Histograma {}.png".format(code))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
     
@@ -263,12 +267,16 @@ for code in labels_apoliticos:
         weights = 'V200010a'
     elif code[3] == '2':
         weights = 'V200010b'
+        
+    df_aux = df_data.loc[df_data[code]>0]
+    if np.unique(df_aux[code]).shape[0] == 7:
+        df_aux = df_aux[df_aux[code] != 4] # Sólo saca el centro
     
     # Set the figure size
     plt.figure(figsize=(20, 15))  # Adjust width and height as needed
-    sns.histplot(df_data.loc[df_data[code]>0], x=code, weights=weights, discrete=True)
+    sns.histplot(df_aux, x=code, weights=weights, stat = 'density', discrete=True)
     plt.xlabel(dict_labels[code])
-    direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/No Politicos/Histograma {}.png".format(code))
+    direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Histogramas/No Politicos/Histograma {}.png".format(code))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
     
@@ -280,15 +288,19 @@ for code in labels_dudosos:
     elif code[3] == '2':
         weights = 'V200010b'
     
+    df_aux = df_data.loc[df_data[code]>0]
+    if np.unique(df_aux[code]).shape[0] == 7:
+        df_aux = df_aux[df_aux[code] != 4] # Sólo saca el centro
+    
     # Set the figure size
     plt.figure(figsize=(20, 15))  # Adjust width and height as needed
-    sns.histplot(df_data.loc[df_data[code]>0], x=code, weights=weights, discrete=True)
+    sns.histplot(df_aux, x=code, weights=weights, stat = 'density', discrete=True)
     plt.xlabel(dict_labels[code])
-    direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Dudosos/Histograma {}.png".format(code))
+    direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Histogramas/Dudosos/Histograma {}.png".format(code))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
 
-"""
+
 
 ####################################################################################################################
 """

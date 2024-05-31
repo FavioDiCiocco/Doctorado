@@ -1236,7 +1236,7 @@ la forma de la función que le voy a mandar. Veré, no sé honestamente qué es 
 Ahora voy a trabajar con tres pares de preguntas que me resultan las más simples de utilizar:
 1) V201255 vs V201258. (Govt. Assistance to Blacks vs Guaranteed Job Income.)
 2) V201200 vs V201420x (Birthright Citizenship vs Liberal-Conservative Self placement)
-3) V202331x vs V202341x (Backgorund checks for gun purchases vs Vaccines in Schools)
+3) V202331x vs V202341x (Background checks for gun purchases vs Vaccines in Schools)
 
 Logré que haga los cálculos, pero no da muy lindo. Mañana armaré algunas preguntas más en la facultad
 como para ver qué es lo que da y si ahora el caso de las preguntas no políticas que parecen un consenso
@@ -1250,3 +1250,46 @@ número.
 Ahí hice lo de los Zealots, la verdad fue bastante rápido, buenísimo. Bueno, ya son las 18:30,
 creo que puedo dejarlo acá por ahora. Mañana seguiré sacando gráficos de distancia JS
 y veré qué tal quedan.
+
+------------------------------------------------------------------------------------------
+
+31/05/2024
+
+Ahora estoy en la facultad. Lo primero que voy a hacer ahora es mandar a armar los gráficos
+para los pares de preguntas que tengo ahí considerado, así se ve mejor si esto funca bien
+o no.
+
+Armé gráficos de distancia JS en el espacio de parámetros. Dan un poco mejor que antes, pero
+tampoco la gran cosa. Habrá que ir viendo qué tal. Se me ocurre que puedo agarrar algunos
+pares de preguntas más, revisarlos y después de ahí sacar conclusiones.
+
+Lo que voy a hacer ahora es armar un poco una charla, unas pocas diapositivas para armar
+la idea de lo que vamos a charlar para el miércoles que viene. Había malentendido yo, 
+esto es para tener un esquema de trabajo nuestro en el cuál tengamos bien claro lo que estamos
+queriendo hacer y lo que falta del trabajo. Tengo anotado el armar simulaciones extendiendo la
+región de simulación del espacio Beta-Cos(delta). La idea está bien, vamos a tener que considerar
+seriamente cuál es el nivel de granularidad de ese barrido cosa de que sea consistente en toda la
+región.
+
+Para el miércoles lo ideal sería llegar con más laburo hecho del lado de los ajustes y las
+distancias calculadas de JS. Para eso necesito entonces armar un conjunto de seis pares
+de preguntas que me interese revisar. Fijemos algunas preguntas como me dijo Pablo y de
+ahí vamos viendo cuáles combino y como.
+
+Algo para aclarar de paso, noté hace un rato que el cálculo de la distancia JS con las simulaciones
+más similares está mal hecho porque no estoy haciendo un sort según distancia. Así que eso lo tengo
+que corregir. Otra cosa que voy a tener que hacer es corregir el cómo se hace el ajuste, porque eso
+no tiene la parte de rotar los gráficos. También estaría bueno agregar al mapa de colores de 
+distancia JS algo que saque el gráfico que más se parece a la distribución de la encuesta considerada.
+
+Una cosa más a revisar es el tema de cómo está dando la distancia JS. Parece que nos está dando
+muy alto. Pero justamente la palabra clave es parece. No tenemos claro si es un número alto o
+no, necesitamos más claridad respecto a qué es un gráfico similar o no a lo que estamos viendo.
+Así que voy a tener que experimentar un poco con eso para ver cómo sale. Por último, voy a tener
+que ver de normalizar los gráficos de histogramas 2D de forma tal que la suma de las fracciones
+graficadas de 1.
+
+Bien, tengo bastante claro el laburo a hacer. Y tengo bastante laburo. Arranquemos. Primero
+las preguntas. Me armé un conjunto de preguntas. Suficientemente chico como para no matarme
+revisando 30 gráficos. La idea es armar seis, siete gráficos de pares de preguntas y con eso
+empezar a revisar cosas.
