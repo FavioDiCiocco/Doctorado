@@ -1293,3 +1293,29 @@ Bien, tengo bastante claro el laburo a hacer. Y tengo bastante laburo. Arranquem
 las preguntas. Me armé un conjunto de preguntas. Suficientemente chico como para no matarme
 revisando 30 gráficos. La idea es armar seis, siete gráficos de pares de preguntas y con eso
 empezar a revisar cosas.
+
+------------------------------------------------------------------------------------------
+
+01/06/2024
+
+Obviamente me olvidé de subir al drive los gráficos de histogramas que había elegido ayer.
+Porque obviamente me iba a olvidar de eso. Ahí armé los gráficos, los hice con matplotlib.
+Por ahora voy a trabajar sólo con preguntas que tengan seis respuestas.
+
+Bien, ya tengo seleccionadas las preguntas que creo van a resultar útiles. Ahora armo las
+distribuciones 2D de esas preguntas para decidir cuáles 6 preguntas quiero mirar.
+Los gráficos que esoty viendo no me gustan, no hay nada que se parezca a lo que queremos
+ver. Sí, ya sé que tampoco lo que veíamos se parecía tanto, pero igual no me gusta. Por
+ahora dejemos eso así, avancemos con las otras cosas, total si lo otro está armado, simplemente tengo
+que elegir nuevos pares de preguntas y volver a intentar.
+
+Ya corregí lo de la similaridad. Era tan simple como poner un np.sort. Lo siguiente que se me
+ocurre es armar una función que me muestre el gráfico más y menos similar. El tema de
+armar una función aparte es que va a tener que volver a calcular todas las distancias JS
+y eso tardaría mucho para mostrar un simple gráfico. Creo que lo mejor sería intentar aprovechar
+la función del Mapa de colores DJS. Hagamos eso.
+
+Suponiendo que está todo bien, se arman los histogramas 2D de mínima y máxima similaridad
+para cada encuesta sin centro y sin cruz. Aunque no estoy haciendo el histograma 2D de la
+simulación sin la cruz o sin el centro. Tengo que ver cómo hacer que esos gráficos respeten
+eso. Lo cuál no es obvio porque en las simulaciones las opiniones no son valores enteros.

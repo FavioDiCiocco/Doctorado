@@ -1382,7 +1382,7 @@ def Leer_Datos_ANES(filename,año):
 # viendo cómo resolver si tienen 6 respuestas.
 
 def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,
-                      SIM_param_x,SIM_param_y):
+                      ID_param_x,SIM_param_x,ID_param_y,SIM_param_y):
     
     # Defino la cantidad de agentes de la red
     AGENTES = int(np.unique(DF_datos["n"]))
@@ -1541,8 +1541,22 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,
     
     #--------------------------------------------------------------------------------
     
+    # Antes de ordenar mis matrices, voy a obtener la info del gráfico que más se parece
+    # y del que menos se parece a lo que estoy queriendo comparar.
+    
+    iMin_centro = np.unravel_index(np.argmin(ZZ_centro),ZZ_centro.shape)
+    iMax_centro = np.unravel_index(np.argmax(ZZ_centro),ZZ_centro.shape)
+    
+    iMin_cruz = np.unravel_index(np.argmin(ZZ_cruz),ZZ_cruz.shape)
+    iMax_cruz = np.unravel_index(np.argmax(ZZ_cruz),ZZ_cruz.shape)
+    
+    #--------------------------------------------------------------------------------
     # Una vez que tengo el ZZ completo, armo mi mapa de colores para el caso sin centro
     direccion_guardado = Path("../../../Imagenes/{}/Sin Centro/DistanciaJS_{}vs{}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"]))
+    
+    # Organizo las matrices ZZ según su similaridad
+    ZZ_centro = np.sort(ZZ_centro)
+    ZZ_cruz = np.sort(ZZ_cruz)
     
     plt.rcParams.update({'font.size': 44})
     plt.figure("Distancia Jensen-Shannon Centro",figsize=(28,21))
@@ -1622,6 +1636,87 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,
         plt.savefig(direccion_guardado , bbox_inches = "tight")
         plt.close("Ranking Distancia Jensen-Shannon Cruz")
         
+    #-------------------------------------------------------------------------------------------------
+    
+    # Hago los gráficos de histograma 2D de las simulaciones que más se parecen y que menos se parecen
+    # a mis distribuciones de las encuestas
+    
+    # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
+    # de todas las simulaciones para cada punto del espacio de parámetros.
+    Dic_Total = Diccionario_metricas(DF_datos,path, 20, 20)
+    
+    # Armo listas de strings y números para mis archivos
+    Lista_similaridad = ["min_similaridad","max_similaridad","min_similaridad","max_similaridad"]
+    Lista_carpeta = ["Sin Centro","Sin Centro", "Sin Cruz", "Sin Cruz"]
+    Valor_distancia = [np.min(ZZ_centro),np.max(ZZ_centro),np.min(ZZ_cruz),np.max(ZZ_cruz)]
+    
+    for m,tupla in enumerate([iMin_centro, iMax_centro, iMin_cruz, iMax_cruz]):
+    
+        PARAM_X = XX[tupla[0],tupla[1]]
+        PARAM_Y = YY[tupla[0],tupla[1]]
+        
+        Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
+                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
+                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
+                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
+                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF_datos.loc[(DF_datos["tipo"]==TIPO) & 
+                                    (DF_datos["n"]==AGENTES) & 
+                                    (DF_datos["Extra"]==EXTRAS) & 
+                                    (DF_datos["parametro_x"]==PARAM_X) &
+                                    (DF_datos["parametro_y"]==PARAM_Y), "nombre"])
+        #-----------------------------------------------------------------------------------------
+        
+        for nombre in archivos:
+            
+            repeticion = int(DF_datos.loc[DF_datos["nombre"]==nombre,"iteracion"])
+            if repeticion == tupla[2]:
+            
+                # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+                # Opinión Inicial del sistema
+                # Variación Promedio
+                # Opinión Final
+                # Semilla
+                
+                # Levanto los datos del archivo
+                Datos = ldata(path / nombre)
+                
+                # Leo los datos de las Opiniones Finales
+                Opifinales = np.array(Datos[5][:-1:], dtype="float")
+                
+                # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+                
+                #----------------------------------------------------------------------------------------------------------------------------------
+                
+                # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
+                
+                direccion_guardado = Path("../../../Imagenes/{}/Hist_2D_{}_{}vs{}.png".format(carpeta / Lista_carpeta[m],Lista_similaridad[m],Dic_ANES["code_2"],Dic_ANES["code_1"]))
+                
+                indice = np.where(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] == repeticion)[0][0]
+                estado = int(Frecuencias[indice])
+                
+                Nombres = ["Consenso neutral", "Consenso radicalizado", "Polarización 1D y Consenso",
+                           "Polarización Ideológica", "Transición", "Polarización Descorrelacionada",
+                           "Polarización 1D y Consenso con anchura",
+                           "Polarización Ideológica con anchura", "Transición con anchura",
+                           "Polarización Descorrelacionada con anchura"]
+                
+                # Armo mi gráfico, lo guardo y lo cierro
+                
+                plt.rcParams.update({'font.size': 32})
+                plt.figure(figsize=(20,15))
+                _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=7,
+                                         range=[[-EXTRAS,EXTRAS],[-EXTRAS,EXTRAS]],density=True,
+                                         cmap="viridis")
+                plt.xlabel(r"$x_i^1$")
+                plt.ylabel(r"$x_i^2$")
+                plt.title('Distancia JS = {}, {}={:.2f}_{}={:.2f} \n {} \n {} vs {}'.format(Valor_distancia[m],ID_param_x,PARAM_X,ID_param_y,PARAM_Y,Nombres[estado],dict_labels[Dic_ANES["code_2"]],dict_labels[Dic_ANES["code_1"]]))
+                plt.colorbar(im, label='Fracción')
+                plt.savefig(direccion_guardado ,bbox_inches = "tight")
+                plt.close()
+    
     
 
 #-----------------------------------------------------------------------------------------------
