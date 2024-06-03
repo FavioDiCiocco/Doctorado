@@ -1381,7 +1381,7 @@ def Leer_Datos_ANES(filename,año):
 # En ambos casos estoy considerando que ambas preguntas tienen 7 respuestas. Voy a tener que ir
 # viendo cómo resolver si tienen 6 respuestas.
 
-def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,
+def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
                       ID_param_x,SIM_param_x,ID_param_y,SIM_param_y):
     
     # Defino la cantidad de agentes de la red
@@ -1430,7 +1430,6 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,
     
     # Distribución de encuesta sin la Cruz
     
-    df_filtered = df_aux[(df_aux[Dic_ANES["code_1"]] != 4) | (df_aux[Dic_ANES["code_2"]] != 4)] # Sólo saca el centro
     df_filtered = df_aux[(df_aux[Dic_ANES["code_1"]] != 4) & (df_aux[Dic_ANES["code_2"]] != 4)] # Saca la cruz
     hist2d_cruz, xedges, yedges, im = plt.hist2d(x=df_filtered[Dic_ANES["code_1"]], y=df_filtered[Dic_ANES["code_2"]], weights=df_filtered[Dic_ANES["weights"]], vmin=0,cmap = "inferno", density = True,
               bins=[np.arange(df_filtered[Dic_ANES["code_1"]].min()-0.5, df_filtered[Dic_ANES["code_1"]].max()+1.5, 1), np.arange(df_filtered[Dic_ANES["code_2"]].min()-0.5, df_filtered[Dic_ANES["code_2"]].max()+1.5, 1)])
@@ -1646,7 +1645,7 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,
     Dic_Total = Diccionario_metricas(DF_datos,path, 20, 20)
     
     # Armo listas de strings y números para mis archivos
-    Lista_similaridad = ["min_similaridad","max_similaridad","min_similaridad","max_similaridad"]
+    Lista_similaridad = ["min_distancia","max_distancia","min_distancia","max_distancia"]
     Lista_carpeta = ["Sin Centro","Sin Centro", "Sin Cruz", "Sin Cruz"]
     Valor_distancia = [np.min(ZZ_centro),np.max(ZZ_centro),np.min(ZZ_cruz),np.max(ZZ_cruz)]
     
@@ -1685,6 +1684,9 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,
                 
                 # Leo los datos de las Opiniones Finales
                 Opifinales = np.array(Datos[5][:-1:], dtype="float")
+                Opifinales = (Opifinales/EXTRAS)*bins[-1]
+                X_0 = Opifinales[0::T]
+                Y_0 = Opifinales[1::T]
                 
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
                 
@@ -1703,15 +1705,31 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,
                            "Polarización Ideológica con anchura", "Transición con anchura",
                            "Polarización Descorrelacionada con anchura"]
                 
+                #----------------------------------------------------------------------------------------------------------------------------------
+                
+                # Tengo que armar los valores de X e Y que voy a graficar en función de si saco la cruz
+                # o si saco el centro
+                
+                if Lista_carpeta[m] == "Sin Centro":
+                    X = X_0[((X_0>bins[4]) | (X_0<bins[3])) | ((Y_0>bins[4]) | (Y_0<bins[3]))]
+                    Y = Y_0[((X_0>bins[4]) | (X_0<bins[3])) | ((Y_0>bins[4]) | (Y_0<bins[3]))]
+                elif Lista_carpeta[m] == "Sin Cruz":
+                    X = X_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
+                    Y = Y_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
+                
+                
+                #----------------------------------------------------------------------------------------------------------------------------------
+                
                 # Armo mi gráfico, lo guardo y lo cierro
                 
                 plt.rcParams.update({'font.size': 32})
-                plt.figure(figsize=(20,15))
-                _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=7,
-                                         range=[[-EXTRAS,EXTRAS],[-EXTRAS,EXTRAS]],density=True,
-                                         cmap="viridis")
+                plt.figure(figsize=(28,21))
+                _, _, _, im = plt.hist2d(X, Y, bins=bins,density=True,cmap="viridis")
                 plt.xlabel(r"$x_i^1$")
                 plt.ylabel(r"$x_i^2$")
+                # Set x-ticks and y-ticks from -10 to 10 using plt.xticks() and plt.yticks()
+                # plt.xticks(np.arange(-10, 11, 1))
+                # plt.yticks(np.arange(-10, 11, 1))
                 plt.title('Distancia JS = {}, {}={:.2f}_{}={:.2f} \n {} \n {} vs {}'.format(Valor_distancia[m],ID_param_x,PARAM_X,ID_param_y,PARAM_Y,Nombres[estado],dict_labels[Dic_ANES["code_2"]],dict_labels[Dic_ANES["code_1"]]))
                 plt.colorbar(im, label='Fracción')
                 plt.savefig(direccion_guardado ,bbox_inches = "tight")
@@ -1728,16 +1746,15 @@ def Ajuste_DJS(DF_datos,DF_Anes,path,carpeta,Dic_ANES,
     
     # Defino la cantidad de agentes de la red
     AGENTES = int(np.unique(DF_datos["n"]))
+    frac_agente_ind = 1/AGENTES
     
     # Defino los arrays de parámetros diferentes
     EXTRAS = int(np.unique(DF_datos["Extra"]))
     Arr_param_x = np.unique(DF_datos["parametro_x"])
-    Arr_param_x = Arr_param_x[Arr_param_x > Cd_range[0]]
-    Arr_param_x = Arr_param_x[Arr_param_x < Cd_range[1]]
+    Arr_param_x = Arr_param_x[(Arr_param_x >= Cd_range[0]) & (Arr_param_x <= Cd_range[1])]
     
     Arr_param_y = np.unique(DF_datos["parametro_y"])
-    Arr_param_y = Arr_param_y[Arr_param_y > B_range[0]]
-    Arr_param_y = Arr_param_y[Arr_param_y < B_range[1]]
+    Arr_param_y = Arr_param_y[(Arr_param_y >= B_range[0]) & (Arr_param_y <= B_range[1])]
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
     Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
@@ -1751,19 +1768,43 @@ def Ajuste_DJS(DF_datos,DF_Anes,path,carpeta,Dic_ANES,
     T=2
     
     # Armo el vector en el que voy a poner todas las distancias Jensen-Shannon que calcule
-    YY = np.reshape(np.array([]),(0,1))
+    YY_centro = np.reshape(np.array([]),(0,1))
+    YY_cruz = np.reshape(np.array([]),(0,1))
+    
     XX = np.reshape(np.array([]),(0,5))
     
     #--------------------------------------------------------------------------------
     
     # Extraigo la distribución en hist2d
     
+    # Extraigo mis distribuciones sacando el centro, es decir, saco a los agentes que respondieron neutro
+    # en ambas encuestas y también extraigo la distribución sacando la cruz, que sería sacar a los agentes que
+    # respondieron neutro en alguna encuesta.
+    
     df_aux = DF_Anes.loc[(DF_Anes[Dic_ANES["code_1"]]>0) & (DF_Anes[Dic_ANES["code_2"]]>0)]
-    hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[Dic_ANES["code_1"]], y=df_aux[Dic_ANES["code_2"]], weights=df_aux[Dic_ANES["weights"]], vmin=0,
-             bins=[np.arange(df_aux[Dic_ANES["code_1"]].min()-0.5, df_aux[Dic_ANES["code_1"]].max()+1.5, 1), np.arange(df_aux[Dic_ANES["code_2"]].min()-0.5, df_aux[Dic_ANES["code_2"]].max()+1.5, 1)])
+    
+    # Distribución de encuesta sin el Centro
+    
+    df_filtered = df_aux[(df_aux[Dic_ANES["code_1"]] != 4) | (df_aux[Dic_ANES["code_2"]] != 4)] # Sólo saca el centro
+    hist2d_centro, xedges, yedges, im = plt.hist2d(x=df_filtered[Dic_ANES["code_1"]], y=df_filtered[Dic_ANES["code_2"]], weights=df_filtered[Dic_ANES["weights"]], vmin=0,cmap = "inferno", density = True,
+              bins=[np.arange(df_filtered[Dic_ANES["code_1"]].min()-0.5, df_filtered[Dic_ANES["code_1"]].max()+1.5, 1), np.arange(df_filtered[Dic_ANES["code_2"]].min()-0.5, df_filtered[Dic_ANES["code_2"]].max()+1.5, 1)])
     plt.close()
     
-    Distr_Enc = np.reshape(hist2d,(hist2d.shape[0]*hist2d.shape[1],1))
+    # Distribución de encuesta sin la Cruz
+    
+    df_filtered = df_aux[(df_aux[Dic_ANES["code_1"]] != 4) & (df_aux[Dic_ANES["code_2"]] != 4)] # Saca la cruz
+    hist2d_cruz, xedges, yedges, im = plt.hist2d(x=df_filtered[Dic_ANES["code_1"]], y=df_filtered[Dic_ANES["code_2"]], weights=df_filtered[Dic_ANES["weights"]], vmin=0,cmap = "inferno", density = True,
+              bins=[np.arange(df_filtered[Dic_ANES["code_1"]].min()-0.5, df_filtered[Dic_ANES["code_1"]].max()+1.5, 1), np.arange(df_filtered[Dic_ANES["code_2"]].min()-0.5, df_filtered[Dic_ANES["code_2"]].max()+1.5, 1)])
+    plt.close()
+    
+    # Armo las distribuciones finalmente
+    
+    Distr_Enc_Centro = np.reshape(hist2d_centro,(hist2d_centro.shape[0]*hist2d_centro.shape[1],1))
+    Distr_Enc_Centro = np.delete(Distr_Enc_Centro,24) # Saco el elemento del centro que tiene un cero
+    
+    Distr_Enc_Cruz = np.reshape(hist2d_cruz,(hist2d_cruz.shape[0]*hist2d_cruz.shape[1],1))
+    Ind_nulos = np.array([3,10,17,21,22,23,24,25,26,27,31,38,45])
+    Distr_Enc_Cruz = np.delete(Distr_Enc_Cruz,Ind_nulos)
     
     #--------------------------------------------------------------------------------
     
@@ -1775,9 +1816,13 @@ def Ajuste_DJS(DF_datos,DF_Anes,path,carpeta,Dic_ANES,
                                     (DF_datos["Extra"]==EXTRAS) & 
                                     (DF_datos["parametro_x"]==PARAM_X) &
                                     (DF_datos["parametro_y"]==PARAM_Y), "nombre"])
+        
         #-----------------------------------------------------------------------------------------
         
-        DistJS = np.zeros((archivos.shape[0],1))
+        Dist_previa_centro = np.zeros(4)
+        Dist_previa_cruz = np.zeros(4)
+        DistJS_centro = np.zeros((archivos.shape[0],1))
+        DistJS_cruz = np.zeros((archivos.shape[0],1))
         
         for nombre in archivos:
             
@@ -1792,22 +1837,75 @@ def Ajuste_DJS(DF_datos,DF_Anes,path,carpeta,Dic_ANES,
             # Levanto los datos del archivo
             Datos = ldata(path / nombre)
             
-            # Leo los datos de las Opiniones Finales
+            # Leo los datos de las Opiniones Finales y me armo una distribución en forma de matriz de 7x7
             Opifinales = np.array(Datos[5][:-1], dtype="float")
             Opifinales = Opifinales / EXTRAS
-            Distr_Sim = np.reshape(Clasificacion(Opifinales,hist2d.shape[0],hist2d.shape[1],T),(hist2d.shape[0]*hist2d.shape[1],1))
+            Distr_Orig = Clasificacion(Opifinales,hist2d_centro.shape[0],hist2d_centro.shape[1],T)
             
+            #-----------------------------------------------------------------------------------------
+            
+            for rotacion in range(4):
+                
+                # Tomo la distribución original, le doy forma de matriz, la roto y luego la plancho
+                Distr_Orig = np.reshape(Distr_Orig, hist2d_centro.shape)
+                Distr_Orig = Rotar_matriz(Distr_Orig)
+                Distr_Orig = np.reshape(Distr_Orig,(hist2d_centro.shape[0]*hist2d_centro.shape[1],1))
+                
+                # A partir de la distribución original voy a fabricarme dos distribuciones de simulaciones, una sin el
+                # punto central, otra sin la cruz.
+                
+                # Primero armo la que no tiene el centro removiendo el punto central
+                Distr_Sim_centro = np.delete(Distr_Orig,24)
+                # Como removí parte de mi distribución, posiblemente ya no esté normalizada
+                # la distribución. Así que debería ahora sumar agentes de a 1 hasta asegurarme
+                # de que otra vez esté normalizada
+                if np.sum(Distr_Sim_centro) != 1:
+                    agentes_agregar = int((1-np.sum(Distr_Sim_centro))/frac_agente_ind)
+                    for i in range(agentes_agregar):
+                        ubic_min = np.argmin(Distr_Sim_centro)
+                        Distr_Sim_centro[ubic_min] += frac_agente_ind
+                # Luego de volver a normalizar mi distribución, si quedaron lugares
+                # sin agentes, los relleno
+                restar = np.count_nonzero(Distr_Sim_centro == 0)
+                ubic = np.argmax(Distr_Sim_centro)
+                Distr_Sim_centro[Distr_Sim_centro == 0] = np.ones(restar)*frac_agente_ind
+                Distr_Sim_centro[ubic] -= frac_agente_ind*restar
+                
+                Dist_previa_centro[rotacion] = jensenshannon(Distr_Enc_Centro,Distr_Sim_centro)
+                
+                
+                # Segundo armo la que no tiene la cruz removiendo los puntos en la cruz de la distribución
+                Distr_Sim_cruz = np.delete(Distr_Orig, Ind_nulos)
+                # Como removí parte de mi distribución, posiblemente ya no esté normalizada
+                # la distribución. Así que debería ahora sumar agentes de a 1 hasta asegurarme
+                # de que otra vez esté normalizada
+                if np.sum(Distr_Sim_cruz) != 1:
+                    agentes_agregar = int((1-np.sum(Distr_Sim_cruz))/frac_agente_ind)
+                    for i in range(agentes_agregar):
+                        ubic_min = np.argmin(Distr_Sim_cruz)
+                        Distr_Sim_cruz[ubic_min] += frac_agente_ind
+                # Luego de volver a normalizar mi distribución, si quedaron lugares
+                # sin agentes, los relleno
+                restar = np.count_nonzero(Distr_Sim_cruz == 0)
+                ubic = np.argmax(Distr_Sim_cruz)
+                Distr_Sim_cruz[Distr_Sim_cruz == 0] = np.ones(restar)*frac_agente_ind
+                Distr_Sim_cruz[ubic] -= frac_agente_ind*restar
+                
+                Dist_previa_cruz[rotacion] = jensenshannon(Distr_Enc_Cruz,Distr_Sim_cruz)
+                
             # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
             
             repeticion = int(DF_datos.loc[DF_datos["nombre"]==nombre,"iteracion"])
             
-            DistJS[repeticion] = jensenshannon(Distr_Enc,Distr_Sim)
+            DistJS_centro[repeticion] = np.min(Dist_previa_centro)
+            DistJS_cruz[repeticion] = np.min(Dist_previa_cruz)
             
         #------------------------------------------------------------------------------------------
         # Una vez que calculé todas las distancias Jensen-Shannon, concateno eso con mi
         # vector YY, así como concateno mi vector XX
         
-        YY = np.concatenate((YY,DistJS))
+        YY_centro = np.concatenate((YY_centro,DistJS_centro))
+        YY_cruz = np.concatenate((YY_cruz,DistJS_cruz))
         
         Bcuad = np.ones((len(archivos),1))*PARAM_Y*PARAM_Y
         Blin = np.ones((len(archivos),1))*PARAM_Y
@@ -1822,15 +1920,16 @@ def Ajuste_DJS(DF_datos,DF_Anes,path,carpeta,Dic_ANES,
     
     # Una vez que tengo armado los vectores XX e YY, ya puedo calcular mis coeficientes
 
-    param = np.matmul(np.linalg.inv(np.matmul(np.transpose(XX),XX)),np.matmul(np.transpose(XX),YY))
+    param_centro = np.matmul(np.linalg.inv(np.matmul(np.transpose(XX),XX)),np.matmul(np.transpose(XX),YY_centro))
+    param_cruz = np.matmul(np.linalg.inv(np.matmul(np.transpose(XX),XX)),np.matmul(np.transpose(XX),YY_cruz))
     
-    return param
+    return param_centro,param_cruz
 
 #-----------------------------------------------------------------------------------------------
     
 # Ploteo el paraboloide que ajuste en un gráfico 3D
 
-def plot_3d_surface(carpeta, Dic_ANES, func, params, x_range, y_range,
+def plot_3d_surface(carpeta, Dic_ANES, func, params_centro, params_cruz, x_range, y_range,
                     SIM_param_x, SIM_param_y,x_samples=100, y_samples=100):
     
     """
@@ -1847,28 +1946,61 @@ def plot_3d_surface(carpeta, Dic_ANES, func, params, x_range, y_range,
     x = np.linspace(x_range[0], x_range[1], x_samples)
     y = np.linspace(y_range[0], y_range[1], y_samples)
     X, Y = np.meshgrid(x, y)
-    Z = func(X, Y,params)
+    Z_centro = func(X, Y, params_centro)
+    Z_cruz = func(X, Y, params_cruz)
 
+    #--------------------------------------------------------------------------------------
+    
+    # Armo el gráfico del paraboloide para el caso sin el centro de la distribución
+    
     # Create the plot
-    direccion_guardado = Path("../../../Imagenes/{}/Paraboloide_ajustado_{}vs{}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"]))
+    direccion_guardado = Path("../../../Imagenes/{}/Paraboloide_ajustado_sin_centro_{}vs{}.png".format(carpeta/"Sin Centro",Dic_ANES["code_2"],Dic_ANES["code_1"]))
     plt.rcParams.update({'font.size': 44})
     fig = plt.figure(figsize=(40,30))
     ax = fig.add_subplot(111, projection='3d')
-    surf = ax.plot_surface(X, Y, Z, cmap='viridis')
+    surf = ax.plot_surface(X, Y, Z_centro, cmap='viridis')
 
     # Add color bar which maps values to colors
     fig.colorbar(surf, ax=ax, shrink=0.5, aspect=5)
 
     # Adjust tick parameters
-    ax.tick_params(axis='x', pad=30)
-    ax.tick_params(axis='y', pad=30)
-    ax.tick_params(axis='z', pad=30)
+    ax.tick_params(axis='x')
+    ax.tick_params(axis='y')
+    ax.tick_params(axis='z')
     
     # Labels and title
-    ax.set_xlabel(r"${}$".format(SIM_param_x))
-    ax.set_ylabel(r"${}$".format(SIM_param_y))
-    ax.set_zlabel('Distancia JS')
-    ax.set_title('Paraboloide ajustada para preguntas \n {} vs {}'.format(Dic_ANES["code_2"],Dic_ANES["code_1"]))
+    ax.set_xlabel(r"${}$".format(SIM_param_x),labelpad = 30)
+    ax.set_ylabel(r"${}$".format(SIM_param_y),labelpad = 30)
+    ax.set_zlabel('Distancia JS',labelpad = 30)
+    ax.set_title('Paraboloide ajustada con distribuciones sin centro \n {} vs {}'.format(Dic_ANES["code_2"],Dic_ANES["code_1"]))
+
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close()
+    
+    #--------------------------------------------------------------------------------------
+    
+    # Armo el gráfico para el caso sin la cruz central de la distribución
+    
+    # Create the plot
+    direccion_guardado = Path("../../../Imagenes/{}/Paraboloide_ajustado_sin_cruz_{}vs{}.png".format(carpeta/"Sin Cruz",Dic_ANES["code_2"],Dic_ANES["code_1"]))
+    plt.rcParams.update({'font.size': 44})
+    fig = plt.figure(figsize=(40,30))
+    ax = fig.add_subplot(111, projection='3d')
+    surf = ax.plot_surface(X, Y, Z_cruz, cmap='viridis')
+
+    # Add color bar which maps values to colors
+    fig.colorbar(surf, ax=ax, shrink=0.5, aspect=5)
+
+    # Adjust tick parameters
+    ax.tick_params(axis='x')
+    ax.tick_params(axis='y')
+    ax.tick_params(axis='z')
+    
+    # Labels and title
+    ax.set_xlabel(r"${}$".format(SIM_param_x),labelpad = 30)
+    ax.set_ylabel(r"${}$".format(SIM_param_y),labelpad = 30)
+    ax.set_zlabel('Distancia JS',labelpad = 30)
+    ax.set_title('Paraboloide ajustada con distribuciones sin cruz \n {} vs {}'.format(Dic_ANES["code_2"],Dic_ANES["code_1"]))
 
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close()

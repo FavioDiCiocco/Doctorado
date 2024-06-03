@@ -85,61 +85,78 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     
+    bines = np.linspace(-3.5,3.5,8)
+    
     Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
+    
+    labels_politicos = ['V201372x','V201386x','V201426x']
+
+    labels_apoliticos = ['V201429','V202320x','V202341x','V202350x']
+
+    labels_dudosos = ['V201225x','V201262','V202242x','V202248x']
     
     # Esta parte del código la uso para calcular el mapa de colores de DJS de varios pares de preguntas,
     # todo de un plumazo.
     
-    labels = [('V201255','V201258','V200010a'), ('V201200','V201420x','V200010a'), ('V202331x','V202341x','V200010b')]
-    for code_1,code_2,weights in labels:
+    labels = [('V201372x','V201386x','V200010a'), ('V201386x','V201426x','V200010a'), ('V202320x','V202341x','V200010b'),
+              ('V202350x','V202341x','V200010b'),('V201262','V202248x','V200010b'),('V202242x','V202248x','V200010b')]
+    
+    rangos = [(np.array([0,0.1]),np.array([0.4,0.8])), (np.array([0.05,0.15]),np.array([0.52,0.72])), (np.array([0,0.1]),np.array([0.4,0.7])),
+              (np.array([0,0.2]),np.array([0.4,0.8])), (np.array([0,0.1]),np.array([0.4,0.66])), (np.array([0,0.1]),np.array([0.4,0.7]))]
+    
+    for preguntas,rango_ajuste in zip(labels,rangos):
             
+        code_1 = preguntas[0]
+        code_2 = preguntas[1]
+        weights = preguntas[2]
+        
         Dic_ANES = {"code_1": code_1, "code_2": code_2, "weights":weights}
         
-        func.Mapas_Colores_DJS(Df_archivos, Df_ANES, dict_labels, Direccion, Etapa/carpeta, Dic_ANES,
-                              SIM_param_x, SIM_param_y)
+        func.Mapas_Colores_DJS(Df_archivos, Df_ANES, dict_labels, Direccion, Etapa/carpeta, Dic_ANES,bines,
+                              ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
     
-    #----------------------------------------------------------------------------------------------
-    """
-    # Esta parte del código la uso para calcular los parámetros del ajuste paraboloidico aplicado
-    # a los datos de las distancias.
+        #----------------------------------------------------------------------------------------------
+        
+        # Esta parte del código la uso para calcular los parámetros del ajuste paraboloidico aplicado
+        # a los datos de las distancias.
+        
+        x_range = rango_ajuste[0]
+        y_range = rango_ajuste[1]
+        
+        params_centro, params_cruz = func.Ajuste_DJS(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, Dic_ANES,
+                                 x_range,y_range)
     
-    Dic_ANES = {"code_1": 'V202320x', "code_2": 'V202350x', "weights":'V200010b'}
-    x_range = np.array([0,0.04])
-    y_range = np.array([0.4,0.74])
-    
-    params = func.Ajuste_DJS(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, Dic_ANES,
-                             y_range[0],y_range[1],x_range[0],x_range[1])
-    
-    func.Tiempo(t0)
-    
-    # Define the mathematical function
-    def my_function(x, y, params):
-        return params[0]*y**2 + params[1]*y + params[2]*x**2 + params[3]*x + params[4]
-    
-    func.plot_3d_surface(Etapa/carpeta, Dic_ANES, my_function, params, x_range,
-                         y_range,SIM_param_x, SIM_param_y)
-    
-    
-#    func.plot_3d_scatter(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, Dic_ANES,
-#                         np.array([0.5,0.72]),np.array([0.04,0.15]), SIM_param_x, SIM_param_y)
-    
-    
-    initial_guess = [0.1,0.5]
-    
-    def my_function_minimize(x, a,b,c,d,e):
-        return a*x[1]**2 + b*x[1] + c*x[0]**2 + d*x[0] + e
-    
-    # Perform the minimization
-    result = minimize(my_function_minimize, initial_guess, args=tuple(params))
-    
-    # Print the result
-    print("Optimal variables:", result.x)
+        # Define the mathematical function
+        def my_function(x, y, params):
+            return params[0]*y**2 + params[1]*y + params[2]*x**2 + params[3]*x + params[4]
+        
+        func.plot_3d_surface(Etapa/carpeta, Dic_ANES, my_function, params_centro, params_cruz, x_range,
+                             y_range,SIM_param_x, SIM_param_y)
+        
+        
+    #    func.plot_3d_scatter(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, Dic_ANES,
+    #                         np.array([0.5,0.72]),np.array([0.04,0.15]), SIM_param_x, SIM_param_y)
+        
+        
+        initial_guess = [0.1,0.5]
+        
+        def my_function_minimize(x, a,b,c,d,e):
+            return a*x[1]**2 + b*x[1] + c*x[0]**2 + d*x[0] + e
+        
+        # Perform the minimization
+        result_centro = minimize(my_function_minimize, initial_guess, args=tuple(params_centro))
+        result_cruz = minimize(my_function_minimize, initial_guess, args=tuple(params_cruz))
+        
+        # Print the result
+        print("Variables ajustadas para preguntas: {} vs {}".format(dict_labels[code_2],dict_labels[code_1]))
+        print("Variables óptimas distribución sin centro:", result_centro.x)
+        print("Variables óptimas distribución sin cruz:", result_cruz.x)
     
     
-    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/"distribuciones", 7, "viridis",
-                                      ID_param_x, ID_param_y, ID_param_extra_1)
-    """
-    #----------------------------------------------------------------------------------------------
+        # func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/"distribuciones", 7, "viridis",
+        #                                   ID_param_x, ID_param_y, ID_param_extra_1)
+        
+        #----------------------------------------------------------------------------------------------
 
 func.Tiempo(t0)
 

@@ -104,14 +104,14 @@ for label in labels:
 
 # Primer Filtro
 
-labels_politicos = ['V201200','V201231x','V201372x','V201386x','V201408x',
-                    'V201411x','V201420x','V201426x','V202255x','V202328x','V202336x']
+# labels_politicos = ['V201200','V201231x','V201372x','V201386x','V201408x',
+#                     'V201411x','V201420x','V201426x','V202255x','V202328x','V202336x']
 
-labels_apoliticos = ['V201429','V202320x','V202331x','V202341x','V202344x',
-                     'V202350x','V202383x']
+# labels_apoliticos = ['V201429','V202320x','V202331x','V202341x','V202344x',
+#                       'V202350x','V202383x']
 
-labels_dudosos = ['V201225x','V201246','V201249','V201252','V201255','V201258',
-                  'V201262','V202242x','V202248x']
+# labels_dudosos = ['V201225x','V201246','V201249','V201252','V201255','V201258',
+#                   'V201262','V202242x','V202248x']
 
 #--------------------------------------------------------------------------------
 
@@ -120,11 +120,11 @@ labels_dudosos = ['V201225x','V201246','V201249','V201252','V201255','V201258',
 # respuestas que tienen distribuciones bimodales o unimodales que podrían resultar
 # más útiles.
 
-#labels_politicos = ['V201372x','V201386x','V201426x']
-#
-#labels_apoliticos = ['V201429','V202320x','V202341x','V202350x']
-#
-#labels_dudosos = ['V201225x','V201262','V202242x','V202248x']
+labels_politicos = ['V201372x','V201386x','V201426x']
+
+labels_apoliticos = ['V201429','V202320x','V202341x','V202350x']
+
+labels_dudosos = ['V201225x','V201262','V202242x','V202248x']
 
 
 labels_filtrados = labels_politicos + labels_apoliticos + labels_dudosos
@@ -161,10 +161,12 @@ for i,code_1 in enumerate(labels_politicos):
         #               marginal_kws={'discrete': True, 'weights': df_aux[weights]})
         
         # Filter out rows where either code_1 or code_2 is 3
-#        df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
-#        df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
-        hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0, cmap = "inferno", density = True,
-                                                bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
+        # df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
+        # carpeta = "Sin Centro"
+        df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
+        carpeta = "Sin Cruz"
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_1], y=df_filtered[code_2], weights=df_filtered[weights], vmin=0, cmap = "inferno", density = True,
+                                                bins=[np.arange(df_filtered[code_1].min()-0.5, df_filtered[code_1].max()+1.5, 1), np.arange(df_filtered[code_2].min()-0.5, df_filtered[code_2].max()+1.5, 1)])
         
         # Add a colorbar
         cbar = plt.colorbar(im)
@@ -174,7 +176,7 @@ for i,code_1 in enumerate(labels_politicos):
         plt.xlabel(dict_labels[code_1])
         plt.ylabel(dict_labels[code_2])
 #        plt.gca().invert_yaxis()
-        direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Base/Politicos/{}vs{}.png".format(code_1,code_2))
+        direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/{}/Politicos/{}vs{}.png".format(carpeta,code_1,code_2))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
         
@@ -197,10 +199,12 @@ for i,code_1 in enumerate(labels_apoliticos):
         #               marginal_kws={'discrete': True, 'weights': df_aux[weights]})
         
         # Filter out rows where either code_1 or code_2 is 3
-#        df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
-#        df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
-        hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0, cmap = "inferno", density = True,
-                                                bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
+        # df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
+        # carpeta = "Sin Centro"
+        df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
+        carpeta = "Sin Cruz"
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_1], y=df_filtered[code_2], weights=df_filtered[weights], vmin=0, cmap = "inferno", density = True,
+                                                bins=[np.arange(df_filtered[code_1].min()-0.5, df_filtered[code_1].max()+1.5, 1), np.arange(df_filtered[code_2].min()-0.5, df_filtered[code_2].max()+1.5, 1)])
         
         # Add a colorbar
         cbar = plt.colorbar(im)
@@ -210,7 +214,7 @@ for i,code_1 in enumerate(labels_apoliticos):
         plt.xlabel(dict_labels[code_1])
         plt.ylabel(dict_labels[code_2])
 #        plt.gca().invert_yaxis()
-        direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Base/No Politicos/{}vs{}.png".format(code_1,code_2))
+        direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/{}/No Politicos/{}vs{}.png".format(carpeta,code_1,code_2))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
 
@@ -232,10 +236,12 @@ for i,code_1 in enumerate(labels_dudosos):
         #               marginal_kws={'discrete': True, 'weights': df_aux[weights]})
         
         # Filter out rows where either code_1 or code_2 is 3
-#        df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
-#        df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
-        hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0, cmap = "inferno", density = True,
-                                                bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
+        # df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
+        # carpeta = "Sin Centro"
+        df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
+        carpeta = "Sin Cruz"
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_1], y=df_filtered[code_2], weights=df_filtered[weights], vmin=0, cmap = "inferno", density = True,
+                                                bins=[np.arange(df_filtered[code_1].min()-0.5, df_filtered[code_1].max()+1.5, 1), np.arange(df_filtered[code_2].min()-0.5, df_filtered[code_2].max()+1.5, 1)])
         
         # Add a colorbar
         cbar = plt.colorbar(im)
@@ -245,7 +251,7 @@ for i,code_1 in enumerate(labels_dudosos):
         plt.xlabel(dict_labels[code_1])
         plt.ylabel(dict_labels[code_2])
 #        plt.gca().invert_yaxis()
-        direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Base/Dudosos/{}vs{}.png".format(code_1,code_2))
+        direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/{}/Dudosos/{}vs{}.png".format(carpeta,code_1,code_2))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
 

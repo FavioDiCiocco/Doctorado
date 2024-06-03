@@ -1336,3 +1336,51 @@ esté armado. Con algo de suerte, no arruiné nada.
 
 Bueno, si corrijo el cómo hace el cálculo de JS la función de ajuste, entonces habré hecho todo lo
 que me anoté el viernes para hacer. Que era un montonazo. Me parece un gran plan.
+
+------------------------------------------------------------------------------------------
+
+03/06/2024
+
+En la facultad acabo de rehacer los gráficos de distribuciones de ANES. Sostengo que los gráficos
+hechos con las preguntas elegidas no me gustan. Voy a tener que elegir algunas preguntas nuevas.
+
+Ahora voy a mandar en Algarve a correr el armado de las simulaciones con Zealots. Ya mandé eso a
+correr. Dentro de todo parece correr bien, los primeros agentes tienen opinión nula mientras que el
+resto de los agentes está convergiendo a algún lugar.
+
+Lo siguiente es mandar a hacer los gráficos de Distancia JS. Los gráficos se hicieron, parece funcar
+bárbaro. Las distancias dan bastante menor, cercano a 0.35 en promedio. Tengo que corregir una cosa
+de esto, y eso es cómo se arma el histograma de máxima y mínima similaridad. También tengo que 
+cambiar esos títulos, son confusos. Pero cuestión que tengo que cambiarlo para que esos gráficos
+tengan efectivamente 0 en los lugares correspondientes, ya sea en el caso en que no tiene el
+centro o el caso en que no tiene la cruz.
+
+Creo que en vez de hacer el histograma, es mejor si simplemente hago el gráfico usando la función de
+clasificación y un pcolormesh. Bien, ahí hice algo, espero que funcione. No me gusta mucho cómo están
+armadas las funciones, después en algún momento tendré que encontrar la oportunidad para rearmarlas y
+escribirlas de forma más prolija. Pero mientras funcionen por ahora, estoy hecho.
+
+Lo siguiente es lograr que la función de ajuste funcione claramente. Que creo que lo está haciendo.
+Así que si eso funca, tengo que seguir con la función de Ajuste. Aunque ahí trabajé la función de Ajuste,
+si todo está bien ya hace lo que debe hacer. Entonces lo que necesito es tomar los gráficos de 
+Distancia en el espacio de parámetro que calculé y calcular los rangos en los que voy a hacer los ajustes.
+Otra cosa interesante para hacer sería juntar todos los datos de 10000 agentes y empezar a laburar con
+eso, mandar a correr este programa en la máquina de Coimbra. O quizás Algarve. Hoy pareciera que Algarve
+es una mejor opción, tiene más hilos libres, como para mandar a correr esto ahí. Empecemos a juntar los
+archivos de Comparacion_datos ahí.
+
+El armado del histograma de forma tal que se vea bien normalizado me está costando horrores. No puedo creer
+que esté perdiendo tanto tiempo en esto. Ahora creo que lo armé de una manera más razonable, Dios quiera
+que esto funque mejor así.
+
+Con esto ya tengo armado todo lo que me anoté el viernes. Debería ahora ir preparando la charla. Una vez que el
+código corra bien en la pc de la facultad, voy a ver de pasarlo a Algarve así mando a armar los gráficos ahí.
+Aparte de eso, debería ver de implementar correctamente el ajuste. Para eso necesito tener más o menos armados
+los rangos de Beta y Cdelta para cada par de preguntas. Si estoy con tiempo, hoy reviso algún par de preguntas
+más y veo de armar gráficos con eso.
+
+El código funciona hasta el final, arma el gráfico del paraboloide, hace el mapa de colores de Distancia JS y
+hace el ajuste para el caso de las distribuciones sin centro y sin cruz. Ya puedo mandarlo a correr en la pc
+de Algarve. Voy a tener que hacer algunos ajustes para eso. En estos últimos 20 minutos, armemos el esqueleto
+de la idea de lo que quiero mostrar, mañana lo mando a correr esto mientras voy mirando alguna que otra pregunta
+que me parezca más valiosa.
