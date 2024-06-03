@@ -1319,3 +1319,20 @@ Suponiendo que está todo bien, se arman los histogramas 2D de mínima y máxima
 para cada encuesta sin centro y sin cruz. Aunque no estoy haciendo el histograma 2D de la
 simulación sin la cruz o sin el centro. Tengo que ver cómo hacer que esos gráficos respeten
 eso. Lo cuál no es obvio porque en las simulaciones las opiniones no son valores enteros.
+
+------------------------------------------------------------------------------------------
+
+02/06/2024
+
+Revisé los gráficos de distribución de la ANES, en el centro de opiniones existen como mucho
+un 12% de agentes, siendo más bien en general entre un 6% y un 8%. Así que mandar un 10% de agentes
+como Zealots parece una buena idea. Lo que tengo que hacer ahora entonces es cargar el archivo
+de opinion a todas las pc's, armar la nueva carpeta de los Zealots y ya mandarlo a correr.
+
+Mandé a correr 10 hilos en Coimbra y 10 en Oporto. Iba a mandar en Algarve, pero todavía le
+queda un hilo a Algarve, entonces para no hacer macanas corté lo que estaba mandando ahí y volví
+a cargar el archivo de opinion que tenía previamente y lo compilé para que ese ejecutable sea el que
+esté armado. Con algo de suerte, no arruiné nada.
+
+Bueno, si corrijo el cómo hace el cálculo de JS la función de ajuste, entonces habré hecho todo lo
+que me anoté el viernes para hacer. Que era un montonazo. Me parece un gran plan.

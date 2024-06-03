@@ -451,8 +451,9 @@ void actualize_network(double *network, double *new_network, double *Ang, double
     }
 	for(i=0; i<cant_zealots*T; i++) new_position[i] = 0;
 
-    for(i=0; i<N*T; i++)
+    for(i=0; i<N*T; i++){
         network[i] = new_network[i];
+	}
 	for(i=0; i<cant_zealots*T; i++) network[i] = 0;
 
 }
@@ -685,7 +686,7 @@ int main(int argc, char *argv[])
 		do{
 			
 			// Evolución
-			actualize_network(network, new_network, Ang, K, beta, delta, N, T); // Se actualizan las opiniones
+			actualize_network(network, new_network, Ang, K, beta, delta, N, T, cant_zealots); // Se actualizan las opiniones
 			// Sumo las opiniones en la segunda fila de Prom_Opi
 			for(int j=0; j<N*T; j++) *(Prom_Opi +j+N*T) += *(network+j);
 			
@@ -714,7 +715,7 @@ int main(int argc, char *argv[])
 		while( contador < Iteraciones_extras && Variacion_promedio <= CritCorte && pasos_simulados < N_steps){
 			
 			// Evolución
-			actualize_network(network, new_network, Ang, K, beta, delta, N, T); // Se actualizan las opiniones
+			actualize_network(network, new_network, Ang, K, beta, delta, N, T, cant_zealots); // Se actualizan las opiniones
 			// Sumo las opiniones en la segunda fila de Prom_Opi
 			for(int j=0; j<N*T; j++) *(Prom_Opi +j+N*T) += *(network+j);
 			

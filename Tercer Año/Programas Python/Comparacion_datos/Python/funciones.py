@@ -1724,7 +1724,7 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,
 # Realizo un ajuste de los parámetros Beta y Cos(delta)
     
 def Ajuste_DJS(DF_datos,DF_Anes,path,carpeta,Dic_ANES,
-               Bmin,Bmax,Cdmin,Cdmax):
+               Cd_range,B_range):
     
     # Defino la cantidad de agentes de la red
     AGENTES = int(np.unique(DF_datos["n"]))
@@ -1732,12 +1732,12 @@ def Ajuste_DJS(DF_datos,DF_Anes,path,carpeta,Dic_ANES,
     # Defino los arrays de parámetros diferentes
     EXTRAS = int(np.unique(DF_datos["Extra"]))
     Arr_param_x = np.unique(DF_datos["parametro_x"])
-    Arr_param_x = Arr_param_x[Arr_param_x > Cdmin]
-    Arr_param_x = Arr_param_x[Arr_param_x < Cdmax]
+    Arr_param_x = Arr_param_x[Arr_param_x > Cd_range[0]]
+    Arr_param_x = Arr_param_x[Arr_param_x < Cd_range[1]]
     
     Arr_param_y = np.unique(DF_datos["parametro_y"])
-    Arr_param_y = Arr_param_y[Arr_param_y > Bmin]
-    Arr_param_y = Arr_param_y[Arr_param_y < Bmax]
+    Arr_param_y = Arr_param_y[Arr_param_y > B_range[0]]
+    Arr_param_y = Arr_param_y[Arr_param_y < B_range[1]]
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
     Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
