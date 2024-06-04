@@ -10,6 +10,7 @@ Created on Mon Sep 19 11:33:00 2022
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.pyplot import cm
+from matplotlib.ticker import FormatStrFormatter
 from scipy.spatial.distance import jensenshannon
 import pandas as pd
 import numpy as np
@@ -238,7 +239,10 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
     # Defino los arrays de parámetros diferentes
     Arr_EXTRAS = np.unique(DF["Extra"])
     Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_x = Arr_param_x[(Arr_param_x >= 0) & (Arr_param_x <= 0.04)]
+    
     Arr_param_y = np.unique(DF["parametro_y"])
+    Arr_param_y = Arr_param_y[(Arr_param_y >= 0.4) & (Arr_param_y <= 0.8)]
     
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
@@ -276,7 +280,7 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
             for nombre in archivos:
                 
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-                if repeticion < 2:
+                if repeticion < 10:
                 
                     # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
                     # Opinión Inicial del sistema
@@ -289,6 +293,9 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                     
                     # Leo los datos de las Opiniones Finales
                     Opifinales = np.array(Datos[5][:-1:], dtype="float")
+                    Opifinales = (Opifinales/EXTRAS)*bins[-1]
+                    X_0 = Opifinales[0::T]
+                    Y_0 = Opifinales[1::T]
                     
                     # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
                     
@@ -311,13 +318,17 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                                "Polarización Ideológica con anchura", "Transición con anchura",
                                "Polarización Descorrelacionada con anchura"]
                     
+                    X = X_0[((X_0>bins[4]) | (X_0<bins[3])) | ((Y_0>bins[4]) | (Y_0<bins[3]))]
+                    Y = Y_0[((X_0>bins[4]) | (X_0<bins[3])) | ((Y_0>bins[4]) | (Y_0<bins[3]))]
+                    
                     # Armo mi gráfico, lo guardo y lo cierro
                     
                     plt.rcParams.update({'font.size': 32})
                     plt.figure(figsize=(20,15))
-                    _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
-                                             range=[[-EXTRAS,EXTRAS],[-EXTRAS,EXTRAS]],density=True,
-                                             cmap=cmap)
+                    # _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
+                    #                          range=[[-EXTRAS,EXTRAS],[-EXTRAS,EXTRAS]],density=True,
+                    #                          cmap=cmap)
+                    _, _, _, im = plt.hist2d(X, Y, bins=bins,density=True,cmap="inferno")
                     plt.xlabel(r"$x_i^1$")
                     plt.ylabel(r"$x_i^2$")
                     plt.title('Histograma 2D, {}={:.2f}_{}={:.2f}\n{}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y,Nombres[estado]))
@@ -1541,13 +1552,22 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
     #--------------------------------------------------------------------------------
     
     # Antes de ordenar mis matrices, voy a obtener la info del gráfico que más se parece
-    # y del que menos se parece a lo que estoy queriendo comparar.
+    # y del décimo que más se parece se parece a lo que estoy queriendo comparar.
     
     iMin_centro = np.unravel_index(np.argmin(ZZ_centro),ZZ_centro.shape)
-    iMax_centro = np.unravel_index(np.argmax(ZZ_centro),ZZ_centro.shape)
-    
     iMin_cruz = np.unravel_index(np.argmin(ZZ_cruz),ZZ_cruz.shape)
-    iMax_cruz = np.unravel_index(np.argmax(ZZ_cruz),ZZ_cruz.shape)
+    
+    # Hallo el décimo que más se parece a la distribución. Arranco con el que no tiene centro
+    
+    flattened_array = ZZ_centro.flatten()
+    sorted_indices = np.argsort(flattened_array)
+    tenth_element_flat_index = sorted_indices[9]
+    iMax_centro = np.unravel_index(tenth_element_flat_index, ZZ_centro.shape)
+    
+    flattened_array = ZZ_cruz.flatten()
+    sorted_indices = np.argsort(flattened_array)
+    tenth_element_flat_index = sorted_indices[9]
+    iMax_cruz = np.unravel_index(tenth_element_flat_index, ZZ_cruz.shape)
     
     #--------------------------------------------------------------------------------
     # Una vez que tengo el ZZ completo, armo mi mapa de colores para el caso sin centro
@@ -1648,6 +1668,8 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
     Lista_similaridad = ["min_distancia","max_distancia","min_distancia","max_distancia"]
     Lista_carpeta = ["Sin Centro","Sin Centro", "Sin Cruz", "Sin Cruz"]
     Valor_distancia = [np.min(ZZ_centro),np.max(ZZ_centro),np.min(ZZ_cruz),np.max(ZZ_cruz)]
+    Vmin = np.array([np.argmin(Distr_Enc_Centro),np.argmin(Distr_Enc_Centro),np.argmin(Distr_Enc_Cruz),np.argmin(Distr_Enc_Cruz)])
+    Vmax = np.array([np.argmax(Distr_Enc_Centro),np.argmax(Distr_Enc_Centro),np.argmax(Distr_Enc_Cruz),np.argmax(Distr_Enc_Cruz)])
     
     for m,tupla in enumerate([iMin_centro, iMax_centro, iMin_cruz, iMax_cruz]):
     
@@ -1724,14 +1746,15 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
                 
                 plt.rcParams.update({'font.size': 32})
                 plt.figure(figsize=(28,21))
-                _, _, _, im = plt.hist2d(X, Y, bins=bins,density=True,cmap="viridis")
+                _, _, _, im = plt.hist2d(X, Y, bins=bins,density=True,cmap="magma")
                 plt.xlabel(r"$x_i^1$")
                 plt.ylabel(r"$x_i^2$")
                 # Set x-ticks and y-ticks from -10 to 10 using plt.xticks() and plt.yticks()
                 # plt.xticks(np.arange(-10, 11, 1))
                 # plt.yticks(np.arange(-10, 11, 1))
-                plt.title('Distancia JS = {}, {}={:.2f}_{}={:.2f} \n {} \n {} vs {}'.format(Valor_distancia[m],ID_param_x,PARAM_X,ID_param_y,PARAM_Y,Nombres[estado],dict_labels[Dic_ANES["code_2"]],dict_labels[Dic_ANES["code_1"]]))
-                plt.colorbar(im, label='Fracción')
+                plt.title('Distancia JS = {:.2f}, {}={:.2f}_{}={:.2f} \n {} \n {} vs {}'.format(Valor_distancia[m],ID_param_x,PARAM_X,ID_param_y,PARAM_Y,Nombres[estado],dict_labels[Dic_ANES["code_2"]],dict_labels[Dic_ANES["code_1"]]))
+                cbar = plt.colorbar(im, label='Fracción')
+                cbar.set_clim(Vmin[m], Vmax[m])
                 plt.savefig(direccion_guardado ,bbox_inches = "tight")
                 plt.close()
     
@@ -1956,12 +1979,18 @@ def plot_3d_surface(carpeta, Dic_ANES, func, params_centro, params_cruz, x_range
     # Create the plot
     direccion_guardado = Path("../../../Imagenes/{}/Paraboloide_ajustado_sin_centro_{}vs{}.png".format(carpeta/"Sin Centro",Dic_ANES["code_2"],Dic_ANES["code_1"]))
     plt.rcParams.update({'font.size': 44})
-    fig = plt.figure(figsize=(40,30))
+    fig = plt.figure(figsize=(48,36))
     ax = fig.add_subplot(111, projection='3d')
     surf = ax.plot_surface(X, Y, Z_centro, cmap='viridis')
 
     # Add color bar which maps values to colors
     fig.colorbar(surf, ax=ax, shrink=0.5, aspect=5)
+    
+    
+    # Format axes ticks to 2 decimal places
+    ax.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax.zaxis.set_major_formatter(FormatStrFormatter('%.2f'))
 
     # Adjust tick parameters
     ax.tick_params(axis='x')
@@ -1969,9 +1998,9 @@ def plot_3d_surface(carpeta, Dic_ANES, func, params_centro, params_cruz, x_range
     ax.tick_params(axis='z')
     
     # Labels and title
-    ax.set_xlabel(r"${}$".format(SIM_param_x),labelpad = 30)
-    ax.set_ylabel(r"${}$".format(SIM_param_y),labelpad = 30)
-    ax.set_zlabel('Distancia JS',labelpad = 30)
+    ax.set_xlabel(r"${}$".format(SIM_param_x),labelpad = 60)
+    ax.set_ylabel(r"${}$".format(SIM_param_y),labelpad = 60)
+    ax.set_zlabel('Distancia JS',labelpad = 60)
     ax.set_title('Paraboloide ajustada con distribuciones sin centro \n {} vs {}'.format(Dic_ANES["code_2"],Dic_ANES["code_1"]))
 
     plt.savefig(direccion_guardado , bbox_inches = "tight")
@@ -1984,22 +2013,27 @@ def plot_3d_surface(carpeta, Dic_ANES, func, params_centro, params_cruz, x_range
     # Create the plot
     direccion_guardado = Path("../../../Imagenes/{}/Paraboloide_ajustado_sin_cruz_{}vs{}.png".format(carpeta/"Sin Cruz",Dic_ANES["code_2"],Dic_ANES["code_1"]))
     plt.rcParams.update({'font.size': 44})
-    fig = plt.figure(figsize=(40,30))
+    fig = plt.figure(figsize=(48,36))
     ax = fig.add_subplot(111, projection='3d')
     surf = ax.plot_surface(X, Y, Z_cruz, cmap='viridis')
 
     # Add color bar which maps values to colors
     fig.colorbar(surf, ax=ax, shrink=0.5, aspect=5)
 
+    # Format axes ticks to 2 decimal places
+    ax.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax.zaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    
     # Adjust tick parameters
     ax.tick_params(axis='x')
     ax.tick_params(axis='y')
     ax.tick_params(axis='z')
     
     # Labels and title
-    ax.set_xlabel(r"${}$".format(SIM_param_x),labelpad = 30)
-    ax.set_ylabel(r"${}$".format(SIM_param_y),labelpad = 30)
-    ax.set_zlabel('Distancia JS',labelpad = 30)
+    ax.set_xlabel(r"${}$".format(SIM_param_x),labelpad = 60)
+    ax.set_ylabel(r"${}$".format(SIM_param_y),labelpad = 60)
+    ax.set_zlabel('Distancia JS',labelpad = 60)
     ax.set_title('Paraboloide ajustada con distribuciones sin cruz \n {} vs {}'.format(Dic_ANES["code_2"],Dic_ANES["code_1"]))
 
     plt.savefig(direccion_guardado , bbox_inches = "tight")

@@ -122,7 +122,7 @@ for label in labels:
 
 labels_politicos = ['V201372x','V201386x','V201426x']
 
-labels_apoliticos = ['V201429','V202320x','V202341x','V202350x']
+labels_apoliticos = ['V202331x','V202341x']
 
 labels_dudosos = ['V201225x','V201262','V202242x','V202248x']
 
@@ -257,7 +257,7 @@ for i,code_1 in enumerate(labels_dudosos):
 
 
 ####################################################################################################################
-"""
+
 
 plt.rcParams.update({'font.size': 28})
 
@@ -269,8 +269,8 @@ for code in labels_politicos:
         weights = 'V200010b'
     
     df_aux = df_data.loc[df_data[code]>0]
-    if np.unique(df_aux[code]).shape[0] == 7:
-        df_aux = df_aux[df_aux[code] != 4] # Sólo saca el centro
+    # if np.unique(df_aux[code]).shape[0] == 7:
+    #     df_aux = df_aux[df_aux[code] != 4] # Sólo saca el centro
     
     # Set the figure size
     plt.figure(figsize=(20, 15))  # Adjust width and height as needed
@@ -278,7 +278,7 @@ for code in labels_politicos:
          bins=np.arange(df_aux[code].min(), df_aux[code].max()+2, 1), align='left')
 #    sns.histplot(df_aux, x=code, weights=weights, stat = 'density', discrete=True)
     plt.xlabel(dict_labels[code])
-    direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Histogramas/Politicos/Histograma {}.png".format(code))
+    direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Base/Politicos/Histograma {}.png".format(code))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
     
@@ -313,8 +313,8 @@ for code in labels_dudosos:
         weights = 'V200010b'
     
     df_aux = df_data.loc[df_data[code]>0]
-    if np.unique(df_aux[code]).shape[0] == 7:
-        df_aux = df_aux[df_aux[code] != 4] # Sólo saca el centro
+    # if np.unique(df_aux[code]).shape[0] == 7:
+    #     df_aux = df_aux[df_aux[code] != 4] # Sólo saca el centro
     
     # Set the figure size
     plt.figure(figsize=(20, 15))  # Adjust width and height as needed
@@ -322,12 +322,12 @@ for code in labels_dudosos:
          bins=np.arange(df_aux[code].min(), df_aux[code].max()+2, 1), align='left')
 #    sns.histplot(df_aux, x=code, weights=weights, stat = 'density', discrete=True)
     plt.xlabel(dict_labels[code])
-    direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Histogramas/Dudosos/Histograma {}.png".format(code))
+    direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Base/Dudosos/Histograma {}.png".format(code))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
 
 
-"""
+
 ####################################################################################################################
 """
 

@@ -84,7 +84,7 @@ for carp in Carpetas:
     func.Tiempo(t0)
     
     #----------------------------------------------------------------------------------------------
-    
+    """
     bines = np.linspace(-3.5,3.5,8)
     
     Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
@@ -98,11 +98,11 @@ for carp in Carpetas:
     # Esta parte del código la uso para calcular el mapa de colores de DJS de varios pares de preguntas,
     # todo de un plumazo.
     
-    labels = [('V201372x','V201386x','V200010a'), ('V201386x','V201426x','V200010a'), ('V202320x','V202341x','V200010b'),
-              ('V202350x','V202341x','V200010b'),('V201262','V202248x','V200010b'),('V202242x','V202248x','V200010b')]
+    labels = [('V201372x','V201386x','V200010a'), ('V201426x','V201386x','V200010a'), ('V202341x','V202331x','V200010b')] #,
+              # ('V202350x','V202341x','V200010b'),('V201262','V202248x','V200010b'),('V202242x','V202248x','V200010b')]
     
-    rangos = [(np.array([0,0.1]),np.array([0.4,0.8])), (np.array([0.05,0.15]),np.array([0.52,0.72])), (np.array([0,0.1]),np.array([0.4,0.7])),
-              (np.array([0,0.2]),np.array([0.4,0.8])), (np.array([0,0.1]),np.array([0.4,0.66])), (np.array([0,0.1]),np.array([0.4,0.7]))]
+    rangos = [(np.array([0,0.1]),np.array([0.4,0.8])), (np.array([0,0.15]),np.array([0.5,0.7])), (np.array([0,0.1]),np.array([0.4,0.7]))] #,
+              # (np.array([0,0.2]),np.array([0.4,0.8])), (np.array([0,0.1]),np.array([0.4,0.66])), (np.array([0,0.1]),np.array([0.4,0.7]))]
     
     for preguntas,rango_ajuste in zip(labels,rangos):
             
@@ -114,7 +114,7 @@ for carp in Carpetas:
         
         func.Mapas_Colores_DJS(Df_archivos, Df_ANES, dict_labels, Direccion, Etapa/carpeta, Dic_ANES,bines,
                               ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
-    
+        
         #----------------------------------------------------------------------------------------------
         
         # Esta parte del código la uso para calcular los parámetros del ajuste paraboloidico aplicado
@@ -152,9 +152,10 @@ for carp in Carpetas:
         print("Variables óptimas distribución sin centro:", result_centro.x)
         print("Variables óptimas distribución sin cruz:", result_cruz.x)
     
-    
-        # func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/"distribuciones", 7, "viridis",
-        #                                   ID_param_x, ID_param_y, ID_param_extra_1)
+        """
+    bines = np.linspace(-3.5,3.5,8)
+    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/"distribuciones", bines, "magma",
+                                      ID_param_x, ID_param_y, ID_param_extra_1)
         
         #----------------------------------------------------------------------------------------------
 

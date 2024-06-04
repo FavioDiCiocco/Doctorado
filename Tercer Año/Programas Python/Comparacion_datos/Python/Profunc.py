@@ -135,7 +135,7 @@ print(A)
 """
 
 #####################################################################################
-
+"""
 # Create some example data
 np.random.seed(0)
 x = np.random.randint(0, 8, size=1000)  # Random integers between 0 and 7
@@ -182,5 +182,32 @@ plt.yticks(y_ticks)
 # Show the plot
 plt.show()
 
+"""
+
+#####################################################################################
+
+# Suponete que quiero comparar la distancia Jensen Shannon de dos gráficos que arrancan
+# siendo iguales y después se van separando. Imaginemos que es el caso de los
+# gráficos que comparo que son de 7x7.
+
+# Armo mis dos distribuciones a comparar
+A = np.ones((49,1)) * 0.001
+B = np.ones((49,1)) * 0.001
+
+A[0] = 0.239
+A[6] = 0.239
+A[42] = 0.239
+A[48] = 0.238
+
+B[0] = 0.239
+B[6] = 0.239
+B[42] = 0.239
+B[48] = 0.238
+
+print(np.sum(A))
+print(np.sum(B))
+
+# Tengo dos distribuciones que son iguales y no tienen ceros. Voy a ir
+# 
 
 func.Tiempo(t0)

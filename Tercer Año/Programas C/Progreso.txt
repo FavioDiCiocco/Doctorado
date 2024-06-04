@@ -1384,3 +1384,47 @@ hace el ajuste para el caso de las distribuciones sin centro y sin cruz. Ya pued
 de Algarve. Voy a tener que hacer algunos ajustes para eso. En estos últimos 20 minutos, armemos el esqueleto
 de la idea de lo que quiero mostrar, mañana lo mando a correr esto mientras voy mirando alguna que otra pregunta
 que me parezca más valiosa.
+
+------------------------------------------------------------------------------------------
+
+04/06/2024
+
+Estoy armando la presentación de mañana. Estoy viendo que tengo bastante para mostrar como trabajo,
+no tanto como resultados positivos. Siento que buena parte del problema es que estamos mirando
+combinaciones de preguntas que dan terrible. Igual vamos a charlarlo con Pablo y ver qué opina al respecto.
+
+No lo encontré a Pablo. Intentemos mejorar los resultados. Para eso hagamos lo siguiente:
+1) Corregir el tema de los gráficos de histogramas, que la distancia anotada sea un número con
+dos cifras significativas.
+2) Aumentar un poco más la distancia de los labels en el gráfico de la superficie 3d.
+3) Asegurarme que la distancia de JS graficada se grafique con hasta dos cifras significativas, sino se chocan
+los números con las palabras.
+
+Esas últimas dos cosas las puedo dejar para después y ahora ponerme con la parte de buscar pares de preguntas
+que me resulten más interesantes.
+
+Ok, estoy sinceramente estancado, tengo que hablar con Pablo para ver qué opina. No sé exactamente cómo encarar
+esto.
+
+Necesito una discusión conmigo mismo para organizar mis ideas. El plan es contar a la gente de GOTHAM que hicimos
+TODO lo que charlamos la última vez. Normalicé los gráficos, armé histogramas 2D, removí el elemento central de las
+distribuciones de las encuestas, hice cálculos de las distancias tanto para casos sin el elemento central como sin
+la cruz central. De esto puedo concluir que se puede trabajar ambos casos casi indistintamente, no dan muy distinto.
+
+También considero que no es necesario mostrar seis preguntas, es un montón de bardo y gráficos, con tres estamos más
+que hechos. Realicé algunos ajustes, y la verdad los resultados para mostrar son un poco feos.
+Estoy teniendo un problema por un lado de que me está quedando los mínimos muy cerca del borde de la
+región de ajuste, entonces el valor de Cos(delta) que ajusta está dando mal. No sé si convendría simular
+un poco para ese lado cosa de que esos datos ubiquen correctamente el mínimo en 0 o si debería más
+bien imponer que el mínimo valor de Cos(delta) sea cero.
+
+Estoy pensando, ¿Tengo una buena respuesta sobre cuál es una distancia chica respecto de dos gráficos?
+¿Cómo mido eso rápido? Podría tomar una distribución en dos ejes que arranque igual e ir aumentando
+su diferencia migrando todos los agentes a un sólo lugar y ver cómo me da eso. Eso lo puedo probar de
+hacer ahora y ver de graficarlo como para tener una idea qué tal da la distancia entre gráficos.
+
+Los ajustes dan un poco más lindo si no encierro tanto el ajuste. Démosle un poco de espacio, quizás
+esta ajustando mucho sobre una zona plana.
+
+Hablé con Pablo, organizamos bastante la charla. Me dijo que en vez de mostrar los que más se parecen
+y los que menos, muestre el que más se parece y el décimo que más se parece.
