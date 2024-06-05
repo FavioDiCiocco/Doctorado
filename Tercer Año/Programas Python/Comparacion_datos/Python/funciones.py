@@ -318,8 +318,8 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                                "Polarización Ideológica con anchura", "Transición con anchura",
                                "Polarización Descorrelacionada con anchura"]
                     
-                    X = X_0[((X_0>bins[4]) | (X_0<bins[3])) | ((Y_0>bins[4]) | (Y_0<bins[3]))]
-                    Y = Y_0[((X_0>bins[4]) | (X_0<bins[3])) | ((Y_0>bins[4]) | (Y_0<bins[3]))]
+                    X = X_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
+                    Y = Y_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
                     
                     # Armo mi gráfico, lo guardo y lo cierro
                     
