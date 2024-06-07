@@ -1428,3 +1428,22 @@ esta ajustando mucho sobre una zona plana.
 
 Hablé con Pablo, organizamos bastante la charla. Me dijo que en vez de mostrar los que más se parecen
 y los que menos, muestre el que más se parece y el décimo que más se parece.
+
+------------------------------------------------------------------------------------------
+
+07/06/2024
+
+El 05 estuve preparando la charla con la gente de España. A la mañana tuvimos la reunión de grupo.
+No estuve en la pc para anotar lo que charlamos en la presentación. Problemas de internet.
+Después de la charla me reuní con Pablo y empecé a armar un cálculo de tiempo de simulación que iba
+a tomar el armar el barrido en los espacios de parámetros.
+
+El 06 llegué tarde porque tuve problemas para arrancar el auto. Después también tuvimos la charla
+de Diego. No llegué a terminar el cálculo del tiempo de simulación, pero casi.
+
+Hoy a la mañana terminé el cálculo del tiempo de simulación de ambos espacios de parámetros. El
+barrido no resulta fino, es algo que tendremos que discutir.
+
+Después me puse a estudiar un poco de alemán.
+Lo siguiente que voy a hacer es enviarle a Hugo un mail sobre cómo es el cluster que tienen, cuántos
+hilos tienen y cuántas cosas podríamos mandar a correr.

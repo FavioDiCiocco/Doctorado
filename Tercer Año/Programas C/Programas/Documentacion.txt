@@ -43,3 +43,10 @@ da el gráfico de entropía.
 Estoy intentando recordar la función de este código, pero no puedo comprender exactamente para qué
 lo quería. Era calcular probabilidad de polarización de ciertas cosas. Pero no me acuerdo qué cosas.
 Ese es el problema de querer documentar mucho tiempo después. En la facultad veré de revisar esto de nuevo.
+
+.) Comparacion_datos:
+---------------------
+
+Estamos directamente usando el código que nos pasó Hugo para realizar simulaciones de 10000 agentes
+porque mi código estaba tardando demasiado. Así que adapté el código de Hugo para que trabaje con dos
+tópicos. La idea es que haga un barrido en una parte del espacio Beta-Cos(delta) 
