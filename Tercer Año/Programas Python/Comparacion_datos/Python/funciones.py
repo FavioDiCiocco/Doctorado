@@ -838,8 +838,8 @@ def Clasificacion(Array, Nx, Ny,T):
     for opinion in Ubicaciones:
         # Tomo mínimos para que no intente ir a una cajita no existente. Tendría un problema
         # si algún agente tiene opinión máxima en algún tópico.
-        fila = min(opinion[1],Nx-1)
-        columna = min(opinion[0],Ny-1)
+        fila = min(opinion[0],Nx-1)
+        columna = min(opinion[1],Ny-1)
         Distribucion[fila*Nx+columna] += 1
     
     # Una vez armada mi distribucion, la normalizo.

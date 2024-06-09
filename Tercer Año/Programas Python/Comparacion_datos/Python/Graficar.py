@@ -84,11 +84,11 @@ for carp in Carpetas:
     func.Tiempo(t0)
     
     #----------------------------------------------------------------------------------------------
-    """
+    
     bines = np.linspace(-3.5,3.5,8)
     
     Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
-    
+    """
     labels_politicos = ['V201372x','V201386x','V201426x']
 
     labels_apoliticos = ['V201429','V202320x','V202341x','V202350x']
@@ -153,17 +153,10 @@ for carp in Carpetas:
         print("Variables óptimas distribución sin cruz:", result_cruz.x)
     
         """
-    bines = np.linspace(-3.5,3.5,8)
-    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/"distribuciones", bines, "magma",
-                                      ID_param_x, ID_param_y, ID_param_extra_1)
+#    bines = np.linspace(-3.5,3.5,8)
+#    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/"distribuciones", bines, "magma",
+#                                      ID_param_x, ID_param_y, ID_param_extra_1)
         
-        #----------------------------------------------------------------------------------------------
-
-func.Tiempo(t0)
-
-#########################################################################################
-#########################################################################################
-"""
 # Este código fue una prueba de cosas para ver cómo calcular la distancia
 # Jensen-Shannon. Ahora lo aislo porque ya generalicé esto en una función.
 
@@ -175,8 +168,8 @@ func.Tiempo(t0)
                                 (Df_archivos["n"]==1000) & 
                                 (Df_archivos["Extra"]==10) & 
                                 (Df_archivos["parametro_x"]==0) &
-                                (Df_archivos["parametro_y"]==0.6) & 
-                                (Df_archivos["iteracion"]==0), "nombre"]
+                                (Df_archivos["parametro_y"]==0.5) & 
+                                (Df_archivos["iteracion"]==1), "nombre"]
     
     for nombre in Sim_prueba:
         Datos = func.ldata(Direccion / nombre)
@@ -223,6 +216,7 @@ func.Tiempo(t0)
     hist2d_r, xedges, yedges, im = plt.hist2d(x=df_filtered[code_1], y=df_filtered[code_2], weights=df_filtered[weights], vmin=0,cmap = "inferno",
               bins=[np.arange(df_filtered[code_1].min()-0.5, df_filtered[code_1].max()+1.5, 1), np.arange(df_filtered[code_2].min()-0.5, df_filtered[code_2].max()+1.5, 1)])
     
+    plt.colorbar()
     Distr_Enc = np.reshape(hist2d_r,(hist2d_r.shape[0]*hist2d_r.shape[1],1))
     
     # Para comparar las distribuciones, les remuevo el elemento del centro.
@@ -241,4 +235,12 @@ func.Tiempo(t0)
     # Esto que me armé efectivamente calcula la distancia Jensen-Shannon entre dos
     # distribuciones. Extrañamente, no tiene problemas con las distribuciones que tengan
     # ceros. Muy raro.
-""" 
+
+        
+        #----------------------------------------------------------------------------------------------
+
+func.Tiempo(t0)
+
+#########################################################################################
+#########################################################################################
+

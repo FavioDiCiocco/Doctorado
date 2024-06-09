@@ -1447,3 +1447,32 @@ barrido no resulta fino, es algo que tendremos que discutir.
 Después me puse a estudiar un poco de alemán.
 Lo siguiente que voy a hacer es enviarle a Hugo un mail sobre cómo es el cluster que tienen, cuántos
 hilos tienen y cuántas cosas podríamos mandar a correr.
+
+------------------------------------------------------------------------------------------
+
+09/06/2024
+
+Hoy lo que quiero hacer es mandar a correr en las pc's de la facultad el nuevo barrido que hablamos con Pablo.
+Para eso, ya que también le voy a pedir a la gente de GOTHAM que mande a correr esto, creo que es importante
+modificar el formato de los archivos de salida, cosa de que pesen lo menos posible. Para eso, en vez
+de devolver el estado final del sistema, voy a hacer que devuelvan la clasificación de opiniones. Voy
+a hacer que además no escriban ni las opiniones iniciales ni la variación promedio. Voy a dejar el dato
+de la semilla y la matriz de adyacencia, por si acaso.
+
+Estoy mirando la forma en que se construye la distribución de mis distribuciones de opiniones finales, y me
+parece que la forma en que se construye con la función de Clasificación NO es igual a cómo se construye
+la distribución de la encuesta. Me parece raro, porque los había comparado y había visto que eran iguales.
+Bueno, había entendido todo mal, soy un gil. No puedo ser tan pelotudo. Efectivamente las distribuciones
+se arman distinto, la que tengo hecha de las simulaciones está traspuesta respecto a la de las encuestas.
+Corrijamos eso ahora. Y estemos atentos a cuál es la forma correcta de hacer esto.
+Lo corregí en Python, ahí lo corrijo en el clasificador de C también.
+
+Bien, ya lo armé y funca bien por lo visto. Ahora lo voy a poner a correr en las 3 pc's. Voy a asegurarme
+de mandar a correr el espacio que charlamos con Pablo.
+
+Estoy mandando a correr en cada pc 20 simulaciones, por lo que tendré en total 60 simulaciones. Lo que estoy
+barriendo son las regiones que etiqueté como B+C+D+F+G+H. La región E la dejo para barrerla al final.
+
+Lo mandé a correr en Algarve y Coimbra, en Oporto no porque faltan 3 simulaciones de lo de los Zealots para
+terminar. Faltan dos para el peso siempre boludo. Bueno, si tengo suerte, antes de irme a dormir puedo mandar
+a correr en Oporto eso que falta.
