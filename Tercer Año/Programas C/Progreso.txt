@@ -1476,3 +1476,34 @@ barriendo son las regiones que etiqueté como B+C+D+F+G+H. La región E la dejo 
 Lo mandé a correr en Algarve y Coimbra, en Oporto no porque faltan 3 simulaciones de lo de los Zealots para
 terminar. Faltan dos para el peso siempre boludo. Bueno, si tengo suerte, antes de irme a dormir puedo mandar
 a correr en Oporto eso que falta.
+
+------------------------------------------------------------------------------------------
+
+10/06/2024
+
+Lo primero que hice en la mañana es mandar a correr desde Oporto las 20 simulaciones que
+faltaban para completar 60. Las últimas 40 voy a ver si se las puedo pedir a Hugo.
+
+¿Qué debería hacer hoy? De lo que tengo anotado como primordial, ya mandé a correr simulaciones
+en la pc de la facultad y modifiqué la salida de los datos para que los archivos sean lo más
+livianos posibles.
+
+Como prioritario me queda hacer:
+1) Realizar ajustes con los conjuntos de simulaciones más similares, armando un ranking agrandando
+el conjunto de a poco.
+2) Armar un archivo con el análisis teórico hecho para pasárselo a Hugo.
+3) Charlar con Capuzzi sobre el cluster de Dirac.
+
+El trabajo interno quizás lo iré revisando ya el miércoles o jueves. El martes podría hacer
+lo del análisis teórico. Hoy me pongo con el punto 1 totalmente. Antes que exactamente eso,
+lo primero que voy a hacer es organizar el código, hacer que se vea más prolijo, agregar las
+funciones al archivo de funciones generales y si todo queda más lindo, ahí hago lo que dijo
+David que se arma en dos o tres líneas.
+
+Lo que tengo que hacer es borrar la parte de laburar borrando el centro, sino que tengo que
+acomodar para que la función trabaje con preguntas de seis respuestas.
+ En la función hice que la distribución de la encuesta siempre salga como una matriz de 6x6.
+Independientemente de si lo que recibe son preguntas de 7 respuestas o preguntas de 6 respuestas
+o mezclado.
+
+No terminé esto, pero vamos bastante bien. Mañana veré de terminar esto.

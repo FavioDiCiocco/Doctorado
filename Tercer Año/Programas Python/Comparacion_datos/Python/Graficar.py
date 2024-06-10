@@ -157,13 +157,13 @@ for carp in Carpetas:
 #    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/"distribuciones", bines, "magma",
 #                                      ID_param_x, ID_param_y, ID_param_extra_1)
         
-# Este código fue una prueba de cosas para ver cómo calcular la distancia
-# Jensen-Shannon. Ahora lo aislo porque ya generalicé esto en una función.
-
-# Consideremos que quiero revisar los estados finales de las simulaciones contra uno de mis
+    # Este código fue una prueba de cosas para ver cómo calcular la distancia
+    # Jensen-Shannon. Ahora lo aislo porque ya generalicé esto en una función.
+    
+    # Consideremos que quiero revisar los estados finales de las simulaciones contra uno de mis
     # gráficos. Tengo que tomar las opiniones finales de algún estado y armar la distribución
     # asociada.
-    
+    """
     Sim_prueba = Df_archivos.loc[(Df_archivos["tipo"]=="Opiniones") & 
                                 (Df_archivos["n"]==1000) & 
                                 (Df_archivos["Extra"]==10) & 
@@ -236,7 +236,7 @@ for carp in Carpetas:
     # distribuciones. Extrañamente, no tiene problemas con las distribuciones que tengan
     # ceros. Muy raro.
 
-        
+    """
         #----------------------------------------------------------------------------------------------
 
 func.Tiempo(t0)
