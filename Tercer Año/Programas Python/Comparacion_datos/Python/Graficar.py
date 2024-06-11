@@ -88,7 +88,7 @@ for carp in Carpetas:
     bines = np.linspace(-3.5,3.5,8)
     
     Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
-    """
+    
     labels_politicos = ['V201372x','V201386x','V201426x']
 
     labels_apoliticos = ['V201429','V202320x','V202341x','V202350x']
@@ -98,8 +98,12 @@ for carp in Carpetas:
     # Esta parte del código la uso para calcular el mapa de colores de DJS de varios pares de preguntas,
     # todo de un plumazo.
     
-    labels = [('V201372x','V201386x','V200010a'), ('V201426x','V201386x','V200010a'), ('V202341x','V202331x','V200010b')] #,
-              # ('V202350x','V202341x','V200010b'),('V201262','V202248x','V200010b'),('V202242x','V202248x','V200010b')]
+    # Esto es para probar preguntas de 7x7, 6x7 y 6x6. Quiero ver si mi código funciona bien.
+    # Estos son labels de prueba
+    labels = [('V201411x','V201408x','V200010a')]
+    
+#    labels = [('V201372x','V201386x','V200010a'), ('V201426x','V201386x','V200010a'), ('V202341x','V202331x','V200010b'),
+#              ('V202350x','V202341x','V200010b'),('V201262','V202248x','V200010b'),('V202242x','V202248x','V200010b')]
     
     rangos = [(np.array([0,0.1]),np.array([0.4,0.8])), (np.array([0,0.15]),np.array([0.5,0.7])), (np.array([0,0.1]),np.array([0.4,0.7]))] #,
               # (np.array([0,0.2]),np.array([0.4,0.8])), (np.array([0,0.1]),np.array([0.4,0.66])), (np.array([0,0.1]),np.array([0.4,0.7]))]
@@ -112,10 +116,12 @@ for carp in Carpetas:
         
         Dic_ANES = {"code_1": code_1, "code_2": code_2, "weights":weights}
         
-        func.Mapas_Colores_DJS(Df_archivos, Df_ANES, dict_labels, Direccion, Etapa/carpeta, Dic_ANES,bines,
-                              ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
+        func.Mapas_Colores_DJS(Df_archivos, Df_ANES, dict_labels, Direccion, Etapa/carpeta, Dic_ANES, bines,
+                               ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
         
         #----------------------------------------------------------------------------------------------
+        
+        """
         
         # Esta parte del código la uso para calcular los parámetros del ajuste paraboloidico aplicado
         # a los datos de las distancias.
@@ -151,92 +157,12 @@ for carp in Carpetas:
         print("Variables ajustadas para preguntas: {} vs {}".format(dict_labels[code_2],dict_labels[code_1]))
         print("Variables óptimas distribución sin centro:", result_centro.x)
         print("Variables óptimas distribución sin cruz:", result_cruz.x)
-    
+        
         """
 #    bines = np.linspace(-3.5,3.5,8)
 #    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/"distribuciones", bines, "magma",
 #                                      ID_param_x, ID_param_y, ID_param_extra_1)
         
-    # Este código fue una prueba de cosas para ver cómo calcular la distancia
-    # Jensen-Shannon. Ahora lo aislo porque ya generalicé esto en una función.
-    
-    # Consideremos que quiero revisar los estados finales de las simulaciones contra uno de mis
-    # gráficos. Tengo que tomar las opiniones finales de algún estado y armar la distribución
-    # asociada.
-    """
-    Sim_prueba = Df_archivos.loc[(Df_archivos["tipo"]=="Opiniones") & 
-                                (Df_archivos["n"]==1000) & 
-                                (Df_archivos["Extra"]==10) & 
-                                (Df_archivos["parametro_x"]==0) &
-                                (Df_archivos["parametro_y"]==0.5) & 
-                                (Df_archivos["iteracion"]==1), "nombre"]
-    
-    for nombre in Sim_prueba:
-        Datos = func.ldata(Direccion / nombre)
-    
-    # Recordemos que los archivos tienen forma
-    
-    # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-    # Opinión Inicial del sistema
-    # Variación Promedio
-    # Opinión Final
-    # Pasos simulados
-    # Semilla
-    # Matriz de Adyacencia
-    
-    Opifinales = np.array(Datos[5][:-1], dtype="float")
-    Opifinales = Opifinales / 10
-    
-    Distr_Sim = np.reshape(func.Clasificacion(Opifinales,7,7,2),(49,1))
-    
-    # Rearmo la distribución de la simulación de forma de que haya un agente
-    # en cada punto como mínimo. La idea es no tener ceros en ningún lugar.
-    # Después resto todos los agentes que sumé del lugar que tenga más agentes
-    restar = np.count_nonzero(Distr_Sim == 0)
-    ubic = np.argmax(Distr_Sim)
-    Distr_Sim[Distr_Sim == 0] = np.ones(restar)*0.001
-    Distr_Sim[ubic] = Distr_Sim[ubic] - 0.001*restar
-    
-    
-    # Ya tengo la distribución de opiniones de mi simulación, ahora necesito la
-    # de la encuesta ANES.
-    
-    code_1 = 'V201200' 
-    code_2 = 'V201420x'
-    weights = 'V200010a'
-    
-    # Extraigo la distribución en hist2d
-    df_aux = Df_ANES.loc[(Df_ANES[code_1]>0) & (Df_ANES[code_2]>0)]
-    # hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0,cmap = "inferno",
-    #           bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
-    
-    # Filter out rows where either code_1 or code_2 is 3
-    df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
-    # df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
-    hist2d_r, xedges, yedges, im = plt.hist2d(x=df_filtered[code_1], y=df_filtered[code_2], weights=df_filtered[weights], vmin=0,cmap = "inferno",
-              bins=[np.arange(df_filtered[code_1].min()-0.5, df_filtered[code_1].max()+1.5, 1), np.arange(df_filtered[code_2].min()-0.5, df_filtered[code_2].max()+1.5, 1)])
-    
-    plt.colorbar()
-    Distr_Enc = np.reshape(hist2d_r,(hist2d_r.shape[0]*hist2d_r.shape[1],1))
-    
-    # Para comparar las distribuciones, les remuevo el elemento del centro.
-    # Quizás la función de Jensen Shannon está quitando los elementos con cero
-    # por sí misma, pero ni idea.
-    
-    Distr_Sim = np.delete(Distr_Sim,24)
-    Distr_Enc = np.delete(Distr_Enc,24)
-    
-    # Una vez que tengo las dos distribuciones, hago el cálculo de la distancia
-    # Jensen-Shannon
-    
-    distancia = jensenshannon(Distr_Enc,Distr_Sim)
-    print(distancia)
-    
-    # Esto que me armé efectivamente calcula la distancia Jensen-Shannon entre dos
-    # distribuciones. Extrañamente, no tiene problemas con las distribuciones que tengan
-    # ceros. Muy raro.
-
-    """
         #----------------------------------------------------------------------------------------------
 
 func.Tiempo(t0)
@@ -244,3 +170,85 @@ func.Tiempo(t0)
 #########################################################################################
 #########################################################################################
 
+
+
+# Este código fue una prueba de cosas para ver cómo calcular la distancia
+# Jensen-Shannon. Ahora lo aislo porque ya generalicé esto en una función.
+
+# Consideremos que quiero revisar los estados finales de las simulaciones contra uno de mis
+# gráficos. Tengo que tomar las opiniones finales de algún estado y armar la distribución
+# asociada.
+"""
+Sim_prueba = Df_archivos.loc[(Df_archivos["tipo"]=="Opiniones") & 
+                            (Df_archivos["n"]==1000) & 
+                            (Df_archivos["Extra"]==10) & 
+                            (Df_archivos["parametro_x"]==0) &
+                            (Df_archivos["parametro_y"]==0.5) & 
+                            (Df_archivos["iteracion"]==1), "nombre"]
+
+for nombre in Sim_prueba:
+    Datos = func.ldata(Direccion / nombre)
+
+# Recordemos que los archivos tienen forma
+
+# Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+# Opinión Inicial del sistema
+# Variación Promedio
+# Opinión Final
+# Pasos simulados
+# Semilla
+# Matriz de Adyacencia
+
+Opifinales = np.array(Datos[5][:-1], dtype="float")
+Opifinales = Opifinales / 10
+
+Distr_Sim = np.reshape(func.Clasificacion(Opifinales,7,7,2),(49,1))
+
+# Rearmo la distribución de la simulación de forma de que haya un agente
+# en cada punto como mínimo. La idea es no tener ceros en ningún lugar.
+# Después resto todos los agentes que sumé del lugar que tenga más agentes
+restar = np.count_nonzero(Distr_Sim == 0)
+ubic = np.argmax(Distr_Sim)
+Distr_Sim[Distr_Sim == 0] = np.ones(restar)*0.001
+Distr_Sim[ubic] = Distr_Sim[ubic] - 0.001*restar
+
+
+# Ya tengo la distribución de opiniones de mi simulación, ahora necesito la
+# de la encuesta ANES.
+
+code_1 = 'V201200' 
+code_2 = 'V201420x'
+weights = 'V200010a'
+
+# Extraigo la distribución en hist2d
+df_aux = Df_ANES.loc[(Df_ANES[code_1]>0) & (Df_ANES[code_2]>0)]
+# hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_1], y=df_aux[code_2], weights=df_aux[weights], vmin=0,cmap = "inferno",
+#           bins=[np.arange(df_aux[code_1].min()-0.5, df_aux[code_1].max()+1.5, 1), np.arange(df_aux[code_2].min()-0.5, df_aux[code_2].max()+1.5, 1)])
+
+# Filter out rows where either code_1 or code_2 is 3
+df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
+# df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
+hist2d_r, xedges, yedges, im = plt.hist2d(x=df_filtered[code_1], y=df_filtered[code_2], weights=df_filtered[weights], vmin=0,cmap = "inferno",
+          bins=[np.arange(df_filtered[code_1].min()-0.5, df_filtered[code_1].max()+1.5, 1), np.arange(df_filtered[code_2].min()-0.5, df_filtered[code_2].max()+1.5, 1)])
+
+plt.colorbar()
+Distr_Enc = np.reshape(hist2d_r,(hist2d_r.shape[0]*hist2d_r.shape[1],1))
+
+# Para comparar las distribuciones, les remuevo el elemento del centro.
+# Quizás la función de Jensen Shannon está quitando los elementos con cero
+# por sí misma, pero ni idea.
+
+Distr_Sim = np.delete(Distr_Sim,24)
+Distr_Enc = np.delete(Distr_Enc,24)
+
+# Una vez que tengo las dos distribuciones, hago el cálculo de la distancia
+# Jensen-Shannon
+
+distancia = jensenshannon(Distr_Enc,Distr_Sim)
+print(distancia)
+
+# Esto que me armé efectivamente calcula la distancia Jensen-Shannon entre dos
+# distribuciones. Extrañamente, no tiene problemas con las distribuciones que tengan
+# ceros. Muy raro.
+
+"""

@@ -419,7 +419,7 @@ def Clasificacion(Array, Nx, Ny,T):
         # si algún agente tiene opinión máxima en algún tópico.
         fila = min(opinion[0],Nx-1)
         columna = min(opinion[1],Ny-1)
-        Distribucion[fila*Nx+columna] += 1
+        Distribucion[fila*Ny+columna] += 1
     
     # Una vez armada mi distribucion, la normalizo.
     Distribucion = Distribucion/np.sum(Distribucion)
@@ -504,8 +504,7 @@ def Leer_Datos_ANES(filename,año):
 
 #-----------------------------------------------------------------------------------------------
     
-# Armo dos mapas de colores de DJS. Uno de los mapas de colores considera que la distribución
-# no tiene el punto en el centro en que ambos agentes opinan neutro. El otro mapa de colores
+# Armo dos mapas de colores de DJS. El mapa de colores
 # no tiene los agentes que hayan opinado neutro en ninguna de las preguntas.
 # En ambos casos estoy considerando que ambas preguntas tienen 7 respuestas. Voy a tener que ir
 # viendo cómo resolver si tienen 6 respuestas.
@@ -549,8 +548,8 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
     # Separo las opiniones de 0
     df_aux = DF_Anes.loc[(DF_Anes[Dic_ANES["code_1"]]>0) & (DF_Anes[Dic_ANES["code_2"]]>0)]
     # Reviso la cantidad de respuestas de cada pregunta
-    resp_1 = np.unique(df_aux[Dic_ANES["code_1"]])
-    resp_2 = np.unique(df_aux[Dic_ANES["code_2"]])
+    resp_1 = np.unique(df_aux[Dic_ANES["code_1"]]).shape[0]
+    resp_2 = np.unique(df_aux[Dic_ANES["code_2"]]).shape[0]
     
     # Los clasifico como código x y código y
     if resp_1 >= resp_2:
@@ -567,12 +566,14 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
         # Saco la cruz
         df_filtered = df_aux[(df_aux[code_x] != 4) & (df_aux[code_y] != 4)] 
         
-        hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_x], y=df_filtered[code_y], weights=df_filtered[Dic_ANES["weights"]], vmin=0,cmap = "inferno", density = True,
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_x], y=df_filtered[code_y], weights=df_filtered[Dic_ANES["weights"]], vmin=0, cmap = "inferno", density = True,
                   bins=[np.arange(df_filtered[code_x].min()-0.5, df_filtered[code_x].max()+1.5, 1), np.arange(df_filtered[code_y].min()-0.5, df_filtered[code_y].max()+1.5, 1)])
         plt.close()
         
+        print(hist2d)
+        
         Distr_Enc = hist2d[np.arange(7) != 3,:][:,np.arange(7) != 3]
-        Distr_Enc = np.reshape(Distr_Enc,(Distr_Enc.shape[0]*Distr_Enc.shape[1],1))
+        Distr_Enc = Distr_Enc.flatten()
     
     # Una pregunta con siete respuestas y otra con seis
     elif (resp_1 == 6 and resp_2 == 7) or (resp_1 == 7 and resp_2 == 6):
@@ -580,12 +581,14 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
         # Saco la cruz
         df_filtered = df_aux[df_aux[code_x] != 4] 
         
-        hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_x], y=df_filtered[code_y], weights=df_filtered[Dic_ANES["weights"]], vmin=0,cmap = "inferno", density = True,
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_x], y=df_filtered[code_y], weights=df_filtered[Dic_ANES["weights"]], vmin=0, cmap = "inferno", density = True,
                   bins=[np.arange(df_filtered[code_x].min()-0.5, df_filtered[code_x].max()+1.5, 1), np.arange(df_filtered[code_y].min()-0.5, df_filtered[code_y].max()+1.5, 1)])
         plt.close()
         
+        print(hist2d)
+        
         Distr_Enc = hist2d[np.arange(7) != 3,:]
-        Distr_Enc = np.reshape(Distr_Enc,(Distr_Enc.shape[0]*Distr_Enc.shape[1],1))
+        Distr_Enc = Distr_Enc.flatten()
     
     # Dos preguntas con seis respuestas
     elif resp_1 == 6 and resp_2 == 6:
@@ -595,7 +598,9 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
                   bins=[np.arange(df_aux[code_x].min()-0.5, df_aux[code_x].max()+1.5, 1), np.arange(df_aux[code_y].min()-0.5, df_aux[code_y].max()+1.5, 1)])
         plt.close()
         
-        Distr_Enc = np.reshape(Distr_Enc,(Distr_Enc.shape[0]*Distr_Enc.shape[1],1))
+        print(hist2d)
+        
+        Distr_Enc = hist2d.flatten()
     
     #--------------------------------------------------------------------------------
     
@@ -628,42 +633,55 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
             # Leo los datos de las Opiniones Finales y me armo una distribución en forma de matriz de 7x7
             Opifinales = np.array(Datos[5][:-1], dtype="float")
             Opifinales = Opifinales / EXTRAS
-            Distr_Orig = Clasificacion(Opifinales,hist2d.shape[0],hist2d.shape[1],T)
+            Distr_Sim = Clasificacion(Opifinales,hist2d.shape[0],hist2d.shape[1],T)
             
-            # La Distr_Orig es un array plano. Lo que estarñia bueno es armarlo de 6x6,
+            # La Distr_Orig es un array plano. Lo que estaria bueno es armarlo de 6x6,
             # total la Distr_Enc tiene tamaño 6x6 siempre
+            
+            Distr_Sim = np.reshape(Distr_Sim, hist2d.shape)
+            
+            # Dos preguntas con siete respuestas
+            if resp_1 == 7 and resp_2 == 7:
+                Distr_Sim = Distr_Sim[np.arange(7) != 3,:][:,np.arange(7) != 3]
+            
+            # Una pregunta con siete respuestas y otra con seis
+            elif (resp_1 == 6 and resp_2 == 7) or (resp_1 == 7 and resp_2 == 6):
+                Distr_Sim = Distr_Sim[np.arange(7) != 3,:]
+            
+            # Dos preguntas con seis respuestas (En este caso no necesita hacer nada, ya es de 6x6 la distribución)
+            
+            
+            # Como removí parte de mi distribución, posiblemente ya no esté normalizada
+            # la distribución. Así que debería ahora sumar agentes de a 1 hasta asegurarme
+            # de que otra vez esté normalizada
+            Distr_Sim = Distr_Sim.flatten()
+            if np.sum(Distr_Sim) != 1:
+                agentes_agregar = int((1-np.sum(Distr_Sim))/frac_agente_ind)
+                for i in range(agentes_agregar):
+                    Distr_Sim[np.argmin(Distr_Sim)] += frac_agente_ind
+            # Luego de volver a normalizar mi distribución, si quedaron lugares
+            # sin agentes, los relleno
+            restar = np.count_nonzero(Distr_Sim == 0)
+            Distr_Sim[Distr_Sim == 0] = np.ones(restar)*frac_agente_ind
+            Distr_Sim[np.argmax(Distr_Sim)] -= frac_agente_ind*restar
             
             #-----------------------------------------------------------------------------------------
             
+            # Calculo la distancia Jensen-Shannon de la distribución de la encuesta con la distribución
+            # de la simulación. Hago esto cuatro veces porque tengo que rotar cuatro veces la distribución
+            # simulada, cosa de asegurarme de que no importe la dirección del estado final.
+            
             for rotacion in range(4):
                 
-                # Tomo la distribución original, le doy forma de matriz, la roto y luego la plancho
-                Distr_Orig = np.reshape(Distr_Orig, hist2d.shape)
-                Distr_Orig = Rotar_matriz(Distr_Orig)
-                Distr_Orig = np.reshape(Distr_Orig,(hist2d.shape[0]*hist2d.shape[1],1))
-                
-                # A partir de la distribución original voy a fabricarme dos distribuciones de simulaciones, una sin el
-                # punto central, otra sin la cruz.
-                
-                                
-                # Segundo armo la que no tiene la cruz removiendo los puntos en la cruz de la distribución
-                Distr_Sim = np.delete(Distr_Orig, Ind_nulos)
-                # Como removí parte de mi distribución, posiblemente ya no esté normalizada
-                # la distribución. Así que debería ahora sumar agentes de a 1 hasta asegurarme
-                # de que otra vez esté normalizada
-                if np.sum(Distr_Sim) != 1:
-                    agentes_agregar = int((1-np.sum(Distr_Sim))/frac_agente_ind)
-                    for i in range(agentes_agregar):
-                        ubic_min = np.argmin(Distr_Sim)
-                        Distr_Sim[ubic_min] += frac_agente_ind
-                # Luego de volver a normalizar mi distribución, si quedaron lugares
-                # sin agentes, los relleno
-                restar = np.count_nonzero(Distr_Sim == 0)
-                ubic = np.argmax(Distr_Sim)
-                Distr_Sim[Distr_Sim == 0] = np.ones(restar)*frac_agente_ind
-                Distr_Sim[ubic] -= frac_agente_ind*restar
-                
+#                print(jensenshannon(Distr_Enc,Distr_Sim))
+#                print(Distr_Enc)
+#                print(Distr_Sim)
                 Dist_previa[rotacion] = jensenshannon(Distr_Enc,Distr_Sim)
+                
+                # Una vez que hice el cálculo de la distancia y todo, roto la matriz
+                Distr_Sim = np.reshape(Distr_Sim, (6,6))
+                Distr_Sim = Rotar_matriz(Distr_Sim)
+                Distr_Sim = Distr_Sim.flatten()
                 
             #-----------------------------------------------------------------------------------------
             
@@ -694,7 +712,7 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
     ZZ = np.sort(ZZ)
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores para el caso sin cruz
-    direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/DistanciaJS_{}vs{}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"]))
+    direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/DistanciaJS_{}vs{}.png".format(carpeta,code_y,code_x))
     
     plt.rcParams.update({'font.size': 44})
     plt.figure("Distancia Jensen-Shannon",figsize=(28,21))
@@ -705,17 +723,19 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
     
     plt.pcolormesh(XX,YY,np.mean(ZZ,axis=2),shading="nearest", cmap = "viridis")
     plt.colorbar()
-    plt.title("Distancia Jensen-Shannon sin cruz\n {} vs {}".format(dict_labels[Dic_ANES["code_2"]],dict_labels[Dic_ANES["code_1"]]))
+    plt.title("Distancia Jensen-Shannon sin cruz\n {} vs {}".format(dict_labels[code_y],dict_labels[code_x]))
     
     # Guardo la figura y la cierro
     
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close("Distancia Jensen-Shannon")
     
-    # Y ahora me armo los rankings
+    # Y ahora me armo el gráfico de promedios de distancia JS según cantidad de simulaciones
+    # consideradas, con las simulaciones ordenadas de las de menos distancia a las de más distancia
+       
+    for i in range(10):
         
-    for i in range(3):
-        direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/DistanciaJS_{}vs{}_r{}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"],i))
+        direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/DistanciaJS_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
     
         plt.rcParams.update({'font.size': 44})
         plt.figure("Ranking Distancia Jensen-Shannon",figsize=(28,21))
@@ -723,17 +743,22 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
         plt.ylabel(r"${}$".format(SIM_param_y))
         
         # Hago el ploteo del mapa de colores con el colormesh
-
+        ZZ_prom = np.mean(ZZ[:,:,0:10+i*10],axis=2)
         
-        plt.pcolormesh(XX,YY,np.mean(ZZ[:,:,0:10+i*30],axis=2),shading="nearest", cmap = "cividis")
+        # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
+        tupla = np.unravel_index(np.argmin(ZZ_prom),ZZ_prom.shape)
+        
+        plt.pcolormesh(XX,YY,ZZ_prom,shading="nearest", cmap = "cividis")
         plt.colorbar()
-        plt.title("Distancia Jensen-Shannon sin cruz {} simulaciones\n {} vs {}".format(10+i*30,dict_labels[Dic_ANES["code_2"]],dict_labels[Dic_ANES["code_1"]]))
+        plt.scatter(XX[tupla],YY[tupla], marker="X", color = "red", s = 90)
+        plt.text(XX[tupla],YY[tupla]-0.025, r"${}$ = {:.2f},${}$ = {:.2f} ".format(SIM_param_y, YY[tupla], SIM_param_x, XX[tupla]), fontsize= 36)
+        plt.title("Distancia Jensen-Shannon sin cruz {} simulaciones\n {} vs {}".format(10+i*10,dict_labels[code_y],dict_labels[code_x]))
         
         # Guardo la figura y la cierro
         
         plt.savefig(direccion_guardado , bbox_inches = "tight")
         plt.close("Ranking Distancia Jensen-Shannon")
-        
+    
     #-------------------------------------------------------------------------------------------------
     
     # Hago los gráficos de histograma 2D de las simulaciones que más se parecen y que menos se parecen
@@ -745,12 +770,11 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
     
     # Armo listas de strings y números para mis archivos
     Lista_similaridad = ["min_distancia","max_distancia"]
-    Lista_carpeta = ["Sin Cruz", "Sin Cruz"]
-    Valor_distancia = [np.min(ZZ),np.max(ZZ)]
-    Vmin = np.array([np.argmin(Distr_Enc),np.argmin(Distr_Enc)])
-    Vmax = np.array([np.argmax(Distr_Enc),np.argmax(Distr_Enc)])
+    Valor_distancia = [np.min(ZZ),np.max(ZZ[:,:,0:10])]
+#    Vmin = np.min(Distr_Enc)
+#    Vmax = np.max(Distr_Enc)
     
-    for m,tupla in enumerate([iMin, iMax]):
+    for tupla,simil,distan in zip([iMin, iMax],Lista_similaridad,Valor_distancia):
     
         PARAM_X = XX[tupla[0],tupla[1]]
         PARAM_Y = YY[tupla[0],tupla[1]]
@@ -795,7 +819,7 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
                 
                 # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
                 
-                direccion_guardado = Path("../../../Imagenes/{}/Hist_2D_{}_{}vs{}.png".format(carpeta / Lista_carpeta[m],Lista_similaridad[m],Dic_ANES["code_2"],Dic_ANES["code_1"]))
+                direccion_guardado = Path("../../../Imagenes/{}/Hist_2D_{}_{}vs{}.png".format(carpeta /"Sin Cruz",simil,code_y,code_x))
                 
                 indice = np.where(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] == repeticion)[0][0]
                 estado = int(Frecuencias[indice])
@@ -820,15 +844,15 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
                 
                 plt.rcParams.update({'font.size': 32})
                 plt.figure(figsize=(28,21))
-                _, _, _, im = plt.hist2d(X, Y, bins=bins,density=True,cmap="magma")
+                _, _, _, im = plt.hist2d(X, Y, bins=bins,density=True,cmap="inferno")
                 plt.xlabel(r"$x_i^1$")
                 plt.ylabel(r"$x_i^2$")
                 # Set x-ticks and y-ticks from -10 to 10 using plt.xticks() and plt.yticks()
                 # plt.xticks(np.arange(-10, 11, 1))
                 # plt.yticks(np.arange(-10, 11, 1))
-                plt.title('Distancia JS = {:.2f}, {}={:.2f}_{}={:.2f} \n {} \n {} vs {}'.format(Valor_distancia[m],ID_param_x,PARAM_X,ID_param_y,PARAM_Y,Nombres[estado],dict_labels[Dic_ANES["code_2"]],dict_labels[Dic_ANES["code_1"]]))
-                cbar = plt.colorbar(im, label='Fracción')
-                cbar.set_clim(Vmin[m], Vmax[m])
+                plt.title('Distancia JS = {:.2f}, {}={:.2f}, {}={:.2f} \n {} \n {} vs {}'.format(distan,ID_param_x,PARAM_X,ID_param_y,PARAM_Y,Nombres[estado],dict_labels[code_y],dict_labels[code_x]))
+                plt.colorbar(im, label='Fracción')
+#                cbar.set_clim(Vmin, Vmax)
                 plt.savefig(direccion_guardado ,bbox_inches = "tight")
                 plt.close()
     

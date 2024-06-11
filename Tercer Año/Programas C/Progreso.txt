@@ -1507,3 +1507,21 @@ Independientemente de si lo que recibe son preguntas de 7 respuestas o preguntas
 o mezclado.
 
 No terminé esto, pero vamos bastante bien. Mañana veré de terminar esto.
+
+------------------------------------------------------------------------------------------
+
+11/06/2024
+
+Estuve trabajando sobre la función que realiza los mapas de colores de forma tal que trabaje
+sobre preguntas que tengan seis o siete respuestas y para que además arme los gráficos que hablamos
+ayer con Pablo.
+
+Voy a probar que funque bien, que pueda trabajar con un par de preguntas de 7x7, 6x7 y 6x6.
+Por lo pronto está corriendo, así que eso es bueno. Ahora me voy a poner a hacer lo que sigue,
+que es mandarle un mail a Hugo con los archivos para correr las simulaciones.
+Estoy corrigiendo muchos pequeños errores con esto, y eso me distrae del laburo. Es sólo eso,
+nada más lo que me distrae.
+
+Armé un mail lo más prolijo que pude y le envié a Hugo con los archivos para simular, así
+como una explicación de qué hacen y lo que espero que haga. Veremos lo que me contesta mañana
+y eso.
