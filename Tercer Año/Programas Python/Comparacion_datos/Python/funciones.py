@@ -570,8 +570,6 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
                   bins=[np.arange(df_filtered[code_x].min()-0.5, df_filtered[code_x].max()+1.5, 1), np.arange(df_filtered[code_y].min()-0.5, df_filtered[code_y].max()+1.5, 1)])
         plt.close()
         
-        print(hist2d)
-        
         Distr_Enc = hist2d[np.arange(7) != 3,:][:,np.arange(7) != 3]
         Distr_Enc = Distr_Enc.flatten()
     
@@ -585,8 +583,6 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
                   bins=[np.arange(df_filtered[code_x].min()-0.5, df_filtered[code_x].max()+1.5, 1), np.arange(df_filtered[code_y].min()-0.5, df_filtered[code_y].max()+1.5, 1)])
         plt.close()
         
-        print(hist2d)
-        
         Distr_Enc = hist2d[np.arange(7) != 3,:]
         Distr_Enc = Distr_Enc.flatten()
     
@@ -597,8 +593,6 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
         hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_x], y=df_aux[code_y], weights=df_aux[Dic_ANES["weights"]], vmin=0,cmap = "inferno", density = True,
                   bins=[np.arange(df_aux[code_x].min()-0.5, df_aux[code_x].max()+1.5, 1), np.arange(df_aux[code_y].min()-0.5, df_aux[code_y].max()+1.5, 1)])
         plt.close()
-        
-        print(hist2d)
         
         Distr_Enc = hist2d.flatten()
     
@@ -673,9 +667,6 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
             
             for rotacion in range(4):
                 
-#                print(jensenshannon(Distr_Enc,Distr_Sim))
-#                print(Distr_Enc)
-#                print(Distr_Sim)
                 Dist_previa[rotacion] = jensenshannon(Distr_Enc,Distr_Sim)
                 
                 # Una vez que hice el cálculo de la distancia y todo, roto la matriz
@@ -709,7 +700,7 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
     #--------------------------------------------------------------------------------
     
     # Organizo las matrices ZZ según su similaridad
-    ZZ = np.sort(ZZ)
+    ZZ_sorted = np.sort(ZZ)
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores para el caso sin cruz
     direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/DistanciaJS_{}vs{}.png".format(carpeta,code_y,code_x))
@@ -721,7 +712,7 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
     
     # Hago el ploteo del mapa de colores con el colormesh
     
-    plt.pcolormesh(XX,YY,np.mean(ZZ,axis=2),shading="nearest", cmap = "viridis")
+    plt.pcolormesh(XX,YY,np.mean(ZZ_sorted,axis=2),shading="nearest", cmap = "viridis")
     plt.colorbar()
     plt.title("Distancia Jensen-Shannon sin cruz\n {} vs {}".format(dict_labels[code_y],dict_labels[code_x]))
     
@@ -743,15 +734,21 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
         plt.ylabel(r"${}$".format(SIM_param_y))
         
         # Hago el ploteo del mapa de colores con el colormesh
-        ZZ_prom = np.mean(ZZ[:,:,0:10+i*10],axis=2)
+        ZZ_prom = np.mean(ZZ_sorted[:,:,0:10+i*10],axis=2)
         
         # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
         tupla = np.unravel_index(np.argmin(ZZ_prom),ZZ_prom.shape)
         
         plt.pcolormesh(XX,YY,ZZ_prom,shading="nearest", cmap = "cividis")
         plt.colorbar()
-        plt.scatter(XX[tupla],YY[tupla], marker="X", color = "red", s = 90)
-        plt.text(XX[tupla],YY[tupla]-0.025, r"${}$ = {:.2f},${}$ = {:.2f} ".format(SIM_param_y, YY[tupla], SIM_param_x, XX[tupla]), fontsize= 36)
+        plt.scatter(XX[tupla],YY[tupla], marker="X", color = "red", s = 180)
+        
+        if YY[tupla]-0.025 < np.min(YY):
+            ytext = YY[tupla]+0.025
+        else:
+            ytext = YY[tupla]-0.025
+        
+        plt.text(XX[tupla],ytext, r"${}$ = {:.2f},${}$ = {:.2f} ".format(SIM_param_y, YY[tupla], SIM_param_x, XX[tupla]), fontsize= 36)
         plt.title("Distancia Jensen-Shannon sin cruz {} simulaciones\n {} vs {}".format(10+i*10,dict_labels[code_y],dict_labels[code_x]))
         
         # Guardo la figura y la cierro
@@ -770,7 +767,7 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
     
     # Armo listas de strings y números para mis archivos
     Lista_similaridad = ["min_distancia","max_distancia"]
-    Valor_distancia = [np.min(ZZ),np.max(ZZ[:,:,0:10])]
+    Valor_distancia = [np.min(ZZ_sorted),np.max(ZZ_sorted[:,:,0:10])]
 #    Vmin = np.min(Distr_Enc)
 #    Vmax = np.max(Distr_Enc)
     
@@ -855,6 +852,31 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
 #                cbar.set_clim(Vmin, Vmax)
                 plt.savefig(direccion_guardado ,bbox_inches = "tight")
                 plt.close()
+                
+    #-------------------------------------------------------------------------------------------------
+    
+    # Lo que quiero hacer acá es armar gráficos de frecuencia de estados de los dos
+    # estados más probables en el espacio de parámetros.
+    
+    # Arranco con un barrido en el ranking
+    for i in range(10):
+        
+        simulaciones = 10+i*10
+        # Me construyo la matriz en la que voy a guardar los estados clasificados
+        Estados_clasificados = np.zeros((XX.shape[0],XX.shape[1],simulaciones))
+        
+        # Luego hago un barrido en los parámetros
+        
+        for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
+            
+            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+            archivos = np.array(DF_datos.loc[(DF_datos["tipo"]==TIPO) & 
+                                        (DF_datos["n"]==AGENTES) & 
+                                        (DF_datos["Extra"]==EXTRAS) & 
+                                        (DF_datos["parametro_x"]==PARAM_X) &
+                                        (DF_datos["parametro_y"]==PARAM_Y), "nombre"])
+            
+            #-----------------------------------------------------------------------------------------
     
     
 

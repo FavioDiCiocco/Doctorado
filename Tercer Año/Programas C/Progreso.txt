@@ -1525,3 +1525,68 @@ nada más lo que me distrae.
 Armé un mail lo más prolijo que pude y le envié a Hugo con los archivos para simular, así
 como una explicación de qué hacen y lo que espero que haga. Veremos lo que me contesta mañana
 y eso.
+
+------------------------------------------------------------------------------------------
+
+13/06/2024
+
+El 12 no anoté nada porque estuve trabajando en el google drive para armar la presentación
+de el análisis teórico realizado. La idea era terminar eso el 12 para mandárselo a Hugo.
+Logré terminarlo y programé el mail para enviárselo a Hugo temprano.
+
+Hoy en la mañana me puse a estudiar un poco de Alemán. Ale nos contó que nació su beba.
+Eso significa que el Lunes no vamos a jugar la partida.
+
+¿Qué voy a hacer hoy? Primero, debería mandar a correr lo que calcula la Distancia Jensen-Shannon
+y arma gráficos con promedios de conjuntos cada vez más grande. Pongámosle un nombre. Ranking
+de promedios de distancias de Jensen-Shannon.
+
+Hasta ahora no hablé con Capuzzi por el tema de los clusters de Dirac. Tengo que hacer eso hoy si
+me lo cruzo en el aula Federman.
+
+¿Qué resultados tengo para mostrar? Hice los gráficos de ranking de promedios de distancias
+Jensen-Shannon. Lo que tendría que hacer ahora es lo que me decía Pablo, de intentar ver
+cómo se componen los estados del ranking. La pregunta es, ¿cómo lo hago?
+
+La idea es que yo tengo mi matriz de Distancias JS, que su número de filas es la cantidad de Cos(delta),
+su número de columnas es la cantidad de Betas, y su tercer coordenada es la cantidad de iteraciones.
+Para cada simulación, que se identifica con una combinación de estas tres variables, ubico su
+distancia JS en un lugar de esta matriz. Yo quiero agarrar un conjunto de estas simulaciones, ordenados
+en distancias de menor a mayor, a ese conjunto quiero identificar qué estados son y obtener algún gráfico
+que visualmente me indique qué estoy viendo.
+ Ponele que estoy mirando las primeras 10 simulaciones, y quiero que arme dos gráficos de frecuencias de
+estados. Uno con lo que es el estado más probable, y otro con el segundo más probable. Se entiende por
+más probable el que aparece más veces en TODO el espacio.
+ Tengo una idea de cómo hacerlo, vuelvo a recorrer todo el espacio de parámetros, uso la matriz que tiene
+las distancias JS y en cada vector asignado a una combinación de parámetros Beta, Cos(delta), busco el
+décimo elemento ordenado de menor a mayor y me quedo con las iteraciones ubicadas en las posiciones
+de los elementos cuya distancia sea menor o igual a la del décimo elemento. Luego, construyo mi matriz
+con las frecuencias de esos estados. Una vez hecho eso, voy contando cuántos estados tengo y listo.
+También veo de armar un gráfico de frecuencias de estados y palo y a la bolsa. Planazo.
+
+La siguiente pregunta es: ¿Meto esto también en la función de cálculo de distancias JS? ¿Debería separar
+esa función en nuevas funciones? Lo meto en la función, siento que separarlo sería un problema en
+sí mismo porque cada una de esas funciones nuevas necesitaría que les pase un montón de cosas, sería
+un bardo en sí mismo.
+
+#################################################################################################
+#################################################################################################
+
+Lo pensé de nuevo, puedo hacerlo en partes separadas. Pero creo que mejor lo dejo para la próxima eso.
+Lo voy a hacer después de la próxima reunión. O en el finde quizás.
+.) La idea es que la primer función returnee la matriz ZZ de distancias Jesnsen-Shannon.
+.) Armo una segunda función que arme los gráficos de ranking de promedios de distancia JS.
+.) Armo una tercera que grafique la simulación más similar y la menos similar. Para eso voy
+a tener que agregar de forma externa el cálculo del Dic_total que surge de la función de 
+Diccionario_metricas. La idea es que eso lo hago una sóla vez, por fuera del for de cada par
+de preguntas.
+
+TODO esto, después de la próxima charla.
+
+#################################################################################################
+#################################################################################################
+
+Tengo que guardarme la matriz ZZ así como viene originalmente, así que voy a tener que agregar
+una nueva matriz que sea la ZZ_sorted.
+
+Arranqué con esto, mañana lo resuelvo y empiezo a armar la presentación.
