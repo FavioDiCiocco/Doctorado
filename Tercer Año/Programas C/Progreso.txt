@@ -1590,3 +1590,25 @@ Tengo que guardarme la matriz ZZ así como viene originalmente, así que voy a t
 una nueva matriz que sea la ZZ_sorted.
 
 Arranqué con esto, mañana lo resuelvo y empiezo a armar la presentación.
+
+------------------------------------------------------------------------------------------
+
+14/06/2024
+
+Primero hice lo de armar los gráficos de Frecuencias de estados para los dos estados más dominantes
+en el espacio de parámetros. Ahora estoy intentando lograr que funcione, porque estoy teniendo unos
+problemas de tamaños en el archivo, no entiendo bien por qué.
+
+Hecho eso, ya me puedo poner a armar la presentación. ¿Qué voy a mostrar en la presentación?
+
+.) Se me ocurre que puedo arrancar mostrando las preguntas a considerar. Ya lo vimos antes, 
+pero para recordar, en especial ahora que estamos fijándonos en las preguntas sin la cruz
+del centro.
+
+Termino esto mañana.
+##############################################################################################
+
+Por algún motivo raro, el código que hace el mapa de colores de FEF para los dos estados predominantes
+está teniendo un problema en un caso particular. Por alguna razón para los valores de Beta=0.4 y
+Cos(delta) = 0.1 pareciera que al calcular la Distancia Jensen-Shannon, todas las distancias dan lo
+mismo. RARO. Voy a intentar printear esa "fila" del vector ZZ y ver qué pasa ahí.

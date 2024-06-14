@@ -292,7 +292,7 @@ def Diccionario_metricas(DF, path, Nx, Ny):
             # Para cada elemento en el vector de identidad, le busco su indice en el
             # vector y coloco ese índice en el vector de Ubicacion en la posición
             # del elemento observado
-            for i in np.unique(Identidad):
+            for i in np.sort(Identidad):
                 indice = np.where(Identidad == i)[0][0]
                 Ubicacion[i] = indice
             
@@ -314,7 +314,7 @@ def Diccionario_metricas(DF, path, Nx, Ny):
             Salida[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"] = Varianza_Y[Ubicacion]
             Salida[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"] = Covarianza[Ubicacion]
             Salida[EXTRAS][PARAM_X][PARAM_Y]["Promedios"] = Promedios[Ubicacion]
-            Salida[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] = np.unique(Identidad)
+            Salida[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] = np.sort(Identidad)
             
     return Salida
 
@@ -767,7 +767,7 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
     
     # Armo listas de strings y números para mis archivos
     Lista_similaridad = ["min_distancia","max_distancia"]
-    Valor_distancia = [np.min(ZZ_sorted),np.max(ZZ_sorted[:,:,0:10])]
+    Valor_distancia = [np.min(ZZ_sorted),np.max(ZZ_sorted)]
 #    Vmin = np.min(Distr_Enc)
 #    Vmax = np.max(Distr_Enc)
     
@@ -858,26 +858,81 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
     # Lo que quiero hacer acá es armar gráficos de frecuencia de estados de los dos
     # estados más probables en el espacio de parámetros.
     
+    # Defino los nombres de los estados de mi sistema
+    Nombres = ["Consenso neutral", "Consenso radicalizado", "Polarización 1D y Consenso",
+               "Polarización Ideológica", "Transición", "Polarización Descorrelacionada",
+               "Polarización 1D y Consenso con anchura",
+               "Polarización Ideológica con anchura", "Transición con anchura",
+               "Polarización Descorrelacionada con anchura"]
+    
     # Arranco con un barrido en el ranking
     for i in range(10):
         
-        simulaciones = 10+i*10
+        cant_simulaciones = 10+i*10
         # Me construyo la matriz en la que voy a guardar los estados clasificados
-        Estados_clasificados = np.zeros((XX.shape[0],XX.shape[1],simulaciones))
+        Estados_clasificados = np.zeros((XX.shape[0],XX.shape[1],cant_simulaciones))
         
         # Luego hago un barrido en los parámetros
         
         for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
             
-            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
-            archivos = np.array(DF_datos.loc[(DF_datos["tipo"]==TIPO) & 
-                                        (DF_datos["n"]==AGENTES) & 
-                                        (DF_datos["Extra"]==EXTRAS) & 
-                                        (DF_datos["parametro_x"]==PARAM_X) &
-                                        (DF_datos["parametro_y"]==PARAM_Y), "nombre"])
+            Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
+                                                         Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
+                                                         Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
+                                                         Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
+                                                         Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
             
             #-----------------------------------------------------------------------------------------
-    
+            
+            # Reviso los vectores de las distancias Jensen Shannon ya calculados y obtengo las posiciones de
+            # las simulaciones cuyas distancias sean menores.
+            indice_decimo_elemento = np.argsort(ZZ[(Arr_param_y.shape[0]-1)-fila,columna,:])[cant_simulaciones-1]
+            print("Cos(delta): ",PARAM_X)
+            print("Beta: ",PARAM_Y)
+            print("indice: ",indice_decimo_elemento)
+            print("Cant True: ",np.count_nonzero(ZZ[(Arr_param_y.shape[0]-1)-fila,columna, :] <= ZZ[(Arr_param_y.shape[0]-1)-fila,columna,indice_decimo_elemento]))
+            print("Tamaño vector Booleano: ",len(ZZ[(Arr_param_y.shape[0]-1)-fila,columna, :] <= ZZ[(Arr_param_y.shape[0]-1)-fila,columna,indice_decimo_elemento]))
+            print("Cant Frecuencias: ",len(Frecuencias[ZZ[(Arr_param_y.shape[0]-1)-fila,columna, :] <= ZZ[(Arr_param_y.shape[0]-1)-fila,columna,indice_decimo_elemento]]))
+            Estados_clasificados[(Arr_param_y.shape[0]-1)-fila,columna, :] = Frecuencias[ZZ[(Arr_param_y.shape[0]-1)-fila,columna, :] <= ZZ[(Arr_param_y.shape[0]-1)-fila,columna,indice_decimo_elemento]]
+            
+        # Ahora que tengo los estados clasificados de las simulaciones dentro del conjunto de simulaciones
+        # más similares, lo siguiente es determinar cuáles son los estados predominantes, así hago gráficos
+        # de los dos estados más predominantes.
+        
+        Estados, Cuentas = np.unique(Estados_clasificados, return_counts=True)
+        indice_segundo_elemento = np.flip(np.argsort(Cuentas))[1]
+        estados_dominantes = Estados[Cuentas >= Cuentas[indice_segundo_elemento]]
+        
+        # Construyo mi array ZZ para graficar el mapa de colores de FEF.
+        ZZ_estados = np.zeros((2,XX.shape[0],XX.shape[1]))
+        
+        for grafico in estados_dominantes:
+            for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
+                
+                ZZ_estados[grafico,(Arr_param_y.shape[0]-1)-fila,columna] = np.count_nonzero(Estados_clasificados[(Arr_param_y.shape[0]-1)-fila,columna,:] == grafico)/Estados_clasificados.shape[2]
+                
+        for grafico in estados_dominantes:
+            # Una vez que tengo el ZZ completo, armo mi mapa de colores
+            direccion_guardado = Path("../../../Imagenes/{}/Fracción estados finales {}_r{}.png".format(carpeta/"Sin Cruz",Nombres[grafico],i))
+            
+            plt.rcParams.update({'font.size': 44})
+            plt.figure("FEF",figsize=(28,21))
+            plt.xlabel(r"${}$".format(SIM_param_x))
+            plt.ylabel(r"${}$".format(SIM_param_y))
+            
+            # Hago el ploteo del mapa de colores con el colormesh
+            
+            plt.pcolormesh(XX,YY,ZZ[grafico],shading="nearest", cmap = "plasma")
+            plt.colorbar()
+            plt.title("Fracción de estados de {} \n {} simulaciones".format(Nombres[grafico],cant_simulaciones))
+            
+            # Guardo la figura y la cierro
+            
+            plt.savefig(direccion_guardado , bbox_inches = "tight")
+            plt.close("FEF")
+        
+        
+        
     
 
 #-----------------------------------------------------------------------------------------------
