@@ -1612,3 +1612,19 @@ Por algún motivo raro, el código que hace el mapa de colores de FEF para los d
 está teniendo un problema en un caso particular. Por alguna razón para los valores de Beta=0.4 y
 Cos(delta) = 0.1 pareciera que al calcular la Distancia Jensen-Shannon, todas las distancias dan lo
 mismo. RARO. Voy a intentar printear esa "fila" del vector ZZ y ver qué pasa ahí.
+
+------------------------------------------------------------------------------------------
+
+18/06/2024
+
+Estoy armando la presentación para mañana, ya tengo varios de los gráficos. Tengo que ver
+de mandar a hacer gráficos de histogramas con los 10000 agentes. En especial porque necesito
+un gráfico de un estado de transición para mostrar.
+
+Como de costumbre, Pablo me tiró una idea de qué hacer ahora, que es un bardo de rearmar. Veamos
+qué podemos hacer de acá para mañana. Si tengo esto resuelto para una o dos preguntas, estoy hecho.
+La idea es mirar el estado promedio. Juraría que cuando hicimos esto, lo que se veía era una cagada.
+Debí haber recordado eso cuando charlaba con Pablo.
+
+Tengo que considerar adaptar el armado de los histogramas 2D de opiniones para que acepte el caso de
+que las preguntas tengan 6 respuestas en vez de 7.
