@@ -1673,3 +1673,27 @@ Debí haber recordado eso cuando charlaba con Pablo.
 
 Tengo que considerar adaptar el armado de los histogramas 2D de opiniones para que acepte el caso de
 que las preguntas tengan 6 respuestas en vez de 7.
+
+------------------------------------------------------------------------------------------
+
+19/06/2024
+
+Notas de la reunión:
+-------------------
+
+.) El gran dilema es si deberíamos tomar pocas cantidad de simulaciones o no al hacer
+los análisis. David propone que deberíamos complementar el análisis de pocas simulaciones
+con un segundo análisis indicando la composición de estados en el espacio de parámetros.
+.) Método cuantitativo, tomar las distancias, ver la dispersión de distancias. Podría dar una
+idea de la comunidad de distancias.
+.) Armar un histograma de distancias de Jensen-Shannon. La idea es ver si se pueden conseguir
+histogramas que indiquen comunidades.
+.) Gráfico de probabilidad de encontrar una configuración en función de su distancia. Esto sería
+el primer paso para algo mejor, que es un segundo gráfico que tenga para cada combinación de
+parámetros, la probabilidad de encontrar comunidades de distancias similares.
+.) Nos están comentando sobre el trabajo con la persona esta, Pablo Etchenique. Es un trabajo
+en que analizan las ideologías 
+
+Luego de la charla me puse a cocinar y mi intención era estudiar Alemán. No estudié un carajo.
+Cuatro horas se me fueron entre cocinar, limpiar la cocina, comer y cosas. Definitivamente fue
+mucho tiempo. No sé qué pasó.
