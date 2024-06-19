@@ -444,11 +444,11 @@ def Leer_Datos_ANES(filename,año):
                        'V201246':'Spending & Services', 'V201249':'Defense Spending', 'V201252':'Gov-private Medical Insurance',
                        'V201255':'Guaranteed job Income', 'V201258':'Gov Assistance to Blacks', 'V201262':'Environment-Business Tradeoff',
                        'V201342x':'Abortion Rights Supreme Court', 'V201345x':'Death Penalty','V201356x':'Vote by mail',
-                       'V201362x':'Allowing Felons to vote', 'V201372x':'Helpful-Harmful if Pres didnt have to worry about Congress',
+                       'V201362x':'Allowing Felons to vote', 'V201372x':'Pres didnt worry Congress',
                        'V201375x':'Restricting Journalist access', 'V201382x':'Corruption increased or decreased since Trump',
-                       'V201386x':'House impeachment decision', 'V201405x':'Require employers to offer paid leave to parents',
-                       'V201408x':'Allow to refuse service to same sex couples', 'V201411x':'Transgender Policy', 'V201420x':'Birthright Citizenship',
-                       'V201423x':'Should children brought illegally be sent back','V201426x':'Wall on border with Mexico',
+                       'V201386x':'Impeachment', 'V201405x':'Require employers to offer paid leave to parents',
+                       'V201408x':'Service same sex couples', 'V201411x':'Transgender Policy', 'V201420x':'Birthright Citizenship',
+                       'V201423x':'Should children brought illegally be sent back','V201426x':'Wall with Mexico',
                        'V201429':'Best way to deal with Urban Unrest','V201605x':'Political Violence compared to 4 years ago',
                        'V202236x':'Allowing refugees to come to US','V202239x':'Effect of Illegal inmigration on crime rate',
                        'V202242x':'Providing path to citizenship','V202245x':'Returning unauthorized immigrants to native country',
@@ -457,8 +457,8 @@ def Leer_Datos_ANES(filename,año):
                        'V202259x':'Government trying to reduce income inequality','V202276x':'People in rural areas get more/less from Govt.',
                        'V202279x':'People in rural areas have too much/too little influence','V202282x':'People in rural areas get too much/too little respect',
                        'V202286x':'Easier/Harder for working mother to bond with child','V202290x':'Better/Worse if man works and woman takes care of home',
-                       'V202320x':'Economic Mobility compared to 20 years ago','V202328x':'Obamacare','V202331x':'Vaccines in Schools',
-                       'V202336x':'Regulation on Greenhouse Emissions','V202341x':'Background checks for guns purchases',
+                       'V202320x':'Economic Mobility compared to 20 years ago','V202328x':'Obamacare','V202331x':'Vaccines Schools',
+                       'V202336x':'Regulation on Greenhouse Emissions','V202341x':'Background checks',
                        'V202344x':'Banning "Assault-style" Rifles','V202347x':'Government buy back of "Assault-Style" Rifles',
                        'V202350x':'Government action about opiod drug addiction','V202361x':'Free trade agreements with other countries',
                        'V202376x':'Federal program giving 12K a year to citizens','V202380x':'Government spending to help pay for health care',
@@ -749,18 +749,27 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, 
         plt.colorbar()
         plt.scatter(XX[tupla],YY[tupla], marker="X", color = "red", s = 180)
         
-        if YY[tupla]-0.025 < np.min(YY):
-            ytext = YY[tupla]+0.025
-        else:
-            ytext = YY[tupla]-0.025
+        # if XX[tupla]+0.05 < np.max(XX):
+        #     xtext = XX[tupla]
+        # else:
+        #     xtext = XX[tupla]-0.05
+
+
+        # if YY[tupla]-0.05 < np.min(YY):
+        #     ytext = YY[tupla]+0.05
+        # else:
+        #     ytext = YY[tupla]-0.05
         
-        plt.text(XX[tupla],ytext, r"${}$ = {:.2f},${}$ = {:.2f} ".format(SIM_param_y, YY[tupla], SIM_param_x, XX[tupla]), fontsize= 36)
+        # plt.text(xtext,ytext, r"${}$ = {:.2f},${}$ = {:.2f} ".format(SIM_param_y, YY[tupla], SIM_param_x, XX[tupla]), fontsize= 36)
         plt.title("Distancia Jensen-Shannon sin cruz {} simulaciones\n {} vs {}".format(10+i*10,dict_labels[code_y],dict_labels[code_x]))
         
         # Guardo la figura y la cierro
         
         plt.savefig(direccion_guardado , bbox_inches = "tight")
         plt.close("Ranking Distancia Jensen-Shannon")
+        
+        
+        
     
 
 #-----------------------------------------------------------------------------------------------
@@ -889,7 +898,7 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_label
                 
                 # Armo mi gráfico, lo guardo y lo cierro
                 
-                plt.rcParams.update({'font.size': 32})
+                plt.rcParams.update({'font.size': 44})
                 plt.figure(figsize=(28,21))
                 _, _, _, im = plt.hist2d(X, Y, bins=bins,density=True,cmap="inferno")
                 plt.xlabel(r"$x_i^1$")
@@ -902,8 +911,81 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_label
 #                cbar.set_clim(Vmin, Vmax)
                 plt.savefig(direccion_guardado ,bbox_inches = "tight")
                 plt.close()
-                
+             
+    
+    #--------------------------------------------------------------------------------
+    
+    # Lo que quiero hacer acá es armar gráficos de promedios de opiniones rankeados.
+    
+    for i in range(10):
+        
+        # Hago el ploteo del mapa de colores con el colormesh
+        Dist_JS_prom = np.mean(Dist_JS_sorted[:,:,0:10+i*10],axis=2)
+        # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
+        tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
+        
+        PARAM_X = XX[tupla[0],tupla[1]]
+        PARAM_Y = YY[tupla[0],tupla[1]]
+        
+    #-----------------------------------------------------------------------------------------
+    
+        OpiTotales = np.empty(0)
+        cant_simulaciones = 10+i*10
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF_datos.loc[(DF_datos["tipo"]==TIPO) & 
+                                    (DF_datos["n"]==AGENTES) & 
+                                    (DF_datos["Extra"]==EXTRAS) & 
+                                    (DF_datos["parametro_x"]==PARAM_X) &
+                                    (DF_datos["parametro_y"]==PARAM_Y), "nombre"])
+        
+        i_Proms = np.argsort(Dist_JS[tupla])[0:cant_simulaciones]
+        
+        for nombre in archivos[i_Proms]:
+        
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
+            # Semilla
+            
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
+            
+            # Leo los datos de las Opiniones Finales
+            Opifinales = np.array(Datos[5][:-1:], dtype="float")
+            Opifinales = (Opifinales/EXTRAS)*bins[-1]
+            
+            # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+            OpiTotales = np.concatenate((OpiTotales,Opifinales),axis=0)
+            
+        X_0 = OpiTotales[0::T]
+        Y_0 = OpiTotales[1::T]
+        
+        # Tengo que armar los valores de X e Y que voy a graficar
+        
+        X = X_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
+        Y = Y_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
+        
+        direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/Hists_prom_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
+        
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("Ranking Opiniones Promedio",figsize=(28,21))
+        _, _, _, im = plt.hist2d(X, Y, bins=bins,density=True,cmap="inferno")
+        plt.xlabel(r"$x_i^1$")
+        plt.ylabel(r"$x_i^2$")
+        # Set x-ticks and y-ticks from -10 to 10 using plt.xticks() and plt.yticks()
+        # plt.xticks(np.arange(-10, 11, 1))
+        # plt.yticks(np.arange(-10, 11, 1))
+        plt.title(r'Promedio de Histogramas, {} simulaciones, ${}$={}, ${}$={} \n {} vs {}'.format(cant_simulaciones,SIM_param_x,PARAM_X,SIM_param_y,PARAM_Y,dict_labels[code_y],dict_labels[code_x]))
+        plt.colorbar(im, label='Fracción')
+#                cbar.set_clim(Vmin, Vmax)
+        plt.savefig(direccion_guardado ,bbox_inches = "tight")
+        plt.close("Ranking Opiniones Promedio")
+        
+    
     #-------------------------------------------------------------------------------------------------
+    
     
     # Lo que quiero hacer acá es armar gráficos de frecuencia de estados de los dos
     # estados más probables en el espacio de parámetros.
@@ -966,8 +1048,8 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_label
             plt.ylabel(r"${}$".format(SIM_param_y))
             
             # Hago el ploteo del mapa de colores con el colormesh
-            
-            plt.pcolormesh(XX,YY,ZZ_estados[grafico],shading="nearest", cmap = "plasma")
+
+            plt.pcolormesh(XX,YY,ZZ_estados[grafico],shading="nearest", cmap = "plasma",vmin = 0, vmax = 1)
             plt.colorbar()
             plt.title("Fracción de estados de {} \n {}, {} simulaciones \n {} vs {}".format(Nombres[int(estados_dominantes[grafico])],titulo,cant_simulaciones,dict_labels[code_y],dict_labels[code_x]))
             
