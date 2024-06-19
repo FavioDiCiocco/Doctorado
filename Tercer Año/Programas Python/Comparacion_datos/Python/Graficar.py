@@ -27,7 +27,7 @@ T=2 # Defino el número de tópicos
 Etapa = Path("Comparacion_datos") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Zoom_Beta-Cosd"]
+Carpetas = ["Beta-Cosd"]
 
 for carp in Carpetas:
     
@@ -115,8 +115,13 @@ for carp in Carpetas:
         
         Dic_ANES = {"code_1": code_1, "code_2": code_2, "weights":weights}
         
-        func.Mapas_Colores_DJS(Df_archivos, Df_ANES, dict_labels, Direccion, Etapa/carpeta, Dic_ANES, bines,
-                               ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
+        DJS, code_x, code_y = func.Matriz_DJS(Df_archivos, Df_ANES, Dic_ANES, Direccion)
+        
+        func.Mapas_Colores_DJS(DJS, code_x, code_y, Df_archivos, Dic_ANES, dict_labels, Etapa/carpeta,
+                               ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
+        
+        func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_ANES, dict_labels, Etapa/carpeta, Direccion, bines,
+                               ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
         
         #----------------------------------------------------------------------------------------------
         

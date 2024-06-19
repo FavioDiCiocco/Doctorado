@@ -504,13 +504,9 @@ def Leer_Datos_ANES(filename,año):
 
 #-----------------------------------------------------------------------------------------------
     
-# Armo dos mapas de colores de DJS. El mapa de colores
-# no tiene los agentes que hayan opinado neutro en ninguna de las preguntas.
-# En ambos casos estoy considerando que ambas preguntas tienen 7 respuestas. Voy a tener que ir
-# viendo cómo resolver si tienen 6 respuestas.
-
-def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
-                      ID_param_x,SIM_param_x,ID_param_y,SIM_param_y):
+# Esta función construye la matriz de DJS y la returnea
+    
+def Matriz_DJS(DF_datos,DF_Anes,Dic_ANES,path):
     
     # Defino la cantidad de agentes de la red
     AGENTES = int(np.unique(DF_datos["n"]))
@@ -682,25 +678,35 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
             repeticion = int(DF_datos.loc[DF_datos["nombre"]==nombre,"iteracion"])
             
             ZZ[(Arr_param_y.shape[0]-1)-fila,columna,repeticion] = np.min(Dist_previa)
+            
+            #-----------------------------------------------------------------------------------------
+            
+    # Resuelta la matriz, returneo mi info
+    
+    return ZZ, code_x, code_y
+
+#-----------------------------------------------------------------------------------------------
+
+# Armo dos mapas de colores de DJS. El mapa de colores
+# no tiene los agentes que hayan opinado neutro en ninguna de las preguntas.
+# En ambos casos estoy considerando que ambas preguntas tienen 7 respuestas. Voy a tener que ir
+# viendo cómo resolver si tienen 6 respuestas.
+
+def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, carpeta,
+                      ID_param_x,SIM_param_x,ID_param_y,SIM_param_y):
+    
+    # Defino los arrays de parámetros diferentes
+    Arr_param_x = np.unique(DF_datos["parametro_x"])
+    Arr_param_y = np.unique(DF_datos["parametro_y"])
     
     #--------------------------------------------------------------------------------
     
-    # Antes de ordenar mis matrices, voy a obtener la info del gráfico que más se parece
-    # y del décimo que más se parece se parece a lo que estoy queriendo comparar.
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
     
-    iMin = np.unravel_index(np.argmin(ZZ),ZZ.shape)
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
     
-    # Hallo el décimo que más se parece a la distribución. Arranco con el que no tiene centro
-    
-    flattened_array = ZZ.flatten()
-    sorted_indices = np.argsort(flattened_array)
-    tenth_element_flat_index = sorted_indices[9]
-    iMax = np.unravel_index(tenth_element_flat_index, ZZ.shape)
-    
-    #--------------------------------------------------------------------------------
-    
-    # Organizo las matrices ZZ según su similaridad
-    ZZ_sorted = np.sort(ZZ)
+    # Organizo las matrices Dist_JS según su similaridad
+    Dist_JS = np.sort(Dist_JS)
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores para el caso sin cruz
     direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/DistanciaJS_{}vs{}.png".format(carpeta,code_y,code_x))
@@ -712,7 +718,7 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
     
     # Hago el ploteo del mapa de colores con el colormesh
     
-    plt.pcolormesh(XX,YY,np.mean(ZZ_sorted,axis=2),shading="nearest", cmap = "viridis")
+    plt.pcolormesh(XX,YY,np.mean(Dist_JS, axis=2),shading="nearest", cmap = "viridis")
     plt.colorbar()
     plt.title("Distancia Jensen-Shannon sin cruz\n {} vs {}".format(dict_labels[code_y],dict_labels[code_x]))
     
@@ -723,23 +729,23 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
     
     # Y ahora me armo el gráfico de promedios de distancia JS según cantidad de simulaciones
     # consideradas, con las simulaciones ordenadas de las de menos distancia a las de más distancia
-       
+    
     for i in range(10):
         
         direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/DistanciaJS_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
-    
+        
         plt.rcParams.update({'font.size': 44})
         plt.figure("Ranking Distancia Jensen-Shannon",figsize=(28,21))
         plt.xlabel(r"${}$".format(SIM_param_x))
         plt.ylabel(r"${}$".format(SIM_param_y))
         
         # Hago el ploteo del mapa de colores con el colormesh
-        ZZ_prom = np.mean(ZZ_sorted[:,:,0:10+i*10],axis=2)
+        Dist_JS_prom = np.mean(Dist_JS[:,:,0:10+i*10],axis=2)
         
         # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
-        tupla = np.unravel_index(np.argmin(ZZ_prom),ZZ_prom.shape)
+        tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
         
-        plt.pcolormesh(XX,YY,ZZ_prom,shading="nearest", cmap = "cividis")
+        plt.pcolormesh(XX,YY,Dist_JS_prom,shading="nearest", cmap = "cividis")
         plt.colorbar()
         plt.scatter(XX[tupla],YY[tupla], marker="X", color = "red", s = 180)
         
@@ -756,20 +762,70 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
         plt.savefig(direccion_guardado , bbox_inches = "tight")
         plt.close("Ranking Distancia Jensen-Shannon")
     
-    #-------------------------------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------------------------
+
+# Esta función arma los histogramas de opiniones máxima y mínima similaridad entre las 10 simulaciones
+# más similares con la distribución de la encuesta
+
+def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, carpeta, path, bins,
+                      ID_param_x,SIM_param_x,ID_param_y,SIM_param_y):
     
     # Hago los gráficos de histograma 2D de las simulaciones que más se parecen y que menos se parecen
     # a mis distribuciones de las encuestas
+    Dist_JS_sorted = np.sort(Dist_JS)
     
     # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
     # de todas las simulaciones para cada punto del espacio de parámetros.
     Dic_Total = Diccionario_metricas(DF_datos,path, 20, 20)
     
+    #-------------------------------------------------------------------------------------------------
+    
+    # Antes de ordenar mis matrices, voy a obtener la info del gráfico que más se parece
+    # y del décimo que más se parece se parece a lo que estoy queriendo comparar.
+    
+    iMin = np.unravel_index(np.argmin(Dist_JS),Dist_JS.shape)
+    
+    # Hallo el décimo que más se parece a la distribución. Arranco con el que no tiene centro
+    
+    flattened_array = Dist_JS.flatten()
+    sorted_indices = np.argsort(flattened_array)
+    tenth_element_flat_index = sorted_indices[9]
+    iMax = np.unravel_index(tenth_element_flat_index, Dist_JS.shape)
+    
+    #--------------------------------------------------------------------------------
+
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF_datos["n"]))
+    
+    # Defino los arrays de parámetros diferentes
+    EXTRAS = int(np.unique(DF_datos["Extra"]))
+    Arr_param_x = np.unique(DF_datos["parametro_x"])
+    Arr_param_y = np.unique(DF_datos["parametro_y"])
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    T=2
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
+                   for j,param_y in enumerate(Arr_param_y)]
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    
+    #--------------------------------------------------------------------------------
+    
     # Armo listas de strings y números para mis archivos
     Lista_similaridad = ["min_distancia","max_distancia"]
-    Valor_distancia = [np.min(ZZ_sorted),np.max(ZZ_sorted)]
-#    Vmin = np.min(Distr_Enc)
-#    Vmax = np.max(Distr_Enc)
+    Valor_distancia = [np.min(Dist_JS_sorted),np.max(Dist_JS_sorted[:,:,0:10])]
+    
+    Nombres = ["Consenso neutral", "Consenso radicalizado", "Polarización 1D y Consenso",
+           "Polarización Ideológica", "Transición", "Polarización Descorrelacionada",
+           "Polarización 1D y Consenso con anchura",
+           "Polarización Ideológica con anchura", "Transición con anchura",
+           "Polarización Descorrelacionada con anchura"]
     
     for tupla,simil,distan in zip([iMin, iMax],Lista_similaridad,Valor_distancia):
     
@@ -821,12 +877,6 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
                 indice = np.where(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] == repeticion)[0][0]
                 estado = int(Frecuencias[indice])
                 
-                Nombres = ["Consenso neutral", "Consenso radicalizado", "Polarización 1D y Consenso",
-                           "Polarización Ideológica", "Transición", "Polarización Descorrelacionada",
-                           "Polarización 1D y Consenso con anchura",
-                           "Polarización Ideológica con anchura", "Transición con anchura",
-                           "Polarización Descorrelacionada con anchura"]
-                
                 #----------------------------------------------------------------------------------------------------------------------------------
                 
                 # Tengo que armar los valores de X e Y que voy a graficar
@@ -858,13 +908,6 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
     # Lo que quiero hacer acá es armar gráficos de frecuencia de estados de los dos
     # estados más probables en el espacio de parámetros.
     
-    # Defino los nombres de los estados de mi sistema
-    Nombres = ["Consenso neutral", "Consenso radicalizado", "Polarización 1D y Consenso",
-               "Polarización Ideológica", "Transición", "Polarización Descorrelacionada",
-               "Polarización 1D y Consenso con anchura",
-               "Polarización Ideológica con anchura", "Transición con anchura",
-               "Polarización Descorrelacionada con anchura"]
-    
     # Arranco con un barrido en el ranking
     for i in range(10):
         
@@ -886,34 +929,36 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
             
             # Reviso los vectores de las distancias Jensen Shannon ya calculados y obtengo las posiciones de
             # las simulaciones cuyas distancias sean menores.
-            indice_decimo_elemento = np.argsort(ZZ[(Arr_param_y.shape[0]-1)-fila,columna,:])[cant_simulaciones-1]
-            print("Cos(delta): ",PARAM_X)
-            print("Beta: ",PARAM_Y)
-            print("indice: ",indice_decimo_elemento)
-            print("Cant True: ",np.count_nonzero(ZZ[(Arr_param_y.shape[0]-1)-fila,columna, :] <= ZZ[(Arr_param_y.shape[0]-1)-fila,columna,indice_decimo_elemento]))
-            print("Tamaño vector Booleano: ",len(ZZ[(Arr_param_y.shape[0]-1)-fila,columna, :] <= ZZ[(Arr_param_y.shape[0]-1)-fila,columna,indice_decimo_elemento]))
-            print("Cant Frecuencias: ",len(Frecuencias[ZZ[(Arr_param_y.shape[0]-1)-fila,columna, :] <= ZZ[(Arr_param_y.shape[0]-1)-fila,columna,indice_decimo_elemento]]))
-            Estados_clasificados[(Arr_param_y.shape[0]-1)-fila,columna, :] = Frecuencias[ZZ[(Arr_param_y.shape[0]-1)-fila,columna, :] <= ZZ[(Arr_param_y.shape[0]-1)-fila,columna,indice_decimo_elemento]]
+            iElemR = np.argsort(Dist_JS[(Arr_param_y.shape[0]-1)-fila,columna,:])[cant_simulaciones-1]
+#            if PARAM_X == 0.1:
+#                print("Cos(delta): ",PARAM_X)
+#                print("Beta: ",PARAM_Y)
+#                print("indice: ",iElemR)
+#                print("Cant True: ",np.count_nonzero(Dist_JS[(Arr_param_y.shape[0]-1)-fila,columna, :] <= Dist_JS[(Arr_param_y.shape[0]-1)-fila,columna,iElemR]))
+#                print("Tamaño vector Booleano: ",len(Dist_JS[(Arr_param_y.shape[0]-1)-fila,columna, :] <= Dist_JS[(Arr_param_y.shape[0]-1)-fila,columna,iElemR]))
+#                print("Cant Frecuencias: ",len(Frecuencias[Dist_JS[(Arr_param_y.shape[0]-1)-fila,columna, :] <= Dist_JS[(Arr_param_y.shape[0]-1)-fila,columna,iElemR]]))
+#                print(Dist_JS[(Arr_param_y.shape[0]-1)-fila,columna])
+            Array_bool = Dist_JS[(Arr_param_y.shape[0]-1)-fila,columna, :] <= Dist_JS[(Arr_param_y.shape[0]-1)-fila,columna,iElemR]
+            Estados_clasificados[(Arr_param_y.shape[0]-1)-fila,columna, :] = Frecuencias[Array_bool][0:cant_simulaciones]
             
         # Ahora que tengo los estados clasificados de las simulaciones dentro del conjunto de simulaciones
         # más similares, lo siguiente es determinar cuáles son los estados predominantes, así hago gráficos
         # de los dos estados más predominantes.
         
         Estados, Cuentas = np.unique(Estados_clasificados, return_counts=True)
-        indice_segundo_elemento = np.flip(np.argsort(Cuentas))[1]
-        estados_dominantes = Estados[Cuentas >= Cuentas[indice_segundo_elemento]]
+        estados_dominantes = Estados[np.argsort(Cuentas)[-2:]]
         
         # Construyo mi array ZZ para graficar el mapa de colores de FEF.
         ZZ_estados = np.zeros((2,XX.shape[0],XX.shape[1]))
         
-        for grafico in estados_dominantes:
+        for grafico,estado in enumerate(estados_dominantes):
             for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
                 
-                ZZ_estados[grafico,(Arr_param_y.shape[0]-1)-fila,columna] = np.count_nonzero(Estados_clasificados[(Arr_param_y.shape[0]-1)-fila,columna,:] == grafico)/Estados_clasificados.shape[2]
+                ZZ_estados[grafico,(Arr_param_y.shape[0]-1)-fila,columna] = np.count_nonzero(Estados_clasificados[(Arr_param_y.shape[0]-1)-fila,columna] == estado)/Estados_clasificados.shape[2]
                 
-        for grafico in estados_dominantes:
+        for grafico,titulo,direc in zip(np.arange(2),["Segundo estado más probable","Primer estado más probable"],["SegundoDom","PrimeroDom"]):
             # Una vez que tengo el ZZ completo, armo mi mapa de colores
-            direccion_guardado = Path("../../../Imagenes/{}/Fracción estados finales {}_r{}.png".format(carpeta/"Sin Cruz",Nombres[grafico],i))
+            direccion_guardado = Path("../../../Imagenes/{}/FEF {}_{}vs{}_r{}.png".format(carpeta/"Sin Cruz",direc,code_y,code_x,i))
             
             plt.rcParams.update({'font.size': 44})
             plt.figure("FEF",figsize=(28,21))
@@ -922,9 +967,9 @@ def Mapas_Colores_DJS(DF_datos,DF_Anes, dict_labels,path,carpeta,Dic_ANES,bins,
             
             # Hago el ploteo del mapa de colores con el colormesh
             
-            plt.pcolormesh(XX,YY,ZZ[grafico],shading="nearest", cmap = "plasma")
+            plt.pcolormesh(XX,YY,ZZ_estados[grafico],shading="nearest", cmap = "plasma")
             plt.colorbar()
-            plt.title("Fracción de estados de {} \n {} simulaciones".format(Nombres[grafico],cant_simulaciones))
+            plt.title("Fracción de estados de {} \n {}, {} simulaciones \n {} vs {}".format(Nombres[int(estados_dominantes[grafico])],titulo,cant_simulaciones,dict_labels[code_y],dict_labels[code_x]))
             
             # Guardo la figura y la cierro
             

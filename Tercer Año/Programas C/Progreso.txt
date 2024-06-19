@@ -1612,3 +1612,48 @@ Por algún motivo raro, el código que hace el mapa de colores de FEF para los d
 está teniendo un problema en un caso particular. Por alguna razón para los valores de Beta=0.4 y
 Cos(delta) = 0.1 pareciera que al calcular la Distancia Jensen-Shannon, todas las distancias dan lo
 mismo. RARO. Voy a intentar printear esa "fila" del vector ZZ y ver qué pasa ahí.
+
+------------------------------------------------------------------------------------------
+
+15/06/2024
+
+Estoy en casa intentando hacer funcionar el código que arma los gráficos de Frecuencia de Estados
+Finales rankeados de las dos distribuciones más dominantes. Estoy teniendo problemas con las matrices
+construidas, pero no sé por qué y tarda mucho el código para poder mostrarme cuál es el problema.
+
+Puedo seguir hardcodeando mis problemas, pero hay muchas chances de mandarme cagadas. Mejor me pongo
+a revisar las cosas de a poco. Voy a desarmar el código de mapa de colores de Distancia Jensen-Shannon
+de forma de correrlo una vez y empezar a trabajar con la matriz ya construida de forma más fácil.
+
+La idea es que la función devuelva la matriz de Jensen-Shannon, después otra función con eso grafica
+el mapa de colores, otra arma los ranking y una tercera hace la parte de las simulaciones predominantes.
+Haré eso entre mañana y el lunes.
+
+------------------------------------------------------------------------------------------
+
+16/06/2024
+
+Armé la función que construye la matriz de Distancia Jensen-Shannon y la returnea.
+Algo que estoy notando es que quizás convenga definir cuál es el código x y el código
+y por fuera de estas funciones. Mejor hacerlo en el código de Graficar.
+
+------------------------------------------------------------------------------------------
+
+17/06/2024
+
+Logré separar el código en tres partes. Lo cuál es un golazo. Lo siguiente es ver si puedo
+descubrir el error que tiene para abrir la matriz. Si puedo hacer eso, puedo revisar entonces
+qué es lo que está pasando que falla en el armado de los gráficos de FEF.
+
+Luego de bastante revisar, al final el error que tenía era una boludez, simplemente pasa que
+estaba pasando un float para ubicar filas de un array. La cosa está funcionando ahora. Lo que voy
+a hacer ahora es volver a mandar a correr las cosas las pc's de la facultad. Y también voy a mandar
+a correr las funciones de Graficación en Algarve, para tener los gráficos hechos a partir de las
+simulaciones de 10000 agentes.
+
+.) En Algarve voy a mandar a correr todo a partir de Beta=0.9. Así que después tengo que completar
+la segunda simulación de Beta=0 a 0.8.
+.) En Coimbra, la primer simulación se terminó y estaban en la segunda. Así que ahora mando todo
+a partir de Beta=0.3.
+.) En Oporto voy a mandar a correr todo a partir de Beta=1.1. Así que después tengo que completar
+la segunda simulación de Beta=0 a 1.
