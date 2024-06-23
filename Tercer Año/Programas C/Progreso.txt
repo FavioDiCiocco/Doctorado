@@ -1697,3 +1697,33 @@ en que analizan las ideologías
 Luego de la charla me puse a cocinar y mi intención era estudiar Alemán. No estudié un carajo.
 Cuatro horas se me fueron entre cocinar, limpiar la cocina, comer y cosas. Definitivamente fue
 mucho tiempo. No sé qué pasó.
+
+------------------------------------------------------------------------------------------
+
+22/06/2024
+
+Revisé las pc's, las simulaciones casi terminaron hoy, mañana podría mandarlas a las regiones que
+faltan. Oporto podría mandarla hoy. Mañana lo que puedo hacer es revisar un poco
+el código y ver de armar algo que construya los histogramas de distancias de Jensen-Shannon.
+
+Tener algún argumento para charlar con Pablo sobre si tomar más o menos simulaciones. Revisar
+las otras preguntas para tener más info qué conversar. Podría también considerar actualizar
+las documentaciones.
+
+------------------------------------------------------------------------------------------
+
+23/06/2024
+
+Algarve todavía no terminó, mañana mando a correr cosas ahí. Esto es lo que tengo que mandar
+a correr nuevamente. Ignorando la región 
+
+.) En Algarve voy a mandar a correr todo a partir de Beta=0.9. Así que después tengo que completar
+la segunda simulación de Beta=0 a 0.8.
+.) En Coimbra, la primer simulación se terminó y estaban en la segunda. Así que ahora mando todo
+a partir de Beta=0.3.
+.) En Oporto voy a mandar a correr todo a partir de Beta=1.1. Así que después tengo que completar
+la segunda simulación de Beta=0 a 1.
+
+En Coimbra se terminó todo, así que ahora tengo que mandar en la región chiquita que faltaba.
+En Oporto falta una buena parte de la segunda simulación, ahí la mando a correr.
+Ya mandé a correr todo. Ahora me voy a poner a estudiar un poco de Alemán.
