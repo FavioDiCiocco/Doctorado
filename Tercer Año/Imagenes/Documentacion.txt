@@ -52,4 +52,11 @@ en el espacio de parámetros. Hasta ahora armé gráficos de Distancia Promedio 
 y ranking de esas distancias en función de la cantidad de simulaciones similares consideradas.
  La idea es armar también gráficos de los paraboloides con los que se construyen los ajustes y
 agregar de alguna manera los valores obtenidos del ajuste de Beta y Cos(delta).
-
+ Agregué carpetas internas, como la de distribuciones sin centro, que tiene distribuciones de histogramas
+2D en el espacio de opiniones en las que remuevo las opiniones que caen en el entorno del punto (0,0).
+La de distribuciones sin cruz remueve todas las opiniones que tienen opinión en alguno de los tópicos
+en el entorno del 0.
+ La carpeta Beta-Cosd es la que tiene los gráficos que obtengo usando simulaciones con 10000 agentes.
+Estos gráficos los obtengo de Algarve. Tanto esta carpeta como la de Zoom_Beta-Cosd tienen otras
+tres carpeta donde separan los gráficos de distancia JS según si usan distribuciones sin el punto
+del centro o si usan distribuciones removiendo la cruz de opiniones del espacio de opiniones.

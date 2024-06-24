@@ -223,8 +223,8 @@ void Clasificacion(puntero_Matrices red, puntero_Parametros param){
 	
 	// Hago el conteo de agentes en cada una de las cajitas
 	for(int agente = 0; agente < Fo; agente++ ){
-		columna = fmin(floor(red->Opi[agente*Co+2]/ancho),param->bines-1);
-		fila = fmin(floor(red->Opi[agente*Co+1+2]/ancho),param->bines-1);
+		columna = fmin(floor(red->Opi[agente*Co+1+2]/ancho),param->bines-1);
+		fila = fmin(floor(red->Opi[agente*Co+2]/ancho),param->bines-1);
 		red->Hist[fila*Cd+columna+2] += 1;
 	}
 	

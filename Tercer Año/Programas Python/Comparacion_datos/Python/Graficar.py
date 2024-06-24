@@ -27,7 +27,7 @@ T=2 # Defino el número de tópicos
 Etapa = Path("Comparacion_datos") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Beta-Cosd"]
+Carpetas = ["Zoom_Beta-Cosd"]
 
 for carp in Carpetas:
     
@@ -108,7 +108,7 @@ for carp in Carpetas:
               # (np.array([0,0.2]),np.array([0.4,0.8])), (np.array([0,0.1]),np.array([0.4,0.66])), (np.array([0,0.1]),np.array([0.4,0.7]))]
     
     for preguntas,rango_ajuste in zip(labels,rangos):
-            
+        
         code_1 = preguntas[0]
         code_2 = preguntas[1]
         weights = preguntas[2]
@@ -117,11 +117,13 @@ for carp in Carpetas:
         
         DJS, code_x, code_y = func.Matriz_DJS(Df_archivos, Df_ANES, Dic_ANES, Direccion)
         
-        func.Mapas_Colores_DJS(DJS, code_x, code_y, Df_archivos, Dic_ANES, dict_labels, Etapa/carpeta,
-                               ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
+        # func.Mapas_Colores_DJS(DJS, code_x, code_y, Df_archivos, Dic_ANES, dict_labels, Etapa/carpeta,
+        #                        ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
         
-        func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_ANES, dict_labels, Etapa/carpeta, Direccion, bines,
-                               ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
+        # func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_ANES, dict_labels, Etapa/carpeta, Direccion, bines,
+        #                        ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
+        
+        func.Histograma_distancias(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta, ID_param_x, ID_param_y)
         
         #----------------------------------------------------------------------------------------------
         

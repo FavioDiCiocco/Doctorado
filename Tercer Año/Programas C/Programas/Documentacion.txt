@@ -49,4 +49,11 @@ Ese es el problema de querer documentar mucho tiempo después. En la facultad ve
 
 Estamos directamente usando el código que nos pasó Hugo para realizar simulaciones de 10000 agentes
 porque mi código estaba tardando demasiado. Así que adapté el código de Hugo para que trabaje con dos
-tópicos. La idea es que haga un barrido en una parte del espacio Beta-Cos(delta) 
+tópicos. La idea es que haga un barrido en una parte del espacio Beta-Cos(delta)
+
+.) Agentes_Fijos:
+-----------------
+
+La idea es que un grupo de los agentes tengan opinión nula durante toda la evolución. Esto era para
+comparar mejor las distribuciones de las encuestas con las distribuciones simuladas. 
+Al final no creo que use estos datos, pero están ya simulados.

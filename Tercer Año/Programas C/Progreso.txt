@@ -1734,3 +1734,32 @@ un histograma con 10 simulaciones no tiene mucho sentido. Necesito definir bien 
 Eso lo haré mañana charlando con Pablo. Y también debería tener un buen argumento sobre si tomar
 muchos o pocas simulaciones. Igual posiblemente lo mejor sea hacer lo que dijo David,
 hacer los dos análisis en simultáneo al mostrar los resultados.
+
+------------------------------------------------------------------------------------------
+
+24/06/2024
+
+Algarve todavía no terminó, así que habrá que ver de mandar a correr cosas el miércoles
+o algo así.
+
+Volviendo al tema de los histogramas de distancias, me parece que lo mejor es arrancar con
+histogramas de distancias en los puntos de mínima distancia promedio, utilizando 100 distribuciones
+para el histograma.
+ Ahí tengo armados estos histogramas. ¿Expando la región que observo? Me parece que hacer un histograma
+de cada punto en el espacio de parámetros es un montón. Una gran pregunta es después cómo encontrar
+máximos o cosas así. Pero para saber qué quiero buscar, voy a necesitar revisar un poco qué forma
+tienen los histogramas obtenidos. Quizás quiera revisar ciertos percentiles o cosas así.
+
+Si hoy no llego a reunirme con Pablo, siento que podría ponerme a revisar un rato el tema de
+por qué mi código va tanto más lento que el de Hugo y la gente de Gotham. En cuanto logre armar
+los histogramas hago eso.
+ Viendo los histogramas, tengo un gran pico con distancias grandes, y un pequeño conjunto
+de estados con distancias pequeñas. Voy a tener que ver cómo reconocer esos conjuntos de
+datos. También considerando que por ejemplo en el caso del par de preguntas no-políticas,
+la distribución de distancias es simplemente un único pico.
+
+Ya revisé el código que tengo en el src. Corregí la función de Clasificación para que funcione
+correctamente. Ahora puedo empezar a jugar con esto para intentar ver qué es lo que está funcionando
+mal. Hice una corrida de 10000 agentes con 500 pasos, tardó 11 minutos y medio. Probemos con 1000
+agentes. Esto tarda 139 segundos. Puedo intentar trabajar con esto para intentar reducir los tiempos
+de simulación. Veré de trabajar en esto mañana. O quizás hoy lo mire un poco en casa, ya veré.

@@ -180,6 +180,7 @@ int main(int argc, char *argv[]){
 	// Promedio el valor de Prom_Opi al dividir por el tamaño de la ventana
 	for(int j=0; j<param->N*param->T; j++) red->Prom_Opi[j+2] = red->Prom_Opi[j+2] / ancho_ventana;
 	*/
+	
 	//################################################################################################################################
 	
 	// Realizo la simulación del modelo hasta que este alcance un estado estable
