@@ -1727,3 +1727,10 @@ la segunda simulación de Beta=0 a 1.
 En Coimbra se terminó todo, así que ahora tengo que mandar en la región chiquita que faltaba.
 En Oporto falta una buena parte de la segunda simulación, ahí la mando a correr.
 Ya mandé a correr todo. Ahora me voy a poner a estudiar un poco de Alemán.
+
+Arranqué a construir una función que arme los histogramas en el punto de distancia mínima. El
+problema con eso es que ese punto medio depende de la cantidad de simulaciones que tome. Y hacer
+un histograma con 10 simulaciones no tiene mucho sentido. Necesito definir bien qué critero voy a tomar.
+Eso lo haré mañana charlando con Pablo. Y también debería tener un buen argumento sobre si tomar
+muchos o pocas simulaciones. Igual posiblemente lo mejor sea hacer lo que dijo David,
+hacer los dos análisis en simultáneo al mostrar los resultados.

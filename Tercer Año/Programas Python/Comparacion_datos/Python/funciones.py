@@ -1057,10 +1057,104 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_label
             
             plt.savefig(direccion_guardado , bbox_inches = "tight")
             plt.close("FEF")
-        
-        
-        
     
+
+#-----------------------------------------------------------------------------------------------
+            
+# Armo una función que en el punto de mínima distancia media construya un histograma de las distancias de JS
+
+def Histograma_distancias(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, carpeta, path, bins,
+                      ID_param_x,SIM_param_x,ID_param_y,SIM_param_y):
+    
+    # Hago los gráficos de histograma 2D de las simulaciones que más se parecen y que menos se parecen
+    # a mis distribuciones de las encuestas
+    Dist_JS_sorted = np.sort(Dist_JS)
+    
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF_datos["n"]))
+    
+    # Defino los arrays de parámetros diferentes
+    EXTRAS = int(np.unique(DF_datos["Extra"]))
+    Arr_param_x = np.unique(DF_datos["parametro_x"])
+    Arr_param_y = np.unique(DF_datos["parametro_y"])
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    T=2
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    
+    #-----------------------------------------------------------------------------------------
+    
+    # Lo que quiero hacer acá es armar gráficos de promedios de opiniones rankeados.
+    
+    for i in range(10):
+        
+        # Hago el ploteo del mapa de colores con el colormesh
+        Dist_JS_prom = np.mean(Dist_JS_sorted[:,:,0:10+i*10],axis=2)
+        # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
+        tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
+        
+        PARAM_X = XX[tupla[0],tupla[1]]
+        PARAM_Y = YY[tupla[0],tupla[1]]
+        
+    #-----------------------------------------------------------------------------------------
+    
+        OpiTotales = np.empty(0)
+        cant_simulaciones = 10+i*10
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF_datos.loc[(DF_datos["tipo"]==TIPO) & 
+                                    (DF_datos["n"]==AGENTES) & 
+                                    (DF_datos["Extra"]==EXTRAS) & 
+                                    (DF_datos["parametro_x"]==PARAM_X) &
+                                    (DF_datos["parametro_y"]==PARAM_Y), "nombre"])
+        
+        i_Proms = np.argsort(Dist_JS[tupla])[0:cant_simulaciones]
+        
+        for nombre in archivos[i_Proms]:
+        
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
+            # Semilla
+            
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
+            
+            # Leo los datos de las Opiniones Finales
+            Opifinales = np.array(Datos[5][:-1:], dtype="float")
+            Opifinales = (Opifinales/EXTRAS)*bins[-1]
+            
+            # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+            OpiTotales = np.concatenate((OpiTotales,Opifinales),axis=0)
+            
+        X_0 = OpiTotales[0::T]
+        Y_0 = OpiTotales[1::T]
+        
+        # Tengo que armar los valores de X e Y que voy a graficar
+        
+        X = X_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
+        Y = Y_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
+        
+        direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/Hists_prom_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
+        
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("Ranking Opiniones Promedio",figsize=(28,21))
+        _, _, _, im = plt.hist2d(X, Y, bins=bins,density=True,cmap="inferno")
+        plt.xlabel(r"$x_i^1$")
+        plt.ylabel(r"$x_i^2$")
+        # Set x-ticks and y-ticks from -10 to 10 using plt.xticks() and plt.yticks()
+        # plt.xticks(np.arange(-10, 11, 1))
+        # plt.yticks(np.arange(-10, 11, 1))
+        plt.title(r'Promedio de Histogramas, {} simulaciones, ${}$={}, ${}$={} \n {} vs {}'.format(cant_simulaciones,SIM_param_x,PARAM_X,SIM_param_y,PARAM_Y,dict_labels[code_y],dict_labels[code_x]))
+        plt.colorbar(im, label='Fracción')
+#                cbar.set_clim(Vmin, Vmax)
+        plt.savefig(direccion_guardado ,bbox_inches = "tight")
+        plt.close("Ranking Opiniones Promedio")
 
 #-----------------------------------------------------------------------------------------------
     
