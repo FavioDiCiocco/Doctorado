@@ -1763,3 +1763,12 @@ correctamente. Ahora puedo empezar a jugar con esto para intentar ver qué es lo
 mal. Hice una corrida de 10000 agentes con 500 pasos, tardó 11 minutos y medio. Probemos con 1000
 agentes. Esto tarda 139 segundos. Puedo intentar trabajar con esto para intentar reducir los tiempos
 de simulación. Veré de trabajar en esto mañana. O quizás hoy lo mire un poco en casa, ya veré.
+
+------------------------------------------------------------------------------------------
+
+25/06/2024
+
+Hoy a la mañana estuve estudiando Alemán. Después fui a cursar, volví de eso y me encontré con Nacho.
+Terminado eso, intenté ponerme un poco con el código que hice yo, pero no tuve mucho tiempo. Revisé
+de nuevo de a poco las cosas iniciales, es todo igual. Así que debería empezar a retocar el RK4 para
+ver qué pasa ahí.
