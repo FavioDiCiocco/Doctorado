@@ -1772,3 +1772,46 @@ Hoy a la mañana estuve estudiando Alemán. Después fui a cursar, volví de eso
 Terminado eso, intenté ponerme un poco con el código que hice yo, pero no tuve mucho tiempo. Revisé
 de nuevo de a poco las cosas iniciales, es todo igual. Así que debería empezar a retocar el RK4 para
 ver qué pasa ahí.
+
+------------------------------------------------------------------------------------------
+
+26/06/2024
+
+En Coimbra tengo todas las simulaciones que quería resueltas. También tengo lo que me pasó Hugo,
+puedo empezar a revisar de compilar todos los datos y simulaciones juntos.
+
+En Algarve mandé a correr las segundas iteraciones, barriendo Cos(delta) [0.16, 0.5] y Beta [0,0.8].
+Cuando eso termine, voy a tener que mandar el pedazo de región que falta, la región E. Que va
+con Beta [1.1,1.5] y Cos(delta) [0,0.14].
+
+En Oporto se están terminando las segundas iteraciones, barriendo Cos(delta) [0.16, 0.5] y Beta [0,1].
+Acá también voy a tener que mandar el pedazo de región que falta, la región E.
+
+Veamos de ir armando el conjunto de datos para revisar en Coimbra.
+
+En la carpeta de Barrido_final puse los datos que tenía reformateados, para que coincidan con todos los
+datos que vengo construyendo. Hay algo que podría ser un leve problema para el futuro, y eso es que
+estos archivos no tienen un espacio final en los datos que sea una tabulación. Mis códigos están armados
+contemplando eso. Pero creo que lo puedo solucionar fácil, tengo que considerar simplemente que lo
+que levanto son los valores de las distribuciones, las cuales tienen tamaño 42x42. Entonces simplemente
+puedo pedir que cuando construya la distribución, esta tome valores del array de 0:42*42 y listo.
+
+Más problemas creo que me va a traer TODO lo demás, como el Diccionario_metricas o el graficado de los
+histogramas 2D, los cuales ahora tendría que readaptarlos a las nuevas distribuciones. O, mejor idea,
+puedo armar una función que a partir de las distribuciones que estoy observando, reconstruya las opiniones
+de los 10000 agentes, de esa manera tengo ese array de opiniones y ya de ahí no modifico nada de todo
+lo demás. Soy un genio. Suena como lo más sensato, en vez de cambiar todo el código, cambiar simplemente
+eso.
+
+Voy a mandarle un mensaje a Pablo para juntarnos, mientras termino de subir todos mis archivos a Coimbra.
+Ya tengo armados los archivos reformateados de la región inicial. Ahora voy a subir lo que ya tengo
+a Coimbra. Lo subo a Coimbra porque es ahí donde se terminó el barrido del espacio de parámetros que
+queríamos hacer. Faltará combinar las cosas de Algarve y Oporto, cuando esas terminen de correr.
+
+Hablando con Pablo, lo que charlamos es primero arrancar estudiando cuál es la composición de estados
+en el primer cluster de distancias. También querríamos ver si el mínimo de las distancias promedio
+se encuentra en el mismo lugar al tomar ese pequeño conjunto de distancias.
+
+Arranco analizando la pregunta de Impeachment vs Wall with Mexico. Para esta pregunta considero las
+distancias menores a 0.4. Eso es un pequeño conjunto de distancias. Lo primero que quiero hacer
+es entonces estudiar la composición de esos estados.

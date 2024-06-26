@@ -1060,7 +1060,7 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_label
     
 
 #-----------------------------------------------------------------------------------------------
-
+            
 # Armo una función que en el punto de mínima distancia media construya un histograma de las distancias de JS
 
 def Histograma_distancias(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta,

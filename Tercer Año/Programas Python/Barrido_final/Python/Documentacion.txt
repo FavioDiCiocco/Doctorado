@@ -1,0 +1,47 @@
+Registro de los archivos usados para analizar los datos de la
+carpeta Ola_interes.
+
+En esta carpeta hay ademaś dos carpetas, que son Oporto y Coimbra. Estas carpetas
+tienen versiones de los códigos de Graficar y de funciones adecuados para Oporto
+y Coimbra. La diferencia entre ambas pc's son las tandas de simulaciones que
+envié a correr. En la primera, los parámetros a explorar fueron K y Beta,
+mientras que en la segunda los parámetros eran Beta y Cos(delta).
+ Además, como en Graficar y funciones modifiqué la denominación de los parámetros
+a "parámetro x", "parámetro y" y "parámetro extra", en Oporto el parámetro extra es
+Cos(delta), mientras que en Coimbra el parámetro extra es K.
+
+Graficar:
+-------
+Este es un código simple que levanta los datos de los archivos y después arma
+los gráficos. Lo lindo de esto es que las funciones que arman los gráficos están
+definidas afuera, y si quiero que no grafique algo, eso lo puedo hacer simplemente
+comentando una línea.
+ El archivo revisa el nombre de los archivos de opiniones y de testigos y de ahí
+extrae los parámetros explorados. De los parámetros explorados, define uno como
+el parámetro x, que es el que se grafica en el eje x en todas las funciones,
+el parámetro y, es el parámetro que se grafica en el eje y en todas las funciones,
+y el resto de parámetros se definen como parámetros extras. Ya que el eje Y y el
+X ya están definidos, en caso de tener un parámetro extras que varía lo que se hace
+es construir múltiples gráficos, uno para cada parámetro extra.
+ Este archivo también tiene las funciones que arman los gráficos particulares,
+como los de fracción de estados polarizados o mapas de colores o cosas así.
+
+
+funciones.py:
+-------------
+
+Este archivo tiene las funciones básicas y las de graficado de los datos
+obtenidos a partir de las simulaciones. El objetivo es tener modularizadas
+las funciones de graficación, cosa de que el archivo principal sea fácil
+de leer y que las funciones se vean más prolijas.
+
+Empecé a borrar las funciones viejas que no uso en cada etapa, considerando
+que existe el archivo de funciones generales. Acá están las funciones de
+fracción de estados polarizados vs T, fracción de estados polarizados vs Y
+y fracción de estados vs Y.
+
+Lo generalicé considerando que las simulaciones tendrán varios parámetros,
+pero los gráficos en general necesitan un parámetro para el eje X y otro para
+el eje Y. Es así que llamé a los parámetros "parámetro x" y "parámetro y"
+según el eje en que se ubican. El resto de parámetros que no se usan para
+graficar los llamé parámetros Extra.

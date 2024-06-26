@@ -85,3 +85,12 @@ tengo la carpeta de ANES_2020 y una carpeta con las simulaciones del espacio Zoo
 Principalmente estoy armando gráficos de distancia JS promedio en el espacio de parámetros
 para algunos conjuntos de pares de preguntas e intentando ajustar los valores de Beta y Cos(delta)
 óptimos para tener el mínimo de distancia.
+
+Barrido final:
+--------------
+Esta carpeta es distinta en los clusters y en la pc de la facultad. En los clusters tengo una carpeta
+de Beta-Cosd donde van las simulaciones con 10000 agentes.
+ En la pc de la facultad en cambio tengo 3 carpetas. La de Descarga tiene los archivos de 10000 agentes
+que construí en la región de Beta [0,1] y Cos(delta) [0,0.14]. La de Beta-Cosd tiene esos mismos
+archivos, pero reformateados para que tengan las distribuciones de opiniones. Y en configurations
+tengo los archivos que Hugo me pasó.

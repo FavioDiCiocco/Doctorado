@@ -101,13 +101,13 @@ for carp in Carpetas:
     # Esto es para probar preguntas de 7x7, 6x7 y 6x6. Quiero ver si mi código funciona bien.
     # Estos son labels de prueba
     
-    labels = [('V201426x','V201386x','V200010a')] # , ('V201411x','V201408x','V200010a'),('V201372x','V201386x','V200010a'), ('V202341x','V202331x','V200010b')] #,
+    labels = [('V201411x','V201408x','V200010a'),('V201372x','V201386x','V200010a'), ('V201426x','V201386x','V200010a'), ('V202341x','V202331x','V200010b')] #,
               # ('V202350x','V202341x','V200010b'),('V201262','V202248x','V200010b'),('V202242x','V202248x','V200010b')]
     
-    # rangos = [(np.array([0,0.1]),np.array([0.4,0.8])),(np.array([0,0.1]),np.array([0.4,0.8])), (np.array([0,0.15]),np.array([0.5,0.7])), (np.array([0,0.1]),np.array([0.4,0.7]))] #,
+    rangos = [(np.array([0,0.1]),np.array([0.4,0.8])),(np.array([0,0.1]),np.array([0.4,0.8])), (np.array([0,0.15]),np.array([0.5,0.7])), (np.array([0,0.1]),np.array([0.4,0.7]))] #,
               # (np.array([0,0.2]),np.array([0.4,0.8])), (np.array([0,0.1]),np.array([0.4,0.66])), (np.array([0,0.1]),np.array([0.4,0.7]))]
     
-    for preguntas in labels:
+    for preguntas,rango_ajuste in zip(labels,rangos):
         
         code_1 = preguntas[0]
         code_2 = preguntas[1]
