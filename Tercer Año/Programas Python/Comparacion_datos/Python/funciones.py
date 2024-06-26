@@ -749,25 +749,12 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, 
         plt.colorbar()
         plt.scatter(XX[tupla],YY[tupla], marker="X", color = "red", s = 180)
         
-        # if XX[tupla]+0.05 < np.max(XX):
-        #     xtext = XX[tupla]
-        # else:
-        #     xtext = XX[tupla]-0.05
-
-
-        # if YY[tupla]-0.05 < np.min(YY):
-        #     ytext = YY[tupla]+0.05
-        # else:
-        #     ytext = YY[tupla]-0.05
-        
-        # plt.text(xtext,ytext, r"${}$ = {:.2f},${}$ = {:.2f} ".format(SIM_param_y, YY[tupla], SIM_param_x, XX[tupla]), fontsize= 36)
         plt.title("Distancia Jensen-Shannon sin cruz {} simulaciones\n {} vs {}".format(10+i*10,dict_labels[code_y],dict_labels[code_x]))
         
         # Guardo la figura y la cierro
         
         plt.savefig(direccion_guardado , bbox_inches = "tight")
         plt.close("Ranking Distancia Jensen-Shannon")
-        
         
         
     
@@ -1095,6 +1082,59 @@ def Histograma_distancias(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpet
     direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/Hist distancias_{} vs {}_{}={}_{}={}.png".format(carpeta,code_y,code_x,ID_param_y,YY[tupla],ID_param_x,XX[tupla]))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
+    
+#-----------------------------------------------------------------------------------------------
+
+# Lo que quiero es ver cuál es la composición de los estados que son parte del cluster
+# de distancias pequeñas que observo en el histograma de Distancias. 
+
+def Comp_estados(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta, path, dist_lim,
+                 ID_param_x, ID_param_y):
+    
+    # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
+    # de todas las simulaciones para cada punto del espacio de parámetros.
+    Dic_Total = Diccionario_metricas(DF_datos,path, 20, 20)
+    
+    # Defino los arrays de parámetros diferentes
+    EXTRAS = int(np.unique(DF_datos["Extra"]))
+    Arr_param_x = np.unique(DF_datos["parametro_x"])
+    Arr_param_y = np.unique(DF_datos["parametro_y"])
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    
+    # Promedio las distancias del espacio de parámetros
+    Dist_JS_prom = np.mean(Dist_JS, axis=2)
+    # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
+    tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
+    
+    PARAM_X = XX[tupla]
+    PARAM_Y = YY[tupla]
+    
+    Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
+                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
+                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
+                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
+                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
+    
+    Nombres = ["Consenso neutral", "Consenso radicalizado", "Polarización 1D y Consenso",
+               "Polarización Ideológica", "Transición", "Polarización Descorrelacionada",
+               "Polarización 1D y Consenso con anchura",
+               "Polarización Ideológica con anchura", "Transición con anchura",
+               "Polarización Descorrelacionada con anchura"]
+    
+    bines = np.arange(-0.5,10.5)
+    
+    plt.rcParams.update({'font.size': 44})
+    plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+    plt.hist(Frecuencias[Dist_JS[tupla] < 0.4], bins = bines, density = True)
+    plt.ylabel("Fracción")
+    plt.title("{} vs {}".format(dict_labels[code_y],dict_labels[code_x]))
+    direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/Compisicoin estados_{} vs {}_{}={}_{}={}.png".format(carpeta,code_y,code_x,ID_param_y,YY[tupla],ID_param_x,XX[tupla]))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close()
+    
+    
     
     
 

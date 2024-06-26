@@ -1815,3 +1815,6 @@ se encuentra en el mismo lugar al tomar ese pequeño conjunto de distancias.
 Arranco analizando la pregunta de Impeachment vs Wall with Mexico. Para esta pregunta considero las
 distancias menores a 0.4. Eso es un pequeño conjunto de distancias. Lo primero que quiero hacer
 es entonces estudiar la composición de esos estados.
+
+Ahí armé en casa una buena idea del programa para mostrarle a Pablo, así que ya lo puedo dejar
+y mañana lo concreto con los detalles finos, voy a tener que modificar los xticks y eso.
