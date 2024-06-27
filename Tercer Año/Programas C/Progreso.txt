@@ -1818,3 +1818,18 @@ es entonces estudiar la composición de esos estados.
 
 Ahí armé en casa una buena idea del programa para mostrarle a Pablo, así que ya lo puedo dejar
 y mañana lo concreto con los detalles finos, voy a tener que modificar los xticks y eso.
+
+------------------------------------------------------------------------------------------
+
+27/06/2024
+
+Mirando todos los histogramas, por lo que observo, con pedir que las distancias de Jensen-Shannon
+sean menores a 0.5, puedo revisar eso como criterio para poder revisar todos los pares de preguntas.
+Siguen sin estar terminados los barridos en Algarve y Oporto.
+
+Emprolijé los archivos de histogramas de estados en el conjunto recortado de simulaciones. Lo hice para
+que se entienda qué corno está graficado. Además, agregué el armado de Mapas de colores de Distancia JS
+con el conjunto de simulaciones elegido. Lo hice para poder observar si con ese conjunto, el mínimo de
+distancia promediado se encuentra en el mismo lugar que el observado en los ranking de distancias.
+
+Lo siguiente que tengo que hacer es aumentar los puntos en los cuáles miro los histogramas de distancias.

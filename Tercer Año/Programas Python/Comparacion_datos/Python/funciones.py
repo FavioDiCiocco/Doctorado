@@ -1052,7 +1052,6 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_label
 
 def Histograma_distancias(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta,
                           ID_param_x, ID_param_y):
-
     
     Arr_param_x = np.unique(DF_datos["parametro_x"])
     Arr_param_y = np.unique(DF_datos["parametro_y"])
@@ -1083,13 +1082,15 @@ def Histograma_distancias(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpet
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
     
+
 #-----------------------------------------------------------------------------------------------
 
 # Lo que quiero es ver cuál es la composición de los estados que son parte del cluster
 # de distancias pequeñas que observo en el histograma de Distancias. 
 
 def Comp_estados(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta, path, dist_lim,
-                 ID_param_x, ID_param_y):
+                 ID_param_x, SIM_param_x, ID_param_y, SIM_param_y):
+    
     
     # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
     # de todas las simulaciones para cada punto del espacio de parámetros.
@@ -1117,24 +1118,49 @@ def Comp_estados(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta, path, 
                                                  Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
                                                  Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
     
-    Nombres = ["Consenso neutral", "Consenso radicalizado", "Polarización 1D y Consenso",
-               "Polarización Ideológica", "Transición", "Polarización Descorrelacionada",
-               "Polarización 1D y Consenso con anchura",
-               "Polarización Ideológica con anchura", "Transición con anchura",
-               "Polarización Descorrelacionada con anchura"]
+    Nombres = ["Cons Neut", "Cons Rad", "Pol 1D y Cons","Pol Id", "Trans", "Pol Desc","Pol 1D y Cons anch","Pol Id anch", "Trans anch","Pol Desc anch"]
+    cant_sim = np.count_nonzero(Dist_JS[tupla] < dist_lim)
     
     bines = np.arange(-0.5,10.5)
+    X = np.arange(10)
     
     plt.rcParams.update({'font.size': 44})
     plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-    plt.hist(Frecuencias[Dist_JS[tupla] < 0.4], bins = bines, density = True)
+    plt.hist(Frecuencias[Dist_JS[tupla] < dist_lim], bins = bines, density = True)
     plt.ylabel("Fracción")
-    plt.title("{} vs {}".format(dict_labels[code_y],dict_labels[code_x]))
-    direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/Compisicoin estados_{} vs {}_{}={}_{}={}.png".format(carpeta,code_y,code_x,ID_param_y,YY[tupla],ID_param_x,XX[tupla]))
+    plt.title("{} vs {}\nCantidad simulaciones {}".format(dict_labels[code_y], dict_labels[code_x], cant_sim))
+    plt.xticks(ticks = X, labels = Nombres, rotation = 45)
+    direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/Comp est_{} vs {}_{}={}_{}={}.png".format(carpeta,code_y,code_x,ID_param_y,YY[tupla],ID_param_x,XX[tupla]))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
     
+    #-----------------------------------------------------------------------------------------
+        
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores para el caso sin cruz
+    direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/DistanciaJS_recortado_{}vs{}.png".format(carpeta,code_y,code_x))
     
+    plt.rcParams.update({'font.size': 44})
+    plt.figure("Distancia Jensen-Shannon",figsize=(28,21))
+    plt.xlabel(r"${}$".format(SIM_param_x))
+    plt.ylabel(r"${}$".format(SIM_param_y))
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    Dist_JS_prom = np.mean(Dist_JS[:,:,0:cant_sim],axis=2)
+    
+    # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
+    tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    
+    plt.pcolormesh(XX,YY,np.mean(Dist_JS_prom, axis=2),shading="nearest", cmap = "viridis")
+    plt.colorbar()
+    plt.scatter(XX[tupla],YY[tupla], marker="X", color = "red", s = 90)
+    plt.title("Distancia Jensen-Shannon \n {} vs {}\nCantidad simulaciones {}".format(dict_labels[code_y],dict_labels[code_x], cant_sim))
+    
+    # Guardo la figura y la cierro
+    
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("Distancia Jensen-Shannon")
     
     
 
