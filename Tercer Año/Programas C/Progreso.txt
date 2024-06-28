@@ -1833,3 +1833,39 @@ con el conjunto de simulaciones elegido. Lo hice para poder observar si con ese 
 distancia promediado se encuentra en el mismo lugar que el observado en los ranking de distancias.
 
 Lo siguiente que tengo que hacer es aumentar los puntos en los cuáles miro los histogramas de distancias.
+
+------------------------------------------------------------------------------------------
+
+28/06/2024
+
+Las corridas en Algarve y Oporto todavía no terminaron. Tengo que mandar a correr la parte que falta
+en ambas pc's. Sigamos ahora con la parte de armar histogramas de distancias en puntos cercanos 
+al punto del mínimo de distancia promedio. Para eso tomo una región de puntos cerca del punto
+de tupla XX e YY.
+
+Ya logré armar los histogramas de la región circundante del punto en el que está el mínimo. Lo siguiente
+para hacer entonces es organizar esto un poco, porque tengo gráficos pero no es muy claro entonces
+las conclusiones de eso. Con esto entonces lo que tenemos es la primer parte de lo que indicaba
+Hugo, la idea de tener histogramas con la proba de obtener ciertas distancias. La segunda parte,
+lo que nos decía Hugo que queríamos construir a partir de estos gráficos, no tengo idea de cómo
+deberíamos armarlo. Me parece que habrá que charlarlo con Pablo para ver qué tal. Así que hoy
+podría reventarme la cabeza por eso, podría retomar lo de ver el tiempo de simulación o
+podría ir armando la presentación con estos gráficos. Yo diría de armar esa presentación el finde.
+
+Estoy un poco confundido con los archivos que estoy construyendo. Más que nada mi confusión es si
+estoy mirando correctamente el entorno del punto que quiero mirar al construir los gráficos
+de composición de estados. Y esta confusión surge porque el array YY está como al revés. Eso
+me está confundiendo un toque. Hagamos unas pruebas, después mando a correr cosas en Coimbra y
+en Oporto, y después me iré para casa una vez definido todo. Luego el finde trabajaré un poco
+en esto y en cosas de Alemán.
+
+Mandé en Oporto las simulaciones de la región que faltaba. Lo de Algarve lo tengo que mandar
+mañana. Mandé en Coimbra a correr el barrido en Beta-Kappa de la región de Beta [0,1.5] y
+Kappa [0.5,10].
+
+Miré lo que me confundía, ahora mismo estoy en la sensación de que me dejé confundir al pedo.
+Si quiero mirar el Y que está adelante y el que está atrás, tengo que usar los puntos
+tupla-1:tupla+2. Esto recorre los puntos (tupla-1,tupla,tupla+1). Entonces esto va a funcionar
+bien así. Bien, creo que ya tengo lo que quiero, después mando eso a correr en Algarve. También
+queda probar si mi idea de cómo armar los títulos va a funcionar bien. Veamos qué pasa con eso
+después.
