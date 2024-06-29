@@ -1108,9 +1108,7 @@ def Comp_estados(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta, path, 
     Dist_JS_prom = np.mean(Dist_JS, axis=2)
     # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
     tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
-    
-    PARAM_X = XX[tupla]
-    PARAM_Y = YY[tupla]
+    cant_sim = np.count_nonzero(Dist_JS[tupla] <= dist_lim)
     
     for PARAM_X,PARAM_Y in zip(XX[tupla[0]-1:tupla[0]+2,tupla[1]-1:tupla[1]+2].flatten(),YY[tupla[0]-1:tupla[0]+2,tupla[1]-1:tupla[1]+2].flatten()):
     
@@ -1121,7 +1119,6 @@ def Comp_estados(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta, path, 
                                                      Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
         
         Nombres = ["Cons Neut", "Cons Rad", "Pol 1D y Cons","Pol Id", "Trans", "Pol Desc","Pol 1D y Cons anch","Pol Id anch", "Trans anch","Pol Desc anch"]
-        cant_sim = np.count_nonzero(Dist_JS[tupla] <= dist_lim)
         
         bines = np.arange(-0.5,10.5)
         X = np.arange(10)

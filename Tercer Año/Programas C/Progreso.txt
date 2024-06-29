@@ -1869,3 +1869,14 @@ tupla-1:tupla+2. Esto recorre los puntos (tupla-1,tupla,tupla+1). Entonces esto 
 bien así. Bien, creo que ya tengo lo que quiero, después mando eso a correr en Algarve. También
 queda probar si mi idea de cómo armar los títulos va a funcionar bien. Veamos qué pasa con eso
 después.
+
+------------------------------------------------------------------------------------------
+
+29/06/2024
+
+Revisé, está corriendo todo. Lo de Beta-Kappa parece correr más rápido, quizás es una sensación.
+Lo de Oporto está corriendo tranca, lo de Algarve todavía no terminó. Así que lo siguiente sería
+mandar en Algarve a armar los gráficos que había planteado antes.
+
+Ya mandé a correr el armado de gráficos en Algarve, mañana veo de armar alguna presentación
+con eso.

@@ -123,7 +123,7 @@ for carp in Carpetas:
         func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_ANES, dict_labels, Etapa/carpeta, Direccion, bines,
                                 ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
         
-        # func.Histograma_distancias(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta, ID_param_x, ID_param_y)
+        func.Histograma_distancias(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta, ID_param_x, ID_param_y)
         
         func.Comp_estados(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta,
                           Direccion, 0.45, ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
