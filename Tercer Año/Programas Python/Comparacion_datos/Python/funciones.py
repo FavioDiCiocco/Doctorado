@@ -720,7 +720,7 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, 
     
     plt.pcolormesh(XX,YY,np.mean(Dist_JS, axis=2),shading="nearest", cmap = "viridis")
     plt.colorbar()
-    plt.title("Distancia Jensen-Shannon sin cruz\n {} vs {}".format(dict_labels[code_y],dict_labels[code_x]))
+    plt.title("Distancia Jensen-Shannon\n {} vs {}".format(dict_labels[code_y],dict_labels[code_x]))
     
     # Guardo la figura y la cierro
     
@@ -747,9 +747,9 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, 
         
         plt.pcolormesh(XX,YY,Dist_JS_prom,shading="nearest", cmap = "cividis")
         plt.colorbar()
-        plt.scatter(XX[tupla],YY[tupla], marker="X", color = "red", s = 180)
+        plt.scatter(XX[tupla],YY[tupla], marker="X", s = 3000, color = "red")
         
-        plt.title("Distancia Jensen-Shannon sin cruz {} simulaciones\n {} vs {}".format(10+i*10,dict_labels[code_y],dict_labels[code_x]))
+        plt.title("Distancia Jensen-Shannon {} simulaciones\n {} vs {}".format(10+i*10,dict_labels[code_y],dict_labels[code_x]))
         
         # Guardo la figura y la cierro
         
@@ -765,7 +765,7 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, 
 # más similares con la distribución de la encuesta
 
 def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, carpeta, path, bins,
-                         ID_param_x,SIM_param_x,ID_param_y,SIM_param_y):
+                         SIM_param_x,SIM_param_y):
     
     # Hago los gráficos de histograma 2D de las simulaciones que más se parecen y que menos se parecen
     # a mis distribuciones de las encuestas
@@ -893,7 +893,7 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_label
                 # Set x-ticks and y-ticks from -10 to 10 using plt.xticks() and plt.yticks()
                 # plt.xticks(np.arange(-10, 11, 1))
                 # plt.yticks(np.arange(-10, 11, 1))
-                plt.title('Distancia JS = {:.2f}, {}={:.2f}, {}={:.2f} \n {} \n {} vs {}'.format(distan,ID_param_x,PARAM_X,ID_param_y,PARAM_Y,Nombres[estado],dict_labels[code_y],dict_labels[code_x]))
+                plt.title(r'Distancia JS = {:.2f}, ${}$={:.2f}, ${}$={:.2f}'.format(distan,SIM_param_x,PARAM_X,SIM_param_y,PARAM_Y) + '\n {} \n {} vs {}'.format(Nombres[estado],dict_labels[code_y],dict_labels[code_x]))
                 plt.colorbar(im, label='Fracción')
 #                cbar.set_clim(Vmin, Vmax)
                 plt.savefig(direccion_guardado ,bbox_inches = "tight")
@@ -902,7 +902,7 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_label
     
     #--------------------------------------------------------------------------------
     
-    # Lo que quiero hacer acá es armar gráficos de promedios de opiniones rankeados.
+    # Lo que quiero hacer acá es armar gráficos de promedios de distancias rankeados.
     
     for i in range(10):
         
@@ -1051,7 +1051,7 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_label
 # Armo una función que en el punto de mínima distancia media construya un histograma de las distancias de JS
 
 def Histograma_distancias(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta,
-                          ID_param_x, ID_param_y):
+                          ID_param_x, SIM_param_x, ID_param_y, SIM_param_y):
     
     Arr_param_x = np.unique(DF_datos["parametro_x"])
     Arr_param_y = np.unique(DF_datos["parametro_y"])
@@ -1077,7 +1077,7 @@ def Histograma_distancias(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpet
     plt.bar(bines[:-1], Y/np.sum(Y), width = (bines[1]-bines[0])*0.9, align = "edge")
     plt.xlabel("Distancia JS")
     plt.ylabel("Probabilidad")
-    plt.title("{} vs {}".format(dict_labels[code_y],dict_labels[code_x]))
+    plt.title("{} vs {}\n".format(dict_labels[code_y],dict_labels[code_x]) + "${}$={}, ${}$={}".format(SIM_param_y,YY[tupla],SIM_param_x,XX[tupla]))
     direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/Hist distancias_{} vs {}_{}={}_{}={}.png".format(carpeta,code_y,code_x,ID_param_y,YY[tupla],ID_param_x,XX[tupla]))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
@@ -1091,6 +1091,7 @@ def Histograma_distancias(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpet
 def Comp_estados(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta, path, dist_lim,
                  ID_param_x, SIM_param_x, ID_param_y, SIM_param_y):
     
+    print("Estoy trabajando con los códigos {} y {}".format(code_x,code_y))
     
     # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
     # de todas las simulaciones para cada punto del espacio de parámetros.
@@ -1110,28 +1111,31 @@ def Comp_estados(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta, path, 
     tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
     cant_sim = np.count_nonzero(Dist_JS[tupla] <= dist_lim)
     
-    for PARAM_X,PARAM_Y in zip(XX[tupla[0]-1:tupla[0]+2,tupla[1]-1:tupla[1]+2].flatten(),YY[tupla[0]-1:tupla[0]+2,tupla[1]-1:tupla[1]+2].flatten()):
+    PARAM_X = XX[tupla]
+    PARAM_Y = YY[tupla]
     
-        Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
-                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
-                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
-                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
-                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
-        
-        Nombres = ["Cons Neut", "Cons Rad", "Pol 1D y Cons","Pol Id", "Trans", "Pol Desc","Pol 1D y Cons anch","Pol Id anch", "Trans anch","Pol Desc anch"]
-        
-        bines = np.arange(-0.5,10.5)
-        X = np.arange(10)
-        
-        plt.rcParams.update({'font.size': 44})
-        plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-        plt.hist(Frecuencias[Dist_JS[tupla] <= dist_lim], bins = bines, density = True)
-        plt.ylabel("Fracción")
-        plt.title('{} vs {}\n'.format(dict_labels[code_y], dict_labels[code_x]) + r'Cantidad simulaciones {}, {}={},{}={}'.format(cant_sim, ID_param_y, PARAM_Y, ID_param_x, PARAM_X))
-        plt.xticks(ticks = X, labels = Nombres, rotation = 45)
-        direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/Comp est_{} vs {}_{}={}_{}={}.png".format(carpeta,code_y,code_x,ID_param_y,PARAM_Y,ID_param_x,PARAM_X))
-        plt.savefig(direccion_guardado ,bbox_inches = "tight")
-        plt.close()
+    # for PARAM_X,PARAM_Y in zip(XX[tupla[0]-1:tupla[0]+2,tupla[1]-1:tupla[1]+2].flatten(),YY[tupla[0]-1:tupla[0]+2,tupla[1]-1:tupla[1]+2].flatten()):
+    
+    Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
+                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
+                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
+                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
+                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
+    
+    Nombres = ["Cons Neut", "Cons Rad", "Pol 1D y Cons","Pol Id", "Trans", "Pol Desc","Pol 1D y Cons anch","Pol Id anch", "Trans anch","Pol Desc anch"]
+    
+    bines = np.arange(-0.5,10.5)
+    X = np.arange(10)
+    
+    plt.rcParams.update({'font.size': 44})
+    plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+    plt.hist(Frecuencias[Dist_JS[tupla] <= dist_lim], bins = bines, density = True)
+    plt.ylabel("Fracción")
+    plt.title('{} vs {}\n'.format(dict_labels[code_y], dict_labels[code_x]) + r'Cantidad simulaciones {}, ${}$={},${}$={}'.format(cant_sim, SIM_param_y, PARAM_Y, SIM_param_x, PARAM_X))
+    plt.xticks(ticks = X, labels = Nombres, rotation = 45)
+    direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/Comp est_{}vs{}_{}={}_{}={}.png".format(carpeta,code_y,code_x,ID_param_y,PARAM_Y,ID_param_x,PARAM_X))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close()
     
     #-----------------------------------------------------------------------------------------
         
@@ -1153,7 +1157,7 @@ def Comp_estados(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta, path, 
     
     plt.pcolormesh(XX,YY,Dist_JS_prom,shading="nearest", cmap = "viridis")
     plt.colorbar()
-    plt.scatter(XX[tupla],YY[tupla], marker="X", color = "red", s = 90)
+    plt.scatter(XX[tupla],YY[tupla], marker="X", color = "red", s = 3000)
     plt.title("Distancia Jensen-Shannon \n {} vs {}\nCantidad simulaciones {}".format(dict_labels[code_y],dict_labels[code_x], cant_sim))
     
     # Guardo la figura y la cierro

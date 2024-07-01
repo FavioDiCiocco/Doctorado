@@ -1880,3 +1880,48 @@ mandar en Algarve a armar los gráficos que había planteado antes.
 
 Ya mandé a correr el armado de gráficos en Algarve, mañana veo de armar alguna presentación
 con eso.
+
+------------------------------------------------------------------------------------------
+
+01/07/2024
+
+Estamos un poco contra las cuerdas. En estos casos de alta presión, lo mejor es descomprimir.
+Después voy a tener que considerar si continuo el curso de Alemán 2 o no. La duda tiene que ver
+con si voy a tener tiempo para rendir el final de la materia de Flujos de Mininni. Y es importante
+rendir eso para pedir los puntos. Charlarlo con Pablo, aunque siento que la respuesta de
+Pablo va a ser "rendilo y fue".
+
+Hoy armemos una presentación rápida con lo que tengo para charlar con Pablo lo que vine
+haciendo estos días.
+
+Antes que nada, como en Oporto se terminaron las simulaciones de la región E, ya mandé el barrido
+de Beta-Kappa de las simulaciones entre 20 y 39. Después en Algarve más tarde mandaré las simulaciones
+entre 40 y 59.
+ En cambio, en Algarve mandé las simulaciones en la región E. Cuando se termine eso, ya puedo empezar
+a juntar cosas, más lo nuevo que volvió a mandarme Hugo. Y faltará lo último del código.
+
+Los gráficos se ven interesantes, creo que hay cosas copadas para mostrar y a partir de ahí podemos
+terminar de armar algo para el jueves. Me están faltando gráficos de Comp. de estados. Y hay algunos
+de Promedios de estados que se ven raros. Revisemos el código y corrijamos eso.
+
+Mandé a rearmar los gráficos de los cuatro pares de preguntas. Con eso voy a armar mi presentación
+para mostrarle a Pablo lo que tengo armado. Digo yo que tengo algo razonable revisado. Después
+tengo que revisar detalles del armado de los gráficos.
+ Los gráficos parecen estar bien, sólo me queda raro que no se armaron algunos gráficos de comp. de
+estados de otros pares de preguntas. Raro.
+
+Hablando con Pablo, le parece que el trabajo está bien y lo que estoy haciendo sirve, pero es
+poco. Revisando la semana, no me parece que realmente sea poco, pero no puedo evitar
+la mala fama.
+
+Mientras se arman los gráficos que necesito para mostrarle a Pablo el laburo hecho, me voy a poner
+a reorganizar el código, mientras intento descubrir el problema del código. No lo entiendo. NO hace
+los gráficos. No hay razón de por qué, pero no los hace. Tengo miedo de sacar el archivo actual que
+grafica y hacer cagadas. Pablo me dijo que arme la presentación con esos gráficos y mañana charlamos
+de nuevo.
+
+Yo podría mandar a correr esto ahora, voy para casa y ya en casa me pongo a resolver lo que falta.
+Lo otro que puedo hacer es mandar a correrlo, quedarme acá mientras eso corre y mientras eso se resuelve
+estudiar alemán. Por último podría irme a casa más temprano y continuar el laburo desde ahí. Creo que voy
+a hacer eso, así tengo en general más tiempo para armar esa presentación y mientras voy pensando qué
+otra cosa hacer para el jueves que viene.
