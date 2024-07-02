@@ -120,7 +120,7 @@ for label in labels:
 # respuestas que tienen distribuciones bimodales o unimodales que podrían resultar
 # más útiles.
 
-labels_politicos = ['V201372x','V201386x','V201426x']
+labels_politicos = ['V201372x','V201386x','V201426x','V201408x','V201411x']
 
 labels_apoliticos = ['V202331x','V202341x']
 
@@ -154,19 +154,20 @@ for i,code_1 in enumerate(labels_politicos):
         
         df_aux = df_data.loc[(df_data[code_1]>0) & (df_data[code_2]>0)]
         
+        if np.unique(df_aux[code_1]).shape[0] == 7 and np.unique(df_aux[code_2]).shape[0] == 7:
+            df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
+        elif np.unique(df_aux[code_1]).shape[0] == 7 and np.unique(df_aux[code_2]).shape[0] == 6:
+            df_filtered = df_aux[df_aux[code_1] != 4] # Saca el centro de la pregunta con siete resupuestas
+        elif np.unique(df_aux[code_1]).shape[0] == 6 and np.unique(df_aux[code_2]).shape[0] == 7:
+            df_filtered = df_aux[df_aux[code_2] != 4] # Saca el centro de la pregunta con siete resupuestas
+        
         plt.rcParams.update({'font.size': 28})
         plt.figure(figsize=(24,20))
-        # sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
-        #               joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
-        #               marginal_kws={'discrete': True, 'weights': df_aux[weights]})
         
         # Filter out rows where either code_1 or code_2 is 3
-        # df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
-        # carpeta = "Sin Centro"
-        df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
         carpeta = "Sin Cruz"
         hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_1], y=df_filtered[code_2], weights=df_filtered[weights], vmin=0, cmap = "inferno", density = True,
-                                                bins=[np.arange(df_filtered[code_1].min()-0.5, df_filtered[code_1].max()+1.5, 1), np.arange(df_filtered[code_2].min()-0.5, df_filtered[code_2].max()+1.5, 1)])
+                                                bins=[np.arange(0.5, df_filtered[code_1].max()+1.5, 1), np.arange(0.5, df_filtered[code_2].max()+1.5, 1)])
         
         # Add a colorbar
         cbar = plt.colorbar(im)
@@ -192,19 +193,18 @@ for i,code_1 in enumerate(labels_apoliticos):
         
         df_aux = df_data.loc[(df_data[code_1]>0) & (df_data[code_2]>0)]
         
+        if np.unique(df_aux[code_1]).shape[0] == 7 and np.unique(df_aux[code_2]).shape[0] == 7:
+            df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
+        elif np.unique(df_aux[code_1]).shape[0] == 7 and np.unique(df_aux[code_2]).shape[0] == 6:
+            df_filtered = df_aux[df_aux[code_1] != 4] # Saca el centro de la pregunta con siete resupuestas
+        elif np.unique(df_aux[code_1]).shape[0] == 6 and np.unique(df_aux[code_2]).shape[0] == 7:
+            df_filtered = df_aux[df_aux[code_2] != 4] # Saca el centro de la pregunta con siete resupuestas
+        
         plt.rcParams.update({'font.size': 28})
         plt.figure(figsize=(24,20))
-        # sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
-        #               joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
-        #               marginal_kws={'discrete': True, 'weights': df_aux[weights]})
-        
-        # Filter out rows where either code_1 or code_2 is 3
-        # df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
-        # carpeta = "Sin Centro"
-        df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
         carpeta = "Sin Cruz"
         hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_1], y=df_filtered[code_2], weights=df_filtered[weights], vmin=0, cmap = "inferno", density = True,
-                                                bins=[np.arange(df_filtered[code_1].min()-0.5, df_filtered[code_1].max()+1.5, 1), np.arange(df_filtered[code_2].min()-0.5, df_filtered[code_2].max()+1.5, 1)])
+                                                bins=[np.arange(0.5, df_filtered[code_1].max()+1.5, 1), np.arange(0.5, df_filtered[code_2].max()+1.5, 1)])
         
         # Add a colorbar
         cbar = plt.colorbar(im)
@@ -229,19 +229,20 @@ for i,code_1 in enumerate(labels_dudosos):
         
         df_aux = df_data.loc[(df_data[code_1]>0) & (df_data[code_2]>0)]
         
+        if np.unique(df_aux[code_1]).shape[0] == 7 and np.unique(df_aux[code_2]).shape[0] == 7:
+            df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
+        elif np.unique(df_aux[code_1]).shape[0] == 7 and np.unique(df_aux[code_2]).shape[0] == 6:
+            df_filtered = df_aux[df_aux[code_1] != 4] # Saca el centro de la pregunta con siete resupuestas
+        elif np.unique(df_aux[code_1]).shape[0] == 6 and np.unique(df_aux[code_2]).shape[0] == 7:
+            df_filtered = df_aux[df_aux[code_2] != 4] # Saca el centro de la pregunta con siete resupuestas
+        
         plt.rcParams.update({'font.size': 28})
         plt.figure(figsize=(24,20))
-        # sns.jointplot(df_aux, x=code_1, y=code_2, kind="hist", vmin=0, cmap='inferno', height = 15,
-        #               joint_kws={'discrete': True, 'weights': df_aux[weights]}, 
-        #               marginal_kws={'discrete': True, 'weights': df_aux[weights]})
         
-        # Filter out rows where either code_1 or code_2 is 3
-        # df_filtered = df_aux[(df_aux[code_1] != 4) | (df_aux[code_2] != 4)] # Sólo saca el centro
-        # carpeta = "Sin Centro"
-        df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
+        
         carpeta = "Sin Cruz"
         hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_1], y=df_filtered[code_2], weights=df_filtered[weights], vmin=0, cmap = "inferno", density = True,
-                                                bins=[np.arange(df_filtered[code_1].min()-0.5, df_filtered[code_1].max()+1.5, 1), np.arange(df_filtered[code_2].min()-0.5, df_filtered[code_2].max()+1.5, 1)])
+                                                bins=[np.arange(0.5, df_filtered[code_1].max()+1.5, 1), np.arange(0.5, df_filtered[code_2].max()+1.5, 1)])
         
         # Add a colorbar
         cbar = plt.colorbar(im)

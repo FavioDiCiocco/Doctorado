@@ -1091,8 +1091,6 @@ def Histograma_distancias(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpet
 def Comp_estados(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta, path, dist_lim,
                  ID_param_x, SIM_param_x, ID_param_y, SIM_param_y):
     
-    print("Estoy trabajando con los códigos {} y {}".format(code_x,code_y))
-    
     # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
     # de todas las simulaciones para cada punto del espacio de parámetros.
     Dic_Total = Diccionario_metricas(DF_datos,path, 20, 20)
@@ -1127,15 +1125,19 @@ def Comp_estados(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta, path, 
     bines = np.arange(-0.5,10.5)
     X = np.arange(10)
     
-    plt.rcParams.update({'font.size': 44})
-    plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-    plt.hist(Frecuencias[Dist_JS[tupla] <= dist_lim], bins = bines, density = True)
-    plt.ylabel("Fracción")
-    plt.title('{} vs {}\n'.format(dict_labels[code_y], dict_labels[code_x]) + r'Cantidad simulaciones {}, ${}$={},${}$={}'.format(cant_sim, SIM_param_y, PARAM_Y, SIM_param_x, PARAM_X))
-    plt.xticks(ticks = X, labels = Nombres, rotation = 45)
-    direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/Comp est_{}vs{}_{}={}_{}={}.png".format(carpeta,code_y,code_x,ID_param_y,PARAM_Y,ID_param_x,PARAM_X))
-    plt.savefig(direccion_guardado ,bbox_inches = "tight")
-    plt.close()
+    for i,dmin,dmax in zip(np.arange(bines.shape[0]-1),bines[0:-1],bines[1:]):
+        plt.rcParams.update({'font.size': 44})
+        plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+        Arr_bool = (Dist_JS[tupla] <= dmax) & (Dist_JS[tupla] >= dmin)
+        if np.count_nonzero(Arr_bool) == 0:
+            continue
+        plt.hist(Frecuencias[Arr_bool], bins = bines, density = True)
+        plt.ylabel("Fracción")
+        plt.title('{} vs {}\n'.format(dict_labels[code_y], dict_labels[code_x]) + r'Cantidad simulaciones {}, ${}$={},${}$={}, Distancias entre {} y {}'.format(cant_sim, SIM_param_y, PARAM_Y, SIM_param_x, PARAM_X, dmin, dmax))
+        plt.xticks(ticks = X, labels = Nombres, rotation = 45)
+        direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/Comp est_{}vs{}_b{}.png".format(carpeta,code_y,code_x,i))
+        plt.savefig(direccion_guardado ,bbox_inches = "tight")
+        plt.close()
     
     #-----------------------------------------------------------------------------------------
         

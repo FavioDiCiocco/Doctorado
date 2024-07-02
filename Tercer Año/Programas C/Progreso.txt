@@ -1925,3 +1925,31 @@ Lo otro que puedo hacer es mandar a correrlo, quedarme acá mientras eso corre y
 estudiar alemán. Por último podría irme a casa más temprano y continuar el laburo desde ahí. Creo que voy
 a hacer eso, así tengo en general más tiempo para armar esa presentación y mientras voy pensando qué
 otra cosa hacer para el jueves que viene.
+
+------------------------------------------------------------------------------------------
+
+02/07/2024
+
+Hoy a la mañana bajé los gráficos de comp. de estados que había armado y los puse en la charla
+que le quiero mostrar a Pablo. Luego estuve estudiando Alemán, fui a cursar, creo que el examen
+me fue bien y volví para agregar el par de preguntas de "Transgender Policy vs Refuse Same sex Service".
+
+Hecho esto, se me ocurren tres cosas para hacer para agregar a la charla, algunas propuestas de Pablo,
+otra propuesta mía.
+1) Armar histogramas de los estados más y menos similares del conjunto de estados con distancias
+menor a 0.45. Eso estaría bueno para comprobar que los estados tienen las formas que estamos considerando.
+2) Hacer un nuevo binneado en el histograma de distancias. Esto me justificaría a tomar algún valor
+intermedio de distancias y además podría servir para reconfigurar un poco más los histogramas. No suena
+como un gran resultado, me gusta cómo se ven.
+3) Revisar los histogramas de las regiones cercanas al mínimo de distancia Jensen Shannon. Eso podría servir
+para ver cómo se comportan esas regiones, que darán posiblemente similar.
+4) Armar un gráfico en el cuál se vea la fracción de los histogramas de distancia Jensen Shannon que tienen
+una cierta cantidad de estados por debajo del criterio de corte de distancia. 
+
+Hablando con Pablo, lo que me dijo es que dilucide un poco mejor lo que ocurre en ese histograma que construí.
+Estas ideas que tengo de hacer, las dejos para después y mañana las charlo con Pablo. Me dijo que para mañana
+tenga resuelta el histograma, complicado. Vamos igual a intentar resolverlo lo mejor posible.
+
+Mandé a correr esos histogramas en la pc de la facultad. Si funca bien, lo mando a correr en Algarve.
+Listo eso, voy a casa y quizás rankeo o mierdas. Después veo mañana de revisar alguna otra cosa que dijimos
+con Pablo.
