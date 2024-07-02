@@ -1130,6 +1130,7 @@ def Comp_estados(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta, path, 
         plt.figure(figsize=(28, 21))  # Adjust width and height as needed
         Arr_bool = (Dist_JS[tupla] <= dmax) & (Dist_JS[tupla] >= dmin)
         if np.count_nonzero(Arr_bool) == 0:
+            plt.close()
             continue
         plt.hist(Frecuencias[Arr_bool], bins = bines, density = True)
         plt.ylabel("Fracción")
