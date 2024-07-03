@@ -1953,3 +1953,42 @@ tenga resuelta el histograma, complicado. Vamos igual a intentar resolverlo lo m
 Mandé a correr esos histogramas en la pc de la facultad. Si funca bien, lo mando a correr en Algarve.
 Listo eso, voy a casa y quizás rankeo o mierdas. Después veo mañana de revisar alguna otra cosa que dijimos
 con Pablo.
+
+------------------------------------------------------------------------------------------
+
+03/07/2024
+
+A la mañana miré los gráficos de composición de estados. No sé qué se graficó, pero claramente no es
+lo que quería ver. No entiendo cómo se graficó así o por qué. Mi sensación es que los arrays en el
+zip son tales que uno de ellos tiene dos elementos nomás. No sé por qué.
+
+Después fuimos a la recibida de Sofi. Muy lindo todo. Hay que preparar una reunión para la semana
+que viene, alguna reunión de grupo, cosas.
+
+Luego de revisar un rato el código, y charlando con Ale, encontré el problema de por qué los gráficos
+se estaban armando mal. Ahora sí, la cosa va a funcionar. Mientras se resuelve el programa, me pondré
+a revisar si tengo algo que hacer en la presentación, como para ir adelantando trabajo. Lo siguiente
+será responder el mail de la gente de Uruguay. Y sino, ponerme con el armado del gráfico que se me ocurrió
+a partir de los gráficos de histogramas.
+
+Hice un cambio en el armado de los gráficos de histogramas para que se ajuste a la región graficada y que
+la región que no tiene nada no se muestre.
+ Lo que debería hacer es que se construyan histogramas en la región circundante al mínimo observado.
+Eso creo que ahí lo armé, no resulta tan complicado por lo visto. Lo siguiente entonces sería intentar
+armar ese gráfico que consideré antes, de fracción de histogramas que tienen X simulaciones con distancias
+menor a 0.45. Aprovecho para agregarle una línea vertical.
+
+Hablando con Pablo, va a ser importante revisar los puntos mínimos secundarios. Una paja armar eso, pero
+podemos intentar. Luego de pelearme mucho con la idea, al final voy a armar los mínimos por mi cuenta, y
+luego mandarle eso a la función para que revise esos mínimos. El primer número define la posición del y,
+la cuál crece de arriba para abajo. El segundo número define el x. Ahí mandé a armar los gráficos de histogramas
+
+Si todo funciona bien, debería armar histogramas de distancias en las regiones cercanas a los mínimos
+y los gráficos de comp. de estados sólo sobre los mínimos designados. Con eso tengo los gráficos para construir
+los histogramas en esas regiones que queremos mirar. Lo que quedaría quizás es armar el gráfico que estaba
+considerando. Veamos si podría construirlo.
+
+Lo mandé a correr en la pc de la facultad, ahora debería funcionar bárbaro esto. Tuve que poner un max en
+una parte para que no se salteara algunos gráficos el armado de gráficos de los histogramas de distancias.
+También agregué el armado del gráfico de fracción de histogramas en función de cantidad de simulaciones con
+distancias menores a la distancia de corte.

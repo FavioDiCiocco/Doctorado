@@ -101,13 +101,15 @@ for carp in Carpetas:
     # Esto es para probar preguntas de 7x7, 6x7 y 6x6. Quiero ver si mi código funciona bien.
     # Estos son labels de prueba
     
-    labels = [('V201426x','V201386x','V200010a'), ('V201411x','V201408x','V200010a'),('V201372x','V201386x','V200010a')] #, ('V202341x','V202331x','V200010b')#,
+    labels = [('V201372x','V201386x','V200010a'),('V201426x','V201386x','V200010a'), ('V201411x','V201408x','V200010a')] #, ('V202341x','V202331x','V200010b')#,
               # ('V202350x','V202341x','V200010b'),('V201262','V202248x','V200010b'),('V202242x','V202248x','V200010b')]
+    
+    ubic_min = [[(4,0),(4,2)],[(0,15),(0,9)],[(4,4),(3,1)]]
     
     # rangos = [(np.array([0,0.1]),np.array([0.4,0.8])),(np.array([0,0.1]),np.array([0.4,0.8])), (np.array([0,0.15]),np.array([0.5,0.7])), (np.array([0,0.1]),np.array([0.4,0.7]))] #,
               # (np.array([0,0.2]),np.array([0.4,0.8])), (np.array([0,0.1]),np.array([0.4,0.66])), (np.array([0,0.1]),np.array([0.4,0.7]))]
     
-    for preguntas in labels:
+    for preguntas,lminimos in zip(labels,ubic_min):
         
         code_1 = preguntas[0]
         code_2 = preguntas[1]
@@ -123,10 +125,13 @@ for carp in Carpetas:
         func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_ANES, dict_labels, Etapa/carpeta, Direccion, bines,
                                 SIM_param_x,SIM_param_y)
         
-        func.Histograma_distancias(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta,ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
+        func.Histograma_distancias(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta, lminimos,
+                                   ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
         
         func.Comp_estados(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta,
-                          Direccion, 0.45, ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
+                          Direccion, 0.45, lminimos, ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
+        
+        func.FracHist_CantEstados(DJS, code_x, code_y, Df_archivos, Dic_ANES, dict_labels, Etapa/carpeta, Direccion, 0.45)
         
         #----------------------------------------------------------------------------------------------
         
