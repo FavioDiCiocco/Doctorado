@@ -1992,3 +1992,30 @@ Lo mandé a correr en la pc de la facultad, ahora debería funcionar bárbaro es
 una parte para que no se salteara algunos gráficos el armado de gráficos de los histogramas de distancias.
 También agregué el armado del gráfico de fracción de histogramas en función de cantidad de simulaciones con
 distancias menores a la distancia de corte.
+
+------------------------------------------------------------------------------------------
+
+04/07/2024
+
+Cosas charladas:
+----------------
+1) Armar histogramas con binneados más chicos.
+2) Hay que definir si es mejor elegir un conjunto chico de simulaciones
+o si tomamos un corte de distancia y nos quedamos con las simulaciones que haya. (o no).
+3) Lo que Hugo proponía es hacer un gráfico que en el eje Y tenga el número de estados 
+y en el eje X el promedio de las distancias de los estados que haya (o no) debajo del
+criterio de corte de distancia.
+4) David propone armar dos mapas de calor. Uno con el promedio de distancias de lo que haya
+(o no) por debajo del criterio de corte y otro con la fracción de simulaciones que hay
+en cada uno de esos puntos.
+
+Sobrevivimos a la charla, la idea es armar estos gráficos que charlamos pero con más
+preguntas. Pablo dijo 20, veamos si podemos hacer con 10 y de ahí vamos construyendo la presentación.
+
+Lo primero que quiero hacer ahora es ponerme a ordenar un poco los archivos. Tengo algunos cambios
+que hice en la pc de Algarve que quiero corregir los archivos locales. Después puedo mandar a armar
+los gráficos enteros, todo de nuevo. Por último, tengo que leer el paper de Sebas para juntarme a
+charlar con Lucio mañana.
+
+En Hist2D se construye el Dic_total. Podría ver de construirlo por fuera de las funciones. En especial
+porque es indistinto de cada pregunta considerada.

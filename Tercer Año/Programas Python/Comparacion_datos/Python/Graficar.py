@@ -81,6 +81,10 @@ for carp in Carpetas:
     SIM_param_y = r"\beta"
     SIM_param_x = r"cos(\delta)"
     
+    # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
+    # de todas las simulaciones para cada punto del espacio de parámetros.
+    Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
+    
     func.Tiempo(t0)
     
     #----------------------------------------------------------------------------------------------
@@ -122,20 +126,20 @@ for carp in Carpetas:
         func.Mapas_Colores_DJS(DJS, code_x, code_y, Df_archivos, Dic_ANES, dict_labels, Etapa/carpeta,
                                 ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
         
-        func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_ANES, dict_labels, Etapa/carpeta, Direccion, bines,
+        func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_Total, Dic_ANES, dict_labels, Etapa/carpeta, Direccion, bines,
                                 SIM_param_x,SIM_param_y)
         
         func.Histograma_distancias(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta, lminimos,
                                    ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
         
-        func.Comp_estados(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta,
+        func.Comp_estados(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta,
                           Direccion, 0.45, lminimos, ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
         
         func.FracHist_CantEstados(DJS, code_x, code_y, Df_archivos, Dic_ANES, dict_labels, Etapa/carpeta, Direccion, 0.45)
         
         #----------------------------------------------------------------------------------------------
-        
         """
+        
         
         # Esta parte del código la uso para calcular los parámetros del ajuste paraboloidico aplicado
         # a los datos de las distancias.
