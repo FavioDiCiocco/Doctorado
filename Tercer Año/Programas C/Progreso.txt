@@ -2019,3 +2019,29 @@ charlar con Lucio mañana.
 
 En Hist2D se construye el Dic_total. Podría ver de construirlo por fuera de las funciones. En especial
 porque es indistinto de cada pregunta considerada.
+
+------------------------------------------------------------------------------------------
+
+05/07/2024
+
+A la mañana llegué y me puse a trabajar con Lucio. Repasamos el paper de Seba, revisamos
+ideas y fijamos como objetivo preparar para la semana que viene un google Colab en el cuál
+simulemos el modelo de Granoveter con agentes y de ahí ver de quizás agregar el término de
+pérdida de memoria de los agentes.
+
+Ahora que estoy en la pc, debería empezar a revisar de construir los gráficos que hablamos con Hugo
+y David. Si esto funca bien, lo siguiente que puedo hacer el lunes es ya mandarlo para múltiples preguntas.
+
+Primero voy a armar el google Colab que hablamos con Lucio. Hecho eso, lo que sigue es revisar cómo vienen
+las simulaciones. Está todo corriendo. Como Ale mandó a correr cosas, ahora todo va a tardar más. Ponele
+que dentro de una semana reviso de nuevo cómo está esto.
+
+Ahora sí, a armar el gráfico que quiero hacer, el que me propuso Hugo y David. La idea es tomar los histogramas,
+fijar un valor que sea el criterio de distancia y tomar todas las simulaciones que sean menores a eso para calcular
+su valor medio de distancia y además calcular la fracción de simulaciones que estoy mirando en
+cada punto. Haré varios de estos gráficos variando el criterio de corte.
+ De paso, antes que nada, voy a probar duplicar la cantidad de bines en el histograma de distancias. Creo
+que duplicar es la cantidad adecuada. Más bines que eso sería una cantidad cercana a la cantidad de simulaciones.
+
+Ahí armé un código, que si funciona bien, construye efectivamente esos gráficos que David me dijo que arme.
+Veremos qué tal, si tira errores o qué. Igual, creo que por hoy ya estoy listo.

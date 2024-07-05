@@ -1058,7 +1058,7 @@ def Histograma_distancias(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpet
     
     # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
     # tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
-    bines = np.linspace(0,1,21)
+    bines = np.linspace(0,1,41)
     for tupla in lminimos:
     
         barrX = XX[max(tupla[0]-1,0):tupla[0]+2,max(tupla[1]-1,0):tupla[1]+2].flatten()
@@ -1184,7 +1184,7 @@ def FracHist_CantEstados(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta
     # menor a la distancia de corte.
     Y = np.zeros(Dist_JS.shape[2]+1)
     unicos,cant = np.unique(Cantidad, return_counts = True)
-    Y[unicos] = cant/np.sum(cant)
+    Y[unicos.astype(int)] = cant/np.sum(cant)
     
     
     # Promedio las distancias del espacio de parámetros
@@ -1197,13 +1197,85 @@ def FracHist_CantEstados(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta
     plt.rcParams.update({'font.size': 44})
     plt.figure(figsize=(28, 21))  # Adjust width and height as needed
     plt.plot(np.arange(Dist_JS.shape[2]+1), Y, "--g", linewidth = 6)
-    plt.xlabel("Número de configuraciones con distancia menor a 0.45")
+    plt.xlabel("Número de configuraciones con distancia menor a {}".format(dist_lim))
     plt.ylabel("Fracción de Histogramas")
     plt.axvline(x=cant_sim, linestyle = "--", color = "red", linewidth = 4)
-    plt.title("{} vs {}\n Fracción de histogramas en función de la cantidad de configuraciones con distancia menor a {}".format(dict_labels[code_y],dict_labels[code_x],dist_lim))
+    plt.title("{} vs {}".format(dict_labels[code_y],dict_labels[code_x]))
     direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/FracHistvsEstados_{} vs {}.png".format(carpeta,code_y,code_x))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
+
+#-----------------------------------------------------------------------------------------------
+
+# Voy a realizar dos mapas de colores. Uno con el promedio de un subconjunto de distancias
+# de JS y otro con la fracción de simulaciones que estoy contando para ese promedio
+
+def Doble_Mapacol_PromyFrac(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta, path,
+                            SIM_param_x, SIM_param_y):
+    
+    # Arranco eligiendo un rango de criterios. Yo diría de mover entre 0.25 y 0.75
+    Criterios = np.arange(6)*0.1 + 0.25
+    
+    # Defino los arrays de parámetros diferentes
+    Arr_param_x = np.unique(DF_datos["parametro_x"])
+    Arr_param_y = np.unique(DF_datos["parametro_y"])
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    ZZ = np.zeros((2,XX.shape[0],XX.shape[1]))
+    
+    # Primero reviso mis conjuntos de distancias para cada punto del espacio. A esas distancias
+    # les calculo el promedio para el subconjunto cuya distancia sea menor que las dist_lim.
+    
+    for i,dist_crit in enumerate(Criterios):
+    
+        for fila in range(Dist_JS.shape[0]):
+            for columna in range(Dist_JS.shape[1]):
+                
+                distancias = Dist_JS[fila,columna][Dist_JS[fila,columna] <= dist_crit]
+                if distancias.shape[0] == 0:
+                    continue
+                ZZ[0,fila,columna] = np.mean(distancias)
+                ZZ[1,fila,columna] = distancias.shape[0]/Dist_JS.shape[2]
+        
+        #------------------------------------------------------------------------
+        
+        # Armo los parámetros del gráfico de promedios
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("Promedios Distancia JS subconjunto",figsize=(28,21))
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        plt.title("Promedios Distancias Jensen-Shannon, distancia corte = {}\n {} vs {}".format(dist_crit,dict_labels[code_y],dict_labels[code_x]))
+        
+        # Guardo la figura
+        direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/DistPromSubconj_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
+        
+        plt.pcolormesh(XX,YY,ZZ[0], shading="nearest", cmap = "autumn", vmin = 0, vmax = 1)
+        plt.colorbar()
+        
+        # Guardo la figura y la cierro
+        plt.savefig(direccion_guardado , bbox_inches = "tight")
+        plt.close("Promedios Distancia JS subconjunto")
+        
+        #------------------------------------------------------------------------
+        
+        # Armo los parámetros del gráfico de promedios
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("Fraccion simulaciones subconjunto",figsize=(28,21))
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        plt.title("Fraccion de simulaciones, distancia corte = {}\n {} vs {}".format(dist_crit,dict_labels[code_y],dict_labels[code_x]))
+        
+        # Guardo la figura
+        direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/FracSim_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
+        
+        plt.pcolormesh(XX,YY,ZZ[1], shading="nearest", cmap = "bone", vmin = 0, vmax = 1)
+        plt.colorbar()
+        
+        # Guardo la figura y la cierro
+        plt.savefig(direccion_guardado , bbox_inches = "tight")
+        plt.close("Fraccion simulaciones subconjunto")
+    
 
 
 #-----------------------------------------------------------------------------------------------

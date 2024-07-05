@@ -3587,3 +3587,127 @@ def Histograma_distancias(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpet
     direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/Hist distancias_{} vs {}_{}={}_{}={}.png".format(carpeta,code_y,code_x,ID_param_y,YY[tupla],ID_param_x,XX[tupla]))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
+    
+#-----------------------------------------------------------------------------------------------
+
+# Lo que quiero es ver cuál es la composición de los estados que son parte del cluster
+# de distancias pequeñas que observo en el histograma de Distancias. 
+
+def Comp_estados(Dist_JS, code_x, code_y, DF_datos, Dic_Total, dict_labels, carpeta, path, dist_lim,lminimos,
+                 ID_param_x, SIM_param_x, ID_param_y, SIM_param_y):
+    
+    # Defino los arrays de parámetros diferentes
+    EXTRAS = int(np.unique(DF_datos["Extra"]))
+    Arr_param_x = np.unique(DF_datos["parametro_x"])
+    Arr_param_y = np.unique(DF_datos["parametro_y"])
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    
+    
+    # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
+    # tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
+    for imin,tupla in enumerate(lminimos):
+        cant_sim = np.count_nonzero(Dist_JS[tupla] <= dist_lim)
+        
+        PARAM_X = XX[tupla]
+        PARAM_Y = YY[tupla]
+        
+        # for PARAM_X,PARAM_Y in zip(XX[tupla[0]-1:tupla[0]+2,tupla[1]-1:tupla[1]+2].flatten(),YY[tupla[0]-1:tupla[0]+2,tupla[1]-1:tupla[1]+2].flatten()):
+        
+        Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
+                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
+                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
+                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
+                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
+        
+        Nombres = ["Cons Neut", "Cons Rad", "Pol 1D y Cons","Pol Id", "Trans", "Pol Desc","Pol 1D y Cons anch","Pol Id anch", "Trans anch","Pol Desc anch"]
+        
+        bin_F = np.arange(-0.5,10.5)
+        bin_D = np.linspace(0,1,21)
+        X = np.arange(10)
+        
+        for i,dmin,dmax in zip(np.arange(bin_D.shape[0]-1),bin_D[0:-1],bin_D[1:]):
+            Arr_bool = (Dist_JS[tupla] >= dmin) & (Dist_JS[tupla] <= dmax) 
+            if np.count_nonzero(Arr_bool) == 0:
+                continue
+            plt.rcParams.update({'font.size': 44})
+            plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+            plt.hist(Frecuencias[Arr_bool], bins = bin_F, density = True)
+            plt.ylabel("Fracción")
+            plt.title('{} vs {}\n'.format(dict_labels[code_y], dict_labels[code_x]) + r'Cantidad simulaciones {}, ${}$={},${}$={}, Distancias entre {:.2f} y {:.2f}'.format(np.count_nonzero(Arr_bool), SIM_param_y, PARAM_Y, SIM_param_x, PARAM_X, dmin, dmax))
+            plt.xticks(ticks = X, labels = Nombres, rotation = 45)
+            direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/Comp est_{}vs{}_min={}_b{}.png".format(carpeta,code_y,code_x,imin+1,i))
+            plt.savefig(direccion_guardado ,bbox_inches = "tight")
+            plt.close()
+    
+    #-----------------------------------------------------------------------------------------
+        
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores para el caso sin cruz
+    direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/DistanciaJS_recortado_{}vs{}.png".format(carpeta,code_y,code_x))
+    
+    plt.rcParams.update({'font.size': 44})
+    plt.figure("Distancia Jensen-Shannon",figsize=(28,21))
+    plt.xlabel(r"${}$".format(SIM_param_x))
+    plt.ylabel(r"${}$".format(SIM_param_y))
+    
+    # Promedio las distancias del espacio de parámetros
+    Dist_JS_prom = np.mean(Dist_JS, axis=2)
+    # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
+    tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
+    cant_sim = np.count_nonzero(Dist_JS[tupla] <= dist_lim)
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    Dist_JS_prom = np.mean(np.sort(Dist_JS)[:,:,0:cant_sim],axis=2)
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    
+    plt.pcolormesh(XX,YY,Dist_JS_prom,shading="nearest", cmap = "viridis")
+    plt.colorbar()
+    plt.scatter(XX[tupla],YY[tupla], marker="X", color = "red", s = 1500)
+    plt.title("Distancia Jensen-Shannon \n {} vs {}\nCantidad simulaciones {}".format(dict_labels[code_y],dict_labels[code_x], cant_sim))
+    
+    # Guardo la figura y la cierro
+    
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("Distancia Jensen-Shannon")
+    
+#-----------------------------------------------------------------------------------------------
+
+# A partir de mis gráficos de histogramas de distancias, quiero armar un gráfico
+# que mire los histogramas y construya la cantidad de gráficos que tienen X configuraciones
+# con distancias menor a la distancia límite, que por ahora es 0.45.
+
+def FracHist_CantEstados(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta, path, dist_lim):
+    
+    # Primero reviso mis conjuntos de distancias para cada punto del espacio. En esos puntos,
+    # cuento cuántas de las simulaciones tienen distancia menor a la distancia de corte
+    Cantidad = np.zeros(Dist_JS.shape[0]*Dist_JS.shape[1])
+    for indice,distancias in enumerate(np.reshape(Dist_JS,(Dist_JS.shape[0]*Dist_JS.shape[1],Dist_JS.shape[2]))):
+        Cantidad[indice] = np.count_nonzero(distancias <= dist_lim)
+    
+    # Con eso puedo entonces contar cuántos histogramas tienen X simulaciones con distancias
+    # menor a la distancia de corte.
+    Y = np.zeros(Dist_JS.shape[2]+1)
+    unicos,cant = np.unique(Cantidad, return_counts = True)
+    Y[unicos.astype(int)] = cant/np.sum(cant)
+    
+    
+    # Promedio las distancias del espacio de parámetros
+    Dist_JS_prom = np.mean(Dist_JS, axis=2)
+    # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
+    tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
+    cant_sim = np.count_nonzero(Dist_JS[tupla] <= dist_lim)
+    
+    # Set the figure size
+    plt.rcParams.update({'font.size': 44})
+    plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+    plt.plot(np.arange(Dist_JS.shape[2]+1), Y, "--g", linewidth = 6)
+    plt.xlabel("Número de configuraciones con distancia menor a 0.45")
+    plt.ylabel("Fracción de Histogramas")
+    plt.axvline(x=cant_sim, linestyle = "--", color = "red", linewidth = 4)
+    plt.title("{} vs {}\n Fracción de histogramas en función de la cantidad de configuraciones con distancia menor a {}".format(dict_labels[code_y],dict_labels[code_x],dist_lim))
+    direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/FracHistvsEstados_{} vs {}.png".format(carpeta,code_y,code_x))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close()
+
