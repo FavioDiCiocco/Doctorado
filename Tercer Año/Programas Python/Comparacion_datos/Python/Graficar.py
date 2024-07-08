@@ -93,93 +93,87 @@ for carp in Carpetas:
     
     Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
     
-    labels_politicos = ['V201372x','V201386x','V201426x']
+    labels_politicos = ['V201372x','V201386x','V201408x','V201411x','V201420x','V201426x',
+                        'V202255x','V202328x','V202336x']
 
-    labels_apoliticos = ['V201429','V202320x','V202341x','V202350x']
+    labels_apoliticos = ['V201429','V202320x','V202331x','V202341x','V202344x','V202350x','V202383x']
 
-    labels_dudosos = ['V201225x','V201262','V202242x','V202248x']
+#    labels_dudosos = ['V201225x','V201262','V202242x','V202248x']
     
-    # Esta parte del código la uso para calcular el mapa de colores de DJS de varios pares de preguntas,
-    # todo de un plumazo.
+    labels = []
     
-    # Esto es para probar preguntas de 7x7, 6x7 y 6x6. Quiero ver si mi código funciona bien.
-    # Estos son labels de prueba
+    for i,code_1 in enumerate(labels_politicos):
+        for code_2 in labels_politicos[i+1:]:
+            
+            if code_1[3] == '1' and code_2[3] == '1':
+                weights = 'V200010a'
+            else:
+                weights = 'V200010b'
+                
+            labels.append((code_1,code_2,weights))
     
-    labels = [('V201372x','V201386x','V200010a'),('V201426x','V201386x','V200010a'), ('V201411x','V201408x','V200010a')] #, ('V202341x','V202331x','V200010b')#,
+        
+    for i,code_1 in enumerate(labels_apoliticos):
+        for code_2 in labels_apoliticos[i+1:]:
+            
+            if code_1[3] == '1' and code_2[3] == '1':
+                weights = 'V200010a'
+            else:
+                weights = 'V200010b'
+                
+            labels.append((code_1,code_2,weights))
+            
+    
+    # labels = [('V201372x','V201386x','V200010a'),('V201426x','V201386x','V200010a'), ('V201411x','V201408x','V200010a')]#, ('V202341x','V202331x','V200010b')#,
               # ('V202350x','V202341x','V200010b'),('V201262','V202248x','V200010b'),('V202242x','V202248x','V200010b')]
     
-    ubic_min = [[(4,0),(4,2)],[(0,15),(0,9)],[(4,0),(4,1)]]
+#    ubic_min = [[(4,0),(4,2)],[(0,15),(0,9)],[(4,0),(4,1)]]
+    
+    dist_lim = 0.45
     
     # rangos = [(np.array([0,0.1]),np.array([0.4,0.8])),(np.array([0,0.1]),np.array([0.4,0.8])), (np.array([0,0.15]),np.array([0.5,0.7])), (np.array([0,0.1]),np.array([0.4,0.7]))] #,
               # (np.array([0,0.2]),np.array([0.4,0.8])), (np.array([0,0.1]),np.array([0.4,0.66])), (np.array([0,0.1]),np.array([0.4,0.7]))]
     
-    for preguntas,lminimos in zip(labels,ubic_min):
+    for preguntas in labels:
         
         code_1 = preguntas[0]
         code_2 = preguntas[1]
+            
         weights = preguntas[2]
         
         Dic_ANES = {"code_1": code_1, "code_2": code_2, "weights":weights}
         
         DJS, code_x, code_y = func.Matriz_DJS(Df_archivos, Df_ANES, Dic_ANES, Direccion)
         
-        # func.Mapas_Colores_DJS(DJS, code_x, code_y, Df_archivos, Dic_ANES, dict_labels, Etapa/carpeta,
-        #                         ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
+        func.Mapas_Colores_DJS(DJS, code_x, code_y, Df_archivos, Dic_ANES, dict_labels, Etapa/carpeta,
+                               ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
         
-        # func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_Total, Dic_ANES, dict_labels, Etapa/carpeta, Direccion, bines,
-        #                         SIM_param_x,SIM_param_y)
+        func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_Total, Dic_ANES, dict_labels, Etapa/carpeta, Direccion, bines,
+                                  SIM_param_x,SIM_param_y)
         
-        # func.Histograma_distancias(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta, lminimos,
-        #                            ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
+        func.Histograma_distancias(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta,
+                                   ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
         
         func.Comp_estados(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta,
-                          Direccion, 0.45, lminimos, ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
+                          Direccion, dist_lim, ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
         
-        func.FracHist_CantEstados(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta, Direccion, 0.45)
+        func.FracHist_CantEstados(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta, Direccion, dist_lim)
         
         func.Doble_Mapacol_PromyFrac(DJS, code_x, code_y, Df_archivos, dict_labels,
                                   Etapa/carpeta, Direccion, SIM_param_x, SIM_param_y)
         
-        #----------------------------------------------------------------------------------------------
-        """
+        #-------------------------------------------------------------------------------------------------------------------------
         
+        # Esto funca con la idea de que quiero revisar varios puntos mínimos. Le cambié el input para que no haya varios
+        # mínimos a mirar, sino sólo mirar el mínimo en el promedio de todos.
         
-        # Esta parte del código la uso para calcular los parámetros del ajuste paraboloidico aplicado
-        # a los datos de las distancias.
+#        func.Histograma_distancias(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta, lminimos,
+#                                   ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
+#        
+#        func.Comp_estados(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta,
+#                          Direccion, dist_lim, lminimos, ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
         
-        x_range = rango_ajuste[0]
-        y_range = rango_ajuste[1]
-        
-        params_centro, params_cruz = func.Ajuste_DJS(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, Dic_ANES,
-                                 x_range,y_range)
-    
-        # Define the mathematical function
-        def my_function(x, y, params):
-            return params[0]*y**2 + params[1]*y + params[2]*x**2 + params[3]*x + params[4]
-        
-        func.plot_3d_surface(Etapa/carpeta, Dic_ANES, my_function, params_centro, params_cruz, x_range,
-                             y_range,SIM_param_x, SIM_param_y)
-        
-        
-    #    func.plot_3d_scatter(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, Dic_ANES,
-    #                         np.array([0.5,0.72]),np.array([0.04,0.15]), SIM_param_x, SIM_param_y)
-        
-        
-        initial_guess = [0.1,0.5]
-        
-        def my_function_minimize(x, a,b,c,d,e):
-            return a*x[1]**2 + b*x[1] + c*x[0]**2 + d*x[0] + e
-        
-        # Perform the minimization
-        result_centro = minimize(my_function_minimize, initial_guess, args=tuple(params_centro))
-        result_cruz = minimize(my_function_minimize, initial_guess, args=tuple(params_cruz))
-        
-        # Print the result
-        print("Variables ajustadas para preguntas: {} vs {}".format(dict_labels[code_2],dict_labels[code_1]))
-        print("Variables óptimas distribución sin centro:", result_centro.x)
-        print("Variables óptimas distribución sin cruz:", result_cruz.x)
-        
-        """
+        #-------------------------------------------------------------------------------------------------------------------------
 #    bines = np.linspace(-3.5,3.5,8)
 #    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/"distribuciones", bines, "magma",
 #                                      ID_param_x, ID_param_y, ID_param_extra_1)
@@ -271,5 +265,47 @@ print(distancia)
 # Esto que me armé efectivamente calcula la distancia Jensen-Shannon entre dos
 # distribuciones. Extrañamente, no tiene problemas con las distribuciones que tengan
 # ceros. Muy raro.
+
+"""
+
+"""
+####################################################################################
+Esto de acá es para hacer ajustes. Después tendré que ver de reincorporarlo
+####################################################################################
+
+# Esta parte del código la uso para calcular los parámetros del ajuste paraboloidico aplicado
+# a los datos de las distancias.
+
+x_range = rango_ajuste[0]
+y_range = rango_ajuste[1]
+
+params_centro, params_cruz = func.Ajuste_DJS(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, Dic_ANES,
+                         x_range,y_range)
+
+# Define the mathematical function
+def my_function(x, y, params):
+    return params[0]*y**2 + params[1]*y + params[2]*x**2 + params[3]*x + params[4]
+
+func.plot_3d_surface(Etapa/carpeta, Dic_ANES, my_function, params_centro, params_cruz, x_range,
+                     y_range,SIM_param_x, SIM_param_y)
+
+
+#    func.plot_3d_scatter(Df_archivos, Df_ANES, Direccion, Etapa/carpeta, Dic_ANES,
+#                         np.array([0.5,0.72]),np.array([0.04,0.15]), SIM_param_x, SIM_param_y)
+
+
+initial_guess = [0.1,0.5]
+
+def my_function_minimize(x, a,b,c,d,e):
+    return a*x[1]**2 + b*x[1] + c*x[0]**2 + d*x[0] + e
+
+# Perform the minimization
+result_centro = minimize(my_function_minimize, initial_guess, args=tuple(params_centro))
+result_cruz = minimize(my_function_minimize, initial_guess, args=tuple(params_cruz))
+
+# Print the result
+print("Variables ajustadas para preguntas: {} vs {}".format(dict_labels[code_2],dict_labels[code_1]))
+print("Variables óptimas distribución sin centro:", result_centro.x)
+print("Variables óptimas distribución sin cruz:", result_cruz.x)
 
 """

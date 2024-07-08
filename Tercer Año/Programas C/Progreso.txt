@@ -2045,3 +2045,30 @@ que duplicar es la cantidad adecuada. Más bines que eso sería una cantidad cer
 
 Ahí armé un código, que si funciona bien, construye efectivamente esos gráficos que David me dijo que arme.
 Veremos qué tal, si tira errores o qué. Igual, creo que por hoy ya estoy listo.
+
+------------------------------------------------------------------------------------------
+
+06/07/2024
+
+Mirando lo que está corriendo en las pc's, en Coimbra se terminó el barrido de simulaciones entre
+0 y 19. En Oporto se están haciendo las simulaciones entre 20 y 39. Así que voy a mandar
+las simulaciones de 40 a 69 en Coimbra, y después en Oporto mando las que van desde 70 a 99.
+
+Mandé a correr las cosas en Coimbra del barrido Beta-Kappa. Mientras estoy descargando los datos 
+de Beta-Cosd para hacer simulaciones en la pc con eso.
+
+Parece que el código que arme funca bien, veré de mandarlo en cuanto se hayan descargado todos los
+archivos y pueda probarlo. Mientras voy a ir mandando los mails y cosas que venía charlando ayer con
+mi vieja.
+
+Bien, logré armar los gráficos que decía David. ¿Qué es lo siguiente para hacer? Bueno, de lo que
+charlamos tengo armado lo que me dijeron. Se me ocurren dos cosas:
+
+1) Modificar el armado de los histogramas de distancias, hacerlos en el lugar del mínimo de los
+promedios nomás, lo de ver componentes en otros lados, ahora, no me sirve.
+2) Tengo que revisar pares de preguntas. Juntemos tántas preguntas como se pueda. Pensemos que si
+llego a juntar unos 10 o 15 pares de preguntas, correr esto va a tardar posiblemente 6 o 7 horas.
+
+Hice estas dos últimas cosas y mandé a correr esto en la pc de Algarve. No creo que sean todos buenos
+pares de preguntas, pero hay como 40 pares de preguntas. Pablo va a estar feliz. Hasta que vea
+que las preguntas son una paja, entonces ya no va a estar tan feliz. Veremos qué sale.
