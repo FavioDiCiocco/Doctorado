@@ -140,7 +140,7 @@ for code in labels_filtrados:
 df_data[['V200010a','V200010b']] = df_raw_data[['V200010a','V200010b']]
 
 #############################################################################################
-"""
+
 # Gráfico de dos preguntas simultáneas con distribuciones individuales en los ejes
 
 for i,code_1 in enumerate(labels_politicos):
@@ -256,7 +256,7 @@ for i,code_1 in enumerate(labels_dudosos):
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
 
-"""
+
 ####################################################################################################################
 
 

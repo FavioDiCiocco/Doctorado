@@ -2072,3 +2072,22 @@ llego a juntar unos 10 o 15 pares de preguntas, correr esto va a tardar posiblem
 Hice estas dos últimas cosas y mandé a correr esto en la pc de Algarve. No creo que sean todos buenos
 pares de preguntas, pero hay como 40 pares de preguntas. Pablo va a estar feliz. Hasta que vea
 que las preguntas son una paja, entonces ya no va a estar tan feliz. Veremos qué sale.
+
+------------------------------------------------------------------------------------------
+
+10/07/2024
+
+Estoy en la facultad, bajé los archivos de los gráficos que hice. Son MUCHOS gráficos, MUCHAS
+preguntas. No sé si siquiera son preguntas interesantes o que valga la pena revisar. Visto que esto
+funca, podría intentar armar primero una presentación con las tres preguntas principales y de ahí
+agregar el resto, una vez que tengo una buena idea de lo que quiero hacer.
+
+Revisé lo que está corriendo en las pc's del cluster, está funcando todo. Quizás el viernes da para mover
+cosas. También me anoté en el congreso que nos dijo Pablo. Del Hostel no me respondieron, así que tengo que ver
+de volver a preguntar ahí o preguntar en el de Casa Copada. Tengo que ver de comprar los pasajes del Buquebus.
+
+Hoy a la tarde me gustaría ponerme con lo que charlamos con Lucio. Después debería ver de dedicar un momento
+para armar funciones que levanten las distribuciones y no las opiniones. Así como dedicarme a ver lo de por qué
+el código de Hugo va más rápido que el mío. Eso lo veré después seguramente. Ahora a comer.
+
+Traspasé la mitad del código. No fui tan efeiciente como me hubiera gustado.
