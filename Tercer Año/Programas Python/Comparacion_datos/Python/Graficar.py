@@ -154,10 +154,10 @@ for carp in Carpetas:
         func.Histograma_distancias(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta,
                                    ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
         
-        func.Comp_estados(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta,
-                          Direccion, dist_lim, ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
+        # func.Comp_estados(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta,
+        #                   Direccion, dist_lim, ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
         
-        func.FracHist_CantEstados(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta, Direccion, dist_lim)
+        # func.FracHist_CantEstados(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta, Direccion, dist_lim)
         
         func.Doble_Mapacol_PromyFrac(DJS, code_x, code_y, Df_archivos, dict_labels,
                                   Etapa/carpeta, Direccion, SIM_param_x, SIM_param_y)

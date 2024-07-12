@@ -731,7 +731,7 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, 
     
     # Y ahora me armo el gráfico de promedios de distancia JS según cantidad de simulaciones
     # consideradas, con las simulaciones ordenadas de las de menos distancia a las de más distancia
-    
+    """
     for i in range(3):
         
         direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/DistanciaJS_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
@@ -758,7 +758,7 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, 
         plt.savefig(direccion_guardado , bbox_inches = "tight")
         plt.close("Ranking Distancia Jensen-Shannon")
         
-        
+    """
     
 
 #-----------------------------------------------------------------------------------------------
@@ -771,14 +771,15 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, Dic_ANES,
     
     # Hago los gráficos de histograma 2D de las simulaciones que más se parecen y que menos se parecen
     # a mis distribuciones de las encuestas
-    Dist_JS_sorted = np.sort(Dist_JS)
+    # Dist_JS_sorted = np.sort(Dist_JS)
+    Dist_JS_prom = np.mean(Dist_JS, axis=2)
     
     #-------------------------------------------------------------------------------------------------
     
     # Antes de ordenar mis matrices, voy a obtener la info del gráfico que más se parece
     # y del décimo que más se parece se parece a lo que estoy queriendo comparar.
-    
-    iMin = np.unravel_index(np.argmin(Dist_JS),Dist_JS.shape)
+    tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
+    iMin = np.argsort(Dist_JS[tupla])[0]
     
     # Hallo el décimo que más se parece a la distribución. Arranco con el que no tiene centro
     
@@ -811,16 +812,14 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, Dic_ANES,
     
     #--------------------------------------------------------------------------------
     
+    # Nombres = ["Consenso neutral", "Consenso radicalizado", "Polarización 1D y Consenso",
+    #        "Polarización Ideológica", "Transición", "Polarización Descorrelacionada",
+    #        "Polarización 1D y Consenso con anchura",
+    #        "Polarización Ideológica con anchura", "Transición con anchura",
+    #        "Polarización Descorrelacionada con anchura"]
     
-    Nombres = ["Consenso neutral", "Consenso radicalizado", "Polarización 1D y Consenso",
-           "Polarización Ideológica", "Transición", "Polarización Descorrelacionada",
-           "Polarización 1D y Consenso con anchura",
-           "Polarización Ideológica con anchura", "Transición con anchura",
-           "Polarización Descorrelacionada con anchura"]
-    
-    tupla = iMin
     simil = "min_distancia"
-    distan = np.min(Dist_JS_sorted)
+    distan = np.min(Dist_JS[tupla])
     
     #--------------------------------------------------------------------------------
     # for tupla,simil,distan in zip([iMin, iMax],Lista_similaridad,Valor_distancia):
@@ -833,11 +832,11 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, Dic_ANES,
     PARAM_X = XX[tupla[0],tupla[1]]
     PARAM_Y = YY[tupla[0],tupla[1]]
     
-    Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
-                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
-                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
-                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
-                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
+    # Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
+    #                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
+    #                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
+    #                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
+    #                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
     
     # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
     archivos = np.array(DF_datos.loc[(DF_datos["tipo"]==TIPO) & 
@@ -851,7 +850,7 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, Dic_ANES,
     for nombre in archivos:
         
         repeticion = int(DF_datos.loc[DF_datos["nombre"]==nombre,"iteracion"])
-        if repeticion == tupla[2]:
+        if repeticion == iMin:
         
             # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
             # Opinión Inicial del sistema
@@ -876,8 +875,8 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, Dic_ANES,
             
             direccion_guardado = Path("../../../Imagenes/{}/Hist_2D_{}_{}vs{}.png".format(carpeta /"Sin Cruz",simil,code_y,code_x))
             
-            indice = np.where(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] == repeticion)[0][0]
-            estado = int(Frecuencias[indice])
+            # indice = np.where(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] == repeticion)[0][0]
+            # estado = int(Frecuencias[indice])
             
             #----------------------------------------------------------------------------------------------------------------------------------
             
@@ -896,7 +895,7 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, Dic_ANES,
             _, _, _, im = plt.hist2d(X, Y, bins=bins,density=True,cmap="inferno")
             plt.xlabel(r"$x_i^1$")
             plt.ylabel(r"$x_i^2$")
-            plt.title(r'Distancia JS = {:.2f}, ${}$={:.2f}, ${}$={:.2f}'.format(distan,SIM_param_x,PARAM_X,SIM_param_y,PARAM_Y) + '\n {} \n {} vs {}'.format(Nombres[estado],dict_labels[code_y],dict_labels[code_x]))
+            plt.title(r'Distancia JS = {:.2f}, ${}$={:.2f}, ${}$={:.2f}'.format(distan,SIM_param_x,PARAM_X,SIM_param_y,PARAM_Y) + '\n {} vs {}'.format(dict_labels[code_y],dict_labels[code_x]))
             plt.colorbar(im, label='Fracción')
             plt.savefig(direccion_guardado ,bbox_inches = "tight")
             plt.close()
@@ -1114,18 +1113,9 @@ def Comp_estados(Dist_JS, code_x, code_y, DF_datos, Dic_Total, dict_labels, carp
     
 #    for imin,tupla in enumerate(lminimos):
     
-    cant_sim = np.count_nonzero(Dist_JS[tupla] <= dist_lim)
-    
-    PARAM_X = XX[tupla]
-    PARAM_Y = YY[tupla]
+    # cant_sim = np.count_nonzero(Dist_JS[tupla] <= dist_lim)
     
     # for PARAM_X,PARAM_Y in zip(XX[tupla[0]-1:tupla[0]+2,tupla[1]-1:tupla[1]+2].flatten(),YY[tupla[0]-1:tupla[0]+2,tupla[1]-1:tupla[1]+2].flatten()):
-    
-    Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
-                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
-                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
-                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
-                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
     
     Nombres = ["Cons Neut", "Cons Rad", "Pol 1D y Cons","Pol Id", "Trans", "Pol Desc","Pol 1D y Cons anch","Pol Id anch", "Trans anch","Pol Desc anch"]
     
@@ -1133,19 +1123,32 @@ def Comp_estados(Dist_JS, code_x, code_y, DF_datos, Dic_Total, dict_labels, carp
     bin_D = np.linspace(0,1,41)
     X = np.arange(10)
     
-    for i,dmin,dmax in zip(np.arange(bin_D.shape[0]-1),bin_D[0:-1],bin_D[1:]):
-        Arr_bool = (Dist_JS[tupla] >= dmin) & (Dist_JS[tupla] <= dmax) 
-        if np.count_nonzero(Arr_bool) == 0:
-            continue
-        plt.rcParams.update({'font.size': 44})
-        plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-        plt.hist(Frecuencias[Arr_bool], bins = bin_F, density = True)
-        plt.ylabel("Fracción")
-        plt.title('{} vs {}\n'.format(dict_labels[code_y], dict_labels[code_x]) + r'Cantidad simulaciones {}, ${}$={},${}$={}, Distancias entre {:.2f} y {:.2f}'.format(np.count_nonzero(Arr_bool), SIM_param_y, PARAM_Y, SIM_param_x, PARAM_X, dmin, dmax))
-        plt.xticks(ticks = X, labels = Nombres, rotation = 45)
-        direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/Comp est_{}vs{}_min={}_b{}.png".format(carpeta,code_y,code_x,1,i))
-        plt.savefig(direccion_guardado ,bbox_inches = "tight")
-        plt.close()
+    barrX = XX[max(tupla[0]-1,0):tupla[0]+2,max(tupla[1]-1,0):tupla[1]+2].flatten()
+    barrY = YY[max(tupla[0]-1,0):tupla[0]+2,max(tupla[1]-1,0):tupla[1]+2].flatten()
+    Distancias = np.reshape(Dist_JS[max(tupla[0]-1,0):tupla[0]+2,max(tupla[1]-1,0):tupla[1]+2],(barrX.shape[0],Dist_JS.shape[2]))
+    
+    for j,PARAM_X,PARAM_Y,Arr_Dist in zip(np.arange(barrX.shape[0]),barrX,barrY,Distancias):
+        
+        Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
+                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
+                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
+                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
+                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
+        
+        
+        for i,dmin,dmax in zip(np.arange(bin_D.shape[0]-1),bin_D[0:-1],bin_D[1:]):
+            Arr_bool = (Arr_Dist >= dmin) & (Arr_Dist <= dmax) 
+            if np.count_nonzero(Arr_bool) == 0:
+                continue
+            plt.rcParams.update({'font.size': 44})
+            plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+            plt.hist(Frecuencias[Arr_bool], bins = bin_F, density = True)
+            plt.ylabel("Fracción")
+            plt.title('{} vs {}\n'.format(dict_labels[code_y], dict_labels[code_x]) + r'Cantidad simulaciones {}, ${}$={},${}$={}, Distancias entre {:.2f} y {:.2f}'.format(np.count_nonzero(Arr_bool), SIM_param_y, PARAM_Y, SIM_param_x, PARAM_X, dmin, dmax))
+            plt.xticks(ticks = X, labels = Nombres, rotation = 45)
+            direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/Comp est_{}vs{}_min={}_b{}.png".format(carpeta,code_y,code_x,j,i))
+            plt.savefig(direccion_guardado ,bbox_inches = "tight")
+            plt.close()
     
     #-----------------------------------------------------------------------------------------
         
@@ -1262,7 +1265,7 @@ def Doble_Mapacol_PromyFrac(Dist_JS, code_x, code_y, DF_datos, dict_labels, carp
         # Guardo la figura
         direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/DistPromSubconj_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
         
-        plt.pcolormesh(XX,YY,ZZ[0], shading="nearest", cmap = "cividis", vmin = 0, vmax = 1)
+        plt.pcolormesh(XX,YY,ZZ[0], shading="nearest", cmap = "viridis")
         plt.colorbar()
         
         # Guardo la figura y la cierro

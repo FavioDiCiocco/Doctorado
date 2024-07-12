@@ -2101,3 +2101,33 @@ con esa info lo mejor ordenada posible.
 
 Ya armé la presentación para cinco preguntas. Mañana la idea es juntarme con Lucio y arrancar charlando
 del paper de Lorenz-Spreen. O ver cómo está el collab. Quizás la reunión de mañana no sea tan larga.
+
+------------------------------------------------------------------------------------------
+
+12/07/2024
+
+A la mañana me junté un momento con Pablo, charlamos ideas de cosas para modificar y corregir en los
+gráficos que estoy armando. Las ideas para modificar son:
+
+1) Sacar las líneas rojas verticales de los histogramas. (Ya corregí eso en el armado de los histogramas
+de distancias)
+2) Tengo la cruz que marca el mínimo en las distancias de JS. ¿Necesito sacarlo? Creo que no, no parece
+que sea un problema
+3) Ver los histogramas de mínimos de distancia en los puntos de mínimos.
+4) Modificar en el promedio de distancias la barra de colores, para que no se sature lo graficado.
+5) Mostrar la composición de los estados en los diversos histogramas de distancias.
+6) En los gráficos de similitud, quitar la clasificación de estados. Va a achicar el tamaño
+de los títulos y además justamente es algo que no venimos prestándole mucha atención.
+7) Utilicemos el mismo código de colores para los gráficos de promedios de distancias según 
+criterio de corte que para los promedios de distancias total.
+
+Voy a poner los cambios en el código. Terminado eso, completaré el formulario de la SICSS.
+De paso, ya se terminó el barrido en el espacio Beta-Cos(delta) que estaba haciendo en Algarve.
+Ya puedo mandar un barrido en el espacio Beta-Kappa, o alguna otra cosa ahí.
+
+Siento que van a ser muchos los gráficos de composición de estados. Por ahora no los voy a armar.
+Ahí mandé a correr todo en Algarve. De ahí veré qué tengo y qué construyo. Voy a mandar a hacer
+los gráficos de composición de estados. Después los separaré en otra carpeta manualmente.
+
+Dejé corriendo los gráficos, tendré que ver qué hago en la carpeta de Algarve.
+El lunes armo la presentación con los nuevos gráficos.
