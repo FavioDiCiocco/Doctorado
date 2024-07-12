@@ -58,12 +58,12 @@ dict_labels = {'V201200':'Liberal-Conservative self Placement', 'V201225x':'Voti
                'V201246':'Spending & Services', 'V201249':'Defense Spending', 'V201252':'Gov-private Medical Insurance',
                'V201255':'Guaranteed job Income', 'V201258':'Gov Assistance to Blacks', 'V201262':'Environment-Business Tradeoff',
                'V201342x':'Abortion Rights Supreme Court', 'V201345x':'Death Penalty','V201356x':'Vote by mail',
-               'V201362x':'Allowing Felons to vote', 'V201372x':'Helpful-Harmful if Pres didnt have to worry about Congress',
+               'V201362x':'Allowing Felons to vote', 'V201372x':'Pres didnt worry Congress',
                'V201375x':'Restricting Journalist access', 'V201382x':'Corruption increased or decreased since Trump',
-               'V201386x':'House impeachment decision', 'V201405x':'Require employers to offer paid leave to parents',
-               'V201408x':'Allow to refuse service to same sex couples', 'V201411x':'Transgender Policy', 'V201420x':'Birthright Citizenship',
-               'V201423x':'Should children brought illegally be sent back','V201426x':'Wall on border with Mexico',
-               'V201429':'Best way to deal with Urban Unrest','V201605x':'Political Violence compared to 4 years ago',
+               'V201386x':'Impeachment', 'V201405x':'Require employers to offer paid leave to parents',
+               'V201408x':'Service to same sex couples', 'V201411x':'Transgender Policy', 'V201420x':'Birthright Citizenship',
+               'V201423x':'Should children brought illegally be sent back','V201426x':'Wall with Mexico',
+               'V201429':'Urban Unrest','V201605x':'Political Violence compared to 4 years ago',
                'V202236x':'Allowing refugees to come to US','V202239x':'Effect of Illegal inmigration on crime rate',
                'V202242x':'Providing path to citizenship','V202245x':'Returning unauthorized immigrants to native country',
                'V202248x':'Separating children from detained immigrants','V202255x':'Less or more Government',
@@ -71,12 +71,12 @@ dict_labels = {'V201200':'Liberal-Conservative self Placement', 'V201225x':'Voti
                'V202259x':'Government trying to reduce income inequality','V202276x':'People in rural areas get more/less from Govt.',
                'V202279x':'People in rural areas have too much/too little influence','V202282x':'People in rural areas get too much/too little respect',
                'V202286x':'Easier/Harder for working mother to bond with child','V202290x':'Better/Worse if man works and woman takes care of home',
-               'V202320x':'Economic Mobility compared to 20 years ago','V202328x':'Obamacare','V202331x':'Vaccines in Schools',
-               'V202336x':'Regulation on Greenhouse Emissions','V202341x':'Background checks for guns purchases',
-               'V202344x':'Banning "Assault-style" Rifles','V202347x':'Government buy back of "Assault-Style" Rifles',
-               'V202350x':'Government action about opiod drug addiction','V202361x':'Free trade agreements with other countries',
+               'V202320x':'Economic Mobility','V202328x':'Obamacare','V202331x':'Vaccines in Schools',
+               'V202336x':'Regulate Greenhouse Emissions','V202341x':'Background checks for guns purchases',
+               'V202344x':'Banning Rifles','V202347x':'Government buy back of "Assault-Style" Rifles',
+               'V202350x':'Govt. action about opiods','V202361x':'Free trade agreements with other countries',
                'V202376x':'Federal program giving 12K a year to citizens','V202380x':'Government spending to help pay for health care',
-               'V202383x':'Health benefits of vaccination outweigh risks','V202390x':'Trasgender people serve in military',
+               'V202383x':'Benefits of vaccination','V202390x':'Trasgender people serve in military',
                'V202490x':'Government treats whites or blacks better','V202493x':'Police treats whites or blacks better',
                'V202542':'Use Facebook','V202544':'Use Twitter'}
 
@@ -278,7 +278,7 @@ for code in labels_politicos:
     hist = plt.hist(x=df_aux[code], weights=df_aux[weights], density = True,
          bins=np.arange(df_aux[code].min(), df_aux[code].max()+2, 1), align='left')
     plt.xlabel(dict_labels[code])
-    direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Base/Politicos/Histograma {}.png".format(code))
+    direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Histogramas/Politicos/Histograma {}.png".format(code))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
     
@@ -320,7 +320,7 @@ for code in labels_dudosos:
     hist = plt.hist(x=df_aux[code], weights=df_aux[weights], density = True,
          bins=np.arange(df_aux[code].min(), df_aux[code].max()+2, 1), align='left')
     plt.xlabel(dict_labels[code])
-    direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Base/Dudosos/Histograma {}.png".format(code))
+    direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Histogramas/Dudosos/Histograma {}.png".format(code))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
 
