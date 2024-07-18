@@ -2151,6 +2151,34 @@ que se veían feos. Creo que fue un día razonable. No sé si bueno, razonable.
 
 ------------------------------------------------------------------------------------------
 
+16/07/2024
+
+Me levanté y no pospuse la alarma, pero costó salir de la cama. Llegué a la facultad, hablé con
+Pablo y me puse a revisar la presentación. Hoy quiero resolver cuatro cosas:
+
+1) Completar la sección de la última pregunta
+2) Armar el gráfico de cómo se agrupan las preguntas en el espacio de parámetros que
+observamos antes. Podría hacer eso superponiéndolo al gráfico que tengo del espacio de
+parámetros que caracterizamos para 1000 agentes.
+3) Armar un gráfico parecido a ese pero con un criterio de corte según los clusters de
+distancias. Eso requeriría que lo mire un poco más a ojo, pero es algo que podría armar
+a partir de los gráficos que tengo. Repito que tendría que aclarar que no está hecho
+de forma automatizada, sino que es un poco a ojo.
+4) El inicio de la charla, agregarle dos diapositivas para definir bien las preguntas que uso
+y cómo las ordeno.
+
+Ahora me voy a poner a estudiar un cachito de Alemán y después me iré a la clase de Alemán más
+tarde.
+
+Volví a la tarde. Ya completé la sección de la última pregunta. Queda quizás completar el desglose
+de las distribuciones de la cuarta pregunta, pero no creo que valga tanto la pena.
+
+Ahora voy a seguir con el punto 2, el gráfico de cómo se agrupan las preguntas en la región del espacio
+de parámetros. Ponele 3 o 4 preguntas por cluster. Si llegas a cinco preguntas por cluster, sos un
+genio.
+
+------------------------------------------------------------------------------------------
+
 17/07/2024
 
 Soy tan boludo que no comitee el laburo que hice ayer en la facultad. Por suerte igual no
@@ -2184,3 +2212,35 @@ Después veo el tema de habilitar la tarjeta de crédito de la VISA y veo el tem
 espermograma en un laboratorio más cercano que el de Avellaneda. Por último, me pondré con el laburo
 que estamos haciendo con Lucio, primero continuando el traspaso del código de Sebas. Mañana quizás pueda
 ver de hacer el barrido que hablábamos con Lucio.
+
+------------------------------------------------------------------------------------------
+
+18/07/2024
+
+Llegué a la facultad, no muy temprano. Mergee los archivos. Me puse a mirar lo que hizo Lucio con el
+código de Granovetter. Tengo algunas dudas del código, pero en principio funciona y la idea está.
+Me confundió un poco lo de que los agentes deben interactuar o con otros agentes o con el campo externo.
+Pero la idea es razonable. En la ecuación se obtiene el punto fijo a partir de la suma de las contribuciones
+del término de la probabilidad acumulada y de la cobertura. Pero en la evolución lo que se representa
+es que los agentes se pueden enterar de las noticias por sus vecinos o por leer del tema en los medios.
+O pueden al no enterarse por ningún camino, decidir desactivarse.
+
+Hoy estoy trabajando poco eficiente. Tengo muchas cosas por hacer pero no estoy metido en ninguna.
+Lucio me dió una mano, me sacó una foto y cargué los datos en la encuesta de la SICSS.
+
+¿Qué trabajos tengo para hacer?
+
+1) El trabajo con Lucio sobre el modelo de Granovetter. Estaría bueno caer con una idea más clara
+sobre cómo meter la competencia de tópicos en el modelo. Yo pensaba en hacer algún barrido o
+cosas, pero creo que no es principal eso ahora, puede esperar a la próxima reunión.
+2) El trabajo con la gente de GOTHAM. Venimos bien, la idea es rearmar el gráfico de distribución
+de preguntas en el espacio de parámetros. También debería ver lo de probar usar la distancia de Kolmogorov-
+Smirnoff para ver si eso registra mejor los estados que son más bien consensos radicalizados.
+3) Tengo que ponerme a ver los videos sobre programación en R y leer el libro que proponen en la página
+del SICSS.
+
+Voy por un café, me voy a poner a leer un poco el paper para lo de mañana y así llego más preparado
+para la charla. Bien, me anoté cosas, creo que estoy en buena idea para mañana.
+
+Voy a hacer dos cosas más y después me voy a casa. Primero voy a imprimir el boleto de viaje a Uruguay.
+Después voy a ver el tema de laboratorios más cerca de casa como para hacer el estudio del espermograma.

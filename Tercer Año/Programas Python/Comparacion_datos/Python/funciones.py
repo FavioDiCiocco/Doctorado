@@ -93,10 +93,10 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
     # Defino los arrays de parámetros diferentes
     Arr_EXTRAS = np.unique(DF["Extra"])
     Arr_param_x = np.unique(DF["parametro_x"])
-    Arr_param_x = Arr_param_x[(Arr_param_x >= 0) & (Arr_param_x <= 0.04)]
+    Arr_param_x = Arr_param_x[(Arr_param_x >= 0.12) & (Arr_param_x <= 0.15)]
     
     Arr_param_y = np.unique(DF["parametro_y"])
-    Arr_param_y = Arr_param_y[(Arr_param_y >= 0.4) & (Arr_param_y <= 0.8)]
+    Arr_param_y = Arr_param_y[(Arr_param_y >= 0.6) & (Arr_param_y <= 0.8)]
     
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar

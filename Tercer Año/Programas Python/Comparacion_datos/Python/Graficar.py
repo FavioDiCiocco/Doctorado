@@ -83,12 +83,12 @@ for carp in Carpetas:
     
     # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
     # de todas las simulaciones para cada punto del espacio de parámetros.
-    Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
+    # Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
     
     func.Tiempo(t0)
     
     #----------------------------------------------------------------------------------------------
-    
+    """
     bines = np.linspace(-3.5,3.5,8)
     
     Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
@@ -174,9 +174,10 @@ for carp in Carpetas:
 #                          Direccion, dist_lim, lminimos, ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
         
         #-------------------------------------------------------------------------------------------------------------------------
-#    bines = np.linspace(-3.5,3.5,8)
-#    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/"distribuciones", bines, "magma",
-#                                      ID_param_x, ID_param_y, ID_param_extra_1)
+        """
+    bines = np.linspace(-3.5,3.5,8)
+    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/"distribuciones_sincruz", bines, "magma",
+                                      ID_param_x, ID_param_y, ID_param_extra_1)
         
         #----------------------------------------------------------------------------------------------
 
