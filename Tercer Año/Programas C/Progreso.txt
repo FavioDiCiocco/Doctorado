@@ -2148,3 +2148,39 @@ mapas en esa zona.
 
 Armé una buena parte de la presentación, preparé cuatro preguntas para eso, corregí los gráficos
 que se veían feos. Creo que fue un día razonable. No sé si bueno, razonable.
+
+------------------------------------------------------------------------------------------
+
+17/07/2024
+
+Soy tan boludo que no comitee el laburo que hice ayer en la facultad. Por suerte igual no
+fue la gran cosa, no va a ser muy problemático el merge.
+
+Ideas de la charla:
+-------------------
+
+1) La distancia JS tiene problemas para detectar los estados de Consenso Radicalizado.
+2) El modelo no está logrando replicar estados con tres picos.
+3) Otra opción es la distancia de Kolmogorov-Smirnoff. Puede servir para identificar mejor
+los estados de Consenso Radicalizado.
+4) Probar rehacer el último gráfico mirando sólo un 10% o 20% de estados más similares.
+5) Permitir que el modelo clasifique por sí mismo las preguntas y no seamos nosotros los
+que definimos cuáles son políticas y cuáles no.
+6) Ver algunas preguntas de encuestas viejas para ver si se van moviendo en el espacio de parámetros.
+
+Para facilitar los gráficos, Pablo me propone que:
+-------------------------------------------------
+
+1) Agregue sobre los márgenes de los histogramas 2D de las encuestas, debería agregar los histogramas
+1D de los cuáles surgen las distribuciones de encuestas.
+2) Cambiar los colores de graficado para que se observe mejor los contrastes. Me propuso usar una escala
+que arranque con blanco en el cero y crezca hasta el negro en 1.
+
+¿Qué hago ahora? Lo primero que se me ocurre es intentar armar un texto para la encuesta de lo del 
+instituto de verano de Uruguay. Así ya mañana llego, veo de sacarme unas fotos después de comer y ya
+cargo eso.
+
+Después veo el tema de habilitar la tarjeta de crédito de la VISA y veo el tema de poder hacer el
+espermograma en un laboratorio más cercano que el de Avellaneda. Por último, me pondré con el laburo
+que estamos haciendo con Lucio, primero continuando el traspaso del código de Sebas. Mañana quizás pueda
+ver de hacer el barrido que hablábamos con Lucio.
