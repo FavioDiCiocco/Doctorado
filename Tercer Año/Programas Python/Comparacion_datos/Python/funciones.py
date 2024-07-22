@@ -1722,3 +1722,37 @@ def Rotar_matriz(M):
         P[1:n-1,1:n-1] = M[1:n-1,1:n-1]
     
     return P
+
+#-----------------------------------------------------------------------------------------------
+
+# Armo una función que reconstruya las opiniones de los agentes a partir
+# de la distribución final de las opiniones.
+
+def Reconstruccion_opiniones(Dist_simulada, N, T):
+    
+    # Construyo un array que tenga los valores en los puntos medios de cada caja.
+    puntos_medios = (np.linspace(-1,1,Dist_simulada.shape[0]+1)[0:-1] + np.linspace(-1,1,Dist_simulada.shape[0]+1)[1:])/2
+    
+    # Construyo el vector de Opiniones que voy a returnear, así como
+    # un variable que voy a necesitar.
+    Opiniones = np.zeros(N*T)
+    agregados = 0
+    
+    # Recorro cada caja y agrego agentes según la fracción de agentes en cada
+    # caja. Asigno sus opiniones según la caja en la que se encuentran
+    for fila in range(Dist_simulada.shape[0]):
+        for columna in range(Dist_simulada.shape[1]):
+            
+            agentes_agregar = int(Dist_simulada[fila,columna] * N)
+            x_i = puntos_medios[fila]
+            y_i = puntos_medios[columna]
+            
+            Sub_opiniones = np.zeros(agentes_agregar*T)
+            Sub_opiniones[0::T] = np.ones(agentes_agregar)*x_i
+            Sub_opiniones[1::T] = np.ones(agentes_agregar)*y_i
+            
+            Opiniones[agregados:agentes_agregar*T+agregados] = Sub_opiniones
+            
+            agregados += agentes_agregar
+            
+    return(Opiniones)

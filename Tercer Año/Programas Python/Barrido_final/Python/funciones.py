@@ -81,10 +81,63 @@ def data_processor(x):
 ##################################################################################
 ##################################################################################
 
+
+# Esta función es la que arma los gráficos de los mapas de colores en el espacio de
+# parámetros de alfa y umbral usando la entropía como métrica.
+
+def Mapa_Colores_Entropia_opiniones(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_param_y,
+                                    ID_param_extra_1):
+    
+    # Defino los arrays de parámetros diferentes
+    EXTRAS = int(np.unique(DF["Extra"]))
+    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_y = np.unique(DF["parametro_y"])
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
+                   for j,param_y in enumerate(Arr_param_y)]
+    
+    #--------------------------------------------------------------------------------
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    ZZ = np.zeros(XX.shape)
+    
+    #--------------------------------------------------------------------------------
+    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
+        
+        #------------------------------------------------------------------------------------------
+        # Armo mi matriz con los valores de entropía y con los valores de la varianza
+        
+        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"])
+        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.var(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"])
+    
+    #--------------------------------------------------------------------------------
+    
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores
+    direccion_guardado = Path("../../../Imagenes/{}/Entropia EP_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
+    
+    plt.rcParams.update({'font.size': 44})
+    plt.figure("Entropia Opiniones",figsize=(28,21))
+    plt.xlabel(r"${}$".format(SIM_param_x))
+    plt.ylabel(r"${}$".format(SIM_param_y))
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    
+    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "viridis")
+    plt.colorbar()
+    plt.title("Entropía de opiniones en Espacio de Parametros")
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("Entropia Opiniones")
+
+
+#-----------------------------------------------------------------------------------------------
+
 # Esta función es la que arma los gráficos de los histogramas de opiniones
 # finales en el espacio de tópicos
 
-def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
+def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
                                  ID_param_x,ID_param_y,ID_param_extra_1):
 
     # Defino la cantidad de agentes de la red
@@ -92,11 +145,8 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
     
     # Defino los arrays de parámetros diferentes
     Arr_EXTRAS = np.unique(DF["Extra"])
-    Arr_param_x = np.unique(DF["parametro_x"])
-    Arr_param_x = Arr_param_x[(Arr_param_x >= 0) & (Arr_param_x <= 0.04)]
-    
-    Arr_param_y = np.unique(DF["parametro_y"])
-    Arr_param_y = Arr_param_y[(Arr_param_y >= 0.4) & (Arr_param_y <= 0.8)]
+    Arr_param_x = np.unique(DF["parametro_x"])[0::2]
+    Arr_param_y = np.unique(DF["parametro_y"])[0::4]
     
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
@@ -109,10 +159,6 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
     # Sólo tiene sentido graficar en dos dimensiones, en una es el 
     # Gráfico de Opi vs T y en tres no se vería mejor.
     T=2
-    
-    # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
-    # de todas las simulaciones para cada punto del espacio de parámetros.
-    Dic_Total = Diccionario_metricas(DF,path, 20, 20)
     
     for EXTRAS in Arr_EXTRAS:
         for PARAM_X,PARAM_Y in Tupla_total:
@@ -137,17 +183,20 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                 if repeticion < 10:
                 
                     # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-                    # Opinión Inicial del sistema
-                    # Variación Promedio
-                    # Opinión Final
+                    # Distribución final
                     # Semilla
+                    # Fragmentos Matriz de Adyacencia
                     
                     # Levanto los datos del archivo
                     Datos = ldata(path / nombre)
                     
-                    # Leo los datos de las Opiniones Finales
-                    Opifinales = np.array(Datos[5][:-1:], dtype="float")
-                    Opifinales = (Opifinales/EXTRAS)*bins[-1]
+                    # Leo los valores de distribución de opiniones, los cuales se distribuyen
+                    # en 42x42 cajas.
+                    dist_final = np.reshape(np.array(Datos[1],dtype="float"),(42,42))
+                    # Reconstruyo las opiniones finales normalizadas a partir de estos datos.
+                    Opifinales = Reconstruccion_opiniones(dist_final, AGENTES, T)
+                    Opifinales = Opifinales*bins[-1]
+                    
                     X_0 = Opifinales[0::T]
                     Y_0 = Opifinales[1::T]
                     
@@ -157,9 +206,6 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                     
                     # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
                 
-                    # direccion_guardado = Path("../../../Imagenes/{}/Hist_opi_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,ID_param_x,PARAM_X,
-                                                # ID_param_y,PARAM_Y,ID_param_extra_1,EXTRAS,repeticion))
-                    
                     direccion_guardado = Path("../../../Imagenes/{}/Hist_opi_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,
                                                                                                 ID_param_x,PARAM_X,ID_param_y,PARAM_Y,repeticion))
                     
@@ -179,9 +225,6 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                     
                     plt.rcParams.update({'font.size': 32})
                     plt.figure(figsize=(20,15))
-                    # _, _, _, im = plt.hist2d(Opifinales[0::T], Opifinales[1::T], bins=bins,
-                    #                          range=[[-EXTRAS,EXTRAS],[-EXTRAS,EXTRAS]],density=True,
-                    #                          cmap=cmap)
                     _, _, _, im = plt.hist2d(X, Y, bins=bins,density=True,cmap="inferno")
                     plt.xlabel(r"$x_i^1$")
                     plt.ylabel(r"$x_i^2$")
@@ -189,6 +232,181 @@ def Graf_Histograma_opiniones_2D(DF,path,carpeta,bins,cmap,
                     plt.colorbar(im, label='Fracción')
                     plt.savefig(direccion_guardado ,bbox_inches = "tight")
                     plt.close()
+
+#-----------------------------------------------------------------------------------------------
+
+# Esta función calcula la traza de la matriz de Covarianza de las distribuciones
+# de opiniones respecto a los T tópicos
+
+def Mapa_Colores_Covarianzas(DF,path,carpeta,SIM_param_x,SIM_param_y,
+                             ID_param_extra_1):
+
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF["n"]))
+    
+    # Defino los arrays de parámetros diferentes
+    EXTRAS = int(np.unique(DF["Extra"]))
+    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_y = np.unique(DF["parametro_y"])
+    
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
+                   for j,param_y in enumerate(Arr_param_y)]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
+    # Gráfico de Opi vs T y en tres no se vería mejor.
+    T=2
+    
+    #--------------------------------------------------------------------------------
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    ZZ = np.zeros(XX.shape)
+    
+    #--------------------------------------------------------------------------------
+    
+    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                    (DF["n"]==AGENTES) & 
+                                    (DF["Extra"]==EXTRAS) & 
+                                    (DF["parametro_x"]==PARAM_X) &
+                                    (DF["parametro_y"]==PARAM_Y), "nombre"])
+        #-----------------------------------------------------------------------------------------
+        
+        Covarianzas = np.zeros(archivos.shape[0])
+        
+        for nombre in archivos:
+            
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Distribución final
+            # Semilla
+            # Fragmentos Matriz de Adyacencia
+            
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
+            
+            # Leo los valores de distribución de opiniones, los cuales se distribuyen
+            # en 42x42 cajas.
+            dist_final = np.reshape(np.array(Datos[1],dtype="float"),(42,42))
+            # Reconstruyo las opiniones finales normalizadas a partir de estos datos.
+            Opifinales = Reconstruccion_opiniones(dist_final, AGENTES, T)
+            
+            # Leo los datos de las Opiniones Finales
+            Matriz_Opi = np.zeros((T,AGENTES))
+            
+            # Normalizo mis datos usando el valor de Kappa
+            for topico in range(T):
+                Matriz_Opi[topico,:] = Opifinales[topico::T]
+            
+            # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+            repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+            
+            M_cov = np.cov(Matriz_Opi)
+            Covarianzas[repeticion] = M_cov[0,1]
+        
+        #------------------------------------------------------------------------------------------
+        # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
+        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Covarianzas)
+            
+    #--------------------------------------------------------------------------------
+    
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores
+    direccion_guardado = Path("../../../Imagenes/{}/Covarianzas_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
+    
+    plt.rcParams.update({'font.size': 44})
+    plt.figure("Covarianzas",figsize=(28,21))
+    plt.xlabel(r"${}$".format(SIM_param_x))
+    plt.ylabel(r"${}$".format(SIM_param_y))
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    
+    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "plasma")
+    plt.colorbar()
+    plt.title("Covarianza en Espacio de Parametros")
+    
+    # Guardo la figura y la cierro
+    
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("Covarianzas")
+
+
+#-----------------------------------------------------------------------------------------------
+# Esta función arma todos los mapas de colores de frecuencias de los estados finales.    
+
+def Mapas_Colores_FEF(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_param_y,
+                      ID_param_extra_1):
+    
+    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
+    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
+    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
+    
+    # Defino los arrays de parámetros diferentes
+    EXTRAS = int(np.unique(DF["Extra"]))
+    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_y = np.unique(DF["parametro_y"])
+    
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
+                   for j,param_y in enumerate(Arr_param_y)]
+
+    #--------------------------------------------------------------------------------
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    # Voy a armar 11 mapas de colores
+    ZZ = np.zeros((10,XX.shape[0],XX.shape[1]))
+    
+    #--------------------------------------------------------------------------------
+    
+    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
+                
+        Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
+                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
+                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
+                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
+                                             Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
+        
+        # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
+        for grafico in range(10):
+            ZZ[grafico,(Arr_param_y.shape[0]-1)-fila,columna] = np.count_nonzero(Frecuencias == grafico)/Frecuencias.shape[0]
+            
+    #--------------------------------------------------------------------------------
+    
+    Nombres = ["Consenso neutral", "Consenso radicalizado", "Polarización 1D y Consenso",
+               "Polarización Ideológica", "Transición", "Polarización Descorrelacionada",
+               "Polarización 1D y Consenso con anchura",
+               "Polarización Ideológica con anchura", "Transición con anchura",
+               "Polarización Descorrelacionada con anchura"]
+    
+    for grafico in range(10):
+        # Una vez que tengo el ZZ completo, armo mi mapa de colores
+        direccion_guardado = Path("../../../Imagenes/{}/Fracción estados finales {}_{}={}.png".format(carpeta,Nombres[grafico],ID_param_extra_1,EXTRAS))
+        
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("FEF",figsize=(28,21))
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        
+        # Hago el ploteo del mapa de colores con el colormesh
+        
+        plt.pcolormesh(XX,YY,ZZ[grafico],shading="nearest", cmap = "plasma")
+        plt.colorbar()
+        plt.title("Fracción de estados de {}".format(Nombres[grafico]))
+        
+        # Guardo la figura y la cierro
+        
+        plt.savefig(direccion_guardado , bbox_inches = "tight")
+        plt.close("FEF")
+
 
 #-----------------------------------------------------------------------------------------------
 
@@ -240,39 +458,32 @@ def Diccionario_metricas(DF, path, Nx, Ny):
                 
         
                 # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-                # Opinión Inicial del sistema
-                # Variación Promedio
-                # Opinión Final
+                # Distribución final
                 # Semilla
-        
+                # Fragmentos Matriz de Adyacencia
+                
                 # Levanto los datos del archivo
                 Datos = ldata(path / nombre)
-        
-                # Leo los datos de las Opiniones Finales
-                Opifinales = np.zeros((T,AGENTES))
-        
-                for topico in range(T):
-                    Opifinales[topico,:] = np.array(Datos[5][topico:-1:T], dtype="float")
-                    Opifinales[topico,:] = Opifinales[topico,:]/ EXTRAS
                 
-                # Esta función normaliza las Opiniones Finales usando la 
-                # variable EXTRA, porque asume que EXTRA es el Kappa. De no serlo,
-                # corregir a que EXTRAS sea PARAM_X o algo así
+                # Leo los valores de distribución de opiniones, los cuales se distribuyen
+                # en 42x42 cajas.
+                dist_final = np.reshape(np.array(Datos[1],dtype="float"),(42,42))
+                # Reconstruyo las opiniones finales normalizadas a partir de estos datos.
+                Opifinales = Reconstruccion_opiniones(dist_final, AGENTES, T)
                 
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
                 Identidad[indice] = repeticion
-        
-                M_cov = np.cov(Opifinales, bias = True)
+                
+                Matriz_opi = np.zeros((T,AGENTES))
+                for topico in range(T):
+                    Matriz_opi[topico] = Opifinales[topico::T]
+                
+                M_cov = np.cov(Matriz_opi, bias = True)
                 Varianza_X[indice] = M_cov[0,0]
                 Varianza_Y[indice] = M_cov[1,1]
                 Covarianza[indice] = M_cov[0,1]
-                Promedios[indice] = np.linalg.norm(np.array(Datos[5][:-1:], dtype="float"),ord=1) / np.array(Datos[5][:-1:], dtype="float").shape[0]
-                
-                # Tengo que rearmar Opifinales para que sea un sólo vector con todo
-                
-                Opifinales = np.array(Datos[5][:-1], dtype="float")
-                Opifinales = Opifinales/EXTRAS
+                Promedios[indice] = np.linalg.norm(Opifinales*EXTRAS,ord=1) / (AGENTES * T)
                 
                 # Armo mi array de Distribucion, que tiene la proba de que una opinión
                 # pertenezca a una región del espacio de tópicos
@@ -449,7 +660,7 @@ def Leer_Datos_ANES(filename,año):
                        'V201386x':'Impeachment', 'V201405x':'Require employers to offer paid leave to parents',
                        'V201408x':'Service same sex couples', 'V201411x':'Transgender Policy', 'V201420x':'Birthright Citizenship',
                        'V201423x':'Should children brought illegally be sent back','V201426x':'Wall with Mexico',
-                       'V201429':'Best way to deal with Urban Unrest','V201605x':'Political Violence compared to 4 years ago',
+                       'V201429':'Urban Unrest','V201605x':'Political Violence compared to 4 years ago',
                        'V202236x':'Allowing refugees to come to US','V202239x':'Effect of Illegal inmigration on crime rate',
                        'V202242x':'Providing path to citizenship','V202245x':'Returning unauthorized immigrants to native country',
                        'V202248x':'Separating children from detained immigrants','V202255x':'Less or more Government',
@@ -457,12 +668,12 @@ def Leer_Datos_ANES(filename,año):
                        'V202259x':'Government trying to reduce income inequality','V202276x':'People in rural areas get more/less from Govt.',
                        'V202279x':'People in rural areas have too much/too little influence','V202282x':'People in rural areas get too much/too little respect',
                        'V202286x':'Easier/Harder for working mother to bond with child','V202290x':'Better/Worse if man works and woman takes care of home',
-                       'V202320x':'Economic Mobility compared to 20 years ago','V202328x':'Obamacare','V202331x':'Vaccines Schools',
-                       'V202336x':'Regulation on Greenhouse Emissions','V202341x':'Background checks',
-                       'V202344x':'Banning "Assault-style" Rifles','V202347x':'Government buy back of "Assault-Style" Rifles',
-                       'V202350x':'Government action about opiod drug addiction','V202361x':'Free trade agreements with other countries',
+                       'V202320x':'Economic Mobility','V202328x':'Obamacare','V202331x':'Vaccines Schools',
+                       'V202336x':'Regulate Greenhouse Emissions','V202341x':'Background checks',
+                       'V202344x':'Banning Rifles','V202347x':'Government buy back of "Assault-Style" Rifles',
+                       'V202350x':'Govt action about opiods','V202361x':'Free trade agreements with other countries',
                        'V202376x':'Federal program giving 12K a year to citizens','V202380x':'Government spending to help pay for health care',
-                       'V202383x':'Health benefits of vaccination outweigh risks','V202390x':'Trasgender people serve in military',
+                       'V202383x':'Benefits of vaccination','V202390x':'Trasgender people serve in military',
                        'V202490x':'Government treats whites or blacks better','V202493x':'Police treats whites or blacks better',
                        'V202542':'Use Facebook','V202544':'Use Twitter'}
 
@@ -610,19 +821,19 @@ def Matriz_DJS(DF_datos,DF_Anes,Dic_ANES,path):
         for nombre in archivos:
             
             # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-            # Opinión Inicial del sistema
-            # Variación Promedio
-            # Opinión Final
-            # Pasos simulados
+            # Distribución final
             # Semilla
-            # Matriz de Adyacencia
+            # Fragmentos Matriz de Adyacencia
             
             # Levanto los datos del archivo
             Datos = ldata(path / nombre)
             
-            # Leo los datos de las Opiniones Finales y me armo una distribución en forma de matriz de 7x7
-            Opifinales = np.array(Datos[5][:-1], dtype="float")
-            Opifinales = Opifinales / EXTRAS
+            # Leo los valores de distribución de opiniones, los cuales se distribuyen
+            # en 42x42 cajas.
+            dist_final = np.reshape(np.array(Datos[1],dtype="float"),(42,42))
+            # Reconstruyo las opiniones finales normalizadas a partir de estos datos.
+            Opifinales = Reconstruccion_opiniones(dist_final, AGENTES, T)
+            
             Distr_Sim = Clasificacion(Opifinales,hist2d.shape[0],hist2d.shape[1],T)
             
             # La Distr_Orig es un array plano. Lo que estaria bueno es armarlo de 6x6,
@@ -709,7 +920,7 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, 
     Dist_JS = np.sort(Dist_JS)
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores para el caso sin cruz
-    direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/DistanciaJS_{}vs{}.png".format(carpeta,code_y,code_x))
+    direccion_guardado = Path("../../../Imagenes/{}/DistanciaJS_{}vs{}.png".format(carpeta,code_y,code_x))
     
     plt.rcParams.update({'font.size': 44})
     plt.figure("Distancia Jensen-Shannon",figsize=(28,21))
@@ -719,8 +930,10 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, 
     # Hago el ploteo del mapa de colores con el colormesh
     
     plt.pcolormesh(XX,YY,np.mean(Dist_JS, axis=2),shading="nearest", cmap = "viridis")
+    tupla = np.unravel_index(np.argmin(np.mean(Dist_JS,axis=2)),np.mean(Dist_JS,axis=2).shape)
     plt.colorbar()
-    plt.title("Distancia Jensen-Shannon sin cruz\n {} vs {}".format(dict_labels[code_y],dict_labels[code_x]))
+    plt.scatter(XX[tupla],YY[tupla], marker="X", s = 1500, color = "red")
+    plt.title("Distancia Jensen-Shannon\n {} vs {}".format(dict_labels[code_y],dict_labels[code_x]))
     
     # Guardo la figura y la cierro
     
@@ -729,10 +942,10 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, 
     
     # Y ahora me armo el gráfico de promedios de distancia JS según cantidad de simulaciones
     # consideradas, con las simulaciones ordenadas de las de menos distancia a las de más distancia
-    
-    for i in range(10):
+    """
+    for i in range(3):
         
-        direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/DistanciaJS_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
+        direccion_guardado = Path("../../../Imagenes/{}/DistanciaJS_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
         
         plt.rcParams.update({'font.size': 44})
         plt.figure("Ranking Distancia Jensen-Shannon",figsize=(28,21))
@@ -740,36 +953,23 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, 
         plt.ylabel(r"${}$".format(SIM_param_y))
         
         # Hago el ploteo del mapa de colores con el colormesh
-        Dist_JS_prom = np.mean(Dist_JS[:,:,0:10+i*10],axis=2)
+        Dist_JS_prom = np.mean(Dist_JS[:,:,0:10+i*20],axis=2)
         
         # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
         tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
         
         plt.pcolormesh(XX,YY,Dist_JS_prom,shading="nearest", cmap = "cividis")
         plt.colorbar()
-        plt.scatter(XX[tupla],YY[tupla], marker="X", color = "red", s = 180)
+        plt.scatter(XX[tupla],YY[tupla], marker="X", s = 1500, color = "red")
         
-        # if XX[tupla]+0.05 < np.max(XX):
-        #     xtext = XX[tupla]
-        # else:
-        #     xtext = XX[tupla]-0.05
-
-
-        # if YY[tupla]-0.05 < np.min(YY):
-        #     ytext = YY[tupla]+0.05
-        # else:
-        #     ytext = YY[tupla]-0.05
-        
-        # plt.text(xtext,ytext, r"${}$ = {:.2f},${}$ = {:.2f} ".format(SIM_param_y, YY[tupla], SIM_param_x, XX[tupla]), fontsize= 36)
-        plt.title("Distancia Jensen-Shannon sin cruz {} simulaciones\n {} vs {}".format(10+i*10,dict_labels[code_y],dict_labels[code_x]))
+        plt.title("Distancia Jensen-Shannon {} simulaciones\n {} vs {}".format(10+i*20,dict_labels[code_y],dict_labels[code_x]))
         
         # Guardo la figura y la cierro
         
         plt.savefig(direccion_guardado , bbox_inches = "tight")
         plt.close("Ranking Distancia Jensen-Shannon")
         
-        
-        
+    """
     
 
 #-----------------------------------------------------------------------------------------------
@@ -777,30 +977,27 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, 
 # Esta función arma los histogramas de opiniones máxima y mínima similaridad entre las 10 simulaciones
 # más similares con la distribución de la encuesta
 
-def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, carpeta, path, bins,
-                         ID_param_x,SIM_param_x,ID_param_y,SIM_param_y):
+def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, Dic_ANES, dict_labels, carpeta, path, bins,
+                         SIM_param_x,SIM_param_y):
     
     # Hago los gráficos de histograma 2D de las simulaciones que más se parecen y que menos se parecen
     # a mis distribuciones de las encuestas
-    Dist_JS_sorted = np.sort(Dist_JS)
-    
-    # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
-    # de todas las simulaciones para cada punto del espacio de parámetros.
-    Dic_Total = Diccionario_metricas(DF_datos,path, 20, 20)
+    # Dist_JS_sorted = np.sort(Dist_JS)
+    Dist_JS_prom = np.mean(Dist_JS, axis=2)
     
     #-------------------------------------------------------------------------------------------------
     
     # Antes de ordenar mis matrices, voy a obtener la info del gráfico que más se parece
     # y del décimo que más se parece se parece a lo que estoy queriendo comparar.
-    
-    iMin = np.unravel_index(np.argmin(Dist_JS),Dist_JS.shape)
+    tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
+    iMin = np.argsort(Dist_JS[tupla])[0]
     
     # Hallo el décimo que más se parece a la distribución. Arranco con el que no tiene centro
     
-    flattened_array = Dist_JS.flatten()
-    sorted_indices = np.argsort(flattened_array)
-    tenth_element_flat_index = sorted_indices[9]
-    iMax = np.unravel_index(tenth_element_flat_index, Dist_JS.shape)
+#    flattened_array = Dist_JS.flatten()
+#    sorted_indices = np.argsort(flattened_array)
+#    tenth_element_flat_index = sorted_indices[9]
+#    iMax = np.unravel_index(tenth_element_flat_index, Dist_JS.shape)
     
     #--------------------------------------------------------------------------------
 
@@ -817,8 +1014,8 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_label
     T = 2
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
-    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
-                   for j,param_y in enumerate(Arr_param_y)]
+#    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
+#                   for j,param_y in enumerate(Arr_param_y)]
     
     # Construyo las grillas que voy a necesitar para el pcolormesh.
     
@@ -826,96 +1023,100 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_label
     
     #--------------------------------------------------------------------------------
     
+    # Nombres = ["Consenso neutral", "Consenso radicalizado", "Polarización 1D y Consenso",
+    #        "Polarización Ideológica", "Transición", "Polarización Descorrelacionada",
+    #        "Polarización 1D y Consenso con anchura",
+    #        "Polarización Ideológica con anchura", "Transición con anchura",
+    #        "Polarización Descorrelacionada con anchura"]
+    
+    simil = "min_distancia"
+    distan = np.min(Dist_JS[tupla])
+    
+    #--------------------------------------------------------------------------------
+    # for tupla,simil,distan in zip([iMin, iMax],Lista_similaridad,Valor_distancia):
+    
     # Armo listas de strings y números para mis archivos
-    Lista_similaridad = ["min_distancia","max_distancia"]
-    Valor_distancia = [np.min(Dist_JS_sorted),np.max(Dist_JS_sorted[:,:,0:10])]
+#    Lista_similaridad = ["min_distancia","max_distancia"]
+#    Valor_distancia = [np.min(Dist_JS_sorted),np.max(Dist_JS_sorted[:,:,0:10])]
+    #--------------------------------------------------------------------------------
     
-    Nombres = ["Consenso neutral", "Consenso radicalizado", "Polarización 1D y Consenso",
-           "Polarización Ideológica", "Transición", "Polarización Descorrelacionada",
-           "Polarización 1D y Consenso con anchura",
-           "Polarización Ideológica con anchura", "Transición con anchura",
-           "Polarización Descorrelacionada con anchura"]
+    PARAM_X = XX[tupla[0],tupla[1]]
+    PARAM_Y = YY[tupla[0],tupla[1]]
     
-    for tupla,simil,distan in zip([iMin, iMax],Lista_similaridad,Valor_distancia):
+    # Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
+    #                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
+    #                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
+    #                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
+    #                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
     
-        PARAM_X = XX[tupla[0],tupla[1]]
-        PARAM_Y = YY[tupla[0],tupla[1]]
+    # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+    archivos = np.array(DF_datos.loc[(DF_datos["tipo"]==TIPO) & 
+                                (DF_datos["n"]==AGENTES) & 
+                                (DF_datos["Extra"]==EXTRAS) & 
+                                (DF_datos["parametro_x"]==PARAM_X) &
+                                (DF_datos["parametro_y"]==PARAM_Y), "nombre"])
+    
+    #-----------------------------------------------------------------------------------------
+    
+    for nombre in archivos:
         
-        Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
-                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
-                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
-                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
-                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
+        repeticion = int(DF_datos.loc[DF_datos["nombre"]==nombre,"iteracion"])
+        if repeticion == iMin:
         
-        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
-        archivos = np.array(DF_datos.loc[(DF_datos["tipo"]==TIPO) & 
-                                    (DF_datos["n"]==AGENTES) & 
-                                    (DF_datos["Extra"]==EXTRAS) & 
-                                    (DF_datos["parametro_x"]==PARAM_X) &
-                                    (DF_datos["parametro_y"]==PARAM_Y), "nombre"])
-        #-----------------------------------------------------------------------------------------
-        
-        for nombre in archivos:
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Distribución final
+            # Semilla
+            # Fragmentos Matriz de Adyacencia
             
-            repeticion = int(DF_datos.loc[DF_datos["nombre"]==nombre,"iteracion"])
-            if repeticion == tupla[2]:
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
             
-                # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-                # Opinión Inicial del sistema
-                # Variación Promedio
-                # Opinión Final
-                # Semilla
-                
-                # Levanto los datos del archivo
-                Datos = ldata(path / nombre)
-                
-                # Leo los datos de las Opiniones Finales
-                Opifinales = np.array(Datos[5][:-1:], dtype="float")
-                Opifinales = (Opifinales/EXTRAS)*bins[-1]
-                X_0 = Opifinales[0::T]
-                Y_0 = Opifinales[1::T]
-                
-                # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
-                
-                #----------------------------------------------------------------------------------------------------------------------------------
-                
-                # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
-                
-                direccion_guardado = Path("../../../Imagenes/{}/Hist_2D_{}_{}vs{}.png".format(carpeta /"Sin Cruz",simil,code_y,code_x))
-                
-                indice = np.where(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] == repeticion)[0][0]
-                estado = int(Frecuencias[indice])
-                
-                #----------------------------------------------------------------------------------------------------------------------------------
-                
-                # Tengo que armar los valores de X e Y que voy a graficar
-                
-                X = X_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
-                Y = Y_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
-                
-                
-                #----------------------------------------------------------------------------------------------------------------------------------
-                
-                # Armo mi gráfico, lo guardo y lo cierro
-                
-                plt.rcParams.update({'font.size': 44})
-                plt.figure(figsize=(28,21))
-                _, _, _, im = plt.hist2d(X, Y, bins=bins,density=True,cmap="inferno")
-                plt.xlabel(r"$x_i^1$")
-                plt.ylabel(r"$x_i^2$")
-                # Set x-ticks and y-ticks from -10 to 10 using plt.xticks() and plt.yticks()
-                # plt.xticks(np.arange(-10, 11, 1))
-                # plt.yticks(np.arange(-10, 11, 1))
-                plt.title('Distancia JS = {:.2f}, {}={:.2f}, {}={:.2f} \n {} \n {} vs {}'.format(distan,ID_param_x,PARAM_X,ID_param_y,PARAM_Y,Nombres[estado],dict_labels[code_y],dict_labels[code_x]))
-                plt.colorbar(im, label='Fracción')
-#                cbar.set_clim(Vmin, Vmax)
-                plt.savefig(direccion_guardado ,bbox_inches = "tight")
-                plt.close()
+            # Leo los valores de distribución de opiniones, los cuales se distribuyen
+            # en 42x42 cajas.
+            dist_final = np.reshape(np.array(Datos[1],dtype="float"),(42,42))
+            # Reconstruyo las opiniones finales normalizadas a partir de estos datos.
+            Opifinales = Reconstruccion_opiniones(dist_final, AGENTES, T)
+            Opifinales = Opifinales*bins[-1]
+            X_0 = Opifinales[0::T]
+            Y_0 = Opifinales[1::T]
+            
+            # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+            
+            #----------------------------------------------------------------------------------------------------------------------------------
+            
+            # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
+            
+            direccion_guardado = Path("../../../Imagenes/{}/Hist_2D_{}_{}vs{}.png".format(carpeta,simil,code_y,code_x))
+            
+            # indice = np.where(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] == repeticion)[0][0]
+            # estado = int(Frecuencias[indice])
+            
+            #----------------------------------------------------------------------------------------------------------------------------------
+            
+            # Tengo que armar los valores de X e Y que voy a graficar
+            
+            X = X_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
+            Y = Y_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
+            
+            
+            #----------------------------------------------------------------------------------------------------------------------------------
+            
+            # Armo mi gráfico, lo guardo y lo cierro
+            
+            plt.rcParams.update({'font.size': 44})
+            plt.figure(figsize=(28,21))
+            _, _, _, im = plt.hist2d(X, Y, bins=bins,density=True,cmap="inferno")
+            plt.xlabel(r"$x_i^1$")
+            plt.ylabel(r"$x_i^2$")
+            plt.title(r'Distancia JS = {:.2f}, ${}$={:.2f}, ${}$={:.2f}'.format(distan,SIM_param_x,PARAM_X,SIM_param_y,PARAM_Y) + '\n {} vs {}'.format(dict_labels[code_y],dict_labels[code_x]))
+            plt.colorbar(im, label='Fracción')
+            plt.savefig(direccion_guardado ,bbox_inches = "tight")
+            plt.close()
              
     
     #--------------------------------------------------------------------------------
-    
-    # Lo que quiero hacer acá es armar gráficos de promedios de opiniones rankeados.
+    """
+    # Lo que quiero hacer acá es armar gráficos de promedios de distancias rankeados.
     
     for i in range(10):
         
@@ -944,17 +1145,19 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_label
         for nombre in archivos[i_Proms]:
         
             # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-            # Opinión Inicial del sistema
-            # Variación Promedio
-            # Opinión Final
+            # Distribución final
             # Semilla
+            # Fragmentos Matriz de Adyacencia
             
             # Levanto los datos del archivo
             Datos = ldata(path / nombre)
             
-            # Leo los datos de las Opiniones Finales
-            Opifinales = np.array(Datos[5][:-1:], dtype="float")
-            Opifinales = (Opifinales/EXTRAS)*bins[-1]
+            # Leo los valores de distribución de opiniones, los cuales se distribuyen
+            # en 42x42 cajas.
+            dist_final = np.reshape(np.array(Datos[1],dtype="float"),(42,42))
+            # Reconstruyo las opiniones finales normalizadas a partir de estos datos.
+            Opifinales = Reconstruccion_opiniones(dist_final, AGENTES, T)
+            Opifinales = Opifinales*bins[-1]
             
             # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
             OpiTotales = np.concatenate((OpiTotales,Opifinales),axis=0)
@@ -967,19 +1170,15 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_label
         X = X_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
         Y = Y_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
         
-        direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/Hists_prom_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
+        direccion_guardado = Path("../../../Imagenes/{}/Hists_prom_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
         
         plt.rcParams.update({'font.size': 44})
         plt.figure("Ranking Opiniones Promedio",figsize=(28,21))
         _, _, _, im = plt.hist2d(X, Y, bins=bins,density=True,cmap="inferno")
         plt.xlabel(r"$x_i^1$")
         plt.ylabel(r"$x_i^2$")
-        # Set x-ticks and y-ticks from -10 to 10 using plt.xticks() and plt.yticks()
-        # plt.xticks(np.arange(-10, 11, 1))
-        # plt.yticks(np.arange(-10, 11, 1))
-        plt.title(r'Promedio de Histogramas, {} simulaciones, ${}$={}, ${}$={} \n {} vs {}'.format(cant_simulaciones,SIM_param_x,PARAM_X,SIM_param_y,PARAM_Y,dict_labels[code_y],dict_labels[code_x]))
+        plt.title(r'Promedio de Histogramas, {} simulaciones, ${}$={}, ${}$={}'.format(cant_simulaciones,SIM_param_x,PARAM_X,SIM_param_y,PARAM_Y) +'\n {} vs {}'.format(dict_labels[code_y],dict_labels[code_x]))
         plt.colorbar(im, label='Fracción')
-#                cbar.set_clim(Vmin, Vmax)
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close("Ranking Opiniones Promedio")
         
@@ -1040,7 +1239,7 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_label
                 
         for grafico,titulo,direc in zip(np.arange(2),["Segundo estado más probable","Primer estado más probable"],["SegundoDom","PrimeroDom"]):
             # Una vez que tengo el ZZ completo, armo mi mapa de colores
-            direccion_guardado = Path("../../../Imagenes/{}/FEF {}_{}vs{}_r{}.png".format(carpeta/"Sin Cruz",direc,code_y,code_x,i))
+            direccion_guardado = Path("../../../Imagenes/{}/FEF {}_{}vs{}_r{}.png".format(carpeta,direc,code_y,code_x,i))
             
             plt.rcParams.update({'font.size': 44})
             plt.figure("FEF",figsize=(28,21))
@@ -1057,15 +1256,14 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_label
             
             plt.savefig(direccion_guardado , bbox_inches = "tight")
             plt.close("FEF")
-    
+    """
 
 #-----------------------------------------------------------------------------------------------
-            
+
 # Armo una función que en el punto de mínima distancia media construya un histograma de las distancias de JS
 
 def Histograma_distancias(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta,
-                          ID_param_x, ID_param_y):
-
+                          ID_param_x, SIM_param_x, ID_param_y, SIM_param_y):
     
     Arr_param_x = np.unique(DF_datos["parametro_x"])
     Arr_param_y = np.unique(DF_datos["parametro_y"])
@@ -1082,21 +1280,233 @@ def Histograma_distancias(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpet
     
     # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
     tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
-    bines = np.linspace(0,1,21)
-    Y, _ = np.histogram(Dist_JS[tupla], bins = bines)
+    bines = np.linspace(0,1,41)
+    
+#    for tupla in lminimos:
+    
+    barrX = XX[max(tupla[0]-1,0):tupla[0]+2,max(tupla[1]-1,0):tupla[1]+2].flatten()
+    barrY = YY[max(tupla[0]-1,0):tupla[0]+2,max(tupla[1]-1,0):tupla[1]+2].flatten()
+    Distancias = np.reshape(Dist_JS[max(tupla[0]-1,0):tupla[0]+2,max(tupla[1]-1,0):tupla[1]+2],(barrX.shape[0],Dist_JS.shape[2]))
+    
+    for PARAM_X,PARAM_Y,Arr_Dist in zip(barrX,barrY,Distancias):
+        Y, _ = np.histogram(Arr_Dist, bins = bines)
+        
+        # Set the figure size
+        plt.rcParams.update({'font.size': 44})
+        plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+        plt.bar(bines[:-1], Y/np.sum(Y), width = (bines[1]-bines[0])*0.9, align = "edge")
+        plt.xlabel("Distancia JS")
+        plt.ylabel("Probabilidad")
+        plt.xlim(bines[:-1][Y>0][0]-0.025,bines[:-1][Y>0][-1]+0.075)
+#        plt.axvline(x=0.45, linestyle = "--", color = "red", linewidth = 4)
+        plt.title("{} vs {}\n".format(dict_labels[code_y],dict_labels[code_x]) + r"${}$={}, ${}$={}".format(SIM_param_y,PARAM_Y,SIM_param_x,PARAM_X))
+        direccion_guardado = Path("../../../Imagenes/{}/Hist distancias_{} vs {}_{}={}_{}={}.png".format(carpeta,code_y,code_x,ID_param_y,PARAM_Y,ID_param_x,PARAM_X))
+        plt.savefig(direccion_guardado ,bbox_inches = "tight")
+        plt.close()
+    
+
+#-----------------------------------------------------------------------------------------------
+
+# Lo que quiero es ver cuál es la composición de los estados que son parte del cluster
+# de distancias pequeñas que observo en el histograma de Distancias. 
+
+def Comp_estados(Dist_JS, code_x, code_y, DF_datos, Dic_Total, dict_labels, carpeta, path, dist_lim,
+                 ID_param_x, SIM_param_x, ID_param_y, SIM_param_y):
+    
+    # Defino los arrays de parámetros diferentes
+    EXTRAS = int(np.unique(DF_datos["Extra"]))
+    Arr_param_x = np.unique(DF_datos["parametro_x"])
+    Arr_param_y = np.unique(DF_datos["parametro_y"])
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    
+    # Promedio las distancias del espacio de parámetros
+    Dist_JS_prom = np.mean(Dist_JS, axis=2)
+    # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
+    tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
+    
+#    for imin,tupla in enumerate(lminimos):
+    
+    # cant_sim = np.count_nonzero(Dist_JS[tupla] <= dist_lim)
+    
+    # for PARAM_X,PARAM_Y in zip(XX[tupla[0]-1:tupla[0]+2,tupla[1]-1:tupla[1]+2].flatten(),YY[tupla[0]-1:tupla[0]+2,tupla[1]-1:tupla[1]+2].flatten()):
+    
+    Nombres = ["Cons Neut", "Cons Rad", "Pol 1D y Cons","Pol Id", "Trans", "Pol Desc","Pol 1D y Cons anch","Pol Id anch", "Trans anch","Pol Desc anch"]
+    
+    bin_F = np.arange(-0.5,10.5)
+    bin_D = np.linspace(0,1,41)
+    X = np.arange(10)
+    
+    barrX = XX[max(tupla[0]-1,0):tupla[0]+2,max(tupla[1]-1,0):tupla[1]+2].flatten()
+    barrY = YY[max(tupla[0]-1,0):tupla[0]+2,max(tupla[1]-1,0):tupla[1]+2].flatten()
+    Distancias = np.reshape(Dist_JS[max(tupla[0]-1,0):tupla[0]+2,max(tupla[1]-1,0):tupla[1]+2],(barrX.shape[0],Dist_JS.shape[2]))
+    
+    for j,PARAM_X,PARAM_Y,Arr_Dist in zip(np.arange(barrX.shape[0]),barrX,barrY,Distancias):
+        
+        Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
+                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
+                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
+                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
+                                                     Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
+        
+        
+        for i,dmin,dmax in zip(np.arange(bin_D.shape[0]-1),bin_D[0:-1],bin_D[1:]):
+            Arr_bool = (Arr_Dist >= dmin) & (Arr_Dist <= dmax) 
+            if np.count_nonzero(Arr_bool) == 0:
+                continue
+            plt.rcParams.update({'font.size': 44})
+            plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+            plt.hist(Frecuencias[Arr_bool], bins = bin_F, density = True)
+            plt.ylabel("Fracción")
+            plt.title('{} vs {}\n'.format(dict_labels[code_y], dict_labels[code_x]) + r'Cantidad simulaciones {}, ${}$={},${}$={}, Distancias entre {:.2f} y {:.2f}'.format(np.count_nonzero(Arr_bool), SIM_param_y, PARAM_Y, SIM_param_x, PARAM_X, dmin, dmax))
+            plt.xticks(ticks = X, labels = Nombres, rotation = 45)
+            direccion_guardado = Path("../../../Imagenes/{}/Comp est_{}vs{}_min={}_b{}.png".format(carpeta,code_y,code_x,j,i))
+            plt.savefig(direccion_guardado ,bbox_inches = "tight")
+            plt.close()
+    
+    #-----------------------------------------------------------------------------------------
+        
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores para el caso sin cruz
+    direccion_guardado = Path("../../../Imagenes/{}/DistanciaJS_recortado_{}vs{}.png".format(carpeta,code_y,code_x))
+    
+    plt.rcParams.update({'font.size': 44})
+    plt.figure("Distancia Jensen-Shannon",figsize=(28,21))
+    plt.xlabel(r"${}$".format(SIM_param_x))
+    plt.ylabel(r"${}$".format(SIM_param_y))
+    
+    # Promedio las distancias del espacio de parámetros
+    Dist_JS_prom = np.mean(Dist_JS, axis=2)
+    # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
+    tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
+    cant_sim = np.count_nonzero(Dist_JS[tupla] <= dist_lim)
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    Dist_JS_prom = np.mean(np.sort(Dist_JS)[:,:,0:cant_sim],axis=2)
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    
+    plt.pcolormesh(XX,YY,Dist_JS_prom,shading="nearest", cmap = "viridis")
+    plt.colorbar()
+    plt.scatter(XX[tupla],YY[tupla], marker="X", color = "red", s = 1500)
+    plt.title("Distancia Jensen-Shannon \n {} vs {}\nCantidad simulaciones {}".format(dict_labels[code_y],dict_labels[code_x], cant_sim))
+    
+    # Guardo la figura y la cierro
+    
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("Distancia Jensen-Shannon")
+    
+#-----------------------------------------------------------------------------------------------
+
+# A partir de mis gráficos de histogramas de distancias, quiero armar un gráfico
+# que mire los histogramas y construya la cantidad de gráficos que tienen X configuraciones
+# con distancias menor a la distancia límite, que por ahora es 0.45.
+
+def FracHist_CantEstados(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta, path, dist_lim):
+    
+    # Primero reviso mis conjuntos de distancias para cada punto del espacio. En esos puntos,
+    # cuento cuántas de las simulaciones tienen distancia menor a la distancia de corte
+    Cantidad = np.zeros(Dist_JS.shape[0]*Dist_JS.shape[1])
+    for indice,distancias in enumerate(np.reshape(Dist_JS,(Dist_JS.shape[0]*Dist_JS.shape[1],Dist_JS.shape[2]))):
+        Cantidad[indice] = np.count_nonzero(distancias <= dist_lim)
+    
+    # Con eso puedo entonces contar cuántos histogramas tienen X simulaciones con distancias
+    # menor a la distancia de corte.
+    Y = np.zeros(Dist_JS.shape[2]+1)
+    unicos,cant = np.unique(Cantidad, return_counts = True)
+    Y[unicos.astype(int)] = cant/np.sum(cant)
+    
+    
+    # Promedio las distancias del espacio de parámetros
+    Dist_JS_prom = np.mean(Dist_JS, axis=2)
+    # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
+    tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
+    cant_sim = np.count_nonzero(Dist_JS[tupla] <= dist_lim)
     
     # Set the figure size
     plt.rcParams.update({'font.size': 44})
     plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-    plt.bar(bines[:-1], Y/np.sum(Y), width = (bines[1]-bines[0])*0.9, align = "edge")
-    plt.xlabel("Distancia JS")
-    plt.ylabel("Probabilidad")
+    plt.plot(np.arange(Dist_JS.shape[2]+1), Y, "--g", linewidth = 6)
+    plt.xlabel("Número de configuraciones con distancia menor a {}".format(dist_lim))
+    plt.ylabel("Fracción de Histogramas")
+    plt.axvline(x=cant_sim, linestyle = "--", color = "red", linewidth = 4)
     plt.title("{} vs {}".format(dict_labels[code_y],dict_labels[code_x]))
-    direccion_guardado = Path("../../../Imagenes/{}/Sin Cruz/Hist distancias_{} vs {}_{}={}_{}={}.png".format(carpeta,code_y,code_x,ID_param_y,YY[tupla],ID_param_x,XX[tupla]))
+    direccion_guardado = Path("../../../Imagenes/{}/FracHistvsEstados_{} vs {}.png".format(carpeta,code_y,code_x))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
+
+#-----------------------------------------------------------------------------------------------
+
+# Voy a realizar dos mapas de colores. Uno con el promedio de un subconjunto de distancias
+# de JS y otro con la fracción de simulaciones que estoy contando para ese promedio
+
+def Doble_Mapacol_PromyFrac(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta, path,
+                            SIM_param_x, SIM_param_y):
     
+    # Arranco eligiendo un rango de criterios. Yo diría de mover entre 0.25 y 0.75
+    Criterios = np.arange(6)*0.1 + 0.25
     
+    # Defino los arrays de parámetros diferentes
+    Arr_param_x = np.unique(DF_datos["parametro_x"])
+    Arr_param_y = np.unique(DF_datos["parametro_y"])
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    ZZ = np.zeros((2,XX.shape[0],XX.shape[1]))
+    
+    # Primero reviso mis conjuntos de distancias para cada punto del espacio. A esas distancias
+    # les calculo el promedio para el subconjunto cuya distancia sea menor que las dist_lim.
+    
+    for i,dist_crit in enumerate(Criterios):
+    
+        for fila in range(Dist_JS.shape[0]):
+            for columna in range(Dist_JS.shape[1]):
+                
+                distancias = Dist_JS[fila,columna][Dist_JS[fila,columna] <= dist_crit]
+                if distancias.shape[0] == 0:
+                    continue
+                ZZ[0,fila,columna] = np.mean(distancias)
+                ZZ[1,fila,columna] = distancias.shape[0]/Dist_JS.shape[2]
+        
+        #------------------------------------------------------------------------
+        
+        # Armo los parámetros del gráfico de promedios
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("Promedios Distancia JS subconjunto",figsize=(28,21))
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        plt.title("Promedios Distancias Jensen-Shannon, distancia corte = {}\n {} vs {}".format(dist_crit,dict_labels[code_y],dict_labels[code_x]))
+        
+        # Guardo la figura
+        direccion_guardado = Path("../../../Imagenes/{}/DistPromSubconj_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
+        
+        plt.pcolormesh(XX,YY,ZZ[0], shading="nearest", cmap = "viridis")
+        plt.colorbar()
+        
+        # Guardo la figura y la cierro
+        plt.savefig(direccion_guardado , bbox_inches = "tight")
+        plt.close("Promedios Distancia JS subconjunto")
+        
+        #------------------------------------------------------------------------
+        
+        # Armo los parámetros del gráfico de promedios
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("Fraccion simulaciones subconjunto",figsize=(28,21))
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        plt.title("Fraccion de simulaciones, distancia corte = {}\n {} vs {}".format(dist_crit,dict_labels[code_y],dict_labels[code_x]))
+        
+        # Guardo la figura
+        direccion_guardado = Path("../../../Imagenes/{}/FracSim_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
+        
+        plt.pcolormesh(XX,YY,ZZ[1], shading="nearest", cmap = "bone", vmin = 0, vmax = 1)
+        plt.colorbar()
+        
+        # Guardo la figura y la cierro
+        plt.savefig(direccion_guardado , bbox_inches = "tight")
+        plt.close("Fraccion simulaciones subconjunto")
+    
+
 
 #-----------------------------------------------------------------------------------------------
     
@@ -1527,3 +1937,41 @@ def Rotar_matriz(M):
         P[1:n-1,1:n-1] = M[1:n-1,1:n-1]
     
     return P
+
+#-----------------------------------------------------------------------------------------------
+
+# Armo una función que reconstruya las opiniones de los agentes a partir
+# de la distribución final de las opiniones.
+
+def Reconstruccion_opiniones(Dist_simulada, N, T):
+    
+    # Construyo un array que tenga los valores en los puntos medios de cada caja.
+    puntos_medios = (np.linspace(-1,1,Dist_simulada.shape[0]+1)[0:-1] + np.linspace(-1,1,Dist_simulada.shape[0]+1)[1:])/2
+    
+    # Construyo el vector de Opiniones que voy a returnear, así como
+    # un variable que voy a necesitar.
+    Opiniones = np.zeros(N*T)
+    agregados = 0
+    
+    # Recorro cada caja y agrego agentes según la fracción de agentes en cada
+    # caja. Asigno sus opiniones según la caja en la que se encuentran
+    for fila in range(Dist_simulada.shape[0]):
+        for columna in range(Dist_simulada.shape[1]):
+            
+            agentes_agregar =round(Dist_simulada[fila,columna] * N)
+            if(agentes_agregar > 0):
+                x_i = puntos_medios[fila]
+                y_i = puntos_medios[columna]
+                
+                Sub_opiniones = np.zeros(agentes_agregar*T)
+                Sub_opiniones[0::T] = np.ones(agentes_agregar)*x_i
+                Sub_opiniones[1::T] = np.ones(agentes_agregar)*y_i
+                
+                inicio = agregados*T
+                final = (agentes_agregar+agregados)*T
+                
+                Opiniones[inicio:final] = Sub_opiniones
+                
+                agregados += agentes_agregar
+            
+    return(Opiniones)

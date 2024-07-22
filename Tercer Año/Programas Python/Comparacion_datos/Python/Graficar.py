@@ -88,6 +88,9 @@ for carp in Carpetas:
     func.Tiempo(t0)
     
     #----------------------------------------------------------------------------------------------
+    
+    
+    
     """
     bines = np.linspace(-3.5,3.5,8)
     
@@ -172,12 +175,12 @@ for carp in Carpetas:
 #        
 #        func.Comp_estados(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta,
 #                          Direccion, dist_lim, lminimos, ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
-        
-        #-------------------------------------------------------------------------------------------------------------------------
         """
-    bines = np.linspace(-3.5,3.5,8)
-    func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/"distribuciones_sincruz", bines, "magma",
-                                      ID_param_x, ID_param_y, ID_param_extra_1)
+        #-------------------------------------------------------------------------------------------------------------------------
+        
+    # bines = np.linspace(-3.5,3.5,8)
+    # func.Graf_Histograma_opiniones_2D(Df_archivos, Direccion, Etapa/"distribuciones_sincruz", bines, "magma",
+    #                                   ID_param_x, ID_param_y, ID_param_extra_1)
         
         #----------------------------------------------------------------------------------------------
 

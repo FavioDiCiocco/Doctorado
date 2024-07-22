@@ -2244,3 +2244,78 @@ para la charla. Bien, me anoté cosas, creo que estoy en buena idea para mañana
 
 Voy a hacer dos cosas más y después me voy a casa. Primero voy a imprimir el boleto de viaje a Uruguay.
 Después voy a ver el tema de laboratorios más cerca de casa como para hacer el estudio del espermograma.
+
+------------------------------------------------------------------------------------------
+
+19/07/2024
+
+Llegué maso temprano, organicé algunos mensajes. Ahora me voy a poner a ver cosas sobre codear en R.
+Nos juntamos con Lucio para seguir trabajando en el proyecto del modelo de Granovetter. Armamos
+un código que contempla dos tópicos, que corre dentro de todo bien. Consideramos que lo que está
+haciendo el código no refleja quizás lo que queremos, pero estamos encaminando. Eso va bastante
+bien.
+
+Hoy voy a intentar resolver dos cosas. Lo primero es lograr que el código levante los datos de las
+distribuciones y desde ahí corra todo los mismo que viene laburando. Lo segundo es seguir viendo 
+algunos videos de codear en R.
+
+La idea es que tengo 42x42 puntos. Cada uno de esos puntos tiene la fracción de agentes. Esos
+cuadrados tienen por lado 2/42. Entonces la idea es reconstruir un vector de opiniones a partir
+de esta distribución. En el punto [0,0], la idea es que están las opiniones que se encuentran entre
+[-1,-1+1/21] para X y [-1,-1+1/21] para Y. Ok, se me ocurre que lo que podría hacer es armar un array
+con los valores medios de cada caja. Luego en función de la posición en la distribución, me construyo
+mi array final.
+
+Ahí armé la función. Estoy viendo de agregar eso a la parte de Barrido_final. Aunque creo que va a ser
+más higiénico si simplemente copio los archivos de funciones y graficar que tengo en Comparación datos
+y ya arranco desde ahí. Va a ser un bardo y mucho tiempo perdido al pedo sino.
+ Bien, ahí parece que está todo. Confío en que ahora esto funca correctamente. Hace falta probarlo.
+Yo diría de intentar construir algunos gráficos de histogramas 2D, como para ver que tenga sentido.
+Claramente, no está teniendo sentido. Esto es un bajón. Veré si puedo hacer que tenga sentido antes de
+irme el martes. No sé cuándo lo haré igual. Un re bajón.
+
+------------------------------------------------------------------------------------------
+
+22/07/2024
+
+El finde estudiamos con Lucio sobre las materias de los finales que queremos rendir. Hoy terminé de
+ver el bootcamp de R y ya me puse con la función que reconstruye opiniones a partir de las
+distribuciones finales.
+
+Ahí corregí los errores de la función. Voy a incorporar eso a la función general para ver que se hacen
+bien las distribuciones y ya mando a correr esto. Ya lo incorporé, funca bárbaro. Bueno, lo siguiente entonces
+es definir qué gráficos necesito del espacio.
+
+Gráficos importantes:
+---------------------
+
+1) Entropía en el espacio de parámetros
+2) Covarianza en el espacio de parámetros.
+3) FEF en el espacio de parámetros
+4) Gráfico manual de regiones
+5) Distancia JS en el espacio de parámetros
+6) Hist2D similares en mínimos de promedios de Distancia JS
+7) Histogramas de las distancias JS en los puntos mínimos
+8) Composición de bines de los histogramas
+9) Mapas de colores de promedios de distancia y fracción de estados promediados
+según una distancia de criterio de corte.
+
+Ya incorporé todo esto en el armado de gráficos, e incluso me encargué de reducir ciertas partes para que
+no tarde tanto, específicamente reduje el calculado del diccionario de métricas y el cálculo de la entropía
+reiterado.
+ Funciona bien esto, ya puedo mandarlo a correr en Coimbra con los datos que tengo ahí.
+
+Mientras, mandé a correr las últimas 10 simulaciones del barrido del espacio Beta-Kappa en Coimbra.
+Ya con eso, no quedará nada más por correr. A menos que querramos ser más finos en nuestro barrido,
+que eso es algo discutible.
+
+Imprimí algunos documentos que necesitaba. Mandé a correr el armado de archivos en Coimbra y eso presenta
+un problema. Los archivos que armé en la región fuera de la región pequeña: Beta [0,1] y Cosd [0,0.15],
+tienen un tab extra al final de la distribución, que los archivos que construí yo no tienen. Tengo que solucionar
+eso de forma de que o todos los archivos tengan el tab o ninguno lo tenga.
+
+Por otro lado, hablando con Pablo, coincidimos en que la idea sería armar el gráfico que ubica las preguntas en
+el espacio de parámetros según dónde se encuentren los mínimos para el total de las simulaciones y para un
+conjunto de 20 o 30 simulaciones. Esto se puede hacer sencillo, total es pasarle el conjunto de preguntas a la
+función, calcular los mapas de distancias JS y luego que vaya graficando. Va a ser una función que tarde mucho en correr
+porque tiene que calcular todos los mapas de distancias. Pero supongo que se puede hacer.

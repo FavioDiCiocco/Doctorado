@@ -24,6 +24,11 @@ doble puntero.
 el barrido que hice en Beta fijando Kappa y Epsilon. La idea es observar la Entropía, Covarianza
 Varianzas y otras métricas de los datos en el espacio de parámetros para los ensambles de datos.
 
+.) Probas_Pol:
+--------------
+ESTA CARPETA AHORA NO RECUERDO QUÉ TIENE, Y NO VOY A PREOCUPARME HOY POR ESO.
+CUANDO VUELVA LO REVISARÉ, QUIZÁS.
+
 
 .) Func_sign:
 -------------
@@ -60,3 +65,10 @@ en el entorno del 0.
 Estos gráficos los obtengo de Algarve. Tanto esta carpeta como la de Zoom_Beta-Cosd tienen otras
 tres carpeta donde separan los gráficos de distancia JS según si usan distribuciones sin el punto
 del centro o si usan distribuciones removiendo la cruz de opiniones del espacio de opiniones.
+
+
+.) Barrido_final:
+-----------------
+Hago gráficos del barrido en ambos espacios de parámetros con 10000 agentes. La idea es armar gráficos
+analizando la distancia de JS y también gráficos de distribuciones de estados finales en la región.
+Espero que esta sea la última etapa del trabajo.
