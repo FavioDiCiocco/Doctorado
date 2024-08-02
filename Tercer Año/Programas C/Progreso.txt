@@ -2319,3 +2319,19 @@ el espacio de parámetros según dónde se encuentren los mínimos para el total
 conjunto de 20 o 30 simulaciones. Esto se puede hacer sencillo, total es pasarle el conjunto de preguntas a la
 función, calcular los mapas de distancias JS y luego que vaya graficando. Va a ser una función que tarde mucho en correr
 porque tiene que calcular todos los mapas de distancias. Pero supongo que se puede hacer.
+
+------------------------------------------------------------------------------------------
+
+02/08/2024
+
+Ya volví de la SICSS. Estuvo muy bueno. Ahora tengo que ocuparme de dos cosas claves. La primera es
+que tengo que anotarme en lo de CAPES. Lo segundo es seguir laburando en el laburo del modelo de agentes.
+Lo tercero que tengo que hacer ahora es repasar lo que investigué como para ver qué mencionarle a Pablo.
+
+Me parece que lo clave de mencionarle a Pablo del SICSS es que conocí gente, que vi una info interesante
+sobre la ética de manipular datos que refieren a personas, que descubrí data sets interesantes del
+Latinobarómetro, CSES o Gdelt, y también que vi algo interesante sobre cómo armar encuestas.
+
+Hablé con Pablo, le pareció interesante lo que mostré, ya seguiremos hablando más en la próxima semana.
+Lo que quedamos es en posponer la charla de la semana que viene. Primero le mando un mail a Hugo sobre
+eso y después me pongo con lo de anotarme al CAPES, a ver qué puedo hacer hoy.
