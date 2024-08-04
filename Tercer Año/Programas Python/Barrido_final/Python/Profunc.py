@@ -32,6 +32,7 @@ def ldata(archive):
         return data
 
 #####################################################################################
+"""
 
 # Voy a ver de levantar datos de los archivos nuevos
 
@@ -67,5 +68,32 @@ for fila in range(dist_simul.shape[0]):
             agregados += cant_agregar
         
 print(agregados)
+
+"""
+
+#####################################################################################
+
+# Recorro las carpetas con datos
+CarpCheck=[[root,files] for root,dirs,files in os.walk("../Beta-Cosd")]
+
+# Me armo una lista con los nombres de todos los archivos con datos.
+# Coloco al inicio de la lista el path de la carpeta en la que se encuentran los datos
+
+Archivos_Datos = [nombre for nombre in CarpCheck[0][1]]
+
+for nombre in Archivos_Datos:
+    
+    file_path = Path("../Beta-Cosd/{}".format(nombre))
+    
+    # Read the file content
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+        
+    # Modify the second line
+    lines[1] = lines[1].rstrip('\n') + '\t\n'
+    
+    # Write the modified content back to the file
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
 
 func.Tiempo(t0)

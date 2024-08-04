@@ -2335,3 +2335,13 @@ Latinobarómetro, CSES o Gdelt, y también que vi algo interesante sobre cómo a
 Hablé con Pablo, le pareció interesante lo que mostré, ya seguiremos hablando más en la próxima semana.
 Lo que quedamos es en posponer la charla de la semana que viene. Primero le mando un mail a Hugo sobre
 eso y después me pongo con lo de anotarme al CAPES, a ver qué puedo hacer hoy.
+
+------------------------------------------------------------------------------------------
+
+04/08/2024
+
+Ya identifiqué los archivos que tengo que corregir. Se encuentran en una carpeta que dice Beta-Cosd en el inicio
+de la pc de Coimbra. Esos mismos los tengo descargados en mi pc de casa. Lo que voy a hacer ahora, con la ayuda de
+Chat GPT, es colocar un tab al fondo de esos números.
+
+Bien, parece estar funcionando ahora. Lo veré más tarde a ver si quedó bien.
