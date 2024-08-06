@@ -2345,3 +2345,28 @@ de la pc de Coimbra. Esos mismos los tengo descargados en mi pc de casa. Lo que 
 Chat GPT, es colocar un tab al fondo de esos números.
 
 Bien, parece estar funcionando ahora. Lo veré más tarde a ver si quedó bien.
+
+------------------------------------------------------------------------------------------
+
+06/08/2024
+
+El 05/08 fue el DDF. Hoy vamos a ponernos con el trabajo de la gente de España, intentemos organizar
+un esqueleto de presentación. Pero antes de eso, ¿Qué es lo que tengo que hacer de trabajo?
+
+1) Preparar presentación para la reunión de la próxima semana con la gente de GOTHAM.
+Tengo que implementar las cosas que me dijeron en la última charla.
+2) Continuar con el trabajo de Granovetter que estábamos haciendo con Lucio. Revisar
+las notas en el Drive para ver cómo continuar eso.
+3) Preparar presentación para la próxima reunión de grupo sobre las cosas que aprendí o
+vale la pena contar en el grupo de mi viaje a Uruguay.
+4) Completar presentación para la presentación de Brasil de Mova La America.
+
+Hoy voy a continuar con la implementación de la presentación de GOTHAM, a la tarde continuo
+un poco con la presentación de Brasil. Bien, me descargué un conjunto de los archivos con 
+el espacio de tab al final de las distribuciones. Lo que debería hacer ahora es por un lado
+armar los mismos gráficos que armé en el espacio Beta-Cosd, para el espacio Beta-Kappa.
+Luego de eso, lo que haré será analizar los gráficos armados para ver qué pongo en la presentación.
+Mirado eso, lo tercero que haré hoy será continuar con la presentación de cosas para la
+beca de Mova La America de Brasil.
+
+

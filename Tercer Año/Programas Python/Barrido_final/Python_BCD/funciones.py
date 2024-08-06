@@ -192,7 +192,7 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
                     
                     # Leo los valores de distribución de opiniones, los cuales se distribuyen
                     # en 42x42 cajas.
-                    dist_final = np.reshape(np.array(Datos[1],dtype="float"),(42,42))
+                    dist_final = np.reshape(np.array(Datos[1][:-1],dtype="float"),(42,42))
                     # Reconstruyo las opiniones finales normalizadas a partir de estos datos.
                     Opifinales = Reconstruccion_opiniones(dist_final, AGENTES, T)
                     Opifinales = Opifinales*bins[-1]
@@ -294,7 +294,7 @@ def Mapa_Colores_Covarianzas(DF,path,carpeta,SIM_param_x,SIM_param_y,
             
             # Leo los valores de distribución de opiniones, los cuales se distribuyen
             # en 42x42 cajas.
-            dist_final = np.reshape(np.array(Datos[1],dtype="float"),(42,42))
+            dist_final = np.reshape(np.array(Datos[1][:-1],dtype="float"),(42,42))
             # Reconstruyo las opiniones finales normalizadas a partir de estos datos.
             Opifinales = Reconstruccion_opiniones(dist_final, AGENTES, T)
             
@@ -467,7 +467,7 @@ def Diccionario_metricas(DF, path, Nx, Ny):
                 
                 # Leo los valores de distribución de opiniones, los cuales se distribuyen
                 # en 42x42 cajas.
-                dist_final = np.reshape(np.array(Datos[1],dtype="float"),(42,42))
+                dist_final = np.reshape(np.array(Datos[1][:-1],dtype="float"),(42,42))
                 # Reconstruyo las opiniones finales normalizadas a partir de estos datos.
                 Opifinales = Reconstruccion_opiniones(dist_final, AGENTES, T)
                 
@@ -830,7 +830,7 @@ def Matriz_DJS(DF_datos,DF_Anes,Dic_ANES,path):
             
             # Leo los valores de distribución de opiniones, los cuales se distribuyen
             # en 42x42 cajas.
-            dist_final = np.reshape(np.array(Datos[1],dtype="float"),(42,42))
+            dist_final = np.reshape(np.array(Datos[1][:-1],dtype="float"),(42,42))
             # Reconstruyo las opiniones finales normalizadas a partir de estos datos.
             Opifinales = Reconstruccion_opiniones(dist_final, AGENTES, T)
             
@@ -1073,7 +1073,7 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, Dic_ANES,
             
             # Leo los valores de distribución de opiniones, los cuales se distribuyen
             # en 42x42 cajas.
-            dist_final = np.reshape(np.array(Datos[1],dtype="float"),(42,42))
+            dist_final = np.reshape(np.array(Datos[1][:-1],dtype="float"),(42,42))
             # Reconstruyo las opiniones finales normalizadas a partir de estos datos.
             Opifinales = Reconstruccion_opiniones(dist_final, AGENTES, T)
             Opifinales = Opifinales*bins[-1]

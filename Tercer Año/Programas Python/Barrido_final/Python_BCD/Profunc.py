@@ -69,7 +69,7 @@ for fila in range(dist_simul.shape[0]):
         
 print(agregados)
 
-"""
+
 
 #####################################################################################
 
@@ -95,5 +95,7 @@ for nombre in Archivos_Datos:
     # Write the modified content back to the file
     with open(file_path, 'w') as file:
         file.writelines(lines)
+
+"""
 
 func.Tiempo(t0)
