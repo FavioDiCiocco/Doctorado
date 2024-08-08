@@ -2369,4 +2369,28 @@ Luego de eso, lo que haré será analizar los gráficos armados para ver qué po
 Mirado eso, lo tercero que haré hoy será continuar con la presentación de cosas para la
 beca de Mova La America de Brasil.
 
+------------------------------------------------------------------------------------------
 
+08/08/2024
+
+El 07 estuve todo el día trabajando en completar los documentos que necesitaba para la inscripción
+del programa de Mova la América de Brasil. Lo bueno es que ya terminé con eso, así que eso es un
+laburo hecho. Tengo que empezar a despertarme más temprano, hoy llegué re tarde. No puedo seguir
+así.
+
+Lo que voy a hacer ahora es primero descargar los gráficos que armé de los dos espacios de parámetros.
+Lo segundo que quiero hacer es armar una carpeta en la cuál guardar los archivos de composición de estados,
+así no me ocupan tanto lugar en mis carpetas.
+Lo tercero es armar una función que grafique los mínimos de cada par de preguntas en el espacio de parámetros.
+Lo cuarto sería agregar lo que me dijo Pablo de poner los histogramas de las preguntas en los bordes de los
+histogramas 2D.
+
+Bajé los gráficos. Como cosas rápidas, observé que en el espacio de Beta-Cosd y Beta-Kappa algunos gráficos
+de distancias JS recortados se construyeron vacíos, no entiendo por qué. Lo otro que noto es que en el
+espacio Beta-Kappa algunos gráficos del histograma 2D más similar me dan nulo. No comprendo por qué, tendré
+que revisarlo. Una tercer observación es que las regiones que había delimitado antes para las simulaciones
+con 1000 agentes parecen haberse movido un poco. No pareciera ser un problema eso, tendré que ver
+de redefinirlas para la próxima reunión.
+
+Lo primero que yo haría ahora es revisar por qué se generaron ciertos gráficos vacíos. Hecho eso, lo siguiente
+sería armar la función que grafica los mínimos en el espacio de parámetros como charlamos la última vez.
