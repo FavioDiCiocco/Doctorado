@@ -102,7 +102,7 @@ def Mapa_Colores_Entropia_opiniones(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_pa
     # Construyo las grillas que voy a necesitar para el pcolormesh.
     
     XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
-    ZZ = np.zeros(XX.shape)
+    ZZ = np.zeros((2,XX.shape[0],XX.shape[1]))
     
     #--------------------------------------------------------------------------------
     for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
@@ -110,8 +110,8 @@ def Mapa_Colores_Entropia_opiniones(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_pa
         #------------------------------------------------------------------------------------------
         # Armo mi matriz con los valores de entropía y con los valores de la varianza
         
-        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"])
-        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.var(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"])
+        ZZ[0,(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"])
+        ZZ[1,(Arr_param_y.shape[0]-1)-fila,columna] = np.var(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"])
     
     #--------------------------------------------------------------------------------
     
@@ -125,11 +125,27 @@ def Mapa_Colores_Entropia_opiniones(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_pa
     
     # Hago el ploteo del mapa de colores con el colormesh
     
-    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "viridis")
+    plt.pcolormesh(XX,YY,ZZ[0],shading="nearest", cmap = "viridis")
     plt.colorbar()
     plt.title("Entropía de opiniones en Espacio de Parametros")
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close("Entropia Opiniones")
+    
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores
+    direccion_guardado = Path("../../../Imagenes/{}/Varianza Entropia EP_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
+    
+    plt.rcParams.update({'font.size': 44})
+    plt.figure("Varianza Entropia",figsize=(28,21))
+    plt.xlabel(r"${}$".format(SIM_param_x))
+    plt.ylabel(r"${}$".format(SIM_param_y))
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    
+    plt.pcolormesh(XX,YY,ZZ[1],shading="nearest", cmap = "magma")
+    plt.colorbar()
+    plt.title("Varianza de Entropía en Espacio de Parametros")
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("Varianza Entropia")
 
 
 #-----------------------------------------------------------------------------------------------
@@ -206,7 +222,7 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
                     
                     # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
                 
-                    direccion_guardado = Path("../../../Imagenes/{}/Hist_opi_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,
+                    direccion_guardado = Path("../../../Imagenes/{}/Histogramas/Hist_opi_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,
                                                                                                 ID_param_x,PARAM_X,ID_param_y,PARAM_Y,repeticion))
                     
                     indice = np.where(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] == repeticion)[0][0]
@@ -942,8 +958,8 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, 
     
     # Y ahora me armo el gráfico de promedios de distancia JS según cantidad de simulaciones
     # consideradas, con las simulaciones ordenadas de las de menos distancia a las de más distancia
-    """
-    for i in range(3):
+    
+    for i in range(2):
         
         direccion_guardado = Path("../../../Imagenes/{}/DistanciaJS_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
         
@@ -962,14 +978,13 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, 
         plt.colorbar()
         plt.scatter(XX[tupla],YY[tupla], marker="X", s = 1500, color = "red")
         
-        plt.title("Distancia Jensen-Shannon {} simulaciones\n {} vs {}".format(10+i*20,dict_labels[code_y],dict_labels[code_x]))
+        plt.title("Distancia Jensen-Shannon {} simulaciones\n {} vs {}".format(10+i*10,dict_labels[code_y],dict_labels[code_x]))
         
         # Guardo la figura y la cierro
         
         plt.savefig(direccion_guardado , bbox_inches = "tight")
         plt.close("Ranking Distancia Jensen-Shannon")
         
-    """
     
 
 #-----------------------------------------------------------------------------------------------
@@ -1361,12 +1376,12 @@ def Comp_estados(Dist_JS, code_x, code_y, DF_datos, Dic_Total, dict_labels, carp
             plt.ylabel("Fracción")
             plt.title('{} vs {}\n'.format(dict_labels[code_y], dict_labels[code_x]) + r'Cantidad simulaciones {}, ${}$={},${}$={}, Distancias entre {:.2f} y {:.2f}'.format(np.count_nonzero(Arr_bool), SIM_param_y, PARAM_Y, SIM_param_x, PARAM_X, dmin, dmax))
             plt.xticks(ticks = X, labels = Nombres, rotation = 45)
-            direccion_guardado = Path("../../../Imagenes/{}/Comp est_{}vs{}_min={}_b{}.png".format(carpeta,code_y,code_x,j,i))
+            direccion_guardado = Path("../../../Imagenes/{}/comp_estados/Comp est_{}vs{}_min={}_b{}.png".format(carpeta,code_y,code_x,j,i))
             plt.savefig(direccion_guardado ,bbox_inches = "tight")
             plt.close()
     
     #-----------------------------------------------------------------------------------------
-        
+    """
     # Una vez que tengo el ZZ completo, armo mi mapa de colores para el caso sin cruz
     direccion_guardado = Path("../../../Imagenes/{}/DistanciaJS_recortado_{}vs{}.png".format(carpeta,code_y,code_x))
     
@@ -1395,7 +1410,7 @@ def Comp_estados(Dist_JS, code_x, code_y, DF_datos, Dic_Total, dict_labels, carp
     
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close("Distancia Jensen-Shannon")
-    
+    """
 #-----------------------------------------------------------------------------------------------
 
 # A partir de mis gráficos de histogramas de distancias, quiero armar un gráfico
@@ -1975,3 +1990,53 @@ def Reconstruccion_opiniones(Dist_simulada, N, T):
                 agregados += agentes_agregar
             
     return(Opiniones)
+
+#-----------------------------------------------------------------------------------------------
+
+# Armo una función que ubique los pares de preguntas en el espacio de parámetros.
+
+def Preguntas_espacio_parametros(DF_datos,DF_Anes,labels,path,carpeta,
+                                 SIM_param_x,SIM_param_y):
+    
+    # Defino los arrays donde guardo las posiciones de las distancias
+    # mínimas promedio
+    X = np.zeros(len(labels))
+    Y = np.zeros(len(labels))
+    
+    # Defino los arrays de parámetros diferentes
+    Arr_param_x = np.unique(DF_datos["parametro_x"])
+    Arr_param_y = np.unique(DF_datos["parametro_y"])
+    # Construyo las grillas que voy a usar para ubicar los valores de X e Y
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    
+    # Itero en todos los pares de preguntas para construir la Matriz
+    # de distancia de JS de cada una y de ahí extraer el punto de mínima
+    # distancia promedio
+    
+    for indice,preguntas in enumerate(labels):
+        
+        code_1 = preguntas[0]
+        code_2 = preguntas[1]
+            
+        weights = preguntas[2]
+        
+        Dic_ANES = {"code_1": code_1, "code_2": code_2, "weights":weights}
+        
+        # Calculo la matriz de distancias JS
+        Dist_JS, code_x, code_y = Matriz_DJS(DF_datos, DF_Anes, Dic_ANES, path)
+        # Obtengo la ubicación del mínimo de distancia JS y agrego ese punto a
+        # los arrays que uso para graficar
+        tupla = np.unravel_index(np.argmin(np.mean(Dist_JS,axis=2)),np.mean(Dist_JS,axis=2).shape)
+        X[indice] = XX[tupla]
+        Y[indice] = YY[tupla]
+    
+    # Lo que queda es hacer un plot scatter
+    plt.rcParams.update({'font.size': 44})
+    plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+    plt.scatter(X,Y, marker="s", s = 500, color = "green", alpha = 0.7)
+    plt.xlabel(r"${}$".format(SIM_param_x))
+    plt.ylabel(r"${}$".format(SIM_param_y))
+    plt.title("Pares de preguntas en el espacio de parámetros")
+    direccion_guardado = Path("../../../Imagenes/{}/Dist_preguntas_espacio.png".format(carpeta))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close()

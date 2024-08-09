@@ -102,7 +102,7 @@ def Mapa_Colores_Entropia_opiniones(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_pa
     # Construyo las grillas que voy a necesitar para el pcolormesh.
     
     XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
-    ZZ = np.zeros(XX.shape)
+    ZZ = np.zeros((2,XX.shape[0],XX.shape[1]))
     
     #--------------------------------------------------------------------------------
     for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
@@ -110,8 +110,8 @@ def Mapa_Colores_Entropia_opiniones(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_pa
         #------------------------------------------------------------------------------------------
         # Armo mi matriz con los valores de entropía y con los valores de la varianza
         
-        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"])
-        ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.var(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"])
+        ZZ[0,(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"])
+        ZZ[1,(Arr_param_y.shape[0]-1)-fila,columna] = np.var(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"])
     
     #--------------------------------------------------------------------------------
     
@@ -125,11 +125,27 @@ def Mapa_Colores_Entropia_opiniones(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_pa
     
     # Hago el ploteo del mapa de colores con el colormesh
     
-    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "viridis")
+    plt.pcolormesh(XX,YY,ZZ[0],shading="nearest", cmap = "viridis")
     plt.colorbar()
     plt.title("Entropía de opiniones en Espacio de Parametros")
     plt.savefig(direccion_guardado , bbox_inches = "tight")
     plt.close("Entropia Opiniones")
+    
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores
+    direccion_guardado = Path("../../../Imagenes/{}/Varianza Entropia EP_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
+    
+    plt.rcParams.update({'font.size': 44})
+    plt.figure("Varianza Entropia",figsize=(28,21))
+    plt.xlabel(r"${}$".format(SIM_param_x))
+    plt.ylabel(r"${}$".format(SIM_param_y))
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    
+    plt.pcolormesh(XX,YY,ZZ[1],shading="nearest", cmap = "magma")
+    plt.colorbar()
+    plt.title("Varianza de Entropía en Espacio de Parametros")
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("Varianza Entropia")
 
 
 #-----------------------------------------------------------------------------------------------
@@ -206,7 +222,7 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
                     
                     # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
                 
-                    direccion_guardado = Path("../../../Imagenes/{}/Hist_opi_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,
+                    direccion_guardado = Path("../../../Imagenes/{}/Histogramas/Hist_opi_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,
                                                                                                 ID_param_x,PARAM_X,ID_param_y,PARAM_Y,repeticion))
                     
                     indice = np.where(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] == repeticion)[0][0]
@@ -217,9 +233,12 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
                                "Polarización 1D y Consenso con anchura",
                                "Polarización Ideológica con anchura", "Transición con anchura",
                                "Polarización Descorrelacionada con anchura"]
-                    
-                    X = X_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
-                    Y = Y_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
+                    if PARAM_X > 1:
+                        X = X_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
+                        Y = Y_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
+                    else:
+                        X = X_0
+                        Y = Y_0
                     
                     # Armo mi gráfico, lo guardo y lo cierro
                     

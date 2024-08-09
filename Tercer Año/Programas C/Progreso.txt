@@ -2394,3 +2394,90 @@ de redefinirlas para la próxima reunión.
 
 Lo primero que yo haría ahora es revisar por qué se generaron ciertos gráficos vacíos. Hecho eso, lo siguiente
 sería armar la función que grafica los mínimos en el espacio de parámetros como charlamos la última vez.
+
+------------------------------------------------------------------------------------------
+
+09/08/2024
+
+Hoy llegué más temprano. Viste que las amenazas sí funcionan.
+
+Cuestión, ayer me volví temprano a casa y aún así tardé horrores en llegar, no pude hacer nada.
+Hoy tengo que ponerme a descular qué corno estoy viendo y a armar el gráfico este de los mínimos
+de los pares de preguntas en el espacio de parámetros. Eso va a requerir que catalogue el tipo de
+preguntas que estoy viendo. No, cierto que el plan era que nosotros revisemos cómo se agrupan
+y de ahí determinar si son preguntas políticas o no. Voy a necesitar construirme una tabla
+con la info de las preguntas y guardarme eso, sino no se me ocurre cómo retener esa info en un
+gráfico.
+
+Vamos anotando las cosas a revisar. Empecemos por el mapa en el espacio Beta-Cosd:
+1) La entropía está mal. (Modifiqué la función que calculaba la entropía)
+2) La covarianza se ve rara. Pero le creo, se parece bastante a lo de antes.
+3) Los gráficos de Fracción de estados finales parecen estar muy bien.
+
+Necesito revisar la forma de los gráficos en diversas regiones. Y ver qué pasa con la entropía.
+Ya ví qué está mal, estaba ploteando la varianza de la entropía y no la entropía. La varianza
+tiene la forma que tiene que tener. Pasemos a lo siguiente, armar algunos gráficos para revisar que
+efectivamente lo que veo es razonable. Los gráficos de histogramas los voy a guardar en carpetas
+aparte.
+
+Ya tengo esos archivos, están en la carpeta de distribuciones. Genial.
+Lo siguiente que me genera dudas es:
+1) ¿Por qué algunos gráficos de mapas de colores recortados me quedan los gráficos en blanco?
+2) En el caso Beta-Kappa, tengo problemas con los gráficos de Histograma 2D de los estados
+más similares. Por algún motivo, me quedan vacíos.
+
+Ya revisé por qué algunos de los gráficos de distancia JS recortados están vacío, el problema
+es que la dist_lim que elegí es 0.45, pero algunos gráficos tienen distancias por encima
+de eso, así que cuando quiero hacer el corte de cantidad de simulaciones en el punto de
+distancia promedio mínima, resulta que en ese punto ninguna simulación tiene distancia menor
+a dist_lim, por lo que intenta plotear con una matriz vacía.
+ Igual me doy cuenta que por lo que charlamos, no es ese el gráfico que quiero hacer ahora,
+sino armar gráficos con una pequeña fracción de agentes. Así que voy a comentar este tipo
+de gráfico y depués descomentar los gráficos de ranking de distancias JS.
+
+Estoy revisando los gráficos de Hist_2D de las simulaciones similares a las distribuciones de
+las encuestas. Todos los gráficos que tienen problema son los gráficos con K = 0.5. Quizás
+hay un problema en los datos ahí. Aunque la fracción de estados finales parece estar en
+cooncordancia con lo que esperaba ver.
+ Ahora entiendo por qué están mal los gráficos de histogramas similares. De nuevo, el código funciona
+bien, el problema es que remueve a los agentes que se encuentran en la cruz central. Y justamente
+cuando K = 0.5 resulta que TODOS los agentes están ahí. Se me ocurre que eso se puede solucinar
+cambiando el código para el caso Beta-Kappa de forma que si el PARAM_X <= 1, entonces omite esa
+parte. Ahora igual eso me deja dudas, ¿Cómo corno arma el mapa de distancias Jensen-Shannon si esa
+parte la saca?
+ Hablé con Pablo. No hace falta que me preocupe por esto, al final no voy a hacer nada de comparación
+con datos en el espacio Beta-Kappa. Y debería mandar a correr datos en las pc's, total están bastante
+al dope actualmente. Después voy a tener que revisar bien qué quiero mandar y donde. La cosa es tener
+cuidado de cómo expando la región.
+
+Hagamos las correcciones al código de Beta-Kappa, subamos los dos códigos, mandemos a correr y después
+intentemos armar el gráfico de las preguntas ubicadas en el espacio de parámetros.
+
+Modifiqué las funciones de Histogramas 2D y de gráficos de Comp_estados, para que esos gráficos vayan
+a carpetas aparte. Esas cosas me construyen MUCHOS gráficos.
+
+El código para la región Beta-Cosdelta está, preparemos el código de Beta-Kappa.
+
+Ya están los dos códigos cargados y todo corriendo. Esperemos que no se corte. Posiblemente sea buena
+idea la semana que viene revisar un poco la documentación.
+
+¿Qué cosas tengo para hacer ahora?
+----------------------------------
+1) Esa función que vengo prometiendo que asigna las preguntas en el espacio de parámetros según dónde
+están los mínimos de la distancia JS.
+2) Agregar los histogramas 1D en los histogramas 2D. Va a ser un tema eso, no muy simple en el sentido
+de que voy a tener que revisar cómo incorporar esa parte del código en varios códigos. Bah, en el que
+construye los gráficos de histogramas de las encuestas, en los otros no.
+3) Revisar el tema de la distancia de Kolmogorov-Smirnoff. Estaría bueno tener aunque sea leído eso,
+si no pude hacer mucho al respecto.
+4) Revisar alguna pregunta y graficarla para ver cómo varía en el tiempo. Quizás esto lo podamos dejar
+para la otra reunión.
+
+Construyamos la función que ubica las preguntas en el espacio de parámetros. El problema de esta función
+es que va a tardar mucho, porque tiene que calcular la matriz de DJS para cada par de preguntas de nuevo.
+Bueno, hagamos una cosa. Arranquemos con hacerlo funcionar. Después lo que puedo ver de
+hacer es guardarme esa info en su momento cuando armo por primera vez la matriz de DJS
+y así no la recalculo cada vez.
+
+Está básicamente armada la función. Hay que probarla para ver que realmente funciona.
+Por hoy vamos a casa, comitteemos todo y listo.
