@@ -2481,3 +2481,78 @@ y así no la recalculo cada vez.
 
 Está básicamente armada la función. Hay que probarla para ver que realmente funciona.
 Por hoy vamos a casa, comitteemos todo y listo.
+
+------------------------------------------------------------------------------------------
+
+12/08/2024
+
+Hoy me levanté tarde, no entiendo por qué. La mañana básicamente se me arruinó. Vamos a intentar
+armar todo lo que tengo que armar lo mejor posible. Estoy corriendo el pedazo de código que quiero
+ver si construye el gráfico que quiero de las preguntas en el espacio de parámetros.
+Efectivamente está tardando un buen rato la simulación. Debí haber probado con cinco preguntas
+más o menos, como para arrancar. Mientras esto corre, tengo dos cosas que puedo hacer. Una es
+mandar a correr en Coimbra, Oporto y Algarve las simulaciones que me faltan. Eso podría venir
+bien total voy a estar esperando este resultado.
+
+Lo segundo es ya agrandar este código para que se vea bien con las simulaciones con un porcentaje de
+las preguntas. Me conviene hacer ya simulaciones con hasta 40 simulaciones.
+ ¿Tengo una forma de guardar los datos de las matrices? Porque sino estoy corriendo esto montones
+de veces y me tarda mucho en hacer el gráfico. Veamos cuánto tarda en hacerse eso, que tengo miedo
+que tarde una eternidad. Además tengo que agregar el cruce de preguntas y por último tengo que
+además lograr extraer qué preguntas caen donde. Bah, eso lo puedo hacer a ojo con los mapas de colores
+de distancias JS.
+
+Lo mandé a correr a las 11, son las 15 y todavía no termina esto corriendo en casa. Voy a necesitar
+ser listo en cómo mando esto a correr. Primero, me parece que lo principal entonces es hacer lo que
+charlamos, armar este gráfico con todas las simulaciones y con hasta 20 simulaciones. Algo que estaba
+pensando, voy a tener que agregar ruido en el eje X y en el Y para que los puntos se vean diferenciados,
+sino no voy a ver cuántas preguntas hay en cada lugar. Sólo habrá una pregunta si no meto el ruido. Lo que
+voy a hacer es obtener una distribución centrada en cero con un sigma que sea un cuarto de la distancia
+entre puntos. Eso me parece importante porque el 95% de los números obtenidos de la muestra van a estar
+en 2 sigmas, entonces el 95% del ruido se va a encontrar a la mitad de la distancia entre puntos. Eso
+me ayuda a que no se me corran preguntas en un punto con preguntas en otro punto.
+
+Lo otro que pensé es que tendría que armar csv con las matrices de distancias JS. De esa manera, voy a
+poder correr esto mucho más rápido. Sino la verdad que el tiempo que tarda en correr esto está escalando
+demasiado y cada pequeño error puede costar horrores.
+
+Bien, agreguemos el ruido y el tema del armado del gráfico para menor cantidad de simulaciones.
+El gráfico terminó en mi pc. Se hizo, tardó casi 5 horas. Habrá que ver si tarda más o menos en
+la pc de Coimbra.
+
+Se me ocurrió cómo hacer esto de forma más rápida para tener en el mismo tiempo de corrida los gráficos para
+una cantidad reducida de simulaciones. Voy a construir los vectores X e Y para todas las simulaciones en
+el mismo for, así esto no tarda 24 horas, tardará 10 más o menos. Y eso es una victoria.
+
+Ya está corriendo y está agregado el tema del ruido y de que se armen los gráficos con un subconjunto
+de simulaciones. Ahora puedo mandarlo a correr en Coimbra.
+
+Lo siguiente que quiero hacer entonces es mandar a correr datos para el espacio Beta-Cosd en las tres pc's.
+Aunque Ale está usando mucho Coimbra, un poco Algarve y nada Oporto. Tendré que ver cómo reparto código en
+las tres pc's. Pero para hacer esto tengo que asegurarme que tengo el código correcto Y que voy a mandar
+las simulaciones a la carpeta correcta. Eso es importante porque si mezclo las nuevas simulaciones
+con el armado de datos, va a ser un bardo. Un importante bardo.
+
+Los archivos que tengo que agregar al final los voy a ir guardando en la carpeta Extras_Beta_CD.
+Considerando que Ale está laburando bastantes cosas, yo diría de mandar a correr símplemente unos 5
+hilos, para resolver 20 iteraciones en esta pc.
+
+Lo que estoy haciendo es armar un barrido más fino en Beta, por lo que la idea es que Beta corra
+entre [0,1.5] de a 0.05.
+
+¿Qué iteraciones corro en cada pc?
+----------------------------------
+1) En Coimbra tengo 5 hilos que van a correr cada uno 4 iteraciones, por un total de 20 iteraciones entre
+0 y 19.
+2) En Algarve tengo 10 hilos que van a correr cada uno 4 iteraciones, por un total de 40 iteraciones entre
+20 y 59.
+3) En Oporto tengo 10 hilos que van a correr cada uno 4 iteraciones, por un total de 40 iteraciones entre
+60 y 99.
+
+Bien, ya mandé a correr cosas en las tres pc's. Mañana me pongo con lo de agregar los histogramas a los bordes
+de los histogramas 2D. Y si veo que es necesario, me haré el armado de los csv con la info de las matrices de DJS.
+No creo que para esta semana llegue con lo de revisar una pregunta que vaya evolucionando en el tiempo, lo dejaré
+eso para la otra reunión.
+
+Me parece bien cortar acá, ya tenemos las tres pc's laburando a full. Dentro de un mes posiblemente esté terminado
+el barrido que les mandé. Lo bueno es que todas tienen que hacer 4 iteraciones, vamos a ver cuál termina más rápido.

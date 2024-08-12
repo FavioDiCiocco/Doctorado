@@ -959,7 +959,7 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, 
     # Y ahora me armo el gráfico de promedios de distancia JS según cantidad de simulaciones
     # consideradas, con las simulaciones ordenadas de las de menos distancia a las de más distancia
     
-    for i in range(2):
+    for i in range(1,5):
         
         direccion_guardado = Path("../../../Imagenes/{}/DistanciaJS_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
         
@@ -969,7 +969,7 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, 
         plt.ylabel(r"${}$".format(SIM_param_y))
         
         # Hago el ploteo del mapa de colores con el colormesh
-        Dist_JS_prom = np.mean(Dist_JS[:,:,0:10+i*20],axis=2)
+        Dist_JS_prom = np.mean(Dist_JS[:,:,0:i*10],axis=2)
         
         # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
         tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
@@ -978,7 +978,7 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, 
         plt.colorbar()
         plt.scatter(XX[tupla],YY[tupla], marker="X", s = 1500, color = "red")
         
-        plt.title("Distancia Jensen-Shannon {} simulaciones\n {} vs {}".format(10+i*10,dict_labels[code_y],dict_labels[code_x]))
+        plt.title("Distancia Jensen-Shannon {} simulaciones\n {} vs {}".format(i*10,dict_labels[code_y],dict_labels[code_x]))
         
         # Guardo la figura y la cierro
         
@@ -1998,10 +1998,13 @@ def Reconstruccion_opiniones(Dist_simulada, N, T):
 def Preguntas_espacio_parametros(DF_datos,DF_Anes,labels,path,carpeta,
                                  SIM_param_x,SIM_param_y):
     
+    # Armo un rng para agregar un ruido normal
+    rng = np.random.default_rng()
+    
     # Defino los arrays donde guardo las posiciones de las distancias
     # mínimas promedio
-    X = np.zeros(len(labels))
-    Y = np.zeros(len(labels))
+    X = np.zeros((5,len(labels)))
+    Y = np.zeros((5,len(labels)))
     
     # Defino los arrays de parámetros diferentes
     Arr_param_x = np.unique(DF_datos["parametro_x"])
@@ -2022,21 +2025,52 @@ def Preguntas_espacio_parametros(DF_datos,DF_Anes,labels,path,carpeta,
         
         Dic_ANES = {"code_1": code_1, "code_2": code_2, "weights":weights}
         
-        # Calculo la matriz de distancias JS
+        # Calculo la matriz de distancias JS y la ordeno
         Dist_JS, code_x, code_y = Matriz_DJS(DF_datos, DF_Anes, Dic_ANES, path)
-        # Obtengo la ubicación del mínimo de distancia JS y agrego ese punto a
-        # los arrays que uso para graficar
+        Dist_JS = np.sort(Dist_JS)
+        
+        # Obtengo la ubicación del mínimo de distancia JS promediado con todas las simulaciones
+        # y agrego ese punto a los arrays que uso para graficar
+        
         tupla = np.unravel_index(np.argmin(np.mean(Dist_JS,axis=2)),np.mean(Dist_JS,axis=2).shape)
-        X[indice] = XX[tupla]
-        Y[indice] = YY[tupla]
+        X[0,indice] = XX[tupla]
+        Y[0,indice] = YY[tupla]
+        
+        for rank in range(1,5):
+            tupla = np.unravel_index(np.argmin(np.mean(Dist_JS[:,:,0:rank*10],axis=2)),np.mean(Dist_JS,axis=2).shape)
+            X[rank,indice] = XX[tupla]
+            Y[rank,indice] = YY[tupla]
+        
+        
     
-    # Lo que queda es hacer un plot scatter
+    # Antes de graficar, necesito agregar ruido para que los puntos no se solapen.
+    # El ruido del eje X y del eje Y tiene que ser distinto, ya que el espacio entre
+    # puntos en ambos ejes es distinto.
+    
+    X = X + rng.normal(loc = 0, scale = (Arr_param_x[1]-Arr_param_x[0])/5, size = X.shape)
+    Y = Y + rng.normal(loc = 0, scale = (Arr_param_y[1]-Arr_param_y[0])/5, size = Y.shape)
+    
+    # Lo que queda es hacer los plot scatter de las preguntas
     plt.rcParams.update({'font.size': 44})
     plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-    plt.scatter(X,Y, marker="s", s = 500, color = "green", alpha = 0.7)
+    plt.scatter(X[0],Y[0], marker="o", s = 500, color = "green", alpha = 0.7)
     plt.xlabel(r"${}$".format(SIM_param_x))
     plt.ylabel(r"${}$".format(SIM_param_y))
-    plt.title("Pares de preguntas en el espacio de parámetros")
+    plt.title("Pares de preguntas en el espacio de parámetros \n Todas las simulaciones")
     direccion_guardado = Path("../../../Imagenes/{}/Dist_preguntas_espacio.png".format(carpeta))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
+    
+    # Acá hago los scatter de las preguntas con una cantidad reducida de simulaciones
+    for rank in range(1,5):
+        plt.rcParams.update({'font.size': 44})
+        plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+        plt.scatter(X[rank],Y[rank], marker="o", s = 500, color = "green", alpha = 0.7)
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        plt.title("Pares de preguntas en el espacio de parámetros \n {} simulaciones más similares".format(rank*10))
+        direccion_guardado = Path("../../../Imagenes/{}/Dist_preguntas_espacio_r{}.png".format(carpeta,rank))
+        plt.savefig(direccion_guardado ,bbox_inches = "tight")
+        plt.close()
+    
+    

@@ -83,14 +83,14 @@ for carp in Carpetas:
     
     # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
     # de todas las simulaciones para cada punto del espacio de parámetros.
-    Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
+#    Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
     
     bines = np.linspace(-3.5,3.5,8)
     
     func.Tiempo(t0)
     
     #----------------------------------------------------------------------------------------------
-    
+    """
     # Gráficos del espacio de parámetros
     
     func.Mapa_Colores_Entropia_opiniones(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
@@ -104,7 +104,7 @@ for carp in Carpetas:
     
     func.Graf_Histograma_opiniones_2D(Df_archivos, Dic_Total, Direccion, Etapa/carpeta, bines, "magma",
                                       ID_param_x, ID_param_y, ID_param_extra_1)
-    
+    """
     #----------------------------------------------------------------------------------------------
     
     # Gráficos de las preguntas ANES
@@ -165,7 +165,7 @@ for carp in Carpetas:
         
         func.Mapas_Colores_DJS(DJS, code_x, code_y, Df_archivos, Dic_ANES, dict_labels, Etapa/carpeta,
                                ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
-        
+        """
         func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_Total, Dic_ANES, dict_labels, Etapa/carpeta, Direccion, bines,
                                   SIM_param_x,SIM_param_y)
         
@@ -188,8 +188,48 @@ for carp in Carpetas:
 #        
 #        func.Comp_estados(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta,
 #                          Direccion, dist_lim, lminimos, ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
-
+        """
         #-------------------------------------------------------------------------------------------------------------------------
+    
+    # Ahora rearmo los labels para mezclar todas las preguntas con todas.
+    
+    labels = []
+    
+    for i,code_1 in enumerate(labels_politicos):
+        for code_2 in labels_politicos[i+1:]:
+            
+            if code_1[3] == '1' and code_2[3] == '1':
+                weights = 'V200010a'
+            else:
+                weights = 'V200010b'
+                
+            labels.append((code_1,code_2,weights))
+    
+        
+    for i,code_1 in enumerate(labels_apoliticos):
+        for code_2 in labels_apoliticos[i+1:]:
+            
+            if code_1[3] == '1' and code_2[3] == '1':
+                weights = 'V200010a'
+            else:
+                weights = 'V200010b'
+                
+            labels.append((code_1,code_2,weights))
+            
+    
+    for code_1 in labels_politicos:
+        for code_2 in labels_apoliticos:
+            
+            if code_1[3] == '1' and code_2[3] == '1':
+                weights = 'V200010a'
+            else:
+                weights = 'V200010b'
+                
+            labels.append((code_1,code_2,weights))
+    
+    
+    func.Preguntas_espacio_parametros(Df_archivos, Df_ANES, labels, Direccion, Etapa/carpeta,
+                                      SIM_param_x, SIM_param_y)
 
 func.Tiempo(t0)
 
