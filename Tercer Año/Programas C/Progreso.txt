@@ -2556,3 +2556,37 @@ eso para la otra reunión.
 
 Me parece bien cortar acá, ya tenemos las tres pc's laburando a full. Dentro de un mes posiblemente esté terminado
 el barrido que les mandé. Lo bueno es que todas tienen que hacer 4 iteraciones, vamos a ver cuál termina más rápido.
+
+------------------------------------------------------------------------------------------
+
+13/08/2024
+
+Llegué a la facultad. Ahora sí tengo miedo. Los gráficos importantes que quería mostrar, no están.
+No salieron. Y parece que van a tardar un poco más. Estoy medio jugado. Va a estar para mañana.
+Pero no me gusta llegar tan justo. En lo que eso se resuelve, aprovechemos el tiempo, resolvamos las dos
+cosas que ayer me quedaron en el tintero. Primero, agregar los gráficos 1D en los histogramas 2D.
+
+Bien, logré armar los gráficos como yo quiero. Éxito. Costó un poco, tuve que aprender a usar el Gridspec.
+Aún así, logré en 30 minutos lo que me podría haber tardado 6 horas fácil. Ya cargué esos gráficos al
+drive. Por si de boludo resulta que en casa esos gráficos nos los puedo armar.
+
+Ahora voy a construir los csv con las matrices de distancia Jensen-Shannon. La idea es armar un csv que en cada
+fila tenga cada uno de los arrays de la tercer dimensión de la matriz. Bien, el csv se armar correctamente.
+¿Me encargo de ver cómo levantarlos? Bah, ahora no hace falta. Me encargaré de mandarlo a correr ahora en
+Coimbra, y después veo qué hago mientras. Bien, ya está corriendo. Ahora yo tengo que ponerme a armar la
+presentación con lo que tengo. Después, veré qué tengo para mañana y qué puedo hacer con eso.
+Dios, necesito ayuda.
+
+Empecemos con la presentación. Estaría bueno tener el gráfico con las regiones marcadas que hice a mano.
+Lo primero que me parece que estaría bueno es contar cómo queda configurado el espacio de parámetros
+para 10000 agentes. Eso lo puedo observar de los gráficos de Entropía, Covarianza y Varianzas.
+
+El código del gráfico de preguntas distribuidas en el espacio de parámetros está tardando mucho más
+de lo esperado. Esto me está volviendo loco. Debería haber tardado como mucho 15 o 20 horas, no 25.
+Sólo me queda rogar que cuando llegue a casa esto esté terminado.
+
+Mientras estoy armando la presentación. En principio me parece que tengo para mostrar algo, pero
+no es mucho avance. Sobre lo que charlamos la última reunión básicamente no avancé. Lo que planeo
+mostrar suena interesante en mi cabeza, no sé qué tan interesante resultará. Espero que funque todo
+bien. Me queda leer un poco sobre distancia de Kolmogorov-Smirnoff. Veré si saco algo de eso,
+como para no caer muerto a la charla y tener algo más de dónde tirar.

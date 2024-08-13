@@ -104,9 +104,9 @@ for carp in Carpetas:
     
     func.Graf_Histograma_opiniones_2D(Df_archivos, Dic_Total, Direccion, Etapa/carpeta, bines, "magma",
                                       ID_param_x, ID_param_y, ID_param_extra_1)
-    """
-    #----------------------------------------------------------------------------------------------
     
+    #----------------------------------------------------------------------------------------------
+    """
     # Gráficos de las preguntas ANES
     
     bines = np.linspace(-3.5,3.5,8)
@@ -119,7 +119,7 @@ for carp in Carpetas:
     labels_apoliticos = ['V201429','V202320x','V202331x','V202341x','V202344x','V202350x','V202383x']
 
 #    labels_dudosos = ['V201225x','V201262','V202242x','V202248x']
-    
+    """
     labels = []
     
     for i,code_1 in enumerate(labels_politicos):
@@ -165,7 +165,7 @@ for carp in Carpetas:
         
         func.Mapas_Colores_DJS(DJS, code_x, code_y, Df_archivos, Dic_ANES, dict_labels, Etapa/carpeta,
                                ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
-        """
+        
         func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_Total, Dic_ANES, dict_labels, Etapa/carpeta, Direccion, bines,
                                   SIM_param_x,SIM_param_y)
         

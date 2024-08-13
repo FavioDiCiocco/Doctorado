@@ -254,11 +254,16 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
 
 #-----------------------------------------------------------------------------------------------
 
+
 # Esta función calcula la traza de la matriz de Covarianza de las distribuciones
 # de opiniones respecto a los T tópicos
 
-def Mapa_Colores_Covarianzas(DF,path,carpeta,SIM_param_x,SIM_param_y,
-                             ID_param_extra_1):
+def Mapa_Colores_Traza_Covarianza(DF, path, carpeta,
+                                  SIM_param_x, SIM_param_y, ID_param_extra_1):
+    
+    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
+    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
+    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
 
     # Defino la cantidad de agentes de la red
     AGENTES = int(np.unique(DF["n"]))
@@ -301,12 +306,13 @@ def Mapa_Colores_Covarianzas(DF,path,carpeta,SIM_param_x,SIM_param_y,
         
         Covarianzas = np.zeros(archivos.shape[0])
         
-        for nombre in archivos:
+        for indice,nombre in enumerate(archivos):
             
             # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-            # Distribución final
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
             # Semilla
-            # Fragmentos Matriz de Adyacencia
             
             # Levanto los datos del archivo
             Datos = ldata(path / nombre)
@@ -317,19 +323,16 @@ def Mapa_Colores_Covarianzas(DF,path,carpeta,SIM_param_x,SIM_param_y,
             # Reconstruyo las opiniones finales normalizadas a partir de estos datos.
             Opifinales = Reconstruccion_opiniones(dist_final, AGENTES, T)
             
-            # Leo los datos de las Opiniones Finales
-            Matriz_Opi = np.zeros((T,AGENTES))
-            
-            # Normalizo mis datos usando el valor de Kappa
+            Matriz_opi = np.zeros((T,AGENTES))
             for topico in range(T):
-                Matriz_Opi[topico,:] = Opifinales[topico::T]
+                Matriz_opi[topico] = Opifinales[topico::T]
             
             # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
-            repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+            # repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
             
-            M_cov = np.cov(Matriz_Opi)
-            Covarianzas[repeticion] = M_cov[0,1]
-        
+            M_cov = np.cov(Matriz_opi)
+            Covarianzas[indice] = np.trace(M_cov)/T
+            
         #------------------------------------------------------------------------------------------
         # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
         ZZ[(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Covarianzas)
@@ -337,10 +340,10 @@ def Mapa_Colores_Covarianzas(DF,path,carpeta,SIM_param_x,SIM_param_y,
     #--------------------------------------------------------------------------------
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/Covarianzas_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
+    direccion_guardado = Path("../../../Imagenes/{}/Varianzas_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
     
     plt.rcParams.update({'font.size': 44})
-    plt.figure("Covarianzas",figsize=(28,21))
+    plt.figure("Traza_Covarianza",figsize=(28,21))
     plt.xlabel(r"${}$".format(SIM_param_x))
     plt.ylabel(r"${}$".format(SIM_param_y))
     
@@ -348,12 +351,13 @@ def Mapa_Colores_Covarianzas(DF,path,carpeta,SIM_param_x,SIM_param_y,
     
     plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "plasma")
     plt.colorbar()
-    plt.title("Covarianza en Espacio de Parametros")
+    plt.title("Varianzas en Espacio de Parametros")
     
     # Guardo la figura y la cierro
     
     plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close("Covarianzas")
+    plt.close("Traza_Covarianza")
+    
 
 
 #-----------------------------------------------------------------------------------------------

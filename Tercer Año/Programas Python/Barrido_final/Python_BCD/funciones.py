@@ -842,6 +842,7 @@ def Matriz_DJS(DF_datos,DF_Anes,Dic_ANES,path):
             # Fragmentos Matriz de Adyacencia
             
             # Levanto los datos del archivo
+            
             Datos = ldata(path / nombre)
             
             # Leo los valores de distribución de opiniones, los cuales se distribuyen
