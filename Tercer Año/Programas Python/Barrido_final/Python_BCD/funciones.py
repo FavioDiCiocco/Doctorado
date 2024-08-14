@@ -2075,3 +2075,19 @@ def Preguntas_espacio_parametros(DF_datos,DF_Anes,labels,path,carpeta,
         plt.close()
     
     
+#-----------------------------------------------------------------------------------------------
+
+# Armo una función que levante las matrices de distancia JS a partir de los archivos csv
+
+def Lectura_Matriz_DJS(size_y, size_x, Direccion, Nombre):
+    
+    # Levanto los datos de la matriz csv.
+    mat_archivo = np.loadtxt(Direccion/Nombre, delimiter = ",")
+    DJS = np.reshape(mat_archivo, (size_y, size_x,mat_archivo.shape[1]))
+    
+    # Defino los códigos x e y
+    code_y = Nombre.strip("csv").split("_")[0]
+    code_x = Nombre.strip("csv").split("_")[2]
+    
+    return DJS, code_x, code_y
+    

@@ -2590,3 +2590,51 @@ no es mucho avance. Sobre lo que charlamos la última reunión básicamente no a
 mostrar suena interesante en mi cabeza, no sé qué tan interesante resultará. Espero que funque todo
 bien. Me queda leer un poco sobre distancia de Kolmogorov-Smirnoff. Veré si saco algo de eso,
 como para no caer muerto a la charla y tener algo más de dónde tirar.
+
+Mañana tengo que conseguir alguna simulación de Polarización descorrelacionada en el espacio
+Beta-Cosd. Para eso tengo que pedir Beta = 1.1.
+
+------------------------------------------------------------------------------------------
+
+14/08/2024
+
+Notas de la charla:
+-------------------
+.) Revisar si el problema de la clasificación es que los picos están poblados
+de forma no uniforme.
+.) La forma de la polarización puede ser importante de revisar. ¿Ha cambiado la distribución
+de opiniones respecto al caso 1D? Es importante para destacar la importancia del análisis
+2D.
+.) Revisar el tema del test de Kolmogorov-Smirnoff.
+.) Podría hacer un gráfico de distancia vs simulación para  ver que no tengo simulaciones
+outliers al considerar las 20 simulaciones más similares.
+.) Prob. de polarización vs Beta-Kappa. Si hay tiempo con ganas. Esto estaría bueno
+para que el paper no esté en el vacío, sino vinculado con el primer paper.
+.) Secciones del numerical recipes 14.3 y 14.7, creo. Es sobre el test de Kolmogorov-Smirnoff.
+
+Numerical Recipes in C.
+
+Algo que noté es que algunos de los gráficos de las distribuciones están armados al revés. Revisar
+por qué carajos pasó eso.
+
+Bien, ya terminó la reunión y baje tres cambios. Vamos a continuar con el laburo y organizar lo que sigue.
+¿Qué cosas hacer? Podría descargar el libro que me pasó Hugo. mañana me pongo
+a trabajar en la cosa que estamos haciendo con Lucio. Ya tengo las tres pc's laburando en realizar
+más simulaciones, no necesito solucionar eso ahora. Lo que se me ocurre es que debería
+hoy armar la función que levanta las matrices de DJS de los archivos csv y ver de modificar los
+códigos para que tenga eso introducido. De esa manera, nunca más va a tardar tanto ese gráfico.
+ Trabajando en esta función noto que esto me genera un cambio en la estructuración del trabajo.
+A partir de ahora, en vez de armarme una lista de preguntas a considerar y tener esa lista en 
+el código de Graficar, voy a relegar esa lista al código de Profunc. Una vez ahí, construiré la
+lista de preguntas a considerar. Con esa lista de preguntas es la que trabajaré siempre. Y cada
+vez que quiera revisar nuevas preguntas, agrego esas preguntas al conjunto de matrices que tengo.
+
+Otra cosa que puedo hacer hoy es empezar a documentar cosas, porque debe haber varias cosas
+perdidas en el laburo.
+
+Estoy pensando que debería rearmar las matrices de DJS de forma tal que los datos guardados
+tengan seis decimales guardados. Cuatro me parecen poco.
+
+Bien, tengo el código que quería. Ahora a armar una función y reorganizar todas las cosas que
+hacen uso de las matrices de DJS. Al final no reorganicé el resto de cosas. Queda para
+después.

@@ -101,7 +101,7 @@ for nombre in Archivos_Datos:
 """
 
 #####################################################################################
-"""
+
 # Voy a armar la función que construya los archivos csv con las matrices de distancia
 # Jensen-Shannon. La idea es que cada fila del csv tenga uno de los elementos de mi
 # matriz, recordando que la matriz es de NxMxP elementos. Entonces cada fila del
@@ -190,7 +190,8 @@ for code_1 in labels_politicos:
 
 # Tercero calculo la matriz de distancia Jensen-Shannon y guardo eso en un csv.
 
-for preguntas in labels:
+"""
+for preguntas in labels[0:1]:
     
     code_1 = preguntas[0]
     code_2 = preguntas[1]
@@ -204,14 +205,41 @@ for preguntas in labels:
     DJS_alterado = np.reshape(DJS, (DJS.shape[0]*DJS.shape[1],DJS.shape[2]))
     
     np.savetxt("../Matrices DJS/{}_vs_{}.csv".format(code_y,code_x), DJS_alterado,delimiter = ",", fmt = "%.4f")
-    
 """
+
+#-------------------------------------------------------------------------------------
+
+# Cuarto armo un código que levante los datos del archivo csv y de ahí
+# reconstruya la matriz de DJS
+
+Arr_param_x = np.unique(Df_archivos["parametro_x"])
+Arr_param_y = np.unique(Df_archivos["parametro_y"])
+
+# Reviso los archivos en la carpeta de las matrices
+
+CarpMatrices=[[root,files] for root,dirs,files in os.walk("../Matrices DJS")]
+
+# Me armo una lista con los nombres de todos los archivos con datos.
+# Coloco al inicio de la lista el path de la carpeta en la que se encuentran los datos
+
+Archivos_Matrices = [nombre for nombre in CarpMatrices[0][1]]
+
+# De esos archivos, tomo los nombres de las preguntas que voy a considerar.
+
+for nombre in Archivos_Matrices:
+    code_y = nombre.split("_")[0]
+    code_x = nombre.split("_")[2]
+    
+    mat_archivo = np.loadtxt("../Matrices DJS/{}".format(nombre), delimiter = ",")
+    DJS = np.reshape(mat_archivo, (Arr_param_y.shape[0],Arr_param_x.shape[0],mat_archivo.shape[1]))
+    
+    print(nombre)
 
 #####################################################################################
 #####################################################################################
 
 # Armo el gráfico de las regiones del espacio de parámetros Beta-Cosd
-
+"""
 tlinea = 6
 
 # Create a figure and axis
@@ -244,7 +272,7 @@ x = [0, 0.5, 0.5, 0.2, 0.2, 0.5, 0.5, 0.1, 0.1, 0, 0]  # x-coordinates
 y = [0, 0, 0.15, 0.3, 0.6, 0.6, 1.1, 1.1, 0.3, 0.2, 0]  # y-coordinates
 # ax.fill(x, y, color='tab:green')  # 'alpha' adjusts transparency
 ax.plot(x, y, color='k', linewidth=tlinea)
-ax.text(0.3, 0.85, 'IV', fontsize=40, ha='center', va='center', color='k')
+ax.text(0.3, 0.85, 'VI', fontsize=40, ha='center', va='center', color='k')
 
 # Región de Mezcla 1
 x = [0, 0.1, 0.1, 0, 0] # x-coordinates
@@ -258,7 +286,7 @@ x = [0, 0.1, 0.1, 0, 0] # x-coordinates
 y = [0.75, 0.75, 1.1, 1.1, 0.75] # y-coordinates
 # ax.fill(x, y, color='tab:brown')  # 'alpha' adjusts transparency
 ax.plot(x, y, color='k', linewidth=tlinea) # label=r'Mezcla: CR (30~40%), P1D (10~50%)')
-ax.text(0.05, 0.9, 'VI', fontsize=40, ha='center', va='center', color='k')
+ax.text(0.05, 0.9, 'IV', fontsize=40, ha='center', va='center', color='k')
 
 # Región de Mezcla 3
 x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
@@ -278,6 +306,6 @@ ax.set_ylim(0,1.5)
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Beta-Cosd/Distribucion de estados.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
-
+"""
 
 func.Tiempo(t0)

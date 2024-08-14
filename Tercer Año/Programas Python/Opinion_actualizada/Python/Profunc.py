@@ -63,7 +63,7 @@ plt.close("FracStacked")
 #####################################################################################
 
 # Armo el gráfico de las regiones del espacio de parámetros Beta-Kappa
-"""
+
 tlinea = 6
 
 # Create a figure and axis
@@ -82,7 +82,7 @@ x = [1, 20, 20, 1]  # x-coordinates
 y = [1.1, 1.1, 2, 2]  # y-coordinates
 # ax.fill(x, y, color='tab:orange')  # 'alpha' adjusts transparency
 ax.plot(x, y, color='k', linewidth=tlinea) # label='Polarización Descorrelacionada')
-ax.text(10, 1.5, 'II', fontsize=40, ha='center', va='center', color='k')
+ax.text(10, 1.5, 'V', fontsize=40, ha='center', va='center', color='k')
 
 # Región de Consenso Radicalizado
 x = np.concatenate((np.array([1,20]),np.flip(np.arange(20)+1)))  # x-coordinates
@@ -90,21 +90,21 @@ curva = np.exp((-1/19)*np.log(4)*np.arange(20))
 y = np.concatenate((np.array([0,0]),np.flip(curva))) # y-coordinates
 # ax.fill(x, y, color='tab:green')  # 'alpha' adjusts transparency
 ax.plot(x, y, color='k', linewidth=tlinea) # label='Consenso Radicalizado')
-ax.text(10, 0.25, 'III', fontsize=40, ha='center', va='center', color='k')
+ax.text(10, 0.25, 'II', fontsize=40, ha='center', va='center', color='k')
 
 # Región de Mezcla 1
 x = np.concatenate((np.arange(8,21),np.array([20,8])))  # x-coordinates
 y = np.concatenate((curva[7:],np.array([0.6,0.6]))) # y-coordinates
 # ax.fill(x, y, color='tab:blue')  # 'alpha' adjusts transparency
 ax.plot(x, y, color='k', linewidth=tlinea) # label=r'Mezcla: CR (40~80%) y P1Da (20~40%)')
-ax.text(17, 0.45, 'IV', fontsize=40, ha='center', va='center', color='k')
+ax.text(17, 0.45, 'III', fontsize=40, ha='center', va='center', color='k')
 
 # Región de Mezcla 2
 x = np.concatenate((np.arange(0,8)+1,np.array([20,20,1])))  # x-coordinates
 y = np.concatenate((curva[0:8],np.array([curva[7],1.1,1.1]))) # y-coordinates
 # ax.fill(x, y, color='tab:purple')  # 'alpha' adjusts transparency
 ax.plot(x, y, color='k', linewidth=tlinea) # label=r'Mezcla: CR (60~80%), P1D (20~30%) y PDa (10%)')
-ax.text(10, 0.85, 'V', fontsize=40, ha='center', va='center', color='k')
+ax.text(10, 0.85, 'IV', fontsize=40, ha='center', va='center', color='k')
 
 ax.set_xlabel(r"$\kappa$")
 ax.set_ylabel(r"$\beta$")
@@ -118,11 +118,11 @@ direccion_guardado = Path("../../../Imagenes/Opinion_actualizada/Beta-Kappa/Dist
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
+
+
+#####################################################################################
+#####################################################################################
 """
-
-#####################################################################################
-#####################################################################################
-
 # Armo el gráfico de las regiones del espacio de parámetros Beta-Cosd
 
 tlinea = 6
@@ -190,6 +190,6 @@ ax.set_ylim(0,2)
 direccion_guardado = Path("../../../Imagenes/Opinion_actualizada/Beta-Cosd/Distribucion de estados.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
-
+"""
 
 func.Tiempo(t0)
