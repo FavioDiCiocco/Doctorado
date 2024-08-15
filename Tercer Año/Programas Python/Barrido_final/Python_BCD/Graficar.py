@@ -31,17 +31,22 @@ Carpetas = ["Beta-Cosd"]
 
 for carp in Carpetas:
     
-    # Transformo estas cosas en paths. Espero que acostumbrarme a esto valga la pena
+    # Transformo estas cosas en paths
     Direccion = Path("../{}".format(carp))
     carpeta = Path(carp)
+    
+    Direc_matrices = Path("../Matrices DJS")
+    
+    # Recorro las carpetas con archivos csv
+    CarpMatrices=[[root,files] for root,dirs,files in os.walk(Direc_matrices)]
     
     # Recorro las carpetas con datos
     CarpCheck=[[root,files] for root,dirs,files in os.walk(Direccion)]
     
-    # Me armo una lista con los nombres de todos los archivos con datos.
-    # Coloco al inicio de la lista el path de la carpeta en la que se encuentran los datos
-    
+    # Me armo una lista con los nombres de todos los archivos con datos
     Archivos_Datos = [nombre for nombre in CarpCheck[0][1]]
+    # Me armo una lista con los nombres de todos los archivos csv
+    Archivos_Matrices = [nombre for nombre in CarpMatrices[0][1]]
     
     #-------------------------------------------------------------------------------------------------------
     
@@ -83,14 +88,17 @@ for carp in Carpetas:
     
     # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
     # de todas las simulaciones para cada punto del espacio de parámetros.
-#    Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
+    Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
+    
+    size_x = np.unique(Df_archivos["parametro_x"]).shape[0]
+    size_y = np.unique(Df_archivos["parametro_y"]).shape[0]
     
     bines = np.linspace(-3.5,3.5,8)
     
     func.Tiempo(t0)
     
     #----------------------------------------------------------------------------------------------
-    """
+    
     # Gráficos del espacio de parámetros
     
     func.Mapa_Colores_Entropia_opiniones(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
@@ -106,67 +114,26 @@ for carp in Carpetas:
                                       ID_param_x, ID_param_y, ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
-    """
+    
     # Gráficos de las preguntas ANES
     
     bines = np.linspace(-3.5,3.5,8)
     
     Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
-    
-    labels_politicos = ['V201372x','V201386x','V201408x','V201411x','V201420x','V201426x',
-                        'V202255x','V202328x','V202336x']
-
-    labels_apoliticos = ['V201429','V202320x','V202331x','V202341x','V202344x','V202350x','V202383x']
-
-#    labels_dudosos = ['V201225x','V201262','V202242x','V202248x']
-    """
-    labels = []
-    
-    for i,code_1 in enumerate(labels_politicos):
-        for code_2 in labels_politicos[i+1:]:
-            
-            if code_1[3] == '1' and code_2[3] == '1':
-                weights = 'V200010a'
-            else:
-                weights = 'V200010b'
-                
-            labels.append((code_1,code_2,weights))
-    
-        
-    for i,code_1 in enumerate(labels_apoliticos):
-        for code_2 in labels_apoliticos[i+1:]:
-            
-            if code_1[3] == '1' and code_2[3] == '1':
-                weights = 'V200010a'
-            else:
-                weights = 'V200010b'
-                
-            labels.append((code_1,code_2,weights))
-    
-    
-    # labels = [('V201372x','V201386x','V200010a'),('V201426x','V201386x','V200010a'), ('V201411x','V201408x','V200010a')]#, ('V202341x','V202331x','V200010b')#,
-              # ('V202350x','V202341x','V200010b'),('V201262','V202248x','V200010b'),('V202242x','V202248x','V200010b')]
 
     # rangos = [(np.array([0,0.1]),np.array([0.4,0.8])),(np.array([0,0.1]),np.array([0.4,0.8])), (np.array([0,0.15]),np.array([0.5,0.7])), (np.array([0,0.1]),np.array([0.4,0.7]))] #,
               # (np.array([0,0.2]),np.array([0.4,0.8])), (np.array([0,0.1]),np.array([0.4,0.66])), (np.array([0,0.1]),np.array([0.4,0.7]))]
     
     dist_lim = 0.45
     
-    for preguntas in labels:
+    for nombre_csv in Archivos_Matrices:
         
-        code_1 = preguntas[0]
-        code_2 = preguntas[1]
-            
-        weights = preguntas[2]
+        DJS, code_x, code_y = func.Lectura_Matriz_DJS(size_y, size_x, Direc_matrices, nombre_csv)
         
-        Dic_ANES = {"code_1": code_1, "code_2": code_2, "weights":weights}
-        
-        DJS, code_x, code_y = func.Matriz_DJS(Df_archivos, Df_ANES, Dic_ANES, Direccion)
-        
-        func.Mapas_Colores_DJS(DJS, code_x, code_y, Df_archivos, Dic_ANES, dict_labels, Etapa/carpeta,
+        func.Mapas_Colores_DJS(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta,
                                ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
         
-        func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_Total, Dic_ANES, dict_labels, Etapa/carpeta, Direccion, bines,
+        func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta, Direccion, bines,
                                   SIM_param_x,SIM_param_y)
         
         func.Histograma_distancias(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta,
@@ -188,47 +155,10 @@ for carp in Carpetas:
 #        
 #        func.Comp_estados(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta,
 #                          Direccion, dist_lim, lminimos, ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
-        """
+        
         #-------------------------------------------------------------------------------------------------------------------------
     
-    # Ahora rearmo los labels para mezclar todas las preguntas con todas.
-    
-    labels = []
-    
-    for i,code_1 in enumerate(labels_politicos):
-        for code_2 in labels_politicos[i+1:]:
-            
-            if code_1[3] == '1' and code_2[3] == '1':
-                weights = 'V200010a'
-            else:
-                weights = 'V200010b'
-                
-            labels.append((code_1,code_2,weights))
-    
-        
-    for i,code_1 in enumerate(labels_apoliticos):
-        for code_2 in labels_apoliticos[i+1:]:
-            
-            if code_1[3] == '1' and code_2[3] == '1':
-                weights = 'V200010a'
-            else:
-                weights = 'V200010b'
-                
-            labels.append((code_1,code_2,weights))
-            
-    
-    for code_1 in labels_politicos:
-        for code_2 in labels_apoliticos:
-            
-            if code_1[3] == '1' and code_2[3] == '1':
-                weights = 'V200010a'
-            else:
-                weights = 'V200010b'
-                
-            labels.append((code_1,code_2,weights))
-    
-    
-    func.Preguntas_espacio_parametros(Df_archivos, Df_ANES, labels, Direccion, Etapa/carpeta,
+    func.Preguntas_espacio_parametros(Df_archivos, Df_ANES, Archivos_Matrices, Direccion, Etapa/carpeta,
                                       SIM_param_x, SIM_param_y)
 
 func.Tiempo(t0)

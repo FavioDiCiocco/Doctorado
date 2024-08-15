@@ -920,7 +920,7 @@ def Matriz_DJS(DF_datos,DF_Anes,Dic_ANES,path):
 # En ambos casos estoy considerando que ambas preguntas tienen 7 respuestas. Voy a tener que ir
 # viendo cómo resolver si tienen 6 respuestas.
 
-def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, carpeta,
+def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta,
                       ID_param_x,SIM_param_x,ID_param_y,SIM_param_y):
     
     # Defino los arrays de parámetros diferentes
@@ -993,7 +993,7 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, Dic_ANES, dict_labels, 
 # Esta función arma los histogramas de opiniones máxima y mínima similaridad entre las 10 simulaciones
 # más similares con la distribución de la encuesta
 
-def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, Dic_ANES, dict_labels, carpeta, path, bins,
+def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, dict_labels, carpeta, path, bins,
                          SIM_param_x,SIM_param_y):
     
     # Hago los gráficos de histograma 2D de las simulaciones que más se parecen y que menos se parecen
@@ -2086,8 +2086,8 @@ def Lectura_Matriz_DJS(size_y, size_x, Direccion, Nombre):
     DJS = np.reshape(mat_archivo, (size_y, size_x,mat_archivo.shape[1]))
     
     # Defino los códigos x e y
-    code_y = Nombre.strip("csv").split("_")[0]
-    code_x = Nombre.strip("csv").split("_")[2]
+    code_y = Nombre.strip(".csv").split("_")[0]
+    code_x = Nombre.strip(".csv").split("_")[2]
     
     return DJS, code_x, code_y
     

@@ -2638,3 +2638,26 @@ tengan seis decimales guardados. Cuatro me parecen poco.
 Bien, tengo el código que quería. Ahora a armar una función y reorganizar todas las cosas que
 hacen uso de las matrices de DJS. Al final no reorganicé el resto de cosas. Queda para
 después.
+
+------------------------------------------------------------------------------------------
+
+15/08/2024
+
+A la mañana fui a hacer el espermograma. Y sin embargo, fue todo tiempo perdido, porque al
+final no pude entregar las muestras. El día pasó, poco y nada hice todavía.
+
+Lo que sí hice fue inscribirme en el concurso de ayudante de primera de física. Por suerte
+es bastante simple el proceso ahora.
+
+Lo siguiente que voy a hacer es reemplazar la parte de la función que usa los csv y reconstruye
+las matrices de DJS. Después quedará para hacer mañana, o el finde, revisar las preguntas con
+lo que estábamos charlando con Pablo. La forma en que las preguntas se distribuyen en el
+espacio Beta-Cos(delta) para 100 simulaciones es radicalmente distinto que para 20 simulaciones.
+Incluso parece realmente que está teniendo errores en cómo los clasifica. Lo que Pablo me propone
+es ir mirando de a clusters y con eso ir armando un análisis robusto de lo que estamos viendo.
+
+Ahí hice los cambios, creo que están bien. Terminé sacando el Dict_Anes que usaba antes. No probé
+el código, habrá que probarlo pronto y ver si todo funca bien. Yo confío que sí.
+
+Miré el código de lo de Granovetter. No avancé nada, pero por lo menos ya lo tengo leído y estoy
+en tema.
