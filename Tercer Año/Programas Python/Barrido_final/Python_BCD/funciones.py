@@ -1996,7 +1996,7 @@ def Reconstruccion_opiniones(Dist_simulada, N, T):
 
 # Armo una función que ubique los pares de preguntas en el espacio de parámetros.
 
-def Preguntas_espacio_parametros(DF_datos,DF_Anes,labels,path,carpeta,
+def Preguntas_espacio_parametros(DF_datos,arc_matrices,path_matrices,carpeta,
                                  SIM_param_x,SIM_param_y):
     
     # Armo un rng para agregar un ruido normal
@@ -2004,12 +2004,14 @@ def Preguntas_espacio_parametros(DF_datos,DF_Anes,labels,path,carpeta,
     
     # Defino los arrays donde guardo las posiciones de las distancias
     # mínimas promedio
-    X = np.zeros((5,len(labels)))
-    Y = np.zeros((5,len(labels)))
+    X = np.zeros((5,len(arc_matrices)))
+    Y = np.zeros((5,len(arc_matrices)))
     
     # Defino los arrays de parámetros diferentes
     Arr_param_x = np.unique(DF_datos["parametro_x"])
+    size_x = Arr_param_x.shape[0]
     Arr_param_y = np.unique(DF_datos["parametro_y"])
+    size_y = Arr_param_y.shape[0]
     # Construyo las grillas que voy a usar para ubicar los valores de X e Y
     XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
     
@@ -2017,17 +2019,10 @@ def Preguntas_espacio_parametros(DF_datos,DF_Anes,labels,path,carpeta,
     # de distancia de JS de cada una y de ahí extraer el punto de mínima
     # distancia promedio
     
-    for indice,preguntas in enumerate(labels):
-        
-        code_1 = preguntas[0]
-        code_2 = preguntas[1]
-            
-        weights = preguntas[2]
-        
-        Dic_ANES = {"code_1": code_1, "code_2": code_2, "weights":weights}
+    for indice,nombre_csv in enumerate(arc_matrices):
         
         # Calculo la matriz de distancias JS y la ordeno
-        Dist_JS, code_x, code_y = Matriz_DJS(DF_datos, DF_Anes, Dic_ANES, path)
+        Dist_JS, code_x, code_y = Lectura_Matriz_DJS(size_y, size_x, path_matrices, nombre_csv)
         Dist_JS = np.sort(Dist_JS)
         
         # Obtengo la ubicación del mínimo de distancia JS promediado con todas las simulaciones
@@ -2043,7 +2038,6 @@ def Preguntas_espacio_parametros(DF_datos,DF_Anes,labels,path,carpeta,
             Y[rank,indice] = YY[tupla]
         
         
-    
     # Antes de graficar, necesito agregar ruido para que los puntos no se solapen.
     # El ruido del eje X y del eje Y tiene que ser distinto, ya que el espacio entre
     # puntos en ambos ejes es distinto.
@@ -2057,6 +2051,8 @@ def Preguntas_espacio_parametros(DF_datos,DF_Anes,labels,path,carpeta,
     plt.scatter(X[0],Y[0], marker="o", s = 500, color = "green", alpha = 0.7)
     plt.xlabel(r"${}$".format(SIM_param_x))
     plt.ylabel(r"${}$".format(SIM_param_y))
+    plt.xlim(0,0.5)
+    plt.ylim(0,1.5)
     plt.title("Pares de preguntas en el espacio de parámetros \n Todas las simulaciones")
     direccion_guardado = Path("../../../Imagenes/{}/Dist_preguntas_espacio.png".format(carpeta))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
@@ -2069,6 +2065,8 @@ def Preguntas_espacio_parametros(DF_datos,DF_Anes,labels,path,carpeta,
         plt.scatter(X[rank],Y[rank], marker="o", s = 500, color = "green", alpha = 0.7)
         plt.xlabel(r"${}$".format(SIM_param_x))
         plt.ylabel(r"${}$".format(SIM_param_y))
+        plt.xlim(0,0.5)
+        plt.ylim(0,1.5)
         plt.title("Pares de preguntas en el espacio de parámetros \n {} simulaciones más similares".format(rank*10))
         direccion_guardado = Path("../../../Imagenes/{}/Dist_preguntas_espacio_r{}.png".format(carpeta,rank))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")

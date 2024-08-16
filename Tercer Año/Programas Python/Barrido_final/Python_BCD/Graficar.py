@@ -98,7 +98,7 @@ for carp in Carpetas:
     func.Tiempo(t0)
     
     #----------------------------------------------------------------------------------------------
-    
+    """
     # Gráficos del espacio de parámetros
     
     func.Mapa_Colores_Entropia_opiniones(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
@@ -144,7 +144,7 @@ for carp in Carpetas:
         
         func.Doble_Mapacol_PromyFrac(DJS, code_x, code_y, Df_archivos, dict_labels,
                                      Etapa/carpeta, Direccion, SIM_param_x, SIM_param_y)
-        
+        """
         #-------------------------------------------------------------------------------------------------------------------------
         
         # Esto funca con la idea de que quiero revisar varios puntos mínimos. Le cambié el input para que no haya varios
@@ -158,7 +158,7 @@ for carp in Carpetas:
         
         #-------------------------------------------------------------------------------------------------------------------------
     
-    func.Preguntas_espacio_parametros(Df_archivos, Df_ANES, Archivos_Matrices, Direccion, Etapa/carpeta,
+    func.Preguntas_espacio_parametros(Df_archivos, Archivos_Matrices, Direccion, Etapa/carpeta,
                                       SIM_param_x, SIM_param_y)
 
 func.Tiempo(t0)

@@ -2661,3 +2661,17 @@ el código, habrá que probarlo pronto y ver si todo funca bien. Yo confío que 
 
 Miré el código de lo de Granovetter. No avancé nada, pero por lo menos ya lo tengo leído y estoy
 en tema.
+
+------------------------------------------------------------------------------------------
+
+16/08/2024
+
+Hoy a la mañana fui a estudiar Alemán. A la tarde me junté con Lucio y charlamos del trabajo
+de Granovetter. Estuvimos discutiendo bastante sobre cómo avanzar el trabajo, pero fue bastante
+interesante el ir viendo las formas de encarar el laburo. Veremos cómo sigue. Estaría bueno
+de mi parte resolver algunas cosas y llegar con algo ya estudiado para el próximo viernes.
+
+No hice nada del laburo con la gente de España todavía. Antes de irme, voy a corregir la función
+que hace el gráfico de la distribución de preguntas en el espacio de parámetros. Que justamente
+es la función que no corregí. Y voy a probar que funque bien.
+ Veremos si funca bien, en principio parece que sí.
