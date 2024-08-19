@@ -68,7 +68,7 @@ for carp in Carpetas:
     Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[5].split("=")[1].strip(".file")))
     
     #----------------------------------------------------------------------------------------------
-
+    
     # Por un lado necesito los nombres que pasaré a los títulos de los archivos
     # ID es por el nombre del parámetro.
     # Todo parámetro que no grafique es un parámetro extra
@@ -88,14 +88,25 @@ for carp in Carpetas:
     
     # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
     # de todas las simulaciones para cada punto del espacio de parámetros.
-    Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
+    # Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
     
     size_x = np.unique(Df_archivos["parametro_x"]).shape[0]
     size_y = np.unique(Df_archivos["parametro_y"]).shape[0]
     
     bines = np.linspace(-3.5,3.5,8)
     
+    Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
+    Df_preguntas = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices, Direc_matrices)
+    Df_preguntas.to_csv("Tabla pares de preguntas.csv", index=False)
+    
+    # Armo el pandas con la data de las preguntas en un cluster
+    # Cluster a revisar: Beta=0.4, Cosd = 0
+    # Beta = 0.4
+    # Cosd = 0
+    # Df_cluster = Df_preguntas.loc[(Df_preguntas["Beta_100"]==Beta) & (Df_preguntas["Cosd_100"]==Cosd)]
+    
     func.Tiempo(t0)
+    
     
     #----------------------------------------------------------------------------------------------
     """
@@ -114,13 +125,10 @@ for carp in Carpetas:
                                       ID_param_x, ID_param_y, ID_param_extra_1)
     
     #----------------------------------------------------------------------------------------------
-    
+    """
     # Gráficos de las preguntas ANES
     
-    bines = np.linspace(-3.5,3.5,8)
-    
-    Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
-
+    """
     # rangos = [(np.array([0,0.1]),np.array([0.4,0.8])),(np.array([0,0.1]),np.array([0.4,0.8])), (np.array([0,0.15]),np.array([0.5,0.7])), (np.array([0,0.1]),np.array([0.4,0.7]))] #,
               # (np.array([0,0.2]),np.array([0.4,0.8])), (np.array([0,0.1]),np.array([0.4,0.66])), (np.array([0,0.1]),np.array([0.4,0.7]))]
     
@@ -158,7 +166,7 @@ for carp in Carpetas:
         
         #-------------------------------------------------------------------------------------------------------------------------
     
-    func.Preguntas_espacio_parametros(Df_archivos, Archivos_Matrices, Direccion, Etapa/carpeta,
+    func.Preguntas_espacio_parametros(Df_archivos, Archivos_Matrices, Direc_matrices, Etapa/carpeta,
                                       SIM_param_x, SIM_param_y)
 
 func.Tiempo(t0)

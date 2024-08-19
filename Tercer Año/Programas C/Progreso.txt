@@ -2675,3 +2675,21 @@ No hice nada del laburo con la gente de España todavía. Antes de irme, voy a c
 que hace el gráfico de la distribución de preguntas en el espacio de parámetros. Que justamente
 es la función que no corregí. Y voy a probar que funque bien.
  Veremos si funca bien, en principio parece que sí.
+ 
+------------------------------------------------------------------------------------------
+
+19/08/2024
+
+No comitee lo que hice ayer. Soy un gil. Bueno, arranquemos con el laburo que me organicé ayer.
+Primero veamos de armar los dataframes de los pares de preguntas.
+
+Armé la función que arma el dataframe y lo pasa a un csv. Mi idea es bajarlo, revisar esos datos
+y luego armar los histogramas de esos pares de preguntas. Perfecto, ya tengo separados los pares
+de preguntas. Lo siguiente es armar una carpeta dentro de la carpeta de Barrido_final para el
+primer cluster y analizarlo en detalle. Ver cómo son las distribuciones 2D de las preguntas del
+primer cluster, los mapas de distancias JS de esas distribuciones, histogramas similares y 
+histograma de distancias.
+
+Bueno, estoy lentamente resolviendo este laburo. Mañana quiero tener vistos dos clusters. Sino
+estoy yendo a un ritmo tortuga y Pablo me va a cagar a trompadas. Se suma además que tengo
+que estudiar Alemán, armar la presentación del DDays y continuar el laburo del trabajo de Granovetter.
