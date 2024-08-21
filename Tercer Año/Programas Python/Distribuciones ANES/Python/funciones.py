@@ -1282,3 +1282,48 @@ def Graf_Histogramas_Promedio(DF,path,carpeta,bins,cmap,
             plt.savefig(direccion_guardado ,bbox_inches = "tight")
             plt.close()
 
+#-----------------------------------------------------------------------------------------------
+
+# Armo una función que construya un Dataframe con los pares de preguntas
+
+def Tabla_datos_preguntas(DF_datos, dict_labels, arc_matrices, path_matrices):
+    
+    # Defino los arrays de parámetros diferentes
+    Arr_param_x = np.unique(DF_datos["parametro_x"])
+    size_x = Arr_param_x.shape[0]
+    Arr_param_y = np.unique(DF_datos["parametro_y"])
+    size_y = Arr_param_y.shape[0]
+    # Construyo las grillas que voy a usar para ubicar los valores de X e Y
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    
+    # Armo el diccionario en el cuál voy a guardar mi info
+    dict_datos = dict()
+    dict_datos["nombre"] = list()
+    dict_datos["código x"] = list()
+    dict_datos["código y"] = list()
+    dict_datos["pregunta x"] = list()
+    dict_datos["pregunta y"] = list()
+    for i in range(1,11):
+        dict_datos["Beta_{}".format(i*10)] = list()
+        dict_datos["Cosd_{}".format(i*10)] = list()
+    
+    for nombre_csv in arc_matrices:
+        
+        # Calculo la matriz de distancias JS y la ordeno
+        Dist_JS, code_x, code_y = Lectura_Matriz_DJS(size_y, size_x, path_matrices, nombre_csv)
+        Dist_JS = np.sort(Dist_JS)
+        
+        dict_datos["nombre"].append(nombre_csv)
+        dict_datos["código x"].append(code_x)
+        dict_datos["código y"].append(code_y)
+        dict_datos["pregunta x"].append(dict_labels[code_x])
+        dict_datos["pregunta y"].append(dict_labels[code_y])
+        
+        for i in range(1,11):
+            
+            tupla = np.unravel_index(np.argmin(np.mean(Dist_JS[:,:,0:i*10],axis=2)),XX.shape)
+            dict_datos["Cosd_{}".format(i*10)].append(XX[tupla])
+            dict_datos["Beta_{}".format(i*10)].append(YY[tupla])
+            
+    df = pd.DataFrame(dict_datos)
+    return df

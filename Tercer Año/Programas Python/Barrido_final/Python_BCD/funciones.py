@@ -161,13 +161,15 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
     
     # Defino los arrays de parámetros diferentes
     Arr_EXTRAS = np.unique(DF["Extra"])
-    Arr_param_x = np.unique(DF["parametro_x"])[0::2]
-    Arr_param_y = np.unique(DF["parametro_y"])[0::4]
+#    Arr_param_x = np.unique(DF["parametro_x"])[0::2]
+#    Arr_param_y = np.unique(DF["parametro_y"])[0::4]
     
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
-    Tupla_total = [(param_x,param_y) for param_x in Arr_param_x
-                   for param_y in Arr_param_y]
+#    Tupla_total = [(param_x,param_y) for param_x in Arr_param_x
+#                   for param_y in Arr_param_y]
+    
+    Tupla_total = [(0,0.4), (0,0.6), (0.02,0.5)]
     
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Opiniones"
@@ -196,7 +198,7 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
             for nombre in archivos:
                 
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-                if repeticion < 10:
+                if repeticion < 100:
                 
                     # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
                     # Distribución final
@@ -1278,7 +1280,7 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, dict_labe
 
 # Armo una función que en el punto de mínima distancia media construya un histograma de las distancias de JS
 
-def Histograma_distancias(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta,
+def Histograma_distancias(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta, lminimos,
                           ID_param_x, SIM_param_x, ID_param_y, SIM_param_y):
     
     Arr_param_x = np.unique(DF_datos["parametro_x"])
@@ -1292,19 +1294,26 @@ def Histograma_distancias(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpet
     # Lo que quiero hacer acá es armar gráficos de promedios de opiniones rankeados.
     
     # Promedio las distancias del espacio de parámetros
-    Dist_JS_prom = np.mean(Dist_JS, axis=2)
+#    Dist_JS_prom = np.mean(Dist_JS, axis=2)
     
     # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
-    tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
+#    tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
     bines = np.linspace(0,1,41)
     
-#    for tupla in lminimos:
+#    barrX = XX[max(tupla[0]-1,0):tupla[0]+2,max(tupla[1]-1,0):tupla[1]+2].flatten()
+#    barrY = YY[max(tupla[0]-1,0):tupla[0]+2,max(tupla[1]-1,0):tupla[1]+2].flatten()
+#    Distancias = np.reshape(Dist_JS[max(tupla[0]-1,0):tupla[0]+2,max(tupla[1]-1,0):tupla[1]+2],(barrX.shape[0],Dist_JS.shape[2]))
     
-    barrX = XX[max(tupla[0]-1,0):tupla[0]+2,max(tupla[1]-1,0):tupla[1]+2].flatten()
-    barrY = YY[max(tupla[0]-1,0):tupla[0]+2,max(tupla[1]-1,0):tupla[1]+2].flatten()
-    Distancias = np.reshape(Dist_JS[max(tupla[0]-1,0):tupla[0]+2,max(tupla[1]-1,0):tupla[1]+2],(barrX.shape[0],Dist_JS.shape[2]))
-    
-    for PARAM_X,PARAM_Y,Arr_Dist in zip(barrX,barrY,Distancias):
+    for punto in lminimos:
+        
+        PARAM_X = punto[0]
+        PARAM_Y = punto[1]
+        ubic_x = np.arange(Arr_param_x.shape[0])[Arr_param_x == punto[0]][0]
+        ubic_y = np.arange(Arr_param_y.shape[0])[np.flip(Arr_param_y) == punto[1]][0]
+        
+        tupla = (ubic_x,ubic_y)
+        Arr_Dist = Dist_JS[tupla]
+        
         Y, _ = np.histogram(Arr_Dist, bins = bines)
         
         # Set the figure size
@@ -2051,7 +2060,7 @@ def Preguntas_espacio_parametros(DF_datos,arc_matrices,path_matrices,carpeta,
     plt.scatter(X[0],Y[0], marker="o", s = 500, color = "green", alpha = 0.7)
     plt.xlabel(r"${}$".format(SIM_param_x))
     plt.ylabel(r"${}$".format(SIM_param_y))
-    plt.xlim(0,0.5)
+    plt.xlim(-0.05,0.5)
     plt.ylim(0,1.5)
     plt.title("Pares de preguntas en el espacio de parámetros \n Todas las simulaciones")
     direccion_guardado = Path("../../../Imagenes/{}/Dist_preguntas_espacio.png".format(carpeta))

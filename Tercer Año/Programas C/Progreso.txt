@@ -2675,7 +2675,40 @@ No hice nada del laburo con la gente de España todavía. Antes de irme, voy a c
 que hace el gráfico de la distribución de preguntas en el espacio de parámetros. Que justamente
 es la función que no corregí. Y voy a probar que funque bien.
  Veremos si funca bien, en principio parece que sí.
- 
+
+------------------------------------------------------------------------------------------
+
+18/08/2024
+
+Tiró un error de una boludez que me mandé. Dejémoslo corriendo un poco y veamos si se corrige eso.
+Hoy creo que no voy a hacer nada avanzar el código, pero vamos a pensar qué sigue. Lo que hablamos
+con Pablo es revisar la distribución del espacio de preguntas por clusters. Entonces lo que tengo
+que hacer es lograr ir trabajando esos clusters de a uno.
+
+¿Armo una etapa nueva para revisar eso?
+Nah, trabajemos dentro de la etapa de Barrido Final, no creo que valga la pena una etapa nueva sólo
+por eso
+
+¿Cómo diferencio las preguntas según cluster?
+Podría armarme un Pandas y a partir de eso guardar esos datos en un csv. Tendría que guardar los códigos
+de las preguntas, las preguntas y sus lugares de distancia mínima. Me gusta esta idea
+
+Una vez que tengo las preguntas separadas, ¿Cómo las analizo?
+Estaría bueno revisar que la clasificación esté teniendo sentido. Primero, podría revisar las distribuciones
+de opiniones de cada pregunta, como para ver si son similares a ojo.
+ Segundo podría ver cómo es el mapa de colores de distancia JS de cada pregunta.
+ Tercero podría analizar cómo son los histogramas más similares en el punto de mínima distancia
+ Cuarto podría mirar en los casos en que parecieran surgir dos Betas posibles los histogramas
+de distancias JS. Con eso tendría una noción de si esas preguntas son posibles de clasificarse en dos
+lugares distintos
+ Quinto tengo que revisar qué corno pasa que para 10 y 20 agentes la cosa da tan distinto a lo esperado
+en lo otro, no tiene sentido. Podría empezar revisando los mapas a ojo, ver que las distancias JS
+graficadas sean coherentes con lo que tenía armado de antes. Daría la sensación que los está ordenando
+para el culo, pero me resulta raro eso, está claramente el comando para ordenarlos.
+
+Bueno, en principio estas cinco cosas diría para hacer mañana. Me parece que hecho esto estaría bien.
+Hablar con Pablo sobre que tengo varias cosas juntas, que me tenga un poco de paciencia.
+
 ------------------------------------------------------------------------------------------
 
 19/08/2024
@@ -2693,3 +2726,97 @@ histograma de distancias.
 Bueno, estoy lentamente resolviendo este laburo. Mañana quiero tener vistos dos clusters. Sino
 estoy yendo a un ritmo tortuga y Pablo me va a cagar a trompadas. Se suma además que tengo
 que estudiar Alemán, armar la presentación del DDays y continuar el laburo del trabajo de Granovetter.
+
+------------------------------------------------------------------------------------------
+
+20/08/2024
+
+Bien, ya tengo la tabla y tengo el cómo levantarla. Ahora tengo que armar gráficos y cosas
+y separarlos según los clusters. Arranquemos con el primer cluster.
+
+Estoy armando los gráficos y guardándolos en carpetas que tienen los valores de beta y cosdelta
+para diferenciar los clusters. Lo primero que quiero revisar entonces es:
+¿Está bien hecha la clasificación cuando miro pocas simulaciones ordenadas de menor distancia
+a mayor distancia?
+
+Algo que estaría bueno en ese caso es mirar los histogramas de distancias en esos lugares. Con algo
+de suerte, si miro los gráficos de distancias de los pares de preguntas ubicados en un cluster,
+puedo observar que comparten ciertos puntos de distancias mínimas. Luego reviso el histograma de
+distancias en esos puntos.
+
+Cluster de Beta=0.4 y Cosd=0
+----------------------------
+
+Mirando los mapas de colores de Distancia JS para 100 simulaciones, para 20 y 40 pareciera que
+en prácticamente todas las simulaciones, está bien clasificado esto. Todos los pares de preguntas
+oscilan entre (Beta=0.6,Cosd=0) y (Beta=0.4,Cosd=0).
+ Se me ocurre que puedo armar histogramas de distancias en los lugares de mínimos usuales, que son
+los dos de antes y en (Beta=0.5,Cosd=0.02).
+ Lo otro que puedo hacer es agregar histogramas de las simulaciones en esos puntos en específico.
+ Hay un par de preguntas que para 10 simulaciones su mínimo se encuentra en (Beta=0.6,Cosd=0.04).
+Veré si puedo revisar otras cosas similares y de ahí decidiré si necesito más info.
+
+Necesito entonces conseguir la info que me estoy planteando. Eso me va a ayudar a decidir si estas
+distribuciones de pares de preguntas están bien clasificadas.
+
+Primero, corrijo los histogramas 2D en esos puntos. LISTO
+Segundo, corrijo los histogramas de distancias, que tienen que recibir varios puntos donde prepararse.
+¿Debería considerar de armar esos gráficos en los mínimos de 20, 40 y 100 simulaciones? No, porque
+hay gráficos que en todos los casos están en un sólo punto, entonces no me daría la info de todos
+los lugares.
+
+------------------------------------------------------------------------------------------
+
+21/08/2024
+
+Continuo con el tema de los histogramas de distancias. Me estoy frenando en lo que es armar la
+lista para revisar los histogramas de distancias. Se me ocurrió usar los arr_param_x/y para identificar
+el índice, y no ser yo el que tenga que ubicar dónde corno se supone que se encuentran esos valores.
+Me parece lo mejor. Ya mandé a armar esos nuevos gráficos, vamos a ver qué pasa.
+
+Hoy armé lo de los histogramas de distancias en esos tres puntos mínimos interesantes. Ahora con
+eso voy a hacer un análisis de lo que estoy observando, y luego voy a ir al siguiente punto.
+
+Cluster de Beta=0.4 y Cosd=0
+----------------------------
+Estoy mirando los gráficos. Puedo concluir las siguientes cosas.
+1) Los gráficos de distribución de las encuestas muestran que los estados clasificados considerando
+100 simulaciones son estados que son intermedios entre consenso radicalizado y Polarización 1D
+con anchura. (No existen estados de consenso radicalizado puros en las encuestas)
+2) Hay 33 preguntas en este conjunto. De esas 33, en TODOS los pares hay por lo menos una pregunta
+del siguiente conjunto: [Benefits of Vaccination, Background Check for Gun Purchases, Vaccines in Schools,
+Govt. Action About Opioids]. (No sé si son todas las posibles preguntas de esas 4 preguntas. No lo creo)
+3) 33 preguntas acá significa un cuarto de preguntas sólo en este punto.
+4) Las preguntas no parecen estar mal clasificadas, para todo subconjunto de simulaciones consideradas
+estos pares de preguntas se encuentran ubicados en una región con Beta entre 0.4 y 0.6 y para Cosd
+entre 0 y 0.02. Por lo que están todos en básicamente la misma región.
+5) Mirando los histogramas de las simulaciones, se ve que los gráficos son similares a lo que me
+indicaba los gráficos de FEF. Aparecen algunos gráficos de polarización descorrelacionada raros.
+No sabría cómo explicarlos.
+6) Los gráficos de histogramas más similares son todos gráficos de Polarización 1D, ninguno me aparece
+de consenso radicalizado.
+
+¿Debería armar un gráficos de distribución de preguntas en el espacio de parámetros para el cluster?
+Sí, debería.
+
+
+IMPORTANTE: Hay sólo 120 pares de preguntas en la carpeta de Matrices de DJS. Raro eso. Deberían ser
+177. Veré hoy de mandarlo a correr de nuevo
+
+Ya son las 19. ¿Cómo me organizo para estos días? ¿Con qué le caigo a Pablo? Creo que me va a mirar
+y me va a cagar a trompadas fiero. No puedo irme a dormir con esto así, necesito revisar qué carajos
+pasa en un cluster más por lo menos. Armemos la carpeta y arranquemos con eso. Primero mando el mail
+para lo de los viáticos, después veo de seguir laburando un poco más.
+
+¿Qué tengo que hacer en estos días? Pasó el martes y miércoles, laburé re poco. O mejor dicho, siento
+que avancé re poco. Carajo, estuve mirando un montón de gráficos e intentando armar una forma de analizar
+esto, no me parece poco. Mierda, mierda con todo.
+
+Quiero ver lo que estábamos hablando con Lucio del laburo de Granovetter, no quiero caer con las manos vacías.
+Después está lo de Alemán, quiero por lo menos tomar unas notas. Por último está preparar la presentación
+para el Ddays. Digo yo que eso lo puedo ir charlando mañana con Pablo luego de por lo menos haber entrado
+a la página.
+
+Mañana a la mañana arranco con lo de Granovetter, después clusters y por último un poco de Alemán.
+El viernes mando a correr la cosa para que los archivos de Matrices sean los indicados. No lo hago ahora
+para no tener que revisar si se agregan nuevos gráficos que arruinen mi análisis del primer cluster.

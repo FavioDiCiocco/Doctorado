@@ -140,8 +140,13 @@ for code in labels_filtrados:
     
 df_data[['V200010a','V200010b']] = df_raw_data[['V200010a','V200010b']]
 
-#############################################################################################
+Df_preguntas = pd.read_csv("Tabla pares de preguntas.csv")
+Beta = 0.4
+Cosd = 0
+Df_cluster = Df_preguntas.loc[(Df_preguntas["Beta_100"]==Beta) & (Df_preguntas["Cosd_100"]==Cosd)]
 
+#############################################################################################
+"""
 # Gráfico de dos preguntas simultáneas con distribuciones individuales en los ejes
 
 for i,code_1 in enumerate(labels_politicos):
@@ -169,8 +174,6 @@ for i,code_1 in enumerate(labels_politicos):
         plt.rcParams.update({'font.size': 28})
         fig = plt.figure(figsize=(16, 12))
         gs = GridSpec(4, 5, figure=fig, hspace=0.2, wspace=0.2, width_ratios=[1, 1, 1, 1, 0.1])
-        
-        carpeta = "Sin Cruz"
         
         # Main plot: 2D histogram
         ax_main = fig.add_subplot(gs[1:, :-2])  # 3x3 space for the main plot
@@ -271,7 +274,7 @@ for i,code_1 in enumerate(labels_apoliticos):
         plt.savefig(direccion_guardado, bbox_inches="tight")
         plt.close()
 
-"""
+
 for i,code_1 in enumerate(labels_dudosos):
     for code_2 in labels_dudosos[i+1::]:
         
@@ -311,7 +314,7 @@ for i,code_1 in enumerate(labels_dudosos):
 """
 
 ####################################################################################################################
-
+"""
 
 plt.rcParams.update({'font.size': 28})
 
@@ -357,7 +360,7 @@ for code in labels_apoliticos:
     plt.close()
     
 
-"""
+
 for code in labels_dudosos:
     
     if code[3] == '1':
@@ -405,5 +408,69 @@ plt.show()
 print(hist2d)
 
 """
+
+####################################################################################################################
+
+for code_1,code_2 in zip(Df_cluster["código x"],Df_cluster["código y"]):
+        
+    if code_1[3] == '1' and code_2[3] == '1':
+        weights = 'V200010a'
+    else:
+        weights = 'V200010b'
+    
+    df_aux = df_data.loc[(df_data[code_1]>0) & (df_data[code_2]>0)]
+    
+    # Filter out rows where either code_1 or code_2 is 3
+    if np.unique(df_aux[code_1]).shape[0] == 7 and np.unique(df_aux[code_2]).shape[0] == 7:
+        df_filtered = df_aux[(df_aux[code_1] != 4) & (df_aux[code_2] != 4)] # Saca la cruz
+    elif np.unique(df_aux[code_1]).shape[0] == 7 and np.unique(df_aux[code_2]).shape[0] == 6:
+        df_filtered = df_aux[df_aux[code_1] != 4] # Saca el centro de la pregunta con siete resupuestas
+    elif np.unique(df_aux[code_1]).shape[0] == 6 and np.unique(df_aux[code_2]).shape[0] == 7:
+        df_filtered = df_aux[df_aux[code_2] != 4] # Saca el centro de la pregunta con siete resupuestas
+    
+    carpeta = "B04C00Cluster"
+    
+    # Set up the figure and grid layout
+    plt.rcParams.update({'font.size': 28})
+    fig = plt.figure(figsize=(16, 12))
+    gs = GridSpec(4, 5, figure=fig, hspace=0.2, wspace=0.2, width_ratios=[1, 1, 1, 1, 0.1])
+    
+    # Main plot: 2D histogram
+    ax_main = fig.add_subplot(gs[1:, :-2])  # 3x3 space for the main plot
+    hist2d, xedges, yedges, im = ax_main.hist2d(
+        x=df_filtered[code_1], 
+        y=df_filtered[code_2], 
+        weights=df_filtered[weights], 
+        vmin=0, 
+        cmap="binary", 
+        density=True,
+        bins=[np.arange(0.5, df_filtered[code_1].max()+1.5, 1), 
+              np.arange(0.5, df_filtered[code_2].max()+1.5, 1)]
+    )
+    
+    # Add a colorbar
+    cbar = fig.colorbar(im, ax=ax_main, cax=fig.add_subplot(gs[1:, -1]))  # Colorbar in the last column
+    cbar.ax.tick_params(labelsize=28)  # Optionally, set the size of the colorbar labels
+    cbar.ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f'{x:.2f}'))  # Format colorbar ticks to 2 decimal places
+    
+    # Top histogram (1D)
+    ax_top = fig.add_subplot(gs[0, :-2], sharex=ax_main)
+    ax_top.hist(df_filtered[code_1], bins=np.arange(0.5, df_filtered[code_1].max()+1.5, 1), weights=df_filtered[weights], color='tab:blue', edgecolor='black')
+    ax_top.axis('off')  # Optionally turn off axis labels
+    
+    # Right histogram (1D)
+    ax_right = fig.add_subplot(gs[1:, -2], sharey=ax_main)
+    ax_right.hist(df_filtered[code_2], bins=np.arange(0.5, df_filtered[code_2].max()+1.5, 1), weights=df_filtered[weights], color='tab:blue', edgecolor='black', orientation='horizontal')
+    ax_right.axis('off')  # Optionally turn off axis labels
+    
+    # Set labels
+    ax_main.set_xlabel(dict_labels[code_1])
+    ax_main.set_ylabel(dict_labels[code_2])
+
+    # Save the figure
+    direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/{}/{}vs{}.png".format(carpeta, code_1, code_2))
+    plt.savefig(direccion_guardado, bbox_inches="tight")
+    plt.close()
+
 
 Tiempo(t0)
