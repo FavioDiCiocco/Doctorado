@@ -2820,3 +2820,23 @@ a la página.
 Mañana a la mañana arranco con lo de Granovetter, después clusters y por último un poco de Alemán.
 El viernes mando a correr la cosa para que los archivos de Matrices sean los indicados. No lo hago ahora
 para no tener que revisar si se agregan nuevos gráficos que arruinen mi análisis del primer cluster.
+
+------------------------------------------------------------------------------------------
+
+22/08/2024
+
+Descargué los archivos de los gráficos del cluster en Beta=0.4 y Cosd=0. Tengo que revisar eso después
+y agregar análisis en otros clusters. Ahora me voy a poner con el estudio de Granovetter, más a la tarde
+veré algo de Alemán.
+
+Pablo pasó un rato a charlar, le conté qué onda. Quizás no contempla si venimos bien o mal, así que no
+me cagó a pedos. Es IMPORTANTE que para el lunes que viene tenga bien revisado gran parte de los clusters.
+Pablo me recomendó que ponga las regiones del espacio de parámetros en los gráficos, cosa que debería
+efectivamente hacer, después agrego eso al código.
+
+Estuve mirando el tema del laburo de Granovetter y también fui al coloquio, pero no pude prestar nada de atención.
+Con lo de Granovetter, hice algunas notas, repasé algunas cosas. Creo que tengo para charlar cosas
+con Lucio mañana y ya diría yo de ver de cerrar esta etapa y avanzar a algo más concreto. Pablo insistiría
+con eso.
+
+Me voy ahora a casa, veré si puedo estudiar algo de Alemán cuando llegue.
