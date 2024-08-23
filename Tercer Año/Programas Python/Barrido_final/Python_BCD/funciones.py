@@ -2054,9 +2054,48 @@ def Preguntas_espacio_parametros(DF_datos,arc_matrices,path_matrices,carpeta,
     X = X + rng.normal(loc = 0, scale = (Arr_param_x[1]-Arr_param_x[0])/5, size = X.shape)
     Y = Y + rng.normal(loc = 0, scale = (Arr_param_y[1]-Arr_param_y[0])/5, size = Y.shape)
     
-    # Lo que queda es hacer los plot scatter de las preguntas
+    
+    # Delineo las regiones del espacio Beta-Cosd
     plt.rcParams.update({'font.size': 44})
     plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+    tlinea = 5
+    # Región de Polarización Descorrelacionada
+    x = [0, 0.1, 0.15, 0, 0]  # x-coordinates
+    y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) #, label='Polarización Descorrelacionada')
+    plt.text(0.05, 1.3, 'I', fontsize=40, ha='center', va='center', color='k')
+    # Región de Transición
+    x = [0.1, 0.15, 0.3, 0.15, 0.1]  # x-coordinates
+    y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+    plt.text(0.18, 1.3, 'II', fontsize=40, ha='center', va='center', color='k')
+    # Región de Polarización ideológica
+    x = [0.15, 0.5, 0.5, 0.3, 0.15] # x-coordinates
+    y = [1.1, 1.1, 1.5, 1.5, 1.1] # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+    plt.text(0.35, 1.3, 'III', fontsize=40, ha='center', va='center', color='k')
+    # Región de Consenso Radicalizado
+    x = [0, 0.5, 0.5, 0.2, 0.2, 0.5, 0.5, 0.1, 0.1, 0, 0]  # x-coordinates
+    y = [0, 0, 0.15, 0.3, 0.6, 0.6, 1.1, 1.1, 0.3, 0.2, 0]  # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+    plt.text(0.3, 0.85, 'VI', fontsize=40, ha='center', va='center', color='k')
+    # Región de Mezcla 1
+    x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+    y = [0.2, 0.3, 0.75, 0.75, 0.2] # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)  # label=r'Mezcla: CR (50~80%), P1Da (20~35%)')
+    plt.text(0.05, 0.55, 'V', fontsize=40, ha='center', va='center', color='k')
+    # Región de Mezcla 2
+    x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+    y = [0.75, 0.75, 1.1, 1.1, 0.75] # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (30~40%), P1D (10~50%)')
+    plt.text(0.05, 0.9, 'IV', fontsize=40, ha='center', va='center', color='k')
+    # Región de Mezcla 3
+    x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
+    y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
+    plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
+
+    # Lo que queda es hacer los plot scatter de las preguntas
     plt.scatter(X[0],Y[0], marker="o", s = 500, color = "green", alpha = 0.7)
     plt.xlabel(r"${}$".format(SIM_param_x))
     plt.ylabel(r"${}$".format(SIM_param_y))
@@ -2071,6 +2110,44 @@ def Preguntas_espacio_parametros(DF_datos,arc_matrices,path_matrices,carpeta,
     for rank in range(1,5):
         plt.rcParams.update({'font.size': 44})
         plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+        
+        tlinea = 5
+        # Región de Polarización Descorrelacionada
+        x = [0, 0.1, 0.15, 0, 0]  # x-coordinates
+        y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+        plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) #, label='Polarización Descorrelacionada')
+        plt.text(0.05, 1.3, 'I', fontsize=40, ha='center', va='center', color='k')
+        # Región de Transición
+        x = [0.1, 0.15, 0.3, 0.15, 0.1]  # x-coordinates
+        y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+        plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+        plt.text(0.18, 1.3, 'II', fontsize=40, ha='center', va='center', color='k')
+        # Región de Polarización ideológica
+        x = [0.15, 0.5, 0.5, 0.3, 0.15] # x-coordinates
+        y = [1.1, 1.1, 1.5, 1.5, 1.1] # y-coordinates
+        plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+        plt.text(0.35, 1.3, 'III', fontsize=40, ha='center', va='center', color='k')
+        # Región de Consenso Radicalizado
+        x = [0, 0.5, 0.5, 0.2, 0.2, 0.5, 0.5, 0.1, 0.1, 0, 0]  # x-coordinates
+        y = [0, 0, 0.15, 0.3, 0.6, 0.6, 1.1, 1.1, 0.3, 0.2, 0]  # y-coordinates
+        plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+        plt.text(0.3, 0.85, 'VI', fontsize=40, ha='center', va='center', color='k')
+        # Región de Mezcla 1
+        x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+        y = [0.2, 0.3, 0.75, 0.75, 0.2] # y-coordinates
+        plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)  # label=r'Mezcla: CR (50~80%), P1Da (20~35%)')
+        plt.text(0.05, 0.55, 'V', fontsize=40, ha='center', va='center', color='k')
+        # Región de Mezcla 2
+        x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+        y = [0.75, 0.75, 1.1, 1.1, 0.75] # y-coordinates
+        plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (30~40%), P1D (10~50%)')
+        plt.text(0.05, 0.9, 'IV', fontsize=40, ha='center', va='center', color='k')
+        # Región de Mezcla 3
+        x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
+        y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
+        plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
+        plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
+        
         plt.scatter(X[rank],Y[rank], marker="o", s = 500, color = "green", alpha = 0.7)
         plt.xlabel(r"${}$".format(SIM_param_x))
         plt.ylabel(r"${}$".format(SIM_param_y))

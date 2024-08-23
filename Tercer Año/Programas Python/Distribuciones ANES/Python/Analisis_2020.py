@@ -141,7 +141,7 @@ for code in labels_filtrados:
 df_data[['V200010a','V200010b']] = df_raw_data[['V200010a','V200010b']]
 
 Df_preguntas = pd.read_csv("Tabla pares de preguntas.csv")
-Beta = 0.4
+Beta = 0.6
 Cosd = 0
 Df_cluster = Df_preguntas.loc[(Df_preguntas["Beta_100"]==Beta) & (Df_preguntas["Cosd_100"]==Cosd)]
 
@@ -428,7 +428,7 @@ for code_1,code_2 in zip(Df_cluster["código x"],Df_cluster["código y"]):
     elif np.unique(df_aux[code_1]).shape[0] == 6 and np.unique(df_aux[code_2]).shape[0] == 7:
         df_filtered = df_aux[df_aux[code_2] != 4] # Saca el centro de la pregunta con siete resupuestas
     
-    carpeta = "B04C00Cluster"
+    carpeta = "B06C00Cluster"
     
     # Set up the figure and grid layout
     plt.rcParams.update({'font.size': 28})

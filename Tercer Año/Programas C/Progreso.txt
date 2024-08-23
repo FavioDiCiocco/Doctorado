@@ -2840,3 +2840,48 @@ con Lucio mañana y ya diría yo de ver de cerrar esta etapa y avanzar a algo m�
 con eso.
 
 Me voy ahora a casa, veré si puedo estudiar algo de Alemán cuando llegue.
+
+------------------------------------------------------------------------------------------
+
+23/08/2024
+
+Hoy a la mañana llegué a la facultad, me encontré con Pablo y ya nos pidió resultados de lo
+que venimos haciendo con Lucio. También me propuso que la semana que viene armemos una propuesta
+de las figuras con las que arrancar a escribir el paper. Así que es importante tener revisados
+los clusters de acá al lunes. O por lo menos la mayor parte.
+
+No me queda claro con Pablo cuándo se supone que armemos la presentación al Ddays. El martes voy
+a empezar con esto, aunque sea voy a abrir la página y dejarme de joder.
+
+A la mañana fui a cursar Alemán, fue bastante bien la clase. Me gustó. Ich Deutsch lernen gern.
+Anoté bastante tarea, veamos cómo me distribuyo eso.
+
+Después de comer me junté a laburar con Lucio. Avanzamos bastante y charlamos sobre el trabajo
+de Granovetter y competencia de tópicos.
+
+Ahora lo que voy a hacer es continuar con el análisis de los clusters de preguntas. Lo primero que tengo
+que hacer es lo que Pablo me sugirió, de agregar las regiones en el gráfico de distribución
+de preguntas. 
+
+Veamos el tema de las preguntas, me tiene un poco loco eso. ¿Por qué son muchas menos de los esperado?
+No es que son mucho menos que lo esperado, simplemente soy un gil y estaba calculando mal las combinatorias.
+Efectivamente 120 son los posibles pares de preguntas que se pueden formar.
+
+Mientras se resuelve el armado del gráfico para el cluster de Beta=0.4, Cosd=0, voy a ver de armar 
+el gráfico con las preguntas completas pero mejor encuadrado y con las regiones separadas.
+
+Algo que antes estaba pensando de las preguntas en el cluster Beta=0.4 y Cosd=0, es si estoy viendo
+TODAS las posibles preguntas que se pueden formar con las 4 preguntas que aparecen repetidas en
+todos los pares. En principio, tengo 9 preguntas "políticas" y 7 "no políticas". Entonces la pregunta
+es cuántos pares puedo armar que tengan a esas 4 preguntas. De cada una, puedo armar entonces 
+9+7-1=15 preguntas. Entonces el total de pares que puedo armar con esas 4 preguntas es 60-6,
+es decir 54 preguntas. Ya que observé 33, la respuesta es que NO son todas las posibles de esas
+4. Pero son bastantes. Esta clase de análisis es más complicado de hacer, me pregunto si hay
+una forma fácil de hacerlo. Podría tomar la matriz y construir algún gráfico que indique cuáles son
+las 5 o 10 preguntas más repetidas. Suena bastante razonable e incluso fácil de hacer eso. Lo puedo
+incluso hacer en la pc remota, no necesito pasar a Coimbra esto, aunque no vendría mal.
+
+El trabajo se puede realizar bastante bien de acá al lunes, para tener algo presentable e interesante.
+Lo complejo va a ser condensar la info y tener algo bien claro que transmitir. Y leer lo de
+distancia Kolmogorov-Smirnoff. Y armar la presentación resumen. Y armar la presentación de Ddays.
+Y estudiar Alemán. Y llegar frescos para el viernes.
