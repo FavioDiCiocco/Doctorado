@@ -1312,6 +1312,7 @@ def Histograma_distancias(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpet
         ubic_y = np.arange(Arr_param_y.shape[0])[np.flip(Arr_param_y) == punto[1]][0]
         
         tupla = (ubic_x,ubic_y)
+        print(tupla)
         Arr_Dist = Dist_JS[tupla]
         
         Y, _ = np.histogram(Arr_Dist, bins = bines)
@@ -1324,7 +1325,7 @@ def Histograma_distancias(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpet
         plt.ylabel("Probabilidad")
         plt.xlim(bines[:-1][Y>0][0]-0.025,bines[:-1][Y>0][-1]+0.075)
 #        plt.axvline(x=0.45, linestyle = "--", color = "red", linewidth = 4)
-        plt.title("{} vs {}\n".format(dict_labels[code_y],dict_labels[code_x]) + r"${}$={}, ${}$={}".format(SIM_param_y,PARAM_Y,SIM_param_x,PARAM_X))
+        plt.title("{} vs {}\n".format(dict_labels[code_y],dict_labels[code_x]) + r"${}$={}, ${}$={}, simulaciones={}".format(SIM_param_y,PARAM_Y,SIM_param_x,PARAM_X,Arr_Dist.shape[0]))
         direccion_guardado = Path("../../../Imagenes/{}/Hist distancias_{} vs {}_{}={}_{}={}.png".format(carpeta,code_y,code_x,ID_param_y,PARAM_Y,ID_param_x,PARAM_X))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()

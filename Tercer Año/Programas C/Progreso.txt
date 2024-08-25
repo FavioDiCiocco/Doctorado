@@ -2885,3 +2885,35 @@ El trabajo se puede realizar bastante bien de acá al lunes, para tener algo pre
 Lo complejo va a ser condensar la info y tener algo bien claro que transmitir. Y leer lo de
 distancia Kolmogorov-Smirnoff. Y armar la presentación resumen. Y armar la presentación de Ddays.
 Y estudiar Alemán. Y llegar frescos para el viernes.
+
+------------------------------------------------------------------------------------------
+
+25/08/2024
+
+Voy a revisar un poco algunos clusters de preguntas, a ver qué pasa.
+
+Cluster de Beta=0.6 y Cosd=0
+----------------------------
+1) Mirando la distribución de las preguntas, las preguntas en este cluster para las 100 simulaciones,
+se mantienen en la misma región y con opiniones similares para 20 o 40 simulaciones, así que parece
+estar bastante bien.
+2) Todos los histogramas más similares son de polarización descorrelacionada, por lo que eso explicaría
+que identifique a estos estados como algo distinto de los anteriores.
+3) Los mapas de colores de distancias JS están dando que en los puntos donde ubica el mínimo es similar
+para cualquier subconjunto de simulaciones. En algunos casos ocurre que para todas las simulaciones hay otros
+lugares que parecerían ser importantes, pero creeme, no lo son. En los gráficos de subconjuntos se
+nota que esos lugares no pasan a ser comparativamente importantes hasta que no promedias muchos
+puntos.
+ 
+
+¿Se están armando bien los histogramas de distancias? Se ven raros. Están claramente mal. Vamos a mandar
+a rehacer estos gráficos y ver qué pasa.
+
+Hagamos eso y el lunes resuelvo lo otro. No quiero estar en esto el resto de la noche.
+
+Los siguientes clusters que quiero mirar son los que tienen Beta alto, es decir 1.1 .
+Hay tres clusters de estos, en Cosd=0.02, en Cosd=0.08 y en Cosd=0.14. Debería tener bien anotado
+cuántas preguntas tengo en cada cluster. Lo puedo ver rápido levantando la tabla de datos, no es tanto
+drama.
+
+Voy a armar las carpetas y los gráficos ahora. Ya lo mandé eso, mañana reviso a ver qué corno pasó con todo.

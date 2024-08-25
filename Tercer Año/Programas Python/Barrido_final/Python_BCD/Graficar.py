@@ -35,7 +35,7 @@ for carp in Carpetas:
     Direccion = Path("../{}".format(carp))
 #    carpeta = Path(carp)
     # Cambio la carpeta para el código de los clusters
-    carpeta = Path("B04C00Cluster")
+    carpeta = Path("B11C02Cluster")
     
     Direc_matrices = Path("../Matrices DJS")
     
@@ -122,10 +122,10 @@ for carp in Carpetas:
     
     func.Mapas_Colores_FEF(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
                            SIM_param_x, SIM_param_y, ID_param_extra_1)
-    
+    """
     func.Graf_Histograma_opiniones_2D(Df_archivos, Dic_Total, Direccion, Etapa/carpeta, bines, "magma",
                                       ID_param_x, ID_param_y, ID_param_extra_1)
-    """
+    
     #----------------------------------------------------------------------------------------------
     
     # Gráficos de las preguntas ANES
@@ -133,8 +133,8 @@ for carp in Carpetas:
     
     # rangos = [(np.array([0,0.1]),np.array([0.4,0.8])),(np.array([0,0.1]),np.array([0.4,0.8])), (np.array([0,0.15]),np.array([0.5,0.7])), (np.array([0,0.1]),np.array([0.4,0.7]))] #,
               # (np.array([0,0.2]),np.array([0.4,0.8])), (np.array([0,0.1]),np.array([0.4,0.66])), (np.array([0,0.1]),np.array([0.4,0.7]))]
-    """
-    lminimos = [(0,0.4),(0,0.6),(0.02,0.5)]
+    
+#    lminimos = [(0,0.4),(0,0.6),(0.02,0.5)]
     
 #    for nombre_csv in Archivos_Matrices:
     for nombre_csv in Df_cluster["nombre"]:
@@ -146,7 +146,7 @@ for carp in Carpetas:
         
         func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta, Direccion, bines,
                                   SIM_param_x,SIM_param_y)
-        
+        """
         func.Histograma_distancias(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta, lminimos,
                                    ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
         
@@ -155,7 +155,7 @@ for carp in Carpetas:
         
         func.Doble_Mapacol_PromyFrac(DJS, code_x, code_y, Df_archivos, dict_labels,
                                      Etapa/carpeta, Direccion, SIM_param_x, SIM_param_y)
-        
+        """
         #-------------------------------------------------------------------------------------------------------------------------
         
         # Esto funca con la idea de que quiero revisar varios puntos mínimos. Le cambié el input para que no haya varios
@@ -168,7 +168,7 @@ for carp in Carpetas:
 #                          Direccion, dist_lim, lminimos, ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
         
         #-------------------------------------------------------------------------------------------------------------------------
-    """
+    
     func.Preguntas_espacio_parametros(Df_archivos, Df_cluster["nombre"], Direc_matrices, Etapa/carpeta,
                                       SIM_param_x, SIM_param_y)
 
