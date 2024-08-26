@@ -101,7 +101,7 @@ for nombre in Archivos_Datos:
 """
 
 #####################################################################################
-
+"""
 # Voy a armar la función que construya los archivos csv con las matrices de distancia
 # Jensen-Shannon. La idea es que cada fila del csv tenga uno de los elementos de mi
 # matriz, recordando que la matriz es de NxMxP elementos. Entonces cada fila del
@@ -190,7 +190,7 @@ for code_1 in labels_politicos:
 
 # Tercero calculo la matriz de distancia Jensen-Shannon y guardo eso en un csv.
 
-"""
+
 for preguntas in labels[0:1]:
     
     code_1 = preguntas[0]
@@ -205,7 +205,7 @@ for preguntas in labels[0:1]:
     DJS_alterado = np.reshape(DJS, (DJS.shape[0]*DJS.shape[1],DJS.shape[2]))
     
     np.savetxt("../Matrices DJS/{}_vs_{}.csv".format(code_y,code_x), DJS_alterado,delimiter = ",", fmt = "%.4f")
-"""
+
 
 #-------------------------------------------------------------------------------------
 
@@ -234,13 +234,14 @@ for nombre in Archivos_Matrices:
     DJS = np.reshape(mat_archivo, (Arr_param_y.shape[0],Arr_param_x.shape[0],mat_archivo.shape[1]))
     
     print(nombre)
-
+"""
 #####################################################################################
 #####################################################################################
 
 # Armo el gráfico de las regiones del espacio de parámetros Beta-Cosd
 """
 tlinea = 6
+
 
 # Create a figure and axis
 plt.rcParams.update({'font.size': 44})
@@ -307,5 +308,12 @@ direccion_guardado = Path("../../../Imagenes/Barrido_final/Beta-Cosd/Distribucio
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 """
+
+#####################################################################################
+#####################################################################################
+
+# Estoy teniendo problemas en el graficado de los histogramas de distancias. El problema
+# me parece que 
+
 
 func.Tiempo(t0)

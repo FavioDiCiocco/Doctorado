@@ -2917,3 +2917,79 @@ cuántas preguntas tengo en cada cluster. Lo puedo ver rápido levantando la tab
 drama.
 
 Voy a armar las carpetas y los gráficos ahora. Ya lo mandé eso, mañana reviso a ver qué corno pasó con todo.
+
+------------------------------------------------------------------------------------------
+
+26/08/2024
+
+Estoy mirando el armado de los histogramas de Distancias de JS. Están mal armados, y creo que ya sé por qué,
+y es porque estoy mandando mal los valores de la tupla. El motivo creo que es que estoy armando mal
+la tupla que busca el dónde se encuentran los datos a graficar. Resulta que me estoy confundiendo el eje X
+con el Y en el armado de la matriz. Siempre me dan paja estos problemas.
+ Bien, ya parece que le encontré la vuelta a esto. Ahora vamos a graficar las cosas.
+
+Hecho eso, lo siguiente es revisar los gráficos, agregar el análisis del cluster que falta y ya de ahí empezar
+a ver cómo mostrar estos datos a Pablo. Yo arrancaría mostrando 
+
+Me faltan armar los gráficos del último cluster, los voy a mandar a hacer mientras tanto. Ya tengo eso y también
+tengo los gráficos de distrib. de preguntas. Hay un gráfico que sale mal. No sé por qué, creo que no vale la
+pena preocuparse tanto por eso. Más me parece interesante revisar que están bien armadas las preguntas.
+
+Las preguntas parecen bien armadas. No se me ocurre cómo cambiar los títulos para que sean más claros, pero están
+bien. Listo, a seguir revisando esto y terminar el tema de las preguntas.
+
+Cluster Beta=1.1, Cdelta=0.02:
+-------------------------------
+1) Mirando las distribuciones, puedo ver rápido cuál es el problema. Las distribuciones de las encuestas,
+se intentan asemejar a estados de transición, pero en el fondo las opiniones están re dispersas. Entonces
+cuando considera menos simulaciones, la distancia JS lo empareja mucho más a los estados de polarización
+descorrelacionada con anchura, los cuales se asemejan a muchas de las distribuciones en definitiva.
+2) Fijate que para bajas cantidad de simulaciones, las distancias mínimas están cerca de 0.2. Eso es
+mucho menor que lo que observo con todas las simulaciones, que está más cerca de 0.5.
+3) Podría armar los histogramas de distancias en los puntos: (0.02,1.1), (0.48,0.4) y (0,0.6)
+4) También armemos histogramas 2D en esos puntos
+
+Cluster Beta=1.1, Cdelta=0.08:
+-------------------------------
+1) Las distribuciones de estas preguntas a la vista no parecen muy distintas de las anteriores, pero
+se nota una diferencia de que no tienen una "zona de mínimo" en la región de bajo Beta y alto Cosd.
+Lo cuál me parece raro, porque si en realidad se ubican en un mayor Cosd debería entonces tener más
+resonancia con esa región. Pero de nuevo, las polarizaciones descorrelacionadas con anchura son las
+que se llevan todo porque al final es a lo que se parecen todas las encuestas.
+2) Podría armar los histogramas de distancias en los puntos: (0.08,1.1) y (0,0.6)
+3) También armemos histogramas 2D en esos puntos
+
+Cluster Beta=1.1, Cdelta=0.14:
+-------------------------------
+1) En estas distribuciones se ve que tienen más agentes sobre la diagonal que por fuera. El hecho
+de que empiecen a verse un poco distintas se nota en que la región de Beta bajo y Cosdelta alto
+tengo una zona de mínimo clara para algunas preguntas cuando considero las 40 simulaciones más similares.
+2) Para 40 simulaciones el gráfico de distribución de pares de preguntas muestra que se esparcen
+mucho estas preguntas.
+3) Podría armar los histogramas de distancias en los puntos: (0.14,1.1), (0.04,0.6), (0.48, 0.4)
+4) También armemos histogramas 2D en esos puntos
+
+Cluster Beta=0.4, Cdelta=0.48:
+-------------------------------
+1) A diferencia de la máquina, yo no veo por qué estas distribuciones son distintas a las otras. Eso puede
+ser el por qué para pocas simulaciones esto VUELVE a caer en la región de Beta=0.6 y Cosd=0.
+ Incluso en 40 simulaciones, están básicamente todos concentrados en la zona esa.
+2) Podría armar los histogramas de distancias en los puntos: (0.02,0.6) y (0.48, 0.4)
+3) También armemos histogramas 2D en esos puntos
+
+Hagamos estos gráficos planteados, después arranquemos con una presentación y de ahí vemos qué sale con esto.
+
+Puse a armar todos los gráficos importantes, eso en diez debería estar. Yo en un rato voy a estar yendo.
+Me está frustrando esto. Llevo más de una semana con este tema. Quizás mi problema fue creer tan ingenuamente
+que en quince minutos lo resolvía. ¿Qué me hizo tardar tanto al principio? Creo que separar los
+datos y las preguntas, ver cómo tomar los conjuntos de clusters. Eso fue el problema al principio. Y
+elegir los gráficos con info que pensé que iba a necesitar. Eso también.
+ Estoy frustrado. Pasó una semana, apenas avancé, tengo que hacer la presentación del Ddays, estudiar
+alemán, continuar con el armado de un resumen de los temas y otras cosas. Bueno, iré a casa, pensaré 
+un poco en esto hasta subir al tren, y ahí me pondré con el libro y dejaré las cosas.
+
+La conclusión que yo saco es que el problema es que la clasificación no es tan directa u obvia
+como planteamos en un inicio. Los estados de polarización descorrelacionada parecen tener la dispersión
+suficiente para parecerse a los estados de las distribuciones, las cuales no se parecen realmente a algo
+en particular de forma tan clara. Eso está generando el problema. Mañana intentaré presentar esto a Pablo
+y ya de ahí reorganizaré esto, le contaré lo que creo que pasa y veremos cómo sigue.
