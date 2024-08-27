@@ -1132,6 +1132,85 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, dict_labe
             plt.close()
              
     
+    # Hago ahora lo mismo pero para los mínimos de la distancia JS promedio con un
+    # subconjunto de las simulaciones
+    
+    Dist_JS_sort = np.sort(Dist_JS)
+    
+    for rank in range(1,3):
+        
+        Dist_JS_prom = np.mean(Dist_JS_sort[:,:,0:rank*10], axis=2)
+        tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
+        iMin = np.argmin(Dist_JS[tupla])
+        distan = np.min(Dist_JS[tupla])
+        
+        PARAM_X = XX[tupla[0],tupla[1]]
+        PARAM_Y = YY[tupla[0],tupla[1]]
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF_datos.loc[(DF_datos["tipo"]==TIPO) & 
+                                    (DF_datos["n"]==AGENTES) & 
+                                    (DF_datos["Extra"]==EXTRAS) & 
+                                    (DF_datos["parametro_x"]==PARAM_X) &
+                                    (DF_datos["parametro_y"]==PARAM_Y), "nombre"])
+        
+        #-----------------------------------------------------------------------------------------
+        
+        for nombre in archivos:
+            
+            repeticion = int(DF_datos.loc[DF_datos["nombre"]==nombre,"iteracion"])
+            if repeticion == iMin:
+            
+                # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+                # Distribución final
+                # Semilla
+                # Fragmentos Matriz de Adyacencia
+                
+                # Levanto los datos del archivo
+                Datos = ldata(path / nombre)
+                
+                # Leo los valores de distribución de opiniones, los cuales se distribuyen
+                # en 42x42 cajas.
+                dist_final = np.reshape(np.array(Datos[1][:-1],dtype="float"),(42,42))
+                # Reconstruyo las opiniones finales normalizadas a partir de estos datos.
+                Opifinales = Reconstruccion_opiniones(dist_final, AGENTES, T)
+                Opifinales = Opifinales*bins[-1]
+                X_0 = Opifinales[0::T]
+                Y_0 = Opifinales[1::T]
+                
+                # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+                
+                #----------------------------------------------------------------------------------------------------------------------------------
+                
+                # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
+                
+                direccion_guardado = Path("../../../Imagenes/{}/Hist_2D_{}_{}vs{}_r{}.png".format(carpeta,simil,code_y,code_x,rank))
+                
+                # indice = np.where(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] == repeticion)[0][0]
+                # estado = int(Frecuencias[indice])
+                
+                #----------------------------------------------------------------------------------------------------------------------------------
+                
+                # Tengo que armar los valores de X e Y que voy a graficar
+                
+                X = X_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
+                Y = Y_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
+                
+                
+                #----------------------------------------------------------------------------------------------------------------------------------
+                
+                # Armo mi gráfico, lo guardo y lo cierro
+                
+                plt.rcParams.update({'font.size': 44})
+                plt.figure(figsize=(28,21))
+                _, _, _, im = plt.hist2d(X, Y, bins=bins,density=True,cmap="inferno")
+                plt.xlabel(r"$x_i^1$")
+                plt.ylabel(r"$x_i^2$")
+                plt.title(r'Distancia JS = {:.2f}, ${}$={:.2f}, ${}$={:.2f}, simulaciones={}'.format(distan,SIM_param_x,PARAM_X,SIM_param_y,PARAM_Y,rank*10) + '\n {} vs {}'.format(dict_labels[code_y],dict_labels[code_x]))
+                plt.colorbar(im, label='Fracción')
+                plt.savefig(direccion_guardado ,bbox_inches = "tight")
+                plt.close()
+    
     #--------------------------------------------------------------------------------
     """
     # Lo que quiero hacer acá es armar gráficos de promedios de distancias rankeados.

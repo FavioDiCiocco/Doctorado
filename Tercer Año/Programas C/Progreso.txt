@@ -2993,3 +2993,28 @@ como planteamos en un inicio. Los estados de polarización descorrelacionada par
 suficiente para parecerse a los estados de las distribuciones, las cuales no se parecen realmente a algo
 en particular de forma tan clara. Eso está generando el problema. Mañana intentaré presentar esto a Pablo
 y ya de ahí reorganizaré esto, le contaré lo que creo que pasa y veremos cómo sigue.
+
+------------------------------------------------------------------------------------------
+
+27/08/2024
+
+Armé una presentación para mostrarle a Pablo en lo que va el tema de la distribución de preguntas. Fue
+un bardo, muchos gráficos y bastante frustración. ¿Pero qué sacamos en claro?
+ Creo que la conclusión a la que podemos llegar es que teníamos la esperanza que considerando todas las
+simulaciones, los gráficos de distancia JS media dieran mínimos en distintas regiones del espacio de
+parámetros. Eso sí ocurrió. Pero en los gráficos y preguntas que miramos también nos comimos un amague.
+Y es que si miramos los subconjuntos de simulaciones más similares, resulta que las distancias más pequeñas
+NO se encuentran donde se encuentran los mínimos cuando considero el conjunto entero de simulaciones,
+sino más bien que se encuentran siempre en la región donde están las polarizaciones descorrelacionadas.
+Al parecer todas las distribuciones de las encuestas más o menos se parecen a eso. Podría revisar que
+efectivamente sea eso a lo que están pareciéndose más, si tomo las distancias mínimas rankeadas.
+Sumemos eso a los gráficos, sólo para terminar de confirmar mis sospechas. Porque los histogramas
+de mínima distancia dan todos gráficos distintos, pero es porque es lo que observan en el punto de mínima
+distancia promedio considerando TODAS las simulaciones.
+
+Hablé con Pablo para juntarme, no sé si hoy va a poder. Mañana tendré que charlar esto con él, después
+pasar a siguiente tema, plantearle la urgencia sobre lo del Ddays, aunque lo único que se necesita
+ahí es un abstract, armar un resumen de lo que venimos trabajando, ir pensando un planteo para el
+paper y estudiar las cosas que Hugo me pasó para que estudie.
+
+Armé ese pedazo de código, cuando llego a casa lo mando. Mejor rajo porque quizás no llego a entrenar.
