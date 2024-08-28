@@ -3018,3 +3018,18 @@ ahí es un abstract, armar un resumen de lo que venimos trabajando, ir pensando 
 paper y estudiar las cosas que Hugo me pasó para que estudie.
 
 Armé ese pedazo de código, cuando llego a casa lo mando. Mejor rajo porque quizás no llego a entrenar.
+
+------------------------------------------------------------------------------------------
+
+28/08/2024
+
+Charlé con Pablo. Me gané una cagada a pedo, pero no fue terrible. Le parece razonable mi propuesta.
+Pablo me dijo que haga esfuerzos para que lo que voy a presentar se entienda mejor.
+1) Mostrar las distribuciones de los estados en las regiones. Eso tiene que estar al lado de todo
+lo que muestro
+2) Agregar las distribuciones en los bordes de los histogramas de las simulaciones.
+
+Ya salió la prueba de oposición para ayudante de primera. Tuve suerte, los temas propuestos de la prueba de
+oposición son iguales a los de una prueba que ya tengo. Así que puedo mandar eso rápido y fácil. Más tarde
+lo mando hoy. La verdad, el ejercicio está re bien planteado. Queda quizás agregarle info de 
+Bibliografía recomendada. 
