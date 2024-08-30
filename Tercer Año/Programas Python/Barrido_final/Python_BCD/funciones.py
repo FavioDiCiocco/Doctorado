@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.pyplot import cm
 from matplotlib.ticker import FormatStrFormatter
+from matplotlib.gridspec import GridSpec
 from scipy.spatial.distance import jensenshannon
 import pandas as pd
 import numpy as np
@@ -153,7 +154,7 @@ def Mapa_Colores_Entropia_opiniones(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_pa
 # Esta función es la que arma los gráficos de los histogramas de opiniones
 # finales en el espacio de tópicos
 
-def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
+def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,Tupla_total,
                                  ID_param_x,ID_param_y,ID_param_extra_1):
 
     # Defino la cantidad de agentes de la red
@@ -169,7 +170,7 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
 #    Tupla_total = [(param_x,param_y) for param_x in Arr_param_x
 #                   for param_y in Arr_param_y]
     
-    Tupla_total = [(0,0.4), (0,0.6), (0.02,0.5)]
+    # Tupla_total = [(0,0.4), (0,0.6), (0.02,0.5)]
     
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Opiniones"
@@ -241,13 +242,42 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
                     
                     # Armo mi gráfico, lo guardo y lo cierro
                     
-                    plt.rcParams.update({'font.size': 32})
-                    plt.figure(figsize=(20,15))
-                    _, _, _, im = plt.hist2d(X, Y, bins=bins,density=True,cmap="inferno")
-                    plt.xlabel(r"$x_i^1$")
-                    plt.ylabel(r"$x_i^2$")
-                    plt.title('Histograma 2D, {}={:.2f}_{}={:.2f}\n{}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y,Nombres[estado]))
-                    plt.colorbar(im, label='Fracción')
+                    # Set up the figure and grid layout
+                    plt.rcParams.update({'font.size': 28})
+                    fig = plt.figure(figsize=(16, 12))
+                    gs = GridSpec(4, 5, figure=fig, hspace=0.2, wspace=0.2, width_ratios=[1, 1, 1, 1, 0.1])
+                    
+                    # Add a title to the figure
+                    fig.suptitle('Histograma 2D, {}={:.2f}_{}={:.2f}\n{}'.format(ID_param_x,PARAM_X,ID_param_y,PARAM_Y,Nombres[estado]))
+                    
+                    # Main plot: 2D histogram
+                    ax_main = fig.add_subplot(gs[1:, :-2])  # 3x3 space for the main plot
+                    hist2d, xedges, yedges, im = ax_main.hist2d(
+                        x=X, 
+                        y=Y, 
+                        cmap="binary", 
+                        density=True,
+                        bins= bins)
+                    
+                    # Add a colorbar
+                    cbar = fig.colorbar(im, ax=ax_main, cax=fig.add_subplot(gs[1:, -1]))  # Colorbar in the last column
+                    cbar.ax.tick_params(labelsize=28)  # Optionally, set the size of the colorbar labels
+                    cbar.ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f'{x:.2f}'))  # Format colorbar ticks to 2 decimal places
+                    
+                    # Top histogram (1D)
+                    ax_top = fig.add_subplot(gs[0, :-2], sharex=ax_main)
+                    ax_top.hist(X, bins=bins, color='tab:blue', edgecolor='black')
+                    ax_top.axis('off')  # Optionally turn off axis labels
+                    
+                    # Right histogram (1D)
+                    ax_right = fig.add_subplot(gs[1:, -2], sharey=ax_main)
+                    ax_right.hist(Y, bins=bins, color='tab:blue', edgecolor='black', orientation='horizontal')
+                    ax_right.axis('off')  # Optionally turn off axis labels
+                    
+                    # Set labels
+                    ax_main.set_xlabel(r"$x_i^1$")
+                    ax_main.set_ylabel(r"$x_i^2$")
+                    
                     plt.savefig(direccion_guardado ,bbox_inches = "tight")
                     plt.close()
 
@@ -1121,13 +1151,42 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, dict_labe
             
             # Armo mi gráfico, lo guardo y lo cierro
             
-            plt.rcParams.update({'font.size': 44})
-            plt.figure(figsize=(28,21))
-            _, _, _, im = plt.hist2d(X, Y, bins=bins,density=True,cmap="inferno")
-            plt.xlabel(r"$x_i^1$")
-            plt.ylabel(r"$x_i^2$")
-            plt.title(r'Distancia JS = {:.2f}, ${}$={:.2f}, ${}$={:.2f}'.format(distan,SIM_param_x,PARAM_X,SIM_param_y,PARAM_Y) + '\n {} vs {}'.format(dict_labels[code_y],dict_labels[code_x]))
-            plt.colorbar(im, label='Fracción')
+            # Set up the figure and grid layout
+            plt.rcParams.update({'font.size': 28})
+            fig = plt.figure(figsize=(16, 12))
+            gs = GridSpec(4, 5, figure=fig, hspace=0.2, wspace=0.2, width_ratios=[1, 1, 1, 1, 0.1])
+            
+            # Add a title to the figure
+            fig.suptitle(r'Distancia JS = {:.2f}, ${}$={:.2f}, ${}$={:.2f}'.format(distan,SIM_param_x,PARAM_X,SIM_param_y,PARAM_Y) + '\n {} vs {}'.format(dict_labels[code_y],dict_labels[code_x]))
+            
+            # Main plot: 2D histogram
+            ax_main = fig.add_subplot(gs[1:, :-2])  # 3x3 space for the main plot
+            hist2d, xedges, yedges, im = ax_main.hist2d(
+                x=X, 
+                y=Y, 
+                cmap="binary", 
+                density=True,
+                bins= bins)
+            
+            # Add a colorbar
+            cbar = fig.colorbar(im, ax=ax_main, cax=fig.add_subplot(gs[1:, -1]))  # Colorbar in the last column
+            cbar.ax.tick_params(labelsize=28)  # Optionally, set the size of the colorbar labels
+            cbar.ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f'{x:.2f}'))  # Format colorbar ticks to 2 decimal places
+            
+            # Top histogram (1D)
+            ax_top = fig.add_subplot(gs[0, :-2], sharex=ax_main)
+            ax_top.hist(X, bins=bins, color='tab:blue', edgecolor='black')
+            ax_top.axis('off')  # Optionally turn off axis labels
+            
+            # Right histogram (1D)
+            ax_right = fig.add_subplot(gs[1:, -2], sharey=ax_main)
+            ax_right.hist(Y, bins=bins, color='tab:blue', edgecolor='black', orientation='horizontal')
+            ax_right.axis('off')  # Optionally turn off axis labels
+            
+            # Set labels
+            ax_main.set_xlabel(r"$x_i^1$")
+            ax_main.set_ylabel(r"$x_i^2$")
+            
             plt.savefig(direccion_guardado ,bbox_inches = "tight")
             plt.close()
              
@@ -1201,13 +1260,42 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, dict_labe
                 
                 # Armo mi gráfico, lo guardo y lo cierro
                 
-                plt.rcParams.update({'font.size': 44})
-                plt.figure(figsize=(28,21))
-                _, _, _, im = plt.hist2d(X, Y, bins=bins,density=True,cmap="inferno")
-                plt.xlabel(r"$x_i^1$")
-                plt.ylabel(r"$x_i^2$")
-                plt.title(r'Distancia JS = {:.2f}, ${}$={:.2f}, ${}$={:.2f}, simulaciones={}'.format(distan,SIM_param_x,PARAM_X,SIM_param_y,PARAM_Y,rank*10) + '\n {} vs {}'.format(dict_labels[code_y],dict_labels[code_x]))
-                plt.colorbar(im, label='Fracción')
+                # Set up the figure and grid layout
+                plt.rcParams.update({'font.size': 28})
+                fig = plt.figure(figsize=(16, 12))
+                gs = GridSpec(4, 5, figure=fig, hspace=0.2, wspace=0.2, width_ratios=[1, 1, 1, 1, 0.1])
+                
+                # Add a title to the figure
+                fig.suptitle(r'Distancia JS = {:.2f}, ${}$={:.2f}, ${}$={:.2f}, simulaciones={}'.format(distan,SIM_param_x,PARAM_X,SIM_param_y,PARAM_Y,rank*10) + '\n {} vs {}'.format(dict_labels[code_y],dict_labels[code_x]))
+                
+                # Main plot: 2D histogram
+                ax_main = fig.add_subplot(gs[1:, :-2])  # 3x3 space for the main plot
+                hist2d, xedges, yedges, im = ax_main.hist2d(
+                    x=X, 
+                    y=Y, 
+                    cmap="binary", 
+                    density=True,
+                    bins= bins)
+                
+                # Add a colorbar
+                cbar = fig.colorbar(im, ax=ax_main, cax=fig.add_subplot(gs[1:, -1]))  # Colorbar in the last column
+                cbar.ax.tick_params(labelsize=28)  # Optionally, set the size of the colorbar labels
+                cbar.ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: f'{x:.2f}'))  # Format colorbar ticks to 2 decimal places
+                
+                # Top histogram (1D)
+                ax_top = fig.add_subplot(gs[0, :-2], sharex=ax_main)
+                ax_top.hist(X, bins=bins, color='tab:blue', edgecolor='black')
+                ax_top.axis('off')  # Optionally turn off axis labels
+                
+                # Right histogram (1D)
+                ax_right = fig.add_subplot(gs[1:, -2], sharey=ax_main)
+                ax_right.hist(Y, bins=bins, color='tab:blue', edgecolor='black', orientation='horizontal')
+                ax_right.axis('off')  # Optionally turn off axis labels
+                
+                # Set labels
+                ax_main.set_xlabel(r"$x_i^1$")
+                ax_main.set_ylabel(r"$x_i^2$")
+                
                 plt.savefig(direccion_guardado ,bbox_inches = "tight")
                 plt.close()
     

@@ -3032,4 +3032,25 @@ lo que muestro
 Ya salió la prueba de oposición para ayudante de primera. Tuve suerte, los temas propuestos de la prueba de
 oposición son iguales a los de una prueba que ya tengo. Así que puedo mandar eso rápido y fácil. Más tarde
 lo mando hoy. La verdad, el ejercicio está re bien planteado. Queda quizás agregarle info de 
-Bibliografía recomendada. 
+Bibliografía recomendada.
+
+A la tarde estuve estudiando alemán.
+
+------------------------------------------------------------------------------------------
+
+29/08/2024
+
+Llegué temprano, vengo despertándome bien estos días. Magia. Me encanta. No sé de dónde salen
+las ganas de vivir.
+
+Lo primero para resolver es lo de agregar las distribuciones a los bordes de los histogramas en las
+simulaciones. Bien, ya descubrí cómo resolverlo. Qué grande chatGPT. Bueno, creo que ahí está,
+mandemos a correr todo de nuevo.
+
+Hecho eso, hoy me gustaría tener hecho todo ese análisis sobre la clasificación de los pares de preguntas.
+Debería también arrancar con la idea de definir cuáles son los gráficos que tengo y que vamos a mostrar.
+Veré qué puedo resolver cosa de tener algo preparado para Pablo el lunes.
+
+Estoy rearmando la presentación, creo que está quedando bastante bien y que mañana puedo tener eso terminado
+y el resumen de lo que vengo laburado ya planteado. También podría sino mañana ponerme a leer lo de 
+Kolmogorov-Smirnoff.

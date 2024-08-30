@@ -435,6 +435,7 @@ for code_1,code_2 in zip(Df_cluster["código x"],Df_cluster["código y"]):
     fig = plt.figure(figsize=(16, 12))
     gs = GridSpec(4, 5, figure=fig, hspace=0.2, wspace=0.2, width_ratios=[1, 1, 1, 1, 0.1])
     
+    
     # Main plot: 2D histogram
     ax_main = fig.add_subplot(gs[1:, :-2])  # 3x3 space for the main plot
     hist2d, xedges, yedges, im = ax_main.hist2d(
