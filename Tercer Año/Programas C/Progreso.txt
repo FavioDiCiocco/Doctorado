@@ -3054,3 +3054,55 @@ Veré qué puedo resolver cosa de tener algo preparado para Pablo el lunes.
 Estoy rearmando la presentación, creo que está quedando bastante bien y que mañana puedo tener eso terminado
 y el resumen de lo que vengo laburado ya planteado. También podría sino mañana ponerme a leer lo de 
 Kolmogorov-Smirnoff.
+
+------------------------------------------------------------------------------------------
+
+30/08/2024
+
+A la mañana fui a la clase de Alemán. Después me junté con Lucio para ver un poco el tema del
+laburo de Granovetter y preparar una charla con Pablo. Terminada la charla, me puse con la
+presentación sobre la clasificación de preguntas. Lo terminé.
+
+------------------------------------------------------------------------------------------
+
+01/09/2024
+
+Hoy mandé la prueba de oposición y me puse a leer un poco del test de Kolmogorov-Smirnoff.
+No llegué a leer mucho.
+
+------------------------------------------------------------------------------------------
+
+02/09/2024
+
+Hoy a la mañana costó levantarse. Cuando llegué, la puerta al pasillo estaba cerrada. Después
+haciéndome un café se me rompió la taza. Ahora voy a intentar ponerme a leer cosas del
+Kolmogorov-Smirnoff, a la tarde me pongo a preparar la presentación sobre lo que ya
+tengo.
+
+Leyendo lo que me pasó Hugo sobre el test de Kolmogorov-Smirnoff, mi primera duda es que
+el libro propone que se necesita que la distribución a considerar no tenga más de un dato en
+un mismo valor. ¿Esto es así? ¿O se puede armar distinto?
+
+La idea en dos dimensiones es que te parás en un punto y partis tu distribución 2D en cuatro
+cuadrantes. Calculás entonces la fracción de datos de tu primer distribución (las encuestas)
+y de tu segunda distribución (las simulaciones) en cada cuadrante, y con eso calculás la diferencia
+en cada cuadrante de esas dos medidas. Luego, hacés eso para todos los puntos. La máxima
+diferencia que encuentres es una medida similar a lo que calculás en el caso 1D, que es la diferencia
+de las distribuciones acumuladas.
+
+Le mostré el laburo a Pablo, me dijo que le copó lo que vengo haciendo. Bueno, me alegro que
+haya valido la pena. Me dijo que haga los siguientes cambios, que debería tener
+para mañana terminados:
+
+1) El gráfico de preguntas clasificadas en el espacio de parámetros hacerla por colores según
+cluster. Tengo que ver cómo resuelvo eso.
+2) Reducir el texto en los títulos de los gráficos. Empezando por los gráficos de preguntas
+en el espacio de parámetros. Y poner en negrita el texto adecuado. Ver si puedo hacer
+eso en el texto de plt.
+3) Revisar que sea más claro cuando menciono los estados en las regiones, que se vea cuál
+región es cuál. Podría agregar un grafiquito abajo como para recordar las regiones.
+4) Reordenar las diapositivas para mostrar los dos casos extremos de pares de preguntas que
+se mueven de una región a la otra. El resto tenerlo ahí por si preguntan.
+5) Si tengo tiempo, podría intentar implementar lo de lograr que las distribuciones se muestren
+rotadas. Al final no coincidí en consultarle a Pablo si mejor rotar o no las distribuciones.
+Imagino que lo mejor es NO presentar un gráfico que se contradice consigo mismo a nivel fundamental.
