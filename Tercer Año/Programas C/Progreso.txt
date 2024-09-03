@@ -3106,3 +3106,28 @@ se mueven de una región a la otra. El resto tenerlo ahí por si preguntan.
 5) Si tengo tiempo, podría intentar implementar lo de lograr que las distribuciones se muestren
 rotadas. Al final no coincidí en consultarle a Pablo si mejor rotar o no las distribuciones.
 Imagino que lo mejor es NO presentar un gráfico que se contradice consigo mismo a nivel fundamental.
+
+------------------------------------------------------------------------------------------
+
+03/09/2024
+
+Llegué un poco sobre la hora, pero venimos bien. Lo siguiente es resolver las cosas que anoté
+ayer. Empecemos por cambiar los colores del gráfico de preguntas clasificadas.
+
+Arranquemos con algo simple, pasemos primero un diccionario cuyas keys sean las tuplas de
+beta-cosd de los clusters y los valores sean los nombres de los archivos de ese cluster.
+Ahí modifiqué la función que arma los gráficos de preguntas en el espacio de parámetros para
+que reciba un dict de los clusters y de las preguntas en cada uno de esos clusters. Esto
+es con el objetivo de que cada cluster se pinte de un color distinto.
+
+Debería revisar que esto no me genere conflictos para después. El punto 2 también lo resolví
+al mismo tiempo. Aunque tengo que revisar los conflictos de textbf.
+
+Ya hice el punto 4. Y agregué unos gráficos de histogramas de distancias. No hice lo de rotar los gráficos
+según las distribuciones. Debería ver de corregir eso para la próxima. Me parece que no es
+tan terrible. Mañana a la mañana me pondré a repasar la charla para asegurarme de que estoy
+preparado. En la semana tengo que estudiar Alemán, preparar la presentación del Ddays y
+continuar el laburo de la parte del resumen. Aunque al mismo tiempo, voy a tener que hacer algo
+nuevo. Creo que se están organizando las cosas, no es tan terrible. Si llego temprano hoy, voy
+a ver si hago algo de estas cosas. Hoy no voy a hacer ejercicio, estoy muerto de sueño.
+Y me quiero ir a dormir temprano.

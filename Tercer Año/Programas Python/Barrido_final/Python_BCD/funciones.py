@@ -2173,16 +2173,11 @@ def Reconstruccion_opiniones(Dist_simulada, N, T):
 
 # Armo una función que ubique los pares de preguntas en el espacio de parámetros.
 
-def Preguntas_espacio_parametros(DF_datos,arc_matrices,path_matrices,carpeta,
+def Preguntas_espacio_parametros(DF_datos,dic_clusters,path_matrices,carpeta,
                                  SIM_param_x,SIM_param_y):
     
     # Armo un rng para agregar un ruido normal
     rng = np.random.default_rng()
-    
-    # Defino los arrays donde guardo las posiciones de las distancias
-    # mínimas promedio
-    X = np.zeros((5,len(arc_matrices)))
-    Y = np.zeros((5,len(arc_matrices)))
     
     # Defino los arrays de parámetros diferentes
     Arr_param_x = np.unique(DF_datos["parametro_x"])
@@ -2192,36 +2187,50 @@ def Preguntas_espacio_parametros(DF_datos,arc_matrices,path_matrices,carpeta,
     # Construyo las grillas que voy a usar para ubicar los valores de X e Y
     XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
     
-    # Itero en todos los pares de preguntas para construir la Matriz
-    # de distancia de JS de cada una y de ahí extraer el punto de mínima
-    # distancia promedio
+    # Armo un diccionario donde colocar los valores de X y de Y de cada cluster
+    dict_grafcluster = dict()
     
-    for indice,nombre_csv in enumerate(arc_matrices):
-        
-        # Calculo la matriz de distancias JS y la ordeno
-        Dist_JS, code_x, code_y = Lectura_Matriz_DJS(size_y, size_x, path_matrices, nombre_csv)
-        Dist_JS = np.sort(Dist_JS)
-        
-        # Obtengo la ubicación del mínimo de distancia JS promediado con todas las simulaciones
-        # y agrego ese punto a los arrays que uso para graficar
-        
-        tupla = np.unravel_index(np.argmin(np.mean(Dist_JS,axis=2)),np.mean(Dist_JS,axis=2).shape)
-        X[0,indice] = XX[tupla]
-        Y[0,indice] = YY[tupla]
-        
-        for rank in range(1,5):
-            tupla = np.unravel_index(np.argmin(np.mean(Dist_JS[:,:,0:rank*10],axis=2)),np.mean(Dist_JS,axis=2).shape)
-            X[rank,indice] = XX[tupla]
-            Y[rank,indice] = YY[tupla]
-        
-        
-    # Antes de graficar, necesito agregar ruido para que los puntos no se solapen.
-    # El ruido del eje X y del eje Y tiene que ser distinto, ya que el espacio entre
-    # puntos en ambos ejes es distinto.
     
-    X = X + rng.normal(loc = 0, scale = (Arr_param_x[1]-Arr_param_x[0])/5, size = X.shape)
-    Y = Y + rng.normal(loc = 0, scale = (Arr_param_y[1]-Arr_param_y[0])/5, size = Y.shape)
-    
+    for cluster,arc_matrices in dic_clusters.items():
+        
+        
+        # Defino los arrays donde guardo las posiciones de las distancias
+        # mínimas promedio
+        X = np.zeros((5,len(arc_matrices)))
+        Y = np.zeros((5,len(arc_matrices)))
+        
+        # Itero en todos los pares de preguntas para construir la Matriz
+        # de distancia de JS de cada una y de ahí extraer el punto de mínima
+        # distancia promedio
+        
+        for indice,nombre_csv in enumerate(arc_matrices):
+            
+            # Calculo la matriz de distancias JS y la ordeno
+            Dist_JS, code_x, code_y = Lectura_Matriz_DJS(size_y, size_x, path_matrices, nombre_csv)
+            Dist_JS = np.sort(Dist_JS)
+            
+            # Obtengo la ubicación del mínimo de distancia JS promediado con todas las simulaciones
+            # y agrego ese punto a los arrays que uso para graficar
+            
+            tupla = np.unravel_index(np.argmin(np.mean(Dist_JS,axis=2)),np.mean(Dist_JS,axis=2).shape)
+            X[0,indice] = XX[tupla]
+            Y[0,indice] = YY[tupla]
+            
+            for rank in range(1,5):
+                tupla = np.unravel_index(np.argmin(np.mean(Dist_JS[:,:,0:rank*10],axis=2)),np.mean(Dist_JS,axis=2).shape)
+                X[rank,indice] = XX[tupla]
+                Y[rank,indice] = YY[tupla]
+        
+        
+        # Antes de graficar, necesito agregar ruido para que los puntos no se solapen.
+        # El ruido del eje X y del eje Y tiene que ser distinto, ya que el espacio entre
+        # puntos en ambos ejes es distinto.
+        
+        X = X + rng.normal(loc = 0, scale = (Arr_param_x[1]-Arr_param_x[0])/5, size = X.shape)
+        Y = Y + rng.normal(loc = 0, scale = (Arr_param_y[1]-Arr_param_y[0])/5, size = Y.shape)
+        
+        dict_grafcluster[cluster] = (X,Y)
+        
     
     # Delineo las regiones del espacio Beta-Cosd
     plt.rcParams.update({'font.size': 44})
@@ -2262,14 +2271,15 @@ def Preguntas_espacio_parametros(DF_datos,arc_matrices,path_matrices,carpeta,
     y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
     plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
     plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
-
-    # Lo que queda es hacer los plot scatter de las preguntas
-    plt.scatter(X[0],Y[0], marker="o", s = 500, color = "green", alpha = 0.7)
+    
+    for cluster in dic_clusters.keys():
+        # Lo que queda es hacer los plot scatter de las preguntas
+        plt.scatter(dict_grafcluster[cluster][0][0],dict_grafcluster[cluster][1][0], marker="o", s = 500, alpha = 0.7)
     plt.xlabel(r"${}$".format(SIM_param_x))
     plt.ylabel(r"${}$".format(SIM_param_y))
     plt.xlim(-0.05,0.5)
     plt.ylim(0,1.5)
-    plt.title("Pares de preguntas en el espacio de parámetros \n Todas las simulaciones, {} pares de preguntas".format(arc_matrices.shape[0]))
+    plt.title("\textbf{Todas las simulaciones}")
     direccion_guardado = Path("../../../Imagenes/{}/Dist_preguntas_espacio.png".format(carpeta))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
@@ -2316,12 +2326,13 @@ def Preguntas_espacio_parametros(DF_datos,arc_matrices,path_matrices,carpeta,
         plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
         plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
         
-        plt.scatter(X[rank],Y[rank], marker="o", s = 500, color = "green", alpha = 0.7)
+        for cluster in dic_clusters.keys():
+            plt.scatter(dict_grafcluster[cluster][0][rank],dict_grafcluster[cluster][1][rank], marker="o", s = 500, alpha = 0.7)
         plt.xlabel(r"${}$".format(SIM_param_x))
         plt.ylabel(r"${}$".format(SIM_param_y))
         plt.xlim(-0.05,0.5)
         plt.ylim(0,1.5)
-        plt.title("Pares de preguntas en el espacio de parámetros \n {} simulaciones más similares, {} pares de preguntas".format(rank*10,arc_matrices.shape[0]))
+        plt.title(r"{} \textbf{{{+ simil}}}".format(rank*10))
         direccion_guardado = Path("../../../Imagenes/{}/Dist_preguntas_espacio_r{}.png".format(carpeta,rank))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
