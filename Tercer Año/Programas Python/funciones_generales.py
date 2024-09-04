@@ -3711,3 +3711,545 @@ def FracHist_CantEstados(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
 
+#-----------------------------------------------------------------------------------------------
+
+# Voy a realizar dos mapas de colores. Uno con el promedio de un subconjunto de distancias
+# de JS y otro con la fracción de simulaciones que estoy contando para ese promedio
+
+def Doble_Mapacol_PromyFrac(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta, path,
+                            SIM_param_x, SIM_param_y):
+    
+    # Arranco eligiendo un rango de criterios. Yo diría de mover entre 0.25 y 0.75
+    Criterios = np.arange(6)*0.1 + 0.25
+    
+    # Defino los arrays de parámetros diferentes
+    Arr_param_x = np.unique(DF_datos["parametro_x"])
+    Arr_param_y = np.unique(DF_datos["parametro_y"])
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    ZZ = np.zeros((2,XX.shape[0],XX.shape[1]))
+    
+    # Primero reviso mis conjuntos de distancias para cada punto del espacio. A esas distancias
+    # les calculo el promedio para el subconjunto cuya distancia sea menor que las dist_lim.
+    
+    for i,dist_crit in enumerate(Criterios):
+    
+        for fila in range(Dist_JS.shape[0]):
+            for columna in range(Dist_JS.shape[1]):
+                
+                distancias = Dist_JS[fila,columna][Dist_JS[fila,columna] <= dist_crit]
+                if distancias.shape[0] == 0:
+                    continue
+                ZZ[0,fila,columna] = np.mean(distancias)
+                ZZ[1,fila,columna] = distancias.shape[0]/Dist_JS.shape[2]
+        
+        #------------------------------------------------------------------------
+        
+        # Armo los parámetros del gráfico de promedios
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("Promedios Distancia JS subconjunto",figsize=(28,21))
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        plt.title("Promedios Distancias Jensen-Shannon, distancia corte = {}\n {} vs {}".format(dist_crit,dict_labels[code_y],dict_labels[code_x]))
+        
+        # Guardo la figura
+        direccion_guardado = Path("../../../Imagenes/{}/DistPromSubconj_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
+        
+        plt.pcolormesh(XX,YY,ZZ[0], shading="nearest", cmap = "viridis")
+        plt.colorbar()
+        
+        # Guardo la figura y la cierro
+        plt.savefig(direccion_guardado , bbox_inches = "tight")
+        plt.close("Promedios Distancia JS subconjunto")
+        
+        #------------------------------------------------------------------------
+        
+        # Armo los parámetros del gráfico de promedios
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("Fraccion simulaciones subconjunto",figsize=(28,21))
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        plt.title("Fraccion de simulaciones, distancia corte = {}\n {} vs {}".format(dist_crit,dict_labels[code_y],dict_labels[code_x]))
+        
+        # Guardo la figura
+        direccion_guardado = Path("../../../Imagenes/{}/FracSim_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
+        
+        plt.pcolormesh(XX,YY,ZZ[1], shading="nearest", cmap = "bone", vmin = 0, vmax = 1)
+        plt.colorbar()
+        
+        # Guardo la figura y la cierro
+        plt.savefig(direccion_guardado , bbox_inches = "tight")
+        plt.close("Fraccion simulaciones subconjunto")
+
+#-----------------------------------------------------------------------------------------------
+
+# Armo una función que reconstruya las opiniones de los agentes a partir
+# de la distribución final de las opiniones.
+
+def Reconstruccion_opiniones(Dist_simulada, N, T):
+    
+    # Construyo un array que tenga los valores en los puntos medios de cada caja.
+    puntos_medios = (np.linspace(-1,1,Dist_simulada.shape[0]+1)[0:-1] + np.linspace(-1,1,Dist_simulada.shape[0]+1)[1:])/2
+    
+    # Construyo el vector de Opiniones que voy a returnear, así como
+    # un variable que voy a necesitar.
+    Opiniones = np.zeros(N*T)
+    agregados = 0
+    
+    # Recorro cada caja y agrego agentes según la fracción de agentes en cada
+    # caja. Asigno sus opiniones según la caja en la que se encuentran
+    for fila in range(Dist_simulada.shape[0]):
+        for columna in range(Dist_simulada.shape[1]):
+            
+            agentes_agregar =round(Dist_simulada[fila,columna] * N)
+            if(agentes_agregar > 0):
+                x_i = puntos_medios[fila]
+                y_i = puntos_medios[columna]
+                
+                Sub_opiniones = np.zeros(agentes_agregar*T)
+                Sub_opiniones[0::T] = np.ones(agentes_agregar)*x_i
+                Sub_opiniones[1::T] = np.ones(agentes_agregar)*y_i
+                
+                inicio = agregados*T
+                final = (agentes_agregar+agregados)*T
+                
+                Opiniones[inicio:final] = Sub_opiniones
+                
+                agregados += agentes_agregar
+            
+    return(Opiniones)
+
+#-----------------------------------------------------------------------------------------------
+
+# Armo una función que ubique los pares de preguntas en el espacio de parámetros.
+
+def Preguntas_espacio_parametros(DF_datos,arc_matrices,path_matrices,carpeta,
+                                 SIM_param_x,SIM_param_y):
+    
+    # Armo un rng para agregar un ruido normal
+    rng = np.random.default_rng()
+    
+    # Defino los arrays de parámetros diferentes
+    Arr_param_x = np.unique(DF_datos["parametro_x"])
+    size_x = Arr_param_x.shape[0]
+    Arr_param_y = np.unique(DF_datos["parametro_y"])
+    size_y = Arr_param_y.shape[0]
+    # Construyo las grillas que voy a usar para ubicar los valores de X e Y
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    
+    
+    # Defino los arrays donde guardo las posiciones de las distancias
+    # mínimas promedio
+    X = np.zeros((5,len(arc_matrices)))
+    Y = np.zeros((5,len(arc_matrices)))
+    
+    # Itero en todos los pares de preguntas para construir la Matriz
+    # de distancia de JS de cada una y de ahí extraer el punto de mínima
+    # distancia promedio
+    
+    for indice,nombre_csv in enumerate(arc_matrices):
+        
+        # Calculo la matriz de distancias JS y la ordeno
+        Dist_JS, code_x, code_y = Lectura_Matriz_DJS(size_y, size_x, path_matrices, nombre_csv)
+        Dist_JS = np.sort(Dist_JS)
+        
+        # Obtengo la ubicación del mínimo de distancia JS promediado con todas las simulaciones
+        # y agrego ese punto a los arrays que uso para graficar
+        
+        tupla = np.unravel_index(np.argmin(np.mean(Dist_JS,axis=2)),np.mean(Dist_JS,axis=2).shape)
+        X[0,indice] = XX[tupla]
+        Y[0,indice] = YY[tupla]
+        
+        for rank in range(1,5):
+            tupla = np.unravel_index(np.argmin(np.mean(Dist_JS[:,:,0:rank*10],axis=2)),np.mean(Dist_JS,axis=2).shape)
+            X[rank,indice] = XX[tupla]
+            Y[rank,indice] = YY[tupla]
+    
+    
+    # Antes de graficar, necesito agregar ruido para que los puntos no se solapen.
+    # El ruido del eje X y del eje Y tiene que ser distinto, ya que el espacio entre
+    # puntos en ambos ejes es distinto.
+    
+    X = X + rng.normal(loc = 0, scale = (Arr_param_x[1]-Arr_param_x[0])/5, size = X.shape)
+    Y = Y + rng.normal(loc = 0, scale = (Arr_param_y[1]-Arr_param_y[0])/5, size = Y.shape)
+    
+    # Delineo las regiones del espacio Beta-Cosd
+    plt.rcParams.update({'font.size': 44})
+    plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+    tlinea = 5
+    # Región de Polarización Descorrelacionada
+    x = [0, 0.1, 0.15, 0, 0]  # x-coordinates
+    y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) #, label='Polarización Descorrelacionada')
+    plt.text(0.05, 1.3, 'I', fontsize=40, ha='center', va='center', color='k')
+    # Región de Transición
+    x = [0.1, 0.15, 0.3, 0.15, 0.1]  # x-coordinates
+    y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+    plt.text(0.18, 1.3, 'II', fontsize=40, ha='center', va='center', color='k')
+    # Región de Polarización ideológica
+    x = [0.15, 0.5, 0.5, 0.3, 0.15] # x-coordinates
+    y = [1.1, 1.1, 1.5, 1.5, 1.1] # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+    plt.text(0.35, 1.3, 'III', fontsize=40, ha='center', va='center', color='k')
+    # Región de Consenso Radicalizado
+    x = [0, 0.5, 0.5, 0.2, 0.2, 0.5, 0.5, 0.1, 0.1, 0, 0]  # x-coordinates
+    y = [0, 0, 0.15, 0.3, 0.6, 0.6, 1.1, 1.1, 0.3, 0.2, 0]  # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+    plt.text(0.3, 0.85, 'VI', fontsize=40, ha='center', va='center', color='k')
+    # Región de Mezcla 1
+    x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+    y = [0.2, 0.3, 0.75, 0.75, 0.2] # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)  # label=r'Mezcla: CR (50~80%), P1Da (20~35%)')
+    plt.text(0.05, 0.55, 'V', fontsize=40, ha='center', va='center', color='k')
+    # Región de Mezcla 2
+    x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+    y = [0.75, 0.75, 1.1, 1.1, 0.75] # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (30~40%), P1D (10~50%)')
+    plt.text(0.05, 0.9, 'IV', fontsize=40, ha='center', va='center', color='k')
+    # Región de Mezcla 3
+    x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
+    y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
+    plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
+    
+    # Lo que queda es hacer los plot scatter de las preguntas
+    plt.scatter(X[0],Y[0], marker="o", color = "green", s = 500, alpha = 0.7)
+    plt.xlabel(r"${}$".format(SIM_param_x))
+    plt.ylabel(r"${}$".format(SIM_param_y))
+    plt.xlim(-0.05,0.5)
+    plt.ylim(0,1.5)
+    plt.title(r"\textbf{Todas las simulaciones}")
+    direccion_guardado = Path("../../../Imagenes/{}/Dist_preguntas_espacio.png".format(carpeta))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close()
+    
+    # Acá hago los scatter de las preguntas con una cantidad reducida de simulaciones
+    for rank in range(1,5):
+        plt.rcParams.update({'font.size': 44})
+        plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+        
+        tlinea = 5
+        # Región de Polarización Descorrelacionada
+        x = [0, 0.1, 0.15, 0, 0]  # x-coordinates
+        y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+        plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) #, label='Polarización Descorrelacionada')
+        plt.text(0.05, 1.3, 'I', fontsize=40, ha='center', va='center', color='k')
+        # Región de Transición
+        x = [0.1, 0.15, 0.3, 0.15, 0.1]  # x-coordinates
+        y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+        plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+        plt.text(0.18, 1.3, 'II', fontsize=40, ha='center', va='center', color='k')
+        # Región de Polarización ideológica
+        x = [0.15, 0.5, 0.5, 0.3, 0.15] # x-coordinates
+        y = [1.1, 1.1, 1.5, 1.5, 1.1] # y-coordinates
+        plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+        plt.text(0.35, 1.3, 'III', fontsize=40, ha='center', va='center', color='k')
+        # Región de Consenso Radicalizado
+        x = [0, 0.5, 0.5, 0.2, 0.2, 0.5, 0.5, 0.1, 0.1, 0, 0]  # x-coordinates
+        y = [0, 0, 0.15, 0.3, 0.6, 0.6, 1.1, 1.1, 0.3, 0.2, 0]  # y-coordinates
+        plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+        plt.text(0.3, 0.85, 'VI', fontsize=40, ha='center', va='center', color='k')
+        # Región de Mezcla 1
+        x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+        y = [0.2, 0.3, 0.75, 0.75, 0.2] # y-coordinates
+        plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)  # label=r'Mezcla: CR (50~80%), P1Da (20~35%)')
+        plt.text(0.05, 0.55, 'V', fontsize=40, ha='center', va='center', color='k')
+        # Región de Mezcla 2
+        x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+        y = [0.75, 0.75, 1.1, 1.1, 0.75] # y-coordinates
+        plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (30~40%), P1D (10~50%)')
+        plt.text(0.05, 0.9, 'IV', fontsize=40, ha='center', va='center', color='k')
+        # Región de Mezcla 3
+        x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
+        y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
+        plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
+        plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
+        
+        plt.scatter(X[rank],Y[rank], marker="o", color = "green", s = 500, alpha = 0.7)
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        plt.xlim(-0.05,0.5)
+        plt.ylim(0,1.5)
+        plt.title(r"{} + simil".format(rank*10))
+        direccion_guardado = Path("../../../Imagenes/{}/Dist_preguntas_espacio_r{}.png".format(carpeta,rank))
+        plt.savefig(direccion_guardado ,bbox_inches = "tight")
+        plt.close()
+    
+    
+#-----------------------------------------------------------------------------------------------
+
+# Armo una función que levante las matrices de distancia JS a partir de los archivos csv
+
+def Lectura_Matriz_DJS(size_y, size_x, Direccion, Nombre):
+    
+    # Levanto los datos de la matriz csv.
+    mat_archivo = np.loadtxt(Direccion/Nombre, delimiter = ",")
+    DJS = np.reshape(mat_archivo, (size_y, size_x,mat_archivo.shape[1]))
+    
+    # Defino los códigos x e y
+    code_y = Nombre.strip(".csv").split("_")[0]
+    code_x = Nombre.strip(".csv").split("_")[2]
+    
+    return DJS, code_x, code_y
+    
+
+#-----------------------------------------------------------------------------------------------
+
+# Armo una función que construya un Dataframe con los pares de preguntas
+
+def Tabla_datos_preguntas(DF_datos, dict_labels, arc_matrices, path_matrices):
+    
+    # Defino los arrays de parámetros diferentes
+    Arr_param_x = np.unique(DF_datos["parametro_x"])
+    size_x = Arr_param_x.shape[0]
+    Arr_param_y = np.unique(DF_datos["parametro_y"])
+    size_y = Arr_param_y.shape[0]
+    # Construyo las grillas que voy a usar para ubicar los valores de X e Y
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    
+    # Armo el diccionario en el cuál voy a guardar mi info
+    dict_datos = dict()
+    dict_datos["nombre"] = list()
+    dict_datos["código x"] = list()
+    dict_datos["código y"] = list()
+    dict_datos["pregunta x"] = list()
+    dict_datos["pregunta y"] = list()
+    for i in range(1,11):
+        dict_datos["Beta_{}".format(i*10)] = list()
+        dict_datos["Cosd_{}".format(i*10)] = list()
+    
+    for nombre_csv in arc_matrices:
+        
+        # Calculo la matriz de distancias JS y la ordeno
+        Dist_JS, code_x, code_y = Lectura_Matriz_DJS(size_y, size_x, path_matrices, nombre_csv)
+        Dist_JS = np.sort(Dist_JS)
+        
+        dict_datos["nombre"].append(nombre_csv)
+        dict_datos["código x"].append(code_x)
+        dict_datos["código y"].append(code_y)
+        dict_datos["pregunta x"].append(dict_labels[code_x])
+        dict_datos["pregunta y"].append(dict_labels[code_y])
+        
+        for i in range(1,11):
+            
+            tupla = np.unravel_index(np.argmin(np.mean(Dist_JS[:,:,0:i*10],axis=2)),XX.shape)
+            dict_datos["Cosd_{}".format(i*10)].append(XX[tupla])
+            dict_datos["Beta_{}".format(i*10)].append(YY[tupla])
+            
+    df = pd.DataFrame(dict_datos)
+    return df
+
+#-----------------------------------------------------------------------------------------------
+    
+# Ploteo el paraboloide que ajuste en un gráfico 3D
+
+def plot_3d_surface(carpeta, Dic_ANES, func, params_centro, params_cruz, x_range, y_range,
+                    SIM_param_x, SIM_param_y,x_samples=100, y_samples=100):
+    
+    """
+    Plot a 3D surface for a given mathematical function.
+    
+    Parameters:
+    - func: The mathematical function to plot. It should take two arguments (x and y) and return a value.
+    - x_range: A tuple specifying the range of x values (min, max).
+    - y_range: A tuple specifying the range of y values (min, max).
+    - x_samples: Number of samples in the x range.
+    - y_samples: Number of samples in the y range.
+    """
+    # Create a grid of points
+    x = np.linspace(x_range[0], x_range[1], x_samples)
+    y = np.linspace(y_range[0], y_range[1], y_samples)
+    X, Y = np.meshgrid(x, y)
+    Z_centro = func(X, Y, params_centro)
+    Z_cruz = func(X, Y, params_cruz)
+
+    #--------------------------------------------------------------------------------------
+    
+    # Armo el gráfico del paraboloide para el caso sin el centro de la distribución
+    
+    # Create the plot
+    direccion_guardado = Path("../../../Imagenes/{}/Paraboloide_ajustado_sin_centro_{}vs{}.png".format(carpeta/"Sin Centro",Dic_ANES["code_2"],Dic_ANES["code_1"]))
+    plt.rcParams.update({'font.size': 44})
+    fig = plt.figure(figsize=(48,36))
+    ax = fig.add_subplot(111, projection='3d')
+    surf = ax.plot_surface(X, Y, Z_centro, cmap='viridis')
+
+    # Add color bar which maps values to colors
+    fig.colorbar(surf, ax=ax, shrink=0.5, aspect=5)
+    
+    
+    # Format axes ticks to 2 decimal places
+    ax.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax.zaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+
+    # Adjust tick parameters
+    ax.tick_params(axis='x')
+    ax.tick_params(axis='y')
+    ax.tick_params(axis='z')
+    
+    # Labels and title
+    ax.set_xlabel(r"${}$".format(SIM_param_x),labelpad = 60)
+    ax.set_ylabel(r"${}$".format(SIM_param_y),labelpad = 60)
+    ax.set_zlabel('Distancia JS',labelpad = 60)
+    ax.set_title('Paraboloide ajustada con distribuciones sin centro \n {} vs {}'.format(Dic_ANES["code_2"],Dic_ANES["code_1"]))
+
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close()
+    
+    #--------------------------------------------------------------------------------------
+    
+    # Armo el gráfico para el caso sin la cruz central de la distribución
+    
+    # Create the plot
+    direccion_guardado = Path("../../../Imagenes/{}/Paraboloide_ajustado_sin_cruz_{}vs{}.png".format(carpeta/"Sin Cruz",Dic_ANES["code_2"],Dic_ANES["code_1"]))
+    plt.rcParams.update({'font.size': 44})
+    fig = plt.figure(figsize=(48,36))
+    ax = fig.add_subplot(111, projection='3d')
+    surf = ax.plot_surface(X, Y, Z_cruz, cmap='viridis')
+
+    # Add color bar which maps values to colors
+    fig.colorbar(surf, ax=ax, shrink=0.5, aspect=5)
+
+    # Format axes ticks to 2 decimal places
+    ax.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    ax.zaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    
+    # Adjust tick parameters
+    ax.tick_params(axis='x')
+    ax.tick_params(axis='y')
+    ax.tick_params(axis='z')
+    
+    # Labels and title
+    ax.set_xlabel(r"${}$".format(SIM_param_x),labelpad = 60)
+    ax.set_ylabel(r"${}$".format(SIM_param_y),labelpad = 60)
+    ax.set_zlabel('Distancia JS',labelpad = 60)
+    ax.set_title('Paraboloide ajustada con distribuciones sin cruz \n {} vs {}'.format(Dic_ANES["code_2"],Dic_ANES["code_1"]))
+
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close()
+
+#-----------------------------------------------------------------------------------------------
+    
+# Ploteo el los puntos sobre los que hice el ajuste en un gráfico 3D
+    
+def plot_3d_scatter(DF_datos,DF_Anes, path, carpeta, Dic_ANES, x_range, y_range,
+                    SIM_param_x, SIM_param_y):
+    
+    """
+    Plot a 3D surface for a given mathematical function.
+    
+    Parameters:
+    - func: The mathematical function to plot. It should take two arguments (x and y) and return a value.
+    - x_range: A tuple specifying the range of x values (min, max).
+    - y_range: A tuple specifying the range of y values (min, max).
+    - x_samples: Number of samples in the x range.
+    - y_samples: Number of samples in the y range.
+    """
+    
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF_datos["n"]))
+    
+    # Defino los arrays de parámetros diferentes
+    EXTRAS = int(np.unique(DF_datos["Extra"]))
+    
+    Arr_param_x = np.unique(DF_datos["parametro_x"])
+    Arr_param_x = Arr_param_x[Arr_param_x > x_range[0]]
+    Arr_param_x = Arr_param_x[Arr_param_x < x_range[1]]
+    
+    Arr_param_y = np.unique(DF_datos["parametro_y"])
+    Arr_param_y = Arr_param_y[Arr_param_y > y_range[0]]
+    Arr_param_y = Arr_param_y[Arr_param_y < y_range[1]]
+    
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
+                   for j,param_y in enumerate(Arr_param_y)]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
+    # Gráfico de Opi vs T y en tres no se vería mejor.
+    T=2
+    
+    #--------------------------------------------------------------------------------
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    ZZ = np.zeros((XX.shape[0],XX.shape[1],100))
+    
+    #--------------------------------------------------------------------------------
+    
+    # Extraigo la distribución en hist2d
+    
+    df_aux = DF_Anes.loc[(DF_Anes[Dic_ANES["code_1"]]>0) & (DF_Anes[Dic_ANES["code_2"]]>0)]
+    hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[Dic_ANES["code_1"]], y=df_aux[Dic_ANES["code_2"]], weights=df_aux[Dic_ANES["weights"]], vmin=0,
+             bins=[np.arange(df_aux[Dic_ANES["code_1"]].min()-0.5, df_aux[Dic_ANES["code_1"]].max()+1.5, 1), np.arange(df_aux[Dic_ANES["code_2"]].min()-0.5, df_aux[Dic_ANES["code_2"]].max()+1.5, 1)])
+    plt.close()
+    
+    Distr_Enc = np.reshape(hist2d,(hist2d.shape[0]*hist2d.shape[1],1))
+    
+    #--------------------------------------------------------------------------------
+    
+    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF_datos.loc[(DF_datos["tipo"]==TIPO) & 
+                                    (DF_datos["n"]==AGENTES) & 
+                                    (DF_datos["Extra"]==EXTRAS) & 
+                                    (DF_datos["parametro_x"]==PARAM_X) &
+                                    (DF_datos["parametro_y"]==PARAM_Y), "nombre"])
+        #-----------------------------------------------------------------------------------------
+        
+        DistJS = np.zeros(archivos.shape[0])
+        
+        for nombre in archivos:
+            
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
+            # Pasos simulados
+            # Semilla
+            # Matriz de Adyacencia
+            
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
+            
+            # Leo los datos de las Opiniones Finales
+            Opifinales = np.array(Datos[5][:-1], dtype="float")
+            Opifinales = Opifinales / EXTRAS
+            Distr_Sim = np.reshape(Clasificacion(Opifinales,hist2d.shape[0],hist2d.shape[1],T),(hist2d.shape[0]*hist2d.shape[1],1))
+            
+            # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+            
+            repeticion = int(DF_datos.loc[DF_datos["nombre"]==nombre,"iteracion"])
+            
+            DistJS[repeticion] = jensenshannon(Distr_Enc,Distr_Sim)
+            
+        #------------------------------------------------------------------------------------------
+        # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
+        ZZ[(Arr_param_y.shape[0]-1)-fila,columna,:] = DistJS
+
+    # Create the plot
+    direccion_guardado = Path("../../../Imagenes/{}/Scatter de DJS_{}vs{}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"]))
+    plt.rcParams.update({'font.size': 44})
+    fig = plt.figure(figsize=(40,30))
+    ax = fig.add_subplot(111, projection='3d')
+    for i in range(100):
+        ax.scatter(XX,YY,ZZ[:,:,i], c="blue", marker="o")
+
+    # Labels and title
+    ax.set_xlabel(r"${}$".format(SIM_param_x))
+    ax.set_ylabel(r"${}$".format(SIM_param_y))
+    ax.set_zlabel('Distancia JS')
+    ax.set_title('Distancias calculadas \n {} vs {}'.format(Dic_ANES["code_2"],Dic_ANES["code_1"]))
+
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close()
+    

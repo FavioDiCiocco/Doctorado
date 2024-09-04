@@ -33,9 +33,9 @@ for carp in Carpetas:
     
     # Transformo estas cosas en paths
     Direccion = Path("../{}".format(carp))
-    carpeta = Path(carp)
+    # carpeta = Path(carp)
     # Cambio la carpeta para el código de los clusters
-    # carpeta = Path("B04C00Cluster")
+    carpeta = Path("B04C00Cluster")
     
     Direc_matrices = Path("../Matrices DJS")
     
@@ -100,18 +100,19 @@ for carp in Carpetas:
     Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
     Df_preguntas = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices, Direc_matrices)
 #    Df_preguntas.to_csv("Tabla pares de preguntas.csv", index=False)
-    """
+    
+    
     # Armo el pandas con la data de las preguntas en un cluster
     # Cluster a revisar: Beta=0.4, Cosd = 0
     Beta = 0.4
     Cosd = 0
     Df_cluster = Df_preguntas.loc[(Df_preguntas["Beta_100"]==Beta) & (Df_preguntas["Cosd_100"]==Cosd)]
-    """
+    
     func.Tiempo(t0)
     
     
     #----------------------------------------------------------------------------------------------
-    """
+    
     # Gráficos del espacio de parámetros
     
     func.Mapa_Colores_Entropia_opiniones(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
@@ -150,15 +151,15 @@ for carp in Carpetas:
         
         func.Histograma_distancias(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta, lminimos,
                                    ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
-        
+        """
         
 #        func.Comp_estados(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta,
 #                          Direccion, dist_lim, ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
         
         func.Doble_Mapacol_PromyFrac(DJS, code_x, code_y, Df_archivos, dict_labels,
                                      Etapa/carpeta, Direccion, SIM_param_x, SIM_param_y)
-        """
         
+        """
         #-------------------------------------------------------------------------------------------------------------------------
         
         # Esto funca con la idea de que quiero revisar varios puntos mínimos. Le cambié el input para que no haya varios
@@ -182,10 +183,10 @@ for carp in Carpetas:
         Beta = tupla[1]
         
         preg_cluster[tupla] = Df_preguntas.loc[(Df_preguntas["Cosd_100"]==Cosd) & (Df_preguntas["Beta_100"]==Beta), "nombre"]
-    
-    func.Preguntas_espacio_parametros(Df_archivos, preg_cluster, Direc_matrices, Etapa/carpeta,
+    """
+    func.Preguntas_espacio_parametros(Df_archivos, Df_cluster["nombre"], Direc_matrices, Etapa/carpeta,
                                       SIM_param_x, SIM_param_y)
-"""
+
 func.Tiempo(t0)
 
 #########################################################################################

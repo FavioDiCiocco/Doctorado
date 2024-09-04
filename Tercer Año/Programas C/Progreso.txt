@@ -3155,3 +3155,10 @@ utilizo los datos 2D?
 Estaría bueno hacer la comparación de proyección en 1D del modelo 2D con el modelo originalmente
 1D.
 .) Es importante hacer un puente de por qué vale la pena pasar a un modelo multidimensional.
+
+Fui a la facultad, di unas vueltas, agregué al código el que los histogramas roten al graficarse,
+cosa de tener las cuatro rotaciones y que eso me sirva para armar mejor los gráficos que quiero.
+
+IMPORTANTE:
+-------------------------
+Mañana le tengo que pasar a Hugo todas las simulaciones que tengo, que me pidió que se lo pase.
