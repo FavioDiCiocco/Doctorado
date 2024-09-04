@@ -3131,3 +3131,27 @@ continuar el laburo de la parte del resumen. Aunque al mismo tiempo, voy a tener
 nuevo. Creo que se están organizando las cosas, no es tan terrible. Si llego temprano hoy, voy
 a ver si hago algo de estas cosas. Hoy no voy a hacer ejercicio, estoy muerto de sueño.
 Y me quiero ir a dormir temprano.
+
+------------------------------------------------------------------------------------------
+
+04/09/2024
+
+Ideas de las charla:
+--------------------
+
+.) Quizás podemos quedarnos con los estados clasificados en la región V.
+.) Podríamos ver de aproximar los datos e idealizar las distribuciones. Reemplazarlas
+por unimodales o bimodales.
+.) Aplicar la distancia de Kolmogorov-Smirnoff y ver si eso es una solución.
+.) Podríamos hacer limpieza borrando agentes según el tamaño de la caja mayor.
+.) Habría que buscar primero una forma de definir que efectivamente tenemos
+clusters de preguntas, que las distribuciones son distintas. Sino, estamos queriendo
+encontrar cosas que no sé si están en los datos.
+.) Hacer un análisis para detectar la región de transición entre la región II y la región
+III. Debería salir haciendo el análisis. (Quizás lo hace Hugo)
+.) ¿Qué pasa si colapso los datos en un histograma 1D? ¿Puedo mejorar el modelo 1D si 
+utilizo los datos 2D?
+.) ¿Cómo cambia la probabilidad de encontrar polarización al pasar a más dimensiones?
+Estaría bueno hacer la comparación de proyección en 1D del modelo 2D con el modelo originalmente
+1D.
+.) Es importante hacer un puente de por qué vale la pena pasar a un modelo multidimensional.
