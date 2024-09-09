@@ -3162,3 +3162,17 @@ cosa de tener las cuatro rotaciones y que eso me sirva para armar mejor los grá
 IMPORTANTE:
 -------------------------
 Mañana le tengo que pasar a Hugo todas las simulaciones que tengo, que me pidió que se lo pase.
+
+------------------------------------------------------------------------------------------
+
+09/09/2024
+
+No sé por qué no anoté nada el jueves y viernes. Sé que no avancé en el tema del trabajo de
+GOTHAM. Avancé un poco con el trabajo de Granovetter y con armar el abstract para el laburo
+del Ddays.
+
+A la mañana trabajé poco y nada, estuve re muerto. Mandé a correr el código con las rotaciones de
+los histogramas similares. Eso funciona bárbaro. Ahora me voy a poner a revisar algunas documentaciones
+y después sigo con armar la métrica de Kolmogorov-Smirnoff.
+
+

@@ -44,9 +44,12 @@ Lo que guardo acá son las distribuciones obtenidas de la ANES. Por eso esto est
 una carpeta según el año de la encuesta ANES considerada, y después en sub carpetas según si las distribuciones
 son de preguntas políticas, preguntas no políticas o preguntas dudosas. Creo que en la pc
 de la facultad tengo además una sub carpeta que tiene gráficos de ejemplo. Es cierto que esta
-carpeta se ve muy distinto en la faculta comparado a casa porque estuve mucho tiempo peleando
+carpeta se ve muy distinto en la faculta comparados a casa porque estuve mucho tiempo peleando
 en casa para lograr hacer funcionar el seaborn, pero al final terminé haciendo los gráficos de
 distribución con matplotlib en casa.
+ Cuando empecé a trabajar con los clusters de pares de preguntas, en esta carpeta coloqué también
+subcarpetas para cada par de preguntas. Ahí estuve armando los gráficos de distribución de cada
+par de preguntas.
 
 
 .) Comparacion_datos:
@@ -72,3 +75,8 @@ del centro o si usan distribuciones removiendo la cruz de opiniones del espacio 
 Hago gráficos del barrido en ambos espacios de parámetros con 10000 agentes. La idea es armar gráficos
 analizando la distancia de JS y también gráficos de distribuciones de estados finales en la región.
 Espero que esta sea la última etapa del trabajo.
+ En esta carpeta me armé gráficos para el espacio Beta-Kappa y Beta-Cosd. En el espacio Beta-Cosd
+hice una distribución de los pares de preguntas en el espacio de parámetros y surgieron clusters
+de preguntas en este espacio. Para realizar un análisis detallado de esos clusters armé una carpeta
+por cada cluster, con nombres B$$C$$Cluster, donde los números después de B indican X.Y, mientras que
+los números después de C indican 0.XY. 

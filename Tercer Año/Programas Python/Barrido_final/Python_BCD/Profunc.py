@@ -312,8 +312,17 @@ plt.close()
 #####################################################################################
 #####################################################################################
 
-# Estoy teniendo problemas en el graficado de los histogramas de distancias. El problema
-# me parece que 
+# Voy a intentar armar una función que levante datos de algún conjunto de
+# datos y calcule la distancia de Kolmogorov-Smirnoff 2D. No es exactamente
+# eso lo que voy a estar calculando, pero ya veremos nombres después-
+
+# Primero voy a levantar datos de un archivo
+Datos = ldata("../Beta-Cosd/Opiniones_N=10000_kappa=10_beta=0.10_cosd=0.08_Iter=10.file")
+Opifinales = func.Reconstruccion_opiniones(Datos, 10000, 2)
+
+# Lo siguiente es levantar los datos de una distribución.
+Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
+preguntas = ('V201372x','V201386x','V200010a')
 
 
 func.Tiempo(t0)

@@ -94,3 +94,7 @@ de Beta-Cosd donde van las simulaciones con 10000 agentes.
 que construí en la región de Beta [0,1] y Cos(delta) [0,0.14]. La de Beta-Cosd tiene esos mismos
 archivos, pero reformateados para que tengan las distribuciones de opiniones. Y en configurations
 tengo los archivos que Hugo me pasó.
+ Eventualmente, para evitar confusiones de código, armé una carpeta Python_BCD para armar los gráficos
+en el espacio Beta-Cosd y una carpeta Python_BK para los gráficos en el espacio Beta-Kappa. Sobre el
+código del espacio Beta-Cosd, fui construyendo algunos diccionarios con el fin de trabajar cluster por
+cluster. Esta parte del código podría retraerse y finalmente volver a la versión total.

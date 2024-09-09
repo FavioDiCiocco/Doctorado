@@ -5,6 +5,7 @@
 Created on Wed Nov 16 14:21:12 2022
 
 @author: favio
+
 """
 
 
@@ -104,6 +105,7 @@ for carp in Carpetas:
     
     # Armo el pandas con la data de las preguntas en un cluster
     # Cluster a revisar: Beta=0.4, Cosd = 0
+    
     Beta = 0.4
     Cosd = 0
     Df_cluster = Df_preguntas.loc[(Df_preguntas["Beta_100"]==Beta) & (Df_preguntas["Cosd_100"]==Cosd)]
@@ -116,7 +118,7 @@ for carp in Carpetas:
     # Gráficos del espacio de parámetros
     
     func.Mapa_Colores_Entropia_opiniones(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
-                                          SIM_param_x, SIM_param_y,ID_param_extra_1)
+                                         SIM_param_x, SIM_param_y,ID_param_extra_1)
     
     func.Mapa_Colores_Covarianzas(Df_archivos, Direccion, Etapa/carpeta,
                                   SIM_param_x, SIM_param_y, ID_param_extra_1)
