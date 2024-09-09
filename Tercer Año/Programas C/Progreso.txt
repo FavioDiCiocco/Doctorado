@@ -3175,4 +3175,6 @@ A la mañana trabajé poco y nada, estuve re muerto. Mandé a correr el código 
 los histogramas similares. Eso funciona bárbaro. Ahora me voy a poner a revisar algunas documentaciones
 y después sigo con armar la métrica de Kolmogorov-Smirnoff.
 
-
+Revisé las documentaciones de imágenes y de archivos de Python. Ahora me voy a poner a armar lo de la
+medida de Kolmogorov-Smirnoff. A ver si con eso podemos obtener mejores clasificaciones de los pares
+de preguntas. La idea es no toquetear los datos en este proceso.
