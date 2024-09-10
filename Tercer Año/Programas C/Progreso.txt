@@ -3178,3 +3178,23 @@ y después sigo con armar la métrica de Kolmogorov-Smirnoff.
 Revisé las documentaciones de imágenes y de archivos de Python. Ahora me voy a poner a armar lo de la
 medida de Kolmogorov-Smirnoff. A ver si con eso podemos obtener mejores clasificaciones de los pares
 de preguntas. La idea es no toquetear los datos en este proceso.
+
+------------------------------------------------------------------------------------------
+
+10/09/2024
+
+Hoy estuve todo el día laburando en el tema de poder armar la medida de Kolmogorov-Smirnoff. Logré
+armarlo en Profunc. Ahora que esto está funcionando, lo próximo que tengo que hacer es
+armar primero una función que construya las matrices de distancia KS en el espacio de parámetros
+para cada par de preguntas. Luego, con esas matrices, empezar a hacer los gráficos. Es importante
+quizás ponerlo a prueba con dos o tres pares de preguntas, eso lo puedo hacer en la pc de
+la facultad, mientras mando a correr eso para todos los pares de preguntas en la pc de Coimbra.
+
+Pero lo central, que es construir la matriz, ya lo tengo. Luego, armar las funciones que grafiquen
+los mapas de colores es un detalle, total es idéntico a lo que se construye actualmente con las
+matrices de distancia JS. Así que razonablemente tendré eso para el jueves. O el viernes, veré de
+hacerlo lo más rápido posible, paralelizando la construcción de estas matrices.
+
+Siento que quizás no fue tanto lo que hice hoy, pero yo digo que estuvo bien. Mañana nada de dormir
+de más, me pongo directo a laburar en el tema de armar estas funciones temprano, termino antes del
+mediodía, y ya a la tarde laburo en lo de Granovetter.
