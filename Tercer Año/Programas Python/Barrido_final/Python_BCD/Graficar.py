@@ -34,14 +34,16 @@ for carp in Carpetas:
     
     # Transformo estas cosas en paths
     Direccion = Path("../{}".format(carp))
-    # carpeta = Path(carp)
+    carpeta = Path(carp)
     # Cambio la carpeta para el código de los clusters
-    carpeta = Path("B04C00Cluster")
+    # carpeta = Path("B04C00Cluster")
     
-    Direc_matrices = Path("../Matrices DJS")
+    Dir_matrices_JS = Path("../Matrices DJS")
+    Dir_matrices_KS = Path("../Matrices DKS")
     
     # Recorro las carpetas con archivos csv
-    CarpMatrices=[[root,files] for root,dirs,files in os.walk(Direc_matrices)]
+    CarpMatJS=[[root,files] for root,dirs,files in os.walk(Dir_matrices_JS)]
+    CarpMatKS=[[root,files] for root,dirs,files in os.walk(Dir_matrices_KS)]
     
     # Recorro las carpetas con datos
     CarpCheck=[[root,files] for root,dirs,files in os.walk(Direccion)]
@@ -49,7 +51,8 @@ for carp in Carpetas:
     # Me armo una lista con los nombres de todos los archivos con datos
     Archivos_Datos = [nombre for nombre in CarpCheck[0][1]]
     # Me armo una lista con los nombres de todos los archivos csv
-    Archivos_Matrices = [nombre for nombre in CarpMatrices[0][1]]
+    Archivos_Matrices_JS = [nombre for nombre in CarpMatJS[0][1]]
+    Archivos_Matrices_KS = [nombre for nombre in CarpMatKS[0][1]]
     
     #-------------------------------------------------------------------------------------------------------
     
@@ -91,7 +94,7 @@ for carp in Carpetas:
     
     # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
     # de todas las simulaciones para cada punto del espacio de parámetros.
-    Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
+    # Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
     
     size_x = np.unique(Df_archivos["parametro_x"]).shape[0]
     size_y = np.unique(Df_archivos["parametro_y"]).shape[0]
@@ -99,10 +102,10 @@ for carp in Carpetas:
     bines = np.linspace(-3.5,3.5,8)
     
     Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
-    Df_preguntas = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices, Direc_matrices)
+    # Df_preguntas = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices_JS, Dir_matrices_JS)
 #    Df_preguntas.to_csv("Tabla pares de preguntas.csv", index=False)
     
-    
+    """
     # Armo el pandas con la data de las preguntas en un cluster
     # Cluster a revisar: Beta=0.4, Cosd = 0
     
@@ -130,7 +133,7 @@ for carp in Carpetas:
     
     func.Graf_Histograma_opiniones_2D(Df_archivos, Dic_Total, Direccion, Etapa/carpeta, bines, "magma",lminimos,
                                       ID_param_x, ID_param_y, ID_param_extra_1)
-    
+    """
     #----------------------------------------------------------------------------------------------
     
     # Gráficos de las preguntas ANES
@@ -140,19 +143,19 @@ for carp in Carpetas:
               # (np.array([0,0.2]),np.array([0.4,0.8])), (np.array([0,0.1]),np.array([0.4,0.66])), (np.array([0,0.1]),np.array([0.4,0.7]))]
     
     
-#    for nombre_csv in Archivos_Matrices:
-    for nombre_csv in Df_cluster["nombre"]:
+    for nombre_csv in Archivos_Matrices_KS:
+    # for nombre_csv in Df_cluster["nombre"]:
         
-        DJS, code_x, code_y = func.Lectura_Matriz_DJS(size_y, size_x, Direc_matrices, nombre_csv)
+        DKS, code_x, code_y = func.Lectura_csv_Matriz(size_y, size_x, Dir_matrices_KS, nombre_csv)
         
-        func.Mapas_Colores_DJS(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta,
+        func.Mapas_Colores_csv(DKS, code_x, code_y, Df_archivos, dict_labels, "KS", Etapa/carpeta,
                                ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
         
-        func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta, Direccion, bines,
-                                  SIM_param_x,SIM_param_y)
+        # func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta, Direccion, bines,
+        #                           SIM_param_x,SIM_param_y)
         
-        func.Histograma_distancias(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta, lminimos,
-                                   ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
+        # func.Histograma_distancias(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta, lminimos,
+        #                            ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
         """
         
 #        func.Comp_estados(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta,
@@ -186,8 +189,8 @@ for carp in Carpetas:
         
         preg_cluster[tupla] = Df_preguntas.loc[(Df_preguntas["Cosd_100"]==Cosd) & (Df_preguntas["Beta_100"]==Beta), "nombre"]
     """
-    func.Preguntas_espacio_parametros(Df_archivos, Df_cluster["nombre"], Direc_matrices, Etapa/carpeta,
-                                      SIM_param_x, SIM_param_y)
+    # func.Preguntas_espacio_parametros(Df_archivos, Df_cluster["nombre"], Dir_matrices_JS, Etapa/carpeta,
+    #                                   SIM_param_x, SIM_param_y)
 
 func.Tiempo(t0)
 

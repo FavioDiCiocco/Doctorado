@@ -952,7 +952,7 @@ def Matriz_DJS(DF_datos,DF_Anes,Dic_ANES,path):
 # En ambos casos estoy considerando que ambas preguntas tienen 7 respuestas. Voy a tener que ir
 # viendo cómo resolver si tienen 6 respuestas.
 
-def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta,
+def Mapas_Colores_csv(Mat_metrica, code_x, code_y, DF_datos, dict_labels, metrica, carpeta,
                       ID_param_x,SIM_param_x,ID_param_y,SIM_param_y):
     
     # Defino los arrays de parámetros diferentes
@@ -966,57 +966,57 @@ def Mapas_Colores_DJS(Dist_JS, code_x, code_y, DF_datos, dict_labels, carpeta,
     XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
     
     # Organizo las matrices Dist_JS según su similaridad
-    Dist_JS = np.sort(Dist_JS)
+    Mat_metrica = np.sort(Mat_metrica)
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores para el caso sin cruz
-    direccion_guardado = Path("../../../Imagenes/{}/DistanciaJS_{}vs{}.png".format(carpeta,code_y,code_x))
+    direccion_guardado = Path("../../../Imagenes/{}/Distancia{}_{}vs{}.png".format(carpeta,metrica,code_y,code_x))
     
     plt.rcParams.update({'font.size': 44})
-    plt.figure("Distancia Jensen-Shannon",figsize=(28,21))
+    plt.figure("Medida total",figsize=(28,21))
     plt.xlabel(r"${}$".format(SIM_param_x))
     plt.ylabel(r"${}$".format(SIM_param_y))
     
     # Hago el ploteo del mapa de colores con el colormesh
     
-    plt.pcolormesh(XX,YY,np.mean(Dist_JS, axis=2),shading="nearest", cmap = "viridis")
-    tupla = np.unravel_index(np.argmin(np.mean(Dist_JS,axis=2)),np.mean(Dist_JS,axis=2).shape)
+    plt.pcolormesh(XX,YY,np.mean(Mat_metrica, axis=2),shading="nearest", cmap = "viridis")
+    tupla = np.unravel_index(np.argmin(np.mean(Mat_metrica,axis=2)),np.mean(Mat_metrica,axis=2).shape)
     plt.colorbar()
     plt.scatter(XX[tupla],YY[tupla], marker="X", s = 1500, color = "red")
-    plt.title("Distancia Jensen-Shannon\n {} vs {}".format(dict_labels[code_y],dict_labels[code_x]))
+    plt.title("Distancia {}\n {} vs {}".format(metrica,dict_labels[code_y],dict_labels[code_x]))
     
     # Guardo la figura y la cierro
     
     plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close("Distancia Jensen-Shannon")
+    plt.close("Medida total")
     
     # Y ahora me armo el gráfico de promedios de distancia JS según cantidad de simulaciones
     # consideradas, con las simulaciones ordenadas de las de menos distancia a las de más distancia
     
-    for i in range(1,5):
+    for i in range(2,3):
         
-        direccion_guardado = Path("../../../Imagenes/{}/DistanciaJS_{}vs{}_r{}.png".format(carpeta,code_y,code_x,i))
+        direccion_guardado = Path("../../../Imagenes/{}/Distancia{}_{}vs{}_r{}.png".format(carpeta,metrica,code_y,code_x,i))
         
         plt.rcParams.update({'font.size': 44})
-        plt.figure("Ranking Distancia Jensen-Shannon",figsize=(28,21))
+        plt.figure("Ranking metrica",figsize=(28,21))
         plt.xlabel(r"${}$".format(SIM_param_x))
         plt.ylabel(r"${}$".format(SIM_param_y))
         
         # Hago el ploteo del mapa de colores con el colormesh
-        Dist_JS_prom = np.mean(Dist_JS[:,:,0:i*10],axis=2)
+        Mat_metrica_prom = np.mean(Mat_metrica[:,:,0:i*10],axis=2)
         
         # Calculo el mínimo de la distancia Jensen-Shannon y marco los valores de Beta y Cosd en el que se encuentra
-        tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
+        tupla = np.unravel_index(np.argmin(Mat_metrica_prom),Mat_metrica_prom.shape)
         
-        plt.pcolormesh(XX,YY,Dist_JS_prom,shading="nearest", cmap = "cividis")
+        plt.pcolormesh(XX,YY,Mat_metrica_prom,shading="nearest", cmap = "cividis")
         plt.colorbar()
         plt.scatter(XX[tupla],YY[tupla], marker="X", s = 1500, color = "red")
         
-        plt.title("Distancia Jensen-Shannon {} simulaciones\n {} vs {}".format(i*10,dict_labels[code_y],dict_labels[code_x]))
+        plt.title("Distancia {} {} simulaciones\n {} vs {}".format(metrica, i*10,dict_labels[code_y],dict_labels[code_x]))
         
         # Guardo la figura y la cierro
         
         plt.savefig(direccion_guardado , bbox_inches = "tight")
-        plt.close("Ranking Distancia Jensen-Shannon")
+        plt.close("Ranking metrica")
         
     
 
@@ -1832,7 +1832,7 @@ def Preguntas_espacio_parametros(DF_datos,arc_matrices,path_matrices,carpeta,
     for indice,nombre_csv in enumerate(arc_matrices):
         
         # Calculo la matriz de distancias JS y la ordeno
-        Dist_JS, code_x, code_y = Lectura_Matriz_DJS(size_y, size_x, path_matrices, nombre_csv)
+        Dist_JS, code_x, code_y = Lectura_csv_Matriz(size_y, size_x, path_matrices, nombre_csv)
         Dist_JS = np.sort(Dist_JS)
         
         # Obtengo la ubicación del mínimo de distancia JS promediado con todas las simulaciones
@@ -1968,17 +1968,17 @@ def Preguntas_espacio_parametros(DF_datos,arc_matrices,path_matrices,carpeta,
 
 # Armo una función que levante las matrices de distancia JS a partir de los archivos csv
 
-def Lectura_Matriz_DJS(size_y, size_x, Direccion, Nombre):
+def Lectura_csv_Matriz(size_y, size_x, Direccion, Nombre):
     
     # Levanto los datos de la matriz csv.
     mat_archivo = np.loadtxt(Direccion/Nombre, delimiter = ",")
-    DJS = np.reshape(mat_archivo, (size_y, size_x,mat_archivo.shape[1]))
+    Mat_salida = np.reshape(mat_archivo, (size_y, size_x,mat_archivo.shape[1]))
     
     # Defino los códigos x e y
     code_y = Nombre.strip(".csv").split("_")[0]
     code_x = Nombre.strip(".csv").split("_")[2]
     
-    return DJS, code_x, code_y
+    return Mat_salida, code_x, code_y
     
 
 #-----------------------------------------------------------------------------------------------
@@ -2009,7 +2009,7 @@ def Tabla_datos_preguntas(DF_datos, dict_labels, arc_matrices, path_matrices):
     for nombre_csv in arc_matrices:
         
         # Calculo la matriz de distancias JS y la ordeno
-        Dist_JS, code_x, code_y = Lectura_Matriz_DJS(size_y, size_x, path_matrices, nombre_csv)
+        Dist_JS, code_x, code_y = Lectura_csv_Matriz(size_y, size_x, path_matrices, nombre_csv)
         Dist_JS = np.sort(Dist_JS)
         
         dict_datos["nombre"].append(nombre_csv)

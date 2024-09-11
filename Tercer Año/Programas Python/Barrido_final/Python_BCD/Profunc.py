@@ -314,123 +314,219 @@ plt.close()
 
 # Voy a intentar armar una función que levante datos de algún conjunto de
 # datos y calcule la distancia de Kolmogorov-Smirnoff 2D. No es exactamente
-# eso lo que voy a estar calculando, pero ya veremos nombres después-
+# eso lo que voy a estar calculando, pero ya veremos nombres después
 
-# Primero levanto los datos de una distribución.
+# Primero levanto los datos de la ANES
 Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
-preguntas = ('V201372x','V201386x','V200010a')
+# tuplas_preguntas = [('V201372x','V201386x','V200010a'), ('V201408x','V201426x','V200010a'), ('V201372x','V201411x','V200010a')]
 
-# Separo las opiniones de 0
-df_aux = Df_ANES.loc[(Df_ANES[preguntas[0]]>0) & (Df_ANES[preguntas[1]]>0)]
-# Reviso la cantidad de respuestas de cada pregunta
-resp_1 = np.unique(df_aux[preguntas[0]]).shape[0]
-resp_2 = np.unique(df_aux[preguntas[1]]).shape[0]
+labels_politicos = ['V201372x','V201386x','V201408x','V201411x','V201420x','V201426x',
+                    'V202255x','V202328x','V202336x']
 
-# Los clasifico como código x y código y
-if resp_1 >= resp_2:
-    code_x = preguntas[0]
-    code_y = preguntas[1]
-else:
-    code_x = preguntas[1]
-    code_y = preguntas[0]
+labels_apoliticos = ['V201429','V202320x','V202331x','V202341x','V202344x','V202350x','V202383x']
 
-# Dos preguntas con siete respuestas
-if resp_1 == 7 and resp_2 == 7:
-    
-    # Saco la cruz
-    df_filtered = df_aux[(df_aux[code_x] != 4) & (df_aux[code_y] != 4)] 
-    
-    hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_x], y=df_filtered[code_y], weights=df_filtered[preguntas[2]], vmin=0, cmap = "inferno", density = True,
-              bins=[np.arange(df_filtered[code_x].min()-0.5, df_filtered[code_x].max()+1.5, 1), np.arange(df_filtered[code_y].min()-0.5, df_filtered[code_y].max()+1.5, 1)])
-    plt.close()
-    
-    Distr_Enc = hist2d[np.arange(7) != 3,:][:,np.arange(7) != 3]
-#    Distr_Enc = Distr_Enc.flatten()
+labels = []
 
-# Una pregunta con siete respuestas y otra con seis
-elif (resp_1 == 6 and resp_2 == 7) or (resp_1 == 7 and resp_2 == 6):
-    
-    # Saco la cruz
-    df_filtered = df_aux[df_aux[code_x] != 4] 
-    
-    hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_x], y=df_filtered[code_y], weights=df_filtered[preguntas[2]], vmin=0, cmap = "inferno", density = True,
-              bins=[np.arange(df_filtered[code_x].min()-0.5, df_filtered[code_x].max()+1.5, 1), np.arange(df_filtered[code_y].min()-0.5, df_filtered[code_y].max()+1.5, 1)])
-    plt.close()
-    
-    Distr_Enc = hist2d[np.arange(7) != 3,:]
-#    Distr_Enc = Distr_Enc.flatten()
-
-# Dos preguntas con seis respuestas
-elif resp_1 == 6 and resp_2 == 6:
-    
-    # No hay necesidad de sacar la cruz
-    Distr_Enc, xedges, yedges, im = plt.hist2d(x=df_aux[code_x], y=df_aux[code_y], weights=df_aux[preguntas[2]], vmin=0,cmap = "inferno", density = True,
-              bins=[np.arange(df_aux[code_x].min()-0.5, df_aux[code_x].max()+1.5, 1), np.arange(df_aux[code_y].min()-0.5, df_aux[code_y].max()+1.5, 1)])
-    plt.close()
-    
-#    Distr_Enc = hist2d.flatten()
-
-###############################################################################################################
-    
-# Lo siguiente que hago es levantar los datos de un archivo
-
-frac_agente_ind = 1/10000
-bines = np.linspace(-3.5,3.5,8)
-Datos = ldata("../Beta-Cosd/Opiniones_N=10000_kappa=10_beta=0.10_cosd=0.08_Iter=10.file")
-dist_final = np.reshape(np.array(Datos[1][:-1],dtype="float"),(42,42))
-Opifinales = func.Reconstruccion_opiniones(dist_final, 10000, 2)
-
-Distr_Sim = func.Clasificacion(Opifinales,hist2d.shape[0],hist2d.shape[1],2)
-Distr_Sim = np.reshape(Distr_Sim, hist2d.shape)
-
-# Dos preguntas con siete respuestas
-if resp_1 == 7 and resp_2 == 7:
-    Distr_Sim = Distr_Sim[np.arange(7) != 3,:][:,np.arange(7) != 3]
-
-# Una pregunta con siete respuestas y otra con seis
-elif (resp_1 == 6 and resp_2 == 7) or (resp_1 == 7 and resp_2 == 6):
-    Distr_Sim = Distr_Sim[np.arange(7) != 3,:]
-
-# Como removí parte de mi distribución, posiblemente ya no esté normalizada
-# la distribución. Así que debería ahora sumar agentes de a 1 hasta asegurarme
-# de que otra vez esté normalizada
-Distr_Sim = Distr_Sim.flatten()
-if np.sum(Distr_Sim) != 1:
-    agentes_agregar = int((1-np.sum(Distr_Sim))/frac_agente_ind)
-    for i in range(agentes_agregar):
-        Distr_Sim[np.argmin(Distr_Sim)] += frac_agente_ind
-# Luego de volver a normalizar mi distribución, si quedaron lugares
-# sin agentes, los relleno
-restar = np.count_nonzero(Distr_Sim == 0)
-Distr_Sim[Distr_Sim == 0] = np.ones(restar)*frac_agente_ind
-Distr_Sim[np.argmax(Distr_Sim)] -= frac_agente_ind*restar
-Distr_Sim = np.reshape(Distr_Sim, (6,6))
-
-Mat_Dist = np.zeros((6,6,4))
-for rotacion in range(4):
-    
-    Distr_Sim = func.Rotar_matriz(Distr_Sim)
-    
-    for fila in range(6):
-        for columna in range(6):
+for i,code_1 in enumerate(labels_politicos):
+    for code_2 in labels_politicos[i+1:]:
+        
+        if code_1[3] == '1' and code_2[3] == '1':
+            weights = 'V200010a'
+        else:
+            weights = 'V200010b'
             
-            DKS = np.zeros(4)
+        labels.append((code_1,code_2,weights))
+    
+    
+for i,code_1 in enumerate(labels_apoliticos):
+    for code_2 in labels_apoliticos[i+1:]:
+        
+        if code_1[3] == '1' and code_2[3] == '1':
+            weights = 'V200010a'
+        else:
+            weights = 'V200010b'
             
-            # Calculo la distancia en el primer cuadrante (Derecha-arriba)
-            DKS[0] = np.sum(Distr_Enc[fila+1:,columna+1:])-np.sum(Distr_Sim[fila+1:,columna+1:])
+        labels.append((code_1,code_2,weights))
+    
+    
+for code_1 in labels_politicos:
+    for code_2 in labels_apoliticos:
+        
+        if code_1[3] == '1' and code_2[3] == '1':
+            weights = 'V200010a'
+        else:
+            weights = 'V200010b'
             
-            # Calculo la distancia en el segundo cuadrante (Derecha-abajo)
-            DKS[1] = np.sum(Distr_Enc[fila+1:,:columna])-np.sum(Distr_Sim[fila+1:,:columna])
-            
-            # Calculo la distancia en el tercer cuadrante (Izquierda-abajo)
-            DKS[2] = np.sum(Distr_Enc[:fila,:columna])-np.sum(Distr_Sim[:fila,:columna])
-            
-            # Calculo la distancia en el tercer cuadrante (Izquierda-arriba)
-            DKS[3] = np.sum(Distr_Enc[:fila,columna+1:])-np.sum(Distr_Sim[:fila,columna+1:])
-            
-            Mat_Dist[fila,columna,rotacion] = np.max(DKS)
+        labels.append((code_1,code_2,weights))
 
-
+for preguntas in labels:
+    
+    # Separo las opiniones de 0
+    df_aux = Df_ANES.loc[(Df_ANES[preguntas[0]]>0) & (Df_ANES[preguntas[1]]>0)]
+    # Reviso la cantidad de respuestas de cada pregunta
+    resp_1 = np.unique(df_aux[preguntas[0]]).shape[0]
+    resp_2 = np.unique(df_aux[preguntas[1]]).shape[0]
+    
+    # Los clasifico como código x y código y
+    if resp_1 >= resp_2:
+        code_x = preguntas[0]
+        code_y = preguntas[1]
+    else:
+        code_x = preguntas[1]
+        code_y = preguntas[0]
+    
+    # Dos preguntas con siete respuestas
+    if resp_1 == 7 and resp_2 == 7:
+        
+        # Saco la cruz
+        df_filtered = df_aux[(df_aux[code_x] != 4) & (df_aux[code_y] != 4)] 
+        
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_x], y=df_filtered[code_y], weights=df_filtered[preguntas[2]], vmin=0, cmap = "inferno", density = True,
+                  bins=[np.arange(df_filtered[code_x].min()-0.5, df_filtered[code_x].max()+1.5, 1), np.arange(df_filtered[code_y].min()-0.5, df_filtered[code_y].max()+1.5, 1)])
+        plt.close()
+        
+        Distr_Enc = hist2d[np.arange(7) != 3,:][:,np.arange(7) != 3]
+    
+    # Una pregunta con siete respuestas y otra con seis
+    elif (resp_1 == 6 and resp_2 == 7) or (resp_1 == 7 and resp_2 == 6):
+        
+        # Saco la cruz
+        df_filtered = df_aux[df_aux[code_x] != 4] 
+        
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_x], y=df_filtered[code_y], weights=df_filtered[preguntas[2]], vmin=0, cmap = "inferno", density = True,
+                  bins=[np.arange(df_filtered[code_x].min()-0.5, df_filtered[code_x].max()+1.5, 1), np.arange(df_filtered[code_y].min()-0.5, df_filtered[code_y].max()+1.5, 1)])
+        plt.close()
+        
+        Distr_Enc = hist2d[np.arange(7) != 3,:]
+    
+    # Dos preguntas con seis respuestas
+    elif resp_1 == 6 and resp_2 == 6:
+        
+        # No hay necesidad de sacar la cruz
+        Distr_Enc, xedges, yedges, im = plt.hist2d(x=df_aux[code_x], y=df_aux[code_y], weights=df_aux[preguntas[2]], vmin=0,cmap = "inferno", density = True,
+                  bins=[np.arange(df_aux[code_x].min()-0.5, df_aux[code_x].max()+1.5, 1), np.arange(df_aux[code_y].min()-0.5, df_aux[code_y].max()+1.5, 1)])
+        plt.close()
+    
+    
+    ###############################################################################################################
+    
+    # Lo siguiente que hago es levantar los datos de un archivo
+    
+    bines = np.linspace(-3.5,3.5,8)
+    
+    # Recorro las carpetas con datos
+    path = Path("../Beta-Cosd")
+    CarpCheck=[[root,files] for root,dirs,files in os.walk(path)]
+    # Me armo una lista con los nombres de todos los archivos con datos
+    Archivos_Datos = [nombre for nombre in CarpCheck[0][1]]
+    
+    # En cambio, en la carpeta 2D llevan por nombre:
+    # "Opiniones_N=$_kappa=$_beta=$_cosd=$_Iter=$.file" y "Testigos_N=$_kappa=$_beta=$_cosd=$_Iter=$.file"
+    Df_archivos = pd.DataFrame({"nombre": Archivos_Datos})
+    # Hecho mi dataframe, voy a armar columnas con los parámetros que varían en los nombres de mis archivos
+    Df_archivos["tipo"] = Df_archivos["nombre"].apply(lambda x: x.split("_")[0])
+    Df_archivos["n"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[1].split("=")[1]))
+    Df_archivos["Extra"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[2].split("=")[1]))
+    Df_archivos["parametro_y"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[3].split("=")[1]))
+    Df_archivos["parametro_x"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[4].split("=")[1]))
+    Df_archivos["iteracion"] = Df_archivos["nombre"].apply(lambda x: float(x.split("_")[5].split("=")[1].strip(".file")))
+    
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(Df_archivos["n"]))
+    frac_agente_ind = 1/AGENTES
+    
+    # Defino los arrays de parámetros diferentes
+    EXTRAS = int(np.unique(Df_archivos["Extra"]))
+    Arr_param_x = np.unique(Df_archivos["parametro_x"])
+    Arr_param_y = np.unique(Df_archivos["parametro_y"])
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    ZZ = np.zeros((XX.shape[0],XX.shape[1],100))
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
+                   for j,param_y in enumerate(Arr_param_y)]
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    T = 2
+    
+    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(Df_archivos.loc[(Df_archivos["tipo"]==TIPO) & 
+                                    (Df_archivos["n"]==AGENTES) & 
+                                    (Df_archivos["Extra"]==EXTRAS) & 
+                                    (Df_archivos["parametro_x"]==PARAM_X) &
+                                    (Df_archivos["parametro_y"]==PARAM_Y), "nombre"])
+        
+        #-----------------------------------------------------------------------------------------
+        
+        for nombre in archivos:
+            
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Distribución final
+            # Semilla
+            # Fragmentos Matriz de Adyacencia
+            
+            # Levanto los datos del archivo
+            
+            Datos = ldata(path / nombre)
+    
+            dist_final = np.reshape(np.array(Datos[1][:-1],dtype="float"),(42,42))
+            Opifinales = func.Reconstruccion_opiniones(dist_final, AGENTES, T)
+            
+            Distr_Sim = func.Clasificacion(Opifinales,hist2d.shape[0],hist2d.shape[1],T)
+            Distr_Sim = np.reshape(Distr_Sim, hist2d.shape)
+            
+            # Dos preguntas con siete respuestas
+            if resp_1 == 7 and resp_2 == 7:
+                Distr_Sim = Distr_Sim[np.arange(7) != 3,:][:,np.arange(7) != 3]
+            
+            # Una pregunta con siete respuestas y otra con seis
+            elif (resp_1 == 6 and resp_2 == 7) or (resp_1 == 7 and resp_2 == 6):
+                Distr_Sim = Distr_Sim[np.arange(7) != 3,:]
+            
+            # Como removí parte de mi distribución, posiblemente ya no esté normalizada
+            # la distribución. Así que debería ahora sumar agentes de a 1 hasta asegurarme
+            # de que otra vez esté normalizada
+            Distr_Sim = Distr_Sim.flatten()
+            if np.sum(Distr_Sim) != 1:
+                agentes_agregar = int((1-np.sum(Distr_Sim))/frac_agente_ind)
+                for i in range(agentes_agregar):
+                    Distr_Sim[np.argmin(Distr_Sim)] += frac_agente_ind
+            Distr_Sim = np.reshape(Distr_Sim, (6,6))
+            
+            Mat_Dist = np.zeros((6,6,4))
+            for rotacion in range(4):
+                
+                Distr_Sim = func.Rotar_matriz(Distr_Sim)
+                
+                for F in range(6):
+                    for C in range(6):
+                        
+                        DKS = np.zeros(4)
+                        
+                        # Calculo la distancia en el primer cuadrante (Derecha-arriba)
+                        DKS[0] = np.sum(Distr_Enc[F+1:,C+1:])-np.sum(Distr_Sim[F+1:,C+1:])
+                        
+                        # Calculo la distancia en el segundo cuadrante (Derecha-abajo)
+                        DKS[1] = np.sum(Distr_Enc[F+1:,:C])-np.sum(Distr_Sim[F+1:,:C])
+                        
+                        # Calculo la distancia en el tercer cuadrante (Izquierda-abajo)
+                        DKS[2] = np.sum(Distr_Enc[:F,:C])-np.sum(Distr_Sim[:F,:C])
+                        
+                        # Calculo la distancia en el tercer cuadrante (Izquierda-arriba)
+                        DKS[3] = np.sum(Distr_Enc[:F,C+1:])-np.sum(Distr_Sim[:F,C+1:])
+                        
+                        Mat_Dist[F,C,rotacion] = np.max(np.abs(DKS))
+            
+            # Una vez que calcule las 4 distancias habiendo rotado 4 veces la distribución,
+            # lo que me queda es guardar eso en las matrices ZZ correspondientes.
+            
+            repeticion = int(Df_archivos.loc[Df_archivos["nombre"]==nombre,"iteracion"])
+            ZZ[(Arr_param_y.shape[0]-1)-fila,columna,repeticion] = 1 - np.max(Mat_Dist)
+        
+    ZZ_alterado = np.reshape(ZZ, (ZZ.shape[0]*ZZ.shape[1],ZZ.shape[2]))
+    np.savetxt("../Matrices DKS/{}_vs_{}.csv".format(code_y,code_x), ZZ_alterado,delimiter = ",", fmt = "%.6f")
 
 
 func.Tiempo(t0)

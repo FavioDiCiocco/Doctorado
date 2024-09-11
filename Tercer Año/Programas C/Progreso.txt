@@ -3198,3 +3198,57 @@ hacerlo lo más rápido posible, paralelizando la construcción de estas matrice
 Siento que quizás no fue tanto lo que hice hoy, pero yo digo que estuvo bien. Mañana nada de dormir
 de más, me pongo directo a laburar en el tema de armar estas funciones temprano, termino antes del
 mediodía, y ya a la tarde laburo en lo de Granovetter.
+
+------------------------------------------------------------------------------------------
+
+11/09/2024
+
+Llegué tarde a la facultad, no puedo avanzar con el laburo así, soy un boludo. Tengo que avanzar
+en el trabajo ya así le puedo dar unos resultados a Pablo, y también así yo puedo dormir
+medio tranquilo.
+
+Una cosa que podría corregir es el hecho de que intento en las distribuciones que no haya lugares
+vacíos en el grid del espacio de opiniones. Pero eso era importante para el cálculo de la distancia
+JS. Para este caso eso no hace falta, puedo sacármelo.
+ Ya resolví esto, bastante simple. De paso, revisando cómo funciona el código con el caso de un estado
+de polarización descorrelacionada observé que había un detalle de módulos que casi se me pasa.
+
+Antes de mandarlo a correr, puedo decir que para una misma distribución, que es la distribución
+de Impeachment vs Pres. Didn't Worry Congress, observo que la máx distancia de KS es 0.687 comparada
+con un estado de polarización 1D con anchura, 0.979 para un estado de consenso radicalizado y 
+0.384 para un estado de polarización descorrelacionada. Si tomo la distancia entre la distribución
+de la encuesta y la distribución de la simulación y hago 1- esa distancia, entonces ya
+puedo tener una distancia mínima con el estado de consenso radicalizado. Igual, si lo miro bien,
+siento que lo que va a pasar es que simplemente los estados de consenso radicalizado van a alcanzar
+siempre altos valores de distancia KS, por tanto bajos valores de distancia renormalizada.
+
+Si todo está bien, creo que puedo mandar a armar gráficos a partir de esto. Y las matrices.
+Elijamos tres gráficos levemente diferentes y veamos qué da en el espacio de parámetros para
+20 y 100 simulaciones.
+
+Bien, logré armar la matriz de distancia KS. Así que ahora lo que voy a hacer primero es mandar
+a correr esto en Coimbra para todos los pares de preguntas, así ya mañana esto está terminado.
+Mientras eso se resuelve, armaré una función que levante los datos de los archivos csv y
+otra función que arme los gráficos a partir de eso.
+
+Mandé eso a correr en Coimbra. En principio debería funcar bien esto. Y con eso me refiero a que
+el código no debería tirar errores. Pero esta métrica me parece que detecta cuando tenés un único
+pico, pero el resto de cosas no las ve.
+
+Hablé con Pablo, tengo varias tareas nuevas que resolver. Vamos a ver cómo corno me organizo para
+todo. Lo que dijimos de hacer son tres cosas principalmente.
+
+1) Preparar el gráfico del par de preguntas con distancia de KS para los tres pares de preguntas
+considerados.
+2) Mandarle un mail a Hugo para reunirnos y consultarle respecto al tema de las distancias KS
+y respecto a lo de proyectar lo de dos dimensiones a una dimensión.
+3) Probar con un nuevo gráfico usando cuadrados mínimos como una métrica para comparar gráficos.
+
+Para hacer lo primero, lo que voy a hacer es levantar las matrices y de ahí construir los gráficos.
+Las funciones de lectura de matriz DJS, mapa colores y preguntas espacio parametros creo que se
+pueden totalmente usar para las demás métricas.
+
+Estaba por mandar a correr y armar algún gráfico de distancia de KS, pero resulta que tengo
+un archivo csv de los que armé en Coimbra. Eso es un problema porque el archivo de Coimbra está
+armado con un barrido más fino y más grande que el que tengo en mi pc. Tengo que rearmar esos
+archivos después. Armé los gráficos que quería, soy un crack. Necesito ayuda igual.
