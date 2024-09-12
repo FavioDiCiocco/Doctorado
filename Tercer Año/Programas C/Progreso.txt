@@ -3252,3 +3252,47 @@ Estaba por mandar a correr y armar algún gráfico de distancia de KS, pero resu
 un archivo csv de los que armé en Coimbra. Eso es un problema porque el archivo de Coimbra está
 armado con un barrido más fino y más grande que el que tengo en mi pc. Tengo que rearmar esos
 archivos después. Armé los gráficos que quería, soy un crack. Necesito ayuda igual.
+
+------------------------------------------------------------------------------------------
+
+12/09/2024
+
+Ayer hablé con Hugo y logré preparar el armado de las matrices de distancias de KS. Se me ocurre
+que lo primero que tengo que hacer es preparar las cosas que necesito para la charla con Hugo
+más a la noche. Quiero comentarle dos cosas importantes a Hugo. La primera es cómo estoy
+tomando la medida de la distancia KS, la segunda es cómo debería hacer el tema de la proyección
+de opiniones en el espacio.
+
+Para lo primero, estaría bueno tener algunas diapositivas mostrando cómo estoy haciendo 
+el cálculo de la distancia de KS. Para lo segundo, tengo que ir con una idea de lo que entendí
+y con el anotador para dejarme bien claro lo que quiero hacer.
+
+Veamos primero si se construyeron todas las matrices ayer y con eso construyamos las matrices
+de distancia de KS. Algunas matrices no se construyeron, no comprendo exáctamente por qué.
+Voy a intentar anotar las preguntas y los tamaños de preguntas, como para ver qué pasa ahí.
+
+Hecho eso, veré de armar algunos gráficos extra de distancia KS. Bien, ya eso está corriendo.
+De lo que anoté ayer, la idea de cuadrados mínimos puedo ver de hacerla mañana. Yo intentaría
+ahora primero de hacer algo del modelo de Granovetter y después un poco de alemán al final del día.
+ Aunque si mañana vamos a lo del CCK, no voy a hacer esto el viernes ni a ganchos. Carajo.
+Bueno, arranquemos con lo de Granovetter. En el medio de esto, fui al coloquio.
+
+Cuando volví, revisé lo de las matrices de DKS. Los gráficos se realizaron bien, lo que no
+salió bien es lo de la generación de matrices polarizadas. Lo que vi es que al parecer el error
+está en que me comí el armado de la matriz hist2d y eso llevaba a problemas. Resuelto eso, debería
+estar bien. Aunque la forma en que lo resolví me choca un poco, pero va todo bien.
+
+Armé una presentación para plantearle más o menos a Hugo mi idea de lo que quiero contarle. Creo
+que tengo todo lo que me parece importante mencionar. Sobre el tema de la proyección, consultarle
+cómo debería hacer eso. Lo que habíamos entendido es que debería tomar las opiniones en cada tópico
+por separado como si fueran distribuciones independientes para los casos con cos(delta) = 0,
+y comparar los niveles de polarización de esos casos con los niveles de polarización de simulaciones
+1D. El tema es, ¿tengo simulaciones 1D? La idea es ver cómo afectaba a la polarización el hecho de
+que tengo un sistema 2D, aún si los tópicos están desacoplados en el cos(delta).
+
+Mirando el laburo, mi plan sería el sábado hacer el tema de los cuadrados mínimos. Veamos un
+segundo si la idea es algo rápido de hacer o no. Seamos inteligentes, me cagaron a pedos y
+seriamente lo veo como algo rápido de hacer. Hagámoslo y después el finde estudiaré alemán
+sino, no es tanto drama. Lo armé, eran dos patadas. Lo cuál muestra que es muy boludo de mi
+parte no hacerlo y hacer otra cosa primero. Como funciona, voy a cargarlo a Coimbra y ya
+poner a hacer esto para todos los pares de preguntas.

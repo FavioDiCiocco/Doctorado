@@ -40,10 +40,12 @@ for carp in Carpetas:
     
     Dir_matrices_JS = Path("../Matrices DJS")
     Dir_matrices_KS = Path("../Matrices DKS")
+    Dir_matrices_CM = Path("../Matrices DCM")
     
     # Recorro las carpetas con archivos csv
     CarpMatJS=[[root,files] for root,dirs,files in os.walk(Dir_matrices_JS)]
     CarpMatKS=[[root,files] for root,dirs,files in os.walk(Dir_matrices_KS)]
+    CarpMatCM=[[root,files] for root,dirs,files in os.walk(Dir_matrices_CM)]
     
     # Recorro las carpetas con datos
     CarpCheck=[[root,files] for root,dirs,files in os.walk(Direccion)]
@@ -53,6 +55,7 @@ for carp in Carpetas:
     # Me armo una lista con los nombres de todos los archivos csv
     Archivos_Matrices_JS = [nombre for nombre in CarpMatJS[0][1]]
     Archivos_Matrices_KS = [nombre for nombre in CarpMatKS[0][1]]
+    Archivos_Matrices_CM = [nombre for nombre in CarpMatCM[0][1]]
     
     #-------------------------------------------------------------------------------------------------------
     
@@ -143,12 +146,12 @@ for carp in Carpetas:
               # (np.array([0,0.2]),np.array([0.4,0.8])), (np.array([0,0.1]),np.array([0.4,0.66])), (np.array([0,0.1]),np.array([0.4,0.7]))]
     
     
-    for nombre_csv in Archivos_Matrices_KS:
+    for nombre_csv in Archivos_Matrices_CM:
     # for nombre_csv in Df_cluster["nombre"]:
         
-        DKS, code_x, code_y = func.Lectura_csv_Matriz(size_y, size_x, Dir_matrices_KS, nombre_csv)
+        DCM, code_x, code_y = func.Lectura_csv_Matriz(size_y, size_x, Dir_matrices_CM, nombre_csv)
         
-        func.Mapas_Colores_csv(DKS, code_x, code_y, Df_archivos, dict_labels, "KS", Etapa/carpeta,
+        func.Mapas_Colores_csv(DCM, code_x, code_y, Df_archivos, dict_labels, "CM", Etapa/carpeta,
                                ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
         
         # func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta, Direccion, bines,
