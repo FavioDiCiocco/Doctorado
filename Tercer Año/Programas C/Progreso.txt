@@ -3296,3 +3296,34 @@ seriamente lo veo como algo rápido de hacer. Hagámoslo y después el finde est
 sino, no es tanto drama. Lo armé, eran dos patadas. Lo cuál muestra que es muy boludo de mi
 parte no hacerlo y hacer otra cosa primero. Como funciona, voy a cargarlo a Coimbra y ya
 poner a hacer esto para todos los pares de preguntas.
+
+------------------------------------------------------------------------------------------
+
+13/09/2024
+
+A la mañana fui a estudiar Alemán. Salí temprano, comí unas empanadas y fui a la reunión
+de grupo para charlar y ahora volví para ponerme con el trabajo del modelo de opinión.
+Tengo dos o tres cosas para hacer. Lo primero es lo que me dijo Hugo, calcular la distancia
+de KS tomando primero la máxima distancia en cada rotación entre todos los cuadrantes
+y todos los puntos y luego tomando el mínimo entre esas 4 distancias obtenidas.
+
+Bien, ya mandé a correr esto en comparación con el caso anterior. Ahora tengo que ver que
+efectivamente funque bien. Quizás pueda aplicar también la otra cosa que propone Hugo sobre
+tomar el punto de pivoteo como la esquina inferior izquierda del cuadrante.
+
+Haciendo lo que propuso Hugo da un poco mejor, pero no es un graan avance. Habría que ver qué
+pasa si hago lo de modificar los cuadrantes considerando el punto de pivoteo como la esquina
+inferior izquierda del cuadrante. Lo que voy a hacer ahora es mandar a correr esta nueva versión
+de KS y también armar los gráficos de distancias de CM.
+ Armé los gráficos de CM. Mirándolos, no parece que haya sido una solución. Esta medida parece
+favorecer que con todas las simulaciones, agrupa a todos los pares de preguntas en la región
+I y un poco de la II. En cambio, para 20 simulaciones, agrupa todas las preguntas en la región
+V. De nuevo, pareciera que los estados de polarización descorrelacionada se llevan toda la atención.
+
+¿Qué cosas quiero hacer este finde? Yo diría de hacer los gráficos con la métrica de KS que me
+propuso Hugo, como una tercer opción. Y después armar las distribuciones de preguntas
+en el espacio de parámetros. Así queda claro qué estoy viendo y cuál es el problema.
+ Otra cosa que se me ocurre es borrar todos los gráficos que tengo en la carpeta de
+Beta-Cosd y rearmarlos. Y aprovechar cuando hago eso de reescribir el código de la
+función de Graficar de forma tal que se armen los mapas de distancias de mis tres
+métricas distintas. Yo sé que puedo hacer eso. Todo esto el sábado.

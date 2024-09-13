@@ -234,11 +234,14 @@ for nombre in Archivos_Matrices:
     DJS = np.reshape(mat_archivo, (Arr_param_y.shape[0],Arr_param_x.shape[0],mat_archivo.shape[1]))
     
     print(nombre)
+
 """
+
 #####################################################################################
 #####################################################################################
 
 # Armo el gráfico de las regiones del espacio de parámetros Beta-Cosd
+
 """
 tlinea = 6
 
@@ -311,7 +314,7 @@ plt.close()
 
 #####################################################################################
 #####################################################################################
-"""
+
 # Voy a intentar armar una función que levante datos de algún conjunto de
 # datos y calcule la distancia de Kolmogorov-Smirnoff 2D. No es exactamente
 # eso lo que voy a estar calculando, pero ya veremos nombres después
@@ -326,6 +329,7 @@ labels_politicos = ['V201372x','V201386x','V201408x','V201411x','V201420x','V201
 labels_apoliticos = ['V201429','V202320x','V202331x','V202341x','V202344x','V202350x','V202383x']
 
 labels = []
+
 
 for i,code_1 in enumerate(labels_politicos):
     for code_2 in labels_politicos[i+1:]:
@@ -358,6 +362,7 @@ for code_1 in labels_politicos:
             weights = 'V200010b'
             
         labels.append((code_1,code_2,weights))
+
 
 for preguntas in labels:
     
@@ -496,7 +501,7 @@ for preguntas in labels:
                     Distr_Sim[np.argmin(Distr_Sim)] += frac_agente_ind
             Distr_Sim = np.reshape(Distr_Sim, (6,6))
             
-            Mat_Dist = np.zeros((6,6,4))
+            Mat_Dist = np.zeros((4,6,6))
             for rotacion in range(4):
                 
                 Distr_Sim = func.Rotar_matriz(Distr_Sim)
@@ -518,18 +523,18 @@ for preguntas in labels:
                         # Calculo la distancia en el tercer cuadrante (Izquierda-arriba)
                         DKS[3] = np.sum(Distr_Enc[:F,C+1:])-np.sum(Distr_Sim[:F,C+1:])
                         
-                        Mat_Dist[F,C,rotacion] = np.max(np.abs(DKS))
+                        Mat_Dist[rotacion,F,C] = np.max(np.abs(DKS))
             
             # Una vez que calcule las 4 distancias habiendo rotado 4 veces la distribución,
             # lo que me queda es guardar eso en las matrices ZZ correspondientes.
             
             repeticion = int(Df_archivos.loc[Df_archivos["nombre"]==nombre,"iteracion"])
-            ZZ[(Arr_param_y.shape[0]-1)-fila,columna,repeticion] = 1 - np.max(Mat_Dist)
-        
+            ZZ[(Arr_param_y.shape[0]-1)-fila,columna,repeticion] = 1 - np.min(np.max(Mat_Dist,axis = (1,2)))
+    
     ZZ_alterado = np.reshape(ZZ, (ZZ.shape[0]*ZZ.shape[1],ZZ.shape[2]))
     np.savetxt("../Matrices DKS/{}_vs_{}.csv".format(code_y,code_x), ZZ_alterado,delimiter = ",", fmt = "%.6f")
 
-"""
+
 
 #####################################################################################
 #####################################################################################
@@ -537,12 +542,12 @@ for preguntas in labels:
 # Voy a intentar armar una función que levante datos de algún conjunto de
 # datos y calcule los cuadrados mínimos entre dos distribuciones como una
 # forma de compararlas y construir una métrica entre ambas mediciones.
-
+"""
 # Primero levanto los datos de la ANES
 Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
 tuplas_preguntas = [('V201372x','V201386x','V200010a'), ('V201408x','V201426x','V200010a'), ('V201372x','V201411x','V200010a')]
 
-"""
+
 labels_politicos = ['V201372x','V201386x','V201408x','V201411x','V201420x','V201426x',
                     'V202255x','V202328x','V202336x']
 
@@ -581,7 +586,7 @@ for code_1 in labels_politicos:
             weights = 'V200010b'
             
         labels.append((code_1,code_2,weights))
-"""
+
 
 
 for preguntas in tuplas_preguntas:
@@ -742,6 +747,6 @@ for preguntas in tuplas_preguntas:
         
     ZZ_alterado = np.reshape(ZZ, (ZZ.shape[0]*ZZ.shape[1],ZZ.shape[2]))
     np.savetxt("../Matrices DCM/{}_vs_{}.csv".format(code_y,code_x), ZZ_alterado,delimiter = ",", fmt = "%.6f")
-
+"""
 
 func.Tiempo(t0)
