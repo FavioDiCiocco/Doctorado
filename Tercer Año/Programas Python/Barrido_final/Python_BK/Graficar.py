@@ -80,9 +80,9 @@ for carp in Carpetas:
     
     # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
     # de todas las simulaciones para cada punto del espacio de parámetros.
-    Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
+    # Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
     
-    bines = np.linspace(-3.5,3.5,8)
+    # bines = np.linspace(-3.5,3.5,8)
     
     func.Tiempo(t0)
     
@@ -90,10 +90,13 @@ for carp in Carpetas:
     
     # Gráficos del espacio de parámetros
     
+    func.Mapas_Colores_1D(Df_archivos, Direccion, Etapa/carpeta,
+                         SIM_param_x, SIM_param_y,ID_param_extra_1)
+    """
     func.Mapa_Colores_Traza_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
                                           SIM_param_x, SIM_param_y,ID_param_extra_1)
     
-    """
+    
     func.Mapa_Colores_Entropia_opiniones(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
                                           SIM_param_x, SIM_param_y,ID_param_extra_1)
     

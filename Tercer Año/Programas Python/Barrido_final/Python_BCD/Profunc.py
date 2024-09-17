@@ -512,16 +512,16 @@ for preguntas in labels:
                         DKS = np.zeros(4)
                         
                         # Calculo la distancia en el primer cuadrante (Derecha-arriba)
-                        DKS[0] = np.sum(Distr_Enc[F+1:,C+1:])-np.sum(Distr_Sim[F+1:,C+1:])
+                        DKS[0] = np.sum(Distr_Enc[F:,C:])-np.sum(Distr_Sim[F:,C:])
                         
                         # Calculo la distancia en el segundo cuadrante (Derecha-abajo)
-                        DKS[1] = np.sum(Distr_Enc[F+1:,:C])-np.sum(Distr_Sim[F+1:,:C])
+                        DKS[1] = np.sum(Distr_Enc[F:,:C])-np.sum(Distr_Sim[F:,:C])
                         
                         # Calculo la distancia en el tercer cuadrante (Izquierda-abajo)
                         DKS[2] = np.sum(Distr_Enc[:F,:C])-np.sum(Distr_Sim[:F,:C])
                         
                         # Calculo la distancia en el tercer cuadrante (Izquierda-arriba)
-                        DKS[3] = np.sum(Distr_Enc[:F,C+1:])-np.sum(Distr_Sim[:F,C+1:])
+                        DKS[3] = np.sum(Distr_Enc[:F,C:])-np.sum(Distr_Sim[:F,C:])
                         
                         Mat_Dist[rotacion,F,C] = np.max(np.abs(DKS))
             
@@ -749,4 +749,71 @@ for preguntas in tuplas_preguntas:
     np.savetxt("../Matrices DCM/{}_vs_{}.csv".format(code_y,code_x), ZZ_alterado,delimiter = ",", fmt = "%.6f")
 """
 
+#####################################################################################
+#####################################################################################
+
+# Voy a construir una matriz que me permita ver la similaridad entre los clusters de
+# preguntas definidos según distancia JS.
+
+# Primero levanto los datos de la ANES
+Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
+tuplas_preguntas = [('V201372x','V201386x','V200010a'), ('V201408x','V201426x','V200010a'), ('V201372x','V201411x','V200010a')]
+
+for preguntas in tuplas_preguntas:
+    
+    # Separo las opiniones de 0
+    df_aux = Df_ANES.loc[(Df_ANES[preguntas[0]]>0) & (Df_ANES[preguntas[1]]>0)]
+    # Reviso la cantidad de respuestas de cada pregunta
+    resp_1 = np.unique(df_aux[preguntas[0]]).shape[0]
+    resp_2 = np.unique(df_aux[preguntas[1]]).shape[0]
+    
+    # Los clasifico como código x y código y
+    if resp_1 >= resp_2:
+        code_x = preguntas[0]
+        code_y = preguntas[1]
+    else:
+        code_x = preguntas[1]
+        code_y = preguntas[0]
+    
+    # Dos preguntas con siete respuestas
+    if resp_1 == 7 and resp_2 == 7:
+        
+        # Saco la cruz
+        df_filtered = df_aux[(df_aux[code_x] != 4) & (df_aux[code_y] != 4)] 
+        
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_x], y=df_filtered[code_y], weights=df_filtered[preguntas[2]], vmin=0, cmap = "inferno", density = True,
+                  bins=[np.arange(df_filtered[code_x].min()-0.5, df_filtered[code_x].max()+1.5, 1), np.arange(df_filtered[code_y].min()-0.5, df_filtered[code_y].max()+1.5, 1)])
+        plt.close()
+        
+        Distr_Enc = hist2d[np.arange(7) != 3,:][:,np.arange(7) != 3]
+        Distr_Enc = Distr_Enc.flatten()
+    
+    # Una pregunta con siete respuestas y otra con seis
+    elif (resp_1 == 6 and resp_2 == 7) or (resp_1 == 7 and resp_2 == 6):
+        
+        # Saco la cruz
+        df_filtered = df_aux[df_aux[code_x] != 4] 
+        
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_x], y=df_filtered[code_y], weights=df_filtered[preguntas[2]], vmin=0, cmap = "inferno", density = True,
+                  bins=[np.arange(df_filtered[code_x].min()-0.5, df_filtered[code_x].max()+1.5, 1), np.arange(df_filtered[code_y].min()-0.5, df_filtered[code_y].max()+1.5, 1)])
+        plt.close()
+        
+        Distr_Enc = hist2d[np.arange(7) != 3,:]
+        Distr_Enc = Distr_Enc.flatten()
+    
+    # Dos preguntas con seis respuestas
+    elif resp_1 == 6 and resp_2 == 6:
+        
+        # No hay necesidad de sacar la cruz
+        hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_x], y=df_aux[code_y], weights=df_aux[preguntas[2]], vmin=0,cmap = "inferno", density = True,
+                  bins=[np.arange(df_aux[code_x].min()-0.5, df_aux[code_x].max()+1.5, 1), np.arange(df_aux[code_y].min()-0.5, df_aux[code_y].max()+1.5, 1)])
+        plt.close()
+        
+        Distr_Enc = hist2d.flatten()
+    
+    ###############################################################################################################
+    
+    
+
 func.Tiempo(t0)
+

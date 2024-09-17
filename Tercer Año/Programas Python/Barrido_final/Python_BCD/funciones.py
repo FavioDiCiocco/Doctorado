@@ -154,7 +154,7 @@ def Mapa_Colores_Entropia_opiniones(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_pa
 # Esta función es la que arma los gráficos de los histogramas de opiniones
 # finales en el espacio de tópicos
 
-def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,Tupla_total,
+def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
                                  ID_param_x,ID_param_y,ID_param_extra_1):
 
     # Defino la cantidad de agentes de la red
@@ -162,13 +162,13 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,Tupla_total
     
     # Defino los arrays de parámetros diferentes
     Arr_EXTRAS = np.unique(DF["Extra"])
-#    Arr_param_x = np.unique(DF["parametro_x"])[0::2]
-#    Arr_param_y = np.unique(DF["parametro_y"])[0::4]
+    Arr_param_x = np.unique(DF["parametro_x"])[0::3]
+    Arr_param_y = np.unique(DF["parametro_y"])[0::4]
     
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
-#    Tupla_total = [(param_x,param_y) for param_x in Arr_param_x
-#                   for param_y in Arr_param_y]
+    Tupla_total = [(param_x,param_y) for param_x in Arr_param_x
+                  for param_y in Arr_param_y]
     
     # Tupla_total = [(0,0.4), (0,0.6), (0.02,0.5)]
     
@@ -1026,11 +1026,10 @@ def Mapas_Colores_csv(Mat_metrica, code_x, code_y, DF_datos, dict_labels, metric
 # más similares con la distribución de la encuesta
 
 def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, dict_labels, carpeta, path, bins,
-                         SIM_param_x,SIM_param_y):
+                         metrica, SIM_param_x,SIM_param_y):
     
     # Hago los gráficos de histograma 2D de las simulaciones que más se parecen y que menos se parecen
     # a mis distribuciones de las encuestas
-    # Dist_JS_sorted = np.sort(Dist_JS)
     Dist_JS_prom = np.mean(Dist_JS, axis=2)
     
     #-------------------------------------------------------------------------------------------------
@@ -1039,13 +1038,6 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, dict_labe
     # y del décimo que más se parece se parece a lo que estoy queriendo comparar.
     tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
     iMin = np.argsort(Dist_JS[tupla])[0]
-    
-    # Hallo el décimo que más se parece a la distribución. Arranco con el que no tiene centro
-    
-#    flattened_array = Dist_JS.flatten()
-#    sorted_indices = np.argsort(flattened_array)
-#    tenth_element_flat_index = sorted_indices[9]
-#    iMax = np.unravel_index(tenth_element_flat_index, Dist_JS.shape)
     
     #--------------------------------------------------------------------------------
 
@@ -1061,41 +1053,16 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, dict_labe
     TIPO = "Opiniones"
     T = 2
     
-    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
-#    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
-#                   for j,param_y in enumerate(Arr_param_y)]
-    
     # Construyo las grillas que voy a necesitar para el pcolormesh.
-    
     XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
     
-    #--------------------------------------------------------------------------------
-    
-    # Nombres = ["Consenso neutral", "Consenso radicalizado", "Polarización 1D y Consenso",
-    #        "Polarización Ideológica", "Transición", "Polarización Descorrelacionada",
-    #        "Polarización 1D y Consenso con anchura",
-    #        "Polarización Ideológica con anchura", "Transición con anchura",
-    #        "Polarización Descorrelacionada con anchura"]
-    
-    simil = "min_distancia"
+    simil = "min_distancia{}".format(metrica)
     distan = np.min(Dist_JS[tupla])
     
-    #--------------------------------------------------------------------------------
-    # for tupla,simil,distan in zip([iMin, iMax],Lista_similaridad,Valor_distancia):
-    
-    # Armo listas de strings y números para mis archivos
-#    Lista_similaridad = ["min_distancia","max_distancia"]
-#    Valor_distancia = [np.min(Dist_JS_sorted),np.max(Dist_JS_sorted[:,:,0:10])]
     #--------------------------------------------------------------------------------
     
     PARAM_X = XX[tupla[0],tupla[1]]
     PARAM_Y = YY[tupla[0],tupla[1]]
-    
-    # Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
-    #                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
-    #                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
-    #                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
-    #                                              Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
     
     # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
     archivos = np.array(DF_datos.loc[(DF_datos["tipo"]==TIPO) & 
@@ -1150,9 +1117,6 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, dict_labe
                 
                 direccion_guardado = Path("../../../Imagenes/{}/Hist_2D_{}_{}vs{}_g{}.png".format(carpeta,simil,code_y,code_x,rot))
                 
-                # indice = np.where(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] == repeticion)[0][0]
-                # estado = int(Frecuencias[indice])
-                
                 #----------------------------------------------------------------------------------------------------------------------------------
                 
                 # Tengo que armar los valores de X e Y que voy a graficar
@@ -1171,7 +1135,7 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, dict_labe
                 gs = GridSpec(4, 5, figure=fig, hspace=0.2, wspace=0.2, width_ratios=[1, 1, 1, 1, 0.1])
                 
                 # Add a title to the figure
-                fig.suptitle(r'Distancia JS = {:.2f}, ${}$={:.2f}, ${}$={:.2f}'.format(distan,SIM_param_x,PARAM_X,SIM_param_y,PARAM_Y) + '\n {} vs {}'.format(dict_labels[code_y],dict_labels[code_x]))
+                fig.suptitle(r'Distancia {} = {:.2f}, ${}$={:.2f}, ${}$={:.2f}'.format(metrica,distan,SIM_param_x,PARAM_X,SIM_param_y,PARAM_Y) + '\n {} vs {}'.format(dict_labels[code_y],dict_labels[code_x]))
                 
                 # Main plot: 2D histogram
                 ax_main = fig.add_subplot(gs[1:, :-2])  # 3x3 space for the main plot
@@ -1210,7 +1174,7 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, dict_labe
     
     Dist_JS_sort = np.sort(Dist_JS)
     
-    for rank in range(2,3):
+    for rank in range(1,3):
         
         Dist_JS_prom = np.mean(Dist_JS_sort[:,:,0:rank*10], axis=2)
         tupla = np.unravel_index(np.argmin(Dist_JS_prom),Dist_JS_prom.shape)
@@ -1294,7 +1258,7 @@ def Hist2D_similares_FEF(Dist_JS, code_x, code_y, DF_datos, Dic_Total, dict_labe
                     gs = GridSpec(4, 5, figure=fig, hspace=0.2, wspace=0.2, width_ratios=[1, 1, 1, 1, 0.1])
                     
                     # Add a title to the figure
-                    fig.suptitle(r'Distancia JS = {:.2f}, ${}$={:.2f}, ${}$={:.2f}, simulaciones={}'.format(distan,SIM_param_x,PARAM_X,SIM_param_y,PARAM_Y,rank*10) + '\n {} vs {}'.format(dict_labels[code_y],dict_labels[code_x]))
+                    fig.suptitle(r'Distancia {} = {:.2f}, ${}$={:.2f}, ${}$={:.2f}, simulaciones={}'.format(metrica,distan,SIM_param_x,PARAM_X,SIM_param_y,PARAM_Y,rank*10) + '\n {} vs {}'.format(dict_labels[code_y],dict_labels[code_x]))
                     
                     # Main plot: 2D histogram
                     ax_main = fig.add_subplot(gs[1:, :-2])  # 3x3 space for the main plot
@@ -1799,7 +1763,7 @@ def Reconstruccion_opiniones(Dist_simulada, N, T):
 
 # Armo una función que ubique los pares de preguntas en el espacio de parámetros.
 
-def Preguntas_espacio_parametros(DF_datos,arc_matrices,path_matrices,carpeta,
+def Preguntas_espacio_parametros(DF_datos,dic_clusters,path_matrices,carpeta,metrica,
                                  SIM_param_x,SIM_param_y):
     
     # Armo un rng para agregar un ruido normal
@@ -1814,47 +1778,45 @@ def Preguntas_espacio_parametros(DF_datos,arc_matrices,path_matrices,carpeta,
     XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
     
     # Armo un diccionario donde colocar los valores de X y de Y de cada cluster
-    # dict_grafcluster = dict()
+    dict_grafcluster = dict()
     
+    for cluster,arc_matrices in dic_clusters.items():
     
-    # for cluster,arc_matrices in dic_clusters.items():
-    
-    
-    # Defino los arrays donde guardo las posiciones de las distancias
-    # mínimas promedio
-    X = np.zeros((5,len(arc_matrices)))
-    Y = np.zeros((5,len(arc_matrices)))
-    
-    # Itero en todos los pares de preguntas para construir la Matriz
-    # de distancia de JS de cada una y de ahí extraer el punto de mínima
-    # distancia promedio
-    
-    for indice,nombre_csv in enumerate(arc_matrices):
+        # Defino los arrays donde guardo las posiciones de las distancias
+        # mínimas promedio
+        X = np.zeros((5,len(arc_matrices)))
+        Y = np.zeros((5,len(arc_matrices)))
         
-        # Calculo la matriz de distancias JS y la ordeno
-        Dist_JS, code_x, code_y = Lectura_csv_Matriz(size_y, size_x, path_matrices, nombre_csv)
-        Dist_JS = np.sort(Dist_JS)
+        # Itero en todos los pares de preguntas para construir la Matriz
+        # de distancia de JS de cada una y de ahí extraer el punto de mínima
+        # distancia promedio
         
-        # Obtengo la ubicación del mínimo de distancia JS promediado con todas las simulaciones
-        # y agrego ese punto a los arrays que uso para graficar
+        for indice,nombre_csv in enumerate(arc_matrices):
+            
+            # Calculo la matriz de distancias JS y la ordeno
+            Mat_metrica, code_x, code_y = Lectura_csv_Matriz(size_y, size_x, path_matrices, nombre_csv)
+            Mat_metrica = np.sort(Mat_metrica)
+            
+            # Obtengo la ubicación del mínimo de distancia JS promediado con todas las simulaciones
+            # y agrego ese punto a los arrays que uso para graficar
+            
+            tupla = np.unravel_index(np.argmin(np.mean(Mat_metrica,axis=2)), Mat_metrica.shape[:2])
+            X[0,indice] = XX[tupla]
+            Y[0,indice] = YY[tupla]
+            
+            for rank in range(1,5):
+                tupla = np.unravel_index(np.argmin(np.mean(Mat_metrica[:,:,0:rank*10],axis=2)), Mat_metrica.shape[:2])
+                X[rank,indice] = XX[tupla]
+                Y[rank,indice] = YY[tupla]
         
-        tupla = np.unravel_index(np.argmin(np.mean(Dist_JS,axis=2)),np.mean(Dist_JS,axis=2).shape)
-        X[0,indice] = XX[tupla]
-        Y[0,indice] = YY[tupla]
+        # Antes de graficar, necesito agregar ruido para que los puntos no se solapen.
+        # El ruido del eje X y del eje Y tiene que ser distinto, ya que el espacio entre
+        # puntos en ambos ejes es distinto.
         
-        for rank in range(1,5):
-            tupla = np.unravel_index(np.argmin(np.mean(Dist_JS[:,:,0:rank*10],axis=2)),np.mean(Dist_JS,axis=2).shape)
-            X[rank,indice] = XX[tupla]
-            Y[rank,indice] = YY[tupla]
-    
-    # Antes de graficar, necesito agregar ruido para que los puntos no se solapen.
-    # El ruido del eje X y del eje Y tiene que ser distinto, ya que el espacio entre
-    # puntos en ambos ejes es distinto.
-    
-    X = X + rng.normal(loc = 0, scale = (Arr_param_x[1]-Arr_param_x[0])/5, size = X.shape)
-    Y = Y + rng.normal(loc = 0, scale = (Arr_param_y[1]-Arr_param_y[0])/5, size = Y.shape)
-    
-    # dict_grafcluster[cluster] = (X,Y)
+        X = X + rng.normal(loc = 0, scale = (Arr_param_x[1]-Arr_param_x[0])/5, size = X.shape)
+        Y = Y + rng.normal(loc = 0, scale = (Arr_param_y[1]-Arr_param_y[0])/5, size = Y.shape)
+        
+        dict_grafcluster[cluster] = (X,Y)
     
     # Delineo las regiones del espacio Beta-Cosd
     plt.rcParams.update({'font.size': 44})
@@ -1896,16 +1858,17 @@ def Preguntas_espacio_parametros(DF_datos,arc_matrices,path_matrices,carpeta,
     plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
     plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
     
-    # for cluster in dic_clusters.keys():
+    
     # Lo que queda es hacer los plot scatter de las preguntas
-    # plt.scatter(dict_grafcluster[cluster][0][0],dict_grafcluster[cluster][1][0], marker="o", s = 500, alpha = 0.7)
-    plt.scatter(X[0],Y[0], marker="o", s = 500, color="green", alpha = 0.7)
+    for cluster in dic_clusters.keys():
+        plt.scatter(dict_grafcluster[cluster][0][0],dict_grafcluster[cluster][1][0], marker="o", s = 500, alpha = 0.7)
+    # plt.scatter(X[0],Y[0], marker="o", s = 500, color="green", alpha = 0.7)
     plt.xlabel(r"${}$".format(SIM_param_x))
     plt.ylabel(r"${}$".format(SIM_param_y))
     plt.xlim(-0.05,0.5)
     plt.ylim(0,1.5)
-    plt.title(r"\textbf{Todas las simulaciones}")
-    direccion_guardado = Path("../../../Imagenes/{}/Dist_preguntas_espacio.png".format(carpeta))
+    plt.title("Todas las simulaciones, Dist {}".format(metrica))
+    direccion_guardado = Path("../../../Imagenes/{}/Preguntas_espacio_{}.png".format(carpeta,metrica))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
     
@@ -1951,15 +1914,15 @@ def Preguntas_espacio_parametros(DF_datos,arc_matrices,path_matrices,carpeta,
         plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
         plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
         
-        # for cluster in dic_clusters.keys():
-        # plt.scatter(dict_grafcluster[cluster][0][rank],dict_grafcluster[cluster][1][rank], marker="o", s = 500, alpha = 0.7)
-        plt.scatter(X[rank],Y[rank], marker="o", s = 500, color="green", alpha = 0.7)
+        for cluster in dic_clusters.keys():
+            plt.scatter(dict_grafcluster[cluster][0][rank],dict_grafcluster[cluster][1][rank], marker="o", s = 500, alpha = 0.7)
+        # plt.scatter(X[rank],Y[rank], marker="o", s = 500, color="green", alpha = 0.7)
         plt.xlabel(r"${}$".format(SIM_param_x))
         plt.ylabel(r"${}$".format(SIM_param_y))
         plt.xlim(-0.05,0.5)
         plt.ylim(0,1.5)
-        plt.title(r"{} + simil".format(rank*10))
-        direccion_guardado = Path("../../../Imagenes/{}/Dist_preguntas_espacio_r{}.png".format(carpeta,rank))
+        plt.title(r"{} + simil, Dist {}".format(rank*10,metrica))
+        direccion_guardado = Path("../../../Imagenes/{}/Preguntas_espacio_{}_r{}.png".format(carpeta,metrica,rank))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
     
@@ -2009,8 +1972,8 @@ def Tabla_datos_preguntas(DF_datos, dict_labels, arc_matrices, path_matrices):
     for nombre_csv in arc_matrices:
         
         # Calculo la matriz de distancias JS y la ordeno
-        Dist_JS, code_x, code_y = Lectura_csv_Matriz(size_y, size_x, path_matrices, nombre_csv)
-        Dist_JS = np.sort(Dist_JS)
+        Mat_metrica, code_x, code_y = Lectura_csv_Matriz(size_y, size_x, path_matrices, nombre_csv)
+        Mat_metrica = np.sort(Mat_metrica)
         
         dict_datos["nombre"].append(nombre_csv)
         dict_datos["código x"].append(code_x)
@@ -2020,7 +1983,7 @@ def Tabla_datos_preguntas(DF_datos, dict_labels, arc_matrices, path_matrices):
         
         for i in range(1,11):
             
-            tupla = np.unravel_index(np.argmin(np.mean(Dist_JS[:,:,0:i*10],axis=2)),XX.shape)
+            tupla = np.unravel_index(np.argmin(np.mean(Mat_metrica[:,:,0:i*10],axis=2)), Mat_metrica.shape[0:2])
             dict_datos["Cosd_{}".format(i*10)].append(XX[tupla])
             dict_datos["Beta_{}".format(i*10)].append(YY[tupla])
             

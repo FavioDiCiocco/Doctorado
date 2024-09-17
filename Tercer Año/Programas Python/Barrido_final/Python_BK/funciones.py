@@ -1531,406 +1531,7 @@ def Doble_Mapacol_PromyFrac(Dist_JS, code_x, code_y, DF_datos, dict_labels, carp
     
 
 
-#-----------------------------------------------------------------------------------------------
-    
-# Realizo un ajuste de los parámetros Beta y Cos(delta)
-    
-def Ajuste_DJS(DF_datos,DF_Anes,path,carpeta,Dic_ANES,
-               Cd_range,B_range):
-    
-    # Defino la cantidad de agentes de la red
-    AGENTES = int(np.unique(DF_datos["n"]))
-    frac_agente_ind = 1/AGENTES
-    
-    # Defino los arrays de parámetros diferentes
-    EXTRAS = int(np.unique(DF_datos["Extra"]))
-    Arr_param_x = np.unique(DF_datos["parametro_x"])
-    Arr_param_x = Arr_param_x[(Arr_param_x >= Cd_range[0]) & (Arr_param_x <= Cd_range[1])]
-    
-    Arr_param_y = np.unique(DF_datos["parametro_y"])
-    Arr_param_y = Arr_param_y[(Arr_param_y >= B_range[0]) & (Arr_param_y <= B_range[1])]
-    
-    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
-    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
-                   for j,param_y in enumerate(Arr_param_y)]
-    
-    # Defino el tipo de archivo del cuál tomaré los datos
-    TIPO = "Opiniones"
-    
-    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
-    # Gráfico de Opi vs T y en tres no se vería mejor.
-    T=2
-    
-    # Armo el vector en el que voy a poner todas las distancias Jensen-Shannon que calcule
-    YY_centro = np.reshape(np.array([]),(0,1))
-    YY_cruz = np.reshape(np.array([]),(0,1))
-    
-    XX = np.reshape(np.array([]),(0,5))
-    
-    #--------------------------------------------------------------------------------
-    
-    # Extraigo la distribución en hist2d
-    
-    # Extraigo mis distribuciones sacando el centro, es decir, saco a los agentes que respondieron neutro
-    # en ambas encuestas y también extraigo la distribución sacando la cruz, que sería sacar a los agentes que
-    # respondieron neutro en alguna encuesta.
-    
-    df_aux = DF_Anes.loc[(DF_Anes[Dic_ANES["code_1"]]>0) & (DF_Anes[Dic_ANES["code_2"]]>0)]
-    
-    # Distribución de encuesta sin el Centro
-    
-    df_filtered = df_aux[(df_aux[Dic_ANES["code_1"]] != 4) | (df_aux[Dic_ANES["code_2"]] != 4)] # Sólo saca el centro
-    hist2d_centro, xedges, yedges, im = plt.hist2d(x=df_filtered[Dic_ANES["code_1"]], y=df_filtered[Dic_ANES["code_2"]], weights=df_filtered[Dic_ANES["weights"]], vmin=0,cmap = "inferno", density = True,
-              bins=[np.arange(df_filtered[Dic_ANES["code_1"]].min()-0.5, df_filtered[Dic_ANES["code_1"]].max()+1.5, 1), np.arange(df_filtered[Dic_ANES["code_2"]].min()-0.5, df_filtered[Dic_ANES["code_2"]].max()+1.5, 1)])
-    plt.close()
-    
-    # Distribución de encuesta sin la Cruz
-    
-    df_filtered = df_aux[(df_aux[Dic_ANES["code_1"]] != 4) & (df_aux[Dic_ANES["code_2"]] != 4)] # Saca la cruz
-    hist2d_cruz, xedges, yedges, im = plt.hist2d(x=df_filtered[Dic_ANES["code_1"]], y=df_filtered[Dic_ANES["code_2"]], weights=df_filtered[Dic_ANES["weights"]], vmin=0,cmap = "inferno", density = True,
-              bins=[np.arange(df_filtered[Dic_ANES["code_1"]].min()-0.5, df_filtered[Dic_ANES["code_1"]].max()+1.5, 1), np.arange(df_filtered[Dic_ANES["code_2"]].min()-0.5, df_filtered[Dic_ANES["code_2"]].max()+1.5, 1)])
-    plt.close()
-    
-    # Armo las distribuciones finalmente
-    
-    Distr_Enc_Centro = np.reshape(hist2d_centro,(hist2d_centro.shape[0]*hist2d_centro.shape[1],1))
-    Distr_Enc_Centro = np.delete(Distr_Enc_Centro,24) # Saco el elemento del centro que tiene un cero
-    
-    Distr_Enc_Cruz = np.reshape(hist2d_cruz,(hist2d_cruz.shape[0]*hist2d_cruz.shape[1],1))
-    Ind_nulos = np.array([3,10,17,21,22,23,24,25,26,27,31,38,45])
-    Distr_Enc_Cruz = np.delete(Distr_Enc_Cruz,Ind_nulos)
-    
-    #--------------------------------------------------------------------------------
-    
-    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
-        
-        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
-        archivos = np.array(DF_datos.loc[(DF_datos["tipo"]==TIPO) & 
-                                    (DF_datos["n"]==AGENTES) & 
-                                    (DF_datos["Extra"]==EXTRAS) & 
-                                    (DF_datos["parametro_x"]==PARAM_X) &
-                                    (DF_datos["parametro_y"]==PARAM_Y), "nombre"])
-        
-        #-----------------------------------------------------------------------------------------
-        
-        Dist_previa_centro = np.zeros(4)
-        Dist_previa_cruz = np.zeros(4)
-        DistJS_centro = np.zeros((archivos.shape[0],1))
-        DistJS_cruz = np.zeros((archivos.shape[0],1))
-        
-        for nombre in archivos:
-            
-            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-            # Opinión Inicial del sistema
-            # Variación Promedio
-            # Opinión Final
-            # Pasos simulados
-            # Semilla
-            # Matriz de Adyacencia
-            
-            # Levanto los datos del archivo
-            Datos = ldata(path / nombre)
-            
-            # Leo los datos de las Opiniones Finales y me armo una distribución en forma de matriz de 7x7
-            Opifinales = np.array(Datos[5][:-1], dtype="float")
-            Opifinales = Opifinales / EXTRAS
-            Distr_Orig = Clasificacion(Opifinales,hist2d_centro.shape[0],hist2d_centro.shape[1],T)
-            
-            #-----------------------------------------------------------------------------------------
-            
-            for rotacion in range(4):
-                
-                # Tomo la distribución original, le doy forma de matriz, la roto y luego la plancho
-                Distr_Orig = np.reshape(Distr_Orig, hist2d_centro.shape)
-                Distr_Orig = Rotar_matriz(Distr_Orig)
-                Distr_Orig = np.reshape(Distr_Orig,(hist2d_centro.shape[0]*hist2d_centro.shape[1],1))
-                
-                # A partir de la distribución original voy a fabricarme dos distribuciones de simulaciones, una sin el
-                # punto central, otra sin la cruz.
-                
-                # Primero armo la que no tiene el centro removiendo el punto central
-                Distr_Sim_centro = np.delete(Distr_Orig,24)
-                # Como removí parte de mi distribución, posiblemente ya no esté normalizada
-                # la distribución. Así que debería ahora sumar agentes de a 1 hasta asegurarme
-                # de que otra vez esté normalizada
-                if np.sum(Distr_Sim_centro) != 1:
-                    agentes_agregar = int((1-np.sum(Distr_Sim_centro))/frac_agente_ind)
-                    for i in range(agentes_agregar):
-                        ubic_min = np.argmin(Distr_Sim_centro)
-                        Distr_Sim_centro[ubic_min] += frac_agente_ind
-                # Luego de volver a normalizar mi distribución, si quedaron lugares
-                # sin agentes, los relleno
-                restar = np.count_nonzero(Distr_Sim_centro == 0)
-                ubic = np.argmax(Distr_Sim_centro)
-                Distr_Sim_centro[Distr_Sim_centro == 0] = np.ones(restar)*frac_agente_ind
-                Distr_Sim_centro[ubic] -= frac_agente_ind*restar
-                
-                Dist_previa_centro[rotacion] = jensenshannon(Distr_Enc_Centro,Distr_Sim_centro)
-                
-                
-                # Segundo armo la que no tiene la cruz removiendo los puntos en la cruz de la distribución
-                Distr_Sim_cruz = np.delete(Distr_Orig, Ind_nulos)
-                # Como removí parte de mi distribución, posiblemente ya no esté normalizada
-                # la distribución. Así que debería ahora sumar agentes de a 1 hasta asegurarme
-                # de que otra vez esté normalizada
-                if np.sum(Distr_Sim_cruz) != 1:
-                    agentes_agregar = int((1-np.sum(Distr_Sim_cruz))/frac_agente_ind)
-                    for i in range(agentes_agregar):
-                        ubic_min = np.argmin(Distr_Sim_cruz)
-                        Distr_Sim_cruz[ubic_min] += frac_agente_ind
-                # Luego de volver a normalizar mi distribución, si quedaron lugares
-                # sin agentes, los relleno
-                restar = np.count_nonzero(Distr_Sim_cruz == 0)
-                ubic = np.argmax(Distr_Sim_cruz)
-                Distr_Sim_cruz[Distr_Sim_cruz == 0] = np.ones(restar)*frac_agente_ind
-                Distr_Sim_cruz[ubic] -= frac_agente_ind*restar
-                
-                Dist_previa_cruz[rotacion] = jensenshannon(Distr_Enc_Cruz,Distr_Sim_cruz)
-                
-            # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
-            
-            repeticion = int(DF_datos.loc[DF_datos["nombre"]==nombre,"iteracion"])
-            
-            DistJS_centro[repeticion] = np.min(Dist_previa_centro)
-            DistJS_cruz[repeticion] = np.min(Dist_previa_cruz)
-            
-        #------------------------------------------------------------------------------------------
-        # Una vez que calculé todas las distancias Jensen-Shannon, concateno eso con mi
-        # vector YY, así como concateno mi vector XX
-        
-        YY_centro = np.concatenate((YY_centro,DistJS_centro))
-        YY_cruz = np.concatenate((YY_cruz,DistJS_cruz))
-        
-        Bcuad = np.ones((len(archivos),1))*PARAM_Y*PARAM_Y
-        Blin = np.ones((len(archivos),1))*PARAM_Y
-        CDcuad = np.ones((len(archivos),1))*PARAM_X*PARAM_X
-        CDlin = np.ones((len(archivos),1))*PARAM_X
-        Unos = np.ones((len(archivos),1))
-        
-        M = np.concatenate((Bcuad,Blin,CDcuad,CDlin,Unos),axis=1)
-        XX = np.concatenate((XX,M))
-        
-    #------------------------------------------------------------------------------------------
-    
-    # Una vez que tengo armado los vectores XX e YY, ya puedo calcular mis coeficientes
 
-    param_centro = np.matmul(np.linalg.inv(np.matmul(np.transpose(XX),XX)),np.matmul(np.transpose(XX),YY_centro))
-    param_cruz = np.matmul(np.linalg.inv(np.matmul(np.transpose(XX),XX)),np.matmul(np.transpose(XX),YY_cruz))
-    
-    return param_centro,param_cruz
-
-#-----------------------------------------------------------------------------------------------
-    
-# Ploteo el paraboloide que ajuste en un gráfico 3D
-
-def plot_3d_surface(carpeta, Dic_ANES, func, params_centro, params_cruz, x_range, y_range,
-                    SIM_param_x, SIM_param_y,x_samples=100, y_samples=100):
-    
-    """
-    Plot a 3D surface for a given mathematical function.
-    
-    Parameters:
-    - func: The mathematical function to plot. It should take two arguments (x and y) and return a value.
-    - x_range: A tuple specifying the range of x values (min, max).
-    - y_range: A tuple specifying the range of y values (min, max).
-    - x_samples: Number of samples in the x range.
-    - y_samples: Number of samples in the y range.
-    """
-    # Create a grid of points
-    x = np.linspace(x_range[0], x_range[1], x_samples)
-    y = np.linspace(y_range[0], y_range[1], y_samples)
-    X, Y = np.meshgrid(x, y)
-    Z_centro = func(X, Y, params_centro)
-    Z_cruz = func(X, Y, params_cruz)
-
-    #--------------------------------------------------------------------------------------
-    
-    # Armo el gráfico del paraboloide para el caso sin el centro de la distribución
-    
-    # Create the plot
-    direccion_guardado = Path("../../../Imagenes/{}/Paraboloide_ajustado_sin_centro_{}vs{}.png".format(carpeta/"Sin Centro",Dic_ANES["code_2"],Dic_ANES["code_1"]))
-    plt.rcParams.update({'font.size': 44})
-    fig = plt.figure(figsize=(48,36))
-    ax = fig.add_subplot(111, projection='3d')
-    surf = ax.plot_surface(X, Y, Z_centro, cmap='viridis')
-
-    # Add color bar which maps values to colors
-    fig.colorbar(surf, ax=ax, shrink=0.5, aspect=5)
-    
-    
-    # Format axes ticks to 2 decimal places
-    ax.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
-    ax.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
-    ax.zaxis.set_major_formatter(FormatStrFormatter('%.2f'))
-
-    # Adjust tick parameters
-    ax.tick_params(axis='x')
-    ax.tick_params(axis='y')
-    ax.tick_params(axis='z')
-    
-    # Labels and title
-    ax.set_xlabel(r"${}$".format(SIM_param_x),labelpad = 60)
-    ax.set_ylabel(r"${}$".format(SIM_param_y),labelpad = 60)
-    ax.set_zlabel('Distancia JS',labelpad = 60)
-    ax.set_title('Paraboloide ajustada con distribuciones sin centro \n {} vs {}'.format(Dic_ANES["code_2"],Dic_ANES["code_1"]))
-
-    plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close()
-    
-    #--------------------------------------------------------------------------------------
-    
-    # Armo el gráfico para el caso sin la cruz central de la distribución
-    
-    # Create the plot
-    direccion_guardado = Path("../../../Imagenes/{}/Paraboloide_ajustado_sin_cruz_{}vs{}.png".format(carpeta/"Sin Cruz",Dic_ANES["code_2"],Dic_ANES["code_1"]))
-    plt.rcParams.update({'font.size': 44})
-    fig = plt.figure(figsize=(48,36))
-    ax = fig.add_subplot(111, projection='3d')
-    surf = ax.plot_surface(X, Y, Z_cruz, cmap='viridis')
-
-    # Add color bar which maps values to colors
-    fig.colorbar(surf, ax=ax, shrink=0.5, aspect=5)
-
-    # Format axes ticks to 2 decimal places
-    ax.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
-    ax.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
-    ax.zaxis.set_major_formatter(FormatStrFormatter('%.2f'))
-    
-    # Adjust tick parameters
-    ax.tick_params(axis='x')
-    ax.tick_params(axis='y')
-    ax.tick_params(axis='z')
-    
-    # Labels and title
-    ax.set_xlabel(r"${}$".format(SIM_param_x),labelpad = 60)
-    ax.set_ylabel(r"${}$".format(SIM_param_y),labelpad = 60)
-    ax.set_zlabel('Distancia JS',labelpad = 60)
-    ax.set_title('Paraboloide ajustada con distribuciones sin cruz \n {} vs {}'.format(Dic_ANES["code_2"],Dic_ANES["code_1"]))
-
-    plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close()
-
-#-----------------------------------------------------------------------------------------------
-    
-# Ploteo el los puntos sobre los que hice el ajuste en un gráfico 3D
-    
-def plot_3d_scatter(DF_datos,DF_Anes, path, carpeta, Dic_ANES, x_range, y_range,
-                    SIM_param_x, SIM_param_y):
-    
-    """
-    Plot a 3D surface for a given mathematical function.
-    
-    Parameters:
-    - func: The mathematical function to plot. It should take two arguments (x and y) and return a value.
-    - x_range: A tuple specifying the range of x values (min, max).
-    - y_range: A tuple specifying the range of y values (min, max).
-    - x_samples: Number of samples in the x range.
-    - y_samples: Number of samples in the y range.
-    """
-    
-    # Defino la cantidad de agentes de la red
-    AGENTES = int(np.unique(DF_datos["n"]))
-    
-    # Defino los arrays de parámetros diferentes
-    EXTRAS = int(np.unique(DF_datos["Extra"]))
-    
-    Arr_param_x = np.unique(DF_datos["parametro_x"])
-    Arr_param_x = Arr_param_x[Arr_param_x > x_range[0]]
-    Arr_param_x = Arr_param_x[Arr_param_x < x_range[1]]
-    
-    Arr_param_y = np.unique(DF_datos["parametro_y"])
-    Arr_param_y = Arr_param_y[Arr_param_y > y_range[0]]
-    Arr_param_y = Arr_param_y[Arr_param_y < y_range[1]]
-    
-    
-    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
-    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
-                   for j,param_y in enumerate(Arr_param_y)]
-    
-    # Defino el tipo de archivo del cuál tomaré los datos
-    TIPO = "Opiniones"
-    
-    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
-    # Gráfico de Opi vs T y en tres no se vería mejor.
-    T=2
-    
-    #--------------------------------------------------------------------------------
-    
-    # Construyo las grillas que voy a necesitar para el pcolormesh.
-    
-    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
-    ZZ = np.zeros((XX.shape[0],XX.shape[1],100))
-    
-    #--------------------------------------------------------------------------------
-    
-    # Extraigo la distribución en hist2d
-    
-    df_aux = DF_Anes.loc[(DF_Anes[Dic_ANES["code_1"]]>0) & (DF_Anes[Dic_ANES["code_2"]]>0)]
-    hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[Dic_ANES["code_1"]], y=df_aux[Dic_ANES["code_2"]], weights=df_aux[Dic_ANES["weights"]], vmin=0,
-             bins=[np.arange(df_aux[Dic_ANES["code_1"]].min()-0.5, df_aux[Dic_ANES["code_1"]].max()+1.5, 1), np.arange(df_aux[Dic_ANES["code_2"]].min()-0.5, df_aux[Dic_ANES["code_2"]].max()+1.5, 1)])
-    plt.close()
-    
-    Distr_Enc = np.reshape(hist2d,(hist2d.shape[0]*hist2d.shape[1],1))
-    
-    #--------------------------------------------------------------------------------
-    
-    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
-        
-        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
-        archivos = np.array(DF_datos.loc[(DF_datos["tipo"]==TIPO) & 
-                                    (DF_datos["n"]==AGENTES) & 
-                                    (DF_datos["Extra"]==EXTRAS) & 
-                                    (DF_datos["parametro_x"]==PARAM_X) &
-                                    (DF_datos["parametro_y"]==PARAM_Y), "nombre"])
-        #-----------------------------------------------------------------------------------------
-        
-        DistJS = np.zeros(archivos.shape[0])
-        
-        for nombre in archivos:
-            
-            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
-            # Opinión Inicial del sistema
-            # Variación Promedio
-            # Opinión Final
-            # Pasos simulados
-            # Semilla
-            # Matriz de Adyacencia
-            
-            # Levanto los datos del archivo
-            Datos = ldata(path / nombre)
-            
-            # Leo los datos de las Opiniones Finales
-            Opifinales = np.array(Datos[5][:-1], dtype="float")
-            Opifinales = Opifinales / EXTRAS
-            Distr_Sim = np.reshape(Clasificacion(Opifinales,hist2d.shape[0],hist2d.shape[1],T),(hist2d.shape[0]*hist2d.shape[1],1))
-            
-            # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
-            
-            repeticion = int(DF_datos.loc[DF_datos["nombre"]==nombre,"iteracion"])
-            
-            DistJS[repeticion] = jensenshannon(Distr_Enc,Distr_Sim)
-            
-        #------------------------------------------------------------------------------------------
-        # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
-        ZZ[(Arr_param_y.shape[0]-1)-fila,columna,:] = DistJS
-
-    # Create the plot
-    direccion_guardado = Path("../../../Imagenes/{}/Scatter de DJS_{}vs{}.png".format(carpeta,Dic_ANES["code_2"],Dic_ANES["code_1"]))
-    plt.rcParams.update({'font.size': 44})
-    fig = plt.figure(figsize=(40,30))
-    ax = fig.add_subplot(111, projection='3d')
-    for i in range(100):
-        ax.scatter(XX,YY,ZZ[:,:,i], c="blue", marker="o")
-
-    # Labels and title
-    ax.set_xlabel(r"${}$".format(SIM_param_x))
-    ax.set_ylabel(r"${}$".format(SIM_param_y))
-    ax.set_zlabel('Distancia JS')
-    ax.set_title('Distancias calculadas \n {} vs {}'.format(Dic_ANES["code_2"],Dic_ANES["code_1"]))
-
-    plt.savefig(direccion_guardado , bbox_inches = "tight")
-    plt.close()
-    
 
 #-----------------------------------------------------------------------------------------------
 
@@ -1998,3 +1599,128 @@ def Reconstruccion_opiniones(Dist_simulada, N, T):
                 agregados += agentes_agregar
             
     return(Opiniones)
+
+
+#-----------------------------------------------------------------------------------------------
+
+# Esta función calcula la traza de la matriz de Covarianza de las distribuciones
+# de opiniones respecto a los T tópicos
+
+def Mapas_Colores_1D(DF, path, carpeta, SIM_param_x, SIM_param_y, ID_param_extra_1):
+
+    # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
+    # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
+    # me armo una lista de tuplas, y desempaco esas tuplas en todos mis parámetros.
+
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF["n"]))
+    
+    # Defino los arrays de parámetros diferentes
+    EXTRAS = int(np.unique(DF["Extra"]))
+    Arr_param_x = np.unique(DF["parametro_x"])
+    Arr_param_y = np.unique(DF["parametro_y"])
+    
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(i,param_x,j,param_y) for i,param_x in enumerate(Arr_param_x)
+                   for j,param_y in enumerate(Arr_param_y)]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
+    # Gráfico de Opi vs T y en tres no se vería mejor.
+    T=2
+    
+    #--------------------------------------------------------------------------------
+    
+    # Construyo las grillas que voy a necesitar para el pcolormesh.
+    
+    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
+    ZZ = np.zeros((2,XX.shape[0],XX.shape[1]))
+    
+    #--------------------------------------------------------------------------------
+    
+    for columna,PARAM_X,fila,PARAM_Y in Tupla_total:
+        
+        # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+        archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                    (DF["n"]==AGENTES) & 
+                                    (DF["Extra"]==EXTRAS) & 
+                                    (DF["parametro_x"]==PARAM_X) &
+                                    (DF["parametro_y"]==PARAM_Y), "nombre"])
+        #-----------------------------------------------------------------------------------------
+        Promedios = np.zeros(archivos.shape[0]*2)
+        Varianzas = np.zeros(archivos.shape[0]*2)
+        
+        for indice,nombre in enumerate(archivos):
+            
+            # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+            # Opinión Inicial del sistema
+            # Variación Promedio
+            # Opinión Final
+            # Semilla
+            
+            # Levanto los datos del archivo
+            Datos = ldata(path / nombre)
+            
+            # Leo los valores de distribución de opiniones, los cuales se distribuyen
+            # en 42x42 cajas.
+            dist_final = np.reshape(np.array(Datos[1][:-1],dtype="float"),(42,42))
+            # Reconstruyo las opiniones finales normalizadas a partir de estos datos.
+            Opifinales = Reconstruccion_opiniones(dist_final, AGENTES, T)
+            X = Opifinales[::2]
+            Y = Opifinales[1::2]
+            
+            # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+            repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+            
+            Varianzas[repeticion*2] = np.std(X)
+            Varianzas[repeticion*2+1] = np.std(Y)
+            
+            Promedios[repeticion*2] = np.mean(np.abs(X))
+            Promedios[repeticion*2+1] = np.mean(np.abs(X))
+        #------------------------------------------------------------------------------------------
+        # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
+        ZZ[0,(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Varianzas)
+        ZZ[1,(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Promedios)
+        
+    #--------------------------------------------------------------------------------
+    
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores
+    direccion_guardado = Path("../../../Imagenes/{}/Varianza1D_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
+    
+    plt.rcParams.update({'font.size': 44})
+    plt.figure("Varianza",figsize=(28,21))
+    plt.xlabel(r"${}$".format(SIM_param_x))
+    plt.ylabel(r"${}$".format(SIM_param_y))
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    
+    plt.pcolormesh(XX,YY,ZZ[0],shading="nearest", cmap = "plasma")
+    plt.colorbar()
+    plt.title(r"$\langle \sigma \rangle$")
+    
+    # Guardo la figura y la cierro
+    
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("Varianza")
+    
+    # Una vez que tengo el ZZ completo, armo mi mapa de colores
+    direccion_guardado = Path("../../../Imagenes/{}/Promedio1D_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
+    
+    plt.rcParams.update({'font.size': 44})
+    plt.figure("Promedio",figsize=(28,21))
+    plt.xlabel(r"${}$".format(SIM_param_x))
+    plt.ylabel(r"${}$".format(SIM_param_y))
+    
+    # Hago el ploteo del mapa de colores con el colormesh
+    
+    plt.pcolormesh(XX,YY,ZZ[0],shading="nearest", cmap = "plasma")
+    plt.colorbar()
+    plt.title(r"$\langle \vert \bar{x} \vert \rangle$")
+    
+    # Guardo la figura y la cierro
+    
+    plt.savefig(direccion_guardado , bbox_inches = "tight")
+    plt.close("Promedio")

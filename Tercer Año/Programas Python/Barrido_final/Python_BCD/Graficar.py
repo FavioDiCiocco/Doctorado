@@ -51,11 +51,11 @@ for carp in Carpetas:
     CarpCheck=[[root,files] for root,dirs,files in os.walk(Direccion)]
     
     # Me armo una lista con los nombres de todos los archivos con datos
-    Archivos_Datos = [nombre for nombre in CarpCheck[0][1]]
+    Archivos_Datos = CarpCheck[0][1]
     # Me armo una lista con los nombres de todos los archivos csv
-    Archivos_Matrices_JS = [nombre for nombre in CarpMatJS[0][1]]
-    Archivos_Matrices_KS = [nombre for nombre in CarpMatKS[0][1]]
-    Archivos_Matrices_CM = [nombre for nombre in CarpMatCM[0][1]]
+    Archivos_Matrices_JS = CarpMatJS[0][1]
+    Archivos_Matrices_KS = CarpMatKS[0][1]
+    Archivos_Matrices_CM = CarpMatCM[0][1]
     
     #-------------------------------------------------------------------------------------------------------
     
@@ -65,7 +65,6 @@ for carp in Carpetas:
     
     # En cambio, en la carpeta 2D llevan por nombre:
     # "Opiniones_N=$_kappa=$_beta=$_cosd=$_Iter=$.file" y "Testigos_N=$_kappa=$_beta=$_cosd=$_Iter=$.file"
-    
     Df_archivos = pd.DataFrame({"nombre": Archivos_Datos})
     
     # Hecho mi dataframe, voy a armar columnas con los parámetros que varían en los nombres de mis archivos
@@ -86,7 +85,6 @@ for carp in Carpetas:
     ID_param_y = "beta"
     ID_param_x = "cosd"
     
-    
     # Lo otro que necesito es el nombre que pasaré a los ejes de los gráficos de las funciones
     # SIM significa símbolo, porque esto lo uso para escribir el símbolo de ese parámetro
     # Todo parámetro que no grafique es un parámetro extra
@@ -97,7 +95,7 @@ for carp in Carpetas:
     
     # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
     # de todas las simulaciones para cada punto del espacio de parámetros.
-    # Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
+    Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
     
     size_x = np.unique(Df_archivos["parametro_x"]).shape[0]
     size_y = np.unique(Df_archivos["parametro_y"]).shape[0]
@@ -105,8 +103,6 @@ for carp in Carpetas:
     bines = np.linspace(-3.5,3.5,8)
     
     Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
-    # Df_preguntas = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices_JS, Dir_matrices_JS)
-#    Df_preguntas.to_csv("Tabla pares de preguntas.csv", index=False)
     
     """
     # Armo el pandas con la data de las preguntas en un cluster
@@ -115,7 +111,7 @@ for carp in Carpetas:
     Beta = 0.4
     Cosd = 0
     Df_cluster = Df_preguntas.loc[(Df_preguntas["Beta_100"]==Beta) & (Df_preguntas["Cosd_100"]==Cosd)]
-    
+    """
     func.Tiempo(t0)
     
     
@@ -132,42 +128,109 @@ for carp in Carpetas:
     func.Mapas_Colores_FEF(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
                            SIM_param_x, SIM_param_y, ID_param_extra_1)
     
-    lminimos = [(0,0.4),(0,0.6),(0.02,0.5)]
+    # lminimos = [(0,0.4),(0,0.6),(0.02,0.5)]
     
-    func.Graf_Histograma_opiniones_2D(Df_archivos, Dic_Total, Direccion, Etapa/carpeta, bines, "magma",lminimos,
+    func.Graf_Histograma_opiniones_2D(Df_archivos, Dic_Total, Direccion, Etapa/carpeta, bines, "magma",
                                       ID_param_x, ID_param_y, ID_param_extra_1)
+    
+    
+    #----------------------------------------------------------------------------------------------
+    
+    # Construyo un diccionario con las preguntas de cada uno de los clusters
+    
+    Df_preguntas = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices_JS, Dir_matrices_JS)
+    # Df_preguntas.to_csv("Tabla_JS.csv", index=False)
+    
+    Clusters = [(0,0.4), (0,0.6), (0.02,1.1), (0.08,1.1), (0.14,1.1), (0.48,0.4)]
+    preg_cluster = dict()
+    
+    for tupla in Clusters:
+        Cosd = tupla[0]
+        Beta = tupla[1]
+        
+        preg_cluster[tupla] = Df_preguntas.loc[(Df_preguntas["Cosd_100"]==Cosd) & (Df_preguntas["Beta_100"]==Beta), "nombre"]
+    
+    #----------------------------------------------------------------------------------------------
+    
+    # Gráficos de métricas JS
+    
+    func.Preguntas_espacio_parametros(Df_archivos, Archivos_Matrices_JS, Dir_matrices_JS, Etapa/carpeta, "JS",
+                                      SIM_param_x, SIM_param_y)
+    
+    # Df_preguntas = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices_JS, Dir_matrices_JS)
+    # Df_preguntas.to_csv("Tabla_JS.csv", index=False)
+    
+    """
+    for nombre_csv in Archivos_Matrices_JS[::5]:
+        
+        DJS, code_x, code_y = func.Lectura_csv_Matriz(size_y, size_x, Dir_matrices_JS, nombre_csv)
+        
+        func.Mapas_Colores_csv(DJS, code_x, code_y, Df_archivos, dict_labels, "JS", Etapa/carpeta,
+                               ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
+        
+        func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta, Direccion, bines,
+                                  "JS",SIM_param_x,SIM_param_y)
+        
     """
     #----------------------------------------------------------------------------------------------
     
-    # Gráficos de las preguntas ANES
+    # Gráficos de métricas KS
     
+    func.Preguntas_espacio_parametros(Df_archivos, Archivos_Matrices_KS, Dir_matrices_KS, Etapa/carpeta, "KS",
+                                      SIM_param_x, SIM_param_y)
+    """
+    Df_preguntas = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices_KS, Dir_matrices_KS)
+    Df_preguntas.to_csv("Tabla_KS.csv", index=False)
     
-    # rangos = [(np.array([0,0.1]),np.array([0.4,0.8])),(np.array([0,0.1]),np.array([0.4,0.8])), (np.array([0,0.15]),np.array([0.5,0.7])), (np.array([0,0.1]),np.array([0.4,0.7]))] #,
-              # (np.array([0,0.2]),np.array([0.4,0.8])), (np.array([0,0.1]),np.array([0.4,0.66])), (np.array([0,0.1]),np.array([0.4,0.7]))]
+    for nombre_csv in Archivos_Matrices_KS[::5]:
+        
+        DKS, code_x, code_y = func.Lectura_csv_Matriz(size_y, size_x, Dir_matrices_KS, nombre_csv)
+        
+        func.Mapas_Colores_csv(DKS, code_x, code_y, Df_archivos, dict_labels, "KS", Etapa/carpeta,
+                               ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
+        
+        func.Hist2D_similares_FEF(DKS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta, Direccion, bines,
+                                  "KS",SIM_param_x,SIM_param_y)
+    """
+    #----------------------------------------------------------------------------------------------
     
+    # Gráficos de métricas CM
     
-    for nombre_csv in Archivos_Matrices_CM:
-    # for nombre_csv in Df_cluster["nombre"]:
+    func.Preguntas_espacio_parametros(Df_archivos, Archivos_Matrices_CM, Dir_matrices_CM, Etapa/carpeta, "CM",
+                                      SIM_param_x, SIM_param_y)
+    """
+    Df_preguntas = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices_CM, Dir_matrices_CM)
+    Df_preguntas.to_csv("Tabla_CM.csv", index=False)
+    
+    for nombre_csv in Archivos_Matrices_CM[::5]:
         
         DCM, code_x, code_y = func.Lectura_csv_Matriz(size_y, size_x, Dir_matrices_CM, nombre_csv)
         
         func.Mapas_Colores_csv(DCM, code_x, code_y, Df_archivos, dict_labels, "CM", Etapa/carpeta,
                                ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
         
-        # func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta, Direccion, bines,
-        #                           SIM_param_x,SIM_param_y)
-        
+        func.Hist2D_similares_FEF(DCM, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta, Direccion, bines,
+                                  "CM",SIM_param_x,SIM_param_y)
+    """
+    
+func.Tiempo(t0)
+
+##############################################################################################################################
+
+    # Todo esto es código que podría eventualmente usar de nuevo, pero que ahora no es necesario.
+    
+    
         # func.Histograma_distancias(DJS, code_x, code_y, Df_archivos, dict_labels, Etapa/carpeta, lminimos,
         #                            ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
-        """
+        
         
 #        func.Comp_estados(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta,
 #                          Direccion, dist_lim, ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
         
-        func.Doble_Mapacol_PromyFrac(DJS, code_x, code_y, Df_archivos, dict_labels,
-                                     Etapa/carpeta, Direccion, SIM_param_x, SIM_param_y)
+        # func.Doble_Mapacol_PromyFrac(DJS, code_x, code_y, Df_archivos, dict_labels,
+        #                              Etapa/carpeta, Direccion, SIM_param_x, SIM_param_y)
         
-        """
+        
         #-------------------------------------------------------------------------------------------------------------------------
         
         # Esto funca con la idea de que quiero revisar varios puntos mínimos. Le cambié el input para que no haya varios
@@ -180,22 +243,10 @@ for carp in Carpetas:
 #                          Direccion, dist_lim, lminimos, ID_param_x, SIM_param_x, ID_param_y, SIM_param_y)
         
         #-------------------------------------------------------------------------------------------------------------------------
-    """
-    # Construyo un diccionario con las preguntas de cada uno de los clusters
     
-    Clusters = [(0,0.4), (0,0.6), (0.02,1.1), (0.08,1.1), (0.14,1.1), (0.48,0.4)]
-    preg_cluster = dict()
-    
-    for tupla in Clusters:
-        Cosd = tupla[0]
-        Beta = tupla[1]
-        
-        preg_cluster[tupla] = Df_preguntas.loc[(Df_preguntas["Cosd_100"]==Cosd) & (Df_preguntas["Beta_100"]==Beta), "nombre"]
-    """
     # func.Preguntas_espacio_parametros(Df_archivos, Df_cluster["nombre"], Dir_matrices_JS, Etapa/carpeta,
     #                                   SIM_param_x, SIM_param_y)
 
-func.Tiempo(t0)
 
 #########################################################################################
 #########################################################################################

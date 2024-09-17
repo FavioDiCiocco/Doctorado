@@ -3327,3 +3327,58 @@ en el espacio de parámetros. Así queda claro qué estoy viendo y cuál es el p
 Beta-Cosd y rearmarlos. Y aprovechar cuando hago eso de reescribir el código de la
 función de Graficar de forma tal que se armen los mapas de distancias de mis tres
 métricas distintas. Yo sé que puedo hacer eso. Todo esto el sábado.
+
+------------------------------------------------------------------------------------------
+
+16/09/2024
+
+El finde no pude trabajar lo que quería hacer. Más vale que hoy resuelva todo lo que tengo
+que hacer ya. Para el finde tengo que tener gráficos, propuestas y alguna idea de proyecto.
+
+Bien, mandé a correr para armar todos los gráficos. Aproveché y revisé lo que se hizo en los
+programas en la pc de Coimbra. Parece que hay algunas simulaciones que no se resolvieron.
+NO ENTIENDO POR QUÉ. Revisar de mandar a correr eso. O revisar que estén bien armados
+los datos. Eso lo miraré el miércoles quizás.
+
+Miré los gráficos de distribución de preguntas. No está dando nada copado, porque se ve que
+las preguntas van al mismo lugar para pocas simulaciones, que es la región V. Aunque podríamos
+destacar que cada métrica destaca cosas distintas, eso se ve en cómo se configuran las distribuciones
+de los histogramas más similares. Tengo dos cosas que puedo hacer ahora. La primera es modificar el
+armado de la distancia KS de forma tal que el punto de pivote sea la esquina izquierda de los cuadrantes.
+La segunda es armar lo de la proyección de las distribuciones 2D y ver cómo se da la generación
+de estados polarizados y comparar eso con lo que se observa en el modelo 1D. Se me ocurre que puedo
+compararlo mirando datos como la varianza de las opiniones y los valores medios. Es la forma en
+que se me ocurre que puedo comparar ambas situaciones, la del sistema 1D con la del sistema 2D
+proyectado.
+
+Si quiero revisar mejor mis datos necesito construir mi tabla de pares de preguntas para cada métrica.
+Por un lado, mandé nuevamente a armar las matrices de distancias de KS. Esta vez con la idea de tomar
+el punto de pivote como la esquina de abajo a la izquierda de los cuadrantes. Ahora no me queda nada más
+que hacer ahí que esperar a que se terminen esas matrices, que tomará unas 10 o 12 horas.
+
+Mientras eso resuelve, detallemos la parte de construir las tablas de preguntas de cada una de las métricas
+y luego de eso me pongo con lo de la proyección de los estados 2D a 1D. Ya hice las tablas, arranquemos
+con el tema de proyectar los estados 2D a 1D. Se me ocurre que para construir este gráfico, puedo partir
+de la función que construye gráficos de Varianza y con eso ver qué ocurre. Eso sería algo bastante rápido
+de construir. De paso, lo tendré que construir en el espacio Beta-Kappa. Así que puedo armar esto en el
+archivo de Graficar de Beta-Kappa.
+
+Revisando las distribuciones de preguntas en el espacio de parámetros Beta-Cosd para las distintas métricas,
+resulta interesante notar que a métrica que más le llegué a observar consistencia entre las preguntas clasificadas
+con 100 simulaciones y las clasificadas con 20 simulaciones es a la métrica KS. Es un poco complicado igual
+sacar conclusiones así como está.
+
+1) En los otros gráficos colorear las preguntas según cluster de JS
+2) Revisar en los datos empíricos realizando una matriz de similaridad usando JS de 120x120.
+Intentar observar clusters propios de los datos con SVD o con Louvain usando una matriz de similaridad.
+3) Podría arrancar armando algún gráfico con los datos de las distancias promedio inter cluster e intra
+cluster. Veremos cuánto de esto puedo resolver para mañana
+
+Pablo también me dijo que arme diapositivas mostrando cuál es la forma que tienen las simulaciones de los
+clusters en particular. Para eso puedo tomar diapositivas de lo que hice la reunión pasada.
+
+Bueno, el gráfico de la proyección de los datos 2D a 1D parece estar corriendo. Eso en principio está avanzando.
+Pasemos a armar los gráficos coloreados como me propuso Pablo. Ya corregí para que se armen
+los gráficos de preguntas en el espacio de parámetros identificando los clusters de preguntas por colores
+como me dijo Pablo. Lo que sigue ahora es ver de construir una matriz de 120x120 de datos contra
+datos usando JS.
