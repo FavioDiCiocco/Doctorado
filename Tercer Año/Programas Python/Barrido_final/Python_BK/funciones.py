@@ -1606,7 +1606,7 @@ def Reconstruccion_opiniones(Dist_simulada, N, T):
 # Esta función calcula la traza de la matriz de Covarianza de las distribuciones
 # de opiniones respecto a los T tópicos
 
-def Mapas_Colores_1D(DF, path, carpeta, SIM_param_x, SIM_param_y, ID_param_extra_1):
+def Mapas_Colores_1D(DF, path, carpeta, SIM_param_x, SIM_param_y):
 
     # Partiendo de la idea de que el pandas no me tira error si el parámetro no está en la lista, sino que simplemente
     # me devolvería un pandas vacío, puedo entonces simplemente iterar en todos los parámetros y listo. Para eso
@@ -1678,17 +1678,17 @@ def Mapas_Colores_1D(DF, path, carpeta, SIM_param_x, SIM_param_y, ID_param_extra
             Varianzas[repeticion*2] = np.std(X)
             Varianzas[repeticion*2+1] = np.std(Y)
             
-            Promedios[repeticion*2] = np.mean(np.abs(X))
-            Promedios[repeticion*2+1] = np.mean(np.abs(X))
+            Promedios[repeticion*2] = np.mean(X)
+            Promedios[repeticion*2+1] = np.mean(Y)
         #------------------------------------------------------------------------------------------
         # Con el vector covarianzas calculo el promedio de los trazas de las covarianzas
         ZZ[0,(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Varianzas)
-        ZZ[1,(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(Promedios)
+        ZZ[1,(Arr_param_y.shape[0]-1)-fila,columna] = np.mean(np.abs(Promedios))
         
     #--------------------------------------------------------------------------------
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/Varianza1D_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
+    direccion_guardado = Path("../../../Imagenes/{}/Varianza1D.png".format(carpeta))
     
     plt.rcParams.update({'font.size': 44})
     plt.figure("Varianza",figsize=(28,21))
@@ -1707,7 +1707,7 @@ def Mapas_Colores_1D(DF, path, carpeta, SIM_param_x, SIM_param_y, ID_param_extra
     plt.close("Varianza")
     
     # Una vez que tengo el ZZ completo, armo mi mapa de colores
-    direccion_guardado = Path("../../../Imagenes/{}/Promedio1D_{}={}.png".format(carpeta,ID_param_extra_1,EXTRAS))
+    direccion_guardado = Path("../../../Imagenes/{}/Promedio1D.png".format(carpeta))
     
     plt.rcParams.update({'font.size': 44})
     plt.figure("Promedio",figsize=(28,21))
@@ -1716,7 +1716,7 @@ def Mapas_Colores_1D(DF, path, carpeta, SIM_param_x, SIM_param_y, ID_param_extra
     
     # Hago el ploteo del mapa de colores con el colormesh
     
-    plt.pcolormesh(XX,YY,ZZ[0],shading="nearest", cmap = "plasma")
+    plt.pcolormesh(XX,YY,ZZ[1],shading="nearest", cmap = "viridis")
     plt.colorbar()
     plt.title(r"$\langle \vert \bar{x} \vert \rangle$")
     

@@ -90,8 +90,8 @@ for carp in Carpetas:
     
     # Gráficos del espacio de parámetros
     
-    func.Mapas_Colores_1D(Df_archivos, Direccion, Etapa/carpeta,
-                         SIM_param_x, SIM_param_y,ID_param_extra_1)
+    func.Mapas_Colores_1D(Df_archivos, Direccion, Etapa/carpeta, SIM_param_x, SIM_param_y)
+    
     """
     func.Mapa_Colores_Traza_Covarianza(Df_archivos, Direccion, Etapa/carpeta,
                                           SIM_param_x, SIM_param_y,ID_param_extra_1)

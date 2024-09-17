@@ -3382,3 +3382,30 @@ Pasemos a armar los gráficos coloreados como me propuso Pablo. Ya corregí para
 los gráficos de preguntas en el espacio de parámetros identificando los clusters de preguntas por colores
 como me dijo Pablo. Lo que sigue ahora es ver de construir una matriz de 120x120 de datos contra
 datos usando JS.
+
+------------------------------------------------------------------------------------------
+
+17/09/2024
+
+Estoy revisando qué hacer hoy. No quiero confundirme, ayer dejé corriendo dos cosas. Lo primero es
+el armado de las matrices de distancias KS usando el punto de pivote como eje izquierdo de los cuadrantes.
+Lo segundo, es el armado de gráficos en el espacio Beta-Kappa para ver lo de la polarización del sistema
+2D proyectado a 1D. Así que ahora voy a mandar a correr el armado de las preguntas en el espacio de parámetros
+Una vez que esté hecho eso, organizo mis datos, lo que tengo y qué voy a poner en la presentación.
+
+Organicemos las cosas que tengo. Ahí armé varios gráficos y necesito plantearme qué tengo y qué voy a mostrar.
+Y qué cosas quedan por hacer para el resto del laburo.
+
+1) Tengo los gráficos de promedios y varianzas de opiniones de las opiniones proyectadas a 1D
+en el espacio de parámetros Beta-Kappa.
+2) Tengo los gráficos de distribución de preguntas por colores en el espacio de parámetros para cada 
+métrica.
+
+Con esas dos cosas puedo armar la presentación que charlamos con Pablo. Debería agregar que los gráficos
+de distribución de preguntas tienen que ser un poco más grandes en la región porque algunos puntos
+no se ven bien.
+
+De los gráficos de opiniones proyectadas a 1D, mejor poner ambos mapas de colores con la misma escala de colores
+y forzar que la escala llegue a 1 como máximo. Eso es rápido, lo dejaré para después.
+
+Son las 21. Terminé la presentación. Ahora salgo para casa. Espero que no esté muy fresco afuera.

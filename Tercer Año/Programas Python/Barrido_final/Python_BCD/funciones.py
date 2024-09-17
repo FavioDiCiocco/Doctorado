@@ -1865,12 +1865,13 @@ def Preguntas_espacio_parametros(DF_datos,dic_clusters,path_matrices,carpeta,met
     # plt.scatter(X[0],Y[0], marker="o", s = 500, color="green", alpha = 0.7)
     plt.xlabel(r"${}$".format(SIM_param_x))
     plt.ylabel(r"${}$".format(SIM_param_y))
-    plt.xlim(-0.05,0.5)
-    plt.ylim(0,1.5)
+    plt.xlim(-0.025,0.525)
+    plt.ylim(0,1.55)
     plt.title("Todas las simulaciones, Dist {}".format(metrica))
     direccion_guardado = Path("../../../Imagenes/{}/Preguntas_espacio_{}.png".format(carpeta,metrica))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
+    
     
     # Acá hago los scatter de las preguntas con una cantidad reducida de simulaciones
     for rank in range(1,5):
@@ -1919,8 +1920,8 @@ def Preguntas_espacio_parametros(DF_datos,dic_clusters,path_matrices,carpeta,met
         # plt.scatter(X[rank],Y[rank], marker="o", s = 500, color="green", alpha = 0.7)
         plt.xlabel(r"${}$".format(SIM_param_x))
         plt.ylabel(r"${}$".format(SIM_param_y))
-        plt.xlim(-0.05,0.5)
-        plt.ylim(0,1.5)
+        plt.xlim(-0.025,0.525)
+        plt.ylim(0,1.55)
         plt.title(r"{} + simil, Dist {}".format(rank*10,metrica))
         direccion_guardado = Path("../../../Imagenes/{}/Preguntas_espacio_{}_r{}.png".format(carpeta,metrica,rank))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
