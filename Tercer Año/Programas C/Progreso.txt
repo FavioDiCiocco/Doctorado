@@ -3297,6 +3297,18 @@ sino, no es tanto drama. Lo armé, eran dos patadas. Lo cuál muestra que es muy
 parte no hacerlo y hacer otra cosa primero. Como funciona, voy a cargarlo a Coimbra y ya
 poner a hacer esto para todos los pares de preguntas.
 
+Para lo de KS Hugo me dijo que tome la máxima distancia de cada rotación y luego minimice entre
+rotaciones, o que sino pruebe quedarme con la esquina izquierda de los cuadrantes. Hay una tercer
+propuesta que a Hugo no le copa mucho, que es partir los datos de las cajitas a la mitad y repartir
+mitad y mitad a cada lado.
+
+La idea es comparar polarización entre el modelo bidimensional y el unidimensional. Los datos
+del unidimensional lo tienen en el paper. Los datos del bidimensional lo sacamos del barrido beta-Kappa.
+La idea es primero comparar la fracción de estados polarizados en el caso 2D habiendo proyectado 
+las opiniones en una dimensión. Mi temilla con esto es cómo defino que un estado es polarizado,
+pero siendo que voy a comparar con los datos de ellos, yo diría de usar la definición que usan
+ellos.
+
 ------------------------------------------------------------------------------------------
 
 13/09/2024
@@ -3409,3 +3421,37 @@ De los gráficos de opiniones proyectadas a 1D, mejor poner ambos mapas de color
 y forzar que la escala llegue a 1 como máximo. Eso es rápido, lo dejaré para después.
 
 Son las 21. Terminé la presentación. Ahora salgo para casa. Espero que no esté muy fresco afuera.
+
+------------------------------------------------------------------------------------------
+
+18/09/2024
+
+Hoy a la mañana me levanté y tuvimos la reunión con la gente de GOTHAM. En la reunión, al final no tuve
+mucho para presentar porque la forma en que entendí que tenía que presentar la distancia de KS estaba
+mal. Soy un boludo, no entiendo cómo esto pasó varios filtros y nunca surgió.
+
+Cosas que salieron de la charla:
+--------------------------------
+.) Para la próxima reunión, tener preparado el análisis de la relación de similaridad entre las distribuciones
+de las encuestas
+.) La forma de la polarización no está predeterminada en un eje y el otro
+.) Se requiere un Beta más grande para generar polarización
+.) Lo que mostró Hugo sobre los mínimos de distancia JS en función de Beta está muy interesante.
+
+Cosas en las que trabajar:
+--------------------------
+1) Armar una matriz de similaridad entre encuestas usando tanto distancia JS y distancia KS.
+2) Preparar el resumen de lo que tengo del trabajo. Es importante para arrancar a escribir el paper.
+Así ya la próxima reunión vamos con algo planteado para arrancar a escribir.
+3) Reescribir el código que hace las simulaciones para que mi código funcione al ritmo del de Hugo
+4) Recomponer las simulaciones que fallaron en Coimbra. Anotar cuáles fueron y ver si las puedo
+armar rápido de nuevo.
+
+Mandé a correr de nuevo el armado de los gráficos de mapas de colores de KS modificando el tema de las
+distancias para que no sea 1 menos la diferencia de las probablidades integradas. En un rato, vuelvo a mandar
+a construir todas las matrices de la distancia KS.
+
+Mientras esto se resuelve, me pondré con lo de armar la matriz de similaridad entre distribuciones de encuestas.
+No armé la matriz. La verdad un poco Pablo me va a cagar a pedos, pero pensar cómo mierda armar esto es parte
+de hacer este laburo. Mañana debería trabajar un poco en esto, un poco en lo de Granovetter y un poco en Alemán.
+Carajo.

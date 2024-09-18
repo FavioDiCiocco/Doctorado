@@ -314,7 +314,7 @@ plt.close()
 
 #####################################################################################
 #####################################################################################
-
+"""
 # Voy a intentar armar una función que levante datos de algún conjunto de
 # datos y calcule la distancia de Kolmogorov-Smirnoff 2D. No es exactamente
 # eso lo que voy a estar calculando, pero ya veremos nombres después
@@ -535,7 +535,7 @@ for preguntas in labels:
     np.savetxt("../Matrices DKS/{}_vs_{}.csv".format(code_y,code_x), ZZ_alterado,delimiter = ",", fmt = "%.6f")
 
 
-
+"""
 #####################################################################################
 #####################################################################################
 
@@ -755,65 +755,26 @@ for preguntas in tuplas_preguntas:
 # Voy a construir una matriz que me permita ver la similaridad entre los clusters de
 # preguntas definidos según distancia JS.
 
+# Levanto los datos de los archivos de matrices. Puedo tomarlo de cualquier métrica
+Dir_matrices_JS = Path("../Matrices DJS")
+CarpMatJS=[[root,files] for root,dirs,files in os.walk(Dir_matrices_JS)]
+Archivos_Matrices_JS = CarpMatJS[0][1]
+
+# Armo mi dataframe en el cuál voy a guardar los datos de las similaridades
+df_simil = pd.DataFrame(columns = Archivos_Matrices_JS, index = Archivos_Matrices_JS)
+
 # Primero levanto los datos de la ANES
 Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
 tuplas_preguntas = [('V201372x','V201386x','V200010a'), ('V201408x','V201426x','V200010a'), ('V201372x','V201411x','V200010a')]
 
-for preguntas in tuplas_preguntas:
-    
-    # Separo las opiniones de 0
-    df_aux = Df_ANES.loc[(Df_ANES[preguntas[0]]>0) & (Df_ANES[preguntas[1]]>0)]
-    # Reviso la cantidad de respuestas de cada pregunta
-    resp_1 = np.unique(df_aux[preguntas[0]]).shape[0]
-    resp_2 = np.unique(df_aux[preguntas[1]]).shape[0]
-    
-    # Los clasifico como código x y código y
-    if resp_1 >= resp_2:
-        code_x = preguntas[0]
-        code_y = preguntas[1]
-    else:
-        code_x = preguntas[1]
-        code_y = preguntas[0]
-    
-    # Dos preguntas con siete respuestas
-    if resp_1 == 7 and resp_2 == 7:
+for tupla_1 in tuplas_preguntas:
+    for tupla_2 in tuplas_preguntas:
         
-        # Saco la cruz
-        df_filtered = df_aux[(df_aux[code_x] != 4) & (df_aux[code_y] != 4)] 
+        # Levanto las dos distribuciones de los dos pares de preguntas
+        Enc_1 = func.Distrib_Anes(tupla_1, Df_ANES)
+        Enc_2 = func.Distrib_Anes(tupla_2, Df_ANES)
         
-        hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_x], y=df_filtered[code_y], weights=df_filtered[preguntas[2]], vmin=0, cmap = "inferno", density = True,
-                  bins=[np.arange(df_filtered[code_x].min()-0.5, df_filtered[code_x].max()+1.5, 1), np.arange(df_filtered[code_y].min()-0.5, df_filtered[code_y].max()+1.5, 1)])
-        plt.close()
         
-        Distr_Enc = hist2d[np.arange(7) != 3,:][:,np.arange(7) != 3]
-        Distr_Enc = Distr_Enc.flatten()
-    
-    # Una pregunta con siete respuestas y otra con seis
-    elif (resp_1 == 6 and resp_2 == 7) or (resp_1 == 7 and resp_2 == 6):
         
-        # Saco la cruz
-        df_filtered = df_aux[df_aux[code_x] != 4] 
-        
-        hist2d, xedges, yedges, im = plt.hist2d(x=df_filtered[code_x], y=df_filtered[code_y], weights=df_filtered[preguntas[2]], vmin=0, cmap = "inferno", density = True,
-                  bins=[np.arange(df_filtered[code_x].min()-0.5, df_filtered[code_x].max()+1.5, 1), np.arange(df_filtered[code_y].min()-0.5, df_filtered[code_y].max()+1.5, 1)])
-        plt.close()
-        
-        Distr_Enc = hist2d[np.arange(7) != 3,:]
-        Distr_Enc = Distr_Enc.flatten()
-    
-    # Dos preguntas con seis respuestas
-    elif resp_1 == 6 and resp_2 == 6:
-        
-        # No hay necesidad de sacar la cruz
-        hist2d, xedges, yedges, im = plt.hist2d(x=df_aux[code_x], y=df_aux[code_y], weights=df_aux[preguntas[2]], vmin=0,cmap = "inferno", density = True,
-                  bins=[np.arange(df_aux[code_x].min()-0.5, df_aux[code_x].max()+1.5, 1), np.arange(df_aux[code_y].min()-0.5, df_aux[code_y].max()+1.5, 1)])
-        plt.close()
-        
-        Distr_Enc = hist2d.flatten()
-    
-    ###############################################################################################################
-    
-    
-
 func.Tiempo(t0)
 

@@ -1991,3 +1991,57 @@ def Tabla_datos_preguntas(DF_datos, dict_labels, arc_matrices, path_matrices):
     df = pd.DataFrame(dict_datos)
     return df
 
+#-----------------------------------------------------------------------------------------------
+
+# Construyo una función que a partir del dataframe de los datos de la Anes
+# devuelva un array de 6x6 con la distribución de la encuesta
+    
+def Distrib_Anes(tupla_preg, Df_Anes):
+    
+    # Separo las opiniones de 0
+    df_aux = Df_Anes.loc[(Df_Anes[tupla_preg[0]]>0) & (Df_Anes[tupla_preg[1]]>0)]
+    # Reviso la cantidad de respuestas de cada pregunta
+    resp_1 = np.unique(df_aux[tupla_preg[0]]).shape[0]
+    resp_2 = np.unique(df_aux[tupla_preg[1]]).shape[0]
+    
+    # Los clasifico como código x y código y
+    if resp_1 >= resp_2:
+        code_x = tupla_preg[0]
+        code_y = tupla_preg[1]
+    else:
+        code_x = tupla_preg[1]
+        code_y = tupla_preg[0]
+    
+    # Dos preguntas con siete respuestas
+    if resp_1 == 7 and resp_2 == 7:
+        
+        # Saco la cruz
+        df_filtered = df_aux[(df_aux[code_x] != 4) & (df_aux[code_y] != 4)] 
+        
+        Distr_Enc, xedges, yedges, im = plt.hist2d(x=df_filtered[code_x], y=df_filtered[code_y], weights=df_filtered[tupla_preg[2]], vmin=0, cmap = "inferno", density = True,
+                  bins=[np.arange(df_filtered[code_x].min()-0.5, df_filtered[code_x].max()+1.5, 1), np.arange(df_filtered[code_y].min()-0.5, df_filtered[code_y].max()+1.5, 1)])
+        plt.close()
+        
+        Distr_Enc = Distr_Enc[np.arange(7) != 3,:][:,np.arange(7) != 3]
+    
+    # Una pregunta con siete respuestas y otra con seis
+    elif (resp_1 == 6 and resp_2 == 7) or (resp_1 == 7 and resp_2 == 6):
+        
+        # Saco la cruz
+        df_filtered = df_aux[df_aux[code_x] != 4] 
+        
+        Distr_Enc, xedges, yedges, im = plt.hist2d(x=df_filtered[code_x], y=df_filtered[code_y], weights=df_filtered[tupla_preg[2]], vmin=0, cmap = "inferno", density = True,
+                  bins=[np.arange(df_filtered[code_x].min()-0.5, df_filtered[code_x].max()+1.5, 1), np.arange(df_filtered[code_y].min()-0.5, df_filtered[code_y].max()+1.5, 1)])
+        plt.close()
+        
+        Distr_Enc = Distr_Enc[np.arange(7) != 3,:]
+    
+    # Dos preguntas con seis respuestas
+    elif resp_1 == 6 and resp_2 == 6:
+        
+        # No hay necesidad de sacar la cruz
+        Distr_Enc, xedges, yedges, im = plt.hist2d(x=df_aux[code_x], y=df_aux[code_y], weights=df_aux[tupla_preg[2]], vmin=0,cmap = "inferno", density = True,
+                  bins=[np.arange(df_aux[code_x].min()-0.5, df_aux[code_x].max()+1.5, 1), np.arange(df_aux[code_y].min()-0.5, df_aux[code_y].max()+1.5, 1)])
+        plt.close()
+        
+    return Distr_Enc
