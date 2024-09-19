@@ -3455,3 +3455,56 @@ Mientras esto se resuelve, me pondré con lo de armar la matriz de similaridad e
 No armé la matriz. La verdad un poco Pablo me va a cagar a pedos, pero pensar cómo mierda armar esto es parte
 de hacer este laburo. Mañana debería trabajar un poco en esto, un poco en lo de Granovetter y un poco en Alemán.
 Carajo.
+
+------------------------------------------------------------------------------------------
+
+19/09/2024
+
+Mandé a rearmar los gráficos de distribución de preguntas en el espacio de parámetros según
+distancia KS. No sé si se hizo bien, porque se ven idénticos. En un rato los repaso más en
+detalle.
+
+Ya casi tengo armado el archivo que produce la matriz de similaridad JS entre distribuciones.
+¿Tengo una duda que no me resuelvo al mirar esto. Debería rotar las matrices para encontrar
+cuál es la mejor coincidencia o no? Siento que rotarlo sería un poco como forzar esto. Pero
+por otro lado, los estados que defino como estados finales del sistema son invariantes ante
+rotaciones. Un estado polarizado en una dimensión y con consenso en el otro, rotado es lo mismo
+en cualquier caso. 
+ Creo que la justificación se encuentra en lo siguiente. Yo considero que algun estado representa
+más o menos la encuesta que estoy observando. Entonces cuando comparo encuestas, lo que quiero
+comparar no es si hay un consenso radicalizado de aprobación contra un consenso radicalizado de
+rechazo, mi interés es saber si hay consenso o polarización. Entonces rotar las encuestas es válido
+porque pierdo la noción de si hay aprobación o rechazo a las preguntas, pero el estado que se
+representa no se pierde.
+
+Hablando con Pablo, la idea es que usar una red para ver el tema de la similaridad quizás no es lo
+mejor, quizás conviene mirar el tema desde la matriz de Similaridad y listo. Me propuso usar cosas
+como tSNE o PCA para reducir dimensionalidad y ver cómo me agrupa las preguntas de las encuestas.
+Otra propuesta es ver cómo son las distribuciones de distancia inter cluster e intra cluster.
+
+Mandé a rehacer las matrices de distancia KS en Coimbra, junto con la matriz de Similaridad.
+Esta vez estoy armando la matriz de SIMILARIDAD. Tiene sentido que la construya como 1-distancia JS.
+
+Antes de hacer nada nuevo, voy a revisar qué pasó con los archivos que no se terminaron de armar.
+Una vez organizado eso, me pondré un ratito con el tema de Granovetter. O quizás vaya para casa si
+veo que la cosa está medio calmada.
+
+.) En la iteración 2, hay un salto entre Beta=0.65 y Cosd=0.26 hasta Beta=0.75 y Cosd=0.36.
+Ver si esos estados faltan.
+.) En la iteración 6 tiró error la sim con Beta=0.65 y Cosd=0.10. Después hay un salto entre
+Beta=0.65 y Cosd=0.20 hasta Beta=0.65 y Cosd=0.42.
+.) En la iteración 10 tiró error la sim con Beta=0.75 y Cosd=0.14. También la sim con Beta=0.85 y Cosd=0.18.
+.) En la iteración 14 tiró error la sim con Beta=0.65 y Cosd=0.08. También la sim con Beta=0.65 y Cosd=0.22.
+.) En la iteración 18 tiró error la sim con Beta=0.55 y Cosd=0.38. También la sim con Beta=0.65 y Cosd=0.02.
+Además hay un salto entre Beta=0.65 y Cosd=0.18 hasta Beta=0.65 y Cosd=0.38.
+
+Me estoy dando cuenta que en un punto también hubo un barrido de Beta entre 0.05 y 0.35 que falta hacer.
+Parece que los saltos no son problemas de verdad. Pero los errores sí. A eso se le suma que la iteración
+6 falta una sim en Beta=0.65 y Cosd=0.22. Básicamente parece que en el inicio de los saltos faltan
+simulaciones. Bien, esos son todos los archivos que faltan que hay un acuse de que faltan.
+
+Mientras tanto, mandé a correr el armado de datos con Beta menor a 0.35. Mientras eso se resuelve,
+veré si mañana o pasado resuelvo lo que falta. Estoy mirando que hay muchos archivos que están vacíos.
+Pero hay una diferencia de 4 iteraciones entre cada iteración con múltiples errores. Mejor lo
+mando a correr todo de nuevo desde el principio y listo. O quizás desde 0.45 hasta 1.05. Me parece
+lo razonable.

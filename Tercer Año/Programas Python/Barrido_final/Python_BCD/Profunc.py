@@ -9,6 +9,7 @@ Created on Mon Dec 19 10:04:40 2022
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from scipy.spatial.distance import jensenshannon
 from pathlib import Path
 import os
 import math
@@ -101,7 +102,7 @@ for nombre in Archivos_Datos:
 """
 
 #####################################################################################
-"""
+
 # Voy a armar la función que construya los archivos csv con las matrices de distancia
 # Jensen-Shannon. La idea es que cada fila del csv tenga uno de los elementos de mi
 # matriz, recordando que la matriz es de NxMxP elementos. Entonces cada fila del
@@ -191,7 +192,7 @@ for code_1 in labels_politicos:
 # Tercero calculo la matriz de distancia Jensen-Shannon y guardo eso en un csv.
 
 
-for preguntas in labels[0:1]:
+for preguntas in labels[::10]:
     
     code_1 = preguntas[0]
     code_2 = preguntas[1]
@@ -208,7 +209,7 @@ for preguntas in labels[0:1]:
 
 
 #-------------------------------------------------------------------------------------
-
+"""
 # Cuarto armo un código que levante los datos del archivo csv y de ahí
 # reconstruya la matriz de DJS
 
@@ -364,7 +365,7 @@ for code_1 in labels_politicos:
         labels.append((code_1,code_2,weights))
 
 
-for preguntas in labels:
+for preguntas in labels[::5]:
     
     # Separo las opiniones de 0
     df_aux = Df_ANES.loc[(Df_ANES[preguntas[0]]>0) & (Df_ANES[preguntas[1]]>0)]
@@ -534,8 +535,8 @@ for preguntas in labels:
     ZZ_alterado = np.reshape(ZZ, (ZZ.shape[0]*ZZ.shape[1],ZZ.shape[2]))
     np.savetxt("../Matrices DKS/{}_vs_{}.csv".format(code_y,code_x), ZZ_alterado,delimiter = ",", fmt = "%.6f")
 
-
 """
+
 #####################################################################################
 #####################################################################################
 
@@ -751,30 +752,74 @@ for preguntas in tuplas_preguntas:
 
 #####################################################################################
 #####################################################################################
-
+"""
 # Voy a construir una matriz que me permita ver la similaridad entre los clusters de
 # preguntas definidos según distancia JS.
 
 # Levanto los datos de los archivos de matrices. Puedo tomarlo de cualquier métrica
-Dir_matrices_JS = Path("../Matrices DJS")
-CarpMatJS=[[root,files] for root,dirs,files in os.walk(Dir_matrices_JS)]
-Archivos_Matrices_JS = CarpMatJS[0][1]
+CarpMat=[[root,files] for root,dirs,files in os.walk("../Matrices DJS")]
+Arc_Matrices = CarpMat[0][1]
 
 # Armo mi dataframe en el cuál voy a guardar los datos de las similaridades
-df_simil = pd.DataFrame(columns = Archivos_Matrices_JS, index = Archivos_Matrices_JS)
+df_simil = pd.DataFrame(columns = Arc_Matrices, index = Arc_Matrices)
 
 # Primero levanto los datos de la ANES
 Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
 tuplas_preguntas = [('V201372x','V201386x','V200010a'), ('V201408x','V201426x','V200010a'), ('V201372x','V201411x','V200010a')]
 
-for tupla_1 in tuplas_preguntas:
-    for tupla_2 in tuplas_preguntas:
+for arc_1 in Arc_Matrices[0:20]:
+    
+    # Defino los códigos x e y
+    code_y = arc_1.strip(".csv").split("_")[0]
+    code_x = arc_1.strip(".csv").split("_")[2]
+    
+    # Defino el peso asociado
+    if code_x[3] == '1' and code_y[3] == '1':
+        weights = 'V200010a'
+    else:
+        weights = 'V200010b'
+    
+    # Armo la tupla de la primer distribución
+    tupla_1 = (code_x,code_y,weights)
+    
+    Enc_1 = func.Distrib_Anes(tupla_1, Df_ANES)
+    Enc_1 = Enc_1.flatten()
+    
+    for arc_2 in Arc_Matrices[0:20]:
+        
+        # Defino los códigos x e y
+        code_y = arc_2.strip(".csv").split("_")[0]
+        code_x = arc_2.strip(".csv").split("_")[2]
+        
+        # Defino el peso asociado
+        if code_x[3] == '1' and code_y[3] == '1':
+            weights = 'V200010a'
+        else:
+            weights = 'V200010b'
+        
+        # Armo la tupla de la primer distribución
+        tupla_2 = (code_x,code_y,weights)
         
         # Levanto las dos distribuciones de los dos pares de preguntas
-        Enc_1 = func.Distrib_Anes(tupla_1, Df_ANES)
         Enc_2 = func.Distrib_Anes(tupla_2, Df_ANES)
+        Enc_2 = Enc_2.flatten()
         
+        # # Ahora que tengo las dos distribuciones, calculo las distancias de JS
+        dist_previa = np.zeros(4)
         
+        for rotacion in range(4):
+            
+            dist_previa[rotacion] = jensenshannon(Enc_1,Enc_2)
+            
+            # Una vez que hice el cálculo de la distancia y todo, roto la matriz
+            Enc_2 = np.reshape(Enc_2, (6,6))
+            Enc_2 = func.Rotar_matriz(Enc_2)
+            Enc_2 = Enc_2.flatten()
         
+        df_simil.loc[arc_1,arc_2] = 1- np.min(dist_previa)
+
+df_simil.to_csv("Simil_JS.csv")
+"""
+
 func.Tiempo(t0)
 
