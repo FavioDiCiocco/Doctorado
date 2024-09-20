@@ -3508,3 +3508,18 @@ veré si mañana o pasado resuelvo lo que falta. Estoy mirando que hay muchos ar
 Pero hay una diferencia de 4 iteraciones entre cada iteración con múltiples errores. Mejor lo
 mando a correr todo de nuevo desde el principio y listo. O quizás desde 0.45 hasta 1.05. Me parece
 lo razonable.
+
+------------------------------------------------------------------------------------------
+
+20/09/2024
+
+A la mañana fui a Alemán, comí, mandé a correr los gráficos con el tema de la distancia KS corregido.
+Ahora lo que sigue es ponerme a laburar, aunque sea un poco, en el tema de Granovetter.
+Me junté con Lucio. También hablamos con Seba por el tema de Granovetter, nos tiró una idea muy
+buena sobre usar las distancias para determinar probas de transición de un estado al otro.
+Si flexibilizamos la condición de transición para que no sea algo de que gana absolutamente el de
+más distancia, sino que sea una probabilidad de transición en función de las distancias.
+
+El tiempo no me da para laburar mucho más, el plan de laburo es el que tengo anotado más arriba.
+A eso le tengo que sumar el ponerme a leer papers y también organizar los que tengo descargado en
+la carpeta de Bibliografía. Mañana me pongo con estudio de la materia de Mininni.
