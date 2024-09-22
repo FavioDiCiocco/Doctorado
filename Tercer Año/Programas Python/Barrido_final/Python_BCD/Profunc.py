@@ -109,7 +109,7 @@ for nombre in Archivos_Datos:
 # csv debería tener P elementos.
 
 #-------------------------------------------------------------------------------------
-
+"""
 # Primero me armo el data frame con los nombres de los archivos
 
 # Recorro las carpetas con datos
@@ -209,7 +209,7 @@ for preguntas in labels[::10]:
 
 
 #-------------------------------------------------------------------------------------
-"""
+
 # Cuarto armo un código que levante los datos del archivo csv y de ahí
 # reconstruya la matriz de DJS
 
@@ -821,5 +821,42 @@ for arc_1 in Arc_Matrices[0:20]:
 df_simil.to_csv("Simil_JS.csv")
 """
 
+#####################################################################################
+#####################################################################################
+
+# Ya tengo la matriz de similaridad de JS. A partir de esto puedo fácilmente reconstruir
+# la distancia, así que es un poco lo mismo. Me gustaría entonces tomar este archivo y
+# levantar cuáles son las distancias inter cluster e intra cluster. Primero para eso
+# tengo que definir los clusters.
+
+# Defino las preguntas del cluster de JS
+Df_preguntas = pd.read_csv("Tabla_JS.csv")
+Clusters = [(0,0.4), (0,0.6), (0.02,1.1), (0.08,1.1), (0.14,1.1), (0.48,0.4)]
+preg_cluster = dict()
+
+for tupla in Clusters:
+    Cosd = tupla[0]
+    Beta = tupla[1]
+    
+    preg_cluster[tupla] = Df_preguntas.loc[(Df_preguntas["Cosd_100"]==Cosd) & (Df_preguntas["Beta_100"]==Beta), "nombre"]
+    
+# Levanto los datos de la tabla de similaridad
+Df_simil = pd.read_csv("Simil_JS.csv")
+
+for ic1, (tupla_1,archivos_1) in enumerate(preg_cluster.items()):
+    
+    Promedios = np.zeros(len(archivos_1))
+    Varianzas = np.zeros(len(archivos_1))
+    
+    for grafico_1 in archivos_1:
+        
+        
+    
+        for ic2, tupla_2 in enumerate(Clusters):
+        
+        
+
+        
+        
 func.Tiempo(t0)
 

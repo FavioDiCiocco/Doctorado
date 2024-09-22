@@ -3523,3 +3523,17 @@ más distancia, sino que sea una probabilidad de transición en función de las 
 El tiempo no me da para laburar mucho más, el plan de laburo es el que tengo anotado más arriba.
 A eso le tengo que sumar el ponerme a leer papers y también organizar los que tengo descargado en
 la carpeta de Bibliografía. Mañana me pongo con estudio de la materia de Mininni.
+
+------------------------------------------------------------------------------------------
+
+22/09/2024
+
+Al final no estudié nada de lo de Mininni. Ahora ya es bastante tarde en el domingo, pero vamos a intentar
+ponernos a laburar un poco, cosa de caer con algo hecho mañana.
+
+Se me ocurre que podría tomar cada distribución dentro de un cluster y comparar eso con gráficos de otros
+clusters y luego tomar la media y la varianza de esas distancias JS. Me parece mejor eso que graficar
+la distribución de distancias. Entonces para un dado cluster, miraría cuáles son las distribuciones de
+la media de distancia JS y la varianza de las distancias JS. Puedo hacer eso diferenciado por clusters.
+
+No hice nada, no quería hacer nada hoy. No trabajé. No descansé. No nada. Qué bronca.
