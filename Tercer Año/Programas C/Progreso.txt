@@ -3537,3 +3537,33 @@ la distribución de distancias. Entonces para un dado cluster, miraría cuáles 
 la media de distancia JS y la varianza de las distancias JS. Puedo hacer eso diferenciado por clusters.
 
 No hice nada, no quería hacer nada hoy. No trabajé. No descansé. No nada. Qué bronca.
+
+------------------------------------------------------------------------------------------
+
+23/09/2024
+
+Estuve avanzando con el tema de hacer la medición de JS entre gráficos de distribuciones.
+Ya tengo el cómo levantar los arrays. Ahora tengo un leve problema que es remover la diagonal
+del array. Pidámosle eso a Chat GPT.
+
+Bien, ya armé los gráficos que quería. Ahora, tengo dos conclusiones. La primera es que no hay
+una gran diferencia en los histogramas inter cluster e intra cluster. La segunda es que no es
+algo fácil o directo de comparar, necesito modificar los gráficos para que sea algo más
+razonable o fácil de entender. Hecho eso, podría hacer el mismo trabajo pero usando la distancia
+de KS como medida de lo que estoy observando.
+
+Se me ocurre que estaría bueno normalizar los gráficos según cantidad de pares de preguntas
+en un cluster y también poner varios de esos gráficos juntos. Podría armar gráficos de barras
+de colores y transparentes.
+
+Pablo me propuso que directamente pruebe hacer un PCA. Arranquemos por eso, no hagamos lo de la
+distancia KS primero.
+
+Antes que esto, viendo que el barrido en valores de Beta menor a 0.35 ya terminó, voy a
+mandar a correr entre Beta = 0.45 y Beta = 0.95 el barrido, cosa de que me asegure de que atrapa
+todos los problemas de simulaciones vacías.
+
+Hice lo del PCA. Creo que está bien hecho, pero consultar con alguien más. La forma en que los agrupó
+es interesante. Por lo que ví, los agrupó en tres, cuatro clusters. Bastante copado eso. Y hay un 60%
+de la varianza explicada en los primeros dos componentes. ¿Con un Nearest Neighbors encuentro
+los clusters? Revisar eso.

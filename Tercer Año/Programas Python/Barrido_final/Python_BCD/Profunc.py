@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import jensenshannon
+from sklearn.decomposition import PCA
 from pathlib import Path
 import os
 import math
@@ -841,22 +842,82 @@ for tupla in Clusters:
     preg_cluster[tupla] = Df_preguntas.loc[(Df_preguntas["Cosd_100"]==Cosd) & (Df_preguntas["Beta_100"]==Beta), "nombre"]
     
 # Levanto los datos de la tabla de similaridad
-Df_simil = pd.read_csv("Simil_JS.csv")
+Df_simil = pd.read_csv("Simil_JS.csv", index_col=0)
+
 
 for ic1, (tupla_1,archivos_1) in enumerate(preg_cluster.items()):
     
-    Promedios = np.zeros(len(archivos_1))
-    Varianzas = np.zeros(len(archivos_1))
+    Promedios = np.zeros((len(archivos_1),len(Clusters)))
+    Varianzas = np.zeros((len(archivos_1),len(Clusters)))
     
-    for grafico_1 in archivos_1:
+    for ic2, (tupla_2,archivos_2) in enumerate(preg_cluster.items()):
         
+        # Levanto la matriz de distancia JS del cluster ic1 con el cluster ic2
+        Dist_JS = 1 - Df_simil.loc[archivos_1,archivos_2].to_numpy()
         
+        # Si comparo un cluster consigo mismo, elimino la diagonal para no promediar
+        # la comparación de un gráfico consigo mismo
+        if ic1 == ic2:
+            Dist_JS = Dist_JS[~np.eye(Dist_JS.shape[0], dtype=bool)].reshape(Dist_JS.shape[0], -1)
+        
+        # Calculo los promedios y varianzas
+        Promedios[:,ic2] = np.mean(Dist_JS, axis=1)
+        Varianzas[:,ic2] = np.var(Dist_JS, axis=1)
     
-        for ic2, tupla_2 in enumerate(Clusters):
-        
-        
+    # Armo el histograma de los Promedios
+    plt.rcParams.update({'font.size': 44})
+    plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+    
+    for ic2 in range(len(Clusters)):
+    
+        # Calculo el histograma y después lo normalizo a mano
+        Y,X = np.histogram(Promedios[:,ic2])
+        Y = Y/len(archivos_1)
+        plt.bar(X[:-1], Y, width= (X[1]-X[0])*0.75, align = "edge", label = "Cluster {}".format(ic2+1), edgecolor = "black", alpha = 0.5)
+    
+    plt.ylabel("Fracción")
+    plt.title('Promedios distancias JS Cluster {}'.format(ic1+1))
+    plt.legend()
+    direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Promedios_C{}.png".format(ic1+1))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close()
+    
+    # Armo el histograma de las Varianzas
+    plt.rcParams.update({'font.size': 44})
+    plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+    for ic2 in range(len(Clusters)):
+    
+        # Calculo el histograma y después lo normalizo a mano
+        Y,X = np.histogram(Varianzas[:,ic2])
+        Y = Y/len(archivos_1)
+        plt.bar(X[:-1], Y, width= (X[1]-X[0])*0.75, align = "edge", label = "Cluster {}".format(ic2+1), edgecolor = "black", alpha = 0.5)
+    
+    plt.ylabel("Fracción")
+    plt.title('Varianzas distancias JS Cluster {}'.format(ic1+1))
+    plt.legend()
+    direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Varianzas_C{}.png".format(ic1+1))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close()
+    
 
-        
-        
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+# A partir de los datos que tengo, aplico un PCA para reducir dimensionalidad
+# del problema.
+
+# Construyo mi operador que realizar un PCA sobre mis datos
+pca = PCA(n_components=2)
+pca.fit(Df_simil.to_numpy())
+X_pca = pca.transform(Df_simil.to_numpy())
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.scatter(X_pca[:,0],X_pca[:,1], s=300, marker = "s", color = "red", alpha = 0.6)
+plt.title('Distribuciones Encuestas en espacio reducido PCA')
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Distribucion_PCA.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
 func.Tiempo(t0)
 
