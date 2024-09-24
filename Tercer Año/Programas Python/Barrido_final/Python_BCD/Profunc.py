@@ -10,7 +10,10 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import jensenshannon
+from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE
+from sklearn.metrics import silhouette_score
 from pathlib import Path
 import os
 import math
@@ -907,16 +910,103 @@ for ic1, (tupla_1,archivos_1) in enumerate(preg_cluster.items()):
 
 # Construyo mi operador que realizar un PCA sobre mis datos
 pca = PCA(n_components=2)
-pca.fit(Df_simil.to_numpy())
-X_pca = pca.transform(Df_simil.to_numpy())
+X_pca = pca.fit_transform(Df_simil.to_numpy())
+
+# Si quiero ver cuales son los autovalores de cada componente
+###autovalores = pca.explained_variance_
+
+# Si quiero ver cuál es la fracción de la varianza explicada por las
+# componentes consideradas
+###Var_acumulada = np.cumsum(pca.explained_variance_ratio_)
+
+# Si quiero reconstruir los datos a partir de los datos reducidos en dimensionalidad
+###X = pca.inverse_transform(X_pca)
+
 
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-plt.scatter(X_pca[:,0],X_pca[:,1], s=300, marker = "s", color = "red", alpha = 0.6)
+plt.scatter(X_pca[:,0],X_pca[:,1], s=400, marker = "s", color = "tab:red", alpha = 0.6)
 plt.title('Distribuciones Encuestas en espacio reducido PCA')
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Distribucion_PCA.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+# A partir de los datos que tengo, aplico tSNE para reducir dimensionalidad
+# del problema.
+
+# Construyo mi operador que realizar un PCA sobre mis datos
+tsne = TSNE(n_components=2, random_state=42)
+X_tsne = tsne.fit_transform(Df_simil.to_numpy())
+
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.scatter(X_tsne[:,0],X_tsne[:,1], s=400, marker = "p", color = "tab:blue", alpha = 0.6)
+plt.title('Distribuciones Encuestas en espacio reducido tSNE')
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Distribucion_tSNE.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+# Voy a armar gráficos de clusterización usando K-means
+# para diversos números de clusters
+
+sse = [] # acá vamos a guardar el puntaje de la función objetivo
+silhouette_coefficients = [] # Acá guardo el puntaje de los coeficientes silhouette
+
+for k in range(3,30):
+    
+    # Armo mi clusterizador y lo entreno
+    kmeans = KMeans(n_clusters=k, random_state=42, n_init = "auto")
+    kmeans.fit(X_pca)
+    
+    # Guardo las posiciones de los centroids
+    centroids = kmeans.cluster_centers_
+    
+    plt.rcParams.update({'font.size': 44})
+    plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+    plt.scatter(X_pca[:,0],X_pca[:,1], s=400, c = kmeans.labels_)
+    plt.scatter(centroids[:, 0], centroids[:, 1], marker="X", s=800, linewidths=1,
+                c=np.unique(kmeans.labels_), edgecolors='black')
+    plt.title('Clusterización de K-means sobre PCA')
+    direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/K-means_PCA_k={}.png".format(k))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close()
+    
+    # SSE suma de los cuadrados de la distancia euclidea de cada cluster
+    sse.append(kmeans.inertia_)
+    
+    # El silhouette score es un número que va entre -1 y 1. Si los clusters están
+    # superpuestos, da -1. Si los clusters no se tocan, da 1.
+    silhouette_coefficients.append(silhouette_score(Df_simil.to_numpy(), kmeans.labels_))
+
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+# estas lineas son el grafico de SSEvsK
+plt.scatter(range(3, 30), sse, s=300)
+plt.xlabel("Número de clusters")
+plt.ylabel("SSE")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SSEk_PCA.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+# estas lineas son el grafico de SSEvsK
+plt.scatter(range(3, 30), silhouette_coefficients, s=300)
+plt.xlabel("Número de clusters")
+plt.ylabel("Promedio coeficientes de SilhouetteSSE")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/CoefSilhouette_PCA.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
 
 
 func.Tiempo(t0)

@@ -3567,3 +3567,28 @@ Hice lo del PCA. Creo que está bien hecho, pero consultar con alguien más. La 
 es interesante. Por lo que ví, los agrupó en tres, cuatro clusters. Bastante copado eso. Y hay un 60%
 de la varianza explicada en los primeros dos componentes. ¿Con un Nearest Neighbors encuentro
 los clusters? Revisar eso.
+
+------------------------------------------------------------------------------------------
+
+24/09/2024
+
+Hablando con Pablo, me dijo que lo que tengo que hacer es ver cómo realizar un clustering de
+mis datos. Se me ocurrer probar con Kmeans, quizás un clustering jerárquico o KNN. Habrá que
+ver ideas de cómo juntar todo.
+
+Hablando con Lucio, me propuso que haga el producto de las matrices que me salen del pca como
+para ver que efectivamente lo que obtengo a la salida es similar que lo que tenía originalmente.
+
+Tanto K-means como clustering jerárquico son métodos válidos para esto, yo arrancaría con el
+K-means. El tema de esto es no perder quince horas revisando la documentación y validación de noventa
+métodos distintos de clusterización. Hagamos primero lo de tSNE y después veo de ir clusterizando
+cosas.
+
+Bien, tengo armado algo para la separación según PCA o tSNE. Ahora tengo que ver de armar métodos de
+clusterización espacial. Le pregunté a Chat GPT, me recomendó cinco métodos, entre ellos K-means y
+hierarchical clustering. También DBSCAN.
+
+Partamos usando K-means. Veamos cómo se usa. Bueno, hice una clusterización con K-means. No sé qué
+decir, no me parece que esté tan bien agrupados. Habría que juntarse con Pablo mañana. También
+quiero mañana a primera hora ponerme a descargar los papers que viene pasando Pablo, cosa de
+organizarlos en la lista de cosas para leer y así.
