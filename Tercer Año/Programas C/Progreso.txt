@@ -3592,3 +3592,28 @@ Partamos usando K-means. Veamos cómo se usa. Bueno, hice una clusterización co
 decir, no me parece que esté tan bien agrupados. Habría que juntarse con Pablo mañana. También
 quiero mañana a primera hora ponerme a descargar los papers que viene pasando Pablo, cosa de
 organizarlos en la lista de cosas para leer y así.
+
+------------------------------------------------------------------------------------------
+
+25/09/2024
+
+En la mañana quise ir a la facultad para laburar, pero se me pinchó la rueda de atrás.
+Mañana llevaré la bici a revisar. Me volví a casa para ponerme a laburar desde ahí.
+Resulta que desde casa hay paquetes que no estaban bien instalados. Así que los resolví
+Luego de un buen rato, ya actualicé el WinPython y mandé a correr todo de nuevo.
+Hagamos ahora sí lo que charlé ayer con Pablo, comparemos clusters.
+
+Bueno, logré armar una matriz que me muestra la superposición entre los clusters hallados 
+por el método de K-means y los clusters hallados al separar los gráficos usando distancia
+JS. Para arrancar, da bastante mal. Lo segundo, no sé si es la mejor manera de mostrar que
+da mal. Lo tercero, quizás tenga que revisar cómo son esos clusters por dentro, para ver si
+tienen algún sentido.
+
+Lo que voy a hacer ahora es armar dos o tres gráficos más de esto. Debería hacer este mismo
+gráfico pero con la reducción de dimensionalidad de tSNE, y después probar si uso otro método
+de Clusterización, aunque no creo que vaya a dar mucho mejor otro método de clusterización.
+Digo, los clusters encontrados parecen bastante razonables. Tengo que charlarlo esto con Pablo
+mañana sí o sí.
+
+Mañana temprano construyo la matriz de KS, armo los gráficos y ya al mediodía veo de plantearle
+a Pablo los resultados. Tengo que levantarme temprano y no joder mañana.
