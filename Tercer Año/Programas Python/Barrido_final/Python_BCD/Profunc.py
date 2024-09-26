@@ -323,8 +323,7 @@ plt.close()
 #####################################################################################
 """
 # Voy a intentar armar una función que levante datos de algún conjunto de
-# datos y calcule la distancia de Kolmogorov-Smirnoff 2D. No es exactamente
-# eso lo que voy a estar calculando, pero ya veremos nombres después
+# datos y calcule la distancia de Kolmogorov-Smirnoff 2D
 
 # Primero levanto los datos de la ANES
 Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
@@ -536,7 +535,7 @@ for preguntas in labels[::5]:
             # lo que me queda es guardar eso en las matrices ZZ correspondientes.
             
             repeticion = int(Df_archivos.loc[Df_archivos["nombre"]==nombre,"iteracion"])
-            ZZ[(Arr_param_y.shape[0]-1)-fila,columna,repeticion] = 1 - np.min(np.max(Mat_Dist,axis = (1,2)))
+            ZZ[(Arr_param_y.shape[0]-1)-fila,columna,repeticion] = np.min(np.max(Mat_Dist,axis = (1,2)))
     
     ZZ_alterado = np.reshape(ZZ, (ZZ.shape[0]*ZZ.shape[1],ZZ.shape[2]))
     np.savetxt("../Matrices DKS/{}_vs_{}.csv".format(code_y,code_x), ZZ_alterado,delimiter = ",", fmt = "%.6f")
@@ -771,7 +770,6 @@ df_simil = pd.DataFrame(columns = Arc_Matrices, index = Arc_Matrices)
 
 # Primero levanto los datos de la ANES
 Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
-tuplas_preguntas = [('V201372x','V201386x','V200010a'), ('V201408x','V201426x','V200010a'), ('V201372x','V201411x','V200010a')]
 
 for arc_1 in Arc_Matrices[0:20]:
     
@@ -822,19 +820,93 @@ for arc_1 in Arc_Matrices[0:20]:
             Enc_2 = func.Rotar_matriz(Enc_2)
             Enc_2 = Enc_2.flatten()
         
-        df_simil.loc[arc_1,arc_2] = 1 - np.min(dist_previa)
+        df_simil.loc[arc_1,arc_2] = np.min(dist_previa)
 
-df_simil.to_csv("Simil_JS.csv")
+df_simil.to_csv("Dist_Enc_JS.csv")
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+
+# Voy a construir una matriz que me permita ver la similaridad entre los clusters de
+# preguntas definidos según distancia JS.
+
+# Levanto los datos de los archivos de matrices. Puedo tomarlo de cualquier métrica
+CarpMat=[[root,files] for root,dirs,files in os.walk("../Matrices DKS")]
+Arc_Matrices = CarpMat[0][1]
+
+# Armo mi dataframe en el cuál voy a guardar los datos de las similaridades
+df_simil = pd.DataFrame(columns = Arc_Matrices, index = Arc_Matrices)
+
+# Primero levanto los datos de la ANES
+Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
+
+for arc_1 in Arc_Matrices:
+    
+    # Defino los códigos x e y
+    code_y = arc_1.strip(".csv").split("_")[0]
+    code_x = arc_1.strip(".csv").split("_")[2]
+    
+    # Defino el peso asociado
+    if code_x[3] == '1' and code_y[3] == '1':
+        weights = 'V200010a'
+    else:
+        weights = 'V200010b'
+    
+    # Armo la tupla de la primer distribución
+    tupla_1 = (code_x,code_y,weights)
+    
+    Enc_1 = func.Distrib_Anes(tupla_1, Df_ANES)
+    
+    for arc_2 in Arc_Matrices:
+        
+        # Defino los códigos x e y
+        code_y = arc_2.strip(".csv").split("_")[0]
+        code_x = arc_2.strip(".csv").split("_")[2]
+        
+        # Defino el peso asociado
+        if code_x[3] == '1' and code_y[3] == '1':
+            weights = 'V200010a'
+        else:
+            weights = 'V200010b'
+        
+        # Armo la tupla de la primer distribución
+        tupla_2 = (code_x,code_y,weights)
+        
+        # Levanto las dos distribuciones de los dos pares de preguntas
+        Enc_2 = func.Distrib_Anes(tupla_2, Df_ANES)
+        
+        Mat_Dist = np.zeros((4,6,6))
+        for rotacion in range(4):
+            
+            for F in range(6):
+                for C in range(6):
+                    
+                    DKS = np.zeros(4)
+                    
+                    # Calculo la distancia en el primer cuadrante (Derecha-arriba)
+                    DKS[0] = np.sum(Enc_1[F:,C:])-np.sum(Enc_2[F:,C:])
+                    
+                    # Calculo la distancia en el segundo cuadrante (Derecha-abajo)
+                    DKS[1] = np.sum(Enc_1[F:,:C])-np.sum(Enc_2[F:,:C])
+                    
+                    # Calculo la distancia en el tercer cuadrante (Izquierda-abajo)
+                    DKS[2] = np.sum(Enc_1[:F,:C])-np.sum(Enc_2[:F,:C])
+                    
+                    # Calculo la distancia en el tercer cuadrante (Izquierda-arriba)
+                    DKS[3] = np.sum(Enc_1[:F,C:])-np.sum(Enc_2[:F,C:])
+                    
+                    Mat_Dist[rotacion,F,C] = np.max(np.abs(DKS))
+                    
+            Enc_2 = func.Rotar_matriz(Enc_2)
+        
+        df_simil.loc[arc_1,arc_2] = np.min(np.max(Mat_Dist,axis = (1,2)))
+
+df_simil.to_csv("Dist_Enc_KS.csv")
+
 """
-
 #####################################################################################
 #####################################################################################
-
-# Ya tengo la matriz de similaridad de JS. A partir de esto puedo fácilmente reconstruir
-# la distancia, así que es un poco lo mismo. Me gustaría entonces tomar este archivo y
-# levantar cuáles son las distancias inter cluster e intra cluster. Primero para eso
-# tengo que definir los clusters.
-
 
 # Defino las preguntas del cluster de JS
 Df_preguntas = pd.read_csv("Tabla_JS.csv")
@@ -846,11 +918,19 @@ for tupla in Clusters:
     Beta = tupla[1]
     
     preg_cluster[tupla] = Df_preguntas.loc[(Df_preguntas["Cosd_100"]==Cosd) & (Df_preguntas["Beta_100"]==Beta), "nombre"]
-    
-# Levanto los datos de la tabla de similaridad
-Df_simil = pd.read_csv("Simil_JS.csv", index_col=0)
 
-"""
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+# Ya tengo la matriz de distancias de JS. A partir de esto puedo fácilmente reconstruir
+# la distancia, así que es un poco lo mismo. Me gustaría entonces tomar este archivo y
+# levantar cuáles son las distancias inter cluster e intra cluster. Primero para eso
+# tengo que definir los clusters.
+
+# Levanto los datos de la tabla de similaridad
+Df_dist_JS = pd.read_csv("Dist_Enc_JS.csv", index_col=0)
+
+
 for ic1, (tupla_1,archivos_1) in enumerate(preg_cluster.items()):
     
     Promedios = np.zeros((len(archivos_1),len(Clusters)))
@@ -859,7 +939,7 @@ for ic1, (tupla_1,archivos_1) in enumerate(preg_cluster.items()):
     for ic2, (tupla_2,archivos_2) in enumerate(preg_cluster.items()):
         
         # Levanto la matriz de distancia JS del cluster ic1 con el cluster ic2
-        Dist_JS = 1 - Df_simil.loc[archivos_1,archivos_2].to_numpy()
+        Dist_JS = Df_dist_JS.loc[archivos_1,archivos_2].to_numpy()
         
         # Si comparo un cluster consigo mismo, elimino la diagonal para no promediar
         # la comparación de un gráfico consigo mismo
@@ -884,7 +964,7 @@ for ic1, (tupla_1,archivos_1) in enumerate(preg_cluster.items()):
     plt.ylabel("Fracción")
     plt.title('Promedios distancias JS Cluster {}'.format(ic1+1))
     plt.legend()
-    direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Promedios_C{}.png".format(ic1+1))
+    direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Promedios_JS_C{}.png".format(ic1+1))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
     
@@ -901,10 +981,10 @@ for ic1, (tupla_1,archivos_1) in enumerate(preg_cluster.items()):
     plt.ylabel("Fracción")
     plt.title('Varianzas distancias JS Cluster {}'.format(ic1+1))
     plt.legend()
-    direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Varianzas_C{}.png".format(ic1+1))
+    direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Varianzas_JS_C{}.png".format(ic1+1))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
-"""    
+
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -913,7 +993,7 @@ for ic1, (tupla_1,archivos_1) in enumerate(preg_cluster.items()):
 
 # Construyo mi operador que realizar un PCA sobre mis datos
 pca = PCA(n_components=2)
-X_pca = pca.fit_transform(Df_simil.to_numpy())
+X_pca = pca.fit_transform(Df_dist_JS.to_numpy())
 
 # Si quiero ver cuales son los autovalores de cada componente
 ###autovalores = pca.explained_variance_
@@ -929,8 +1009,8 @@ X_pca = pca.fit_transform(Df_simil.to_numpy())
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 plt.scatter(X_pca[:,0],X_pca[:,1], s=400, marker = "s", color = "tab:red", alpha = 0.6)
-plt.title('Distribuciones Encuestas en espacio reducido PCA')
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Distribucion_PCA.png")
+plt.title('Distrib Encuestas en espacio reducido PCA, metrica JS')
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Distribucion_PCA_JS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
@@ -942,20 +1022,20 @@ plt.close()
 
 # Construyo mi operador que realizar un PCA sobre mis datos
 tsne = TSNE(n_components=2, random_state=42)
-X_tsne = tsne.fit_transform(Df_simil.to_numpy())
+X_tsne = tsne.fit_transform(Df_dist_JS.to_numpy())
 
 
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 plt.scatter(X_tsne[:,0],X_tsne[:,1], s=400, marker = "p", color = "tab:blue", alpha = 0.6)
-plt.title('Distribuciones Encuestas en espacio reducido tSNE')
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Distribucion_tSNE.png")
+plt.title('Distrib Encuestas en espacio reducido tSNE, metrica JS')
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Distribucion_tSNE_JS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------
-"""
+
 
 # Voy a armar gráficos de clusterización usando K-means
 # para diversos números de clusters
@@ -977,8 +1057,8 @@ for k in range(3,11):
     plt.scatter(X_pca[:,0],X_pca[:,1], s=400, c = kmeans.labels_)
     plt.scatter(centroids[:, 0], centroids[:, 1], marker="X", s=800, linewidths=1,
                 c=np.unique(kmeans.labels_), edgecolors='black')
-    plt.title('Clusterización de K-means sobre PCA, {} Clusters'.format(k))
-    direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/K-means_PCA_k={}.png".format(k))
+    plt.title('Clusterización de K-means sobre PCA, {} Clusters, metrica JS'.format(k))
+    direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/K-means_PCA_JS_k={}.png".format(k))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
     
@@ -987,7 +1067,7 @@ for k in range(3,11):
     
     # El silhouette score es un número que va entre -1 y 1. Si los clusters están
     # superpuestos, da -1. Si los clusters no se tocan, da 1.
-    silhouette_coefficients.append(silhouette_score(Df_simil.to_numpy(), kmeans.labels_))
+    silhouette_coefficients.append(silhouette_score(Df_dist_JS.to_numpy(), kmeans.labels_))
 
 
 plt.rcParams.update({'font.size': 44})
@@ -996,7 +1076,8 @@ plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 plt.scatter(range(3, 11), sse, s=300)
 plt.xlabel("Número de clusters")
 plt.ylabel("SSE")
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SSEk_PCA.png")
+plt.title("Métrica JS")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SSEk_PCA_JS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
@@ -1007,7 +1088,8 @@ plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 plt.scatter(range(3, 11), silhouette_coefficients, s=300)
 plt.xlabel("Número de clusters")
 plt.ylabel("Promedio coeficientes de Silhouette")
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/CoefSilhouette_PCA.png")
+plt.title("Métrica JS")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/CoefSilhouette_PCA_JS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
@@ -1033,8 +1115,8 @@ for k in range(3,11):
     plt.scatter(X_tsne[:,0],X_tsne[:,1], s=400, c = kmeans.labels_)
     plt.scatter(centroids[:, 0], centroids[:, 1], marker="X", s=800, linewidths=1,
                 c=np.unique(kmeans.labels_), edgecolors='black')
-    plt.title('Clusterización de K-means sobre tSNE, {} Clusters'.format(k))
-    direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/K-means_tSNE_k={}.png".format(k))
+    plt.title('Clusterización K-means sobre tSNE, {} Clusters, metrica JS'.format(k))
+    direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/K-means_tSNE_JS_k={}.png".format(k))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
     
@@ -1043,7 +1125,7 @@ for k in range(3,11):
     
     # El silhouette score es un número que va entre -1 y 1. Si los clusters están
     # superpuestos, da -1. Si los clusters no se tocan, da 1.
-    silhouette_coefficients.append(silhouette_score(Df_simil.to_numpy(), kmeans.labels_))
+    silhouette_coefficients.append(silhouette_score(Df_dist_JS.to_numpy(), kmeans.labels_))
 
 
 plt.rcParams.update({'font.size': 44})
@@ -1052,7 +1134,8 @@ plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 plt.scatter(range(3, 11), sse, s=300)
 plt.xlabel("Número de clusters")
 plt.ylabel("SSE")
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SSEk_tSNE.png")
+plt.title("Métrica JS")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SSEk_tSNE_JS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
@@ -1063,11 +1146,11 @@ plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 plt.scatter(range(3, 11), silhouette_coefficients, s=300)
 plt.xlabel("Número de clusters")
 plt.ylabel("Promedio coeficientes de Silhouette")
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/CoefSilhouette_tSNE.png")
+plt.title("Métrica JS")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/CoefSilhouette_tSNE_JS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
-"""
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 # Voy a comparar los clusters observados en la clasificación de JS con los clusters observados
@@ -1083,7 +1166,7 @@ clust_pca_kmeans = dict()
 for cluster in range(np.max(kmeans.labels_)):
     
     # Ubico los clusters en el nuevo dict
-    clust_pca_kmeans[cluster] = Df_simil.index[kmeans.labels_ == cluster]
+    clust_pca_kmeans[cluster] = Df_dist_JS.index[kmeans.labels_ == cluster]
 
 # Comparo los conjuntos para ver qué tan similares son
 Mat_sup = np.zeros((6,6))
@@ -1100,10 +1183,11 @@ col_labels = ["Clust {}".format(k) for k in range(1,7)]
 # Plot the colormap using imshow
 plt.rcParams.update({'font.size': 38})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-plt.imshow(Mat_sup, cmap='RdYlBu', aspect='auto')
+im = plt.imshow(Mat_sup, cmap='RdYlBu', aspect='auto')
 
 # Add colorbar
-plt.colorbar()
+cbar = plt.colorbar(im)
+im.set_clim(0,1)
 
 # Add column text labels
 plt.xticks(ticks=np.arange(Mat_sup.shape[1]), labels=col_labels)
@@ -1112,10 +1196,10 @@ plt.xticks(ticks=np.arange(Mat_sup.shape[1]), labels=col_labels)
 plt.yticks(ticks=np.arange(Mat_sup.shape[0]), labels=row_labels)
 
 # Display the plot
-plt.title("Superposición de Clusters PCA K-Means")
-plt.ylabel("K-Means")
-plt.xlabel("Clust. JS")
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Sup_Clusters_PCA.png")
+plt.title("Superposición de Clusters: (PCA,K-Means), metrica JS")
+plt.xlabel("K-Means")
+plt.ylabel("Clust. JS")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Sup_Clusters_PCA_JS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
@@ -1134,7 +1218,7 @@ clust_tsne_kmeans = dict()
 for cluster in range(np.max(kmeans.labels_)):
     
     # Ubico los clusters en el nuevo dict
-    clust_tsne_kmeans[cluster] = Df_simil.index[kmeans.labels_ == cluster]
+    clust_tsne_kmeans[cluster] = Df_dist_JS.index[kmeans.labels_ == cluster]
 
 # Comparo los conjuntos para ver qué tan similares son
 Mat_sup = np.zeros((6,6))
@@ -1151,10 +1235,11 @@ col_labels = ["Clust {}".format(k) for k in range(1,7)]
 # Plot the colormap using imshow
 plt.rcParams.update({'font.size': 38})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-plt.imshow(Mat_sup, cmap='RdYlBu', aspect='auto')
+im = plt.imshow(Mat_sup, cmap='RdYlBu', aspect='auto')
 
 # Add colorbar
-plt.colorbar()
+cbar = plt.colorbar(im)
+im.set_clim(0,1)
 
 # Add column text labels
 plt.xticks(ticks=np.arange(Mat_sup.shape[1]), labels=col_labels)
@@ -1163,10 +1248,359 @@ plt.xticks(ticks=np.arange(Mat_sup.shape[1]), labels=col_labels)
 plt.yticks(ticks=np.arange(Mat_sup.shape[0]), labels=row_labels)
 
 # Display the plot
-plt.title("Superposición de Clusters tSNE K-Means")
-plt.ylabel("K-Means")
-plt.xlabel("Clust. JS")
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Sup_Clusters_tSNE.png")
+plt.title("Superposición de Clusters: (tSNE,K-Means), metrica JS")
+plt.xlabel("K-Means")
+plt.ylabel("Clust. JS")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Sup_Clusters_tSNE_JS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+# Defino las preguntas del cluster de JS
+Df_preguntas = pd.read_csv("Tabla_JS.csv")
+Clusters = [(0,0.4), (0,0.6), (0.02,1.1), (0.08,1.1), (0.14,1.1), (0.48,0.4)]
+preg_cluster = dict()
+
+for tupla in Clusters:
+    Cosd = tupla[0]
+    Beta = tupla[1]
+    
+    preg_cluster[tupla] = Df_preguntas.loc[(Df_preguntas["Cosd_100"]==Cosd) & (Df_preguntas["Beta_100"]==Beta), "nombre"]
+
+
+#####################################################################################
+#####################################################################################
+
+# Ya tengo la matriz de distancias de JS. A partir de esto puedo fácilmente reconstruir
+# la distancia, así que es un poco lo mismo. Me gustaría entonces tomar este archivo y
+# levantar cuáles son las distancias inter cluster e intra cluster. Primero para eso
+# tengo que definir los clusters.
+
+# Levanto los datos de la tabla de similaridad
+Df_dist_KS = pd.read_csv("Dist_Enc_KS.csv", index_col=0)
+
+
+for ic1, (tupla_1,archivos_1) in enumerate(preg_cluster.items()):
+    
+    Promedios = np.zeros((len(archivos_1),len(Clusters)))
+    Varianzas = np.zeros((len(archivos_1),len(Clusters)))
+    
+    for ic2, (tupla_2,archivos_2) in enumerate(preg_cluster.items()):
+        
+        # Levanto la matriz de distancia JS del cluster ic1 con el cluster ic2
+        Dist_KS = Df_dist_KS.loc[archivos_1,archivos_2].to_numpy()
+        
+        # Si comparo un cluster consigo mismo, elimino la diagonal para no promediar
+        # la comparación de un gráfico consigo mismo
+        if ic1 == ic2:
+            Dist_KS = Dist_KS[~np.eye(Dist_KS.shape[0], dtype=bool)].reshape(Dist_KS.shape[0], -1)
+        
+        # Calculo los promedios y varianzas
+        Promedios[:,ic2] = np.mean(Dist_KS, axis=1)
+        Varianzas[:,ic2] = np.var(Dist_KS, axis=1)
+    
+    # Armo el histograma de los Promedios
+    plt.rcParams.update({'font.size': 44})
+    plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+    
+    for ic2 in range(len(Clusters)):
+    
+        # Calculo el histograma y después lo normalizo a mano
+        Y,X = np.histogram(Promedios[:,ic2])
+        Y = Y/len(archivos_1)
+        plt.bar(X[:-1], Y, width= (X[1]-X[0])*0.75, align = "edge", label = "Cluster {}".format(ic2+1), edgecolor = "black", alpha = 0.5)
+    
+    plt.ylabel("Fracción")
+    plt.title('Promedios distancias KS Cluster {}'.format(ic1+1))
+    plt.legend()
+    direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Promedios_KS_C{}.png".format(ic1+1))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close()
+    
+    # Armo el histograma de las Varianzas
+    plt.rcParams.update({'font.size': 44})
+    plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+    for ic2 in range(len(Clusters)):
+    
+        # Calculo el histograma y después lo normalizo a mano
+        Y,X = np.histogram(Varianzas[:,ic2])
+        Y = Y/len(archivos_1)
+        plt.bar(X[:-1], Y, width= (X[1]-X[0])*0.75, align = "edge", label = "Cluster {}".format(ic2+1), edgecolor = "black", alpha = 0.5)
+    
+    plt.ylabel("Fracción")
+    plt.title('Varianzas distancias KS Cluster {}'.format(ic1+1))
+    plt.legend()
+    direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Varianzas_KS_C{}.png".format(ic1+1))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close()
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+# A partir de los datos que tengo, aplico un PCA para reducir dimensionalidad
+# del problema.
+
+# Construyo mi operador que realizar un PCA sobre mis datos
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(Df_dist_KS.to_numpy())
+
+# Si quiero ver cuales son los autovalores de cada componente
+###autovalores = pca.explained_variance_
+
+# Si quiero ver cuál es la fracción de la varianza explicada por las
+# componentes consideradas
+###Var_acumulada = np.cumsum(pca.explained_variance_ratio_)
+
+# Si quiero reconstruir los datos a partir de los datos reducidos en dimensionalidad
+###X = pca.inverse_transform(X_pca)
+
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.scatter(X_pca[:,0],X_pca[:,1], s=400, marker = "s", color = "tab:red", alpha = 0.6)
+plt.title('Distrib Encuestas en espacio reducido PCA, metrica KS')
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Distribucion_PCA_KS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+# A partir de los datos que tengo, aplico tSNE para reducir dimensionalidad
+# del problema.
+
+# Construyo mi operador que realizar un PCA sobre mis datos
+tsne = TSNE(n_components=2, random_state=42)
+X_tsne = tsne.fit_transform(Df_dist_KS.to_numpy())
+
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.scatter(X_tsne[:,0],X_tsne[:,1], s=400, marker = "p", color = "tab:blue", alpha = 0.6)
+plt.title('Distrib Encuestas en espacio reducido tSNE, metrica KS')
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Distribucion_tSNE_KS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+
+# Voy a armar gráficos de clusterización usando K-means
+# para diversos números de clusters
+
+sse = [] # acá vamos a guardar el puntaje de la función objetivo
+silhouette_coefficients = [] # Acá guardo el puntaje de los coeficientes silhouette
+
+for k in range(3,11):
+    
+    # Armo mi clusterizador y lo entreno
+    kmeans = KMeans(n_clusters=k, random_state=42, n_init = "auto")
+    kmeans.fit(X_pca)
+    
+    # Guardo las posiciones de los centroids
+    centroids = kmeans.cluster_centers_
+    
+    plt.rcParams.update({'font.size': 44})
+    plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+    plt.scatter(X_pca[:,0],X_pca[:,1], s=400, c = kmeans.labels_)
+    plt.scatter(centroids[:, 0], centroids[:, 1], marker="X", s=800, linewidths=1,
+                c=np.unique(kmeans.labels_), edgecolors='black')
+    plt.title('Clusterización de K-means sobre PCA, {} Clusters, metrica KS'.format(k))
+    direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/K-means_PCA_KS_k={}.png".format(k))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close()
+    
+    # SSE suma de los cuadrados de la distancia euclidea de cada cluster
+    sse.append(kmeans.inertia_)
+    
+    # El silhouette score es un número que va entre -1 y 1. Si los clusters están
+    # superpuestos, da -1. Si los clusters no se tocan, da 1.
+    silhouette_coefficients.append(silhouette_score(Df_dist_KS.to_numpy(), kmeans.labels_))
+
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+# estas lineas son el grafico de SSEvsK
+plt.scatter(range(3, 11), sse, s=300)
+plt.xlabel("Número de clusters")
+plt.ylabel("SSE")
+plt.title("Métrica KS")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SSEk_PCA_KS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+# estas lineas son el grafico de SSEvsK
+plt.scatter(range(3, 11), silhouette_coefficients, s=300)
+plt.xlabel("Número de clusters")
+plt.ylabel("Promedio coeficientes de Silhouette")
+plt.title("Métrica KS")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/CoefSilhouette_PCA_KS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+# Voy a armar gráficos de clusterización usando K-means
+# para diversos números de clusters
+
+sse = [] # acá vamos a guardar el puntaje de la función objetivo
+silhouette_coefficients = [] # Acá guardo el puntaje de los coeficientes silhouette
+
+for k in range(3,11):
+    
+    # Armo mi clusterizador y lo entreno
+    kmeans = KMeans(n_clusters=k, random_state=42, n_init = "auto")
+    kmeans.fit(X_tsne)
+    
+    # Guardo las posiciones de los centroids
+    centroids = kmeans.cluster_centers_
+    
+    plt.rcParams.update({'font.size': 44})
+    plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+    plt.scatter(X_tsne[:,0],X_tsne[:,1], s=400, c = kmeans.labels_)
+    plt.scatter(centroids[:, 0], centroids[:, 1], marker="X", s=800, linewidths=1,
+                c=np.unique(kmeans.labels_), edgecolors='black')
+    plt.title('Clusterización K-means sobre tSNE, {} Clusters, metrica KS'.format(k))
+    direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/K-means_tSNE_KS_k={}.png".format(k))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close()
+    
+    # SSE suma de los cuadrados de la distancia euclidea de cada cluster
+    sse.append(kmeans.inertia_)
+    
+    # El silhouette score es un número que va entre -1 y 1. Si los clusters están
+    # superpuestos, da -1. Si los clusters no se tocan, da 1.
+    silhouette_coefficients.append(silhouette_score(Df_dist_KS.to_numpy(), kmeans.labels_))
+
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+# estas lineas son el grafico de SSEvsK
+plt.scatter(range(3, 11), sse, s=300)
+plt.xlabel("Número de clusters")
+plt.ylabel("SSE")
+plt.title("Métrica KS")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SSEk_tSNE_KS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+# estas lineas son el grafico de SSEvsK
+plt.scatter(range(3, 11), silhouette_coefficients, s=300)
+plt.xlabel("Número de clusters")
+plt.ylabel("Promedio coeficientes de Silhouette")
+plt.title("Métrica KS")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/CoefSilhouette_tSNE_KS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+# Voy a comparar los clusters observados en la clasificación de JS con los clusters observados
+# al agrupar según PCA o tSNE usando K-Means.
+
+# A partir de los datos de PCA identifico los clusters con K-Means
+# Elijo 6 clusters para que sea comparable con los clusters que identifiqué en
+# el gráfico de distribución de preguntas. SSE parece corroborar esto.
+kmeans = KMeans(n_clusters=6, random_state=42, n_init = "auto")
+kmeans.fit(X_pca)
+
+clust_pca_kmeans = dict()
+for cluster in range(np.max(kmeans.labels_)):
+    
+    # Ubico los clusters en el nuevo dict
+    clust_pca_kmeans[cluster] = Df_dist_KS.index[kmeans.labels_ == cluster]
+
+# Comparo los conjuntos para ver qué tan similares son
+Mat_sup = np.zeros((6,6))
+
+for ic1,cluster_1 in enumerate(preg_cluster.values()):
+    for ic2,cluster_2 in enumerate(clust_pca_kmeans.values()):
+        
+        Mat_sup[ic1, ic2] = (len(set(cluster_1) & set(cluster_2))) / (len(set(cluster_1) | set(cluster_2)))
+
+# Create row and column labels
+row_labels = ["Clust {}".format(k) for k in range(1,7)]
+col_labels = ["Clust {}".format(k) for k in range(1,7)]
+
+# Plot the colormap using imshow
+plt.rcParams.update({'font.size': 38})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+im = plt.imshow(Mat_sup, cmap='RdYlBu', aspect='auto')
+
+# Add colorbar
+cbar = plt.colorbar(im)
+im.set_clim(0,1)
+
+# Add column text labels
+plt.xticks(ticks=np.arange(Mat_sup.shape[1]), labels=col_labels)
+
+# Add row text labels
+plt.yticks(ticks=np.arange(Mat_sup.shape[0]), labels=row_labels)
+
+# Display the plot
+plt.title("Superposición de Clusters: (PCA,K-Means), metrica KS")
+plt.xlabel("K-Means")
+plt.ylabel("Clust. JS")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Sup_Clusters_PCA_KS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+# Voy a comparar los clusters observados en la clasificación de JS con los clusters observados
+# al agrupar según PCA o tSNE usando K-Means.
+
+# A partir de los datos de PCA identifico los clusters con K-Means
+# Elijo 6 clusters para que sea comparable con los clusters que identifiqué en
+# el gráfico de distribución de preguntas. SSE parece corroborar esto.
+kmeans = KMeans(n_clusters=6, random_state=42, n_init = "auto")
+kmeans.fit(X_tsne)
+
+clust_tsne_kmeans = dict()
+for cluster in range(np.max(kmeans.labels_)):
+    
+    # Ubico los clusters en el nuevo dict
+    clust_tsne_kmeans[cluster] = Df_dist_KS.index[kmeans.labels_ == cluster]
+
+# Comparo los conjuntos para ver qué tan similares son
+Mat_sup = np.zeros((6,6))
+
+for ic1,cluster_1 in enumerate(preg_cluster.values()):
+    for ic2,cluster_2 in enumerate(clust_tsne_kmeans.values()):
+        
+        Mat_sup[ic1, ic2] = (len(set(cluster_1) & set(cluster_2))) / (len(set(cluster_1) | set(cluster_2)))
+
+# Create row and column labels
+row_labels = ["Clust {}".format(k) for k in range(1,7)]
+col_labels = ["Clust {}".format(k) for k in range(1,7)]
+
+# Plot the colormap using imshow
+plt.rcParams.update({'font.size': 38})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+im = plt.imshow(Mat_sup, cmap='RdYlBu', aspect='auto')
+
+# Add colorbar
+cbar = plt.colorbar(im)
+im.set_clim(0,1)
+
+# Add column text labels
+plt.xticks(ticks=np.arange(Mat_sup.shape[1]), labels=col_labels)
+
+# Add row text labels
+plt.yticks(ticks=np.arange(Mat_sup.shape[0]), labels=row_labels)
+
+# Display the plot
+plt.title("Superposición de Clusters: (tSNE,K-Means), metrica KS")
+plt.xlabel("K-Means")
+plt.ylabel("Clust. JS")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Sup_Clusters_tSNE_KS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 

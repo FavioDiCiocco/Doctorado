@@ -3617,3 +3617,22 @@ mañana sí o sí.
 
 Mañana temprano construyo la matriz de KS, armo los gráficos y ya al mediodía veo de plantearle
 a Pablo los resultados. Tengo que levantarme temprano y no joder mañana.
+
+------------------------------------------------------------------------------------------
+
+26/09/2024
+
+Hoy trabajé desde casa, estuve preparando los gráficos de clusterización y cosas para mostrarle a Pablo.
+Armé una presentación rápida y charlamos lo que estuve haciendo. Anoté las cosas que Pablo
+me propuso hacer.
+
+.) Usar los colores de los clusters al graficar PCA
+.) Preguntarle a Sebas por formas de encontrar clusters según la forma de las distribuciones
+en un espacio euclídeo
+.) Hacer K-means en el espacio de vectores de 36 dimensiones (Creo que al final esto no)
+.) Hacer K-Means sobre la matriz de Dist_Enc_JS
+.) Agregar las preguntas que no están en los clusters como "Otros"
+
+Después de la reunión estuve con cosas, se paso la hora rápido, así que no pude avanzar nada
+en esto. Tampoco pude estudiar Alemán. Quizás haga un rato de eso mañana. Veré si mañana
+puedo hacer algo de esto que me pasó Pablo o si lo haré el lunes.
