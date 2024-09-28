@@ -3632,6 +3632,8 @@ en un espacio euclídeo
 .) Hacer K-means en el espacio de vectores de 36 dimensiones (Creo que al final esto no)
 .) Hacer K-Means sobre la matriz de Dist_Enc_JS
 .) Agregar las preguntas que no están en los clusters como "Otros"
+.) Organizar el gráfico que compara cuánto se parecen los clusters en función de 
+cuánto se parecen.
 
 Después de la reunión estuve con cosas, se paso la hora rápido, así que no pude avanzar nada
 en esto. Tampoco pude estudiar Alemán. Quizás haga un rato de eso mañana. Veré si mañana
@@ -3644,3 +3646,25 @@ puedo hacer algo de esto que me pasó Pablo o si lo haré el lunes.
 Hoy fui a la mañana a Alemán, después tuvimos la reunión de grupo en la que Lucas dió charla,
 y por último me reuní con Lucio. No pude hacer nada sobre lo que anoté ayer para resolver.
 Voy para casa así busco la bici y veo si después me pongo a laburar un poco más.
+
+------------------------------------------------------------------------------------------
+
+28/09/2024
+
+De lo que charlamos el jueves con Pablo, voy a intentar primero hacer el K-means a la matriz de 120x120
+y después lo de incorporar los colores al conjunto de datos. Lo de agregar los que sobran lo haré
+a lo último. Hagamos primero que nada el estudio sobre la distancia JS, no la distancia KS.
+
+Bien, armado ese gráfico, da interesante porque lo que observo es muy similar de lo que observo 
+aplicando K-means al PCA. Armemos los tres gráficos que Pablo decía que debo tener. El que me falta
+es el tercero, el que pinta los datos según los clusters formados según la distribución de preguntas
+en el espacio de parámetros.
+
+Creo que puedo hacer mejor este trabajo si utilizo las propiedades de Pandas. Puedo agregar una columna
+al pandas que tengo de Df_preguntas en el cuál vayan los clusters considerados. Luego, uso esa columna
+para identificar los clusters en el gráfico. Ahí revisé, la columna nombres del DataFrame de Df_preguntas
+coincide totalmente con los índices del DF Df_dist_JS.
+
+Bien, ya tengo esos tres gráficos. Tengo que organizarlo un poco para que sea más legible o agradable a la
+vista. Ponele básicamente la leyenda de clusters al costado, y fijate que más o menos tengan que ver los
+clusters entre ellos un poco.

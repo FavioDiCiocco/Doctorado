@@ -919,7 +919,7 @@ for tupla in Clusters:
     
     preg_cluster[tupla] = Df_preguntas.loc[(Df_preguntas["Cosd_100"]==Cosd) & (Df_preguntas["Beta_100"]==Beta), "nombre"]
 
-
+"""
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 # Ya tengo la matriz de distancias de JS. A partir de esto puedo fácilmente reconstruir
@@ -1255,23 +1255,15 @@ direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Sup_C
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
-
-# Defino las preguntas del cluster de JS
-Df_preguntas = pd.read_csv("Tabla_JS.csv")
-Clusters = [(0,0.4), (0,0.6), (0.02,1.1), (0.08,1.1), (0.14,1.1), (0.48,0.4)]
-preg_cluster = dict()
-
-for tupla in Clusters:
-    Cosd = tupla[0]
-    Beta = tupla[1]
-    
-    preg_cluster[tupla] = Df_preguntas.loc[(Df_preguntas["Cosd_100"]==Cosd) & (Df_preguntas["Beta_100"]==Beta), "nombre"]
+"""
 
 
 #####################################################################################
 #####################################################################################
 
-# Ya tengo la matriz de distancias de JS. A partir de esto puedo fácilmente reconstruir
+"""
+
+# Ya tengo la matriz de distancias de KS. A partir de esto puedo fácilmente reconstruir
 # la distancia, así que es un poco lo mismo. Me gustaría entonces tomar este archivo y
 # levantar cuáles son las distancias inter cluster e intra cluster. Primero para eso
 # tengo que definir los clusters.
@@ -1601,6 +1593,68 @@ plt.title("Superposición de Clusters: (tSNE,K-Means), metrica KS")
 plt.xlabel("K-Means")
 plt.ylabel("Clust. JS")
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Sup_Clusters_tSNE_KS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+"""
+
+#####################################################################################
+#####################################################################################
+
+# Veamos de hacer el análisis de K-means sobre la matriz de similaridad entre todas las
+# preguntas.
+
+# Defino las preguntas del cluster de JS
+Df_preguntas = pd.read_csv("Tabla_JS.csv")
+Clusters = [(0,0.4), (0,0.6), (0.02,1.1), (0.08,1.1), (0.14,1.1), (0.48,0.4)]
+preg_cluster = dict()
+
+for tupla in Clusters:
+    Cosd = tupla[0]
+    Beta = tupla[1]
+    
+    preg_cluster[tupla] = Df_preguntas.loc[(Df_preguntas["Cosd_100"]==Cosd) & (Df_preguntas["Beta_100"]==Beta), "nombre"]
+
+# Levanto los datos de la tabla de similaridad
+Df_dist_JS = pd.read_csv("Dist_Enc_JS.csv", index_col=0)
+
+kmeans = KMeans(n_clusters=7, random_state=42, n_init = "auto")
+kmeans.fit(Df_dist_JS)
+
+# Construyo mi operador que realizar un PCA sobre mis datos
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(Df_dist_JS.to_numpy())
+
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.scatter(X_pca[:,0],X_pca[:,1], s=400, c = kmeans.labels_)
+plt.title('Clusterización K-means dist JS, 6 clusters')
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/K-means_dist_JS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+# Voy a querer construir un gráfico similar pero que tenga el coloreado según los clusters 
+# construidos por la agrupación en espacio de parámetros según JS.
+
+# Lo inicializo en 6 para que los no revisados sean un cluster aparte
+Df_preguntas["clusters"] = 6
+
+for cluster,tupla in enumerate(Clusters):
+    Cosd = tupla[0]
+    Beta = tupla[1]
+    
+    Df_preguntas.loc[(Df_preguntas["Cosd_100"]==Cosd) & (Df_preguntas["Beta_100"]==Beta), "clusters"] = cluster
+
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.scatter(X_pca[:,0],X_pca[:,1], s=400, c = Df_preguntas["clusters"])
+plt.title('Clasifiación en espacio de parámetros')
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_esp_parametros.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
