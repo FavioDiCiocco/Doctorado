@@ -919,7 +919,7 @@ for tupla in Clusters:
     
     preg_cluster[tupla] = Df_preguntas.loc[(Df_preguntas["Cosd_100"]==Cosd) & (Df_preguntas["Beta_100"]==Beta), "nombre"]
 
-"""
+
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 # Ya tengo la matriz de distancias de JS. A partir de esto puedo fácilmente reconstruir
@@ -930,7 +930,7 @@ for tupla in Clusters:
 # Levanto los datos de la tabla de similaridad
 Df_dist_JS = pd.read_csv("Dist_Enc_JS.csv", index_col=0)
 
-
+"""
 for ic1, (tupla_1,archivos_1) in enumerate(preg_cluster.items()):
     
     Promedios = np.zeros((len(archivos_1),len(Clusters)))
@@ -1040,10 +1040,10 @@ plt.close()
 # Voy a armar gráficos de clusterización usando K-means
 # para diversos números de clusters
 
-sse = [] # acá vamos a guardar el puntaje de la función objetivo
-silhouette_coefficients = [] # Acá guardo el puntaje de los coeficientes silhouette
+# sse = [] # acá vamos a guardar el puntaje de la función objetivo
+# silhouette_coefficients = [] # Acá guardo el puntaje de los coeficientes silhouette
 
-for k in range(3,11):
+for k in range(6,8):
     
     # Armo mi clusterizador y lo entreno
     kmeans = KMeans(n_clusters=k, random_state=42, n_init = "auto")
@@ -1054,20 +1054,29 @@ for k in range(3,11):
     
     plt.rcParams.update({'font.size': 44})
     plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-    plt.scatter(X_pca[:,0],X_pca[:,1], s=400, c = kmeans.labels_)
-    plt.scatter(centroids[:, 0], centroids[:, 1], marker="X", s=800, linewidths=1,
-                c=np.unique(kmeans.labels_), edgecolors='black')
+    scatter = plt.scatter(X_pca[:,0],X_pca[:,1], s=400, c = kmeans.labels_)
+    # scatter = plt.scatter(centroids[:, 0], centroids[:, 1], marker="X", s=800, linewidths=1,
+    #             c=np.unique(kmeans.labels_), edgecolors='black')
+    
+    # Custom legend with specific text for each cluster
+    legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(kmeans.labels_)]  # Customize these as you like
+    # Create legend manually using custom text and colors from the scatter plot
+    handles = [plt.Line2D([0], [0], marker='o', color='w', label=label, 
+                          markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
+                          for i, label in enumerate(legend_labels)]
+    # Add the legend to the plot
+    plt.legend(handles=handles, loc="best", ncol=2)
     plt.title('Clusterización de K-means sobre PCA, {} Clusters, metrica JS'.format(k))
     direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/K-means_PCA_JS_k={}.png".format(k))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
     
     # SSE suma de los cuadrados de la distancia euclidea de cada cluster
-    sse.append(kmeans.inertia_)
+    # sse.append(kmeans.inertia_)
     
     # El silhouette score es un número que va entre -1 y 1. Si los clusters están
     # superpuestos, da -1. Si los clusters no se tocan, da 1.
-    silhouette_coefficients.append(silhouette_score(Df_dist_JS.to_numpy(), kmeans.labels_))
+    # silhouette_coefficients.append(silhouette_score(Df_dist_JS.to_numpy(), kmeans.labels_))
 
 
 plt.rcParams.update({'font.size': 44})
@@ -1255,13 +1264,10 @@ direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Sup_C
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
-"""
-
 
 #####################################################################################
 #####################################################################################
 
-"""
 
 # Ya tengo la matriz de distancias de KS. A partir de esto puedo fácilmente reconstruir
 # la distancia, así que es un poco lo mismo. Me gustaría entonces tomar este archivo y
@@ -1625,15 +1631,23 @@ kmeans.fit(Df_dist_JS)
 pca = PCA(n_components=2)
 X_pca = pca.fit_transform(Df_dist_JS.to_numpy())
 
-
+"""
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-plt.scatter(X_pca[:,0],X_pca[:,1], s=400, c = kmeans.labels_)
-plt.title('Clusterización K-means dist JS, 6 clusters')
+scatter = plt.scatter(X_pca[:,0],X_pca[:,1], s=400, c = kmeans.labels_)
+# Custom legend with specific text for each cluster
+legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(kmeans.labels_)]  # Customize these as you like
+# Create legend manually using custom text and colors from the scatter plot
+handles = [plt.Line2D([0], [0], marker='o', color='w', label=label, 
+                      markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
+                      for i, label in enumerate(legend_labels)]
+# Add the legend to the plot
+plt.legend(handles=handles, loc="best", ncol=2)
+plt.title('Clusterización K-means dist JS, 7 clusters')
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/K-means_dist_JS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
-
+"""
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1652,11 +1666,183 @@ for cluster,tupla in enumerate(Clusters):
 
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-plt.scatter(X_pca[:,0],X_pca[:,1], s=400, c = Df_preguntas["clusters"])
-plt.title('Clasifiación en espacio de parámetros')
+scatter = plt.scatter(X_pca[:,0],X_pca[:,1], s=400, c = Df_preguntas["clusters"])
+plt.title('Clasificación en espacio de parámetros')
+# Custom legend with specific text for each cluster
+legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(Df_preguntas["clusters"])]  # Customize these as you like
+# Create legend manually using custom text and colors from the scatter plot
+handles = [plt.Line2D([0], [0], marker='o', color='w', label=label, 
+                      markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
+                      for i, label in enumerate(legend_labels)]
+# Add the legend to the plot
+plt.legend(handles=handles, loc="best", ncol=2)
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_esp_parametros.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
+
+#####################################################################################
+#####################################################################################
+
+# Lo que se me ocurre es que puedo primero tener el dato de los clusters en un solo
+# data frame.
+
+# Guardo los datos según K-means en la matriz de distancia JS entre encuestas.
+
+kmeans = KMeans(n_clusters=7, random_state=42, n_init = "auto")
+kmeans.fit(Df_dist_JS)
+Df_preguntas["pre_clusters_JS"] = kmeans.labels_
+
+# Guardo los datos según K-means en aplicado al PCA de la matriz de distancia JS entre encuestas.
+
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(Df_dist_JS.to_numpy())
+kmeans = KMeans(n_clusters=7, random_state=42, n_init = "auto")
+kmeans.fit(X_pca)
+Df_preguntas["pre_clusters_PCA_JS"] = kmeans.labels_
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+# Lo siguiente es ir viendo cuáles clusters se parecen más a otros, y con eso
+# ir luego viendo que estén todos pintados en consecuencia. Ese pintarse en
+# consecuencia se resuelve con columnas nuevas
+
+# Primero necesito ver de comparar conjuntos
+Mat_sup = np.zeros((7,7))
+for ic1 in range(np.unique(Df_preguntas["clusters"]).shape[0]):
+    
+    cluster_1 = Df_preguntas.loc[Df_preguntas["clusters"] == ic1, "nombre"]
+    
+    for ic2 in range(np.unique(Df_preguntas["clusters"]).shape[0]):
+        
+        cluster_2 = Df_preguntas.loc[Df_preguntas["pre_clusters_JS"] == ic2, "nombre"]
+        
+        Mat_sup[ic1, ic2] = (len(set(cluster_1) & set(cluster_2))) / (len(set(cluster_1) | set(cluster_2)))
+
+# Lo siguiente es ir ordenando la matriz de forma correcta
+Transicion = np.arange(Mat_sup.shape[0])
+for fila in range(Mat_sup.shape[0]):
+    
+    i_cambio = np.argmax(Mat_sup[fila,fila:])
+    Transicion[[fila, fila + i_cambio]] = Transicion[[fila + i_cambio, fila]]
+    Mat_sup[:,[fila, fila + i_cambio]] = Mat_sup[:,[fila+i_cambio, fila]]
+
+# Ahora que lo tengo ordenado, construyo la nueva clusterización
+Df_preguntas["clusters_JS_ord"] = None
+for ic,cluster in enumerate(Transicion):
+    Df_preguntas.loc[Df_preguntas["pre_clusters_JS"]==ic, "clusters_JS_ord"] = cluster
+
+
+# Create row and column labels
+row_labels = ["Clust {}".format(k) for k in range(1,8)]
+col_labels = ["Clust {}".format(k) for k in range(1,8)]
+# Plot the colormap using imshow
+plt.rcParams.update({'font.size': 38})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+im = plt.imshow(Mat_sup, cmap='RdYlBu', aspect='auto')
+# Add colorbar
+cbar = plt.colorbar(im)
+im.set_clim(0,1)
+# Add column text labels
+plt.xticks(ticks=np.arange(Mat_sup.shape[1]), labels=col_labels)
+# Add row text labels
+plt.yticks(ticks=np.arange(Mat_sup.shape[0]), labels=row_labels)
+# Display the plot
+plt.title("Sup. Clusters, K-Means sobre mat. preguntas")
+plt.xlabel("K-Means")
+plt.ylabel("Clust. JS")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Sup_clusters_Ord.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+# Repito esto para los clusters obtenidos de la proyección 2D por PCA
+
+# Primero necesito ver de comparar conjuntos
+Mat_sup = np.zeros((7,7))
+for ic1 in range(np.unique(Df_preguntas["clusters"]).shape[0]):
+    
+    cluster_1 = Df_preguntas.loc[Df_preguntas["clusters"] == ic1, "nombre"]
+    
+    for ic2 in range(np.unique(Df_preguntas["clusters"]).shape[0]):
+        
+        cluster_2 = Df_preguntas.loc[Df_preguntas["pre_clusters_PCA_JS"] == ic2, "nombre"]
+        
+        Mat_sup[ic1, ic2] = (len(set(cluster_1) & set(cluster_2))) / (len(set(cluster_1) | set(cluster_2)))
+
+# Lo siguiente es ir ordenando la matriz de forma correcta
+Transicion = np.arange(Mat_sup.shape[0])
+for fila in range(Mat_sup.shape[0]):
+    
+    i_cambio = np.argmax(Mat_sup[fila,fila:])
+    Transicion[[fila, fila + i_cambio]] = Transicion[[fila + i_cambio, fila]]
+    Mat_sup[:,[fila, fila + i_cambio]] = Mat_sup[:,[fila+i_cambio, fila]]
+
+# Ahora que lo tengo ordenado, construyo la nueva clusterización
+Df_preguntas["clusters_PCA_JS_ord"] = None
+for ic,cluster in enumerate(Transicion):
+    Df_preguntas.loc[Df_preguntas["pre_clusters_PCA_JS"]==ic, "clusters_PCA_JS_ord"] = cluster
+
+# Create row and column labels
+row_labels = ["Clust {}".format(k) for k in range(1,8)]
+col_labels = ["Clust {}".format(k) for k in range(1,8)]
+# Plot the colormap using imshow
+plt.rcParams.update({'font.size': 38})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+im = plt.imshow(Mat_sup, cmap='RdYlBu', aspect='auto')
+# Add colorbar
+cbar = plt.colorbar(im)
+im.set_clim(0,1)
+# Add column text labels
+plt.xticks(ticks=np.arange(Mat_sup.shape[1]), labels=col_labels)
+# Add row text labels
+plt.yticks(ticks=np.arange(Mat_sup.shape[0]), labels=row_labels)
+# Display the plot
+plt.title("Sup. Clusters, K-Means sobre PCA de mat. preguntas")
+plt.xlabel("K-Means")
+plt.ylabel("Clust. JS")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Sup_clusters_PCA_Ord.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+# Ahora los grafico a los dos
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.scatter(X_pca[:,0],X_pca[:,1], s=400, c = Df_preguntas["clusters_JS_ord"])
+plt.title('Clasificación Matriz Distancia')
+# Custom legend with specific text for each cluster
+legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(Df_preguntas["clusters_JS_ord"])]  # Customize these as you like
+# Create legend manually using custom text and colors from the scatter plot
+handles = [plt.Line2D([0], [0], marker='o', color='w', label=label, 
+                      markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
+                      for i, label in enumerate(legend_labels)]
+# Add the legend to the plot
+plt.legend(handles=handles, loc="best", ncol=2)
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_Mat_dist.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.scatter(X_pca[:,0],X_pca[:,1], s=400, c = Df_preguntas["clusters_PCA_JS_ord"])
+plt.title('Clasificación aplicado al PCA')
+# Custom legend with specific text for each cluster
+legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(Df_preguntas["clusters_PCA_JS_ord"])]  # Customize these as you like
+# Create legend manually using custom text and colors from the scatter plot
+handles = [plt.Line2D([0], [0], marker='o', color='w', label=label, 
+                      markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
+                      for i, label in enumerate(legend_labels)]
+# Add the legend to the plot
+plt.legend(handles=handles, loc="best", ncol=2)
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_dist_PCA.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
 
 
 func.Tiempo(t0)

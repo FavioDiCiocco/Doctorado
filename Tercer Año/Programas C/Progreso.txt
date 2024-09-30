@@ -3668,3 +3668,38 @@ coincide totalmente con los índices del DF Df_dist_JS.
 Bien, ya tengo esos tres gráficos. Tengo que organizarlo un poco para que sea más legible o agradable a la
 vista. Ponele básicamente la leyenda de clusters al costado, y fijate que más o menos tengan que ver los
 clusters entre ellos un poco.
+
+------------------------------------------------------------------------------------------
+
+30/09/2024
+
+Llegué temprano hoy a la facultad, pero tengo un sueño terrible, me está costando laburar. Cuestión,
+tengo los tres gráficos que quiero:
+
+1) K-Means aplicado sobre el PCA
+2) K-Means aplicado sobre la matriz de distancias JS
+3) Pares de preguntas clasificados en espacio de parámetros aplicados sobre PCA.
+
+Estaría bueno que los colores tengan que ver para que sea más fácil comparar. Porque la verdad no sé
+qué estoy viendo. Primero que nada, pongámosle a cada gráfico el cuadro de labels.
+
+Costó, pero ahí armé el cuadro de leyenda que indica los clusters. Ahora veré 
+de agregar eso a los otros y después veré de organizar correctamente esos clusters.
+Bien, ya tengo todos los gráficos con los clusters ubicados. Ahora necesitaría compararlos por un lado
+y colorearlos según los que más se parecen. Ya junté las tres clusterizaciones en un dataframe, que es
+el de Df_preguntas.
+
+Bueno, armé los gráficos. Acabo de descubrir que perdí un puto día haciendo esto, para que me de todo
+para el tuje. La verdad, que se vaya todo a la mierda. Veamos qué tengo y qué voy a hacer con eso.
+
+De lo que anoté de la última reunión, hice tres de las cuatro cosas anotadas. La primera era
+lo de la matriz de Similaridad, está armado eso y preparados los gráficos al respecto, tanto para
+el K-Means sobre la matriz de distancia como para el K-Means sobre los datos de PCA,
+Lo segundo era lo de corregir el análisis de KS, esto está resuelto y da bastante feo también.
+Lo tercero era lo de revisar las simulaciones que salieron mal, las cuáles ya mandé a correr
+de nuevo. Mañana debería revisar qué les pasó.
+Finalmente lo cuarto era lo de continuar preparando un resumen del trabajo hasta ahora,
+así como revisar que mi código en C corra tan rápido como el de Hugo. Esto último no lo
+veré mañana, pero si logro preparar pronto la charla para el miércoles, muy raro que Pablo
+considere que ya con lo que tengo para mostrar estamos terminados, podría ponerme un poco con
+el laburo de ir juntando todo lo que ya tengo para ir perfilando el laburo.
