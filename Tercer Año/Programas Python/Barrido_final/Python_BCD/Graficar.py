@@ -139,29 +139,29 @@ for carp in Carpetas:
     # Construyo un diccionario con las preguntas de cada uno de los clusters
     
     Df_preguntas = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices_JS, Dir_matrices_JS)
-    Df_preguntas.to_csv("Tabla_JS.csv", index=False)
+    # Df_preguntas.to_csv("Tabla_JS.csv", index=False)
     
+    # Lo inicializo en 6 para que los no revisados sean un cluster aparte
+    Df_preguntas["clusters"] = 6
     Clusters = [(0,0.4), (0,0.6), (0.02,1.1), (0.08,1.1), (0.14,1.1), (0.48,0.4)]
-    preg_cluster = dict()
     
-    for tupla in Clusters:
+    for cluster,tupla in enumerate(Clusters):
         Cosd = tupla[0]
         Beta = tupla[1]
         
-        preg_cluster[tupla] = Df_preguntas.loc[(Df_preguntas["Cosd_100"]==Cosd) & (Df_preguntas["Beta_100"]==Beta), "nombre"]
+        Df_preguntas.loc[(Df_preguntas["Cosd_100"]==Cosd) & (Df_preguntas["Beta_100"]==Beta), "clusters"] = cluster
     
     #----------------------------------------------------------------------------------------------
     
     # Gráficos de métricas JS
     
-    func.Preguntas_espacio_parametros(Df_archivos, preg_cluster, Dir_matrices_JS, Etapa/carpeta, "JS",
+    func.Preguntas_espacio_parametros(Df_archivos, Df_preguntas, Dir_matrices_JS, Etapa/carpeta, "JS",
                                       SIM_param_x, SIM_param_y)
     
     # Df_preguntas = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices_JS, Dir_matrices_JS)
     # Df_preguntas.to_csv("Tabla_JS.csv", index=False)
     
-    
-    for nombre_csv in Archivos_Matrices_JS[::5]:
+    for nombre_csv in Archivos_Matrices_JS:
         
         DJS, code_x, code_y = func.Lectura_csv_Matriz(size_y, size_x, Dir_matrices_JS, nombre_csv)
         
@@ -170,19 +170,20 @@ for carp in Carpetas:
         
         func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta, Direccion, bines,
                                   "JS",SIM_param_x,SIM_param_y)
-        
+    
     
     #----------------------------------------------------------------------------------------------
     
     # Gráficos de métricas KS
     
-    func.Preguntas_espacio_parametros(Df_archivos, preg_cluster, Dir_matrices_KS, Etapa/carpeta, "KS",
+    Df_preguntas_KS = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices_KS, Dir_matrices_KS)
+    Df_preguntas_KS["clusters"] = Df_preguntas["clusters"]
+    # Df_preguntas.to_csv("Tabla_KS.csv", index=False)
+    
+    func.Preguntas_espacio_parametros(Df_archivos, Df_preguntas_KS, Dir_matrices_KS, Etapa/carpeta, "KS",
                                       SIM_param_x, SIM_param_y)
     
-    Df_preguntas = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices_KS, Dir_matrices_KS)
-    Df_preguntas.to_csv("Tabla_KS.csv", index=False)
-    
-    for nombre_csv in Archivos_Matrices_KS[::5]:
+    for nombre_csv in Archivos_Matrices_KS:
         
         DKS, code_x, code_y = func.Lectura_csv_Matriz(size_y, size_x, Dir_matrices_KS, nombre_csv)
         
@@ -193,7 +194,7 @@ for carp in Carpetas:
                                   "KS",SIM_param_x,SIM_param_y)
     
     #----------------------------------------------------------------------------------------------
-    
+    """
     # Gráficos de métricas CM
     
     func.Preguntas_espacio_parametros(Df_archivos, preg_cluster, Dir_matrices_CM, Etapa/carpeta, "CM",
@@ -211,7 +212,7 @@ for carp in Carpetas:
         
         func.Hist2D_similares_FEF(DCM, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta, Direccion, bines,
                                   "CM",SIM_param_x,SIM_param_y)
-    
+    """
     
 func.Tiempo(t0)
 

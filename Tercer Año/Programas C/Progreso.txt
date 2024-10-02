@@ -3703,3 +3703,25 @@ así como revisar que mi código en C corra tan rápido como el de Hugo. Esto ú
 veré mañana, pero si logro preparar pronto la charla para el miércoles, muy raro que Pablo
 considere que ya con lo que tengo para mostrar estamos terminados, podría ponerme un poco con
 el laburo de ir juntando todo lo que ya tengo para ir perfilando el laburo.
+
+------------------------------------------------------------------------------------------
+
+01/10/2024
+
+Armados mis gráficos, ¿Qué voy a presentar? Vistos los gráficos, lo que puedo mencionar es que
+la construcción de los clusters usando K-means muestra conjuntos de pares de preguntas muy
+distintos. Entonces voy a presentar que hice el análisis de la distancia KS, el análisis
+de la similaridad de gráficos y la clusterización usando K-means.
+
+Hablando con Pablo, me propuso usar la MI o el randIndex para revisar un poco más la relación
+entre las clusterizaciones. Me dijo de cambiar los textos en los gráficos. Se me ocurre además
+agregar en paréntesis el tamaño de los clusters, para que quede marcado también eso como una
+referencia. Hagamos esto y después agregemos estos gráficos a la presentación.
+ Hice los cambios en los textos, vayamos poniendo todo en la presentación. Para el gráfico de
+preguntas en el espacio de parámetro, tengo que agregar las preguntas que sobran y que no son
+parte de ningún cluster.
+
+Hacer Jaccard índex, hacer Rand índex, Matriz de Superposición comparando las dos particiones
+obtenidas por K-Means. Tengo armado esto, aunque tengo mis dudas. Veré si Pablo quiere discutirlo
+un segundo mañana. Mi plan mañana es armar unas conclusiones también, eso lo puedo hacer en un
+momentito.

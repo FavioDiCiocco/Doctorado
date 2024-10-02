@@ -11,6 +11,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import jensenshannon
 from sklearn.cluster import KMeans
+from sklearn.metrics import normalized_mutual_info_score
+from sklearn.metrics import adjusted_rand_score
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from sklearn.metrics import silhouette_score
@@ -985,7 +987,7 @@ for ic1, (tupla_1,archivos_1) in enumerate(preg_cluster.items()):
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
 
-
+"""
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 # A partir de los datos que tengo, aplico un PCA para reducir dimensionalidad
@@ -1009,12 +1011,12 @@ X_pca = pca.fit_transform(Df_dist_JS.to_numpy())
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 plt.scatter(X_pca[:,0],X_pca[:,1], s=400, marker = "s", color = "tab:red", alpha = 0.6)
-plt.title('Distrib Encuestas en espacio reducido PCA, metrica JS')
+plt.title('Reducción de dimensionalidad usando PCA')
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Distribucion_PCA_JS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
-
+"""
 #-------------------------------------------------------------------------------------------------------------------------------------
 
 # A partir de los datos que tengo, aplico tSNE para reducir dimensionalidad
@@ -1733,8 +1735,8 @@ for ic,cluster in enumerate(Transicion):
 
 
 # Create row and column labels
-row_labels = ["Clust {}".format(k) for k in range(1,8)]
-col_labels = ["Clust {}".format(k) for k in range(1,8)]
+row_labels = ["Clust {} ({})".format(k, np.unique(Df_preguntas["clusters"],return_counts=True)[1][k-1]) for k in range(1,8)]
+col_labels = ["Clust {} \n ({})".format(k, np.unique(Df_preguntas["clusters_JS_ord"],return_counts=True)[1][k-1]) for k in range(1,8)]
 # Plot the colormap using imshow
 plt.rcParams.update({'font.size': 38})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
@@ -1747,9 +1749,9 @@ plt.xticks(ticks=np.arange(Mat_sup.shape[1]), labels=col_labels)
 # Add row text labels
 plt.yticks(ticks=np.arange(Mat_sup.shape[0]), labels=row_labels)
 # Display the plot
-plt.title("Sup. Clusters, K-Means sobre mat. preguntas")
-plt.xlabel("K-Means")
-plt.ylabel("Clust. JS")
+plt.title("Índice de Jaccard")
+plt.ylabel("Clust. Datos")
+plt.xlabel("Clust. Matriz")
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Sup_clusters_Ord.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
@@ -1785,8 +1787,8 @@ for ic,cluster in enumerate(Transicion):
     Df_preguntas.loc[Df_preguntas["pre_clusters_PCA_JS"]==ic, "clusters_PCA_JS_ord"] = cluster
 
 # Create row and column labels
-row_labels = ["Clust {}".format(k) for k in range(1,8)]
-col_labels = ["Clust {}".format(k) for k in range(1,8)]
+row_labels = ["Clust {} ({})".format(k, np.unique(Df_preguntas["clusters"],return_counts=True)[1][k-1]) for k in range(1,8)]
+col_labels = ["Clust {} \n ({})".format(k, np.unique(Df_preguntas["clusters_PCA_JS_ord"],return_counts=True)[1][k-1]) for k in range(1,8)]
 # Plot the colormap using imshow
 plt.rcParams.update({'font.size': 38})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
@@ -1799,12 +1801,65 @@ plt.xticks(ticks=np.arange(Mat_sup.shape[1]), labels=col_labels)
 # Add row text labels
 plt.yticks(ticks=np.arange(Mat_sup.shape[0]), labels=row_labels)
 # Display the plot
-plt.title("Sup. Clusters, K-Means sobre PCA de mat. preguntas")
-plt.xlabel("K-Means")
-plt.ylabel("Clust. JS")
+plt.title("Índice Jaccard")
+plt.ylabel("Clust. Datos")
+plt.xlabel("Clust. Proyección Matriz")
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Sup_clusters_PCA_Ord.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+
+# Hago una comparación entre las particiones obtenidas de los K-Means
+
+# Primero necesito ver de comparar conjuntos
+Mat_sup = np.zeros((7,7))
+for ic1 in range(np.unique(Df_preguntas["clusters"]).shape[0]):
+    
+    cluster_1 = Df_preguntas.loc[Df_preguntas["clusters_JS_ord"] == ic1, "nombre"]
+    
+    for ic2 in range(np.unique(Df_preguntas["clusters"]).shape[0]):
+        
+        cluster_2 = Df_preguntas.loc[Df_preguntas["pre_clusters_PCA_JS"] == ic2, "nombre"]
+        
+        Mat_sup[ic1, ic2] = (len(set(cluster_1) & set(cluster_2))) / (len(set(cluster_1) | set(cluster_2)))
+
+# Lo siguiente es ir ordenando la matriz de forma correcta
+Transicion = np.arange(Mat_sup.shape[0])
+for fila in range(Mat_sup.shape[0]):
+    
+    i_cambio = np.argmax(Mat_sup[fila,fila:])
+    Transicion[[fila, fila + i_cambio]] = Transicion[[fila + i_cambio, fila]]
+    Mat_sup[:,[fila, fila + i_cambio]] = Mat_sup[:,[fila+i_cambio, fila]]
+
+# Ahora que lo tengo ordenado, construyo la nueva clusterización
+Df_preguntas["clusters_PCA_JS_neword"] = None
+for ic,cluster in enumerate(Transicion):
+    Df_preguntas.loc[Df_preguntas["pre_clusters_PCA_JS"]==ic, "clusters_PCA_JS_neword"] = cluster
+
+# Create row and column labels
+row_labels = ["Clust {} ({})".format(k, np.unique(Df_preguntas["clusters_JS_ord"],return_counts=True)[1][k-1]) for k in range(1,8)]
+col_labels = ["Clust {} \n ({})".format(Transicion[k-1]+1, np.unique(Df_preguntas["clusters_PCA_JS_ord"],return_counts=True)[1][Transicion[k-1]]) for k in range(1,8)]
+# Plot the colormap using imshow
+plt.rcParams.update({'font.size': 38})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+im = plt.imshow(Mat_sup, cmap='RdYlBu', aspect='auto')
+# Add colorbar
+cbar = plt.colorbar(im)
+im.set_clim(0,1)
+# Add column text labels
+plt.xticks(ticks=np.arange(Mat_sup.shape[1]), labels=col_labels)
+# Add row text labels
+plt.yticks(ticks=np.arange(Mat_sup.shape[0]), labels=row_labels)
+# Display the plot
+plt.title("Índice Jaccard")
+plt.xlabel("Clust. Proyección Matriz")
+plt.ylabel("Clust. Matriz")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Sup_clusters_kmeans_Ord.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1813,7 +1868,7 @@ plt.close()
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 plt.scatter(X_pca[:,0],X_pca[:,1], s=400, c = Df_preguntas["clusters_JS_ord"])
-plt.title('Clasificación Matriz Distancia')
+plt.title('Clusterización Matriz Distancia')
 # Custom legend with specific text for each cluster
 legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(Df_preguntas["clusters_JS_ord"])]  # Customize these as you like
 # Create legend manually using custom text and colors from the scatter plot
@@ -1830,7 +1885,7 @@ plt.close()
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 plt.scatter(X_pca[:,0],X_pca[:,1], s=400, c = Df_preguntas["clusters_PCA_JS_ord"])
-plt.title('Clasificación aplicado al PCA')
+plt.title('Clusterización aplicado al PCA')
 # Custom legend with specific text for each cluster
 legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(Df_preguntas["clusters_PCA_JS_ord"])]  # Customize these as you like
 # Create legend manually using custom text and colors from the scatter plot
@@ -1843,7 +1898,26 @@ direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
+#-------------------------------------------------------------------------------------------------------------------------------------
 
+# Una vez que tengo armados mis clusterings, uso NMI y rand_index ajustado para
+# comparar qué tan similares son esos clusterings.
+
+# Voy a guardar la info en arrays de tamaño tres, en el primer elemento pongo 
+# La clust. de los datos vs la clust de la matriz de JS, en el segundo pongo la
+# clust de los datos versus la clust de la proyección de la matriz de JS y en la
+# tercer componente pongo la clust de la matriz versus la de la proyección.
+
+info_mutua = np.zeros(3)
+info_mutua[0] = normalized_mutual_info_score(Df_preguntas["clusters"], Df_preguntas["clusters_JS_ord"])
+info_mutua[1] = normalized_mutual_info_score(Df_preguntas["clusters"], Df_preguntas["clusters_PCA_JS_ord"])
+info_mutua[2] = normalized_mutual_info_score(Df_preguntas["clusters_JS_ord"], Df_preguntas["clusters_PCA_JS_neword"])
+
+
+ind_rand = np.zeros(3)
+ind_rand[0] = adjusted_rand_score(Df_preguntas["clusters"], Df_preguntas["clusters_JS_ord"])
+ind_rand[1] = adjusted_rand_score(Df_preguntas["clusters"], Df_preguntas["clusters_PCA_JS_ord"])
+ind_rand[2] = adjusted_rand_score(Df_preguntas["clusters_JS_ord"], Df_preguntas["clusters_PCA_JS_neword"])
 
 func.Tiempo(t0)
 

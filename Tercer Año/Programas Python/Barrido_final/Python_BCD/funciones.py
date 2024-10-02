@@ -1763,7 +1763,7 @@ def Reconstruccion_opiniones(Dist_simulada, N, T):
 
 # Armo una función que ubique los pares de preguntas en el espacio de parámetros.
 
-def Preguntas_espacio_parametros(DF_datos,dic_clusters,path_matrices,carpeta,metrica,
+def Preguntas_espacio_parametros(DF_datos,Df_preguntas,path_matrices,carpeta,metrica,
                                  SIM_param_x,SIM_param_y):
     
     # Armo un rng para agregar un ruido normal
@@ -1771,15 +1771,18 @@ def Preguntas_espacio_parametros(DF_datos,dic_clusters,path_matrices,carpeta,met
     
     # Defino los arrays de parámetros diferentes
     Arr_param_x = np.unique(DF_datos["parametro_x"])
-    size_x = Arr_param_x.shape[0]
     Arr_param_y = np.unique(DF_datos["parametro_y"])
-    size_y = Arr_param_y.shape[0]
     # Construyo las grillas que voy a usar para ubicar los valores de X e Y
     XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
     
-    # Armo un diccionario donde colocar los valores de X y de Y de cada cluster
-    dict_grafcluster = dict()
+    X = np.transpose(Df_preguntas[["Cosd_100","Cosd_10","Cosd_20","Cosd_30","Cosd_40",]].to_numpy())
+    Y = np.transpose(Df_preguntas[["Beta_100","Beta_10","Beta_20","Beta_30","Beta_40",]].to_numpy())
     
+    X = X + rng.normal(loc = 0, scale = (Arr_param_x[1]-Arr_param_x[0])/5, size = X.shape)
+    Y = Y + rng.normal(loc = 0, scale = (Arr_param_y[1]-Arr_param_y[0])/5, size = Y.shape)
+    
+    
+    """
     for cluster,arc_matrices in dic_clusters.items():
     
         # Defino los arrays donde guardo las posiciones de las distancias
@@ -1817,6 +1820,7 @@ def Preguntas_espacio_parametros(DF_datos,dic_clusters,path_matrices,carpeta,met
         Y = Y + rng.normal(loc = 0, scale = (Arr_param_y[1]-Arr_param_y[0])/5, size = Y.shape)
         
         dict_grafcluster[cluster] = (X,Y)
+    """
     
     # Delineo las regiones del espacio Beta-Cosd
     plt.rcParams.update({'font.size': 44})
@@ -1860,9 +1864,7 @@ def Preguntas_espacio_parametros(DF_datos,dic_clusters,path_matrices,carpeta,met
     
     
     # Lo que queda es hacer los plot scatter de las preguntas
-    for cluster in dic_clusters.keys():
-        plt.scatter(dict_grafcluster[cluster][0][0],dict_grafcluster[cluster][1][0], marker="o", s = 500, alpha = 0.7)
-    # plt.scatter(X[0],Y[0], marker="o", s = 500, color="green", alpha = 0.7)
+    plt.scatter(X[0],Y[0], marker="o", c = Df_preguntas["clusters"], s = 500, alpha = 0.7)
     plt.xlabel(r"${}$".format(SIM_param_x))
     plt.ylabel(r"${}$".format(SIM_param_y))
     plt.xlim(-0.025,0.525)
@@ -1915,9 +1917,7 @@ def Preguntas_espacio_parametros(DF_datos,dic_clusters,path_matrices,carpeta,met
         plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
         plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
         
-        for cluster in dic_clusters.keys():
-            plt.scatter(dict_grafcluster[cluster][0][rank],dict_grafcluster[cluster][1][rank], marker="o", s = 500, alpha = 0.7)
-        # plt.scatter(X[rank],Y[rank], marker="o", s = 500, color="green", alpha = 0.7)
+        plt.scatter(X[rank],Y[rank], marker="o", c = Df_preguntas["clusters"], s = 500, alpha = 0.7)
         plt.xlabel(r"${}$".format(SIM_param_x))
         plt.ylabel(r"${}$".format(SIM_param_y))
         plt.xlim(-0.025,0.525)
