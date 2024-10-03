@@ -3746,3 +3746,22 @@ Propuesta de Pablo:
 1) Hacer el camino inverso con los métodos de clusterización para ver cuál es la cantidad de clusters
 razonables y así ver cuál es la mejor cantidad de simulaciones a considerar.
 2) Armar una presentación general de los resultados
+
+A la tarde fui a la marcha universitaria.
+
+------------------------------------------------------------------------------------------
+
+03/10/2024
+
+Hoy a la mañana fui a hacer un trámite con mis viejos y ya llegué a la facultad al mediodía.
+Ejercité un poco, respondí cosas y ahora me queda ir al coloquio de Andrés. Después de eso,
+veamos de laburar en esto.
+
+El armado de datos está tomando bastante tiempo, todavía no terminaron los barridos en Algarve
+y en Oporto. Quedarán para cuando vuelva de México.
+
+Estuve empezando a armar algo sobre la charla resumen de lo que tenemos hecho hasta ahora.
+Después podría más o menos fácilmente armar algún recorrido sobre los métodos de clusterización
+para presentar el miércoles. Veremos cómo se va resolviendo el día de mañana después de Alemán.
+No estamos tan en la mierda, aunque tampoco tengo taaanto para mostrarle mañana a Pablo. Habrá que
+ver cómo venimos.
