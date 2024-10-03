@@ -3725,3 +3725,24 @@ Hacer Jaccard índex, hacer Rand índex, Matriz de Superposición comparando las
 obtenidas por K-Means. Tengo armado esto, aunque tengo mis dudas. Veré si Pablo quiere discutirlo
 un segundo mañana. Mi plan mañana es armar unas conclusiones también, eso lo puedo hacer en un
 momentito.
+
+------------------------------------------------------------------------------------------
+
+02/10/2024
+
+Cosas charladas en la reunión:
+-------------------------------
+.) Revisar más en detalle las configuraciones outliers en KS para ver cómo están compuestas.
+.) También mirar mejor si las radicalizadas están clasificadas mejor o si eso queda mal.
+.) Hacer K-Means en el espacio de Beta-Cosd sobre la distancia de JS.
+.) Definir la cantidad de simulaciones a utilizar en función de cuál ajusta mejor a la cantidad de clusters.
+.) Habrá que revisar mejor las métricas para definir qué es una buena clusterización.
+.) Quizás revisar si hay mejores formas de clusterizar.
+.) Mi criterio de convergencia es más estricto. ¿Por qué lo hice así?
+.) Presentación de los resultados generales.
+
+Propuesta de Pablo:
+--------------------
+1) Hacer el camino inverso con los métodos de clusterización para ver cuál es la cantidad de clusters
+razonables y así ver cuál es la mejor cantidad de simulaciones a considerar.
+2) Armar una presentación general de los resultados
