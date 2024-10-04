@@ -3765,3 +3765,42 @@ Después podría más o menos fácilmente armar algún recorrido sobre los méto
 para presentar el miércoles. Veremos cómo se va resolviendo el día de mañana después de Alemán.
 No estamos tan en la mierda, aunque tampoco tengo taaanto para mostrarle mañana a Pablo. Habrá que
 ver cómo venimos.
+
+------------------------------------------------------------------------------------------
+
+04/10/2024
+
+Una idea es usar Multi-dimensional scaling para hacer una proyección en 2D de los datos de la
+matriz de distancia JS. Seba me proponía esto como forma de graficar en un espacio 2D los gráficos
+de pares de preguntas. La otra cosa que me proponía es buscar si hay alguna transformación
+que lleva mis encuestas que están en un espacio representado por un vector de 36 elementos,
+a otro espacio donde ciertas distribuciones que representan estados finales similares se encuentren
+juntos.
+
+Más temprano, fui a estudiar Alemán y tuvimos el examen oral del primer bimestre. Lo que sigue
+es continuar con el trabajo que teníamos anotado sobre armar una presentación para resumir
+el laburo y armar un camino inverso de ver cómo clusterizar los puntos en el espacio de parámetros,
+y ver cuáles de estas formas de clusterización dan mejor.
+
+Tengo un montón de código en Profunc, organicemos un poco ahí. Ya borré las cosas que no tenían mucho
+que hacer o que eran repetidas. Ahora vamos a ver de intentar tomar mis datos y realizar dos procesos
+de clusterización. Uno que funcione usando K-means, el otro usando DBSCAN.
+
+El plan es tomar la posición de las preguntas en el espacio de parámetros, clusterizar eso y después
+comparar ese cluster con clusters construidos a partir de la matriz de Datos. Mi plan es sólo comparar
+contra eso, no contra la clusterización a partir de los datos reducidos en dimensionalidad.
+
+Siento que son varios los gráficos que quiero armar. Por un lado tengo la matriz de Datos, la cuál
+puedo clusterizarla en K clusters. Por otro lado tengo los datos en el espacio de parámetros, los
+cuáles puedo clusterizarlos en L clusters. Finalmente los datos en el espacio de parámetros puedo
+tomarlos segun una cantidad T de simulaciones más similares. Efectivamente tengo tres cosas que
+variar. Se me ocurre que lo razonable es pensar que la cantidad de clusters que armo de la matriz
+de distancia tiene que ser igual a la cantidad de clusters que armo en el espacio de parámetros,
+sino sería rara la comparación. Yo quiero ver cuál es la cantidad de clusters a tomar y la cantidad
+de simulaciones a considerar. Mi anhelo es que eso me dé un máximo al rand_index cuando las clusterizaciones
+son similares para un dado número de simulaciones. Si hice 6 clusters en la matriz de distancias y eso
+por motivos raros da bien con la clusterización de 3 clusters del espacio de parámetros, no sé qué
+puedo extraer ahí. ¿Uso 3 o 6 clusters?
+
+Arranqué con el código, la idea va. Creo que lo voy a graficar como mapas de colores. Claramente tengo
+una fascinación con eso.
