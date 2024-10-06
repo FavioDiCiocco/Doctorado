@@ -41,6 +41,7 @@ def ldata(archive):
         return data
 
 #####################################################################################
+
 """
 
 # Voy a ver de levantar datos de los archivos nuevos
@@ -1088,10 +1089,10 @@ ind_rand[0] = adjusted_rand_score(Df_preguntas["clusters"], Df_preguntas["cluste
 ind_rand[1] = adjusted_rand_score(Df_preguntas["clusters"], Df_preguntas["clusters_PCA_JS_ord"])
 ind_rand[2] = adjusted_rand_score(Df_preguntas["clusters_JS_ord"], Df_preguntas["clusters_PCA_JS_neword"])
 
-"""
-#####################################################################################
-#####################################################################################
 
+#####################################################################################
+#####################################################################################
+"""
 # Voy a querer clusterizar sobre los distintos espacios de parámetros, y luego comparar
 # esos clusters con los clusters obtenidos al clusterizar la Mat_Dist_JS.
 # Para comparar esos clusters, en principio voy a usar simplemente rand_index o mutual info
@@ -1102,20 +1103,181 @@ Df_dist_JS = pd.read_csv("Dist_Enc_JS.csv", index_col=0)
 # Defino las preguntas del cluster de JS
 Df_preguntas = pd.read_csv("Tabla_JS.csv")
 
-for k in range(3,11):
+# Hago el PCA de los datos
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(Df_dist_JS.to_numpy())
+
+# Armo un rng para agregar un ruido normal
+rng = np.random.default_rng()
+
+num_clusters = np.arange(3,11)
+num_simul = np.arange(1,11)*10
+
+XX,YY = np.meshgrid(num_clusters,num_simul)
+
+# Hago la comparación de clusters usando Rand_index
+ZZ = np.zeros(XX.shape)
+for columna,k in enumerate(num_clusters):
     
     # Armo mi clusterizador y lo entreno para detectar clusters en matriz de 
     # distancias entre gráficos
     kmeans_mat = KMeans(n_clusters=k, random_state=42, n_init = "auto")
-    kmeans_mat.fit(Df_dist_JS)
+    kmeans_mat.fit(Df_dist_JS.to_numpy()) # + rng.normal(loc = 0, scale = 0.004, size = Df_dist_JS.to_numpy().shape))
     
-    for rank in range(10):
+    for fila,rank in enumerate(range(10)):
         
         # Armo mi clusterizador y lo entreno para detectar clusters en espacio
         # de parámetros
         kmeans_esp = KMeans(n_clusters=k, random_state=42, n_init = "auto")
-        kmeans_esp.fit(Df_preguntas[["Beta_{}".format(rank*10+10),"Cosd_{}".format(rank*10+10)]])
+        kmeans_esp.fit(Df_preguntas[["Cosd_{}".format(rank*10+10),"Beta_{}".format(rank*10+10)]])
+        
+        ZZ[fila,columna] = adjusted_rand_score(kmeans_esp.labels_, kmeans_mat.labels_)
 
+# Armo los parámetros del gráfico de promedios
+plt.rcParams.update({'font.size': 44})
+plt.figure("Rindex clusters",figsize=(28,21))
+plt.xlabel("Cantidad de clusters")
+plt.ylabel("Cantidad de simulaciones")
+plt.title("Rand Index ajustado de clusterizaciones")
+
+# Guardo la figura
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Randindex_clusters.png")
+plt.pcolormesh(XX,YY,ZZ, shading="nearest", cmap = "viridis")
+plt.colorbar()
+# Guardo la figura y la cierro
+plt.savefig(direccion_guardado , bbox_inches = "tight")
+plt.close("Rindex clusters")
+
+# hago la comparación de clusters usando mutual informaiton
+ZZ = np.zeros(XX.shape)
+for columna,k in enumerate(num_clusters):
+    
+    # Armo mi clusterizador y lo entreno para detectar clusters en matriz de 
+    # distancias entre gráficos
+    kmeans_mat = KMeans(n_clusters=k, random_state=42, n_init = "auto")
+    kmeans_mat.fit(Df_dist_JS.to_numpy()) # + rng.normal(loc = 0, scale = 0.004, size = Df_dist_JS.to_numpy().shape))
+    
+    for fila,rank in enumerate(range(10)):
+        
+        # Armo mi clusterizador y lo entreno para detectar clusters en espacio
+        # de parámetros
+        kmeans_esp = KMeans(n_clusters=k, random_state=42, n_init = "auto")
+        kmeans_esp.fit(Df_preguntas[["Cosd_{}".format(rank*10+10),"Beta_{}".format(rank*10+10)]])
+        
+        ZZ[fila,columna] = normalized_mutual_info_score(kmeans_esp.labels_, kmeans_mat.labels_)
+
+# Armo los parámetros del gráfico de promedios
+plt.rcParams.update({'font.size': 44})
+plt.figure("Minfo clusters",figsize=(28,21))
+plt.xlabel("Cantidad de clusters")
+plt.ylabel("Cantidad de simulaciones")
+plt.title("Mutual info. normalizada de clusterizaciones")
+
+# Guardo la figura
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Minfo_clusters.png")
+plt.pcolormesh(XX,YY,ZZ, shading="nearest", cmap = "viridis")
+plt.colorbar()
+# Guardo la figura y la cierro
+plt.savefig(direccion_guardado , bbox_inches = "tight")
+plt.close("Minfo clusters")
+
+#---------------------------------------------------------------------------------------------
+
+# Habiendo encontrado las clusterizaciones que maximizan similaridad, grafiquémoslas
+
+# Primero armo la clusterización adecuada
+kmeans_esp = KMeans(n_clusters=4, random_state=42, n_init = "auto")
+kmeans_esp.fit(Df_preguntas[["Cosd_{}".format(90),"Beta_{}".format(90)]])
+
+# Grafico la clusterización del espacio de parámetros en el espacio proyectado de PCA
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+scatter = plt.scatter(X_pca[:,0],X_pca[:,1], s=400, c = kmeans_esp.labels_)
+plt.title('Kmeans en espacio de parámetros, 90 simul más similares')
+# Custom legend with specific text for each cluster
+legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(kmeans_esp.labels_)]  # Customize these as you like
+# Create legend manually using custom text and colors from the scatter plot
+handles = [plt.Line2D([0], [0], marker='o', color='w', label=label, 
+                      markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
+                      for i, label in enumerate(legend_labels)]
+# Add the legend to the plot
+plt.legend(handles=handles, loc="best", ncol=2)
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clust_max_simil_esp_parametros.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+# Lo que queda es hacer los plot scatter de las preguntas
+X = Df_preguntas["Cosd_{}".format(90)] + rng.normal(loc = 0, scale = (0.02)/5, size = Df_preguntas["Cosd_{}".format(90)].shape)
+Y = Df_preguntas["Beta_{}".format(90)] + rng.normal(loc = 0, scale = (0.1)/5, size = Df_preguntas["Beta_{}".format(90)].shape)
+
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+tlinea = 5
+# Región de Polarización Descorrelacionada
+x = [0, 0.1, 0.15, 0, 0]  # x-coordinates
+y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) #, label='Polarización Descorrelacionada')
+plt.text(0.05, 1.3, 'I', fontsize=40, ha='center', va='center', color='k')
+# Región de Transición
+x = [0.1, 0.15, 0.3, 0.15, 0.1]  # x-coordinates
+y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+plt.text(0.18, 1.3, 'II', fontsize=40, ha='center', va='center', color='k')
+# Región de Polarización ideológica
+x = [0.15, 0.5, 0.5, 0.3, 0.15] # x-coordinates
+y = [1.1, 1.1, 1.5, 1.5, 1.1] # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+plt.text(0.35, 1.3, 'III', fontsize=40, ha='center', va='center', color='k')
+# Región de Consenso Radicalizado
+x = [0, 0.5, 0.5, 0.2, 0.2, 0.5, 0.5, 0.1, 0.1, 0, 0]  # x-coordinates
+y = [0, 0, 0.15, 0.3, 0.6, 0.6, 1.1, 1.1, 0.3, 0.2, 0]  # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+plt.text(0.3, 0.85, 'VI', fontsize=40, ha='center', va='center', color='k')
+# Región de Mezcla 1
+x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+y = [0.2, 0.3, 0.75, 0.75, 0.2] # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)  # label=r'Mezcla: CR (50~80%), P1Da (20~35%)')
+plt.text(0.05, 0.55, 'V', fontsize=40, ha='center', va='center', color='k')
+# Región de Mezcla 2
+x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+y = [0.75, 0.75, 1.1, 1.1, 0.75] # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (30~40%), P1D (10~50%)')
+plt.text(0.05, 0.9, 'IV', fontsize=40, ha='center', va='center', color='k')
+# Región de Mezcla 3
+x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
+y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
+plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
+plt.scatter(X,Y, marker="o", c = kmeans_esp.labels_ , s = 500, alpha = 0.7)
+plt.xlabel(r"$cos(\delta)$")
+plt.ylabel(r"$\beta$")
+plt.xlim(-0.025,0.525)
+plt.ylim(0,1.55)
+plt.title("90 simulaciones, Dist {}".format("JS"))
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Esp_parametros_Max_Simil_Clust.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+
+# Primero armo la clusterización adecuada
+kmeans_esp = KMeans(n_clusters=4, random_state=42, n_init = "auto")
+kmeans_esp.fit(Df_dist_JS.to_numpy())
+# Grafico la clusterización del espacio de parámetros en el espacio proyectado de PCA
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+scatter = plt.scatter(X_pca[:,0],X_pca[:,1], s=400, c = kmeans_esp.labels_)
+plt.title('Kmeans en Matriz Dist JS')
+# Custom legend with specific text for each cluster
+legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(kmeans_esp.labels_)]  # Customize these as you like
+# Create legend manually using custom text and colors from the scatter plot
+handles = [plt.Line2D([0], [0], marker='o', color='w', label=label, 
+                      markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
+                      for i, label in enumerate(legend_labels)]
+# Add the legend to the plot
+plt.legend(handles=handles, loc="best", ncol=2)
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clust_max_simil_Mat_Dist_JS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
 
 
 func.Tiempo(t0)

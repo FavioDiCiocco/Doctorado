@@ -3804,3 +3804,18 @@ puedo extraer ahí. ¿Uso 3 o 6 clusters?
 
 Arranqué con el código, la idea va. Creo que lo voy a graficar como mapas de colores. Claramente tengo
 una fascinación con eso.
+
+------------------------------------------------------------------------------------------
+
+06/10/2024
+
+Bien, me senté a laburar. En dos horas puedo hacer algo, creo en mi. Pongamos algo de música para laburar
+y no dormirme. Bueno, logré hacer algo. Hice clusterizaciones varias, comparé los clusters usando
+Mutual info y Rand Index. La verdad, no se ve que coincidan mucho las clusterizaciones, aunque es en parte
+lo que me marcan ambos índices. Mi respuesta a Pablo sería que no es evidente, ni me parece el mejor camino,
+hacer un análisis desde este lado. En especial considerando por un lado que al programa le cuesta encontrar más
+que siete clusters, y además que está encontrando un máximo en 4, que suena más bien a un máximo resultado de
+haber tomado pocos clusters.
+
+Podría intentar hacer un análisis usando DBSCAN, pero en ese caso tengo que ir considerando el tema de cuál
+es la distancia para identificar puntos como vecinos.
