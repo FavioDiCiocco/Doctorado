@@ -3819,3 +3819,23 @@ haber tomado pocos clusters.
 
 Podría intentar hacer un análisis usando DBSCAN, pero en ese caso tengo que ir considerando el tema de cuál
 es la distancia para identificar puntos como vecinos.
+
+------------------------------------------------------------------------------------------
+
+07/10/2024
+
+Llegué a la facultad en el horario usual, pero más tarde de lo que debería, porque como boludo me pasé
+de parada. Si hoy voy a buscar la bici, quizás pueda empezar a llegar más temprano. Dios, siempre hay
+más gastos para hacer.
+
+Hoy a la tarde veré si puedo ponerme a ordenar el tema de los papers. Por otro lado, estoy teniendo mal
+internet, voy a ponerme a leer papers y ver si se me arregla pronto.
+
+Por un lado, probé hacer DBSCAN sobre los datos de la matriz y encontré los dos extremos. Para eps=0.3,
+no encuentra ningún cluster. Para eps=0.9 todos los puntos forman parte del mismo cluster. Puedo variar
+eps entre 0.4 y 0.7 y ver cómo construye los clusters.
+
+Pablo me dijo que pruebe hacer clusterización sobre el espacio 2D y que revise qué tal queda
+como para ver si el score de Silhouette me indica una buena clusterización o no.
+Hay probé eso, no me queda del todo claro que esté tan bien eso. Habrá que ir probando qué tal.
+Vamos yendo a ver si consigo pasar a buscar mi bici.

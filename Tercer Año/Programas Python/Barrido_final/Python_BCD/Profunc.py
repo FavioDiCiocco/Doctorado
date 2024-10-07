@@ -14,6 +14,8 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import normalized_mutual_info_score
 from sklearn.metrics import adjusted_rand_score
 from sklearn.decomposition import PCA
+from sklearn.manifold import MDS
+from sklearn.cluster import DBSCAN
 from sklearn.manifold import TSNE
 from sklearn.metrics import silhouette_score
 from pathlib import Path
@@ -698,6 +700,8 @@ df_simil.to_csv("Dist_Enc_KS.csv")
 #####################################################################################
 #####################################################################################
 
+"""
+
 # Defino las preguntas del cluster de JS
 Df_preguntas = pd.read_csv("Tabla_JS.csv")
 Clusters = [(0,0.4), (0,0.6), (0.02,1.1), (0.08,1.1), (0.14,1.1), (0.48,0.4)]
@@ -718,7 +722,7 @@ for tupla in Clusters:
 Df_dist_JS = pd.read_csv("Dist_Enc_JS.csv", index_col=0)
 
 #-------------------------------------------------------------------------------------------------------------------------------------
-"""
+
 
 # Voy a armar gráficos de clusterización usando K-means
 # para diversos números de clusters
@@ -1092,7 +1096,9 @@ ind_rand[2] = adjusted_rand_score(Df_preguntas["clusters_JS_ord"], Df_preguntas[
 
 #####################################################################################
 #####################################################################################
-"""
+
+
+
 # Voy a querer clusterizar sobre los distintos espacios de parámetros, y luego comparar
 # esos clusters con los clusters obtenidos al clusterizar la Mat_Dist_JS.
 # Para comparar esos clusters, en principio voy a usar simplemente rand_index o mutual info
@@ -1276,6 +1282,155 @@ handles = [plt.Line2D([0], [0], marker='o', color='w', label=label,
 # Add the legend to the plot
 plt.legend(handles=handles, loc="best", ncol=2)
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clust_max_simil_Mat_Dist_JS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+"""
+
+#####################################################################################
+#####################################################################################
+
+# Primero voy a intentar encontrar los verdaderos clusters que se hallan en los datos
+# del espacio de Matriz de Dist JS. Para eso tengo que probar diversas formas de
+# clusterizar y métricas para analizarlas
+
+# Levanto los datos de la tabla de similaridad
+Df_dist_JS = pd.read_csv("Dist_Enc_JS.csv", index_col=0)
+# Defino las preguntas del cluster de JS
+Df_preguntas = pd.read_csv("Tabla_JS.csv")
+
+# Armo un rng para agregar un ruido normal
+rng = np.random.default_rng()
+
+# Reduzco dimensionalidad usando Multi-Dimensional Scaling
+mds = MDS(n_components = 2, random_state = 42, dissimilarity = "precomputed", normalized_stress = "auto")
+X_2d = mds.fit_transform(Df_dist_JS.to_numpy())
+
+# Grafico los datos en el espacio reducido usando MDS
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.scatter(X_2d[:,0],X_2d[:,1], s=400, marker = "8", color = "tab:orange")
+plt.title('Reducción de dimensionalidad usando MDS')
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Distribucion_MDS_JS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+# Reduzco dimensionalidad usando Principal Component Analysis
+# Construyo mi operador que realizar un PCA sobre mis datos
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(Df_dist_JS.to_numpy())
+
+# Esto arma el gráfico de distribución de puntos en 2D, sin clusterizar
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.scatter(X_pca[:,0],X_pca[:,1], s=400, marker = "s", color = "tab:red")
+plt.title('Reducción de dimensionalidad usando PCA')
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Distribucion_PCA_JS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+#---------------------------------------------------------------------------------------------
+
+# Ahora que tengo los gráficos ubicados en el espacio 2D, veamos de armar clusterizaciones
+# y usar métricas para ver cuál es la cantidad correcta de clusters a observar. Una vez
+# hecho eso, graficaré la "mejor" clusterización
+
+# Primero clasifico usando DBSCAN
+radios = np.linspace(0.4,0.6,100)
+silhouette_scores = list()
+
+for dist in radios:
+    # Clusterizo
+    dbscan = DBSCAN(eps=dist, min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
+    dbscan.fit(Df_dist_JS.to_numpy())
+    
+    # Calculate the silhouette score
+    silhouette_avg = silhouette_score(Df_dist_JS.to_numpy(), dbscan.labels_)
+    silhouette_scores.append(silhouette_avg)
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.plot(radios,silhouette_scores, linewidth=6, color = "tab:blue")
+plt.title('Silhouette de DBSCAN sobre Mat JS')
+plt.ylabel("Silhouette Score")
+plt.xlabel("Distancia máxima entre muestras")
+plt.grid()
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SilhouetteS_DBSCAN_JS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+# Segundo clasifico usando K-means
+cant_clusters = np.arange(2,13)
+silhouette_scores = list()
+
+for clusters in cant_clusters:
+    # Clusterizo
+    kmeans = KMeans(n_clusters=clusters, random_state=42, n_init = "auto")
+    kmeans.fit(Df_dist_JS.to_numpy())
+    
+    # Calculate the silhouette score
+    silhouette_avg = silhouette_score(Df_dist_JS.to_numpy(), kmeans.labels_)
+    silhouette_scores.append(silhouette_avg)
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.plot(cant_clusters,silhouette_scores, linewidth=6, color = "tab:blue")
+plt.title('Silhouette de K-means sobre Mat JS')
+plt.ylabel("Silhouette Score")
+plt.xlabel("Cant. Clusters")
+plt.grid()
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SilhouetteS_Kmeans_JS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+#---------------------------------------------------------------------------------------------
+
+# Hago una prueba de clusterizar los datos en el espacio 2D y ver si el score
+# de Silhouette tiene sentido. Clusterizo sobre el espacio 2D
+
+# Primero clasifico usando DBSCAN
+radios = np.linspace(0.03,0.07,100)
+silhouette_scores = list()
+
+for dist in radios:
+    # Clusterizo
+    dbscan = DBSCAN(eps=dist, min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
+    dbscan.fit(X_2d)
+    
+    # Calculate the silhouette score
+    silhouette_avg = silhouette_score(Df_dist_JS.to_numpy(), dbscan.labels_)
+    silhouette_scores.append(silhouette_avg)
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.plot(radios,silhouette_scores, linewidth=6, color = "tab:blue")
+plt.title('Silhouette de DBSCAN sobre MDS de Mat JS')
+plt.ylabel("Silhouette Score")
+plt.xlabel("Distancia máxima entre muestras")
+plt.grid()
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SilhouetteS_DBSCAN_MDS_JS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+dbscan = DBSCAN(eps=0.055, min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
+dbscan.fit(X_2d)
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=400, c = dbscan.labels_, cmap = "tab20")
+plt.title('DBSCAN sobre MDS')
+# Custom legend with specific text for each cluster
+legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(dbscan.labels_)]  # Customize these as you like
+# Create legend manually using custom text and colors from the scatter plot
+handles = [plt.Line2D([0], [0], marker='o', color='w', label=label, 
+                      markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
+                      for i, label in enumerate(legend_labels)]
+# Add the legend to the plot
+plt.legend(handles=handles, loc="best", ncol=2)
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_DBSCAN_MDS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
