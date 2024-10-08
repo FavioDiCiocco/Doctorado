@@ -3839,3 +3839,23 @@ Pablo me dijo que pruebe hacer clusterización sobre el espacio 2D y que revise 
 como para ver si el score de Silhouette me indica una buena clusterización o no.
 Hay probé eso, no me queda del todo claro que esté tan bien eso. Habrá que ir probando qué tal.
 Vamos yendo a ver si consigo pasar a buscar mi bici.
+
+------------------------------------------------------------------------------------------
+
+08/10/2024
+
+Hoy vine un poco más tarde, pero es porque me voy a quedar hasta bastante tarde. El freno de adelante
+de la bici se salió, tengo que reajustarlo. Estuve retocando el plot para que se vea más lindo. Todo
+bien con eso, pero ahora queda tomar decisiones sobre qué hacer.
+
+Charlando con Pablo, me propone esforzarme en armar clusterizaciones directamente sobre el espacio de
+las distribuciones, el espacio de 120x36. Se me ocurre que una primera forma de hacer esto es 
+comparar los gráficos y alinearlos con las rotaciones según la rotación que minimiza cuadrados mínimos.
+Para eso tomo un primer gráfico de consenso radicalizado ubicado arriba a la derecha, y luego a partir
+de ese ordeno todos los demás gráficos. Vayamos con eso. Primero hagamos los gráficos de todos los
+pares de preguntas consideradas en una sola carpeta.
+
+Ya tengo armados todos los gráficos en una sola carpeta. Voy a probar alinear todo con el gráfico de
+"Service to same-sex couples vs Pres. didn't worry about congress". V201408xvsV201372x.png.
+Logré armar el array con las distribuciones rotadas para encajar todas lo mejor posible.
+Ahora sólo tengo que aplicar DBSCAN o Kmeans a esta matriz. Haré eso mañana en un momentito.

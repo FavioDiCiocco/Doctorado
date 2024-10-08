@@ -144,7 +144,7 @@ Df_preguntas = pd.read_csv("Tabla pares de preguntas.csv")
 Beta = 1.1
 Cosd = 0.02
 Df_cluster = Df_preguntas.loc[(Df_preguntas["Beta_100"]==Beta) & (Df_preguntas["Cosd_100"]==Cosd)]
-carpeta = "B11C02Cluster"
+# carpeta = "B11C02Cluster"
 
 
 #############################################################################################
@@ -413,7 +413,7 @@ print(hist2d)
 
 ####################################################################################################################
 
-for code_1,code_2 in zip(Df_cluster["código x"],Df_cluster["código y"]):
+for code_1,code_2 in zip(Df_preguntas["código x"],Df_preguntas["código y"]):
         
     if code_1[3] == '1' and code_2[3] == '1':
         weights = 'V200010a'
@@ -469,7 +469,7 @@ for code_1,code_2 in zip(Df_cluster["código x"],Df_cluster["código y"]):
     ax_main.set_ylabel(dict_labels[code_2])
 
     # Save the figure
-    direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/{}/{}vs{}.png".format(carpeta, code_1, code_2))
+    direccion_guardado = Path("../../../Imagenes/Distribucion_ANES/2020/Conjunto_total/{}vs{}.png".format(code_2, code_1))
     plt.savefig(direccion_guardado, bbox_inches="tight")
     plt.close()
 

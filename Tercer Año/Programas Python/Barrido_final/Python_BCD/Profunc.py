@@ -1289,7 +1289,7 @@ plt.close()
 
 #####################################################################################
 #####################################################################################
-
+"""
 # Primero voy a intentar encontrar los verdaderos clusters que se hallan en los datos
 # del espacio de Matriz de Dist JS. Para eso tengo que probar diversas formas de
 # clusterizar y métricas para analizarlas
@@ -1417,22 +1417,82 @@ plt.close()
 
 dbscan = DBSCAN(eps=0.055, min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
 dbscan.fit(X_2d)
+labels = dbscan.labels_
+labels[labels == -1] = np.max(labels)+1
 
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=400, c = dbscan.labels_, cmap = "tab20")
+scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=400, c = labels, cmap = "tab10")
 plt.title('DBSCAN sobre MDS')
 # Custom legend with specific text for each cluster
-legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(dbscan.labels_)]  # Customize these as you like
+legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(labels)]  # Customize these as you like
 # Create legend manually using custom text and colors from the scatter plot
 handles = [plt.Line2D([0], [0], marker='o', color='w', label=label, 
                       markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
                       for i, label in enumerate(legend_labels)]
 # Add the legend to the plot
-plt.legend(handles=handles, loc="best", ncol=2)
+plt.legend(handles=handles, loc="best", ncol=2, framealpha = 0.5)
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_DBSCAN_MDS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
+"""
+
+#####################################################################################
+#####################################################################################
+
+"""
+# Voy a intentar ordenar todos los histogramas para que se roten de forma de que
+# queden alineados. Voy a intentar alinearlos usando cuadrados mínimos.
+
+# Primero levanto los datos de la ANES
+Df_ANES, dict_labels = func.Leer_Datos_ANES("../Anes_2020/anes_timeseries_2020.dta", 2020)
+
+# Construyo la distribución de mi gráfico de referencia
+code_1 = "V201408x"
+code_2 = "V201372x"
+weights = "V200010a"
+
+Enc_ref = func.Distrib_Anes((code_1,code_2,weights), Df_ANES)
+
+#---------------------------------------------------------------------------------------------
+
+# Ya levanté el archivo que va a ser la referencia. Ahora necesito levantar
+# el resto y construir la matriz de 120x36
+
+# Defino las preguntas del cluster de JS
+Df_preguntas = pd.read_csv("Tabla_JS.csv")
+Mat_final = np.zeros((120,36))
+
+for fila,code_1,code_2 in zip(np.arange(120),Df_preguntas["código y"],Df_preguntas["código x"]):
+    
+    # Defino el peso asociado
+    if code_1[3] == '1' and code_2[3] == '1':
+        weights = 'V200010a'
+    else:
+        weights = 'V200010b'
+    
+    Enc_obs = func.Distrib_Anes((code_1,code_2,weights), Df_ANES)
+    cuad_min = np.zeros(4)
+    
+    for rot in range(4):
+        cuad_min[rot] = np.sum((Enc_ref.flatten() - Enc_obs.flatten())**2)
+        Enc_obs = func.Rotar_matriz(Enc_obs)
+    
+    rotaciones = np.argmin(cuad_min)
+    for rot in range(rotaciones):
+        Enc_obs = func.Rotar_matriz(Enc_obs)
+    
+    Mat_final[fila] = Enc_obs.flatten()
+
+df_rotado = pd.DataFrame(Mat_final)
+df_rotado.insert(0,"nombre",Df_preguntas["nombre"])
+df_rotado.to_csv("Distribuciones_alineadas.csv")
+"""
+
+#####################################################################################
+#####################################################################################
+
+
 
 
 func.Tiempo(t0)
