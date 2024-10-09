@@ -3859,3 +3859,42 @@ Ya tengo armados todos los gráficos en una sola carpeta. Voy a probar alinear t
 "Service to same-sex couples vs Pres. didn't worry about congress". V201408xvsV201372x.png.
 Logré armar el array con las distribuciones rotadas para encajar todas lo mejor posible.
 Ahora sólo tengo que aplicar DBSCAN o Kmeans a esta matriz. Haré eso mañana en un momentito.
+
+------------------------------------------------------------------------------------------
+
+09/10/2024
+
+Llegué en tiempo más o menos, hice lo de clusterizar en el espacio de distribuciones e intenté observar
+algo a partir de eso. No estoy viendo nada claro. No sé si este sea el camino. Razonemos un poco
+lo que tengo y lo que estoy haciendo. Estoy intentando hallar una clusterización que surja de los
+datos de las encuestas. Usando DBSCAN me está costando un poco quizás definir clusters.
+Tampoco estoy sabiendo leer bien el silhouette clustering por lo que veo.
+ Con el DBSCAN tengo dramas por la distancia entre puntos para considerarlos vecinos, porque si es
+muy chica o muy grande me genera un único cluster, y de ahí no puedo ni calcular el score de Silhouette.
+
+Ok, revisar el Silhouette no es algo garantizado. Probé aumentar K-Means una barbaridad y me da
+que se plancha el silhouette. Creo que justamente eso marca que aumentar la cantidad de
+clusters en ese punto no te cambia el sistema.
+
+Necesito organizar lo que tengo, son muchos gráficos y cosas que me confunden. Se me ocurre que
+puedo ir separando yo los gráficos según lo que me parece más razonable. Hasta ahora he realizado
+reducciones de dimensionalidad tanto de la matriz de dist. JS como de la matriz de distribuciones
+de las encuestas. Realicé PCA y MDS de ambas cosas. Sobre ambas matrices intenté investigar la
+cantidad de clusters óptimos usando DBSCAN y K-means y optimizando el coeficiente de Silhouette.
+Para ver que esto clusterizaba bien, apliqué DBSCAN sobre los espacios reducidos, optimicé Silhouette
+y me fijé cómo quedaba eso clusterizado.
+
+Hecho todo esto, creo que los métodos de reducción de dimensionalidad considerados son razonables,
+no sé si tiene sentido probar otros aparte de PCA y MDS. Lo que debería probar es dos métodos extra
+para estudiar si la clusterización es correcta y además podría agregar como método de clusterización
+el de clustering jerárquico. Hagamos eso ahora, intentemos no perdernos entre tantos gráficos.
+ El uso de la inercia para calcular DBSCAN no funca. ChatGPT me recomienda usar el índice de 
+Davies-Bouldin. Entonces usaré eso en DBSCAN, pero inertia en K-means.
+
+Hablé con Pablo, planteamos que el siguiente paso es esto:
+1) Fijate qué se observa con Kmeans sobre la Mat JS para el "máximo" coef. Silhouette
+2) Compará la clusterización de DBSCAN contra la de Kmeans y fijate qué tan parecidas son.
+3) Si son similares, entonces comparamos contra clusterizaciones del espacio de parámetros
+Si no son similares, haré algo similar seguro. Dios sabe que es un bardo esto.
+
+Mañana resuelvo esto.

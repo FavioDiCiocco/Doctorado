@@ -13,6 +13,7 @@ from scipy.spatial.distance import jensenshannon
 from sklearn.cluster import KMeans
 from sklearn.metrics import normalized_mutual_info_score
 from sklearn.metrics import adjusted_rand_score
+from sklearn.metrics import davies_bouldin_score
 from sklearn.decomposition import PCA
 from sklearn.manifold import MDS
 from sklearn.cluster import DBSCAN
@@ -1289,7 +1290,7 @@ plt.close()
 
 #####################################################################################
 #####################################################################################
-"""
+
 # Primero voy a intentar encontrar los verdaderos clusters que se hallan en los datos
 # del espacio de Matriz de Dist JS. Para eso tengo que probar diversas formas de
 # clusterizar y métricas para analizarlas
@@ -1310,11 +1311,10 @@ X_2d = mds.fit_transform(Df_dist_JS.to_numpy())
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 plt.scatter(X_2d[:,0],X_2d[:,1], s=400, marker = "8", color = "tab:orange")
-plt.title('Reducción de dimensionalidad usando MDS')
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Distribucion_MDS_JS.png")
+plt.title('MDS Matriz JS')
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/MDS_JS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
-
 
 # Reduzco dimensionalidad usando Principal Component Analysis
 # Construyo mi operador que realizar un PCA sobre mis datos
@@ -1325,8 +1325,8 @@ X_pca = pca.fit_transform(Df_dist_JS.to_numpy())
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 plt.scatter(X_pca[:,0],X_pca[:,1], s=400, marker = "s", color = "tab:red")
-plt.title('Reducción de dimensionalidad usando PCA')
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Distribucion_PCA_JS.png")
+plt.title('PCA matriz JS')
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/PCA_JS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
@@ -1339,6 +1339,7 @@ plt.close()
 # Primero clasifico usando DBSCAN
 radios = np.linspace(0.4,0.6,100)
 silhouette_scores = list()
+dabo_scores = list()
 
 for dist in radios:
     # Clusterizo
@@ -1348,11 +1349,14 @@ for dist in radios:
     # Calculate the silhouette score
     silhouette_avg = silhouette_score(Df_dist_JS.to_numpy(), dbscan.labels_)
     silhouette_scores.append(silhouette_avg)
+    
+    # Calculate the Davies_Bouldin score
+    dabo_scores.append(davies_bouldin_score(Df_dist_JS.to_numpy(), dbscan.labels_))
 
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 plt.plot(radios,silhouette_scores, linewidth=6, color = "tab:blue")
-plt.title('Silhouette de DBSCAN sobre Mat JS')
+plt.title('Caracterización DBSCAN Mat JS')
 plt.ylabel("Silhouette Score")
 plt.xlabel("Distancia máxima entre muestras")
 plt.grid()
@@ -1360,10 +1364,24 @@ direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Silho
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.plot(radios,dabo_scores, linewidth=6, color = "tab:blue")
+plt.title('Caracterización DBSCAN Mat JS')
+plt.ylabel("Davies-Bouldin Score")
+plt.xlabel("Distancia máxima entre muestras")
+plt.grid()
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/DaboS_DBSCAN_JS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+#---------------------------------------------------------------------------------------------
 
 # Segundo clasifico usando K-means
 cant_clusters = np.arange(2,13)
 silhouette_scores = list()
+sse = list() # acá vamos a guardar el puntaje de la función objetivo
 
 for clusters in cant_clusters:
     # Clusterizo
@@ -1373,15 +1391,29 @@ for clusters in cant_clusters:
     # Calculate the silhouette score
     silhouette_avg = silhouette_score(Df_dist_JS.to_numpy(), kmeans.labels_)
     silhouette_scores.append(silhouette_avg)
+    
+    # SSE suma de los cuadrados de la distancia euclidea de cada cluster
+    sse.append(kmeans.inertia_)
 
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 plt.plot(cant_clusters,silhouette_scores, linewidth=6, color = "tab:blue")
-plt.title('Silhouette de K-means sobre Mat JS')
+plt.title('Caracterización K-means sobre Mat JS')
 plt.ylabel("Silhouette Score")
 plt.xlabel("Cant. Clusters")
 plt.grid()
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SilhouetteS_Kmeans_JS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.plot(cant_clusters,sse, linewidth=6, color = "tab:blue")
+plt.title('Caracterización K-means sobre Mat JS')
+plt.ylabel("SSE")
+plt.xlabel("Cant. Clusters")
+plt.grid()
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SSE_Kmeans_JS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
@@ -1393,6 +1425,7 @@ plt.close()
 # Primero clasifico usando DBSCAN
 radios = np.linspace(0.03,0.07,100)
 silhouette_scores = list()
+dabo_scores = list()
 
 for dist in radios:
     # Clusterizo
@@ -1400,13 +1433,17 @@ for dist in radios:
     dbscan.fit(X_2d)
     
     # Calculate the silhouette score
-    silhouette_avg = silhouette_score(Df_dist_JS.to_numpy(), dbscan.labels_)
+    silhouette_avg = silhouette_score(X_2d, dbscan.labels_)
     silhouette_scores.append(silhouette_avg)
+    
+    # Calculate the Davies_Bouldin score
+    dabo_scores.append(davies_bouldin_score(X_2d, dbscan.labels_))
+
 
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 plt.plot(radios,silhouette_scores, linewidth=6, color = "tab:blue")
-plt.title('Silhouette de DBSCAN sobre MDS de Mat JS')
+plt.title('Caracterización DBSCAN sobre MDS de Mat JS')
 plt.ylabel("Silhouette Score")
 plt.xlabel("Distancia máxima entre muestras")
 plt.grid()
@@ -1414,8 +1451,19 @@ direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Silho
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.plot(radios,dabo_scores, linewidth=6, color = "tab:blue")
+plt.title('Caracterización DBSCAN sobre MDS de Mat JS')
+plt.ylabel("Davies-Bouldin Score")
+plt.xlabel("Distancia máxima entre muestras")
+plt.grid()
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/DaboS_DBSCAN_MDS_JS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
 
-dbscan = DBSCAN(eps=0.055, min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
+
+dbscan = DBSCAN(eps=radios[np.argmax(silhouette_scores)], min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
 dbscan.fit(X_2d)
 labels = dbscan.labels_
 labels[labels == -1] = np.max(labels)+1
@@ -1423,7 +1471,7 @@ labels[labels == -1] = np.max(labels)+1
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=400, c = labels, cmap = "tab10")
-plt.title('DBSCAN sobre MDS')
+plt.title('Max. Silh, eps={} DBSCAN sobre MDS de Mat JS'.format(round(radios[np.argmax(silhouette_scores)],4)))
 # Custom legend with specific text for each cluster
 legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(labels)]  # Customize these as you like
 # Create legend manually using custom text and colors from the scatter plot
@@ -1432,10 +1480,32 @@ handles = [plt.Line2D([0], [0], marker='o', color='w', label=label,
                       for i, label in enumerate(legend_labels)]
 # Add the legend to the plot
 plt.legend(handles=handles, loc="best", ncol=2, framealpha = 0.5)
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_DBSCAN_MDS.png")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_maxsilh_DBSCAN_MDS_JS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
-"""
+
+
+dbscan = DBSCAN(eps=radios[np.argmin(dabo_scores)], min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
+dbscan.fit(X_2d)
+labels = dbscan.labels_
+labels[labels == -1] = np.max(labels)+1
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=400, c = labels, cmap = "tab10")
+plt.title('Min. Dabo, eps={} DBSCAN sobre MDS de Mat JS'.format(round(radios[np.argmin(dabo_scores)],4)))
+# Custom legend with specific text for each cluster
+legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(labels)]  # Customize these as you like
+# Create legend manually using custom text and colors from the scatter plot
+handles = [plt.Line2D([0], [0], marker='o', color='w', label=label, 
+                      markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
+                      for i, label in enumerate(legend_labels)]
+# Add the legend to the plot
+plt.legend(handles=handles, loc="best", ncol=2, framealpha = 0.5)
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_mindabo_DBSCAN_MDS_JS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
 
 #####################################################################################
 #####################################################################################
@@ -1486,12 +1556,221 @@ for fila,code_1,code_2 in zip(np.arange(120),Df_preguntas["código y"],Df_pregun
 
 df_rotado = pd.DataFrame(Mat_final)
 df_rotado.insert(0,"nombre",Df_preguntas["nombre"])
-df_rotado.to_csv("Distribuciones_alineadas.csv")
+df_rotado.to_csv("Distribuciones_alineadas.csv", index = False)
 """
 
 #####################################################################################
 #####################################################################################
 
+# Levanto la matriz de las distribuciones de las encuestas alineadas
+Df_enc_alin = pd.read_csv("Distribuciones_alineadas.csv", index_col=0)
+# Ahora hago todo el bardo de clusterización en este espacio
+
+# Defino las preguntas del cluster de JS
+Df_preguntas = pd.read_csv("Tabla_JS.csv")
+
+# Reduzco dimensionalidad usando Multi-Dimensional Scaling
+mds = MDS(n_components = 2, random_state = 42, normalized_stress = "auto")
+X_2d = mds.fit_transform(Df_enc_alin.to_numpy())
+
+# Grafico los datos en el espacio reducido usando MDS
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.scatter(X_2d[:,0],X_2d[:,1], s=400, marker = "8", color = "tab:orange")
+plt.title('MDS esp. de distribuciones')
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Distribucion_MDS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+# Reduzco dimensionalidad usando Principal Component Analysis
+# Construyo mi operador que realizar un PCA sobre mis datos
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(Df_enc_alin.to_numpy())
+
+# Esto arma el gráfico de distribución de puntos en 2D, sin clusterizar
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.scatter(X_pca[:,0],X_pca[:,1], s=400, marker = "s", color = "tab:red")
+plt.title('PCA esp. de distribuciones')
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Distribucion_PCA.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+#---------------------------------------------------------------------------------------------
+
+# Ahora que tengo los gráficos ubicados en el espacio 2D, veamos de armar clusterizaciones
+# y usar métricas para ver cuál es la cantidad correcta de clusters a observar. Una vez
+# hecho eso, graficaré la "mejor" clusterización
+
+# Primero clasifico usando DBSCAN
+radios = np.linspace(0.05,0.1,100)
+silhouette_scores = list()
+dabo_scores = list()
+
+for dist in radios:
+    # Clusterizo
+    dbscan = DBSCAN(eps=dist, min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
+    dbscan.fit(Df_enc_alin.to_numpy())
+    
+    # Calculate the silhouette score
+    silhouette_avg = silhouette_score(Df_enc_alin.to_numpy(), dbscan.labels_)
+    silhouette_scores.append(silhouette_avg)
+    
+    # Calculate the Davies_Bouldin score
+    dabo_scores.append(davies_bouldin_score(Df_enc_alin.to_numpy(), dbscan.labels_))
+
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.plot(radios,silhouette_scores, linewidth=6, color = "tab:blue")
+plt.title('Caracterización DBSCAN sobre Mat distrib.')
+plt.ylabel("Silhouette Score")
+plt.xlabel("Distancia máxima entre muestras")
+plt.grid()
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SilhouetteS_DBSCAN_Distrib.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.plot(radios,dabo_scores, linewidth=6, color = "tab:blue")
+plt.title('Caracterización DBSCAN sobre Mat distrib.')
+plt.ylabel("Davies-Bouldin Score")
+plt.xlabel("Distancia máxima entre muestras")
+plt.grid()
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/DaboS_DBSCAN_Distrib.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+#---------------------------------------------------------------------------------------------
+
+# Segundo clasifico usando K-means
+cant_clusters = np.arange(2,16)
+silhouette_scores = list()
+sse = list() # acá vamos a guardar el puntaje de la función objetivo
+
+for clusters in cant_clusters:
+    # Clusterizo
+    kmeans = KMeans(n_clusters=clusters, random_state=42, n_init = "auto")
+    kmeans.fit(Df_enc_alin.to_numpy())
+    
+    # Calculate the silhouette score
+    silhouette_avg = silhouette_score(Df_enc_alin.to_numpy(), kmeans.labels_)
+    silhouette_scores.append(silhouette_avg)
+    
+    # SSE suma de los cuadrados de la distancia euclidea de cada cluster
+    sse.append(kmeans.inertia_)
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.plot(cant_clusters,silhouette_scores, linewidth=6, color = "tab:blue")
+plt.title('Caracterización K-means sobre Mat distrib.')
+plt.ylabel("Silhouette Score")
+plt.xlabel("Cant. Clusters")
+plt.grid()
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SilhouetteS_Kmeans_Distrib.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.plot(cant_clusters,sse, linewidth=6, color = "tab:blue")
+plt.title('Caracterización K-means sobre Mat distrib.')
+plt.ylabel("SSE")
+plt.xlabel("Cant. Clusters")
+plt.grid()
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SSE_Kmeans_Distrib.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+#---------------------------------------------------------------------------------------------
+
+# Hago una prueba de clusterizar los datos en el espacio 2D y ver si el score
+# de Silhouette tiene sentido. Clusterizo sobre el espacio 2D
+
+# Primero clasifico usando DBSCAN
+radios = np.linspace(0.03,0.07,100)
+silhouette_scores = list()
+dabo_scores = list()
+
+for dist in radios:
+    # Clusterizo
+    dbscan = DBSCAN(eps=dist, min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
+    dbscan.fit(X_2d)
+    
+    # Calculate the silhouette score
+    silhouette_avg = silhouette_score(X_2d, dbscan.labels_)
+    silhouette_scores.append(silhouette_avg)
+    
+    # Calculate the Davies_Bouldin score
+    dabo_scores.append(davies_bouldin_score(Df_enc_alin.to_numpy(), dbscan.labels_))
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.plot(radios,silhouette_scores, linewidth=6, color = "tab:blue")
+plt.title('Caracterización DBSCAN MDS de Mat distrib.')
+plt.ylabel("Silhouette Score")
+plt.xlabel("Distancia máxima entre muestras")
+plt.grid()
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SilhouetteS_DBSCAN_MDS_Distrib.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+plt.plot(radios,dabo_scores, linewidth=6, color = "tab:blue")
+plt.title('Caracterización DBSCAN MDS de Mat distrib.')
+plt.ylabel("Davies-Bouldin Score")
+plt.xlabel("Distancia máxima entre muestras")
+plt.grid()
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/DaboS_DBSCAN_MDS_Distrib.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+dbscan = DBSCAN(eps=radios[np.argmax(silhouette_scores)], min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
+dbscan.fit(X_2d)
+labels = dbscan.labels_
+labels[labels == -1] = np.max(labels)+1
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=400, c = labels, cmap = "tab10")
+plt.title('Max. Silh, eps={}, DBSCAN MDS de Mat. Distrib'.format(round(radios[np.argmax(silhouette_scores)],4)))
+# Custom legend with specific text for each cluster
+legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(labels)]  # Customize these as you like
+# Create legend manually using custom text and colors from the scatter plot
+handles = [plt.Line2D([0], [0], marker='o', color='w', label=label, 
+                      markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
+                      for i, label in enumerate(legend_labels)]
+# Add the legend to the plot
+plt.legend(handles=handles, loc="best", ncol=2, framealpha = 0.5)
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_maxsilh_DBSCAN_MDS_distrib.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+dbscan = DBSCAN(eps=radios[np.argmin(dabo_scores)], min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
+dbscan.fit(X_2d)
+labels = dbscan.labels_
+labels[labels == -1] = np.max(labels)+1
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=400, c = labels, cmap = "tab10")
+plt.title('Min. Dabo, eps={} DBSCAN MDS de Mat Distrib'.format(round(radios[np.argmin(dabo_scores)],4)))
+# Custom legend with specific text for each cluster
+legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(labels)]  # Customize these as you like
+# Create legend manually using custom text and colors from the scatter plot
+handles = [plt.Line2D([0], [0], marker='o', color='w', label=label, 
+                      markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
+                      for i, label in enumerate(legend_labels)]
+# Add the legend to the plot
+plt.legend(handles=handles, loc="best", ncol=2, framealpha = 0.5)
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_mindabo_DBSCAN_MDS_distrib.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
 
 
 
