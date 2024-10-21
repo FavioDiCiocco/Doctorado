@@ -3898,3 +3898,45 @@ Hablé con Pablo, planteamos que el siguiente paso es esto:
 Si no son similares, haré algo similar seguro. Dios sabe que es un bardo esto.
 
 Mañana resuelvo esto.
+
+------------------------------------------------------------------------------------------
+
+21/10/2024
+
+Estaba pensando por qué no tengo nada anotado de lo que hice. Lo del 10/10 yo juraría que lo anoté
+y que lo mandé al git. Espero no haberme mandado cagadas en ese caso. Pero bueno, ya me pondré
+con eso. Me puse más o menos al día con mails y cosas, lo que sigue es laburar lo que teníamos
+preparado con Pablo y de ahí ir terminando de preparar la presentación del miércoles. Primero
+leamos lo que mandé, después haré el trabajo de revisar lo que me decía Hugo de ver si
+se clasifican mejor los estados de "Consenso Radicalizado" usando la distancia de KS.
+
+Mirando la presentación, está para modificar los gráficos de Varianza o Covarianza para que se
+vean mejor y para que las barras de color vayan entre 0 y 1. El gráfico final de Clust. Matriz JS
+vs Clust. espacio parámetros, podría modificar el color de la línea punteada de la curva, para
+que se diferencia de la línea punteada que marca el punto clave. O podría hacer la otra línea negra
+y fue.
+
+Ahora me voy a poner con lo que me dijo Hugo, lo de revisar que los estados de Consenso Radicalizado
+se clasifiquen bien usando la métrica de KS. Primero definamos cuáles son esas preguntas. ¿Las
+elijo a ojo? Por ahora sí, mañana quizás no. Ahí las revisé, usé las distribuciones unidimensionales
+como forma de apalancarme en la idea de si son Consensos radicalizados o no. Encontré 15 pares
+de preguntas que forman estos estados.
+
+V202331x_vs_V201372x.csv
+V202331x_vs_V202336x.csv
+V202336x_vs_V201372x.csv
+V202341x_vs_V201372x.csv
+V202341x_vs_V202331x.csv
+V202341x_vs_V202336x.csv
+V202350x_vs_V201372x.csv
+V202350x_vs_V202331x.csv
+V202350x_vs_V202336x.csv
+V202350x_vs_V202341x.csv
+V202383x_vs_V201372x.csv
+V202383x_vs_V202331x.csv
+V202383x_vs_V202336x.csv
+V202383x_vs_V202341x.csv
+V202383x_vs_V202350x.csv
+
+Mañana lo que voy a hacer es revisar cómo se clasifican estos 15 pares de preguntas en el espacio de 
+parámetros para JS y cómo lo hacen para KS. Hecho eso, tendré que ver bien qué cuento el miércoles.
