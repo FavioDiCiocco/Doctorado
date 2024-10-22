@@ -3901,6 +3901,25 @@ Mañana resuelvo esto.
 
 ------------------------------------------------------------------------------------------
 
+10/10/2024
+
+Al final no fui a la facultad, laburo desde casa. Hagamos rápido lo que charlamos con Pablo y 
+mandémosle esto a Pablo. Ya armé el K-means sobre el máximo coef. de Silhouette. Ahora
+tengo que comparar clusterizaciones.
+ Lo que me está
+
+El rand_index y la info_mutua dan por encima de 0.5, así que hay similitud entre ambas clusterizaciones.
+
+Comparo esto contra clusterizaciones en el espacio de parámetros. La idea es comparar las clusterizaciones
+que tengo en la Mat de JS, no las que armo en la proyección. Según coef. de Silhouette, el eps tiene que
+ser 0.525, mientras que la cantidad de clusters tiene que ser 5.
+
+Tuvimos charla con Pablo. Dentro de todo la idea resultó bastante razonable, me agrada que estamos cerrando
+a algo. Ahora debería ver de armar la presentación, como para tener algo bien terminado para
+cuando vuelva. Dios, cómo carajos me pongo a tiro con lo de Lucio, Alemán y cosas.
+
+------------------------------------------------------------------------------------------
+
 21/10/2024
 
 Estaba pensando por qué no tengo nada anotado de lo que hice. Lo del 10/10 yo juraría que lo anoté
