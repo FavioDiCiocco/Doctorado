@@ -3959,3 +3959,29 @@ V202383x_vs_V202350x.csv
 
 Mañana lo que voy a hacer es revisar cómo se clasifican estos 15 pares de preguntas en el espacio de 
 parámetros para JS y cómo lo hacen para KS. Hecho eso, tendré que ver bien qué cuento el miércoles.
+
+------------------------------------------------------------------------------------------
+
+22/10/2024
+
+En la mañana le mandé el mail a Silvio sobre el plan de Tesis para que pueda armar la documentación para
+el viaje.
+
+Más temprano hablé con Pablo. Fijamos tres cosas para presentar mañana.
+1) Un armado sobre qué vamos a proponer en el paper. Cómo vamos a hacer eso y qué vamos a contar.
+2) Una muestra sobre clusterizaciones de las distribuciones y qué se observa en esos
+clusters. Muestras de que hay una cierta cantidad de clusters ideal.
+3) Responder a la pregunta que me hacía Hugo sobre el tema de los estados de Consenso Radicalizado
+mal o bien clasificados según KS.
+
+Arranco por el tema de la pregunta de Hugo. Estoy armando esos gráficos. Así que eso va a estar listo
+pronto. Lo siguiente es armar los gráficos correctos de clusterizaciones que quiero mostrar.
+
+Armé el gráfico para responder a lo que me preguntaba Hugo, ya tengo hecho eso para agregarlo a la presentación.
+
+Cosas para revisar:
+1) Los gráficos según lo que escribí ayer
+2) Cómo funciona el score de Silhouette
+3) Qué es el SSE
+
+Bien, ya mandé a hacer cosas. Ahora me iré para casa, emparcho un poco más la presentación y listo.

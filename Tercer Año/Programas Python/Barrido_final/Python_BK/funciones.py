@@ -349,8 +349,9 @@ def Mapa_Colores_Traza_Covarianza(DF, path, carpeta,
     
     # Hago el ploteo del mapa de colores con el colormesh
     
-    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "plasma")
+    im = plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "plasma")
     plt.colorbar()
+    im.set_clim(0,1)
     plt.title("Varianzas en Espacio de Parametros")
     
     # Guardo la figura y la cierro
@@ -1697,8 +1698,9 @@ def Mapas_Colores_1D(DF, path, carpeta, SIM_param_x, SIM_param_y):
     
     # Hago el ploteo del mapa de colores con el colormesh
     
-    plt.pcolormesh(XX,YY,ZZ[0],shading="nearest", cmap = "plasma")
+    im = plt.pcolormesh(XX,YY,ZZ[0],shading="nearest", cmap = "plasma")
     plt.colorbar()
+    im.set_clim(0,1)
     plt.title(r"$\langle \sigma \rangle$")
     
     # Guardo la figura y la cierro
@@ -1716,8 +1718,9 @@ def Mapas_Colores_1D(DF, path, carpeta, SIM_param_x, SIM_param_y):
     
     # Hago el ploteo del mapa de colores con el colormesh
     
-    plt.pcolormesh(XX,YY,ZZ[1],shading="nearest", cmap = "viridis")
+    im = plt.pcolormesh(XX,YY,ZZ[1],shading="nearest", cmap = "viridis")
     plt.colorbar()
+    im.set_clim(0,1)
     plt.title(r"$\langle \vert \bar{x} \vert \rangle$")
     
     # Guardo la figura y la cierro

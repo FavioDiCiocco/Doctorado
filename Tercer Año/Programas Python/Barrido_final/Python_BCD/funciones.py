@@ -375,8 +375,9 @@ def Mapa_Colores_Covarianzas(DF,path,carpeta,SIM_param_x,SIM_param_y,
     
     # Hago el ploteo del mapa de colores con el colormesh
     
-    plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "plasma")
+    im = plt.pcolormesh(XX,YY,ZZ,shading="nearest", cmap = "plasma")
     plt.colorbar()
+    im.set_clim(0,1)
     plt.title("Covarianza en Espacio de Parametros")
     
     # Guardo la figura y la cierro

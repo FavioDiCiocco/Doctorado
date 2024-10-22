@@ -112,6 +112,7 @@ for carp in Carpetas:
     Cosd = 0
     Df_cluster = Df_preguntas.loc[(Df_preguntas["Beta_100"]==Beta) & (Df_preguntas["Cosd_100"]==Cosd)]
     """
+    
     func.Tiempo(t0)
     
     
@@ -135,7 +136,7 @@ for carp in Carpetas:
     
     
     #----------------------------------------------------------------------------------------------
-    
+    """
     # Construyo un diccionario con las preguntas de cada uno de los clusters
     
     Df_preguntas = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices_JS, Dir_matrices_JS)
@@ -150,6 +151,15 @@ for carp in Carpetas:
         Beta = tupla[1]
         
         Df_preguntas.loc[(Df_preguntas["Cosd_100"]==Cosd) & (Df_preguntas["Beta_100"]==Beta), "clusters"] = cluster
+    
+    # Voy a armar gráficos con menos puntos en el espacio de parámetros
+    Lista_grafs = ["V202331x_vs_V201372x.csv","V202331x_vs_V202336x.csv","V202336x_vs_V201372x.csv",
+                   "V202341x_vs_V201372x.csv","V202341x_vs_V202331x.csv","V202341x_vs_V202336x.csv",
+                   "V202350x_vs_V201372x.csv","V202350x_vs_V202331x.csv","V202350x_vs_V202336x.csv",
+                   "V202350x_vs_V202341x.csv","V202383x_vs_V201372x.csv","V202383x_vs_V202331x.csv",
+                   "V202383x_vs_V202336x.csv","V202383x_vs_V202341x.csv","V202383x_vs_V202350x.csv"]
+    
+    Df_preguntas = Df_preguntas[Df_preguntas["nombre"].isin(Lista_grafs)]
     
     #----------------------------------------------------------------------------------------------
     
@@ -180,6 +190,8 @@ for carp in Carpetas:
     Df_preguntas_KS["clusters"] = Df_preguntas["clusters"]
     # Df_preguntas.to_csv("Tabla_KS.csv", index=False)
     
+    Df_preguntas_KS = Df_preguntas_KS[Df_preguntas_KS["nombre"].isin(Lista_grafs)]
+    
     func.Preguntas_espacio_parametros(Df_archivos, Df_preguntas_KS, Dir_matrices_KS, Etapa/carpeta, "KS",
                                       SIM_param_x, SIM_param_y)
     
@@ -192,7 +204,7 @@ for carp in Carpetas:
         
         func.Hist2D_similares_FEF(DKS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta, Direccion, bines,
                                   "KS",SIM_param_x,SIM_param_y)
-    
+    """
     #----------------------------------------------------------------------------------------------
     """
     # Gráficos de métricas CM

@@ -1098,7 +1098,7 @@ ind_rand[2] = adjusted_rand_score(Df_preguntas["clusters_JS_ord"], Df_preguntas[
 #####################################################################################
 #####################################################################################
 """
-"""
+
 
 # Voy a querer clusterizar sobre los distintos espacios de parámetros, y luego comparar
 # esos clusters con los clusters obtenidos al clusterizar la Mat_Dist_JS.
@@ -1124,36 +1124,36 @@ XX,YY = np.meshgrid(num_clusters,num_simul)
 
 # Hago la comparación de clusters usando Rand_index
 ZZ = np.zeros(XX.shape)
-for columna,k in enumerate(num_clusters):
+# for columna,k in enumerate(num_clusters):
     
-    # Armo mi clusterizador y lo entreno para detectar clusters en matriz de 
-    # distancias entre gráficos
-    kmeans_mat = KMeans(n_clusters=k, random_state=42, n_init = "auto")
-    kmeans_mat.fit(Df_dist_JS.to_numpy()) # + rng.normal(loc = 0, scale = 0.004, size = Df_dist_JS.to_numpy().shape))
+#     # Armo mi clusterizador y lo entreno para detectar clusters en matriz de 
+#     # distancias entre gráficos
+#     kmeans_mat = KMeans(n_clusters=k, random_state=42, n_init = "auto")
+#     kmeans_mat.fit(Df_dist_JS.to_numpy()) # + rng.normal(loc = 0, scale = 0.004, size = Df_dist_JS.to_numpy().shape))
     
-    for fila,rank in enumerate(range(10)):
+#     for fila,rank in enumerate(range(10)):
         
-        # Armo mi clusterizador y lo entreno para detectar clusters en espacio
-        # de parámetros
-        kmeans_esp = KMeans(n_clusters=k, random_state=42, n_init = "auto")
-        kmeans_esp.fit(Df_preguntas[["Cosd_{}".format(rank*10+10),"Beta_{}".format(rank*10+10)]])
+#         # Armo mi clusterizador y lo entreno para detectar clusters en espacio
+#         # de parámetros
+#         kmeans_esp = KMeans(n_clusters=k, random_state=42, n_init = "auto")
+#         kmeans_esp.fit(Df_preguntas[["Cosd_{}".format(rank*10+10),"Beta_{}".format(rank*10+10)]])
         
-        ZZ[fila,columna] = adjusted_rand_score(kmeans_esp.labels_, kmeans_mat.labels_)
+#         ZZ[fila,columna] = adjusted_rand_score(kmeans_esp.labels_, kmeans_mat.labels_)
 
-# Armo los parámetros del gráfico de promedios
-plt.rcParams.update({'font.size': 44})
-plt.figure("Rindex clusters",figsize=(28,21))
-plt.xlabel("Cantidad de clusters")
-plt.ylabel("Cantidad de simulaciones")
-plt.title("Rand Index ajustado de clusterizaciones")
+# # Armo los parámetros del gráfico de promedios
+# plt.rcParams.update({'font.size': 44})
+# plt.figure("Rindex clusters",figsize=(28,21))
+# plt.xlabel("Cantidad de clusters")
+# plt.ylabel("Cantidad de simulaciones")
+# plt.title("Rand Index ajustado de clusterizaciones")
 
-# Guardo la figura
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Randindex_clusters.png")
-plt.pcolormesh(XX,YY,ZZ, shading="nearest", cmap = "viridis")
-plt.colorbar()
-# Guardo la figura y la cierro
-plt.savefig(direccion_guardado , bbox_inches = "tight")
-plt.close("Rindex clusters")
+# # Guardo la figura
+# direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Randindex_clusters.png")
+# plt.pcolormesh(XX,YY,ZZ, shading="nearest", cmap = "viridis")
+# plt.colorbar()
+# # Guardo la figura y la cierro
+# plt.savefig(direccion_guardado , bbox_inches = "tight")
+# plt.close("Rindex clusters")
 
 # hago la comparación de clusters usando mutual informaiton
 ZZ = np.zeros(XX.shape)
@@ -1187,7 +1187,7 @@ plt.colorbar()
 # Guardo la figura y la cierro
 plt.savefig(direccion_guardado , bbox_inches = "tight")
 plt.close("Minfo clusters")
-
+"""
 #---------------------------------------------------------------------------------------------
 
 # Habiendo encontrado las clusterizaciones que maximizan similaridad, grafiquémoslas
@@ -1316,6 +1316,7 @@ direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/MDS_J
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
+"""
 # Reduzco dimensionalidad usando Principal Component Analysis
 # Construyo mi operador que realizar un PCA sobre mis datos
 pca = PCA(n_components=2)
@@ -1329,13 +1330,13 @@ plt.title('PCA matriz JS')
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/PCA_JS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
-
+"""
 #---------------------------------------------------------------------------------------------
 
 # Ahora que tengo los gráficos ubicados en el espacio 2D, veamos de armar clusterizaciones
 # y usar métricas para ver cuál es la cantidad correcta de clusters a observar. Una vez
 # hecho eso, graficaré la "mejor" clusterización
-
+"""
 # Primero clasifico usando DBSCAN
 radios = np.linspace(0.4,0.6,100)
 silhouette_scores = list()
@@ -1374,7 +1375,7 @@ plt.grid()
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/DaboS_DBSCAN_JS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
-
+"""
 
 #---------------------------------------------------------------------------------------------
 
@@ -1423,7 +1424,7 @@ kmeans.fit(Df_dist_JS.to_numpy())
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=400, c = kmeans.labels_, cmap = "tab10")
-plt.title('Silh {}, K-means sobre MDS de Mat JS'.format(round(silhouette_scores[3],4)))
+plt.title('Silh {}, K-means sobre Mat JS'.format(round(silhouette_scores[3],2)))
 # Custom legend with specific text for each cluster
 legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(kmeans.labels_)]  # Customize these as you like
 # Create legend manually using custom text and colors from the scatter plot
@@ -1440,7 +1441,7 @@ plt.close()
 
 # Hago una prueba de clusterizar los datos en el espacio 2D y ver si el score
 # de Silhouette tiene sentido. Clusterizo sobre el espacio 2D
-
+"""
 # Primero clasifico usando DBSCAN
 radios = np.linspace(0.03,0.07,100)
 silhouette_scores = list()
@@ -1502,7 +1503,7 @@ plt.legend(handles=handles, loc="best", ncol=2, framealpha = 0.5)
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_maxsilh_DBSCAN_MDS_JS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
-
+"""
 
 """
 dbscan = DBSCAN(eps=radios[np.argmin(dabo_scores)], min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
@@ -1528,7 +1529,7 @@ plt.close()
 """
 
 #---------------------------------------------------------------------------------------------
-
+"""
 # Segundo clasifico usando K-means
 cant_clusters = np.arange(2,13)
 silhouette_scores = list()
@@ -1610,16 +1611,16 @@ plt.close()
 # direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_maxsilh_DBSCAN_MDS_JS.png")
 # plt.savefig(direccion_guardado ,bbox_inches = "tight")
 # plt.close()
-
+"""
 #---------------------------------------------------------------------------------------------
 
 # Ahora comparo estas dos particiones
 
-info_mutua = normalized_mutual_info_score(dbscan.labels_, kmeans.labels_)
-print("La info mutua entre ambas particiones es: ", info_mutua)
+# info_mutua = normalized_mutual_info_score(dbscan.labels_, kmeans.labels_)
+# print("La info mutua entre ambas particiones es: ", info_mutua)
 
-ind_rand = adjusted_rand_score(dbscan.labels_, kmeans.labels_)
-print("El rand_index entre ambas particiones es: ", ind_rand)
+# ind_rand = adjusted_rand_score(dbscan.labels_, kmeans.labels_)
+# print("El rand_index entre ambas particiones es: ", ind_rand)
 
 #---------------------------------------------------------------------------------------------
 
@@ -1631,8 +1632,8 @@ X = np.arange(1,11)*10
 kmeans = KMeans(n_clusters=5, random_state=42, n_init = "auto")
 kmeans.fit(Df_dist_JS.to_numpy())
 
-dbscan = DBSCAN(eps=0.525, min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
-dbscan.fit(Df_dist_JS.to_numpy())
+# dbscan = DBSCAN(eps=0.525, min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
+# dbscan.fit(Df_dist_JS.to_numpy())
 
 
 # Armo los valores de Y a graficar.
@@ -1645,8 +1646,8 @@ for i,rank in enumerate(X):
     kmeans_esp = KMeans(n_clusters=5, random_state=42, n_init = "auto")
     kmeans_esp.fit(Df_preguntas[["Cosd_{}".format(rank),"Beta_{}".format(rank)]])
     
-    dbscan_esp = DBSCAN(eps=0.525, min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
-    dbscan_esp.fit(Df_preguntas[["Cosd_{}".format(rank),"Beta_{}".format(rank)]])
+    # dbscan_esp = DBSCAN(eps=0.525, min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
+    # dbscan_esp.fit(Df_preguntas[["Cosd_{}".format(rank),"Beta_{}".format(rank)]])
     
     Y_KM[i] = normalized_mutual_info_score(kmeans.labels_, kmeans_esp.labels_)
     # Y_DB[i] = normalized_mutual_info_score(dbscan.labels_, dbscan_esp.labels_)
@@ -1655,7 +1656,7 @@ for i,rank in enumerate(X):
 # Grafico las curvas de similaridad entre las particiones
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-plt.plot(X,Y_KM, "r--" ,linewidth = 6, label = "K-means, 5 clusters")
+plt.plot(X,Y_KM, "k--" ,linewidth = 6, label = "K-means, 5 clusters")
 # plt.plot(X,Y_DB, "g--" ,linewidth = 6, label = "DBSCAN, eps = 0.525")
 plt.title('Clust. Matriz JS vs Clust. espacio parámetros, MI')
 plt.xlabel("Cant. Simulaciones")
@@ -1666,6 +1667,7 @@ direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/NI_co
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
+"""
 # Armo los valores de Y a graficar.
 Y_KM = np.zeros(X.shape)
 # Y_DB = np.zeros(X.shape)
@@ -1696,7 +1698,7 @@ plt.grid()
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/ARI_comparacion_clusterizaciones.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
-
+"""
 #####################################################################################
 #####################################################################################
 
