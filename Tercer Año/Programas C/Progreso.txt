@@ -3985,3 +3985,19 @@ Cosas para revisar:
 3) Qué es el SSE
 
 Bien, ya mandé a hacer cosas. Ahora me iré para casa, emparcho un poco más la presentación y listo.
+
+------------------------------------------------------------------------------------------
+
+23/10/2024
+
+Cosas que surgieron en la reunión:
+-----------------------------------
+
+.) Hugo propone estudiar la polarización ideológica para el caso con coseno delta distinto de cero
+.) Hugo hizo simulaciones para estudiar la estabilidad del caso de polarización ideológica.
+Da cosas raras.
+.) Quizás la transición de polarización descorrelacionada no es una transición propiamente dicha.
+.) David menciona que quizás es mejor intentar distinguir los clusters generales, intentar diferenciarlos
+minuciosamente es más ambicioso
+.) Estaría bueno mirar entonces un subconjunto de preguntas que se separe bien, no intentar separar
+TODAS las preguntas.
