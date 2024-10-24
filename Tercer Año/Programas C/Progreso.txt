@@ -4001,3 +4001,35 @@ Da cosas raras.
 minuciosamente es más ambicioso
 .) Estaría bueno mirar entonces un subconjunto de preguntas que se separe bien, no intentar separar
 TODAS las preguntas.
+
+------------------------------------------------------------------------------------------
+
+24/10/2024
+
+Hoy a la mañana lo primero que hice fue mandarle un mail a Silvia sobre lo que fue mi viaje, con ganas
+de armar un texto escrito en Alemán.
+
+Después me junté con Lucio y trabajamos en retocar la presentación y cómo plantearla para mostrarle a 
+Pablo dónde estamos. Quedamos en que yo debería retocar el código para que las distribuciones de umbrales
+sean únicas para todos los tópicos por cada agente. Voy a cambiar para que los tipitos blancos tengan
+otro color porque cuesta verlos. Por último, retocar un poco la presentación en general para que se
+vea más linda. Y después ya tendría que ponerme a ver lo que hizo Sebas para entender cómo es el pase
+de la ecuación de la dínamica de las probabilidades a la ecuación de la dinámica del k.
+
+Bueno, bastante laburé en la presentación. Ahora pasemos a lo del trabajo con la gente de España.
+Primero anotemos las cosas que me dijo Pablo de hacer.
+
+1) La parte numérica está bastante cerrada. Quedaría ver cómo matchear eso con el modelo 1D y elegir
+correctamente los mejores gráficos a presentar.
+2) En la parte teórica, continuar un poco con el análisis teórico, cosa de tener algo más claro
+las curvas de transición. Yo propondría continuar un poco con la ecuación de la estabilidad
+del estado de polarización descorrelacionada.
+3) En la parte empírica, habría que reducir las preguntas a un conjunto que mejor matchee con el
+modelo.
+
+Ahora me voy a poner a hacer lo tercero, buscar un conjunto que me parezca que sea el más identitario
+de estados finales del modelo. ¿Lo hago a ojo? ¿O podría buscar una métrica? No, definitivamente
+tiene que ser a ojo en principio. Planteemos entre 8 y 12 gráficos como el subconjunto a revisar.
+
+Bien, ahí separé un conjunto de preguntas. Queda después ver cómo trabajar con eso y ver si realmente
+se puede clasificar algo de eso.
