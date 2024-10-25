@@ -119,7 +119,7 @@ for nombre in Archivos_Datos:
 # csv debería tener P elementos.
 
 #-------------------------------------------------------------------------------------
-"""
+
 # Primero me armo el data frame con los nombres de los archivos
 
 # Recorro las carpetas con datos
@@ -219,7 +219,7 @@ for preguntas in labels[::10]:
 
 
 #-------------------------------------------------------------------------------------
-
+"""
 # Cuarto armo un código que levante los datos del archivo csv y de ahí
 # reconstruya la matriz de DJS
 
@@ -327,7 +327,7 @@ plt.close()
 
 #####################################################################################
 #####################################################################################
-"""
+
 # Voy a intentar armar una función que levante datos de algún conjunto de
 # datos y calcule la distancia de Kolmogorov-Smirnoff 2D
 
@@ -376,7 +376,7 @@ for code_1 in labels_politicos:
         labels.append((code_1,code_2,weights))
 
 
-for preguntas in labels[::5]:
+for preguntas in labels:
     
     # Separo las opiniones de 0
     df_aux = Df_ANES.loc[(Df_ANES[preguntas[0]]>0) & (Df_ANES[preguntas[1]]>0)]
@@ -546,12 +546,12 @@ for preguntas in labels[::5]:
     ZZ_alterado = np.reshape(ZZ, (ZZ.shape[0]*ZZ.shape[1],ZZ.shape[2]))
     np.savetxt("../Matrices DKS/{}_vs_{}.csv".format(code_y,code_x), ZZ_alterado,delimiter = ",", fmt = "%.6f")
 
-"""
+
 
 #####################################################################################
 #####################################################################################
-
 """
+
 # Voy a construir una matriz que me permita ver la similaridad entre los clusters de
 # preguntas definidos según distancia JS.
 
@@ -1097,7 +1097,7 @@ ind_rand[2] = adjusted_rand_score(Df_preguntas["clusters_JS_ord"], Df_preguntas[
 
 #####################################################################################
 #####################################################################################
-"""
+
 
 
 # Voy a querer clusterizar sobre los distintos espacios de parámetros, y luego comparar
@@ -1187,7 +1187,7 @@ plt.colorbar()
 # Guardo la figura y la cierro
 plt.savefig(direccion_guardado , bbox_inches = "tight")
 plt.close("Minfo clusters")
-"""
+
 #---------------------------------------------------------------------------------------------
 
 # Habiendo encontrado las clusterizaciones que maximizan similaridad, grafiquémoslas
@@ -1291,30 +1291,30 @@ plt.close()
 #####################################################################################
 #####################################################################################
 
-# Primero voy a intentar encontrar los verdaderos clusters que se hallan en los datos
-# del espacio de Matriz de Dist JS. Para eso tengo que probar diversas formas de
-# clusterizar y métricas para analizarlas
+# # Primero voy a intentar encontrar los verdaderos clusters que se hallan en los datos
+# # del espacio de Matriz de Dist JS. Para eso tengo que probar diversas formas de
+# # clusterizar y métricas para analizarlas
 
-# Levanto los datos de la tabla de similaridad
-Df_dist_JS = pd.read_csv("Dist_Enc_JS.csv", index_col=0)
-# Defino las preguntas del cluster de JS
-Df_preguntas = pd.read_csv("Tabla_JS.csv")
+# # Levanto los datos de la tabla de similaridad
+# Df_dist_JS = pd.read_csv("Dist_Enc_JS.csv", index_col=0)
+# # Defino las preguntas del cluster de JS
+# Df_preguntas = pd.read_csv("Tabla_JS.csv")
 
-# Armo un rng para agregar un ruido normal
-rng = np.random.default_rng()
+# # Armo un rng para agregar un ruido normal
+# rng = np.random.default_rng()
 
-# Reduzco dimensionalidad usando Multi-Dimensional Scaling
-mds = MDS(n_components = 2, random_state = 42, dissimilarity = "precomputed", normalized_stress = "auto")
-X_2d = mds.fit_transform(Df_dist_JS.to_numpy())
+# # Reduzco dimensionalidad usando Multi-Dimensional Scaling
+# mds = MDS(n_components = 2, random_state = 42, dissimilarity = "precomputed", normalized_stress = "auto")
+# X_2d = mds.fit_transform(Df_dist_JS.to_numpy())
 
-# Grafico los datos en el espacio reducido usando MDS
-plt.rcParams.update({'font.size': 44})
-plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-plt.scatter(X_2d[:,0],X_2d[:,1], s=400, marker = "8", color = "tab:orange")
-plt.title('MDS Matriz JS')
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/MDS_JS.png")
-plt.savefig(direccion_guardado ,bbox_inches = "tight")
-plt.close()
+# # Grafico los datos en el espacio reducido usando MDS
+# plt.rcParams.update({'font.size': 44})
+# plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+# plt.scatter(X_2d[:,0],X_2d[:,1], s=400, marker = "8", color = "tab:orange")
+# plt.title('MDS Matriz JS')
+# direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/MDS_JS.png")
+# plt.savefig(direccion_guardado ,bbox_inches = "tight")
+# plt.close()
 
 """
 # Reduzco dimensionalidad usando Principal Component Analysis
@@ -1379,63 +1379,63 @@ plt.close()
 
 #---------------------------------------------------------------------------------------------
 
-# Segundo clasifico usando K-means
-cant_clusters = np.arange(2,13)
-silhouette_scores = list()
-sse = list() # acá vamos a guardar el puntaje de la función objetivo
+# # Segundo clasifico usando K-means
+# cant_clusters = np.arange(2,13)
+# silhouette_scores = list()
+# sse = list() # acá vamos a guardar el puntaje de la función objetivo
 
-for clusters in cant_clusters:
-    # Clusterizo
-    kmeans = KMeans(n_clusters=clusters, random_state=42, n_init = "auto")
-    kmeans.fit(Df_dist_JS.to_numpy())
+# for clusters in cant_clusters:
+#     # Clusterizo
+#     kmeans = KMeans(n_clusters=clusters, random_state=42, n_init = "auto")
+#     kmeans.fit(Df_dist_JS.to_numpy())
     
-    # Calculate the silhouette score
-    silhouette_avg = silhouette_score(Df_dist_JS.to_numpy(), kmeans.labels_)
-    silhouette_scores.append(silhouette_avg)
+#     # Calculate the silhouette score
+#     silhouette_avg = silhouette_score(Df_dist_JS.to_numpy(), kmeans.labels_)
+#     silhouette_scores.append(silhouette_avg)
     
-    # SSE suma de los cuadrados de la distancia euclidea de cada cluster
-    sse.append(kmeans.inertia_)
+#     # SSE suma de los cuadrados de la distancia euclidea de cada cluster
+#     sse.append(kmeans.inertia_)
 
-plt.rcParams.update({'font.size': 44})
-plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-plt.plot(cant_clusters,silhouette_scores, linewidth=6, color = "tab:blue")
-plt.title('Caracterización K-means sobre Mat JS')
-plt.ylabel("Silhouette Score")
-plt.xlabel("Cant. Clusters")
-plt.grid()
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SilhouetteS_Kmeans_JS.png")
-plt.savefig(direccion_guardado ,bbox_inches = "tight")
-plt.close()
+# plt.rcParams.update({'font.size': 44})
+# plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+# plt.plot(cant_clusters,silhouette_scores, linewidth=6, color = "tab:blue")
+# plt.title('Caracterización K-means sobre Mat JS')
+# plt.ylabel("Silhouette Score")
+# plt.xlabel("Cant. Clusters")
+# plt.grid()
+# direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SilhouetteS_Kmeans_JS.png")
+# plt.savefig(direccion_guardado ,bbox_inches = "tight")
+# plt.close()
 
-plt.rcParams.update({'font.size': 44})
-plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-plt.plot(cant_clusters,sse, linewidth=6, color = "tab:blue")
-plt.title('Caracterización K-means sobre Mat JS')
-plt.ylabel("SSE")
-plt.xlabel("Cant. Clusters")
-plt.grid()
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SSE_Kmeans_JS.png")
-plt.savefig(direccion_guardado ,bbox_inches = "tight")
-plt.close()
+# plt.rcParams.update({'font.size': 44})
+# plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+# plt.plot(cant_clusters,sse, linewidth=6, color = "tab:blue")
+# plt.title('Caracterización K-means sobre Mat JS')
+# plt.ylabel("SSE")
+# plt.xlabel("Cant. Clusters")
+# plt.grid()
+# direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SSE_Kmeans_JS.png")
+# plt.savefig(direccion_guardado ,bbox_inches = "tight")
+# plt.close()
 
-kmeans = KMeans(n_clusters=5, random_state=42, n_init = "auto")
-kmeans.fit(Df_dist_JS.to_numpy())
+# kmeans = KMeans(n_clusters=5, random_state=42, n_init = "auto")
+# kmeans.fit(Df_dist_JS.to_numpy())
 
-plt.rcParams.update({'font.size': 44})
-plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=400, c = kmeans.labels_, cmap = "tab10")
-plt.title('Silh {}, K-means sobre Mat JS'.format(round(silhouette_scores[3],2)))
-# Custom legend with specific text for each cluster
-legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(kmeans.labels_)]  # Customize these as you like
-# Create legend manually using custom text and colors from the scatter plot
-handles = [plt.Line2D([0], [0], marker='o', color='w', label=label, 
-                      markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
-                      for i, label in enumerate(legend_labels)]
-# Add the legend to the plot
-plt.legend(handles=handles, loc="best", ncol=2, framealpha = 0.5)
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_silh_K-means5_JS.png")
-plt.savefig(direccion_guardado ,bbox_inches = "tight")
-plt.close()
+# plt.rcParams.update({'font.size': 44})
+# plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+# scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=400, c = kmeans.labels_, cmap = "tab10")
+# plt.title('Silh {}, K-means sobre Mat JS'.format(round(silhouette_scores[3],2)))
+# # Custom legend with specific text for each cluster
+# legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(kmeans.labels_)]  # Customize these as you like
+# # Create legend manually using custom text and colors from the scatter plot
+# handles = [plt.Line2D([0], [0], marker='o', color='w', label=label, 
+#                       markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
+#                       for i, label in enumerate(legend_labels)]
+# # Add the legend to the plot
+# plt.legend(handles=handles, loc="best", ncol=2, framealpha = 0.5)
+# direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_silh_K-means5_JS.png")
+# plt.savefig(direccion_guardado ,bbox_inches = "tight")
+# plt.close()
 
 #---------------------------------------------------------------------------------------------
 
@@ -1624,48 +1624,48 @@ plt.close()
 
 #---------------------------------------------------------------------------------------------
 
-# Por último, comparo ambas clusterizaciones con clusterizaciones en el espacio de parámetros
+# # Por último, comparo ambas clusterizaciones con clusterizaciones en el espacio de parámetros
 
-X = np.arange(1,11)*10
+# X = np.arange(1,11)*10
 
-# Armo las clusterizaciones correctas según los gráficos de Coef. de Silhouette
-kmeans = KMeans(n_clusters=5, random_state=42, n_init = "auto")
-kmeans.fit(Df_dist_JS.to_numpy())
+# # Armo las clusterizaciones correctas según los gráficos de Coef. de Silhouette
+# kmeans = KMeans(n_clusters=5, random_state=42, n_init = "auto")
+# kmeans.fit(Df_dist_JS.to_numpy())
 
-# dbscan = DBSCAN(eps=0.525, min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
-# dbscan.fit(Df_dist_JS.to_numpy())
+# # dbscan = DBSCAN(eps=0.525, min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
+# # dbscan.fit(Df_dist_JS.to_numpy())
 
 
-# Armo los valores de Y a graficar.
-Y_KM = np.zeros(X.shape)
-# Y_DB = np.zeros(X.shape)
-for i,rank in enumerate(X):
+# # Armo los valores de Y a graficar.
+# Y_KM = np.zeros(X.shape)
+# # Y_DB = np.zeros(X.shape)
+# for i,rank in enumerate(X):
     
-    # Armo mi clusterizador y lo entreno para detectar clusters en espacio
-    # de parámetros
-    kmeans_esp = KMeans(n_clusters=5, random_state=42, n_init = "auto")
-    kmeans_esp.fit(Df_preguntas[["Cosd_{}".format(rank),"Beta_{}".format(rank)]])
+#     # Armo mi clusterizador y lo entreno para detectar clusters en espacio
+#     # de parámetros
+#     kmeans_esp = KMeans(n_clusters=5, random_state=42, n_init = "auto")
+#     kmeans_esp.fit(Df_preguntas[["Cosd_{}".format(rank),"Beta_{}".format(rank)]])
     
-    # dbscan_esp = DBSCAN(eps=0.525, min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
-    # dbscan_esp.fit(Df_preguntas[["Cosd_{}".format(rank),"Beta_{}".format(rank)]])
+#     # dbscan_esp = DBSCAN(eps=0.525, min_samples=3)  # eps is the radius for clusters, min_samples is the min points in a cluster
+#     # dbscan_esp.fit(Df_preguntas[["Cosd_{}".format(rank),"Beta_{}".format(rank)]])
     
-    Y_KM[i] = normalized_mutual_info_score(kmeans.labels_, kmeans_esp.labels_)
-    # Y_DB[i] = normalized_mutual_info_score(dbscan.labels_, dbscan_esp.labels_)
+#     Y_KM[i] = normalized_mutual_info_score(kmeans.labels_, kmeans_esp.labels_)
+#     # Y_DB[i] = normalized_mutual_info_score(dbscan.labels_, dbscan_esp.labels_)
 
 
-# Grafico las curvas de similaridad entre las particiones
-plt.rcParams.update({'font.size': 44})
-plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-plt.plot(X,Y_KM, "k--" ,linewidth = 6, label = "K-means, 5 clusters")
-# plt.plot(X,Y_DB, "g--" ,linewidth = 6, label = "DBSCAN, eps = 0.525")
-plt.title('Clust. Matriz JS vs Clust. espacio parámetros, MI')
-plt.xlabel("Cant. Simulaciones")
-plt.ylabel("Normalized Mutual Info")
-plt.legend()
-plt.grid()
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/NI_comparacion_clusterizaciones.png")
-plt.savefig(direccion_guardado ,bbox_inches = "tight")
-plt.close()
+# # Grafico las curvas de similaridad entre las particiones
+# plt.rcParams.update({'font.size': 44})
+# plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+# plt.plot(X,Y_KM, "k--" ,linewidth = 6, label = "K-means, 5 clusters")
+# # plt.plot(X,Y_DB, "g--" ,linewidth = 6, label = "DBSCAN, eps = 0.525")
+# plt.title('Clust. Matriz JS vs Clust. espacio parámetros, MI')
+# plt.xlabel("Cant. Simulaciones")
+# plt.ylabel("Normalized Mutual Info")
+# plt.legend()
+# plt.grid()
+# direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/NI_comparacion_clusterizaciones.png")
+# plt.savefig(direccion_guardado ,bbox_inches = "tight")
+# plt.close()
 
 """
 # Armo los valores de Y a graficar.

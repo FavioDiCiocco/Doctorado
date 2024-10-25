@@ -4033,3 +4033,40 @@ tiene que ser a ojo en principio. Planteemos entre 8 y 12 gráficos como el subc
 
 Bien, ahí separé un conjunto de preguntas. Queda después ver cómo trabajar con eso y ver si realmente
 se puede clasificar algo de eso.
+
+------------------------------------------------------------------------------------------
+
+25/10/2024
+
+Fui temprano a la clase de Alemán, revisamos cosas sobre formas de decir si algo está prohibido,
+si es obligatorio, si se puede hacer o no.
+
+Hecho eso, volvimos, fuimos a comer, di vueltas algunas cosas y ahora sí, a laburar. Ya separé un
+conjunto de gráficos para analizar eso en detalle separado. Veámoslo a ver si quedan separados en
+el espacio de parámetros.
+
+Los pares de preguntas que estoy mirando en el subconjunto son:
+V201411xvsV201408x
+V201426xvsV201386x
+V202255xvsV201420x
+V202255xvsV202328x
+V202255xvsV202341x
+V202328xvsV201386x
+V202331xvsV201386x
+V202341xvsV201372x
+V202341xvsV201386x
+V202341xvsV202331x
+V202350xvsV201386x
+V202350xvsV202341x
+
+Antes de eso, primero mandemos a realizar las matrices usando los datos que calculé y que completan
+el espacio de parámetros. Bien, ya junté todos los datos en una carpeta. Debería probar a ver qué
+me da si construyo matrices con eso. Veamos primero el archivo de Python que tengo.
+
+Ya mandé a correr para construir las matrices de DJS de los pares de preguntas en el espacio de
+parámetros habiendo aumentado el conjunto de simulaciones. Me mandaría a ver cómo quedan ordenados
+los pares de preguntas del subconjunto en el espacio de parámetros, pero ahora necesito esperar
+a que se construyan las matrices de DJS.
+
+Lo siguiente que puedo hacer es continuar un poco con el código para que cuando estas cosas estén
+hechas ya mandarlas a correr. Ahí preparé eso, así que me voy yendo a casa.

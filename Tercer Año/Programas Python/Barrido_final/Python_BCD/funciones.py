@@ -163,7 +163,7 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
     # Defino los arrays de parámetros diferentes
     Arr_EXTRAS = np.unique(DF["Extra"])
     Arr_param_x = np.unique(DF["parametro_x"])[0::3]
-    Arr_param_y = np.unique(DF["parametro_y"])[0::4]
+    Arr_param_y = np.unique(DF["parametro_y"])[0::8]
     
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
@@ -199,7 +199,7 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
             for nombre in archivos:
                 
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
-                if repeticion < 100:
+                if repeticion < 50:
                 
                     # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
                     # Distribución final
@@ -1773,11 +1773,9 @@ def Preguntas_espacio_parametros(DF_datos,Df_preguntas,path_matrices,carpeta,met
     # Defino los arrays de parámetros diferentes
     Arr_param_x = np.unique(DF_datos["parametro_x"])
     Arr_param_y = np.unique(DF_datos["parametro_y"])
-    # Construyo las grillas que voy a usar para ubicar los valores de X e Y
-    XX,YY = np.meshgrid(Arr_param_x,np.flip(Arr_param_y))
     
-    X = np.transpose(Df_preguntas[["Cosd_100","Cosd_10","Cosd_20","Cosd_30","Cosd_40",]].to_numpy())
-    Y = np.transpose(Df_preguntas[["Beta_100","Beta_10","Beta_20","Beta_30","Beta_40",]].to_numpy())
+    X = np.transpose(Df_preguntas[["Cosd_100","Cosd_20","Cosd_40",]].to_numpy())
+    Y = np.transpose(Df_preguntas[["Beta_100","Beta_20","Beta_40",]].to_numpy())
     
     X = X + rng.normal(loc = 0, scale = (Arr_param_x[1]-Arr_param_x[0])/5, size = X.shape)
     Y = Y + rng.normal(loc = 0, scale = (Arr_param_y[1]-Arr_param_y[0])/5, size = Y.shape)
@@ -1865,7 +1863,7 @@ def Preguntas_espacio_parametros(DF_datos,Df_preguntas,path_matrices,carpeta,met
     
     
     # Lo que queda es hacer los plot scatter de las preguntas
-    plt.scatter(X[0],Y[0], marker="o", c = Df_preguntas["clusters"], s = 500, alpha = 0.7)
+    plt.scatter(X[0],Y[0], marker="o", c = Df_preguntas["clusters"], cmap = "tab10", s = 500, alpha = 0.7)
     plt.xlabel(r"${}$".format(SIM_param_x))
     plt.ylabel(r"${}$".format(SIM_param_y))
     plt.xlim(-0.025,0.525)
@@ -1877,7 +1875,8 @@ def Preguntas_espacio_parametros(DF_datos,Df_preguntas,path_matrices,carpeta,met
     
     
     # Acá hago los scatter de las preguntas con una cantidad reducida de simulaciones
-    for rank in range(1,5):
+    
+    for rank in range(1,X.shape[0]+1):
         plt.rcParams.update({'font.size': 44})
         plt.figure(figsize=(28, 21))  # Adjust width and height as needed
         
@@ -1918,12 +1917,12 @@ def Preguntas_espacio_parametros(DF_datos,Df_preguntas,path_matrices,carpeta,met
         plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
         plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
         
-        plt.scatter(X[rank],Y[rank], marker="o", c = Df_preguntas["clusters"], s = 500, alpha = 0.7)
+        plt.scatter(X[rank],Y[rank], marker="o", c = Df_preguntas["clusters"], s = 500, cmap = "tab10", alpha = 0.7)
         plt.xlabel(r"${}$".format(SIM_param_x))
         plt.ylabel(r"${}$".format(SIM_param_y))
         plt.xlim(-0.025,0.525)
         plt.ylim(0,1.55)
-        plt.title(r"{} + simil, Dist {}".format(rank*10,metrica))
+        plt.title(r"{} + simil, Dist {}".format(np.array([2,4])[rank-1]*10,metrica))
         direccion_guardado = Path("../../../Imagenes/{}/Preguntas_espacio_{}_r{}.png".format(carpeta,metrica,rank))
         plt.savefig(direccion_guardado ,bbox_inches = "tight")
         plt.close()
