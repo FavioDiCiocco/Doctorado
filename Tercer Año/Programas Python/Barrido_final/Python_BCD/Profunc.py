@@ -202,7 +202,7 @@ for code_1 in labels_politicos:
 # Tercero calculo la matriz de distancia Jensen-Shannon y guardo eso en un csv.
 
 
-for preguntas in labels[::10]:
+for preguntas in labels:
     
     code_1 = preguntas[0]
     code_2 = preguntas[1]

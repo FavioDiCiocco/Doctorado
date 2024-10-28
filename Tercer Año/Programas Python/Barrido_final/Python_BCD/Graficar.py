@@ -92,7 +92,7 @@ for carp in Carpetas:
     
     # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
     # de todas las simulaciones para cada punto del espacio de parámetros.
-    Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
+    # Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
     
     size_x = np.unique(Df_archivos["parametro_x"]).shape[0]
     size_y = np.unique(Df_archivos["parametro_y"]).shape[0]
@@ -116,7 +116,7 @@ for carp in Carpetas:
     #----------------------------------------------------------------------------------------------
     
     # Gráficos del espacio de parámetros
-    
+    """
     func.Mapa_Colores_Entropia_opiniones(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
                                          SIM_param_x, SIM_param_y,ID_param_extra_1)
     
@@ -130,14 +130,14 @@ for carp in Carpetas:
     
     func.Graf_Histograma_opiniones_2D(Df_archivos, Dic_Total, Direccion, Etapa/carpeta, bines, "magma",
                                       ID_param_x, ID_param_y, ID_param_extra_1)
-    
+    """
     
     #----------------------------------------------------------------------------------------------
     
     # Construyo un diccionario con las preguntas de cada uno de los clusters
     
     Df_preguntas = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices_JS, Dir_matrices_JS)
-    # Df_preguntas.to_csv("Tabla_JS.csv", index=False)
+    Df_preguntas.to_csv("Tabla_JS.csv", index=False)
     
     # Lo inicializo en 6 para que los no revisados sean un cluster aparte
     Df_preguntas["clusters"] = 1
@@ -164,13 +164,13 @@ for carp in Carpetas:
                      "V202331xvsV201386x.csv","V202341xvsV201372x.csv","V202341xvsV201386x.csv",
                      "V202341xvsV202331x.csv","V202350xvsV201386x.csv","V202350xvsV202341x.csv"]
     
-    Df_preguntas = Df_preguntas[Df_preguntas["nombre"].isin(Lista_subconj)]
+    Df_subconj = Df_preguntas[Df_preguntas["nombre"].isin(Lista_subconj)]
     
     #----------------------------------------------------------------------------------------------
     
     # Gráficos de métricas JS
     
-    func.Preguntas_espacio_parametros(Df_archivos, Df_preguntas, Dir_matrices_JS, Etapa/carpeta, "JS",
+    func.Preguntas_espacio_parametros(Df_archivos, Df_subconj, Dir_matrices_JS, Etapa/carpeta, "JS",
                                       SIM_param_x, SIM_param_y)
     
     # Df_preguntas = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices_JS, Dir_matrices_JS)
@@ -183,8 +183,9 @@ for carp in Carpetas:
         func.Mapas_Colores_csv(DJS, code_x, code_y, Df_archivos, dict_labels, "JS", Etapa/carpeta,
                                ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
         
-        func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta, Direccion, bines,
-                                  "JS",SIM_param_x,SIM_param_y)
+        # func.Hist2D_similares_FEF(DJS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta, Direccion, bines,
+        #                           "JS",SIM_param_x,SIM_param_y)
+        
     
     
     #----------------------------------------------------------------------------------------------
@@ -193,11 +194,11 @@ for carp in Carpetas:
     
     Df_preguntas_KS = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices_KS, Dir_matrices_KS)
     Df_preguntas_KS["clusters"] = Df_preguntas["clusters"]
-    # Df_preguntas.to_csv("Tabla_KS.csv", index=False)
+    Df_preguntas.to_csv("Tabla_KS.csv", index=False)
     
-    Df_preguntas_KS = Df_preguntas_KS[Df_preguntas_KS["nombre"].isin(Lista_subconj)]
+    Df_subconj = Df_preguntas_KS[Df_preguntas_KS["nombre"].isin(Lista_subconj)]
     
-    func.Preguntas_espacio_parametros(Df_archivos, Df_preguntas_KS, Dir_matrices_KS, Etapa/carpeta, "KS",
+    func.Preguntas_espacio_parametros(Df_archivos, Df_subconj, Dir_matrices_KS, Etapa/carpeta, "KS",
                                       SIM_param_x, SIM_param_y)
     
     for nombre_csv in Archivos_Matrices_KS:
@@ -207,8 +208,8 @@ for carp in Carpetas:
         func.Mapas_Colores_csv(DKS, code_x, code_y, Df_archivos, dict_labels, "KS", Etapa/carpeta,
                                ID_param_x,SIM_param_x,ID_param_y,SIM_param_y)
         
-        func.Hist2D_similares_FEF(DKS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta, Direccion, bines,
-                                  "KS",SIM_param_x,SIM_param_y)
+        # func.Hist2D_similares_FEF(DKS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta, Direccion, bines,
+        #                           "KS",SIM_param_x,SIM_param_y)
     
     #----------------------------------------------------------------------------------------------
     

@@ -4070,3 +4070,32 @@ a que se construyan las matrices de DJS.
 
 Lo siguiente que puedo hacer es continuar un poco con el código para que cuando estas cosas estén
 hechas ya mandarlas a correr. Ahí preparé eso, así que me voy yendo a casa.
+
+------------------------------------------------------------------------------------------
+
+28/10/2024
+
+Hoy vine más tarde porque a la noche mis viejos llegaron a la 1:30 de la mañana. En la mañana me peleé
+un poco con el sistema de CAPES para lograr enviar la carta firmada por Silvio.
+
+En la comida hablamos con Pablo sobre que deberíamos proponerle a Silvio alguna idea de trabajo.
+Estaría bueno proponer un modelo multidimensional, algo en la línea del trabajo que hace Pastor Satorras.
+Esa es una idea, la otra es proponer algún modelo que busque aplicar ideas de teoría de juegos, 
+interacción de personas con alguna interface y quizás propuestas de argumentos que puedan ser
+analizados.
+
+Ahora debería ponerme con el tema del trabajo con Hugo. Primero, mandé a correr el armado de las matrices
+de DJS y los gráficos del espacio de parámetros habiendo incrementado la cantidad de simulaciones utilizadas.
+ Se hicieron bien todas las simulaciones. Ahora debería revisar lo que me anoté sobre los gráficos esos
+particulares que planeo revisar en especial, los que pertenecen al subconjunto.
+
+Por motivos que desconozco, no se armaron los gráficos de preguntas en el espacio de parámetros. Voy a tener
+que revisarlo de nuevo desde el principio. Por un lado, las matrices de JS no se armaron, la cagué ahí. 
+Voy a mandarlo a arrancar de nuevo eso, así que hoy no va a estar. Resuelto esto, sigo teniendo una
+pequeña duda de por qué el gráfico en el caso de datos KS no se construyeron. No me cierra eso.
+Ya vi el error. Listo, ahora a esperar que se resuelva todo.
+
+Lo siguiente es ponerme con la parte teórica, ya. Por ahora fue simple repaso, pero me vino bien para
+recuperar idea de cómo se hace la cuenta. Tengo que seguir.
+
+Por otro lado, mañana leeré lo que me pasó Lucio, se parece a un paper que leí, pero ya no recuerdo.
