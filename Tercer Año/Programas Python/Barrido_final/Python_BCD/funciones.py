@@ -1876,7 +1876,7 @@ def Preguntas_espacio_parametros(DF_datos,Df_preguntas,path_matrices,carpeta,met
     
     # Acá hago los scatter de las preguntas con una cantidad reducida de simulaciones
     
-    for rank in range(1,X.shape[0]+1):
+    for rank in range(1, X.shape[0]):
         plt.rcParams.update({'font.size': 44})
         plt.figure(figsize=(28, 21))  # Adjust width and height as needed
         

@@ -159,10 +159,10 @@ for carp in Carpetas:
     
     # Este es un subconjunto de distribuciones que parecen ser los más parecidos a estados finales
     # de la simulación.
-    Lista_subconj = ["V201411xvsV201408x.csv","V201426xvsV201386x.csv","V202255xvsV201420x.csv",
-                     "V202255xvsV202328x.csv","V202255xvsV202341x.csv","V202328xvsV201386x.csv",
-                     "V202331xvsV201386x.csv","V202341xvsV201372x.csv","V202341xvsV201386x.csv",
-                     "V202341xvsV202331x.csv","V202350xvsV201386x.csv","V202350xvsV202341x.csv"]
+    Lista_subconj = ["V201411x_vs_V201408x.csv","V201426x_vs_V201386x.csv","V202255x_vs_V201420x.csv",
+                     "V202255x_vs_V202328x.csv","V202255x_vs_V202341x.csv","V202328x_vs_V201386x.csv",
+                     "V202331x_vs_V201386x.csv","V202341x_vs_V201372x.csv","V202341x_vs_V201386x.csv",
+                     "V202341x_vs_V202331x.csv","V202350x_vs_V201386x.csv","V202350x_vs_V202341x.csv"]
     
     Df_subconj = Df_preguntas[Df_preguntas["nombre"].isin(Lista_subconj)]
     
@@ -194,7 +194,7 @@ for carp in Carpetas:
     
     Df_preguntas_KS = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices_KS, Dir_matrices_KS)
     Df_preguntas_KS["clusters"] = Df_preguntas["clusters"]
-    Df_preguntas.to_csv("Tabla_KS.csv", index=False)
+    Df_preguntas_KS.to_csv("Tabla_KS.csv", index=False)
     
     Df_subconj = Df_preguntas_KS[Df_preguntas_KS["nombre"].isin(Lista_subconj)]
     

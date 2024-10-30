@@ -4002,6 +4002,11 @@ minuciosamente es más ambicioso
 .) Estaría bueno mirar entonces un subconjunto de preguntas que se separe bien, no intentar separar
 TODAS las preguntas.
 
+Hecho eso, hoy y mañana no me pondré directamente con esto. Aunque charlaré con Pablo al respecto mañana.
+Ahora me pondré con lo de Lucio que charlamos. Bien, ahí lo miré, estoy en tema. Charlaré con Lucio sobre
+que me genera un poco de duda la notación y después modificaré el color blanco de los indecisos. Y luego
+me pondré a ver un poco el código.
+
 ------------------------------------------------------------------------------------------
 
 24/10/2024
@@ -4117,3 +4122,26 @@ Mañana o el jueves.
 
 Tengo que mañana resolver lo que está pasando en el gráfico ese. Y también quiero hacer el test de
 Alemán.
+
+------------------------------------------------------------------------------------------
+
+30/10/2024
+
+Hay tres cosas claras que quiero resolver.
+
+1) Armar esos gráficos de preguntas en el espacio de parámetros que por motivos no me están
+funcionando.
+2) Completar la presentación que estamos armando con Lucio sobre el trabajo de Granovetter.
+3) Hacer un test de Alemán.
+4) Revisar el tema de la beca de movilidad.
+5) Mandar a correr las simulaciones haciendo un barrido más fino en el espacio de Beta-Cosd.
+
+No logro entender por qué funciona mal. No lo entiendo. El código de funciones que está
+cargado es uno viejo. No tiene las correcciones nuevas. Tengo que cargar uno nuevo. Decidí directamente
+bajar los archivos de csv.
+Está dando vacío el subconj de preguntas. No logro entender por qué. Ese es el gran problema. Lo veré
+más tarde, porque Pablo quiere que haga algo extra en el medio.
+
+Ya encontré el problema. Dios, era una re pelotudez, la puta madre. Bueno, esos gráficos van
+a estar para mañana. Lo que puedo hacer ahora es ponerme con el test de Alemán y después
+mañana me pondré con lo de Granovetter.
