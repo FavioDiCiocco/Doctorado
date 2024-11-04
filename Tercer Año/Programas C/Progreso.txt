@@ -4157,3 +4157,74 @@ continuar con la parte teórica a ver qué logro construir.
 
 Hice lo que me dijo Pablo, terminé lo de Granovetter. No llegué a hacer nada más, lo otro lo hago
 el finde supongo.
+
+------------------------------------------------------------------------------------------
+
+01/11/2024
+
+A la mañana fui a Alemán, a la tarde fue el DF Abierto. No tuve tiempo de avanzar en nada.
+
+------------------------------------------------------------------------------------------
+
+03/11/2024
+
+En casa al final estuve intentando pensar en qué hacer con el trabajo para presentarle a la
+gente de GOTHAM. No tengo grandes ideas. Esto no está nada bueno. Me puse a estudiar un
+poco para la materia de Mininni. Tengo que avanzar más rápido con esto si quiero 
+rendir ese final algún día.
+
+------------------------------------------------------------------------------------------
+
+04/11/2024
+
+Hoy llegué a las 10. Revisé los gráficos que tengo hechos. La verdad, no muestran gran cosa.
+Quiero charlarlo con Pablo y plantearle mi situación. Mientras me voy a poner con la parte
+teórica.
+
+Hablé con Pablo después de la comida, lo que me dijo es que no sólo haga una clusterización
+en cuatro clusters, sino que también lo haga en dos, que identifique cuáles son los pares de
+preguntas en cada cluster y de ahí sacar una conclusión sobre si podemos o no diferenciar
+estados en este contexto.
+
+A esto sumarle un resumen claro de qué vamos a escribir en el paper.
+
+Ya clusterizé todo en dos clusters y sumé los gráficos para ese análisis. Ahora debería
+diferenciar cuáles pares de preguntas están en cada cluster.
+
+#######################################################################################
+
+Si clusterizo en dos clusters, lo que observo son las siguientes separaciones:
+
+.) Cluster 1: 'V202255x_vs_V202341x.csv', 'V202331x_vs_V201386x.csv',
+	      'V202341x_vs_V201386x.csv', 'V202350x_vs_V201386x.csv'
+	    
+.) Cluster 2: 'V201411x_vs_V201408x.csv', 'V201426x_vs_V201386x.csv',
+   	      'V202255x_vs_V201420x.csv', 'V202255x_vs_V202328x.csv',
+   	      'V202328x_vs_V201386x.csv', 'V202341x_vs_V201372x.csv',
+    	      'V202341x_vs_V202331x.csv', 'V202350x_vs_V202341x.csv'
+    	      
+#######################################################################################
+
+Si clusterizo en 4 clusters, lo que observo son los siguientes conjuntos:
+
+.) Cluster 1: 'V202255x_vs_V202341x.csv', 'V202331x_vs_V201386x.csv',
+	      'V202341x_vs_V201386x.csv', 'V202350x_vs_V201386x.csv'
+	    
+.) Cluster 2: 'V201426x_vs_V201386x.csv', 'V202328x_vs_V201386x.csv'
+
+.) Cluster 3: 'V201411x_vs_V201408x.csv', 'V202255x_vs_V201420x.csv',
+	      'V202255x_vs_V202328x.csv'
+	    
+.) Cluster 4: 'V202341x_vs_V201372x.csv', 'V202341x_vs_V202331x.csv',
+	      'V202350x_vs_V202341x.csv'
+	      
+#######################################################################################
+
+Bueno, la verdad dió bastante lindo lo observado. Habrá que ver cómo plantear el mostrar eso.
+Más que nada como para que entren todos los gráficos en una o dos diapositivas.
+Podría armar un nuevo subconjunto y ver qué da, pero me parece que es forzar un poco
+la maquinaria. Creo que estaría bueno mostrar lo observado y de ahí decidir a dónde
+encaramos la cosa.
+
+Por ahora seguiré con el análisis teórico. Ahí anoté una buena parte de la ecuación, tendría
+que ver si puedo hacer un análisis de estabilidad de esto.

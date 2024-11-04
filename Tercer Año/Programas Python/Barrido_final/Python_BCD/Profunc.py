@@ -2045,7 +2045,6 @@ direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/SSE_K
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
-
 kmeans = KMeans(n_clusters=4, random_state=42, n_init = "auto")
 kmeans.fit(Subconj_JS.to_numpy())
 
@@ -2069,33 +2068,6 @@ plt.close()
 # Defino las preguntas del cluster de JS
 Df_preguntas = pd.read_csv("Tabla_JS.csv")
 Df_preguntas = Df_preguntas[Df_preguntas["nombre"].isin(Lista_subconj)]
-X = np.arange(1,11)*10
-
-# Armo los valores de Y a graficar.
-Y_KM = np.zeros(X.shape)
-for i,rank in enumerate(X):
-    
-    # Armo mi clusterizador y lo entreno para detectar clusters en espacio
-    # de parámetros
-    kmeans_esp = KMeans(n_clusters=4, random_state=42, n_init = "auto")
-    kmeans_esp.fit(Df_preguntas[["Cosd_{}".format(rank),"Beta_{}".format(rank)]])
-    
-    Y_KM[i] = normalized_mutual_info_score(kmeans.labels_, kmeans_esp.labels_)
-
-
-# Grafico las curvas de similaridad entre las particiones
-plt.rcParams.update({'font.size': 44})
-plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-plt.plot(X,Y_KM, "k--" ,linewidth = 6, label = "K-means, 4 clusters")
-plt.title('Clust. subconj. Matriz JS vs Clust. espacio parámetros, MI')
-plt.xlabel("Cant. Simulaciones")
-plt.ylabel("Normalized Mutual Info")
-plt.legend()
-plt.grid()
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/NI_subconj_vs_param.png")
-plt.savefig(direccion_guardado ,bbox_inches = "tight")
-plt.close()
-
 
 # Grafico en el esp. de parámetros los puntos clusterizados según Mat. JS
 X = Df_preguntas["Cosd_{}".format(50)] + rng.normal(loc = 0, scale = (0.02)/5, size = Df_preguntas["Cosd_{}".format(50)].shape)
@@ -2144,7 +2116,7 @@ plt.ylabel(r"$\beta$")
 plt.xlim(-0.025,0.525)
 plt.ylim(0,1.55)
 plt.title("50 simulaciones, Dist {}".format("JS"))
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Esp_parametros_Clust_Subconj_JS.png")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Esp_parametros_Clust_Subconj_k=4_JS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
@@ -2195,9 +2167,187 @@ plt.ylabel(r"$\beta$")
 plt.xlim(-0.025,0.525)
 plt.ylim(0,1.55)
 plt.title("50 simulaciones, Dist {}".format("JS"))
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Esp_parametros_Clust_parametros.png")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Esp_parametros_Clust_k=4_parametros.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
+
+#----------------------------------------------------------------------------------------------------
+
+# Hago un trabajo similar pero comparando con el caso de armar dos clusterizaciones nomás
+
+kmeans = KMeans(n_clusters=2, random_state=42, n_init = "auto")
+kmeans.fit(Subconj_JS.to_numpy())
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=400, c = kmeans.labels_, cmap = "tab10")
+plt.title('Silh {}, K-means sobre Subconj'.format(round(silhouette_scores[0],2)))
+# Custom legend with specific text for each cluster
+legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(kmeans.labels_)]  # Customize these as you like
+# Create legend manually using custom text and colors from the scatter plot
+handles = [plt.Line2D([0], [0], marker='o', color='w', label=label, 
+                      markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
+                      for i, label in enumerate(legend_labels)]
+# Add the legend to the plot
+plt.legend(handles=handles, loc="best", ncol=2, framealpha = 0.5)
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_silh_K-means2_Subconj.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+# Grafico las curvas de similaridad entre las particiones
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+
+# Defino las preguntas del cluster de JS
+Df_preguntas = pd.read_csv("Tabla_JS.csv")
+Df_preguntas = Df_preguntas[Df_preguntas["nombre"].isin(Lista_subconj)]
+X = np.arange(1,11)*10
+
+# Armo los valores de Y a graficar.
+kmeans = KMeans(n_clusters=2, random_state=42, n_init = "auto")
+kmeans.fit(Subconj_JS.to_numpy())
+Y_KM = np.zeros(X.shape)
+for i,rank in enumerate(X):
+    
+    # Armo mi clusterizador y lo entreno para detectar clusters en espacio
+    # de parámetros
+    kmeans_esp = KMeans(n_clusters=2, random_state=42, n_init = "auto")
+    kmeans_esp.fit(Df_preguntas[["Cosd_{}".format(rank),"Beta_{}".format(rank)]])
+    
+    Y_KM[i] = normalized_mutual_info_score(kmeans.labels_, kmeans_esp.labels_)
+plt.plot(X,Y_KM, "--" ,linewidth = 6, label = "K-means, 2 clusters")
+
+kmeans = KMeans(n_clusters=4, random_state=42, n_init = "auto")
+kmeans.fit(Subconj_JS.to_numpy())
+Y_KM = np.zeros(X.shape)
+for i,rank in enumerate(X):
+    
+    # Armo mi clusterizador y lo entreno para detectar clusters en espacio
+    # de parámetros
+    kmeans_esp = KMeans(n_clusters=4, random_state=42, n_init = "auto")
+    kmeans_esp.fit(Df_preguntas[["Cosd_{}".format(rank),"Beta_{}".format(rank)]])
+    
+    Y_KM[i] = normalized_mutual_info_score(kmeans.labels_, kmeans_esp.labels_)
+plt.plot(X,Y_KM, "--" ,linewidth = 6, label = "K-means, 4 clusters")
+
+plt.title('Clust. subconj. Matriz JS vs Clust. espacio parámetros, MI')
+plt.xlabel("Cant. Simulaciones")
+plt.ylabel("Normalized Mutual Info")
+plt.legend()
+plt.grid()
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/MI_subconj_vs_param.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+# Grafico en el esp. de parámetros los puntos clusterizados según Mat. JS
+X = Df_preguntas["Cosd_{}".format(50)] + rng.normal(loc = 0, scale = (0.02)/5, size = Df_preguntas["Cosd_{}".format(50)].shape)
+Y = Df_preguntas["Beta_{}".format(50)] + rng.normal(loc = 0, scale = (0.1)/5, size = Df_preguntas["Beta_{}".format(50)].shape)
+
+
+kmeans = KMeans(n_clusters=2, random_state=42, n_init = "auto")
+kmeans.fit(Subconj_JS.to_numpy())
+
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+tlinea = 5
+# Región de Polarización Descorrelacionada
+x = [0, 0.1, 0.15, 0, 0]  # x-coordinates
+y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) #, label='Polarización Descorrelacionada')
+plt.text(0.05, 1.3, 'I', fontsize=40, ha='center', va='center', color='k')
+# Región de Transición
+x = [0.1, 0.15, 0.3, 0.15, 0.1]  # x-coordinates
+y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+plt.text(0.18, 1.3, 'II', fontsize=40, ha='center', va='center', color='k')
+# Región de Polarización ideológica
+x = [0.15, 0.5, 0.5, 0.3, 0.15] # x-coordinates
+y = [1.1, 1.1, 1.5, 1.5, 1.1] # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+plt.text(0.35, 1.3, 'III', fontsize=40, ha='center', va='center', color='k')
+# Región de Consenso Radicalizado
+x = [0, 0.5, 0.5, 0.2, 0.2, 0.5, 0.5, 0.1, 0.1, 0, 0]  # x-coordinates
+y = [0, 0, 0.15, 0.3, 0.6, 0.6, 1.1, 1.1, 0.3, 0.2, 0]  # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+plt.text(0.3, 0.85, 'VI', fontsize=40, ha='center', va='center', color='k')
+# Región de Mezcla 1
+x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+y = [0.2, 0.3, 0.75, 0.75, 0.2] # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)  # label=r'Mezcla: CR (50~80%), P1Da (20~35%)')
+plt.text(0.05, 0.55, 'V', fontsize=40, ha='center', va='center', color='k')
+# Región de Mezcla 2
+x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+y = [0.75, 0.75, 1.1, 1.1, 0.75] # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (30~40%), P1D (10~50%)')
+plt.text(0.05, 0.9, 'IV', fontsize=40, ha='center', va='center', color='k')
+# Región de Mezcla 3
+x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
+y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
+plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
+plt.scatter(X,Y, marker="o", c = kmeans.labels_ , s = 500,cmap = "tab10" , alpha = 0.7)
+plt.xlabel(r"$cos(\delta)$")
+plt.ylabel(r"$\beta$")
+plt.xlim(-0.025,0.525)
+plt.ylim(0,1.55)
+plt.title("50 simulaciones, Dist {}".format("JS"))
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Esp_parametros_Clust_Subconj_k=2_JS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+kmeans_esp = KMeans(n_clusters=2, random_state=42, n_init = "auto")
+kmeans_esp.fit(Df_preguntas[["Cosd_{}".format(50),"Beta_{}".format(50)]])
+
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+tlinea = 5
+# Región de Polarización Descorrelacionada
+x = [0, 0.1, 0.15, 0, 0]  # x-coordinates
+y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) #, label='Polarización Descorrelacionada')
+plt.text(0.05, 1.3, 'I', fontsize=40, ha='center', va='center', color='k')
+# Región de Transición
+x = [0.1, 0.15, 0.3, 0.15, 0.1]  # x-coordinates
+y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+plt.text(0.18, 1.3, 'II', fontsize=40, ha='center', va='center', color='k')
+# Región de Polarización ideológica
+x = [0.15, 0.5, 0.5, 0.3, 0.15] # x-coordinates
+y = [1.1, 1.1, 1.5, 1.5, 1.1] # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+plt.text(0.35, 1.3, 'III', fontsize=40, ha='center', va='center', color='k')
+# Región de Consenso Radicalizado
+x = [0, 0.5, 0.5, 0.2, 0.2, 0.5, 0.5, 0.1, 0.1, 0, 0]  # x-coordinates
+y = [0, 0, 0.15, 0.3, 0.6, 0.6, 1.1, 1.1, 0.3, 0.2, 0]  # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+plt.text(0.3, 0.85, 'VI', fontsize=40, ha='center', va='center', color='k')
+# Región de Mezcla 1
+x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+y = [0.2, 0.3, 0.75, 0.75, 0.2] # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)  # label=r'Mezcla: CR (50~80%), P1Da (20~35%)')
+plt.text(0.05, 0.55, 'V', fontsize=40, ha='center', va='center', color='k')
+# Región de Mezcla 2
+x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+y = [0.75, 0.75, 1.1, 1.1, 0.75] # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (30~40%), P1D (10~50%)')
+plt.text(0.05, 0.9, 'IV', fontsize=40, ha='center', va='center', color='k')
+# Región de Mezcla 3
+x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
+y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
+plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
+plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
+plt.scatter(X,Y, marker="o", c = kmeans_esp.labels_ , s = 500,cmap = "tab10" , alpha = 0.7)
+plt.xlabel(r"$cos(\delta)$")
+plt.ylabel(r"$\beta$")
+plt.xlim(-0.025,0.525)
+plt.ylim(0,1.55)
+plt.title("50 simulaciones, Dist {}".format("JS"))
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Esp_parametros_Clust_k=2_parametros.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
 
 
 func.Tiempo(t0)
