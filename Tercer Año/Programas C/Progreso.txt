@@ -4145,3 +4145,15 @@ más tarde, porque Pablo quiere que haga algo extra en el medio.
 Ya encontré el problema. Dios, era una re pelotudez, la puta madre. Bueno, esos gráficos van
 a estar para mañana. Lo que puedo hacer ahora es ponerme con el test de Alemán y después
 mañana me pondré con lo de Granovetter.
+
+------------------------------------------------------------------------------------------
+
+31/10/2024
+
+Hablé con Pablo, me dijo que primero vea si puedo separar el subconj de preguntas a partir
+de usar las distancias JS. Hecho eso, me pondré con la presentación del trabajo de Granovetter.
+Después tengo que mandar a correr nuevas simulaciones en las pc's del cluster. Y por último,
+continuar con la parte teórica a ver qué logro construir.
+
+Hice lo que me dijo Pablo, terminé lo de Granovetter. No llegué a hacer nada más, lo otro lo hago
+el finde supongo.
