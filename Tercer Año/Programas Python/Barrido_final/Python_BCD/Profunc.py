@@ -2000,14 +2000,14 @@ X_2d = mds.fit_transform(Subconj_JS.to_numpy())
 # Grafico los datos en el espacio reducido usando MDS
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-plt.scatter(X_2d[:,0],X_2d[:,1], s=400, marker = "8", color = "tab:orange")
+plt.scatter(X_2d[:,0],X_2d[:,1], s=900, marker = "8", color = "tab:orange")
 plt.title('MDS Subconj Matriz JS')
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/MDS_subconj_JS.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
 # Clasifico usando K-means
-cant_clusters = np.arange(2,6)
+cant_clusters = np.arange(2,12)
 silhouette_scores = list()
 sse = list() # acá vamos a guardar el puntaje de la función objetivo
 for clusters in cant_clusters:
@@ -2050,7 +2050,7 @@ kmeans.fit(Subconj_JS.to_numpy())
 
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=400, c = kmeans.labels_, cmap = "tab10")
+scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=900, c = kmeans.labels_, cmap = "tab10")
 plt.title('Silh {}, K-means sobre Subconj'.format(round(silhouette_scores[2],2)))
 # Custom legend with specific text for each cluster
 legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(kmeans.labels_)]  # Customize these as you like
@@ -2110,7 +2110,7 @@ x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
 y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
 plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
 plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
-plt.scatter(X,Y, marker="o", c = kmeans.labels_ , s = 500,cmap = "tab10" , alpha = 0.7)
+plt.scatter(X,Y, marker="o", c = kmeans.labels_ , s = 800,cmap = "tab10" , alpha = 0.7)
 plt.xlabel(r"$cos(\delta)$")
 plt.ylabel(r"$\beta$")
 plt.xlim(-0.025,0.525)
@@ -2161,7 +2161,7 @@ x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
 y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
 plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
 plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
-plt.scatter(X,Y, marker="o", c = kmeans_esp.labels_ , s = 500,cmap = "tab10" , alpha = 0.7)
+plt.scatter(X,Y, marker="o", c = kmeans_esp.labels_ , s = 800,cmap = "tab10" , alpha = 0.7)
 plt.xlabel(r"$cos(\delta)$")
 plt.ylabel(r"$\beta$")
 plt.xlim(-0.025,0.525)
@@ -2180,7 +2180,7 @@ kmeans.fit(Subconj_JS.to_numpy())
 
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=400, c = kmeans.labels_, cmap = "tab10")
+scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=900, c = kmeans.labels_, cmap = "tab10")
 plt.title('Silh {}, K-means sobre Subconj'.format(round(silhouette_scores[0],2)))
 # Custom legend with specific text for each cluster
 legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(kmeans.labels_)]  # Customize these as you like
@@ -2286,7 +2286,7 @@ x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
 y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
 plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
 plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
-plt.scatter(X,Y, marker="o", c = kmeans.labels_ , s = 500,cmap = "tab10" , alpha = 0.7)
+plt.scatter(X,Y, marker="o", c = kmeans.labels_ , s = 800,cmap = "tab10" , alpha = 0.7)
 plt.xlabel(r"$cos(\delta)$")
 plt.ylabel(r"$\beta$")
 plt.xlim(-0.025,0.525)
@@ -2337,7 +2337,7 @@ x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
 y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
 plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
 plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
-plt.scatter(X,Y, marker="o", c = kmeans_esp.labels_ , s = 500,cmap = "tab10" , alpha = 0.7)
+plt.scatter(X,Y, marker="o", c = kmeans_esp.labels_ , s = 800,cmap = "tab10" , alpha = 0.7)
 plt.xlabel(r"$cos(\delta)$")
 plt.ylabel(r"$\beta$")
 plt.xlim(-0.025,0.525)
@@ -2347,7 +2347,67 @@ direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Esp_p
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
+#----------------------------------------------------------------------------------------------
 
+kmeans = KMeans(n_clusters=4, random_state=42, n_init = "auto")
+kmeans.fit(Subconj_JS.to_numpy())
+
+# Defino las preguntas del cluster de JS
+Df_preguntas = pd.read_csv("Tabla_JS.csv")
+Df_preguntas = Df_preguntas[Df_preguntas["nombre"].isin(Lista_subconj)]
+
+cant_simulaciones = np.arange(1,11)*10
+for rank in cant_simulaciones:
+    # Grafico en el esp. de parámetros los puntos clusterizados según Mat. JS
+    X = Df_preguntas["Cosd_{}".format(rank)] + rng.normal(loc = 0, scale = (0.02)/5, size = Df_preguntas["Cosd_{}".format(rank)].shape)
+    Y = Df_preguntas["Beta_{}".format(rank)] + rng.normal(loc = 0, scale = (0.1)/5, size = Df_preguntas["Beta_{}".format(rank)].shape)
+
+    plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+    tlinea = 5
+    # Región de Polarización Descorrelacionada
+    x = [0, 0.1, 0.15, 0, 0]  # x-coordinates
+    y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) #, label='Polarización Descorrelacionada')
+    plt.text(0.05, 1.3, 'I', fontsize=40, ha='center', va='center', color='k')
+    # Región de Transición
+    x = [0.1, 0.15, 0.3, 0.15, 0.1]  # x-coordinates
+    y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+    plt.text(0.18, 1.3, 'II', fontsize=40, ha='center', va='center', color='k')
+    # Región de Polarización ideológica
+    x = [0.15, 0.5, 0.5, 0.3, 0.15] # x-coordinates
+    y = [1.1, 1.1, 1.5, 1.5, 1.1] # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+    plt.text(0.35, 1.3, 'III', fontsize=40, ha='center', va='center', color='k')
+    # Región de Consenso Radicalizado
+    x = [0, 0.5, 0.5, 0.2, 0.2, 0.5, 0.5, 0.1, 0.1, 0, 0]  # x-coordinates
+    y = [0, 0, 0.15, 0.3, 0.6, 0.6, 1.1, 1.1, 0.3, 0.2, 0]  # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+    plt.text(0.3, 0.85, 'VI', fontsize=40, ha='center', va='center', color='k')
+    # Región de Mezcla 1
+    x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+    y = [0.2, 0.3, 0.75, 0.75, 0.2] # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)  # label=r'Mezcla: CR (50~80%), P1Da (20~35%)')
+    plt.text(0.05, 0.55, 'V', fontsize=40, ha='center', va='center', color='k')
+    # Región de Mezcla 2
+    x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+    y = [0.75, 0.75, 1.1, 1.1, 0.75] # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (30~40%), P1D (10~50%)')
+    plt.text(0.05, 0.9, 'IV', fontsize=40, ha='center', va='center', color='k')
+    # Región de Mezcla 3
+    x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
+    y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
+    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
+    plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
+    plt.scatter(X,Y, marker="o", c = kmeans.labels_ , s = 800,cmap = "tab10" , alpha = 0.7)
+    plt.xlabel(r"$cos(\delta)$")
+    plt.ylabel(r"$\beta$")
+    plt.xlim(-0.025,0.525)
+    plt.ylim(0,1.55)
+    plt.title("{} simulaciones, Dist {}".format(rank,"JS"))
+    direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Esp_parametros_Clust_Subconj_k=4_JS_r{}.png".format(int(rank/10)))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close()
 
 
 func.Tiempo(t0)

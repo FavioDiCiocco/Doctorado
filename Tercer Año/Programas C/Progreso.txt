@@ -4228,3 +4228,21 @@ encaramos la cosa.
 
 Por ahora seguiré con el análisis teórico. Ahí anoté una buena parte de la ecuación, tendría
 que ver si puedo hacer un análisis de estabilidad de esto.
+
+------------------------------------------------------------------------------------------
+
+05/11/2024
+
+Preparé la presentación para mañana. Es bastante chica. ¿Hay algo más que quiera presentar?
+Establecí que mirando un pequeño subconjunto, la clusterización de Kmeans logra diferenciar
+4 clusters de gráficos bien diferenciados.
+
+¿Debería agregar gráficos a este subconjunto? Me parece que sería para confundir nomás.
+¿Qué debería comentar como idea para el paper? Por ahora por desgracia nos estaría faltando
+la capacidad de diferenciar en el espacio de parámetros gráficos de encuestas. Actualmente
+tenemos preguntas distribuidas en el espacio de parámetros, pero sin un gran contexto de
+cómo se distribuyen. Y si reducimos el conjunto de simulaciones usadas, la cosa da horrible
+porque ubica a todos los gráficos en el mismo lugar básicamente.
+
+No estoy seguro de qué cosas hacer de acá para mañana, yo creo que voy a seguir un rato con
+el análisis teórico, a pesar de que no voy a poder resolver nada para mañana.
