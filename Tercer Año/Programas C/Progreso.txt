@@ -4246,3 +4246,105 @@ porque ubica a todos los gráficos en el mismo lugar básicamente.
 
 No estoy seguro de qué cosas hacer de acá para mañana, yo creo que voy a seguir un rato con
 el análisis teórico, a pesar de que no voy a poder resolver nada para mañana.
+
+------------------------------------------------------------------------------------------
+
+06/11/2024
+
+Cosas que surgieron en la reunión:
+---------------------------------
+
+.) Tomar los datos, aprovechar la separación en 4 clusters 
+.) Concentrarnos sólo en polarizaciones en ambos ejes. Tendremos una
+distribución de parámetros ideales
+.) Empezar a escribir, como para ir destilando lo que tenemos y 
+de ahí ir consolidando lo que tenemos
+.) Quizás pensar en la Kurtosis
+.) Quizás se podrían ir agrupando cajas de opiniones. Pasar de siete
+a cinco.
+
+.) Lo que mencioné sobre los estados observados está bien, ¿verdad? Estoy
+notando que el de Obamacare vs Impeachment no pareciera bien graficado.
+¿Eso pasa con todos?
+.) ¿Hay alguna otra forma de comparar los datos con las simulaciones? 
+
+Lo miré, los colores están mal. No entiendo cómo, pero están mal. Voy a revisar esto primero.
+Sí, efectivamente están identificados para el orto. Reparemos eso. Claro, además cuando
+comparo clusterizaciones, están mal comparadas. Pero en el espacio están bien. Y eso
+es compatible. Dios, qué pelotudo.
+
+Encima me da mejor la clusterización para tres clusters. Y quizás justamente eso sea mejor.
+Dios, qué bronca. Repitamos la anotación de clusters
+
+#######################################################################################
+
+Si clusterizo en dos clusters, lo que observo son las siguientes separaciones:
+
+.) Cluster 1: 'V201426x_vs_V201386x.csv', 'V201411x_vs_V201408x.csv',
+      	      'V202255x_vs_V201420x.csv', 'V202328x_vs_V201386x.csv',
+       	      'V202255x_vs_V202328x.csv'
+	    
+.) Cluster 2: 'V202341x_vs_V201372x.csv', 'V202341x_vs_V202331x.csv',
+      	      'V202350x_vs_V202341x.csv', 'V202350x_vs_V201386x.csv',
+	      'V202341x_vs_V201386x.csv', 'V202331x_vs_V201386x.csv',
+      	      'V202255x_vs_V202341x.csv'
+    	      
+#######################################################################################
+
+Si clusterizo en 3 clusters, lo que observo son los siguientes conjuntos:
+
+.) Cluster 1: 'V201426x_vs_V201386x.csv', 'V201411x_vs_V201408x.csv',
+     	      'V202255x_vs_V201420x.csv', 'V202328x_vs_V201386x.csv',
+	      'V202255x_vs_V202328x.csv'
+	    
+.) Cluster 2: 'V202350x_vs_V201386x.csv', 'V202341x_vs_V201386x.csv',
+    	      'V202331x_vs_V201386x.csv', 'V202255x_vs_V202341x.csv'
+
+.) Cluster 3: 'V202341x_vs_V201372x.csv', 'V202341x_vs_V202331x.csv',
+	      'V202350x_vs_V202341x.csv'
+
+
+#######################################################################################
+
+Si clusterizo en 4 clusters, lo que observo son los siguientes conjuntos:
+
+.) Cluster 1: 'V201411x_vs_V201408x.csv', 'V202255x_vs_V201420x.csv',
+      	      'V202255x_vs_V202328x.csv'
+	    
+.) Cluster 2: 'V202350x_vs_V201386x.csv', 'V202341x_vs_V201386x.csv',
+              'V202331x_vs_V201386x.csv', 'V202255x_vs_V202341x.csv'
+
+.) Cluster 3: 'V202341x_vs_V201372x.csv', 'V202341x_vs_V202331x.csv',
+    	      'V202350x_vs_V202341x.csv'
+	    
+.) Cluster 4: 'V201426x_vs_V201386x.csv', 'V202328x_vs_V201386x.csv'
+	      
+#######################################################################################
+
+Bueno, revisé la cosa y la verdad si bien me mandé una cagada en la presentación de resultados,
+que honestamente me hace sentir que doy una imagen de alguien que labura tórpemente,
+por otro lado por lo menos las cosas dan bien y me parece que tenemos un resultado en puerta.
+Estamos completamente en condiciones para escribir el paper y arrancar a presentar lo que
+tenemos. Con mes y medio de laburo quizás podemos llegar a presentar algo para fin de año.
+O quizás para Enero.
+
+Pablo anotó las siguientes cosas:
+---------------------------------
+
+Buscar distribuciones empíricas que se parezcan mas a los estados puros.
+Pensar que queremos separar bien en el espacio de parámetros.
+(Esto creo que está supeditado a que estaba dando mal. Igual podríamos agrandar el subconjunto
+visto que dentro de todo esto está dando mejor)
+
+El modelo esta muy degenerado y puede encontrar mismas configuraciones en muchas regiones del espacio de parámetros.
+Hugo: Concentrarse en configuraciones polarizadas
+Otra metrica aparte de JS? (Pensar en otra métrica visto los resultados corregidos quizás
+no sea necesario)
+
+binear en. 3 o 5 cajas (Esto se podría considerar como forma de mejorar las distancias obtenidas)
+Nuestro modelo cualitativamente reproduce los resultados, si queremos ser mas precisos en la comparación,
+tenemos que hacer un modelo mas sofisticado que incluya variabilidad. (Esta es una propuesta
+de reiniciar todo que finalmente quizás no sea necesaria)
+
+Correr una red 1000 fully connected entre cos delta 0.5 y 1, beta 1 y beta 1.2
+Hugo: buscar la transición de descorrelacionada a correlaciónada en la región beta > 1

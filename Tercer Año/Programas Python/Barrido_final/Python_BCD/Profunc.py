@@ -1989,6 +1989,9 @@ Lista_subconj = ["V201411x_vs_V201408x.csv","V201426x_vs_V201386x.csv","V202255x
                  "V202331x_vs_V201386x.csv","V202341x_vs_V201372x.csv","V202341x_vs_V201386x.csv",
                  "V202341x_vs_V202331x.csv","V202350x_vs_V201386x.csv","V202350x_vs_V202341x.csv"]
 
+indices = np.argsort([np.where(Df_dist_JS.index == elem)[0][0] for elem in Lista_subconj])
+Lista_subconj = [Lista_subconj[x] for x in indices]
+
 # Me quedo con un pequeño conjunto de encuestas
 Subconj_JS = Df_dist_JS.loc[Lista_subconj,Lista_subconj]
 
@@ -2218,6 +2221,19 @@ for i,rank in enumerate(X):
     Y_KM[i] = normalized_mutual_info_score(kmeans.labels_, kmeans_esp.labels_)
 plt.plot(X,Y_KM, "--" ,linewidth = 6, label = "K-means, 2 clusters")
 
+kmeans = KMeans(n_clusters=3, random_state=42, n_init = "auto")
+kmeans.fit(Subconj_JS.to_numpy())
+Y_KM = np.zeros(X.shape)
+for i,rank in enumerate(X):
+    
+    # Armo mi clusterizador y lo entreno para detectar clusters en espacio
+    # de parámetros
+    kmeans_esp = KMeans(n_clusters=3, random_state=42, n_init = "auto")
+    kmeans_esp.fit(Df_preguntas[["Cosd_{}".format(rank),"Beta_{}".format(rank)]])
+    
+    Y_KM[i] = normalized_mutual_info_score(kmeans.labels_, kmeans_esp.labels_)
+plt.plot(X,Y_KM, "--" ,linewidth = 6, label = "K-means, 3 clusters")
+
 kmeans = KMeans(n_clusters=4, random_state=42, n_init = "auto")
 kmeans.fit(Subconj_JS.to_numpy())
 Y_KM = np.zeros(X.shape)
@@ -2408,6 +2424,27 @@ for rank in cant_simulaciones:
     direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Esp_parametros_Clust_Subconj_k=4_JS_r{}.png".format(int(rank/10)))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
+
+#-------------------------------------------------------------------------------------------------------
+
+kmeans = KMeans(n_clusters=3, random_state=42, n_init = "auto")
+kmeans.fit(Subconj_JS.to_numpy())
+
+plt.rcParams.update({'font.size': 44})
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=900, c = kmeans.labels_, cmap = "tab10")
+plt.title('Silh {}, K-means sobre Subconj'.format(round(silhouette_scores[0],2)))
+# Custom legend with specific text for each cluster
+legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(kmeans.labels_)]  # Customize these as you like
+# Create legend manually using custom text and colors from the scatter plot
+handles = [plt.Line2D([0], [0], marker='o', color='w', label=label, 
+                      markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
+                      for i, label in enumerate(legend_labels)]
+# Add the legend to the plot
+plt.legend(handles=handles, loc="best", ncol=2, framealpha = 0.5)
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_silh_K-means3_Subconj.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
 
 
 func.Tiempo(t0)
