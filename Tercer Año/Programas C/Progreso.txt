@@ -4348,3 +4348,18 @@ de reiniciar todo que finalmente quizás no sea necesaria)
 
 Correr una red 1000 fully connected entre cos delta 0.5 y 1, beta 1 y beta 1.2
 Hugo: buscar la transición de descorrelacionada a correlaciónada en la región beta > 1
+
+------------------------------------------------------------------------------------------
+
+07/11/2024
+
+En la mañana hice otro de los test en alemán. Hablé con Pablo, me dijo que primero hagamos la
+comparación con tres clusters, a ver qué se observa. Eso quiere decir el gráfico de parámetros
+coloreado según los clusters, la mutual information entre clusters y por ahora no se me ocurre
+algo más.
+
+Ya armé esos gráficos que me propuso Pablo, los subí al drive, corroboré que los gráficos estén
+en los lugares correctos.
+
+Pensaba leer un paper, después ir a casa y ya de ahí mañana haré algunas cosas más de Alemán.
+O mejor el laburo de la materia de agentes.
