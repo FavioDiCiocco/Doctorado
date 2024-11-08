@@ -4363,3 +4363,25 @@ en los lugares correctos.
 
 Pensaba leer un paper, después ir a casa y ya de ahí mañana haré algunas cosas más de Alemán.
 O mejor el laburo de la materia de agentes.
+
+------------------------------------------------------------------------------------------
+
+08/11/2024
+
+A la mañana fui a Alemán, después estuvo la charla de Sebas. Para dentro de dos semanas tengo
+que preparar una charla. Veré si la armo sobre lo que fueron las clases de ética en la
+recolección de datos, o sobre algún paper interesante.
+
+Lo primero que tengo que hacer es mandar a correr cosas. Segundo leer lo que hizo Sebas sobre
+el cálculo de la ecuación dinámica en el modelo de Granovetter.
+
+En Coimbra mandé a realizarse las simulaciones de la iteración 0 a la 29. En Algarve
+mandé a realizarse las simuaciones de la iteración 30 a la 59. En Oporto mandé
+a correr las simulaciones entre 60 y 89. Van a quedar 10 simulaciones faltantes
+que después repartiré en las tres pc's. Dentro de un mes o más.
+
+Ecuación de Focker-Planck. Está descargando el libro de Springer mientras miro lo que escribió
+Sebas. Tal cuál me dijo Sebas, ese libro justifica el paso de la ecuación de la derivada
+de la probabilidad de la fracción de agentes a la ecuación dinámica de la fracción de agentes.
+¿Cómo sería entonces la ecuación maestra que tenemos pasada al caso de fracción de agentes?
+
