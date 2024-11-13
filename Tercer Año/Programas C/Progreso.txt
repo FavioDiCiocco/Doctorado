@@ -4385,3 +4385,82 @@ Sebas. Tal cuál me dijo Sebas, ese libro justifica el paso de la ecuación de l
 de la probabilidad de la fracción de agentes a la ecuación dinámica de la fracción de agentes.
 ¿Cómo sería entonces la ecuación maestra que tenemos pasada al caso de fracción de agentes?
 
+------------------------------------------------------------------------------------------
+
+11/11/2024
+
+Llegué no tan temprano, hablé con Lucio por temas del modelo de Granovetter y el viaje con
+Silvio. Después mandé mail por el tema del trabajo de la materia de modelos basados en
+agentes.
+
+Podría seguir laburando en la parte de agregar pares de preguntas al tema del trabajo de la
+gente de GOTHAM. Podría seguir con el análisis teórico, que ya casi tengo la ecuación armada
+y de ahí lo que sigue sería quizás hacer pruebas con el modelo numérico. No me parece igual
+que sea el camino a resultados.
+
+Hablando con Pablo, me dijo de modificar los colores de los gráficos, para que sean más fácilmente
+diferenciables. Y que arme también el gráfico para 100 simulaciones en el caso de 4 clusters.
+Y que revise uno de los puntos rojos que está mezclado con los puntos rosas.
+
+No me tengo que olvidar que yo tengo que armar una presentación para dentro de dos semanas.
+Tengo que leer lo que anoté del viaje a Uruguay y decidir si con eso tengo algo para charlar
+al respecto.
+
+Pablo nos recomendó buscar bibliografía sobre el modelo de Schelling para la materia de Inés.
+Ahora YA voy a ver lo de la ecuación del modelo de Granovetter, después lo que me dijo Pablo
+y por último lo del modelo dinámico para ver si ya consigo una versión final de eso.
+
+Charlamos sobre el modelo de Granovetter con Pablo, anoté unas cosas para hacer en el
+cuaderno. Con Lucio estábamos viendo formas de escribir la ecuación maestra de la
+probabilidad de tener una fracción de agentes. Estábamos considerando introducir una
+integral de la función softmax en función de los umbrales de los agentes. Y como esa
+integral se presenta como una cuenta muy compleja de resolver, quizás podríamos ver
+formas de aproximar el denominador.
+
+Volviendo al trabajo con la gente de GOTHAM, Pablo me dijo para emprolijar lo que tengo
+hasta ahora cosa de mandarles lo que estamos viendo antes de la charla y ya poder llegar
+con esto revisado.
+
+Antes de eso, primero voy a revisar las correcciones que hicieron sobre mi laburo Victoria
+y Felipe. Bien, ya revisé y respondí eso, sigamos con lo otro.
+
+Resolví lo de los colores. Genial. Pablo me dijo de armar los clusters en el espacio reducido
+y en reconstruir los gráficos en el espacio de parámetros, porque no son del todo claros.
+Tengo que tener algo que dé una idea de cómo son los estados promedios de los clusters y
+cómo son los estados en cada región. También me preguntó para el caso de 4 clusters si el punto
+rojo en las 20 simulaciones está mal clasificado. Y cuál es el caso de 100 simulaciones para
+los 4 clusters.
+
+------------------------------------------------------------------------------------------
+
+12/11/2024
+
+Hoy tengo tres cosas principales para hacer:
+1) Emprolijar la presentación, intentemos sacar algo hecho hoy. Achicar la región graficada
+en los gráficos donde se me juntan todos los puntos, esas cosas.
+2) Revisar algunos papers sobre trabajos de Schelling, ideas con las que caer hoy a la
+clase. También revisar cómo funca el código de Mesa.
+3) Preparar presentación para el viernes de la otra semana.
+
+Revisé y encontré un paper sobre cosas de Schelling, después quizás lo charlemos con los pibes.
+
+Voy a ponerme con la presentación. Revisé el punto que me propuso Pablo de mirar,
+está bien ese punto. Después me fui a la clase de Modelo de agentes.
+
+------------------------------------------------------------------------------------------
+
+13/11/2024
+
+Hablando con Pablo, el plan primero es armar la presentación para mandarle a la gente
+de GOTHAM. Bien, tengo esa presentación armada. Para la semana que viene puedo intentar
+tener un análisis más claro de la parte teórica y una presentación un poco más exhaustiva
+sobre las clusterizaciones.
+
+Ahora tengo dos cosas que puedo ponerme a hacer. La primera es un test de Alemán, la segunda
+es ponerme a preparar la presentación para el viernes de la semana que viene. La tercera
+cosa que quiero hacer es si puedo ponerme a estudiar para el final de Mininni.
+
+Pablo me dijo de armar unos gráficos de distancias de JS y ver dónde van los mínimos.
+Armé los gráficos que Pablo me pidió, mañana a primera hora le muestro eso. Mañana
+trabajaré con Lucio en el tema de Granovetter. Mañana también quiero laburar en la presentación
+del otro viernes.

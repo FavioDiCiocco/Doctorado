@@ -9,6 +9,7 @@ Created on Mon Dec 19 10:04:40 2022
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
 from scipy.spatial.distance import jensenshannon
 from sklearn.cluster import KMeans
 from sklearn.metrics import normalized_mutual_info_score
@@ -1978,6 +1979,8 @@ plt.close()
 # Levanto los datos de la tabla de similaridad
 Df_dist_JS = pd.read_csv("Dist_Enc_JS.csv", index_col=0)
 
+colmap = "tab20b"
+
 
 # Armo un rng para agregar un ruido normal
 rng = np.random.default_rng()
@@ -2053,8 +2056,8 @@ kmeans.fit(Subconj_JS.to_numpy())
 
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=900, c = kmeans.labels_, cmap = "tab10")
-plt.title('Silh {}, K-means sobre Subconj'.format(round(silhouette_scores[2],2)))
+scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=1200, c = kmeans.labels_, cmap = colmap)
+plt.title('K-means sobre Subconj, 4 clusters')
 # Custom legend with specific text for each cluster
 legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(kmeans.labels_)]  # Customize these as you like
 # Create legend manually using custom text and colors from the scatter plot
@@ -2077,8 +2080,8 @@ kmeans.fit(Subconj_JS.to_numpy())
 
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=900, c = kmeans.labels_, cmap = "tab10")
-plt.title('Silh {}, K-means sobre Subconj'.format(round(silhouette_scores[0],2)))
+scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=1200, c = kmeans.labels_, cmap = colmap)
+plt.title('K-means sobre Subconj, 2 clusters')
 # Custom legend with specific text for each cluster
 legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(kmeans.labels_)]  # Customize these as you like
 # Create legend manually using custom text and colors from the scatter plot
@@ -2101,32 +2104,32 @@ Df_preguntas = pd.read_csv("Tabla_JS.csv")
 Df_preguntas = Df_preguntas[Df_preguntas["nombre"].isin(Lista_subconj)]
 X = np.arange(1,11)*10
 
-# Armo los valores de Y a graficar.
-kmeans = KMeans(n_clusters=2, random_state=42, n_init = "auto")
-kmeans.fit(Subconj_JS.to_numpy())
-Y_KM = np.zeros(X.shape)
-for i,rank in enumerate(X):
+# # Armo los valores de Y a graficar.
+# kmeans = KMeans(n_clusters=2, random_state=42, n_init = "auto")
+# kmeans.fit(Subconj_JS.to_numpy())
+# Y_KM = np.zeros(X.shape)
+# for i,rank in enumerate(X):
     
-    # Armo mi clusterizador y lo entreno para detectar clusters en espacio
-    # de parámetros
-    kmeans_esp = KMeans(n_clusters=2, random_state=42, n_init = "auto")
-    kmeans_esp.fit(Df_preguntas[["Cosd_{}".format(rank),"Beta_{}".format(rank)]])
+#     # Armo mi clusterizador y lo entreno para detectar clusters en espacio
+#     # de parámetros
+#     kmeans_esp = KMeans(n_clusters=2, random_state=42, n_init = "auto")
+#     kmeans_esp.fit(Df_preguntas[["Cosd_{}".format(rank),"Beta_{}".format(rank)]])
     
-    Y_KM[i] = normalized_mutual_info_score(kmeans.labels_, kmeans_esp.labels_)
-plt.plot(X,Y_KM, "--" ,linewidth = 6, label = "K-means, 2 clusters")
+#     Y_KM[i] = normalized_mutual_info_score(kmeans.labels_, kmeans_esp.labels_)
+# plt.plot(X,Y_KM, "--" ,linewidth = 6, label = "K-means, 2 clusters")
 
-kmeans = KMeans(n_clusters=3, random_state=42, n_init = "auto")
-kmeans.fit(Subconj_JS.to_numpy())
-Y_KM = np.zeros(X.shape)
-for i,rank in enumerate(X):
+# kmeans = KMeans(n_clusters=3, random_state=42, n_init = "auto")
+# kmeans.fit(Subconj_JS.to_numpy())
+# Y_KM = np.zeros(X.shape)
+# for i,rank in enumerate(X):
     
-    # Armo mi clusterizador y lo entreno para detectar clusters en espacio
-    # de parámetros
-    kmeans_esp = KMeans(n_clusters=3, random_state=42, n_init = "auto")
-    kmeans_esp.fit(Df_preguntas[["Cosd_{}".format(rank),"Beta_{}".format(rank)]])
+#     # Armo mi clusterizador y lo entreno para detectar clusters en espacio
+#     # de parámetros
+#     kmeans_esp = KMeans(n_clusters=3, random_state=42, n_init = "auto")
+#     kmeans_esp.fit(Df_preguntas[["Cosd_{}".format(rank),"Beta_{}".format(rank)]])
     
-    Y_KM[i] = normalized_mutual_info_score(kmeans.labels_, kmeans_esp.labels_)
-plt.plot(X,Y_KM, "--" ,linewidth = 6, label = "K-means, 3 clusters")
+#     Y_KM[i] = normalized_mutual_info_score(kmeans.labels_, kmeans_esp.labels_)
+# plt.plot(X,Y_KM, "--" ,linewidth = 6, label = "K-means, 3 clusters")
 
 kmeans = KMeans(n_clusters=4, random_state=42, n_init = "auto")
 kmeans.fit(Subconj_JS.to_numpy())
@@ -2168,26 +2171,26 @@ for rank in cant_simulaciones:
 
     plt.figure(figsize=(28, 21))  # Adjust width and height as needed
     tlinea = 5
-    # Región de Polarización Descorrelacionada
-    x = [0, 0.1, 0.15, 0, 0]  # x-coordinates
-    y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
-    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) #, label='Polarización Descorrelacionada')
-    plt.text(0.05, 1.3, 'I', fontsize=40, ha='center', va='center', color='k')
-    # Región de Transición
-    x = [0.1, 0.15, 0.3, 0.15, 0.1]  # x-coordinates
-    y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
-    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
-    plt.text(0.18, 1.3, 'II', fontsize=40, ha='center', va='center', color='k')
-    # Región de Polarización ideológica
-    x = [0.15, 0.5, 0.5, 0.3, 0.15] # x-coordinates
-    y = [1.1, 1.1, 1.5, 1.5, 1.1] # y-coordinates
-    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
-    plt.text(0.35, 1.3, 'III', fontsize=40, ha='center', va='center', color='k')
+    # # Región de Polarización Descorrelacionada
+    # x = [0, 0.1, 0.15, 0, 0]  # x-coordinates
+    # y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+    # plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) #, label='Polarización Descorrelacionada')
+    # plt.text(0.05, 1.3, 'I', fontsize=40, ha='center', va='center', color='k')
+    # # Región de Transición
+    # x = [0.1, 0.15, 0.3, 0.15, 0.1]  # x-coordinates
+    # y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+    # plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+    # plt.text(0.18, 1.3, 'II', fontsize=40, ha='center', va='center', color='k')
+    # # Región de Polarización ideológica
+    # x = [0.15, 0.5, 0.5, 0.3, 0.15] # x-coordinates
+    # y = [1.1, 1.1, 1.5, 1.5, 1.1] # y-coordinates
+    # plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+    # plt.text(0.35, 1.3, 'III', fontsize=40, ha='center', va='center', color='k')
     # Región de Consenso Radicalizado
     x = [0, 0.5, 0.5, 0.2, 0.2, 0.5, 0.5, 0.1, 0.1, 0, 0]  # x-coordinates
     y = [0, 0, 0.15, 0.3, 0.6, 0.6, 1.1, 1.1, 0.3, 0.2, 0]  # y-coordinates
     plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
-    plt.text(0.3, 0.85, 'VI', fontsize=40, ha='center', va='center', color='k')
+    # plt.text(0.15, 0.4, 'VI', fontsize=40, ha='center', va='center', color='k')
     # Región de Mezcla 1
     x = [0, 0.1, 0.1, 0, 0] # x-coordinates
     y = [0.2, 0.3, 0.75, 0.75, 0.2] # y-coordinates
@@ -2198,16 +2201,17 @@ for rank in cant_simulaciones:
     y = [0.75, 0.75, 1.1, 1.1, 0.75] # y-coordinates
     plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (30~40%), P1D (10~50%)')
     plt.text(0.05, 0.9, 'IV', fontsize=40, ha='center', va='center', color='k')
-    # Región de Mezcla 3
-    x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
-    y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
-    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
-    plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
-    plt.scatter(X,Y, marker="o", c = kmeans.labels_ , s = 800,cmap = "tab10" , alpha = 0.7)
+    # # Región de Mezcla 3
+    # x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
+    # y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
+    # plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
+    # plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
+    plt.scatter(X,Y, marker="o", c = kmeans.labels_ , s = 900, cmap = colmap , alpha = 0.7)
+    plt.gca().xaxis.set_major_formatter(FuncFormatter(lambda val, pos: f'{val:.2f}'))
     plt.xlabel(r"$cos(\delta)$")
     plt.ylabel(r"$\beta$")
-    plt.xlim(-0.025,0.525)
-    plt.ylim(0,1.55)
+    plt.xlim(-0.025,0.11)
+    plt.ylim(0,1)
     plt.title("{} simulaciones, Dist {}".format(rank,"JS"))
     direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Esp_parametros_Clust_Subconj_k=4_JS_r{}.png".format(int(rank/10)))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
@@ -2220,8 +2224,8 @@ kmeans.fit(Subconj_JS.to_numpy())
 
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=900, c = kmeans.labels_, cmap = "tab10")
-plt.title('Silh {}, K-means sobre Subconj'.format(round(silhouette_scores[0],2)))
+scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=1200, c = kmeans.labels_, cmap = colmap)
+plt.title('K-means sobre Subconj, 3 clusters')
 # Custom legend with specific text for each cluster
 legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(kmeans.labels_)]  # Customize these as you like
 # Create legend manually using custom text and colors from the scatter plot
@@ -2278,7 +2282,7 @@ for rank in cant_simulaciones:
     y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
     plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
     plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
-    plt.scatter(X,Y, marker="o", c = kmeans.labels_ , s = 800, cmap = "tab10" , alpha = 0.7)
+    plt.scatter(X,Y, marker="o", c = kmeans.labels_ , s = 900, cmap = colmap , alpha = 0.85)
     plt.xlabel(r"$cos(\delta)$")
     plt.ylabel(r"$\beta$")
     plt.xlim(-0.025,0.525)
@@ -2303,25 +2307,25 @@ for rank in cant_simulaciones:
     plt.figure(figsize=(28, 21))  # Adjust width and height as needed
     tlinea = 5
     # Región de Polarización Descorrelacionada
-    x = [0, 0.1, 0.15, 0, 0]  # x-coordinates
-    y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
-    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) #, label='Polarización Descorrelacionada')
-    plt.text(0.05, 1.3, 'I', fontsize=40, ha='center', va='center', color='k')
-    # Región de Transición
-    x = [0.1, 0.15, 0.3, 0.15, 0.1]  # x-coordinates
-    y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
-    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
-    plt.text(0.18, 1.3, 'II', fontsize=40, ha='center', va='center', color='k')
-    # Región de Polarización ideológica
-    x = [0.15, 0.5, 0.5, 0.3, 0.15] # x-coordinates
-    y = [1.1, 1.1, 1.5, 1.5, 1.1] # y-coordinates
-    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
-    plt.text(0.35, 1.3, 'III', fontsize=40, ha='center', va='center', color='k')
+    # x = [0, 0.1, 0.15, 0, 0]  # x-coordinates
+    # y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+    # plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) #, label='Polarización Descorrelacionada')
+    # plt.text(0.05, 1.3, 'I', fontsize=40, ha='center', va='center', color='k')
+    # # Región de Transición
+    # x = [0.1, 0.15, 0.3, 0.15, 0.1]  # x-coordinates
+    # y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+    # plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+    # plt.text(0.18, 1.3, 'II', fontsize=40, ha='center', va='center', color='k')
+    # # Región de Polarización ideológica
+    # x = [0.15, 0.5, 0.5, 0.3, 0.15] # x-coordinates
+    # y = [1.1, 1.1, 1.5, 1.5, 1.1] # y-coordinates
+    # plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+    # plt.text(0.35, 1.3, 'III', fontsize=40, ha='center', va='center', color='k')
     # Región de Consenso Radicalizado
     x = [0, 0.5, 0.5, 0.2, 0.2, 0.5, 0.5, 0.1, 0.1, 0, 0]  # x-coordinates
     y = [0, 0, 0.15, 0.3, 0.6, 0.6, 1.1, 1.1, 0.3, 0.2, 0]  # y-coordinates
     plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
-    plt.text(0.3, 0.85, 'VI', fontsize=40, ha='center', va='center', color='k')
+    plt.text(0.15, 0.4, 'VI', fontsize=40, ha='center', va='center', color='k')
     # Región de Mezcla 1
     x = [0, 0.1, 0.1, 0, 0] # x-coordinates
     y = [0.2, 0.3, 0.75, 0.75, 0.2] # y-coordinates
@@ -2333,15 +2337,16 @@ for rank in cant_simulaciones:
     plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (30~40%), P1D (10~50%)')
     plt.text(0.05, 0.9, 'IV', fontsize=40, ha='center', va='center', color='k')
     # Región de Mezcla 3
-    x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
-    y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
-    plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
-    plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
-    plt.scatter(X,Y, marker="o", c = kmeans.labels_ , s = 800, cmap = "tab10" , alpha = 0.7)
+    # x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
+    # y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
+    # plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
+    # plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
+    plt.scatter(X,Y, marker="o", c = kmeans.labels_ , s = 900, cmap = colmap , alpha = 0.85)
+    plt.gca().xaxis.set_major_formatter(FuncFormatter(lambda val, pos: f'{val:.2f}'))
     plt.xlabel(r"$cos(\delta)$")
     plt.ylabel(r"$\beta$")
-    plt.xlim(-0.025,0.525)
-    plt.ylim(0,1.55)
+    plt.xlim(-0.025,0.18)
+    plt.ylim(0,1)
     plt.title("{} simulaciones, Dist {}".format(rank,"JS"))
     direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Esp_parametros_Clust_Subconj_k=2_JS_r{}.png".format(int(rank/10)))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
