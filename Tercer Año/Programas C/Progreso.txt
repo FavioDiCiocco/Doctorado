@@ -4464,3 +4464,21 @@ Pablo me dijo de armar unos gráficos de distancias de JS y ver dónde van los m
 Armé los gráficos que Pablo me pidió, mañana a primera hora le muestro eso. Mañana
 trabajaré con Lucio en el tema de Granovetter. Mañana también quiero laburar en la presentación
 del otro viernes.
+
+------------------------------------------------------------------------------------------
+
+14/11/2024
+
+Llegué más o menos temprano, vamos mejorando. Me siento joven, con vida.
+Pablo me decía que tenga a mano los estados característicos de las regiones como para
+mostrar que lo que se ve en las matrices de distancia de JS es correcto. Se me ocurren
+dos formas de mostrar eso, una es colocando según como yo ya tengo separadas las regiones.
+Siento que eso tiene como un preconcepto de lo que yo creo que es. Me parece mejor si
+uso los gráficos de fracción de agentes en el espacio de parámetros. Porque además
+justamente sirve para mostrar por qué creo que están donde digo que están.
+Lo armé como me parece mejor. Ahora tengo dos opciones, ponerme con Alemán o ponerme
+con el armado de la presentación para el viernes que viene. Yo haré lo de la presentación
+primero, después alemán, después charlar con Pablo.
+
+¿Hay algo que yo piense que deba hacer para la semana que viene? Proponerle a Pablo lo
+de usar la correlación como forma de medir si los gráficos dan bien.
