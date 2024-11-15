@@ -4482,3 +4482,25 @@ primero, después alemán, después charlar con Pablo.
 
 ¿Hay algo que yo piense que deba hacer para la semana que viene? Proponerle a Pablo lo
 de usar la correlación como forma de medir si los gráficos dan bien.
+
+Después de esto me junté con Lucio a laburar en el tema de la notación de Granovetter
+y resolver lo de la notación.
+
+Más tarde charlé con Pablo y continué preparando la presentación agregando comparaciones
+entre el mapa de colores de distancia JS contra lo que se ve en el mapa de fracción
+de agentes en el espacio de parámetros.
+
+------------------------------------------------------------------------------------------
+
+15/11/2024
+
+A la mañana fui a Alemán, llegué un poquitín tarde hoy. Fuimos a comer, volví, y más tarde
+voy al casi coloquio. Hoy no voy a laburar mucho.
+
+Después tengo que ponerme a actualizar la documentación. El miércoles quizás.
+En la hora que queda, me pondré a revisar el código del laburo de la materia de Modelos
+de Agentes. Miré el modelo, la verdad que me quedé bastante dando vueltas con eso y no
+resolví nada. Pero por lo menos ya lo entiendo bastante, creo que podría hacerlo correr
+con los otros criterios que charlamos. Me confunde un poco que no estoy seguro de qué queremos
+ver o graficar. Tengo algunas cosas anotadas, veré de armar algo para el martes quizás.
+No sé si el finde, quizás el martes nomás.
