@@ -4504,3 +4504,26 @@ resolví nada. Pero por lo menos ya lo entiendo bastante, creo que podría hacer
 con los otros criterios que charlamos. Me confunde un poco que no estoy seguro de qué queremos
 ver o graficar. Tengo algunas cosas anotadas, veré de armar algo para el martes quizás.
 No sé si el finde, quizás el martes nomás.
+
+------------------------------------------------------------------------------------------
+
+20/11/2024
+
+Hicimos la reunión con Pablo y la gente de GOTHAM. Estas son las cosas que anoté de la charla.
+
+Cosas que surgen en la reunión:
+--------------------------------
+1) No apoyarse tanto en los datos. Identificar diferentes parejas de datos en el espacio de parámetros.
+2) Hacer comparaciones bien cualitativas sobre si los estados están en regiones de 
+alta controversialidad o de alta correlación.
+3) Convence más la idea de la comparación de la encuesta con el mapa de JS y la fracción de estados
+en el espacio de parámetros.
+4) Hugo está mostrando cómo da el análisis de estabilidad. Encuentra dos regiones de transición,
+una de Beta 1.1 para abajo, y otra de Cos(delta) 0.75 en adelante.
+5) La presentación de la comparación de la polarización 2D vs 1D me parece interesante para mostrar
+la importancia de el modelado en varias dimensiones.
+6) Estaría bueno mostrar la jerarquía de Betas. Dar una idea de que lo que se vió en el paper de ellos
+1D se respeta en la versión 2D.
+
+Luego de bastante mirar los pdfs, creo que básicamente tomaré algunas slides de dos presentaciones
+y contaré algunas conclusiones que tengo de lo que fue la parte más de charlas del SICSS.
