@@ -4507,6 +4507,14 @@ No sé si el finde, quizás el martes nomás.
 
 ------------------------------------------------------------------------------------------
 
+19/11/2024
+
+Llegué a la facultad, estoy en condiciones de laburar en lo de la presentación, hacer algo
+para la charla de grupo o trabajar en lo del modelo de Schelling. Primero voy a repasar un
+segundo el tema de la presentación para la gente de GOTHAM.
+
+------------------------------------------------------------------------------------------
+
 20/11/2024
 
 Hicimos la reunión con Pablo y la gente de GOTHAM. Estas son las cosas que anoté de la charla.
@@ -4527,3 +4535,13 @@ la importancia de el modelado en varias dimensiones.
 
 Luego de bastante mirar los pdfs, creo que básicamente tomaré algunas slides de dos presentaciones
 y contaré algunas conclusiones que tengo de lo que fue la parte más de charlas del SICSS.
+
+
+------------------------------------------------------------------------------------------
+
+21/11/2024
+
+Hoy en la mañana quise laburar en el tema de Modelos de Agentes, no logré hacer correr el programa,
+tampoco nos pusimos de acuerdo en quién manda a correr las cosas. Mañana charlaremos sobre esto supongo.
+El resto del día estuve laburando en la presentación sobre el viaje de Uruguay. Viene bien, falta
+agregar el tema de lo de ética en ciencia. Veré si puedo concretar una buena parte hoy.
