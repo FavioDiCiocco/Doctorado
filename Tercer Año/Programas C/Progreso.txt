@@ -4513,7 +4513,7 @@ Llegué a la facultad, estoy en condiciones de laburar en lo de la presentación
 para la charla de grupo o trabajar en lo del modelo de Schelling. Primero voy a repasar un
 segundo el tema de la presentación para la gente de GOTHAM.
 
-------------------------------------------------------------------------------------------
+
 
 20/11/2024
 
@@ -4545,3 +4545,18 @@ Hoy en la mañana quise laburar en el tema de Modelos de Agentes, no logré hace
 tampoco nos pusimos de acuerdo en quién manda a correr las cosas. Mañana charlaremos sobre esto supongo.
 El resto del día estuve laburando en la presentación sobre el viaje de Uruguay. Viene bien, falta
 agregar el tema de lo de ética en ciencia. Veré si puedo concretar una buena parte hoy.
+
+
+------------------------------------------------------------------------------------------
+
+22/11/2024
+
+Llegué temprano, aunque los trenes me están complicando porque están tardando mucho.
+Me puse con la presentación del viaje a Uruguay. Armé bastante, aunque no terminé todo
+lo que me hubiera gustado. Igual fue una charla grande, creo que bastante bien estuvo.
+
+Me junté con el grupo de MBA, charlamos sobre qué hacer, fue un bardo porque todavía no
+tenemos datos. Así que volví y mandé a correr las cosas en el cluster de Coimbra.
+Corté mis simulaciones en Coimbra, estaban en la primer vuelta en Beta=1.20. Voy a arrancar
+desde la segunda vuelta la próxima. Y ya a lo último vuelvo a arrancar desde 1.20 la primer
+vuelta nomás.
