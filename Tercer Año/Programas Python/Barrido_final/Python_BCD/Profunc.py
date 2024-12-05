@@ -254,11 +254,7 @@ for nombre in Archivos_Matrices:
 
 # Armo el gráfico de las regiones del espacio de parámetros Beta-Cosd
 
-
-"""
-
 tlinea = 6
-
 
 # Create a figure and axis
 plt.rcParams.update({'font.size': 44})
@@ -316,15 +312,15 @@ ax.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
 
 ax.set_xlabel(r"$cos(\delta)$")
 ax.set_ylabel(r"$\beta$")
-ax.set_title("Distribución de estados en el espacio de parámetros")
-ax.set_xlim(0,0.5)
-ax.set_ylim(0,1.5)
+ax.set_title("Separation into regions of the space of parameters")
+ax.set_xlim(-0.01,0.51)
+ax.set_ylim(0,1.51)
 # ax.legend()
 
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Beta-Cosd/Distribucion de estados.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
-"""
+
 
 #####################################################################################
 #####################################################################################
