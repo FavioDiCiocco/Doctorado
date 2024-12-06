@@ -251,7 +251,7 @@ for nombre in Archivos_Matrices:
 
 #####################################################################################
 #####################################################################################
-
+"""
 # Armo el gráfico de las regiones del espacio de parámetros Beta-Cosd
 
 tlinea = 6
@@ -321,7 +321,7 @@ direccion_guardado = Path("../../../Imagenes/Barrido_final/Beta-Cosd/Distribucio
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
-
+"""
 #####################################################################################
 #####################################################################################
 
@@ -2208,7 +2208,7 @@ for rank in cant_simulaciones:
     plt.ylabel(r"$\beta$")
     plt.xlim(-0.025,0.525)
     plt.ylim(0,1.55)
-    plt.title("{} simulaciones, Dist {}".format(rank,"JS"))
+    # plt.title("{} simulaciones, Dist {}".format(rank,"JS"))
     direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Esp_parametros_Clust_Subconj_k=4_JS_r{}.png".format(int(rank/10)))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
