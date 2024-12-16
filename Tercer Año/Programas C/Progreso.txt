@@ -4628,7 +4628,7 @@ cosa esté más tranca en ese sentido.
 
 ------------------------------------------------------------------------------------------
 
-02/11/2024
+02/12/2024
 
 Hoy llegué más o menos tarde a la facultad, ahora debería ponerme con lo que es el poster del
 Dinamic Days. Hay tres cosas claves para hacer esta semana:
@@ -4646,7 +4646,7 @@ para que lo mire. Me voy más temprano porque no me estoy sintiendo tan bien, in
 
 ------------------------------------------------------------------------------------------
 
-03/11/2024
+03/12/2024
 
 Hoy me quedé en casa esperando a que vengan a revisar el tema de la caldera. De paso me sirvió
 porque estaba sintiéndome bastante mal por el tema de la gripe/fiebre de ayer.
@@ -4656,7 +4656,7 @@ medio nefasta con el laburo que tengo por delante.
 
 ------------------------------------------------------------------------------------------
 
-04/11/2024
+04/12/2024
 
 Pablo me dijo que haga varios cambios en el archivo de Overleaf. Para empezar, me dijo que lo
 pase a Inglés. El resto de los cambios los voy a ir tomando de lo que me escribió en el Whatsapp.
@@ -4672,7 +4672,7 @@ seguiré laburando.
 
 ------------------------------------------------------------------------------------------
 
-05/11/2024
+05/12/2024
 
 Hoy estuve laburando el poster. Va quedando. Pablo me dijo que lo puedo imprimir el lunes.
 No me gusta estar tan sobre la hora, pero bueno, veremos. Intentaré tenerlo mañana. Aunque
@@ -4684,7 +4684,7 @@ Debería revisarlo un poco más mañana.
 
 ------------------------------------------------------------------------------------------
 
-06/11/2024
+06/12/2024
 
 A la mañana fui a rendir Alemán, estuvo bien, se hizo lo que se pudo. Me gustó el curso.
 Después miré un poco el tema del trabajo de MBA. Anoté algunas correcciones. Pero no está
@@ -4694,3 +4694,27 @@ Seguí con el poster. Hice todo lo que pude, lo que se me ocurrió. Tiene forma 
 imprimirse. Hay algunas cosas que después les daré una revisada con una mente un poco más fresca.
 Al final nunca entregamos el trabajo de MBA. Tenemos que resolver eso el finde. Después veré
 qué haré el finde.
+
+------------------------------------------------------------------------------------------
+
+16/12/2024
+
+Hoy llegué al mediodía, tuve que ir a buscar unas cosas a la mañana. Ahora voy a comer
+y ya arranco con el tema del trabajo del modelo de opiniones y a pensar un poco un proyecto
+para laburar con Silvio en Brasil.
+
+Lo primero para hacer hoy, YA: Qué pasa con el modelo en el caso de cos(delta)=1.
+Avancé, aunque quedaron algunas cosas por resolver todavía. Debería mandar a correr simulaciones
+con esto. También debería rearmar las simulaciones que tenía corriendo en Coimbra y Algarve.
+
+Pablo me dijo de hacer tres cosa en particular:
+1) Avanzar con el paper con la gente de GOTHAM. Cualquier cosa le pido la hoja con lo que charlamos
+con David y Jesús.
+2) Preparar una propuesta de laburo para mandarle a Silvio. Hablarle sobre el modelo de opinión,
+3) No me acuerdo qué era, la concha de la lora. Creo que era mandar simulaciones para ver qué
+pasa con lo del caso de cos(delta)=1. Arrancaremos con las dos cosas que tengo anotadas y después
+recalculamos.
+
+Para lo primero, tengo que además hacer simulaciones con 1000 agentes para valores de Beta entre
+[0.5, 1.5] y cos(delta)=1. Tengo que ver cómo evoluciona eso. Y tengo que reponer las simulaciones
+en Coimbra y Algarve.
