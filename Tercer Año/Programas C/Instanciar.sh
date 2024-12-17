@@ -3,42 +3,61 @@
 # y que sean programas separados, de manera de que me tire el tiempo que tardó
 # en cada uno. Porque sino tengo que andar mirando los tiempos en los archivos.
 
-#make clean
-#make all
+# make clean
+# make all
 
-echo Apreta enter para correr, sino primero apreta alguna letra y despues enter
-read decision
+# echo Apreta enter para correr, sino primero apreta alguna letra y despues enter
+# read decision
 
 echo "El ID del script es $$"
 
-# Voy a Hardcodear algunos Arrays
+# Voy a armar los arrays de las variables que voy a barrer.
 
-Arr_Agentes=(1000)
-Arr_Beta=(0.7)
-Arr_CosD=(0)
-Arr_Kappas=(10)
-#Arr_Iteracion=(0)
+# Armo el array de valores de Beta. Primero lo hago vacío
+# y después lo lleno con la lista de valores a recorrer
+Arr_Beta=()
+
+for val in {0..20}
+do
+	cuenta=`echo 0.5+$val*0.05 | bc -l`
+	Arr_Beta+=( $cuenta )
+done
+
+
+# Armo el array de valores de Cosdelta. Primero lo hago
+# vacío y después lo lleno con la lista de valores a recorrer.
+#Arr_Cosdelta=()
+
+# for val in {0..24}
+# do
+#	cuenta=`echo 0.01+$val*0.02 | bc -l`
+#	Arr_Cosdelta+=( $cuenta )
+# done
+Arr_Cosdelta=(1)
+
+#for val in {0..19}
+#do
+#	cuenta=`echo $val*0.5+0.5 | bc -l`
+#	Arr_Kappas+=( $cuenta )
+#done
 
 
 if [ -z $decision ]
 then
-	for N in ${Arr_Agentes[@]}
+	iteracion=0
+	while [ $iteracion -le 100 ]
 	do
-		for iteracion in {751..999}
+		for Beta in ${Arr_Beta[@]}
 		do
-			for Kappa in ${Arr_Kappas[@]}
+			for Cdelta in ${Arr_Cosdelta[@]}
 			do
-				for Beta in ${Arr_Beta[@]}
-				do
-					for CosD in ${Arr_CosD[@]}
-					do
-						echo Kappa=$Kappa, Beta = $Beta, CosD = $CosD
-						./$1.e $iteracion
-					done
-				done
+				echo Beta = $Beta, Cosd = $Cdelta
+				./$1.e $Beta $Cdelta $iteracion
 			done
-			# echo Complete $iteracion simulaciones totales
 		done
+	echo Termine la iteracion $iteracion
+	((iteracion++))
 	done
-
 fi
+
+

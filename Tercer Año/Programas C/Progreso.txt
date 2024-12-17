@@ -4339,9 +4339,7 @@ visto que dentro de todo esto está dando mejor)
 El modelo esta muy degenerado y puede encontrar mismas configuraciones en muchas regiones del espacio de parámetros.
 Hugo: Concentrarse en configuraciones polarizadas
 Otra metrica aparte de JS? (Pensar en otra métrica visto los resultados corregidos quizás
-no sea necesario)
-
-binear en. 3 o 5 cajas (Esto se podría considerar como forma de mejorar las distancias obtenidas)
+no sea necesario) binear en. 3 o 5 cajas (Esto se podría considerar como forma de mejorar las distancias obtenidas)
 Nuestro modelo cualitativamente reproduce los resultados, si queremos ser mas precisos en la comparación,
 tenemos que hacer un modelo mas sofisticado que incluya variabilidad. (Esta es una propuesta
 de reiniciar todo que finalmente quizás no sea necesaria)
@@ -4513,7 +4511,7 @@ Llegué a la facultad, estoy en condiciones de laburar en lo de la presentación
 para la charla de grupo o trabajar en lo del modelo de Schelling. Primero voy a repasar un
 segundo el tema de la presentación para la gente de GOTHAM.
 
-
+------------------------------------------------------------------------------------------
 
 20/11/2024
 
@@ -4718,3 +4716,32 @@ recalculamos.
 Para lo primero, tengo que además hacer simulaciones con 1000 agentes para valores de Beta entre
 [0.5, 1.5] y cos(delta)=1. Tengo que ver cómo evoluciona eso. Y tengo que reponer las simulaciones
 en Coimbra y Algarve.
+
+------------------------------------------------------------------------------------------
+
+17/12/2024
+
+Hoy voy a arrancar con el tema de las simulaciones. Voy a volver a mandar las cosas de Oporto y las
+de Coimbra. En su momento había cortado cosas en Coimbra, recordemos cuáles.
+
+No encuentro lo que anoté de dónde corté en Coimbra, me cago en mi. Voy a tener que revisar eso
+de lo que tengo armado en la carpeta directamente.
+
+Algarve:
+-------
+Se terminó la primer iteración, la segunda arranca en general desde Beta=0.4. Creo que sin drama
+puedo arrancarlo todo de una a partir de la segunda iteración. Repetiré algunas simulaciones
+pero no vale la pena preocuparse.
+
+Coimbra:
+-------
+La primera iteración resolvió hasta Beta=1.15. Hay que arrancar en Beta=1.20 la primera iteración.
+La segunda iteración resolvió hasta Beta=1.05. Hay que arrancar en Beta=1.10 la segunda iteración.
+La tercera iteración la arranco desde Beta=0.
+
+Bien, ya está mandado a correr todo. Ahora hagamos la parte que tiene Cos(delta)=1, con Beta
+en el intervalo [0.5, 1.5].
+
+Armé algo para correr estos datos. Mañana correré esto desde la facultad, veré si lo puedo hacer
+correr con 5 hilos y con eso resolver esto en tres o cuatro horas. Ahora mismo lo dejo corriendo
+un poco en casa como para ver cuánto tarda.
