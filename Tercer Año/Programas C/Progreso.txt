@@ -4745,3 +4745,17 @@ en el intervalo [0.5, 1.5].
 Armé algo para correr estos datos. Mañana correré esto desde la facultad, veré si lo puedo hacer
 correr con 5 hilos y con eso resolver esto en tres o cuatro horas. Ahora mismo lo dejo corriendo
 un poco en casa como para ver cuánto tarda.
+
+------------------------------------------------------------------------------------------
+
+18/12/2024
+
+Mandé a correr las simulaciones para tener datos en el caso de Cos(delta)=1. Para eso están
+corriendo 5 procesos en paralelo. Mientras se hace la parte numérica, voy a seguir con la
+parte teórica. Con esos 5 procesos que mandé, estoy armando simulaciones de 0 a 19.
+
+Terminé armando simulaciones hasta la 59. Mañana haré los gráficos que me muestran la polarización
+del sistema en función de Beta.
+También terminé el análisis teórico, me da que el cambio de la estabilidad de los estados
+ideológicamente polarizados se da en beta=1, igual que me daba en los otros casos. Es bastante
+razonable en cierto sentido, porque al final el comportamiento 2D se vuelve muy similar al 1D.

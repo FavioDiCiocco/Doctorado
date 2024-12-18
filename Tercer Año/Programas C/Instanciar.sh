@@ -42,22 +42,18 @@ Arr_Cosdelta=(1)
 #done
 
 
-if [ -z $decision ]
-then
-	iteracion=0
-	while [ $iteracion -le 100 ]
+iteracion=56
+while [ $iteracion -le 59 ]
+do
+	for Beta in ${Arr_Beta[@]}
 	do
-		for Beta in ${Arr_Beta[@]}
+		for Cdelta in ${Arr_Cosdelta[@]}
 		do
-			for Cdelta in ${Arr_Cosdelta[@]}
-			do
-				echo Beta = $Beta, Cosd = $Cdelta
-				./$1.e $Beta $Cdelta $iteracion
-			done
+			echo Beta = $Beta, Cosd = $Cdelta
+			./$1.e $Beta $Cdelta $iteracion
 		done
-	echo Termine la iteracion $iteracion
-	((iteracion++))
 	done
-fi
-
+echo Termine la iteracion $iteracion
+((iteracion++))
+done
 
