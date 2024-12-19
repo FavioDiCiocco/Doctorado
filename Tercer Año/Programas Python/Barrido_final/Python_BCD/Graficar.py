@@ -28,7 +28,7 @@ T=2 # Defino el número de tópicos
 Etapa = Path("Barrido_final") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Beta-Cosd"]
+Carpetas = ["Extremo_polarizado"]
 
 for carp in Carpetas:
     
@@ -38,12 +38,12 @@ for carp in Carpetas:
     # Cambio la carpeta para el código de los clusters
     # carpeta = Path("B04C00Cluster")
     
-    Dir_matrices_JS = Path("../Matrices DJS")
-    Dir_matrices_KS = Path("../Matrices DKS")
+    # Dir_matrices_JS = Path("../Matrices DJS")
+    # Dir_matrices_KS = Path("../Matrices DKS")
     
     # Recorro las carpetas con archivos csv
-    CarpMatJS=[[root,files] for root,dirs,files in os.walk(Dir_matrices_JS)]
-    CarpMatKS=[[root,files] for root,dirs,files in os.walk(Dir_matrices_KS)]
+    # CarpMatJS=[[root,files] for root,dirs,files in os.walk(Dir_matrices_JS)]
+    # CarpMatKS=[[root,files] for root,dirs,files in os.walk(Dir_matrices_KS)]
     
     # Recorro las carpetas con datos
     CarpCheck=[[root,files] for root,dirs,files in os.walk(Direccion)]
@@ -51,8 +51,8 @@ for carp in Carpetas:
     # Me armo una lista con los nombres de todos los archivos con datos
     Archivos_Datos = CarpCheck[0][1]
     # Me armo una lista con los nombres de todos los archivos csv
-    Archivos_Matrices_JS = CarpMatJS[0][1]
-    Archivos_Matrices_KS = CarpMatKS[0][1]
+    # Archivos_Matrices_JS = CarpMatJS[0][1]
+    # Archivos_Matrices_KS = CarpMatKS[0][1]
     
     #-------------------------------------------------------------------------------------------------------
     
@@ -92,7 +92,7 @@ for carp in Carpetas:
     
     # Diccionario con la entropía, Sigma_x, Sigma_y, Promedios y Covarianzas
     # de todas las simulaciones para cada punto del espacio de parámetros.
-    # Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
+    Dic_Total = func.Diccionario_metricas(Df_archivos,Direccion, 20, 20)
     
     size_x = np.unique(Df_archivos["parametro_x"]).shape[0]
     size_y = np.unique(Df_archivos["parametro_y"]).shape[0]
@@ -112,11 +112,14 @@ for carp in Carpetas:
     
     func.Tiempo(t0)
     
+    func.Ent_Var_1D(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
+                    SIM_param_x, SIM_param_y, ID_param_extra_1)
     
+    """
     #----------------------------------------------------------------------------------------------
     
     # Gráficos del espacio de parámetros
-    """
+    
     func.Mapa_Colores_Entropia_opiniones(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
                                          SIM_param_x, SIM_param_y,ID_param_extra_1)
     
@@ -126,11 +129,9 @@ for carp in Carpetas:
     func.Mapas_Colores_FEF(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
                            SIM_param_x, SIM_param_y, ID_param_extra_1)
     
-    # lminimos = [(0,0.4),(0,0.6),(0.02,0.5)]
-    
     func.Graf_Histograma_opiniones_2D(Df_archivos, Dic_Total, Direccion, Etapa/carpeta, bines, "magma",
                                       ID_param_x, ID_param_y, ID_param_extra_1)
-    """
+    
     
     #----------------------------------------------------------------------------------------------
     
@@ -210,7 +211,7 @@ for carp in Carpetas:
         
         # func.Hist2D_similares_FEF(DKS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta, Direccion, bines,
         #                           "KS",SIM_param_x,SIM_param_y)
-    
+    """
     #----------------------------------------------------------------------------------------------
     
 func.Tiempo(t0)

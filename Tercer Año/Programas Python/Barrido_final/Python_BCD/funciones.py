@@ -2045,3 +2045,37 @@ def Distrib_Anes(tupla_preg, Df_Anes):
         plt.close()
         
     return Distr_Enc
+
+#-----------------------------------------------------------------------------------------------
+
+# Construyo una función que tome los datos de las redes de 1000 agentes
+# y me grafique la entropía y la varianza en función del parámetro Beta.
+
+def Ent_Var_1D(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_param_y,ID_param_extra_1):
+    
+    # Defino los arrays de parámetros diferentes
+    EXTRAS = int(np.unique(DF["Extra"]))
+    PARAM_X = np.unique(DF["parametro_x"])[0]
+    Arr_param_y = np.unique(DF["parametro_y"])
+    
+    # Parámetros a graficar
+    Entropia = np.zeros(Arr_param_y.shape)
+    Varianza = np.zeros(Arr_param_y.shape)
+    
+    for i,PARAM_Y in enumerate(Arr_param_y):
+        Entropia[i] = np.mean(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"])
+        Varianza[i] = np.mean(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"] + Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"])
+    
+    
+    # Set the figure size
+    plt.rcParams.update({'font.size': 44})
+    plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+    plt.plot(Arr_param_y, Entropia, "--g", label="Entropia distribucion",linewidth = 6)
+    # plt.plot(Arr_param_y, Varianza, "--b", label="Varianza ambos tópicos",linewidth = 6)
+    plt.xlabel(r"$\beta$")
+    plt.ylabel("Funciones")
+    plt.grid()
+    plt.legend()
+    direccion_guardado = Path("../../../Imagenes/{}/Polarizacion_Beta.png".format(carpeta))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close()
