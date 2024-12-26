@@ -4759,3 +4759,44 @@ del sistema en función de Beta.
 También terminé el análisis teórico, me da que el cambio de la estabilidad de los estados
 ideológicamente polarizados se da en beta=1, igual que me daba en los otros casos. Es bastante
 razonable en cierto sentido, porque al final el comportamiento 2D se vuelve muy similar al 1D.
+
+------------------------------------------------------------------------------------------
+
+19/12/2024
+
+Hoy llegué medio tarde, me agarraron para llevar sillas al jardín en el que íbamos a hacer
+el asado de fin de año, comimos el asado, a la vuelta guardé sillas y por último me quedé
+laburando para terminar el gráfico de entropía y varianza en función de Beta. Da lo que esperaba,
+un salto en beta=1.
+
+------------------------------------------------------------------------------------------
+
+26/12/2024
+
+Me tomé libre del 20 al 25. Aunque eso fue descanso únicamente de tres días. Llegué a la mañana
+y Coimbra estaba caído, al parecer se cayó en estos días. Ahora voy a tener que mandar
+a correr nuevamente todas las cosas en Coimbra. Lo que estaba corriendo en Coimbra es la
+tercer iteración y parece que se cortó en su mínimo valor en Beta=1.00.
+
+Ya fue, mando las tres iteraciones todas juntas entonces a partir de Beta=1. Listo, ya lo mandé
+a correr, veremos cuánto tarda esto en terminarse. Digo yo que unos días más y está, para fin
+de año debería estar todo listo.
+
+Bueno, hecho esto, recapitulemos lo que tengo que hacer y lo que voy a hacer. Tengo 4
+cosas importantes para resolver:
+
+1) Paper trabajo de modelo de opiniones multidimensional.
+2) Propuesta para Silvio
+3) Final de Mininni
+4) Trabajo de Granovetter con Lucio
+5) Avisarle a la gente de GOTHAM del laburo sobre Cos(delta)=1
+6) Revisar el tema de la vacunación de la fiebre amarilla
+
+Arranquemos con lo primero que se puede resolver más rápido, lo de Silvio.
+Ya mandé un mail a Hugo preguntándole sobre el laburo de comparar el modelo 1D con el 2D.
+También le mandé un mail a Silvio por el tema de la visa de viaje. Podría ser necesario
+tener una visa de viaje para poder permanecer 6 meses allá y cobrar el estipendio.
+Por último tengo que mandarle un mail a la gente de España avisando el laburo de
+cos(delta)=1.
+
+Ahora voy a escribir la propuesta de trabajo para laburar con Silvio.

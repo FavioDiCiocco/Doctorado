@@ -2064,18 +2064,31 @@ def Ent_Var_1D(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_param_y,ID_param_extra_
     
     for i,PARAM_Y in enumerate(Arr_param_y):
         Entropia[i] = np.mean(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"])
-        Varianza[i] = np.mean(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"] + Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"])
+        Varianza[i] = np.mean(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"] + Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"])/2
     
     
     # Set the figure size
     plt.rcParams.update({'font.size': 44})
     plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-    plt.plot(Arr_param_y, Entropia, "--g", label="Entropia distribucion",linewidth = 6)
-    # plt.plot(Arr_param_y, Varianza, "--b", label="Varianza ambos tópicos",linewidth = 6)
+    plt.plot(Arr_param_y, Entropia, "--", color = "tab:green",linewidth = 6)
     plt.xlabel(r"$\beta$")
-    plt.ylabel("Funciones")
+    # plt.ylabel("Funciones")
+    plt.title("Entropía de las distribuciones")
     plt.grid()
-    plt.legend()
-    direccion_guardado = Path("../../../Imagenes/{}/Polarizacion_Beta.png".format(carpeta))
+    # plt.legend()
+    direccion_guardado = Path("../../../Imagenes/{}/Entropia_Beta.png".format(carpeta))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close()
+    
+    # Set the figure size
+    plt.rcParams.update({'font.size': 44})
+    plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+    plt.plot(Arr_param_y, Varianza, "--", color = "tab:blue", label="Varianza ambos tópicos",linewidth = 6)
+    plt.xlabel(r"$\beta$")
+    # plt.ylabel("Funciones")
+    plt.title("Varianza de las distribuciones")
+    plt.grid()
+    # plt.legend()
+    direccion_guardado = Path("../../../Imagenes/{}/Varianza_Beta.png".format(carpeta))
     plt.savefig(direccion_guardado ,bbox_inches = "tight")
     plt.close()
