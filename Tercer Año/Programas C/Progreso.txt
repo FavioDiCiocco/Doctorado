@@ -4823,3 +4823,29 @@ pero en principio logré que tenga la forma que busco.
 
 Avancé con escribir cosas, no mucho. Veré qué tal después. Tengo que no distraerme tanto
 al hacer esto. Pero todo genera dudas sobre cómo escribirlo o qué escribir.
+
+------------------------------------------------------------------------------------------
+
+30/12/2024
+
+Hoy la alarma no sonó, me levanté más tarde de lo usual. Laburé desde casa. A la mañana miré
+a ver si encontraba papers del tema que hablé con Mininni para trabajar. Encontré tres, voy
+a intentar leerlos y ver si son relevantes o útiles.
+
+A la tarde estuve con el paper para escribir con la gente de España. La primera parte del modelo
+la vengo escribiendo siguiendo los lineamientos del paper de ellos. Ahora llegué a la parte
+donde tengo que ir describiendo los puntos estables. Hay algo ahí para mencionar que es que 
+a diferencia de lo observado en el modelo 1D, si considero que las opiniones de los agentes
+son todas iguales y quiero ver cómo son los puntos fijos en los cuáles los agentes tienden
+a consenso neutral o consenso radicalizado, la transición de esos estados se da para 
+K = 1/(1+cos(delta)).
+
+Algo para mencionarle a Pablo es que venimos siempre usando la figura de Baumann como figura
+ilustrativa del carácter bidimensional del modelo. ¿Deberíamos usar una figura nueva para
+eso? ¿Qué querríamos mostrar de distinto con una nueva figura? Se me ocurre una figura
+que tenga un agente hablando sobre tópicos y abajo una representación de ese espacio
+e indicaciones de los valores del ángulo entre esos dos casos.
+
+También me parece importante recalcarle que en sí vengo avanzando por el orden del paper
+en el cuál estoy repasando el mismo orden jerárquico que el de la gente de España.
+Estaría bueno un primer vistazo de eso.
