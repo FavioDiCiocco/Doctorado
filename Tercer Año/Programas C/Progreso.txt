@@ -4868,3 +4868,31 @@ Hoy llegué más o menos a tiempo. No laburé mucho, estuve dormido todo el día
 que no pude aprovechar el día para nada. Avancé un poco del paper, pero a este ritmo
 no termino ni en Mayo. Tengo que ponerme las pilas. Y mañana tengo que ponerme a leer
 un poco los papers que revisé para lo de Mininni.
+
+------------------------------------------------------------------------------------------
+
+03/01/2025
+
+Hoy me sentí muy cansado y con sueño, a la mañana tuve reunión con Lucio, charlamos sobre el tema
+de los pasajes para Brasil, la idea es el lunes mandarle un mail a Silvio mencionándole lo de los
+pasajes y las opciones. Después me puse a dormir por lo cansado que me sentía, no podía trabajar.
+
+A lo último, revisé el tema de la visa y le mandé un mail al muchacho José, resulta que sacar la visa
+en Brasil es una mala idea, tenemos que hacerlo acá, sin duda. El lunes debería volver a llamar
+por el tema de la vacuna amarilla, tengo que dármela ASAP.
+
+------------------------------------------------------------------------------------------
+
+04/01/2025
+
+Hoy quería mirar un poco el tema del paper, pero la verdad me encuentro con cero ganas y encima
+no tengo el cuaderno para anotar cosas sobre eso. Seamos serios. El lunes vayamos temprano a laburar,
+no jodamos con eso. Ahora lo que voy a hacer es leer un poco el laburo sobre lo que quiero charlarle
+a Mininni. También voy a organizar un poco el laburo de la semana.
+
+El lunes debería terminar la parte del modelo, anotando lo de la aproximación que hago para el caso
+de Cos(delta) = 1. Quizás dejar una parte para la charla sobre comparación de modelo 1D con el modelo
+2D y luego pasar a laburar lo que sigue. Esta sección debería coronarla con armar un gráfico que sirva
+de ejemplo para explicar el modelo. Mi deseo es que quien vea ese gráfico se lleve una idea clara de cómo
+funca el modelo. Hecho eso, paso a la siguiente sección de datos, tal cuál lo charlamos con Pablo, David
+y Jesús. Entonces, esto que anoté es el camino claro para llegar al resultado.
