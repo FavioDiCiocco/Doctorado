@@ -4896,3 +4896,38 @@ de Cos(delta) = 1. Quizás dejar una parte para la charla sobre comparación de 
 de ejemplo para explicar el modelo. Mi deseo es que quien vea ese gráfico se lleve una idea clara de cómo
 funca el modelo. Hecho eso, paso a la siguiente sección de datos, tal cuál lo charlamos con Pablo, David
 y Jesús. Entonces, esto que anoté es el camino claro para llegar al resultado.
+
+------------------------------------------------------------------------------------------
+
+06/01/2025
+
+Llegué temprano hoy, mandé mails y me puse con el laburo del paper. Después me agarró Lucio
+para ver el tema de los pasajes y charlar con Silvio al respecto. Entre cosas pude terminar
+más o menos la parte del modelo. O lo que creo que es la parte del modelo, después revisaré
+de nuevo eso.
+
+Veré si cuando llego a casa me pongo a armar un esquema de la primer figura.
+
+------------------------------------------------------------------------------------------
+
+07/01/2025
+
+Venimos llegando bien a la facultad. Aunque me robó de nuevo el pasaje a la salida desde
+casa en el tren.
+
+A la mañana revisé lo que me mandó Hugo y después estuve revisando todo lo que escribí en
+la sección del modelo. Como primer draft me parece bien, tengo comentarios de cosas para corregir.
+Ahí me armé una versión cartoon de la primer figura indicando cómo sería el modelo. Subamos eso 
+al paper y agreguémoslo.
+
+Armé la figura inicial que representa un poco el modelo a estudiar. Pablo espera que esto esté bien
+armado, completo para el jueves. Vengo trabajando, no sé si bien o mal. Tengo que anotarme entonces
+lo que voy a mencionar en la parte de comparación con el modelo 1D. Me parece que la parte
+más clara es ver cómo la fracción de simulaciones polarizadas se reduce en el espacio Beta-Kappa
+al comparar el modelo 1D contra proyecciones del modelo 2D.
+Dicho eso, creo que hay algo más para agregar considerando los otros gráficos que pasó Hugo, pero
+no logro definir qué querría contar de eso. El tema está también en que quiero seguir el hilo narrativo
+y no adelantarme en lo que estoy contando. Y la parte de la estabilidad de los estados finales me
+parece que es un resultado que nos sirve a nosotros para charlar sobre dónde se ubica realmente
+la región de transición, pero no me parece que sea algo para agregar así como está. Creo que no
+es central a lo que queremos contar.
