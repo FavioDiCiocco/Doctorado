@@ -4931,3 +4931,26 @@ y no adelantarme en lo que estoy contando. Y la parte de la estabilidad de los e
 parece que es un resultado que nos sirve a nosotros para charlar sobre dónde se ubica realmente
 la región de transición, pero no me parece que sea algo para agregar así como está. Creo que no
 es central a lo que queremos contar.
+
+------------------------------------------------------------------------------------------
+
+08/01/2025
+
+A la mañana fui a ver el tema del vacunatorio. Al final necesito simplemente el pasaje a Brasil y mi
+DNI para que me den la vacuna de la fiebre amarilla. Ya que me dice Sara, un día deberia ir hasta
+Avellaneda para ver el tema de la vasectomía de nuevo. Que igual debe funcionar sin problemas.
+
+Llegué al mediodía para la facultad y me puse con el paper. Armé el gráfico de la figura 2 con las
+cosas que me parece que estaría bueno comentar. Hagamos los últimos comentarios y pasemos a la siguiente
+sección.
+
+Hablando con Lucio, estos son los documentos para apostillar:
+
+- Antecedentes penales
+- Certificado de nacimiento
+- Copia del título
+- Admisión al doctorado
+
+Al comenzar la siguiente parte, tengo que arrancar describiendo cómo es el modelo y qué parámetros barrí.
+Igual, releer de nuevo lo que escribió la gente de GOTHAM, no estoy seguro que sea buena idea hablar
+de TODOS los parámetros barridos.
