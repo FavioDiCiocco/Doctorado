@@ -4954,3 +4954,29 @@ Hablando con Lucio, estos son los documentos para apostillar:
 Al comenzar la siguiente parte, tengo que arrancar describiendo cómo es el modelo y qué parámetros barrí.
 Igual, releer de nuevo lo que escribió la gente de GOTHAM, no estoy seguro que sea buena idea hablar
 de TODOS los parámetros barridos.
+
+------------------------------------------------------------------------------------------
+
+09/01/2025
+
+Hoy costó salir de la cama, no sé por qué estaba tan muerto. Cuestión, llegué, me puse a laburar
+con el tema de Brasil porque Silvio mandó mails, después me puse con el paper, fuimos a comer, y
+a la vuelta estuve yendo y viniendo entre Brasil, portugués y el paper.
+
+Estuve pensando que puedo hacer mejor de forma esquemática las figuras que poner. Para empezar, puedo
+primero ir armando las figuras en google slides, después las trabajaré un poco más para que se vean más
+lindas.
+
+Cambios para hacer:
+-------------------
+
+1) La figura 2 puedo hacerla en Google Slides para que se vea como quiero, eso reduciría bastante bardo.
+2) La figura 3 (La que tiene todos los estados finales) vuela, lo que podría hacer es ir poniendo los estados
+finales asociados con las regiones en las que aparecen.
+3) Para el estudio del modelo en los espacios de parámetros, podría armar una imagen que tenga en chiquito
+los tres gráficos que rápidamente caracterizan el modelo en ese espacio de parámetros y más en grande
+la separación del espacio de parámetros en regiones con los estados finales acompañando eso.
+
+Empecé a anotar sobre cómo describir la región del espacio de parámetros Beta-Kappa. Está escrito medio
+bruto, pero me gusta. Lo mismo, me gusta la idea de que maduré un concepto de las figuras finales. Habría
+que discutir después qué tan interesante le parece a los demás esas figuras.
