@@ -89,7 +89,7 @@ for carp in Carpetas:
     #----------------------------------------------------------------------------------------------
     
     # Gráficos del espacio de parámetros
-    
+    """
     func.Mapas_Colores_1D(Df_archivos, Direccion, Etapa/carpeta, SIM_param_x, SIM_param_y)
     
     
@@ -99,13 +99,14 @@ for carp in Carpetas:
     
     func.Mapa_Colores_Entropia_opiniones(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
                                           SIM_param_x, SIM_param_y,ID_param_extra_1)
-    """
+    
     func.Mapas_Colores_FEF(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
                            SIM_param_x, SIM_param_y, ID_param_extra_1)
+    """
     
     func.Graf_Histograma_opiniones_2D(Df_archivos, Dic_Total, Direccion, Etapa/carpeta, bines, "magma",
                                       ID_param_x, ID_param_y, ID_param_extra_1)
-    """
+    
 #-------------------------------------------------------------------------------------------------------------------------
 
 func.Tiempo(t0)
