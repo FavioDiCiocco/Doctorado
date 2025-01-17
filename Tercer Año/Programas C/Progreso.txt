@@ -5036,3 +5036,40 @@ el tercer paso. Necesito esperar a que me manden el número para subirlo en mi c
 y actualizar mis datos. Posiblemente la semana que viene esté esto.
 
 Ahora sí, el final con Minnini. Empecé a leer el paper. Cómo cuesta leer papers. Bueno, eso.
+
+------------------------------------------------------------------------------------------
+
+17/01/2025
+
+Hoy leí el paper de Dominant Imprint of Rossby Waves. Para hacer un resumen, en el paper
+lo que hacen es estudiar la temperatura a altura de la superficie y con eso intentar
+medir correlación entre distintos puntos. La idea es que tomaron el mapa y lo subdividen
+en una grilla identificando cada punto como un nodo. Lo que logran observar finalmente
+es que encuentran correlación entre nodos que se configura en base a cantidades entera
+de media longitud de onda de Rossby. Es decir, las mediciones de correlación y la forma
+que entre nodos se afectan está muy influenciada por el fenómeno de las ondas de Rossby.
+Esa es la gran conclusión.
+
+Ahora miremos un poco lo que tengo hecho yo en el trabajo que hice para E1. Después de eso,
+lo siguiente sería ponerme a ver cómo carajos hacer funcionar el GHOST en mi pc.
+Ya leí el trabajo, tiene algunos puntos que tengo que revisar y si quiero hacer las cuentas:
+
+1) La aproximación de la fuerza de Coriolis usando la aproximación del plano Beta
+2) El cálculo de las ecuaciones dinámicas que definen el sistema.
+3) ¿Qué es la aproximación de aguas poco profundas?
+4) El uso del método de Lax-Wendroff y por qué vale la pena
+5) ¿Qué es la vorticidad potencial?
+
+Me parece que son cinco preguntas razonables a contestar, yo me pondría con esto el martes
+o miércoles que viene. Quizás podría comparar con las cosas de la materia a ver si surge algo
+parecido en lo visto en clase.
+
+Al hacer este análisis, Pablo me dijo de considerar por qué pudo haber fallado. Me dijo
+de revisar el coeficiente ese que te da la relación entre el tamaño del grillado y el delta
+t para ver si te va a reventar la simulación.
+
+Lo siguiente que se me ocurre que vale la pena revisar es cómo hacer correr el GHOST. Juraría
+que aunque sea una vez funcó en mi pc. BIEN, lo hice funcionar. Encontré en la página un archivo
+indicando cómo hacerlo funcionar y carpetas en las que mandé a correr esto alguna vez.
+Corrió, no tarda demasiado. Habrá que ver cómo extraer info de los archivos. Charlar con Mauro
+sobre eso.
