@@ -5105,3 +5105,28 @@ Al final estuve toda la tarde intentando anotarme en el CPF, voy a ver si puedo 
 en casa. Estuve mirando unas páginas por un lado, otras por el otro, mandé mail al consulado.
 Cuestión que ahora encontré algo que tiene un instructivo de cómo hacerlo en la página
 del consulado. Esperemos que esto funque esta vez.
+
+------------------------------------------------------------------------------------------
+
+22/01/2025
+
+Ayer en casa terminé de solicitar el turno para el CPF. Hoy a la mañana charlé con Lucio y
+miré unas cosas de mails. Ahora me voy a poner a revisar las figuras del paper y a ver
+cómo estilizarlas siguiendo lo que me dijo Pablo.
+
+Antes de las figuras, vi que me enviaron el comprobante de alumno regular, así que intentaré
+llevar eso a apostillar. Ya saqué turno para ir a apostillar cosas el viernes. Y por otro lado,
+tengo para ir al consulado a conseguir mi CPF el lunes 03 de Febrero. Está intensa la cosa.
+
+Correcciones:
+.) Presentación del modelo: Falta un párrafo citando la descipción de la figura 1
+   Hacer un análisis de punto fijo antes de análisis de estabilidad
+.) Modificar los parencite por cite.
+.) El párrafo que marqué como copiado directamente, debería reescribirlo con mis palabras
+.) El párrafo donde describo los estados finales, tengo que modificarlo porque la
+forma en que está escrito casi que pide el usar una figura para mostrar los estados finales.
+.) Sacar la descripción de las métricas de las secciones de espacios de parámetros y ponerla
+en la sección de estados finales del modelo. Partir explicando que trabajo con la distribución
+de opiniones 2D y 1D, que miro la entropía y varianza de eso y después de aclarar cómo lo calculo
+recién ahí decir que hago un promedio sobre el ensamble. Además agregar en esa región una
+figura con los estados finales que me parezca importante mencionar.
