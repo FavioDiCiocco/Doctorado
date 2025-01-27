@@ -28,7 +28,7 @@ T=2 # Defino el número de tópicos
 Etapa = Path("Barrido_final") # Defino el nombre de la etapa del trabajo en la que estoy
 
 # Defino las carpetas que voy a recorrer. Tiene más sentido definir esto a mano.
-Carpetas = ["Extremo_polarizado"]
+Carpetas = ["Beta-Cosd"]
 
 for carp in Carpetas:
     
@@ -112,29 +112,29 @@ for carp in Carpetas:
     
     func.Tiempo(t0)
     
-    func.Ent_Var_1D(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
-                    SIM_param_x, SIM_param_y, ID_param_extra_1)
+    # func.Ent_Var_1D(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
+    #                 SIM_param_x, SIM_param_y, ID_param_extra_1)
     
-    """
+    
     #----------------------------------------------------------------------------------------------
     
     # Gráficos del espacio de parámetros
     
-    func.Mapa_Colores_Entropia_opiniones(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
-                                         SIM_param_x, SIM_param_y,ID_param_extra_1)
+    # func.Mapa_Colores_Entropia_opiniones(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
+    #                                      SIM_param_x, SIM_param_y,ID_param_extra_1)
     
-    func.Mapa_Colores_Covarianzas(Df_archivos, Direccion, Etapa/carpeta,
-                                  SIM_param_x, SIM_param_y, ID_param_extra_1)
+    # func.Mapa_Colores_Covarianzas(Df_archivos, Direccion, Etapa/carpeta,
+    #                               SIM_param_x, SIM_param_y, ID_param_extra_1)
     
-    func.Mapas_Colores_FEF(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
-                           SIM_param_x, SIM_param_y, ID_param_extra_1)
+    # func.Mapas_Colores_FEF(Df_archivos, Dic_Total, Direccion, Etapa/carpeta,
+    #                        SIM_param_x, SIM_param_y, ID_param_extra_1)
     
     func.Graf_Histograma_opiniones_2D(Df_archivos, Dic_Total, Direccion, Etapa/carpeta, bines, "magma",
                                       ID_param_x, ID_param_y, ID_param_extra_1)
     
     
     #----------------------------------------------------------------------------------------------
-    
+    """
     # Construyo un diccionario con las preguntas de cada uno de los clusters
     
     Df_preguntas = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices_JS, Dir_matrices_JS)

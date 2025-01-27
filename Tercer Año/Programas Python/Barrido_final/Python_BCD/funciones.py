@@ -13,6 +13,7 @@ from matplotlib.pyplot import cm
 from matplotlib.ticker import FormatStrFormatter
 from matplotlib.gridspec import GridSpec
 from scipy.spatial.distance import jensenshannon
+from scipy.stats import gaussian_kde
 import pandas as pd
 import numpy as np
 import time
@@ -266,12 +267,19 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
                     
                     # Top histogram (1D)
                     ax_top = fig.add_subplot(gs[0, :-2], sharex=ax_main)
-                    ax_top.hist(X, bins=bins, color='tab:blue', edgecolor='black')
+                    kde = gaussian_kde(X) # Esto reconstruye una función de distribución a partir de un muestreo
+                    x_vals = np.linspace(-3,3,100) # Esta es la región en la que tengo mi muestreo
+                    y_vals = kde(x_vals) # Esto construye la curva a graficar
+                    # ax_top.hist(X, bins=bins, color='tab:blue', edgecolor='black')
+                    ax_top.plot(x_vals, y_vals,color='tab:blue')
                     ax_top.axis('off')  # Optionally turn off axis labels
                     
                     # Right histogram (1D)
                     ax_right = fig.add_subplot(gs[1:, -2], sharey=ax_main)
-                    ax_right.hist(Y, bins=bins, color='tab:blue', edgecolor='black', orientation='horizontal')
+                    kde = gaussian_kde(Y) # Esto reconstruye una función de distribución a partir de un muestreo
+                    x_vals = np.linspace(-3,3,100) # Esta es la región en la que tengo mi muestreo
+                    y_vals = kde(x_vals) # Esto construye la curva a graficar
+                    ax_right.plot(y_vals, x_vals,color='tab:blue')
                     ax_right.axis('off')  # Optionally turn off axis labels
                     
                     # Set labels

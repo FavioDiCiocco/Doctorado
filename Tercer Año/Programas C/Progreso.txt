@@ -5139,3 +5139,36 @@ Hoy llegué no muy temprano. Esto de dormir más tiene ese problema. A cambio, e
 bastante mejor, nada zombie. Hice bastantes de las correcciones que Pablo me dijo que haga,
 aunque no terminé. Me falta lo último, repasando la sección del espacio de parámetros.
 Haré eso mañana y ya después me pondré con el final de Mininni supongo.
+
+------------------------------------------------------------------------------------------
+
+24/01/2025
+
+A la mañana fui al colegio de escribanos a apostillar documentos. Me tomaron la partida de nacimiento,
+no me tomaron el certificado de alumno regular. Tengo que enviar el mail para que me inicien el trámite.
+
+Después a la tarde me puse a terminar de agregar las correcciones que charlamos con Pablo al
+paper. No fue mucho para terminar, así que hecho eso, ahora voy a mandar el mail, llamar
+para ver de sacar turno por el tema de mi hombro y después me voy a poner a leer el paper
+que Nahuel me pasó para comentarle a Mininni. El lunes me pondré con las figuras que debo
+corregir del paper y ya el martes continuaré con el tema del final.
+
+Al final saqué turno médico para el lunes a las 14:45, así que no iré a la facultad a laburar.
+
+------------------------------------------------------------------------------------------
+
+27/01/2025
+
+Ayer fue el recital de Los Piojos, hoy me levanté re tarde. Me levanté, comí, fui al médico a recibir
+los turnos para hacerme un control médico y volví para casa. Ahora me voy a poner a revisar algunas
+de las figuras, cosa de llegar mañana con algo hecho para mostrarle a Pablo.
+
+Pablo me dijo que arranque con emprolijar las figuras de las distribuciones, con algo similar a lo que
+hacen Sofi y Sebas en un paper. Básicamente la idea sería hacer que los histogramas tengan forma de
+funciones para que se vean más lindos, y que no sean barras.
+
+Estoy peleando con el cómo armar el gráfico de forma horizontal. Hecho eso, tendría también que lograr
+sombrear la parte de abajo. Eso va a tomar otro rato de resolver, de nuevo para la parte que va en
+vertical. Pero hecho eso, estaríamos esa parte, después habrá que discutir los colores y cosas con Pablo.
+
+No está funcionando bien eso, habrá que seguir revisando qué hace y cómo.
