@@ -5198,3 +5198,20 @@ modificar.
 
 No olvidarte de mencionarle a Pablo la idea de comparar algunos gráficos de preguntas más en el espacio
 Beta-Cos(delta)
+
+------------------------------------------------------------------------------------------
+
+30/01/2025
+
+Hoy llegué un poco tarde, me estoy acostumbrando a dormir de más. Vamos a tener que resolver eso.
+A la mañana mandé mensaje al consulado por el tema de sacar dos visas y después terminé de leer
+el paper. Hablé con Pablo y me dijo de ir probando considerar más gráficos para agregar a los
+resultados de la figura 5. Me pondré con eso mañana seguro. Yo hoy voy a ponerme a trabajar
+con lo de mejorar los gráficos de distribuciones.
+
+Lo que voy a hacer ahora es primero que nada, imprimir las cosas para el CPF y para la vacuna
+de la fiebre amarilla. Listo, ya imprimí todas las cosas que necesitaba. Ahora voy a ponerme
+a trabajar con el tema de las distribuciones.
+
+El armado de las curvas rodeando los gráficos se va acercando a algo deseable, pero le falta
+todavía.
