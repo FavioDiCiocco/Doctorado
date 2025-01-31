@@ -5215,3 +5215,18 @@ a trabajar con el tema de las distribuciones.
 
 El armado de las curvas rodeando los gráficos se va acercando a algo deseable, pero le falta
 todavía.
+
+------------------------------------------------------------------------------------------
+
+31/01/2025
+
+A la mañana me puse a revisar el armado del gráfico de histograma 2D. Después me junté
+con Pablo para terminar de revisar el paper. Fuimos y volvimos con eso y ya lo tenemos
+listo para enviarlo, así que ahora tengo que mandarle el mail a la gente de España. Y
+otros mails más.
+
+Ya mandé mails para Silvio y la gente de España con el paper. Ahora a seguir con el laburo
+de armar gráficos más lindos. Ya logré que las curvas alrededor de los gráficos de
+histogramas 2D se vean lindas. Ahora tengo que suavizar los gráficos 2D. Voy a imprimir
+los términos de otorgamiento de la beca y de ahí irme a casa. Después revisaré el link que me
+mandó Sebas.

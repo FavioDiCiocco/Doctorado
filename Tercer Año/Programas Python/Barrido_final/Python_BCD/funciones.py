@@ -274,15 +274,17 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
                     x_vals = np.linspace(-3.5,3.5,100) # Esta es la región en la que tengo mi muestreo
                     y_vals = kde(x_vals) # Esto construye la curva a graficar
                     # ax_top.hist(X, bins=bins, color='tab:blue', edgecolor='black')
-                    ax_top.plot(x_vals, y_vals,color='tab:blue')
+                    ax_top.plot(x_vals, y_vals,color='tab:blue', linewidth = 3)
+                    ax_top.fill_between(x_vals, y_vals, alpha=0.5, color='tab:blue')  # Fill under the curve
                     ax_top.axis('off')  # Optionally turn off axis labels
                     
                     # Right histogram (1D)
                     ax_right = fig.add_subplot(gs[1:, -2], sharey=ax_main)
-                    kde = gaussian_kde((Y+rng.normal(0,0.15,Y.shape[0]))*0.8) # Esto reconstruye una función de distribución a partir de un muestreo
-                    x_vals = np.linspace(-3,3,100) # Esta es la región en la que tengo mi muestreo
+                    kde = gaussian_kde((Y+rng.normal(0,0.15,Y.shape[0]))*0.9) # Esto reconstruye una función de distribución a partir de un muestreo
+                    x_vals = np.linspace(-3.5,3.5,100) # Esta es la región en la que tengo mi muestreo
                     y_vals = kde(x_vals) # Esto construye la curva a graficar
-                    ax_right.plot(y_vals, x_vals,color='tab:blue')
+                    ax_right.plot(y_vals, x_vals,color='tab:blue', linewidth = 3)
+                    ax_right.fill_betweenx(x_vals, 0, y_vals, alpha=0.5, color='tab:blue')  # Fill under the curve
                     # ax_right.hist(Y, bins=bins, color='tab:blue', edgecolor='black', orientation='horizontal')
                     ax_right.axis('off')  # Optionally turn off axis labels
                     
