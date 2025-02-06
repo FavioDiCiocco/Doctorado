@@ -5264,3 +5264,46 @@ fácil de hacer esto. Pero seguro que algo va a salir.
 
 Veamos de responder algunos de los comentarios del paper. Respondí algunos comentarios, me quedan
 otros. Ya resolveré eso.
+
+------------------------------------------------------------------------------------------
+
+05/02/2025
+
+En la mañana fui al consulado de Brasil para resolver el tema del CPF. En unas horas
+tengo listo el CPF.
+
+Cuando volví a casa, me puse a revisar nuevamente el paper y las correcciones que nos planteó
+Hugo. Le mandé unos mensajes a Pablo y queda pendiente mandarle un mensaje a Hugo al
+respecto.
+
+Por último, me puse a leer el paper que me pasó Nahuel para preparar el final de Mininni. Lo
+estoy empezando a entender bastante bien, me gusta eso.
+
+------------------------------------------------------------------------------------------
+
+06/02/2025
+
+En la mañana revisé el tema de los turnos y con Ale revisamos que las pc's funquen bien.
+Conectamos y desconectamos los cables de red. Después me puse a leer un poco el paper
+para el final de Mininni.
+
+Después de comer le mandé un mensaje a Silvio y al consulado sobre el tema. También le mandé
+mensaje a la gente de España para ver de reunirnos la semana que viene. Queda entonces
+resolver qué hacer ahora.
+
+No sé bien qué hacer en este momento. Al consulado les mandé el trámite nuevamente con nuevos
+papeles. Pero no están todos bien, así que espero que me digan que está mal, pero eso los mantendrá
+ocupados un rato. Así que mientras eso pasa, mañana tenemos que ir a sacar turno a Uriburu.
+
+Entonces la gran pregunta es: ¿Qué debería estar haciendo ahora?
+Se me ocurren tres cosas:
+
+1) Preparar el informe anual de doctorado. Debería preguntarle a Mariano a ver qué tal.
+Creo que la semana que viene me puedo poner con eso.
+2) Preparar el final con Mininni. Podría hoy ponerme con las cosas que anoté antes y después
+mañana terminar de leer ese paper, que tan largo no resulta realmente.
+3) Continuar con el armado de gráficos más suavizados. Honestamente no me parece urgente.
+Igual lo conseguido con el código de Seba tampoco se ve mucho mejor que lo que podía hacer
+yo con el 2dhist.
+
+Sólo resolví un punto. Y hasta ahí. Tengo que dedicarme más al tema del final.
