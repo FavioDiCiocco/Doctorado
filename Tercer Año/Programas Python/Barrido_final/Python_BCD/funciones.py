@@ -203,7 +203,8 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
             
             for nombre in archivos:
                 
-                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+                # repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"].iloc[0])
                 if repeticion < 5:
                 
                     # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
@@ -221,8 +222,16 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
                     Opifinales = Reconstruccion_opiniones(dist_final, AGENTES, T)
                     Opifinales = Opifinales*bins[-1]
                     
+                    """
+                    # CORRECCIONES DE PAPER
+                    # Decidimos no remover las partes del centro de las distribuciones
+                    
                     X_0 = Opifinales[0::T]
                     Y_0 = Opifinales[1::T]
+                    """
+                    
+                    X = Opifinales[0::T]
+                    Y = Opifinales[1::T]
                     
                     # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
                     
@@ -230,7 +239,7 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
                     
                     # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
                 
-                    direccion_guardado = Path("../../../Imagenes/{}/Histogramas/Hist_opi_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,
+                    direccion_guardado = Path("../../../Imagenes/{}/Histogramas/KDE_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,
                                                                                                 ID_param_x,PARAM_X,ID_param_y,PARAM_Y,repeticion))
                     
                     indice = np.where(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] == repeticion)[0][0]
@@ -242,12 +251,17 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
                                "Polarización Ideológica con anchura", "Transición con anchura",
                                "Polarización Descorrelacionada con anchura"]
                     
+                    """
+                    # CORRECCIONES DE PAPER
+                    # Decidimos no remover las partes del centro de las distribuciones
+                    
                     X = X_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
                     Y = Y_0[((X_0>bins[4]) | (X_0<bins[3])) & ((Y_0>bins[4]) | (Y_0<bins[3]))]
+                    """
                     
                     # Armo mi gráfico, lo guardo y lo cierro
                     
-                    plt.figure(dpi = 2400, figsize=(16,12))
+                    # plt.figure(dpi = 2400, figsize=(16,12))
                     
                     X = (X+rng.normal(0,0.15,X.shape[0]))*0.9
                     Y = (Y+rng.normal(0,0.15,Y.shape[0]))*0.9
@@ -262,9 +276,9 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
                     plt.ylabel(r"$x_i^2$", size = 18)
                     plt.xticks([-3, -2, -1, 0, 1, 2, 3], size = 16)
                     plt.yticks([-3, -2, -1, 0, 1, 2, 3], size = 16)
-                    # plt.tight_layout()
+                    plt.tight_layout()
                     plt.savefig(direccion_guardado ,bbox_inches = "tight")
-                    plt.show()
+                    plt.close()
 
                     
                     # # Set up the figure and grid layout
@@ -475,6 +489,7 @@ def Mapas_Colores_FEF(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_param_y,
                "Polarización Ideológica con anchura", "Transición con anchura",
                "Polarización Descorrelacionada con anchura"]
     
+    """
     for grafico in range(10):
         # Una vez que tengo el ZZ completo, armo mi mapa de colores
         direccion_guardado = Path("../../../Imagenes/{}/Fracción estados finales {}_{}={}.png".format(carpeta,Nombres[grafico],ID_param_extra_1,EXTRAS))
@@ -494,7 +509,41 @@ def Mapas_Colores_FEF(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_param_y,
         
         plt.savefig(direccion_guardado , bbox_inches = "tight")
         plt.close("FEF")
-
+    """
+    
+    # CORRECCIONES DE PAPER
+    # Voy a corregir estos gráficos para construir los que tienen fracción de polarización de los 4 estados principales
+    
+    Nombres_principales = ["Consenso", "Polarización 1D", "Polarización descorrelacionada", "Polarización Ideológica"]
+    Capas = [[0,1],[2,6],[5,9],[3,7]]
+    
+    for nombre,capa in zip(Nombres_principales,Capas):
+        
+        direccion_guardado = Path("../../../Imagenes/{}/Fracción estados finales {}_{}={}.png".format(carpeta,nombre,ID_param_extra_1,EXTRAS))
+        
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("FEF",figsize=(28,21))
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        
+        # Hago el ploteo del mapa de colores con el colormesh
+        
+        ZZ_final = np.zeros(ZZ.shape)
+        
+        for c in capa:
+            ZZ_final = ZZ_final + ZZ[capa]
+        
+        plt.pcolormesh(XX,YY,ZZ_final,shading="nearest", cmap = "plasma")
+        plt.colorbar()
+        plt.title("Fracción de estados de {}".format(nombre))
+        
+        # Guardo la figura y la cierro
+        
+        plt.savefig(direccion_guardado , bbox_inches = "tight")
+        plt.close("FEF")
+        
+        
+    
 
 #-----------------------------------------------------------------------------------------------
 
@@ -560,7 +609,8 @@ def Diccionario_metricas(DF, path, Nx, Ny):
                 Opifinales = Reconstruccion_opiniones(dist_final, AGENTES, T)
                 
                 # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
-                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"].iloc[0])
+                # repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
                 Identidad[indice] = repeticion
                 
                 Matriz_opi = np.zeros((T,AGENTES))
