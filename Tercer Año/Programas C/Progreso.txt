@@ -5346,3 +5346,6 @@ Empecemos con el punto 1.
 A la mañana no pude laburar porque se me cortó el internet. La concha de la lora. Me fui
 a lo de mi vieja para realizar la llamada. Hecho eso, me volví y me puse a laburar lo
 que pude, pero no tenía internet y estaba complicada la cosa.
+
+Hice algunas correcciones sobre los gráficos de fracciones de estados finales (FEF) y sobre
+los histogramas 2D.
