@@ -5349,3 +5349,16 @@ que pude, pero no tenía internet y estaba complicada la cosa.
 
 Hice algunas correcciones sobre los gráficos de fracciones de estados finales (FEF) y sobre
 los histogramas 2D.
+
+------------------------------------------------------------------------------------------
+
+12/02/2025
+
+A la mañana estuve intentando imprimir los documentos que necesitaba para el consulado,
+los cortes de red me complicaron el laburo, tardé mucho más de lo esperado pero al
+final lo conseguí.
+
+Fuimos un rato con Lucio a la charla de Gustavo Córdoba de Zubán Córdoba. Cuando volví,
+me pelee con el código y logré armar los gráficos un poco más suavizados. Ahora voy a intentar
+mandar eso a Coimbra y ver si funca.
+Está corriendo, cuando llegue a casa revisaré que así siga.
