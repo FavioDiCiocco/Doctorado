@@ -13,6 +13,7 @@ from matplotlib.pyplot import cm
 from matplotlib.ticker import FormatStrFormatter
 from matplotlib.gridspec import GridSpec
 from scipy.spatial.distance import jensenshannon
+from scipy.stats import gaussian_kde
 import pandas as pd
 import numpy as np
 import time
@@ -151,6 +152,9 @@ def Mapa_Colores_Entropia_opiniones(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_pa
 
 #-----------------------------------------------------------------------------------------------
 
+"""
+
+VERSION PRE PAPER
 # Esta función es la que arma los gráficos de los histogramas de opiniones
 # finales en el espacio de tópicos
 
@@ -274,6 +278,151 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
                     # Right histogram (1D)
                     ax_right = fig.add_subplot(gs[1:, -2], sharey=ax_main)
                     ax_right.hist(Y, bins=bins, color='tab:blue', edgecolor='black', orientation='horizontal')
+                    ax_right.axis('off')  # Optionally turn off axis labels
+                    
+                    # Set labels
+                    ax_main.set_xlabel(r"$x_i^1$")
+                    ax_main.set_ylabel(r"$x_i^2$")
+                    
+                    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+                    plt.close()
+
+"""
+
+
+# Version paper
+#-----------------------------------------------------------------------------------------------
+
+# Esta función es la que arma los gráficos de los histogramas de opiniones
+# finales en el espacio de tópicos
+
+def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
+                                 ID_param_x,ID_param_y,ID_param_extra_1):
+
+    # Defino la cantidad de agentes de la red
+    AGENTES = int(np.unique(DF["n"]))
+    
+    # Construyo un generador de números aleatorios
+    rng = np.random.default_rng()
+    
+    # Defino los arrays de parámetros diferentes
+    Arr_EXTRAS = np.unique(DF["Extra"])
+    Arr_param_x = np.unique(DF["parametro_x"])[0::3]
+    Arr_param_y = np.unique(DF["parametro_y"])[0::2]
+    
+    
+    # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
+    Tupla_total = [(param_x,param_y) for param_x in Arr_param_x
+                  for param_y in Arr_param_y]
+    
+    # Defino el tipo de archivo del cuál tomaré los datos
+    TIPO = "Opiniones"
+    
+    # Sólo tiene sentido graficar en dos dimensiones, en una es el 
+    # Gráfico de Opi vs T y en tres no se vería mejor.
+    T=2
+    
+    for EXTRAS in Arr_EXTRAS:
+        for PARAM_X,PARAM_Y in Tupla_total:
+            
+            Frecuencias = Identificacion_Estados(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Entropia"],
+                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmax"],
+                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Sigmay"],
+                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Covarianza"],
+                                                 Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Promedios"])
+            
+            # Acá estoy recorriendo todos los parámetros combinados con todos. Lo que queda es ponerme a armar la lista de archivos a recorrer
+            archivos = np.array(DF.loc[(DF["tipo"]==TIPO) & 
+                                        (DF["n"]==AGENTES) & 
+                                        (DF["Extra"]==EXTRAS) & 
+                                        (DF["parametro_x"]==PARAM_X) &
+                                        (DF["parametro_y"]==PARAM_Y), "nombre"])
+            #-----------------------------------------------------------------------------------------
+            
+            for nombre in archivos:
+                
+                # repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
+                repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"].iloc[0])
+                if repeticion < 20:
+                
+                    # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
+                    # Distribución final
+                    # Semilla
+                    # Fragmentos Matriz de Adyacencia
+                    
+                    # Levanto los datos del archivo
+                    Datos = ldata(path / nombre)
+                    
+                    # Leo los valores de distribución de opiniones, los cuales se distribuyen
+                    # en 42x42 cajas.
+                    dist_final = np.reshape(np.array(Datos[1][:-1],dtype="float"),(42,42))
+                    # Reconstruyo las opiniones finales normalizadas a partir de estos datos.
+                    Opifinales = Reconstruccion_opiniones(dist_final, AGENTES, T)
+                    Opifinales = Opifinales*bins[-1]
+                    
+                    X = Opifinales[0::T]
+                    Y = Opifinales[1::T]
+                    
+                    # De esta manera tengo mi array que me guarda las opiniones finales de los agente.
+                    
+                    #----------------------------------------------------------------------------------------------------------------------------------
+                    
+                    # Esto me registra la simulación que va a graficar. Podría cambiar los nombres y colocar la palabra sim en vez de iter.
+                
+                    direccion_guardado = Path("../../../Imagenes/{}/Histogramas/KDE_2D_N={:.0f}_{}={:.2f}_{}={:.2f}_sim={}.png".format(carpeta,AGENTES,
+                                                                                                ID_param_x,PARAM_X,ID_param_y,PARAM_Y,repeticion))
+                    
+                    indice = np.where(Dic_Total[EXTRAS][PARAM_X][PARAM_Y]["Identidad"] == repeticion)[0][0]
+                    estado = int(Frecuencias[indice])
+                    
+                    Nombres = ["Consenso neutral", "Consenso radicalizado", "Polarización 1D y Consenso",
+                               "Polarización Ideológica", "Transición", "Polarización Descorrelacionada",
+                               "Polarización 1D y Consenso con anchura",
+                               "Polarización Ideológica con anchura", "Transición con anchura",
+                               "Polarización Descorrelacionada con anchura"]
+                    
+                    
+                    # Set up the figure and grid layout
+                    plt.rcParams.update({'font.size': 28})
+                    fig = plt.figure(figsize=(16, 12))
+                    gs = GridSpec(4, 4, figure=fig, hspace=0.2, wspace=0.2, width_ratios=[1, 1, 1, 1])
+                    
+                    # Main plot: 2D histogram
+                    ax_main = fig.add_subplot(gs[1:, :-1])  # 3x3 space for the main plot
+                    
+                    # Create KDE estimation
+                    X = (X+rng.normal(0,0.15,X.shape[0]))*0.9
+                    Y = (Y+rng.normal(0,0.15,Y.shape[0]))*0.9
+                    xy = np.vstack([X, Y])
+                    kde_2d = gaussian_kde(xy)
+                    
+                    # Generate a grid
+                    x_grid = np.linspace(-3.5, 3.5, 200)
+                    y_grid = np.linspace(-3.5, 3.5, 200)
+                    X_grid, Y_grid = np.meshgrid(x_grid, y_grid)
+                    
+                    # Compute density on the grid
+                    Z = kde_2d(np.vstack([X_grid.ravel(), Y_grid.ravel()])).reshape(X_grid.shape)
+                    
+                    ax_main.contourf(X_grid, Y_grid, Z, levels=20, cmap="magma")  # Smooth heatmap-like plot
+                    
+                    
+                    # Top histogram (1D)
+                    ax_top = fig.add_subplot(gs[0, :-1], sharex=ax_main)
+                    kde = gaussian_kde(X) # Esto reconstruye una función de distribución a partir de un muestreo
+                    x_vals = np.linspace(-3.5,3.5,100) # Esta es la región en la que tengo mi muestreo
+                    y_vals = kde(x_vals) # Esto construye la curva a graficar
+                    ax_top.plot(x_vals, y_vals,color='tab:blue', linewidth = 2)
+                    ax_top.fill_between(x_vals, y_vals, alpha=0.5, color='tab:blue')  # Fill under the curve
+                    ax_top.axis('off')  # Optionally turn off axis labels
+                    
+                    # Right histogram (1D)
+                    ax_right = fig.add_subplot(gs[1:, -1], sharey=ax_main)
+                    kde = gaussian_kde(Y) # Esto reconstruye una función de distribución a partir de un muestreo
+                    x_vals = np.linspace(-3.5,3.5,100) # Esta es la región en la que tengo mi muestreo
+                    y_vals = kde(x_vals) # Esto construye la curva a graficar
+                    ax_right.plot(y_vals, x_vals,color='tab:blue', linewidth = 2)
+                    ax_right.fill_betweenx(x_vals, 0, y_vals, alpha=0.5, color='tab:blue')  # Fill under the curve
                     ax_right.axis('off')  # Optionally turn off axis labels
                     
                     # Set labels
@@ -442,6 +591,8 @@ def Mapas_Colores_FEF(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_param_y,
                "Polarización Ideológica con anchura", "Transición con anchura",
                "Polarización Descorrelacionada con anchura"]
     
+    """
+    
     for grafico in range(10):
         # Una vez que tengo el ZZ completo, armo mi mapa de colores
         direccion_guardado = Path("../../../Imagenes/{}/Fracción estados finales {}_{}={}.png".format(carpeta,Nombres[grafico],ID_param_extra_1,EXTRAS))
@@ -461,6 +612,37 @@ def Mapas_Colores_FEF(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_param_y,
         
         plt.savefig(direccion_guardado , bbox_inches = "tight")
         plt.close("FEF")
+        
+    """
+    # CORRECCIONES DE PAPER
+    # Voy a corregir estos gráficos para construir los que tienen fracción de polarización de los 4 estados principales
+    
+    Nombres_principales = ["Consenso", "Polarización 1D", "Polarización descorrelacionada", "Polarización Ideológica"]
+    Capas = [[0,1],[2,6],[5,9],[3,7]]
+    
+    for nombre,capa in zip(Nombres_principales,Capas):
+        
+        direccion_guardado = Path("../../../Imagenes/{}/Fracción estados finales {}_{}={}.png".format(carpeta,nombre,ID_param_extra_1,EXTRAS))
+        
+        plt.rcParams.update({'font.size': 44})
+        plt.figure("FEF",figsize=(28,21))
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        
+        # Hago el ploteo del mapa de colores con el colormesh
+        
+        ZZ_final = np.sum(ZZ[capa],axis = 0)
+        
+        # plt.pcolormesh(XX,YY,ZZ_final,shading="nearest", cmap = "plasma")
+        plt.contourf(XX,YY,ZZ_final, levels = 20, cmap = "plasma")
+        plt.colorbar()
+        plt.title("Fracción de estados de {}".format(nombre))
+        
+        # Guardo la figura y la cierro
+        
+        plt.savefig(direccion_guardado , bbox_inches = "tight")
+        plt.close("FEF")
+
 
 
 #-----------------------------------------------------------------------------------------------

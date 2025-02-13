@@ -296,6 +296,7 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
 
 """
 
+
 # Version paper
 #-----------------------------------------------------------------------------------------------
 
@@ -314,14 +315,12 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
     # Defino los arrays de parámetros diferentes
     Arr_EXTRAS = np.unique(DF["Extra"])
     Arr_param_x = np.unique(DF["parametro_x"])[0::3]
-    Arr_param_y = np.unique(DF["parametro_y"])[0::4]
+    Arr_param_y = np.unique(DF["parametro_y"])[0::2]
     
     
     # Armo una lista de tuplas que tengan organizados los parámetros a utilizar
     Tupla_total = [(param_x,param_y) for param_x in Arr_param_x
                   for param_y in Arr_param_y]
-    
-    # Tupla_total = [(0,0.4), (0,0.6), (0.02,0.5)]
     
     # Defino el tipo de archivo del cuál tomaré los datos
     TIPO = "Opiniones"
@@ -351,7 +350,7 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
                 
                 # repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"])
                 repeticion = int(DF.loc[DF["nombre"]==nombre,"iteracion"].iloc[0])
-                if repeticion < 5:
+                if repeticion < 20:
                 
                     # Acá levanto los datos de los archivos de opiniones. Estos archivos tienen los siguientes datos:
                     # Distribución final
@@ -645,8 +644,7 @@ def Mapas_Colores_FEF(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_param_y,
         
         plt.savefig(direccion_guardado , bbox_inches = "tight")
         plt.close("FEF")
-        
-        
+
 
 #-----------------------------------------------------------------------------------------------
 
