@@ -634,8 +634,9 @@ def Mapas_Colores_FEF(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_param_y,
         ZZ_final = np.sum(ZZ[capa],axis = 0)
         
         # plt.pcolormesh(XX,YY,ZZ_final,shading="nearest", cmap = "plasma")
-        plt.contourf(XX,YY,ZZ_final, levels = 20, cmap = "plasma")
-        plt.colorbar()
+        c = plt.contourf(XX,YY,ZZ_final, levels = 20, cmap = "plasma")
+        cb = plt.colorbar(c)
+        cb.set_clim(0, 1)
         plt.title("Fracción de estados de {}".format(nombre))
         
         # Guardo la figura y la cierro

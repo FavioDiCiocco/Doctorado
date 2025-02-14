@@ -5375,3 +5375,14 @@ imágenes de eso y cambiar lo que estuvimos charlando.
 
 Hice un poco de eso, mañana continuo y lo termino. También mencionar que varias correcciones que
 charlamos están anotadas en el overleaf.
+
+------------------------------------------------------------------------------------------
+
+14/02/2025
+
+Llegué más tarde hoy, pasaron cosas. Me lo cobré porque ayer me fui tarde y me levanté temprano
+para el tema de la visa. Ahora voy a ver de resolver el tema de las pc's, porque de nuevo
+no conectan. Ya funcionan, qué forma de hacerme gastar tiempo todos los días.
+
+Ya hablé con Pablo. No estoy pudiendo lograr que el colorbar vaya de 0 a 1, no entiendo por qué
+tan difícil el asunto.
