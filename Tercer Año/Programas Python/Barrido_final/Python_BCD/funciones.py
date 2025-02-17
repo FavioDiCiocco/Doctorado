@@ -390,7 +390,7 @@ def Graf_Histograma_opiniones_2D(DF,Dic_Total,path,carpeta,bins,cmap,
                     
                     
                     # Set up the figure and grid layout
-                    plt.rcParams.update({'font.size': 28})
+                    plt.rcParams.update({'font.size': 50})
                     fig = plt.figure(figsize=(16, 12))
                     gs = GridSpec(4, 4, figure=fig, hspace=0.2, wspace=0.2, width_ratios=[1, 1, 1, 1])
                     
@@ -626,23 +626,26 @@ def Mapas_Colores_FEF(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_param_y,
         
         direccion_guardado = Path("../../../Imagenes/{}/Fracción estados finales {}_{}={}.png".format(carpeta,nombre,ID_param_extra_1,EXTRAS))
         
-        plt.rcParams.update({'font.size': 44})
+        plt.rcParams.update({'font.size': 60})
         plt.figure("FEF",figsize=(28,21))
         plt.xlabel(r"${}$".format(SIM_param_x))
         plt.ylabel(r"${}$".format(SIM_param_y))
         
         # Hago el ploteo del mapa de colores con el colormesh
-        
         ZZ_final = np.sum(ZZ[capa],axis = 0)
         
+        # Define fixed levels to ensure colorbar limits remain [0,1]
+        levels = np.linspace(0, 1, 21)  # 20 intervals between 0 and 1
+        
         # plt.pcolormesh(XX,YY,ZZ_final,shading="nearest", cmap = "plasma")
-        im = plt.contourf(XX,YY,ZZ_final, levels = 20, cmap = "plasma")
-        cb = plt.colorbar(im)
-        im.set_clim(0, 1)
-        cb.set_ticks([0, 0.2, 0.4, 0.6, 0.8, 1])
-        cb.ax.set_ylim(0, 1)  # Ensure the range is from 0 to 1
+        im = plt.contourf(XX, YY, ZZ_final, levels=levels, cmap="plasma", vmin=0, vmax=1)
 
-        plt.title("Fracción de estados de {}".format(nombre))
+        # Add a colorbar with the same range
+        cbar = plt.colorbar(im)
+        cbar.set_ticks(np.linspace(0, 1, 6))  # Set tick marks at even intervals
+        cbar.ax.set_ylim(0, 1)  # Explicitly set the colorbar limits
+        
+        # plt.title("Fracción de estados de {}".format(nombre))
         
         # Guardo la figura y la cierro
         

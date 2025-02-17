@@ -5386,3 +5386,28 @@ no conectan. Ya funcionan, qué forma de hacerme gastar tiempo todos los días.
 
 Ya hablé con Pablo. No estoy pudiendo lograr que el colorbar vaya de 0 a 1, no entiendo por qué
 tan difícil el asunto.
+
+------------------------------------------------------------------------------------------
+
+16/02/2025
+
+Hoy armé un texto sobre la propuesta de trabajo para mostrarle a Pablo, después veremos
+qué le parece. El texto lo armé intentando explicar su importancia, precedente, plan de trabajo
+y fundamentos.
+
+------------------------------------------------------------------------------------------
+
+17/02/2025
+
+Hoy llegué bien a la facultad, podría haber sido un poco más temprano. Lo primero que hice a la
+mañana es revisar bien los gráficos que estuvimos preparando sobre los estados suavizados y
+fracción de agentes. Está complejo el lograr que la barra de colores se mueva entre 0 y 1.
+
+Después de comer hice la solicitud para retirar la visa. Y también agregué los datos de mi CPF
+a mi cuenta de CAPES. Ahora a esperar que me manden el mail avisando que puedo confirmar la fecha.
+
+Sigamos con los gráficos del paper, ya casi tengo para corregir los dos gráficos que le
+mostré a Pablo, lo siguiente será resolver el cómo armar el gráfico de la figura final.
+
+Armé una idea de la figura final y empecé a armar el crudo de eso. Mañana se lo muestro a Pablo
+y lo termino.

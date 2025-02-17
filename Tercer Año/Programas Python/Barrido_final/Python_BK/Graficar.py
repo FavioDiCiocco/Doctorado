@@ -105,8 +105,8 @@ for carp in Carpetas:
                            SIM_param_x, SIM_param_y, ID_param_extra_1)
     
     
-    # func.Graf_Histograma_opiniones_2D(Df_archivos, Dic_Total, Direccion, Etapa/carpeta, bines, "magma",
-    #                                   ID_param_x, ID_param_y, ID_param_extra_1)
+    func.Graf_Histograma_opiniones_2D(Df_archivos, Dic_Total, Direccion, Etapa/carpeta, bines, "magma",
+                                      ID_param_x, ID_param_y, ID_param_extra_1)
     
 #-------------------------------------------------------------------------------------------------------------------------
 
