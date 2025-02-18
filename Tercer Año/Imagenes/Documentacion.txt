@@ -80,3 +80,7 @@ hice una distribución de los pares de preguntas en el espacio de parámetros y 
 de preguntas en este espacio. Para realizar un análisis detallado de esos clusters armé una carpeta
 por cada cluster, con nombres B$$C$$Cluster, donde los números después de B indican X.Y, mientras que
 los números después de C indican 0.XY. 
+
+.) Paper:
+---------
+Acá guardo las imágenes que voy a poner en el paper.
