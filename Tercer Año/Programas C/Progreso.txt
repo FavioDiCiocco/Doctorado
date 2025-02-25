@@ -5437,3 +5437,50 @@ Por último, llegando a casa me puse a revisar un poco más el paper, la secció
 comparación con el modelo 1D la voy a pasar por ahora, pero me voy a poner a revisar la sección
 4. Por un lado tengo unos párrafos que podría modificar y después veré si la primera parte
 de esa sección la puedo pasar más arriba como dice Hugo.
+
+------------------------------------------------------------------------------------------
+
+20/02/2025
+
+Hoy fui a la facultad, en todo el día estuve trabajando en lo que me pedían por un lado desde
+CAPES y por el otro en armar el informe de avance anual de doctorado. Me distraigo mucho,
+laburo poco, soy muy boludo.
+
+------------------------------------------------------------------------------------------
+
+21/02/2025
+
+Hoy a la mañana iba a laburar temprano, pero llegó el gato del vecino. Después me puse
+con terminar el informe de avance anual de doctorado y con leer los documentos que
+CAPES pide que llevemos. Lo miré por arriba, no parece que haya que cargar mucho en el
+sentido de que no veo en el sistema cómo cargarlo, pero ya iremos viendo de nuevo qué
+hay que subir. Eran muchas cosas y necesito ordenarme.
+
+Al final no laburé casi nada en el tema del paper, arranquemos ahora con eso. Vengo dejando
+pasar el laburo todos los días y no avanzando nada, soy un re boludo.
+
+------------------------------------------------------------------------------------------
+
+24/02/2025
+
+A la mañana terminé de preparar el CV y se lo mandé a Mariano, después fui al consulado al
+mediodía. De ahí me junté con Lucio, revisamos cosas sobre el viaje a Brasil y después
+me fui a la facultad para reconectar los cables de las pc's de los clusters.
+
+------------------------------------------------------------------------------------------
+
+25/02/2025
+
+Modifiqué la sección 4 agregando lo que habíamos charlado pero no cambié esa sección
+a las partes más arriba. Eso lo puedo hacer después. Me queda entonces ver de juntarme
+con Hugo, charlar lo que vamos a hacer y de ahí agregar nuevas cosas.
+
+Mañana voy a resolver el tema de Greenpeace, ir al laboratorio, al cardiólogo y comprar
+la lamparita que me falta.
+
+¿Qué haré con el paper mañana? Ya revisaré de nuevo, quizás haga algo con la figura final.
+Si no tengo respuesta de Hugo, intentaré dar una nueva revisión. También podría ponerme
+a agregar los datos nuevos para hacer un barrido más fino del espacio de parámetros 
+Beta-Cosd.
+
+También tengo que revisar lo del trámite de visado que me mandaron del consulado.
