@@ -5517,3 +5517,67 @@ Coimbra.
 
 Lo iba a hacer, pero me acuerdo que voy a tardar un montonazo. Vamos a resolver eso
 mañana o el viernes. O en la facultad, no hace falta hacerlo ya.
+
+------------------------------------------------------------------------------------------
+
+27/02/2025
+
+Cosas para mencionarle a Hugo:
+1) Agregué el algoritmo para diferenciar estados finales.
+2) En la sección asociada a los mapas de calor, debería modificar el texto porque se basa
+en una descripción usando entropía, covarianza y varianza, pero ahora nada de eso está
+mostrado en las figuras.
+3) En la figura 5 están marcadas las regiones como las definimos previamente. Quizás convenga
+no marcar esas regiones. Mostrar en ese sentido algunas figuras que estuve armando a Hugo para que
+vea lo que planee como alternativas.
+4) Mencionar que la justificación para validar la partición de 3 clusters viene del Coeficiente de
+Silhouette y el SSE.
+
+Cosas charladas con Hugo:
+a) La entropía efectivamente podemos dejarla para después, en especial la varianza de la entropía.
+b) Hugo propone que no deberíamos usar un suavizado en los mapas de colores de fracción de estados.
+c) Hugo propone fijar un único valor de covarianza para separar los estados de polarización descorrelacionada
+de los estados de polarización ideológica. Probemos poner covarianza límite en 0.3.
+Para que no quede ese hueco en la región del espacio Beta-Cos(delta)
+d) Estaría bueno mostrar en una sección de parte suplementaria cuáles son los datos que tomamos,
+por qué clasificamos en tres clusters, cuál es la matriz de similaridad y cosas así.
+e) En la figura 5, Hugo propone sacar la leyenda y tener cuidado con el hecho de armar una figura
+con muchos datos que después cuesta cargar al mirar el pdf.
+f) Hugo dice de revisar todas las combinaciones y ver si da algo más lindo el agregar gráficos de preguntas
+a nuestro análisis. La otra es restringirnos a 4 temas y ver si combinando esos 4 conseguimos 12
+puntos que den todo bien. Pero la propuesta sería que en cualquiera de los dos casos me concentre a
+un conjunto de preguntas fijas y dado eso armar las combinaciones.
+g) Podríamos armar una figura 5 que tenga dos filas, la de arriba hablando sobre la clusterización usando
+un K-means, y la de abajo hablando del proceso de adjudicar un gráfico a un punto en el espacio de
+Beta-Cos(delta)
+
+Vamos a ver si puedo resolver hoy el tema de incorporar preguntas al proceso de distribuir histogramas
+de preguntas de ANES en el espacio de parámetros.
+
+En total usé 10 preguntas.
+201372
+201386
+201408
+201411
+201420
+201426
+202255
+202328
+202331
+202341
+202350
+
+Logré armar las distribuciones de preguntas en el espacio de parámetros, pero ahora la mejor separación
+de clusters se me da para dos clusters. Es un poco endeble esto. Veamos cuáles gráficos son en este caso.
+
+------------------------------------------------------------------------------------------
+
+28/02/2025
+
+A la mañana fui a la dentista, después me junté con Lucio a revisar el tema de dónde alojarnos,
+ver lo de los seguros y ver qué papeles nos falta mandar a Brasil.
+
+Después estuve abriendo mi cuenta en Cocos Capital, mandé mensajes tarde para lo de hacerme los estudios
+de Laboratorio y ahora me voy a poner a revisar el tema de cuáles son los gráficos clusterizados.
+
+Costó, pero separé los gráficos en dos clusters. Se nota que la separación tiene sentido, está bueno.

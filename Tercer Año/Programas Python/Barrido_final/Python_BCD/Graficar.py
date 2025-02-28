@@ -135,6 +135,7 @@ for carp in Carpetas:
     
     #----------------------------------------------------------------------------------------------
     """
+    
     # Construyo un diccionario con las preguntas de cada uno de los clusters
     
     Df_preguntas = func.Tabla_datos_preguntas(Df_archivos, dict_labels, Archivos_Matrices_JS, Dir_matrices_JS)
@@ -211,6 +212,7 @@ for carp in Carpetas:
         
         # func.Hist2D_similares_FEF(DKS, code_x, code_y, Df_archivos, Dic_Total, dict_labels, Etapa/carpeta, Direccion, bines,
         #                           "KS",SIM_param_x,SIM_param_y)
+    
     """
     #----------------------------------------------------------------------------------------------
     
