@@ -5581,3 +5581,65 @@ Después estuve abriendo mi cuenta en Cocos Capital, mandé mensajes tarde para 
 de Laboratorio y ahora me voy a poner a revisar el tema de cuáles son los gráficos clusterizados.
 
 Costó, pero separé los gráficos en dos clusters. Se nota que la separación tiene sentido, está bueno.
+
+------------------------------------------------------------------------------------------
+
+03/03/2025
+
+Tengo armados dos clusters de gráficos, usando 11 preguntas en total. Lo que observo de ahí es que
+las preguntas se separan en un cluster de gráficos con polarización 2D y sin polarización 2D.
+Una primer cosa que me podría preguntar es si ambos clusters tienen conjuntos de pregntas distintos.
+Veámoslo.
+
+Cluster 1:
+201408 (Service to same sex couple)
+201386 (Impeachment)
+201420 (Birthright Citizenship)
+201426 (Wall with Mexico)
+202328 (Obamacare)
+201411 (Transgender Policy)
+202255 (Less or more government)
+
+Cluster 2:
+201386 (Impeachment)
+201372 (Pres. didnt' worry about congress)
+201408 (Service to same sex couple)
+202331 (Vaccines in schools)
+202341 (Background checks for guns purchases)
+202350 (Govt. action about opioids)
+201411 (Transgender Policy)
+201420 (Birthright Citizenship)
+201426 (Wall with Mexico)
+202255 (Less or more government)
+202328 (Obamacare)
+
+En el cluster de polarización 2D tengo menos preguntas que en el cluster 2. Eso es porque para polarización
+2D necesito que las dos preguntas cruzadas tengan distribución bimodal, pero para polarización 1D o
+consenso, puedo tener una bimodal o ninguna. Entonces tengo más combinaciones siempre que junte las
+distribuciones bimodales con unimodales o unimodales con unimodales.
+
+Al separar en 3 clusters no se parte el conjunto de simulaciones 2D, sino el conjunto de simulaciones 1D.
+La métrica de clustering de silhouette me da que dos clusters es lo mejor, a mi me genera dudas eso, habría
+que charlarlo. ¿Qué opino yo? Que estaría bueno tener anotado cuáles gráficos van a parar a dónde en el
+espacio de parámetros, con eso sabemos entonces cómo se diferencian entre ellos. Esto es trabajo que hice
+antes, no me quiero meter en el mismo trabajo largo que ya hice.
+
+------------------------------------------------------------------------------------------
+
+04/03/2025
+
+Teniendo los gráficos, vamos a intentar ver dónde caen los gráficos, como para diferenciarlos según
+el lugar en el que caen.
+
+¿Cuál es el estado gráfico del cluster de polarizados que cae en la región de estados de polarización 1D
+en el espacio de parámetros? V202255xvsV201411x.png. Es el que más parece como ruido por la distribución
+que abarca todo el espacio.
+
+Me genera cosa decir que la mejor separación es en 2 clusters. ¿Hay una mejor separación? ¿Cómo
+organizo eso de forma para que la presentación sea clara e indudable? Podría agregar al SSE
+un punto más en el caso de un sólo cluster.
+
+Me avivé de subir los gráficos de los clusters al drive, buena idea para no perder tiempo al pedo.
+¿Hay algo más que debería hacer? Yo venía pensando en armar un gráfico de Venn para mostrar esto,
+una red de preguntas que se conectan o una red bipartita. Estas son las cosas que se me ocurren
+sumar a esto, hecho eso, seguimos con el armado del paper.
