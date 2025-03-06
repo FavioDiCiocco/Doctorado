@@ -5588,7 +5588,7 @@ Costó, pero separé los gráficos en dos clusters. Se nota que la separación t
 
 Tengo armados dos clusters de gráficos, usando 11 preguntas en total. Lo que observo de ahí es que
 las preguntas se separan en un cluster de gráficos con polarización 2D y sin polarización 2D.
-Una primer cosa que me podría preguntar es si ambos clusters tienen conjuntos de pregntas distintos.
+Una primer cosa que me podría preguntar es si ambos clusters tienen conjuntos de preguntas distintos.
 Veámoslo.
 
 Cluster 1:
@@ -5662,3 +5662,33 @@ Hice lo del gráfico de SSE, la verdad da bastante lindo para lo que quería. Ef
 clusters parece ser lo óptimo.
 Lo del diagrama de Venn no parece que vaya a salir, no creo que sea una gran idea.
 Armé esto como gráfico, me gusta mucho más cómo queda.
+
+------------------------------------------------------------------------------------------
+
+06/03/2025
+
+Hoy a la mañana preparé unas diapositivas para mostrar lo que estuve haciendo a David y Hugo.
+La idea dentro de todo va bien, me agrada como quedó, mañana se lo mostraré a Pablo.
+
+Ideas que salen de la reunión con Hugo y David:
+a) David dice de modificar la figura 5, para mostrar ahí lo que calculamos sobre cuándo se da
+el cruce de estabilidad de los estados. Es decir que lo analítico esté contrastado contra 
+lo simulado. Una idea, que aunque sea vaya para material suplementario, sería armar gráficos
+de fracción de polarización en función de beta.
+b) También está de acuerdo en rebajar o sacar la interpolación a los gráficos de fracción
+de estados en el espacio de parámetros.
+c) Probar revisar esto del estudio de la red de preguntas que hice para 2 clusters en los casos de
+3 y 4 clusters, para ver si da algo más justificable de cómo separa preguntas la clusterización.
+d) En la sección final ver de presentar que la clusterización encuentra algo por sí mismo
+y de ahí podemos hacer un trabajo de diferenciación con nuestro modelo.
+
+Luego de la reunión, lo que voy a hacer primero es armar un análisis de redes de preguntas
+para los casos de tres o cuatro clusters.
+Tengo las redes, veamos si hay algo más razonable de eso. Hagamos una presentación como la que hice
+esta mañana para separar las preguntas de cada red. Podría ver de cambiarle el tamaño de las
+líneas a estos gráficos.
+
+Ya armé ese análisis y si bien se puede hilar fino para ver cómo se juntan los distintos histogramas,
+me parece que es hilar muy fino y que se puede trabajar con la partición en dos clusters. Ya tengo
+hecho esto, mañana me puedo poner con otra cosa. Iré mañana al laboratorio para hacerme el estudio.
+Cocinaré ahora la carne.

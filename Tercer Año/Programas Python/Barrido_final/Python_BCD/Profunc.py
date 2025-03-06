@@ -2069,7 +2069,7 @@ kmeans.fit(Subconj_JS.to_numpy())
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=1200, c = kmeans.labels_, cmap = colmap)
-plt.title('K-means sobre Subconj, 4 clusters')
+# plt.title('K-means sobre Subconj, 4 clusters')
 # Custom legend with specific text for each cluster
 legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(kmeans.labels_)]  # Customize these as you like
 # Create legend manually using custom text and colors from the scatter plot
@@ -2077,7 +2077,7 @@ handles = [plt.Line2D([0], [0], marker='o', color='w', label=label,
                       markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
                       for i, label in enumerate(legend_labels)]
 # Add the legend to the plot
-plt.legend(handles=handles, loc="best", ncol=2, framealpha = 0.5)
+# plt.legend(handles=handles, loc="best", ncol=2, framealpha = 0.5)
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_silh_K-means4_Subconj.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
@@ -2089,7 +2089,7 @@ kmeans.fit(Subconj_JS.to_numpy())
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=1200, c = kmeans.labels_, cmap = colmap)
-plt.title('K-means sobre Subconj, 3 clusters')
+# plt.title('K-means sobre Subconj, 3 clusters')
 # Custom legend with specific text for each cluster
 legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(kmeans.labels_)]  # Customize these as you like
 # Create legend manually using custom text and colors from the scatter plot
@@ -2097,7 +2097,7 @@ handles = [plt.Line2D([0], [0], marker='o', color='w', label=label,
                       markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
                       for i, label in enumerate(legend_labels)]
 # Add the legend to the plot
-plt.legend(handles=handles, loc="best", ncol=2, framealpha = 0.5)
+# plt.legend(handles=handles, loc="best", ncol=2, framealpha = 0.5)
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_silh_K-means3_Subconj.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
@@ -2109,7 +2109,7 @@ kmeans.fit(Subconj_JS.to_numpy())
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
 scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=1200, c = kmeans.labels_, cmap = colmap)
-plt.title('K-means sobre Subconj, 2 clusters')
+# plt.title('K-means sobre Subconj, 2 clusters')
 # Custom legend with specific text for each cluster
 legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(kmeans.labels_)]  # Customize these as you like
 # Create legend manually using custom text and colors from the scatter plot
@@ -2117,7 +2117,7 @@ handles = [plt.Line2D([0], [0], marker='o', color='w', label=label,
                       markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
                       for i, label in enumerate(legend_labels)]
 # Add the legend to the plot
-plt.legend(handles=handles, loc="best", ncol=2, framealpha = 0.5)
+# plt.legend(handles=handles, loc="best", ncol=2, framealpha = 0.5)
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_silh_K-means2_Subconj.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
@@ -2197,42 +2197,42 @@ X = Df_preguntas["Cosd_{}".format(cant_simulaciones)] + rng.normal(loc = 0, scal
 Y = Df_preguntas["Beta_{}".format(cant_simulaciones)] + rng.normal(loc = 0, scale = (0.1)/5, size = Df_preguntas["Beta_{}".format(cant_simulaciones)].shape)
 
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-tlinea = 5
-# Región de Polarización Descorrelacionada
-x = [0, 0.1, 0.15, 0, 0]  # x-coordinates
-y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) #, label='Polarización Descorrelacionada')
-plt.text(0.05, 1.3, 'I', fontsize=40, ha='center', va='center', color='k')
-# Región de Transición
-x = [0.1, 0.15, 0.3, 0.15, 0.1]  # x-coordinates
-y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
-plt.text(0.18, 1.3, 'II', fontsize=40, ha='center', va='center', color='k')
-# Región de Polarización ideológica
-x = [0.15, 0.5, 0.5, 0.3, 0.15] # x-coordinates
-y = [1.1, 1.1, 1.5, 1.5, 1.1] # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
-plt.text(0.35, 1.3, 'III', fontsize=40, ha='center', va='center', color='k')
-# Región de Consenso Radicalizado
-x = [0, 0.5, 0.5, 0.2, 0.2, 0.5, 0.5, 0.1, 0.1, 0, 0]  # x-coordinates
-y = [0, 0, 0.15, 0.3, 0.6, 0.6, 1.1, 1.1, 0.3, 0.2, 0]  # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
-plt.text(0.3, 0.85, 'VI', fontsize=40, ha='center', va='center', color='k')
-# Región de Mezcla 1
-x = [0, 0.1, 0.1, 0, 0] # x-coordinates
-y = [0.2, 0.3, 0.75, 0.75, 0.2] # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)  # label=r'Mezcla: CR (50~80%), P1Da (20~35%)')
-plt.text(0.05, 0.55, 'V', fontsize=40, ha='center', va='center', color='k')
-# Región de Mezcla 2
-x = [0, 0.1, 0.1, 0, 0] # x-coordinates
-y = [0.75, 0.75, 1.1, 1.1, 0.75] # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (30~40%), P1D (10~50%)')
-plt.text(0.05, 0.9, 'IV', fontsize=40, ha='center', va='center', color='k')
-# Región de Mezcla 3
-x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
-y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
-plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
+# tlinea = 5
+# # Región de Polarización Descorrelacionada
+# x = [0, 0.1, 0.15, 0, 0]  # x-coordinates
+# y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) #, label='Polarización Descorrelacionada')
+# plt.text(0.05, 1.3, 'I', fontsize=40, ha='center', va='center', color='k')
+# # Región de Transición
+# x = [0.1, 0.15, 0.3, 0.15, 0.1]  # x-coordinates
+# y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+# plt.text(0.18, 1.3, 'II', fontsize=40, ha='center', va='center', color='k')
+# # Región de Polarización ideológica
+# x = [0.15, 0.5, 0.5, 0.3, 0.15] # x-coordinates
+# y = [1.1, 1.1, 1.5, 1.5, 1.1] # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+# plt.text(0.35, 1.3, 'III', fontsize=40, ha='center', va='center', color='k')
+# # Región de Consenso Radicalizado
+# x = [0, 0.5, 0.5, 0.2, 0.2, 0.5, 0.5, 0.1, 0.1, 0, 0]  # x-coordinates
+# y = [0, 0, 0.15, 0.3, 0.6, 0.6, 1.1, 1.1, 0.3, 0.2, 0]  # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+# plt.text(0.3, 0.85, 'VI', fontsize=40, ha='center', va='center', color='k')
+# # Región de Mezcla 1
+# x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+# y = [0.2, 0.3, 0.75, 0.75, 0.2] # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)  # label=r'Mezcla: CR (50~80%), P1Da (20~35%)')
+# plt.text(0.05, 0.55, 'V', fontsize=40, ha='center', va='center', color='k')
+# # Región de Mezcla 2
+# x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+# y = [0.75, 0.75, 1.1, 1.1, 0.75] # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (30~40%), P1D (10~50%)')
+# plt.text(0.05, 0.9, 'IV', fontsize=40, ha='center', va='center', color='k')
+# # Región de Mezcla 3
+# x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
+# y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
+# plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
 plt.scatter(X,Y, marker="o", c = kmeans.labels_ , s = 900, cmap = colmap , alpha = 0.7)
 plt.gca().xaxis.set_major_formatter(FuncFormatter(lambda val, pos: f'{val:.2f}'))
 plt.xlabel(r"$cos(\delta)$")
@@ -2307,65 +2307,48 @@ plt.close()
 kmeans = KMeans(n_clusters=3, random_state=42, n_init = "auto")
 kmeans.fit(Subconj_JS.to_numpy())
 
-plt.rcParams.update({'font.size': 44})
-plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-scatter = plt.scatter(X_2d[:,0],X_2d[:,1], s=1200, c = kmeans.labels_, cmap = colmap)
-plt.title('K-means sobre Subconj, 3 clusters')
-# Custom legend with specific text for each cluster
-legend_labels = ["Cluster {}".format(cluster+1) for cluster in np.unique(kmeans.labels_)]  # Customize these as you like
-# Create legend manually using custom text and colors from the scatter plot
-handles = [plt.Line2D([0], [0], marker='o', color='w', label=label, 
-                      markerfacecolor=scatter.cmap(scatter.norm(i)), markersize=15)
-                      for i, label in enumerate(legend_labels)]
-# Add the legend to the plot
-plt.legend(handles=handles, loc="best", ncol=2, framealpha = 0.5)
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Clas_silh_K-means3_Subconj.png")
-plt.savefig(direccion_guardado ,bbox_inches = "tight")
-plt.close()
-
-
 cant_simulaciones = 100
 # Grafico en el esp. de parámetros los puntos clusterizados según Mat. JS
 X = Df_preguntas["Cosd_{}".format(cant_simulaciones)] + rng.normal(loc = 0, scale = (0.02)/5, size = Df_preguntas["Cosd_{}".format(cant_simulaciones)].shape)
 Y = Df_preguntas["Beta_{}".format(cant_simulaciones)] + rng.normal(loc = 0, scale = (0.1)/5, size = Df_preguntas["Beta_{}".format(cant_simulaciones)].shape)
 
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-tlinea = 5
-# Región de Polarización Descorrelacionada
-x = [0, 0.1, 0.15, 0, 0]  # x-coordinates
-y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) #, label='Polarización Descorrelacionada')
-plt.text(0.05, 1.3, 'I', fontsize=40, ha='center', va='center', color='k')
-# Región de Transición
-x = [0.1, 0.15, 0.3, 0.15, 0.1]  # x-coordinates
-y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
-plt.text(0.18, 1.3, 'II', fontsize=40, ha='center', va='center', color='k')
-# Región de Polarización ideológica
-x = [0.15, 0.5, 0.5, 0.3, 0.15] # x-coordinates
-y = [1.1, 1.1, 1.5, 1.5, 1.1] # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
-plt.text(0.35, 1.3, 'III', fontsize=40, ha='center', va='center', color='k')
-# Región de Consenso Radicalizado
-x = [0, 0.5, 0.5, 0.2, 0.2, 0.5, 0.5, 0.1, 0.1, 0, 0]  # x-coordinates
-y = [0, 0, 0.15, 0.3, 0.6, 0.6, 1.1, 1.1, 0.3, 0.2, 0]  # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
-plt.text(0.3, 0.85, 'VI', fontsize=40, ha='center', va='center', color='k')
-# Región de Mezcla 1
-x = [0, 0.1, 0.1, 0, 0] # x-coordinates
-y = [0.2, 0.3, 0.75, 0.75, 0.2] # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)  # label=r'Mezcla: CR (50~80%), P1Da (20~35%)')
-plt.text(0.05, 0.55, 'V', fontsize=40, ha='center', va='center', color='k')
-# Región de Mezcla 2
-x = [0, 0.1, 0.1, 0, 0] # x-coordinates
-y = [0.75, 0.75, 1.1, 1.1, 0.75] # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (30~40%), P1D (10~50%)')
-plt.text(0.05, 0.9, 'IV', fontsize=40, ha='center', va='center', color='k')
-# Región de Mezcla 3
-x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
-y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
-plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
+# tlinea = 5
+# # Región de Polarización Descorrelacionada
+# x = [0, 0.1, 0.15, 0, 0]  # x-coordinates
+# y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) #, label='Polarización Descorrelacionada')
+# plt.text(0.05, 1.3, 'I', fontsize=40, ha='center', va='center', color='k')
+# # Región de Transición
+# x = [0.1, 0.15, 0.3, 0.15, 0.1]  # x-coordinates
+# y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+# plt.text(0.18, 1.3, 'II', fontsize=40, ha='center', va='center', color='k')
+# # Región de Polarización ideológica
+# x = [0.15, 0.5, 0.5, 0.3, 0.15] # x-coordinates
+# y = [1.1, 1.1, 1.5, 1.5, 1.1] # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+# plt.text(0.35, 1.3, 'III', fontsize=40, ha='center', va='center', color='k')
+# # Región de Consenso Radicalizado
+# x = [0, 0.5, 0.5, 0.2, 0.2, 0.5, 0.5, 0.1, 0.1, 0, 0]  # x-coordinates
+# y = [0, 0, 0.15, 0.3, 0.6, 0.6, 1.1, 1.1, 0.3, 0.2, 0]  # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+# plt.text(0.3, 0.85, 'VI', fontsize=40, ha='center', va='center', color='k')
+# # Región de Mezcla 1
+# x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+# y = [0.2, 0.3, 0.75, 0.75, 0.2] # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)  # label=r'Mezcla: CR (50~80%), P1Da (20~35%)')
+# plt.text(0.05, 0.55, 'V', fontsize=40, ha='center', va='center', color='k')
+# # Región de Mezcla 2
+# x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+# y = [0.75, 0.75, 1.1, 1.1, 0.75] # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (30~40%), P1D (10~50%)')
+# plt.text(0.05, 0.9, 'IV', fontsize=40, ha='center', va='center', color='k')
+# # Región de Mezcla 3
+# x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
+# y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
+# plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
 plt.scatter(X,Y, marker="o", c = kmeans.labels_ , s = 900, cmap = colmap , alpha = 0.85)
 plt.xlabel(r"$cos(\delta)$")
 plt.ylabel(r"$\beta$")
@@ -2387,42 +2370,42 @@ X = Df_preguntas["Cosd_{}".format(cant_simulaciones)] + rng.normal(loc = 0, scal
 Y = Df_preguntas["Beta_{}".format(cant_simulaciones)] + rng.normal(loc = 0, scale = (0.1)/5, size = Df_preguntas["Beta_{}".format(cant_simulaciones)].shape)
 
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-tlinea = 5
-# Región de Polarización Descorrelacionada
-x = [0, 0.1, 0.15, 0, 0]  # x-coordinates
-y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) #, label='Polarización Descorrelacionada')
-plt.text(0.05, 1.3, 'I', fontsize=40, ha='center', va='center', color='k')
-# Región de Transición
-x = [0.1, 0.15, 0.3, 0.15, 0.1]  # x-coordinates
-y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
-plt.text(0.18, 1.3, 'II', fontsize=40, ha='center', va='center', color='k')
-# Región de Polarización ideológica
-x = [0.15, 0.5, 0.5, 0.3, 0.15] # x-coordinates
-y = [1.1, 1.1, 1.5, 1.5, 1.1] # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
-plt.text(0.35, 1.3, 'III', fontsize=40, ha='center', va='center', color='k')
-# Región de Consenso Radicalizado
-x = [0, 0.5, 0.5, 0.2, 0.2, 0.5, 0.5, 0.1, 0.1, 0, 0]  # x-coordinates
-y = [0, 0, 0.15, 0.3, 0.6, 0.6, 1.1, 1.1, 0.3, 0.2, 0]  # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
-plt.text(0.3, 0.85, 'VI', fontsize=40, ha='center', va='center', color='k')
-# Región de Mezcla 1
-x = [0, 0.1, 0.1, 0, 0] # x-coordinates
-y = [0.2, 0.3, 0.75, 0.75, 0.2] # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)  # label=r'Mezcla: CR (50~80%), P1Da (20~35%)')
-plt.text(0.05, 0.55, 'V', fontsize=40, ha='center', va='center', color='k')
-# Región de Mezcla 2
-x = [0, 0.1, 0.1, 0, 0] # x-coordinates
-y = [0.75, 0.75, 1.1, 1.1, 0.75] # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (30~40%), P1D (10~50%)')
-plt.text(0.05, 0.9, 'IV', fontsize=40, ha='center', va='center', color='k')
-# Región de Mezcla 3
-x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
-y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
-plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
-plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
+# tlinea = 5
+# # Región de Polarización Descorrelacionada
+# x = [0, 0.1, 0.15, 0, 0]  # x-coordinates
+# y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) #, label='Polarización Descorrelacionada')
+# plt.text(0.05, 1.3, 'I', fontsize=40, ha='center', va='center', color='k')
+# # Región de Transición
+# x = [0.1, 0.15, 0.3, 0.15, 0.1]  # x-coordinates
+# y = [1.1, 1.1, 1.5, 1.5, 1.1]  # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+# plt.text(0.18, 1.3, 'II', fontsize=40, ha='center', va='center', color='k')
+# # Región de Polarización ideológica
+# x = [0.15, 0.5, 0.5, 0.3, 0.15] # x-coordinates
+# y = [1.1, 1.1, 1.5, 1.5, 1.1] # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+# plt.text(0.35, 1.3, 'III', fontsize=40, ha='center', va='center', color='k')
+# # Región de Consenso Radicalizado
+# x = [0, 0.5, 0.5, 0.2, 0.2, 0.5, 0.5, 0.1, 0.1, 0, 0]  # x-coordinates
+# y = [0, 0, 0.15, 0.3, 0.6, 0.6, 1.1, 1.1, 0.3, 0.2, 0]  # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)
+# plt.text(0.3, 0.85, 'VI', fontsize=40, ha='center', va='center', color='k')
+# # Región de Mezcla 1
+# x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+# y = [0.2, 0.3, 0.75, 0.75, 0.2] # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4)  # label=r'Mezcla: CR (50~80%), P1Da (20~35%)')
+# plt.text(0.05, 0.55, 'V', fontsize=40, ha='center', va='center', color='k')
+# # Región de Mezcla 2
+# x = [0, 0.1, 0.1, 0, 0] # x-coordinates
+# y = [0.75, 0.75, 1.1, 1.1, 0.75] # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (30~40%), P1D (10~50%)')
+# plt.text(0.05, 0.9, 'IV', fontsize=40, ha='center', va='center', color='k')
+# # Región de Mezcla 3
+# x = [0.2, 0.5, 0.5, 0.2, 0.2] # x-coordinates
+# y = [0.3, 0.15, 0.6, 0.6, 0.3] # y-coordinates
+# plt.plot(x, y, color='k', linestyle = "dashed", linewidth=tlinea, alpha = 0.4) # label=r'Mezcla: CR (40~80%) y PIa (10~45%)')
+# plt.text(0.3, 0.45, 'VII', fontsize=40, ha='center', va='center', color='k')
 plt.scatter(X,Y, marker="o", c = kmeans.labels_ , s = 900, cmap = colmap , alpha = 0.85)
 plt.xlabel(r"$cos(\delta)$")
 plt.ylabel(r"$\beta$")
@@ -2456,9 +2439,9 @@ for grafico in np.array(Lista_subconj)[kmeans.labels_ == 0]:
 G.add_edges_from(Enlaces)
 
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-nx.draw(G, with_labels=True, pos = nx.circular_layout(G), node_color="lightblue", edge_color="gray", node_size=4000, font_size=25)
+nx.draw(G, with_labels=True, pos = nx.circular_layout(G), node_color="lightblue", edge_color="gray", node_size=4000, font_size=40, width = 4)
 plt.title("Red cluster 1")
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Red_cluster_1.png")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Kmeans=2_cluster_1.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
@@ -2479,12 +2462,67 @@ for grafico in np.array(Lista_subconj)[kmeans.labels_ == 1]:
 G.add_edges_from(Enlaces)
 
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-nx.draw(G, with_labels=True, pos = nx.circular_layout(G), node_color="lightblue", edge_color="gray", node_size=4000, font_size=25)
+nx.draw(G, with_labels=True, pos = nx.circular_layout(G), node_color="lightblue", edge_color="gray", node_size=4000, font_size=40, width = 4)
 plt.title("Red cluster 2")
-direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Red_cluster_2.png")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Kmeans=2_cluster_2.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
+
+# Hagámoslo para el caso de 3 clusters.
+
+kmeans = KMeans(n_clusters=3, random_state=42, n_init = "auto")
+kmeans.fit(Subconj_JS.to_numpy())
+
+for cluster in np.unique(kmeans.labels_):
+    # Armo la red
+    G = nx.Graph()
+    G.add_nodes_from(Preguntas)
+    
+    # Armo la lista de enlaces
+    Enlaces = list()
+    for grafico in np.array(Lista_subconj)[kmeans.labels_ == cluster]:
+        string = grafico.split("_")
+        nodo1 = string[0].strip("x").strip("V")
+        nodo2 = string[2].strip("x.csv").strip("V")
+        Enlaces.append((nodo1,nodo2))
+    G.add_edges_from(Enlaces)
+    
+    # Armo el gráfico
+    plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+    nx.draw(G, with_labels=True, pos = nx.circular_layout(G), node_color="lightblue", edge_color="gray", node_size=4000, font_size=40, width = 4)
+    plt.title("Red cluster {}".format(cluster+1))
+    direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Kmeans=3_cluster_{}.png".format(cluster+1))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close()
+
+
+# Hagámoslo para el caso de 4 clusters.
+
+kmeans = KMeans(n_clusters=4, random_state=42, n_init = "auto")
+kmeans.fit(Subconj_JS.to_numpy())
+
+for cluster in np.unique(kmeans.labels_):
+    # Armo la red
+    G = nx.Graph()
+    G.add_nodes_from(Preguntas)
+    
+    # Armo la lista de enlaces
+    Enlaces = list()
+    for grafico in np.array(Lista_subconj)[kmeans.labels_ == cluster]:
+        string = grafico.split("_")
+        nodo1 = string[0].strip("x").strip("V")
+        nodo2 = string[2].strip("x.csv").strip("V")
+        Enlaces.append((nodo1,nodo2))
+    G.add_edges_from(Enlaces)
+    
+    # Armo el gráfico
+    plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+    nx.draw(G, with_labels=True, pos = nx.circular_layout(G), node_color="lightblue", edge_color="gray", node_size=4000, font_size=40, width = 4)
+    plt.title("Red cluster {}".format(cluster+1))
+    direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Kmeans=4_cluster_{}.png".format(cluster+1))
+    plt.savefig(direccion_guardado ,bbox_inches = "tight")
+    plt.close()
 
 func.Tiempo(t0)
 

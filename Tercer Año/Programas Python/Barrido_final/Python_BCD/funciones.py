@@ -812,15 +812,16 @@ def Identificacion_Estados(Entropia, Sigma_X, Sigma_Y, Covarianza, Promedios):
                 Resultados[i] = 2
                 
             else:
-                if np.abs(cov) > 0.6:
+                if np.abs(cov) > 0.3:
                     # Dos extremos ideológico
                     Resultados[i] = 3
-                elif np.abs(cov) < 0.3:
+                # elif np.abs(cov) < 0.3:
+                else:
                     # Cuatro extremos
                     Resultados[i] = 5
-                else:
-                    # Estados de Transición
-                    Resultados[i] = 4
+                # else:
+                #     # Estados de Transición
+                #     Resultados[i] = 4
         
         else:
             
