@@ -5643,3 +5643,22 @@ Me avivé de subir los gráficos de los clusters al drive, buena idea para no pe
 ¿Hay algo más que debería hacer? Yo venía pensando en armar un gráfico de Venn para mostrar esto,
 una red de preguntas que se conectan o una red bipartita. Estas son las cosas que se me ocurren
 sumar a esto, hecho eso, seguimos con el armado del paper.
+
+------------------------------------------------------------------------------------------
+
+05/03/2025
+
+Lo vengo pensando y ya me definí qué voy a hacer. Lista de cosas para hacer hoy:
+
+1) Armar la separación en tres y cuatro clusters de los 55 gráficos.
+2) Agregar el cálculo del SSE para el caso de un único cluster, si se puede.
+3) Armar un gráfico de Venn para separar las preguntas en el caso de 2 clusters (quizás)
+4) Armar una red que vincule preguntas como para visualizar esto.
+5) Fijar un único valor de covarianza y modificar los gráficos de fracción de estados en
+el espacio de parámetros.
+6) Preparar una nueva figura 5.
+
+Hice lo del gráfico de SSE, la verdad da bastante lindo para lo que quería. Efectivamente 2
+clusters parece ser lo óptimo.
+Lo del diagrama de Venn no parece que vaya a salir, no creo que sea una gran idea.
+Armé esto como gráfico, me gusta mucho más cómo queda.

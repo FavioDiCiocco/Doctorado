@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
+import networkx as nx
 from scipy.spatial.distance import jensenshannon
 from sklearn.cluster import KMeans
 from sklearn.metrics import normalized_mutual_info_score
@@ -2022,7 +2023,7 @@ plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
 # Clasifico usando K-means
-cant_clusters = np.arange(2,12)
+cant_clusters = np.arange(1,12)
 silhouette_scores = list()
 sse = list() # acá vamos a guardar el puntaje de la función objetivo
 for clusters in cant_clusters:
@@ -2031,8 +2032,9 @@ for clusters in cant_clusters:
     kmeans.fit(Subconj_JS.to_numpy())
     
     # Calculate the silhouette score
-    silhouette_avg = silhouette_score(Subconj_JS.to_numpy(), kmeans.labels_)
-    silhouette_scores.append(silhouette_avg)
+    if clusters >= 2:
+        silhouette_avg = silhouette_score(Subconj_JS.to_numpy(), kmeans.labels_)
+        silhouette_scores.append(silhouette_avg)
     
     # SSE suma de los cuadrados de la distancia euclidea de cada cluster
     sse.append(kmeans.inertia_)
@@ -2040,7 +2042,7 @@ for clusters in cant_clusters:
 
 plt.rcParams.update({'font.size': 44})
 plt.figure(figsize=(28, 21))  # Adjust width and height as needed
-plt.plot(cant_clusters,silhouette_scores, linewidth=6, color = "tab:blue")
+plt.plot(cant_clusters[1::],silhouette_scores, linewidth=6, color = "tab:blue")
 plt.title('Caracterización K-means sobre Subconj.')
 plt.ylabel("Silhouette Score")
 plt.xlabel("Cant. Clusters")
@@ -2427,6 +2429,59 @@ plt.ylabel(r"$\beta$")
 plt.xlim(-0.025,0.525)
 plt.ylim(0,1.55)
 direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Esp_parametros_Clust_Subconj_k=2_JS.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+
+
+###################################################################################################################
+
+# Armemos gráficos de redes para ver cómo quedan las preguntas organizadas en esas redes.
+# Hagámoslo para el caso de 2 clusters.
+
+# Cluster 1
+
+G = nx.Graph()
+
+G.add_nodes_from(Preguntas)
+
+# Armo la lista de enlaces
+Enlaces = list()
+for grafico in np.array(Lista_subconj)[kmeans.labels_ == 0]:
+    string = grafico.split("_")
+    nodo1 = string[0].strip("x").strip("V")
+    nodo2 = string[2].strip("x.csv").strip("V")
+    Enlaces.append((nodo1,nodo2))
+
+G.add_edges_from(Enlaces)
+
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+nx.draw(G, with_labels=True, pos = nx.circular_layout(G), node_color="lightblue", edge_color="gray", node_size=4000, font_size=25)
+plt.title("Red cluster 1")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Red_cluster_1.png")
+plt.savefig(direccion_guardado ,bbox_inches = "tight")
+plt.close()
+
+# Cluster 2
+
+G = nx.Graph()
+
+G.add_nodes_from(Preguntas)
+
+# Armo la lista de enlaces
+Enlaces = list()
+for grafico in np.array(Lista_subconj)[kmeans.labels_ == 1]:
+    string = grafico.split("_")
+    nodo1 = string[0].strip("x").strip("V")
+    nodo2 = string[2].strip("x.csv").strip("V")
+    Enlaces.append((nodo1,nodo2))
+
+G.add_edges_from(Enlaces)
+
+plt.figure(figsize=(28, 21))  # Adjust width and height as needed
+nx.draw(G, with_labels=True, pos = nx.circular_layout(G), node_color="lightblue", edge_color="gray", node_size=4000, font_size=25)
+plt.title("Red cluster 2")
+direccion_guardado = Path("../../../Imagenes/Barrido_final/Distr_encuestas/Red_cluster_2.png")
 plt.savefig(direccion_guardado ,bbox_inches = "tight")
 plt.close()
 
