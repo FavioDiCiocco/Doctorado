@@ -5692,3 +5692,12 @@ Ya armé ese análisis y si bien se puede hilar fino para ver cómo se juntan lo
 me parece que es hilar muy fino y que se puede trabajar con la partición en dos clusters. Ya tengo
 hecho esto, mañana me puedo poner con otra cosa. Iré mañana al laboratorio para hacerme el estudio.
 Cocinaré ahora la carne.
+
+------------------------------------------------------------------------------------------
+
+07/03/2025
+
+Llegué un poco tarde a la facultad, mandé el mail a CAPES, y ahora me tengo que poner a revisar el
+paper. Arranquemos con el armado de la figura 5. Charlé con Pablo, le pareció una buena idea los
+cambios, iremos viendo de implementar todo lo posible en estos días, De paso, vuevlo a casa temprano,
+hace un calor infernal y el aire no funciona. Dios se olvidó de nosotros.
