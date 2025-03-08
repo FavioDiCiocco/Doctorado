@@ -5701,3 +5701,9 @@ Llegué un poco tarde a la facultad, mandé el mail a CAPES, y ahora me tengo qu
 paper. Arranquemos con el armado de la figura 5. Charlé con Pablo, le pareció una buena idea los
 cambios, iremos viendo de implementar todo lo posible en estos días, De paso, vuevlo a casa temprano,
 hace un calor infernal y el aire no funciona. Dios se olvidó de nosotros.
+
+Volví a casa, terminé de armar una idea de la figura 5. Me parecería bueno hablar con Pablo esto
+el lunes, ver su opinión al respecto y de ahí tomar una decisión más clara. No quiero que sea
+algo tonto como concepto, pero tampo algo supercargado de siete imágenes en una figura. Podría poner
+las flechas y que la fila de arriba converge al gráfico final abajo. También revisar lo que decía
+Pablo de agregar las regiones en el espacio de parámetros. 
