@@ -622,18 +622,22 @@ def Mapas_Colores_FEF(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_param_y,
     
     for nombre,capa in zip(Nombres_principales,Capas):
         
-        direccion_guardado = Path("../../../Imagenes/{}/Fracción estados finales {}_{}={}.png".format(carpeta,nombre,ID_param_extra_1,EXTRAS))
+        # Hago el ploteo del mapa de colores con el colormesh
+        ZZ_final = np.sum(ZZ[capa],axis = 0)
+        
+        ##################################################################################
+        
+        # Armo tres versiones con suavizados distintos y una sin suavizar
+        
+        direccion_guardado = Path("../../../Imagenes/{}/Fracción estados finales {}_v1.png".format(carpeta,nombre))
         
         plt.rcParams.update({'font.size': 60})
         plt.figure("FEF",figsize=(28,21))
         plt.xlabel(r"${}$".format(SIM_param_x))
         plt.ylabel(r"${}$".format(SIM_param_y))
         
-        # Hago el ploteo del mapa de colores con el colormesh
-        ZZ_final = np.sum(ZZ[capa],axis = 0)
-        
         # Define fixed levels to ensure colorbar limits remain [0,1]
-        levels = np.linspace(0, 1, 21)  # 20 intervals between 0 and 
+        levels = np.linspace(0, 1, 21)  # 20 intervals between 0 and 1
         
         # plt.pcolormesh(XX,YY,ZZ_final,shading="nearest", cmap = "plasma")
         im = plt.contourf(XX, YY, ZZ_final, levels=levels, cmap="plasma", vmin=0, vmax=1)
@@ -644,6 +648,61 @@ def Mapas_Colores_FEF(DF,Dic_Total,path,carpeta,SIM_param_x,SIM_param_y,
         cbar.ax.set_ylim(0, 1)  # Explicitly set the colorbar limits
         
         # plt.title("Fracción de estados de {}".format(nombre))
+        
+        # Guardo la figura y la cierro
+        
+        plt.savefig(direccion_guardado , bbox_inches = "tight")
+        plt.close("FEF")
+        
+        ##################################################################################
+        
+        # Armo tres versiones con suavizados distintos y una sin suavizar
+        
+        direccion_guardado = Path("../../../Imagenes/{}/Fracción estados finales {}_v2.png".format(carpeta,nombre))
+        
+        plt.rcParams.update({'font.size': 60})
+        plt.figure("FEF",figsize=(28,21))
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        
+        # Define fixed levels to ensure colorbar limits remain [0,1]
+        levels = np.linspace(0, 1, 11)  # 10 intervals between 0 and 1
+        
+        # plt.pcolormesh(XX,YY,ZZ_final,shading="nearest", cmap = "plasma")
+        im = plt.contourf(XX, YY, ZZ_final, levels=levels, cmap="plasma", vmin=0, vmax=1)
+
+        # Add a colorbar with the same range
+        cbar = plt.colorbar(im)
+        cbar.set_ticks(np.linspace(0, 1, 6))  # Set tick marks at even intervals
+        cbar.ax.set_ylim(0, 1)  # Explicitly set the colorbar limits
+        
+        # plt.title("Fracción de estados de {}".format(nombre))
+        
+        # Guardo la figura y la cierro
+        
+        plt.savefig(direccion_guardado , bbox_inches = "tight")
+        plt.close("FEF")
+        
+        ##################################################################################
+        
+        # Armo tres versiones con suavizados distintos y una sin suavizar
+        
+        # Una vez que tengo el ZZ completo, armo mi mapa de colores
+        direccion_guardado = Path("../../../Imagenes/{}/Fracción estados finales {}_v3.png".format(carpeta,nombre))
+        
+        plt.rcParams.update({'font.size': 60})
+        plt.figure("FEF",figsize=(28,21))
+        plt.xlabel(r"${}$".format(SIM_param_x))
+        plt.ylabel(r"${}$".format(SIM_param_y))
+        
+        # Hago el ploteo del mapa de colores con el colormesh
+        
+        im = plt.pcolormesh(XX,YY,ZZ_final,shading="nearest", cmap = "plasma")
+        
+        # Add a colorbar with the same range
+        cbar = plt.colorbar(im)
+        cbar.set_ticks(np.linspace(0, 1, 6))  # Set tick marks at even intervals
+        cbar.ax.set_ylim(0, 1)  # Explicitly set the colorbar limits
         
         # Guardo la figura y la cierro
         

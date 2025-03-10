@@ -5706,4 +5706,33 @@ Volví a casa, terminé de armar una idea de la figura 5. Me parecería bueno ha
 el lunes, ver su opinión al respecto y de ahí tomar una decisión más clara. No quiero que sea
 algo tonto como concepto, pero tampo algo supercargado de siete imágenes en una figura. Podría poner
 las flechas y que la fila de arriba converge al gráfico final abajo. También revisar lo que decía
-Pablo de agregar las regiones en el espacio de parámetros. 
+Pablo de agregar las regiones en el espacio de parámetros.
+
+------------------------------------------------------------------------------------------
+
+10/03/2025
+
+Hoy a la mañana me puse a organizar las últimas cosas del viaje, el seguro, los pasajes y
+mis fondos. Revisé que no me falte mandarle nada a CAPES actualmente y lo que me queda
+entonces es terminar de sacar el seguro, después de comer le vuelvo a insistir a Lisandro.
+
+La tarde, hasta las 18:30 aprox., la voy a dedicar a resolver cosas del paper.
+.) Armar la lista de figuras con un suavizado no tan marcado.
+.) Agregar los archivos de las simulaciones para hacer más fino el barrido en
+el espacio beta-cosd.
+.) Corregir la forma en que se clasifican los estados de Polarización ideológica.
+.) Corregir la figura 5.
+.) Modificar el texto de las secciones finales.
+.) Mover al apéndice el algoritmo de clasificación de estados.
+
+Mandé a correr las figuras para hacer el armado menos suavizado.
+
+En Algarve tengo las simulaciones entre 30 y 59. En Oporto tengo de la 60 a la 89.
+En Coimbra están los que van de 0 a 29 y de 90 a 99. Logré juntar todo y lo mandé a 
+correr. Tengo por si acaso guardada la carpeta vieja, que ahora se llama BCD_pre.
+Si todo sale mal, puedo seguir usando eso. Total, simplemente copié los archivos,
+no los trasladé. Admito que tengo un poco de miedo porque no recuerdo cómo se
+calculan las matrices de JS y demás que faltan, pero confío en que va a estar todo bien.
+
+Ya hice lo de corregir la clasificación de estados de polarización ideológica. Ahora subo
+el gráfico. Lo haré en casa, ahora voy yendo y le dejo la llave a Pablo.
