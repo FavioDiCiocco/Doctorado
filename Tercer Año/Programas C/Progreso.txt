@@ -5699,7 +5699,7 @@ Cocinaré ahora la carne.
 
 Llegué un poco tarde a la facultad, mandé el mail a CAPES, y ahora me tengo que poner a revisar el
 paper. Arranquemos con el armado de la figura 5. Charlé con Pablo, le pareció una buena idea los
-cambios, iremos viendo de implementar todo lo posible en estos días, De paso, vuevlo a casa temprano,
+cambios, iremos viendo de implementar todo lo posible en estos días, De paso, vuelvo a casa temprano,
 hace un calor infernal y el aire no funciona. Dios se olvidó de nosotros.
 
 Volví a casa, terminé de armar una idea de la figura 5. Me parecería bueno hablar con Pablo esto
@@ -5736,3 +5736,15 @@ calculan las matrices de JS y demás que faltan, pero confío en que va a estar 
 
 Ya hice lo de corregir la clasificación de estados de polarización ideológica. Ahora subo
 el gráfico. Lo haré en casa, ahora voy yendo y le dejo la llave a Pablo.
+
+------------------------------------------------------------------------------------------
+
+14/03/2025
+
+Ayer llegamos a Brasil, el martes pasado no laburé nada en esto, el lunes que viene me
+voy a tener que poner de nuevo a pelear con el tema de las claves. Voy a mandarles un mensaje
+ahora comentándoles mi problema a ver si me pueden dar una mano.
+
+Ok, tengo un problema serio, que es que no me corren los programas para usar Spyder. Por no
+decir que no puedo acceder a los clusters. Dios y la irgen, la concha de la madre. Tan difícil
+va a ser hacer que esto funcione la puta que lo parió
